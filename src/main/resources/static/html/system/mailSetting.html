@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <!-- common js -->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/popup.js"></script>
+    <!-- validate.js -->
+    <script src="../../js/jquery.validate.min.js"></script>
+</head>
+
+<body>
+<div class="wrap">
+    <!-- header 영역 시작 -->
+    <header class="header cf">
+        <h1 class="logo"><a href="../index.html"><img src="../../image/logo.png" alt="MICRM" /></a></h1>
+        <div class="right cf">
+            <ol class="summary">
+                <li><span>발송예정</span>&nbsp;3</li>
+                <li><span>발송중</span>&nbsp;1</li>
+                <li><span>승인요청</span>&nbsp;2</li>
+            </ol>
+            <div class="ico_notice"><span>알림</span>&nbsp;3</div>
+        </div>
+    </header>
+    <!-- header 영역 끝 -->
+    <!-- left menu 영역 시작 -->
+    <nav class="nav">
+        <!-- gnb 영역 시작 -->
+        <ul class="gnb">
+            <li>
+                <span>회원 관리</span>
+                <ul class="sub_menu">
+                    <li><a href="member.html">DB 회원</a></li>
+                    <li><a href="rejection.html">수신거부 회원</a></li>
+                    <li><a href="upload.html">업로드 회원</a></li>
+                </ul>
+            </li>
+            <li>
+                <span>메시지</span>
+                <ul class="sub_menu">
+                    <li><a href="../message/edmList.html">이메일</a></li>
+                    <li><a href="../message/smsList.html">모바일</a></li>
+                    <li><a href="../message/imageList.html">이미지 파일</a></li>
+                </ul>
+            </li>
+            <li>
+                <span>캠페인</span>
+                <ul class="sub_menu">
+                    <li><a href="#">타겟팅</a></li>
+                    <li><a href="#">캠페인 발송</a></li>
+                    <li><a href="#">발송 현황</a></li>
+                </ul>
+            </li>
+            <li>
+                <span>리포트</span>
+                <ul class="sub_menu">
+                    <li><a href="#">캠페인 현황 통계</a></li>
+                </ul>
+            </li>
+            <li>
+                <span>시스템 관리</span>
+                <ul class="sub_menu">
+                    <li><a href="workList.html">작업</a></li>
+                    <li><a href="userManagement.html">사용자</a></li>
+                    <li><a href="ipSecurity.html">보안</a></li>
+                    <li class="on"><a href="mailSetting.html">환경</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- gnb 영역 끝 -->
+        <div class="user_info cf">
+            <div class="user">밀버스님</div>
+            <a href="#" class="logout">로그아웃</a>
+        </div>
+    </nav>
+    <!-- left menu 영역 끝 -->
+    <!-- container 영역 시작 -->
+    <section class="container">
+        <!-- 컨텐츠 영역 시작 -->
+        <div class="contents">
+            <!-- row 영역 시작 -->
+            <div class="row tooltip_area bottom-border cf">
+                <div class="left">
+                    <!-- location 영역 -->
+                    <ul class="location">
+                        <li>홈</li>
+                        <li>시스템관리</li>
+                        <li>환경</li>
+                    </ul>
+                    <!-- tooltip 버튼 영역  -->
+                    <div class="tooltip_icon">
+                        <img src="../../image/ico_tooltip.png" alt="Tooltip" />
+                    </div>
+                    <!-- tooltip box 영역 시작 -->
+                    <div class="tooltip_box">
+                        <!-- tooltip bullet 영역 -->
+                        <div class="bullet"></div>
+                        <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                        스타일론 직장인이 26.69억(29.1%), <br />
+                        스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                    </div>
+                    <!-- tooltip box 영역 끝 -->
+                </div>
+                <div class="right">
+                    <!-- select 영역 시작 -->
+                    <div class="select style1 left-border">
+                        <!-- selected value -->
+                        <div class="value searchSelect" data="">기준선택</div>
+                        <!-- option -->
+                        <ul class="option">
+                            <li data="발신자명">발신자명</li>
+                            <li data="발신주소">발신주소</li>
+                            <li data="사용여부">사용여부</li>
+                        </ul>
+                    </div>
+                    <!-- select 영역 끝 -->
+                    <input type="text" class="searchInp left-border searchWord" placeholder="검색어입력" onkeyup="enterSubmit();" />
+                    <input type="submit" class="searchBtn" value="검색" onclick="return searchCheck();" />
+                </div>
+            </div>
+            <!-- row 영역 끝 -->
+            <ul class="tab_row">
+                <!-- Tab menu -->
+                <li class="on"><a href="mailSetting.html">메일 정보 설정</a></li>
+                <li><a href="smsSetting.html">문자 정보 설정</a></li>
+                <li><a href="testGroupSetting.html">테스트 그룹 설정</a></li>
+                <li><a href="noticeSetting.html">공지사항 설정</a></li>
+                <li><a href="approval.html">승인 절차 설정</a></li>
+            </ul>
+            <!-- section 영역 시작 -->
+            <div class="section">
+                <div class="count border-bottom cf">
+                    <div class="total left">기본 메일 주소</div>
+                </div>
+                <!-- table 영역 시작 -->
+                <table class="tableType2">
+                    <colgroup>
+                        <col width="156" />
+                        <col width="*" />
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>발신자명</th>
+                        <td><span class="en_font">Reebok_Korea</span></td>
+                    </tr>
+                    <tr>
+                        <th>발신주소</th>
+                        <td><span class="en_font">ReebokKorea@korea.adidas.com</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="count border-bottom cf">
+                    <div class="total left">메일 리스트</div>
+                    <div class="btn_col right">
+                        <input type="button" value="추가" class="btn_sm_line" onclick="addressAddPopup();" />
+                        <input type="button" value="기본 메일 지정" class="btn_sm_line" onclick="mailPostPopup();" />
+                    </div>
+                </div>
+                <!-- table 영역 시작 -->
+                <table class="table mail_tbl">
+                    <colgroup>
+                        <col width="3%" />
+                        <col width="5%" />
+                        <col width="13%" />
+                        <col width="12.8%" />
+                        <col width="23.8%" />
+                        <col width="15.8%" />
+                        <col width="10.8%" />
+                        <col width="15.8%" />
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>기본</th>
+                        <th>발신자명</th>
+                        <th>설명</th>
+                        <th>발신주소</th>
+                        <th>생성일</th>
+                        <th>사용여부</th>
+                        <th>수정/삭제</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><label class="custom_radio"><input name="mailAddress" type="radio" value="ReebokKorea@korea.adidas.com"><span></span></label></td>
+                        <td><img src="../../image/ico_basic.png" alt=""/></td>
+                        <td class="en_font">Reebok_Korea</td>
+                        <td class="ellipsis">리복_본사</td>
+                        <td class="en_font">ReebokKorea@korea.adidas.com</td>
+                        <td class="en_font">2020-11-04 17:10:00</td>
+                        <td class="en_font"><input type="button" class="use_state en_font btn_state" value="Y" /></td>
+                        <td>
+                            <input type="button" class="btn_sm_line btn_inline size" value="수정"  onclick="addressRePopup();" />
+                            <input type="button" class="btn_sm_line btn_inline size" value="삭제"  onclick="deleteAlert(this);" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="custom_radio"><input name="mailAddress" type="radio" value="ReebokKorea_Jamsil@korea.adidas.com"><span></span></label></td>
+                        <td></td>
+                        <td class="en_font">Reebok_Jamsil</td>
+                        <td class="ellipsis">리복_잠실</td>
+                        <td class="en_font">ReebokKorea_Jamsil@korea.adidas.com</td>
+                        <td class="en_font">2020-10-28 11:00:00</td>
+                        <td class="en_font"><input type="button" class="use_state en_font btn_state" value="Y" /></td>
+                        <td>
+                            <input type="button" class="btn_sm_line btn_inline size" value="수정" onclick="addressRePopup();" />
+                            <input type="button" class="btn_sm_line btn_inline size" value="삭제" onclick="deleteAlert(this);" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="custom_radio"><input name="mailAddress" type="radio" value="ReebokKorea_REFO@korea.adidas.com"><span></span></label></td>
+                        <td></td>
+                        <td class="en_font">Reebok_REFO</td>
+                        <td class="ellipsis">리복</td>
+                        <td class="en_font">ReebokKorea_REFO@korea.adidas.com</td>
+                        <td class="en_font">2020-10-25 10:23:00</td>
+                        <td class="en_font"><input type="button" class="use_state en_font btn_state" value="Y" /></td>
+                        <td>
+                            <input type="button" class="btn_sm_line btn_inline size" value="수정" onclick="addressRePopup();" />
+                            <input type="button" class="btn_sm_line btn_inline size" value="삭제" onclick="deleteAlert(this);" />
+                        </td>
+                    </tr>
+                    <!-- 검색 결과가 없는 경우 영역 시작 -->
+                    <tr class="no_data">
+                        <td colspan="100%">조회된 결과가 없습니다.</td>
+                    </tr>
+                    <!-- 검색 결과가 없는 경우 영역 시작 -->
+                    </tbody>
+                </table>
+                <div class="btn_row bottom-border">
+                    <ul class="pager">
+                        <!-- 페이지 이동 버튼이 활성화 상태일 경우 addClass'active' -->
+                        <li class="first">First</li>
+                        <li class="prev">Prev</li>
+                        <!-- 페이지 번호가 활성화 상태일 경우 addClass'on' -->
+                        <li class="page on">1</li>
+                        <li class="page">2</li>
+                        <li class="page">3</li>
+                        <li class="page">4</li>
+                        <li class="page">5</li>
+                        <li class="page">6</li>
+                        <li class="page">7</li>
+                        <li class="page">8</li>
+                        <li class="page">9</li>
+                        <li class="page">10</li>
+                        <li class="next active">Next</li>
+                        <li class="last active">Last</li>
+                    </ul>
+                </div>
+                <!-- table 영역 끝 -->
+            </div>
+            <!-- section 영역 끝 -->
+        </div>
+        <!-- 컨텐츠 영역 끝 -->
+        <!-- footer 영역 시작 -->
+        <footer class="footer">
+            &copy; Milvus Corp.
+        </footer>
+        <!-- footer 영역 끝 -->
+    </section>
+    <!-- container 영역 끝 -->
+</div>
+<!-- wrap end -->
+
+<!-- 메일 주소 추가 팝업 영역 시작 -->
+<div class="layer_pop addressAddPopup">
+    <div class="pop_container popup_size1">
+        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+        <div class="pop_title">메일 주소 추가</div>
+        <div class="pop_inner">
+            <form action="" id="postForm1">
+                <table class="pop_table_type1">
+                    <colgroup>
+                        <col width="103" />
+                        <col width="*" />
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>발신자명</th>
+                        <td><input type="text" name="postName1" placeholder="발신자명을 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
+                        <th>설명</th>
+                        <td><input type="text" name="subText1" placeholder="설명을 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
+                        <th>발신주소</th>
+                        <td><input type="text" name="postAddress1" placeholder="발신주소를 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="pop_error_txt blue_point_color" id="errorArea1"></div>
+            <div class="btn_row">
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="postSubmit1();" value="저장" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 메일 주소 추가 팝업 영역 끝 -->
+
+<!-- 메일 주소 수정 팝업 영역 수정 -->
+<div class="layer_pop addressRePopup">
+    <div class="pop_container popup_size1">
+        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+        <div class="pop_title">메일 주소 수정</div>
+        <div class="pop_inner">
+            <form action="" id="postForm2">
+                <table class="pop_table_type1">
+                    <colgroup>
+                        <col width="103" />
+                        <col width="*" />
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>발신자명</th>
+                        <td><input type="text" name="postName2" placeholder="발신자명을 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
+                        <th>설명</th>
+                        <td><input type="text" name="subText2" placeholder="설명을 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
+                        <th>발신주소</th>
+                        <td><input type="text" name="postAddress2" placeholder="발신주소를 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="pop_error_txt blue_point_color" id="errorArea2"></div>
+            <div class="btn_row">
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="postSubmit2();" value="저장" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 메일 주소 수정 팝업 영역 끝 -->
+</body>
+<script>
+    // 검색영역 enter key event
+    function enterSubmit() {
+        if (window.event.keyCode == 13) {
+            searchCheck();
+        }
+        return false;
+    }
+
+    $(document).ready(function () {
+        // 사용여부 click event
+        $('.use_state').on('click', function () {
+            let useValue = $(this).val();
+            if (useValue == 'Y') {
+                $(this).val('N');
+            } else {
+                $(this).val('Y');
+            }
+        });
+
+        $('#postForm1').validate({
+            onfocusout: false
+            , submitHandler: function () {
+                $('#errorArea1').html('');
+                $('.addressAddPopup').removeClass('active');
+                return false;
+            }
+            , errorPlacement: $.noop
+            , invalidHandler: function (form, validator) {
+                let errors = validator.numberOfInvalids();
+                if (errors) {
+                    $('#errorArea1').html(validator.errorList[0].message);
+                }
+            }
+            , rules: {
+                postName1: {
+                    required: true
+                }
+                , subText1 : {
+                    required: true
+                }
+                , postAddress1: {
+                    required: true
+                    , email: true
+                }
+            }
+            , messages: {
+                postName1: {
+                    required: "발신자명을 입력해주세요."
+                }
+                , subText1 : {
+                    required: "설명을 입력해주세요."
+                }
+                , postAddress1: {
+                    required: "발신주소를 입력해주세요."
+                    , email: "이메일 형식에 맞게 입력해주세요."
+                }
+            }
+        });
+
+        $('#postForm2').validate({
+            onfocusout: false
+            , submitHandler: function (element) {
+                $('#errorArea2').html('');
+                $('.addressRePopup').removeClass('active');
+                return false;
+            }
+            , errorPlacement: $.noop
+            , invalidHandler: function (form, validator) {
+                let errors = validator.numberOfInvalids();
+                if (errors) {
+                    $('#errorArea2').html(validator.errorList[0].message);
+                }
+            }
+            , rules: {
+                postName2: {
+                    required: true
+                }
+                , subText2 : {
+                    required: true
+                }
+                , postAddress2: {
+                    required: true
+                    , email: true
+                }
+            }
+            , messages: {
+                postName2: {
+                    required: "발신자명을 입력해주세요."
+                }
+                , subText2 : {
+                    required: "설명을 입력해주세요."
+                }
+                , postAddress2: {
+                    required: "발신주소를 입력해주세요."
+                    , email: "이메일 형식에 맞게 입력해주세요."
+                }
+            }
+        });
+    });
+
+    function postSubmit1() {
+        $('#postForm1').submit();
+    }
+
+    function addressAddPopup() {
+        $('.addressAddPopup').addClass('active');
+    }
+
+    function postSubmit2() {
+        $('#postForm2').submit();
+    }
+
+    function addressRePopup() {
+        $('.addressRePopup').addClass('active');
+    }
+
+    let deleteEl;
+    function deleteAlert(el) {
+        deleteEl = el;
+        let html = '';
+        html +=
+            '<div class="layer_pop alert active">' +
+            '<div class="pop_container popup_size3">' +
+            '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+            '<div class="pop_title">메일 주소 삭제</div>' +
+            '<div class="pop_inner">' +
+            '<div class="alert_txt">선택된 메일 주소를 삭제하시겠습니까?</div>' +
+            '<div class="btn_row">' +
+            '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="deleteRow(deleteEl);" value="확인" />' +
+            '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $('body .layer_pop.alert').remove();
+        $('body').append(html);
+        return false;
+    }
+
+    function deleteRow(row) {
+        $(row).parents('tr').remove();
+        $('.alert').removeClass('active');
+        return false;
+    }
+
+    function mailPostPopup() {
+        let changeMail = $('input[name="mailAddress"]:checked').val();
+        if (changeMail != undefined && changeMail != '') {
+            let html = '';
+            html += '<div class="layer_pop mailPostPopup active">' +
+                '<div class="pop_container popup_size1">' +
+                '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+                '<div class="pop_title">기본 메일 변경</div>' +
+                '<div class="pop_inner">' +
+                '<table class="pop_table_type1">' +
+                '<colgroup>' +
+                '<col width="103"/>' +
+                '<col width="*"/>' +
+                '</colgroup>' +
+                '<tbody>' +
+                '<tr>' +
+                '<th>기존 메일</th>' +
+                '<td><span>ReebokKorea@korea.adidas.com</span></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<th>변경 메일</th>' +
+                '<td><span>' + changeMail + '</span></td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>' +
+                '<div class="btn_row">' +
+                '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="확인" />' +
+                '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $('body .layer_pop.mailPostPopup').remove();
+            $('body').append(html);
+            return false;
+        } if (changeMail == undefined || changeMail == '') {
+            popup.popAlert("변경할 메일 주소를 선택해주세요.");
+            return false;
+        }
+    }
+
+
+</script>
+
+</html>

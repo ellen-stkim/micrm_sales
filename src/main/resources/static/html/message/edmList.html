@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <!-- common js -->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/popup.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- header 영역 시작 -->
+        <header class="header cf">
+            <h1 class="logo"><a href="../index.html"><img src="../../image/logo.png" alt="MICRM" /></a></h1>
+            <div class="right cf">
+                <ol class="summary">
+                    <li><span>발송예정</span>&nbsp;3</li>
+                    <li><span>발송중</span>&nbsp;1</li>
+                    <li><span>승인요청</span>&nbsp;2</li>
+                </ol>
+                <div class="ico_notice"><span>알림</span>&nbsp;3</div>
+            </div>
+        </header>
+        <!-- header 영역 끝 -->
+        <!-- left menu 영역 시작 -->
+        <nav class="nav">
+            <!-- gnb 영역 시작 -->
+            <ul class="gnb">
+                <li>
+                    <span>회원 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="../member/member.html">DB 회원</a></li>
+                        <li><a href="../member/rejection.html">수신거부 회원</a></li>
+                        <li><a href="../member/upload.html">업로드 회원</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>메시지</span>
+                    <ul class="sub_menu">
+                        <li class="on"><a href="edmList.html">이메일</a></li>
+                        <li><a href="smsList.html">모바일</a></li>
+                        <li><a href="imageList.html">이미지 파일</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>캠페인</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">타겟팅</a></li>
+                        <li><a href="#">캠페인 발송</a></li>
+                        <li><a href="#">발송 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>리포트</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">캠페인 현황 통계</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>시스템 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">작업</a></li>
+                        <li><a href="#">사용자</a></li>
+                        <li><a href="#">보안</a></li>
+                        <li><a href="#">환경</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- gnb 영역 끝 -->
+            <div class="user_info cf">
+                <div class="user">밀버스님</div>
+                <a href="#" class="logout">로그아웃</a>
+            </div>
+        </nav>
+        <!-- left menu 영역 끝 -->
+        <!-- container 영역 시작 -->
+        <section class="container">
+            <!-- 컨텐츠 영역 시작 -->
+            <div class="contents">
+                <!-- row 영역 시작 -->
+                <div class="row tooltip_area bottom-border cf">
+                    <div class="left">
+                        <!-- location 영역 -->
+                        <ul class="location">
+                            <li>홈</li>
+                            <li>메세지</li>
+                            <li>이메일</li>
+                        </ul>
+                        <!-- tooltip 버튼 영역  -->
+                        <div class="tooltip_icon">
+                            <img src="../../image/ico_tooltip.png" alt="Tooltip" />
+                        </div>
+                        <!-- tooltip box 영역 시작 -->
+                        <div class="tooltip_box">
+                            <!-- tooltip bullet 영역 -->
+                            <div class="bullet"></div>
+                            <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                            스타일론 직장인이 26.69억(29.1%), <br />
+                            스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                        </div>
+                        <!-- tooltip box 영역 끝 -->
+                    </div>
+                    <div class="right">
+                        <!-- select 영역 시작 -->
+                        <div class="select style1 left-border">
+                            <!-- selected value -->
+                            <div class="value searchSelect" data="">기준선택</div>
+                            <!-- option -->
+                            <ul class="option">
+                                <li data="템플릿명">템플릿명</li>
+                                <li data="제목">제목</li>
+                            </ul>
+                        </div>
+                        <!-- select 영역 끝 -->
+                        <input type="text" class="searchInp left-border" placeholder="검색어입력" />
+                        <input type="submit" class="searchBtn" value="검색" onclick="return searchCheck();" />
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- row 영역 시작 -->
+                <div class="row bottom-border cf">
+                    <div class="left">
+                        <a href="edmCreate.html" class="btn_basic emailCreate left right-border">이메일 컨텐츠 생성</a>
+                        <input type="button" class="btn_basic delete left right-border"
+                            onclick="popup.deleteClick('campaign', '');" value="삭제" />
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- section 영역 시작 -->
+                <div class="section">
+                    <!-- list_container 영역 시작 -->
+                    <div class="list_container cf">
+                        <div class="row_grid">
+                            <!-- column 1단위 영역 시작 -->
+                            <div class="column">
+                                <!-- 비활성화 cover -->
+                                <div class="hidden_cover"></div>
+                                <div class="row_head cf">
+                                    <!-- 체크박스 -->
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <!-- 템플릿명 -->
+                                    <h3>2001002_Oct_Newsletter_A</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <a href="#">수정</a>
+                                    </div>
+                                </div>
+                                <div class="row_top cf">
+                                    <!-- 컨텐츠 type -->
+                                    <div class="contents_type">광고</div>
+                                    <!-- 제목 -->
+                                    <h4>BEYONCE X SUPERSTAR 콜라보</h4>
+                                </div>
+                                <div class="row_body">
+                                    <!-- edm 이미지 영역 -->
+                                    <div class="edm">
+                                        <img src="../../image/test_img3.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <!-- 수정일 -->
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <!-- 등록일 -->
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <!-- column 1단위 영역 끝 -->
+                            <div class="column off">
+                                <div class="hidden_cover"></div>
+                                <div class="row_head cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <h3>200920_Sep_Newsletter_B</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="N" class="en_font useState" />
+                                        <a href="#">수정</a>
+                                    </div>
+                                </div>
+                                <div class="row_top cf">
+                                    <div class="contents_type">광고</div>
+                                    <h4>X-GHOSTE 발매 안내</h4>
+                                </div>
+                                <div class="row_body">
+                                    <div class="edm">
+                                        <img src="../../image/test_img4.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="hidden_cover"></div>
+                                <div class="row_head cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <h3>200918_Sep_Newsletter_c</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <a href="#">수정</a>
+                                    </div>
+                                </div>
+                                <div class="row_top cf">
+                                    <div class="contents_type">광고</div>
+                                    <h4>최대 50% 할인이 오늘까지!</h4>
+                                </div>
+                                <div class="row_body">
+                                    <div class="edm">
+                                        <img src="../../image/test_img5.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="hidden_cover"></div>
+                                <div class="row_head cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <h3>200704_July_Newsletter_D</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <a href="#">수정</a>
+                                    </div>
+                                </div>
+                                <div class="row_top cf">
+                                    <div class="contents_type">광고</div>
+                                    <h4>놀라운 할인의 시작</h4>
+                                </div>
+                                <div class="row_body">
+                                    <div class="edm">
+                                        <img src="../../image/test_img6.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+                    <!-- list_container 영역 끝 -->
+                    <div class="btn_more"><img src="../../image/bullet_arrw1.png" alt="" />더보기</div>
+                    <div class="none list_ht bottom-border">
+                        조회된 결과가 없습니다.                            
+                    </div>
+                </div>
+                <!-- section 영역 끝 -->
+            </div>
+            <!-- 컨텐츠 영역 끝 -->
+            <!-- footer 영역 시작 -->
+            <footer class="footer">
+                &copy; Milvus Corp.
+            </footer>
+            <!-- footer 영역 끝 -->
+        </section>
+        <!-- container 영역 끝 -->
+    </div>
+</body>
+<script>
+    // 더보기 버튼 event
+    let moreBtn = document.querySelector('.btn_more');
+    moreBtn.addEventListener('click', function () {
+        $('.row_grid').append(rowAppend);
+    });
+
+    // 컨텐츠 사용여부 변경 event
+    let useState = document.getElementsByClassName('useState');
+    for (let s = 0; s < useState.length; s++) {
+        useState[s].addEventListener('click', function (e) {
+            if (e.target.value == 'Y') {
+                e.target.value = 'N';
+                e.target.parentElement.parentElement.parentElement.classList.add('off');
+            } else {
+                e.target.value = 'Y';
+                e.target.parentElement.parentElement.parentElement.classList.remove('off');
+            }
+        });
+    }
+
+    // 더보기 HTML Append event
+    function rowAppend() {
+        let row = '';
+        for (let i = 0; i < 4; i++) {
+            row += '<div class="column">' +
+                '<div class="hidden_cover"></div>' +
+                '<div class="row_head cf">' +
+                '<label class="custom_check1"><input type="checkbox" name="list"/><span></span></label>' +
+                '<h3>200704_July_Newsletter_D</h3>' +
+                '<div class="remove_info">' +
+                '<input type="button" value="Y" class="en_font useState"/>' +
+                '<a href="#">수정</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="row_top cf">' +
+                '<div class="contents_type">광고</div>' +
+                '<h4>놀라운 할인의 시작</h4>' +
+                '</div>' +
+                '<div class="row_body">' +
+                '<div class="edm">' +
+                '<img src="../../image/test_img6.jpg" alt=""/>' +
+                '</div>' +
+                '</div>' +
+                '<div class="row_footer">' +
+                '<div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>' +
+                '<div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>' +
+                '</div>' +
+                '</div>';
+        }
+        return row;
+    }
+
+</script>
+
+</html>

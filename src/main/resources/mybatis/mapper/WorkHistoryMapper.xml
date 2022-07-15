@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.WorkHistoryMapper">
+	<cache />
+
+	<insert id="insertWorkHistory" parameterType="Tblmi_workDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into tblmi_work_hst
+					(
+							work_type,
+							work_usr_id,
+							work_usr_ip,
+							work_stat,
+							work_msg,
+							work_grp_cd,
+							work_st_dt,
+							reg_id,
+							reg_dt
+					)
+		values
+					(		#{work_type},
+							#{work_usr_id},
+							INET_ATON(#{work_usr_ip}),
+							#{work_stat},
+							#{work_msg},
+							#{work_grp_cd},
+							now(),
+							#{reg_id},
+							now()
+					)
+ 	</insert>
+
+	<update id ="updateWorkHistory" parameterType="Tblmi_workDto">
+		UPDATE TBLMI_WORK_HST
+		SET UPD_ID = #{upd_id}
+			,UPD_DT = now()
+			,WORK_END_DT = now()
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_stat)">
+			,work_stat = #{work_stat}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_msg)">
+			,work_msg = #{work_msg}
+		</if>
+		<where>
+			seq = #{seq}
+		</where>
+	</update>
+
+	<select id="getWorkListCnt" parameterType="Tblmi_workDto"  resultType="Int">
+		select count(*)
+		from tblmi_work_hst as wrk
+			INNER JOIN tblmi_usr AS usr
+					ON wrk.work_usr_id = usr.usr_id
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				wrk.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_grp_cd)">
+				and wrk.work_grp_cd = #{work_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_usr_ip)">
+				and wrk.work_usr_ip = #{work_usr_ip}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_type)">
+				and wrk.work_type LIKE CONCAT('%',#{work_type},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_stat)">
+				and wrk.work_stat = #{work_stat}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_email)">
+				and usr.usr_email LIKE CONCAT('%',#{usr_email},'%')
+			</if>
+		</trim>
+	</select>
+
+	<select id="getWorkList" parameterType="Tblmi_workDto"  resultType="Tblmi_workDto">
+		SELECT wrk.seq,
+				wrk.work_type,
+				usr.usr_email AS work_usr_id,
+				wrk.work_usr_ip,
+				wrk.work_stat,
+				wrk.work_msg,
+				wrk.work_grp_cd,
+				wrk.notify,
+				wrk.work_st_dt,
+				wrk.work_end_dt,
+				wrk.reg_id,
+				wrk.reg_dt,
+				wrk.upd_id,
+				wrk.upd_dt
+		FROM   tblmi_work_hst AS wrk
+		INNER JOIN tblmi_usr AS usr
+				ON wrk.work_usr_id = usr.usr_id
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				wrk.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_grp_cd)">
+				and wrk.work_grp_cd = #{work_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_usr_ip)">
+				and wrk.work_usr_ip = #{work_usr_ip}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_type)">
+				and wrk.work_type LIKE CONCAT('%',#{work_type},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_stat)">
+				and wrk.work_stat LIKE CONCAT('%',#{work_stat},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_email)">
+				and usr.usr_email LIKE CONCAT('%',#{usr_email},'%')
+			</if>
+		</trim>
+		order by REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id ="selectWorkHstForAlarm" parameterType="Tblmi_workDto" resultType="Tblmi_workDto">
+		SELECT *
+		FROM tblmi_work_hst a
+		<where>
+			NOT EXISTS (
+					SELECT 1
+					FROM tblmi_work_hst b
+					WHERE work_stat = '3'
+					and a.seq = b.seq
+			)
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_usr_id)">
+				AND a.work_usr_id = #{work_usr_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_grp_cd)">
+				AND a.work_grp_cd = #{work_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+					and (a.REG_DT >= #{reg_dt} and a.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+				</if>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(notify)">
+				AND a.notify = #{notify}
+			</if>
+				ORDER BY a.reg_dt desc
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(isLimit)">
+				LIMIT #{isLimit}
+			</if>
+		</where>
+	</select>
+
+
+	<select id ="checkAlarmCnt" parameterType="Tblmi_workDto" resultType="Int">
+		SELECT COUNT(*)
+		FROM tblmi_work_hst a
+		<where>
+			NOT EXISTS (
+				SELECT 1
+				FROM tblmi_work_hst b
+				WHERE work_stat = '3'
+					and a.seq = b.seq
+			)
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_usr_id)">
+				AND a.work_usr_id = #{work_usr_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_grp_cd)">
+				AND a.work_grp_cd = #{work_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+					and (a.REG_DT >= #{reg_dt} and a.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+				</if>
+			</if>
+				AND a.notify = '1'
+		</where>
+	</select>
+
+	<!-- 알람 상태 읽음 표시 -->
+	<update id ="updateAlarmStatus" parameterType="Tblmi_workDto">
+		UPDATE tblmi_work_hst
+		set notify = '0'
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_usr_id)">
+				AND work_usr_id = #{work_usr_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_grp_cd)">
+				AND work_grp_cd = #{work_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+					and (REG_DT >= #{reg_dt} and REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+				</if>
+			</if>
+		</where>
+	</update>
+</mapper>
+
+
+
+
+

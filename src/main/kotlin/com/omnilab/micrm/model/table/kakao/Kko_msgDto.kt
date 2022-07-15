@@ -1,0 +1,47 @@
+package com.omnilab.micrm.model.table.kakao
+
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.apache.commons.lang3.builder.ToStringStyle
+import org.apache.ibatis.type.Alias
+
+@Alias("Kko_msgDto")
+class Kko_msgDto {
+    var msgkey: Int? = null
+    var serialnum: Int? = null
+    var id: String? = null
+    var status: String? = null
+    var phone: String? = null
+    var callback: String? = null
+    var reqdate: String? = null
+    var sentdate: String? = null
+    var rsltdate: String? = null
+    var reportdate: String? = null
+    var rslt: String? = null
+    var msg_rslt: String? = null
+    var net: String? = null
+    var msg: String? = null
+    var template_code: String? = null
+    var failed_type: String? = null
+    var failed_subject: String? = null
+    var failed_msg: String? = null
+    var failed_img: String? = null
+    var profile_key: String? = null
+    var url: String? = null
+    var url_button_txt: String? = null
+    var img_path: String? = null
+    var img_url: String? = null
+    var button_json: String? = null
+    var ad_flag: String? = null
+    var etc1: String? = null
+    var etc2: String? = null
+    var etc3: String? = null
+    var etc4: String? = null
+    var etc5: String? = null
+    var etc6: String? = null
+
+    var m_server: String? = null
+
+    override fun toString(): String {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
+    }
+}

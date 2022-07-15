@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ 
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    <description>CommonUtil functions library</description>
+    <display-name>CommonUtil functions</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>cutil</short-name>
+    <uri>tld/Commonutils.tld</uri>
+
+    <function>
+        <description>yyyymmdd hh:mm:ss</description>
+        <name>stringDatetimeParse</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String stringDatetimeParse(java.lang.String)</function-signature>
+        <example>${cutil:stringDatetimeParse(str)}</example>
+    </function>
+
+    <function>
+        <description>yyyymmdd</description>
+        <name>stringDateParse</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String stringDateParse(java.lang.String)</function-signature>
+        <example>${cutil:stringDateParse(str)}</example>
+    </function>
+
+    <function>
+        <description>yyyymmdd a hh</description>
+        <name>stringDateTimeKorParse</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String stringDateTimeKorParse(java.lang.String)</function-signature>
+        <example>${cutil:stringDateTimeKorParse(str)}</example>
+    </function>
+
+    <function>
+       <description>yyyymmdd</description>
+       <name>stringDatetimeMap</name>
+       <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+       <function-signature>java.util.Map stringDatetimeMap(java.lang.String)</function-signature>
+       <example>${cutil:stringDatetimeMap(str)}</example>
+   </function>
+
+    <function>
+        <description>empty check</description>
+        <name>isEmptyObject</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>boolean isEmptyObject(java.lang.Object)</function-signature>
+        <example>${cutil:isEmptyObject(str)}</example>
+    </function>
+
+    <function>
+        <description>yyyymmdd</description>
+        <name>stringDateHourParse</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String stringDateHourParse(java.lang.String)</function-signature>
+        <example>${cutil:stringDateParse(str)}</example>
+    </function>
+
+    <function>
+        <description>numberToPhone</description>
+        <name>numberToPhone</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String numberToPhone(java.lang.String)</function-signature>
+        <example>${cutil:numberToPhone(str)}</example>
+    </function>
+
+    <function>
+        <description>replaceBr</description>
+        <name>replaceBr</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String replaceBr(java.lang.String)</function-signature>
+        <example>${cutil:replaceBr(str)}</example>
+    </function>
+
+    <function>
+        <description>getDateTimeNow</description>
+        <name>getDateTimeNow</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String getDateTimeNow()</function-signature>
+        <example>${cutil:getDateTimeNow()}</example>
+    </function>
+
+    <function>
+        <description>escapeTextToHtml</description>
+        <name>escapeTextToHtml</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String EscapeTextToHtml(java.lang.String)</function-signature>
+        <example>${cutil:escapeTextToHtml()}</example>
+    </function>
+
+    <function>
+        <description>byteLength</description>
+        <name>byteLength</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>int byteLength(java.lang.String)</function-signature>
+        <example>${cutil:byteLength()}</example>
+    </function>
+
+    <function>
+        <description>textAreaParsing</description>
+        <name>textAreaParsing</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String textAreaParsing(java.lang.String)</function-signature>
+        <example>${cutil:textAreaParsing()}</example>
+    </function>
+
+    <function>
+        <description>objectToString</description>
+        <name>objectToString</name>
+        <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
+        <function-signature>java.lang.String objectToString(java.lang.Object)</function-signature>
+        <example>${cutil:objectToString()}</example>
+    </function>
+
+</taglib>
+

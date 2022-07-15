@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <!-- common js -->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/popup.js"></script>
+    <!-- validate.js -->
+    <script src="../../js/jquery.validate.min.js"></script>
+    <!-- image upload js -->
+    <script src="../../js/imageUpload.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- header 영역 시작 -->
+        <header class="header cf">
+            <h1 class="logo"><a href="../index.html"><img src="../../image/logo.png" alt="MICRM" /></a></h1>
+            <div class="right cf">
+                <ol class="summary">
+                    <li><span>발송예정</span>&nbsp;3</li>
+                    <li><span>발송중</span>&nbsp;1</li>
+                    <li><span>승인요청</span>&nbsp;2</li>
+                </ol>
+                <div class="ico_notice"><span>알림</span>&nbsp;3</div>
+            </div>
+        </header>
+        <!-- header 영역 끝 -->
+        <!-- left menu 영역 시작 -->
+        <nav class="nav">
+            <!-- gnb 영역 시작 -->
+            <ul class="gnb">
+                <li>
+                    <span>회원 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="../member/member.html">DB 회원</a></li>
+                        <li><a href="../member/rejection.html">수신거부 회원</a></li>
+                        <li><a href="../member/upload.html">업로드 회원</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>메시지</span>
+                    <ul class="sub_menu">
+                        <li><a href="edmList.html">이메일</a></li>
+                        <li><a href="smsList.html">모바일</a></li>
+                        <li class="on"><a href="imageList.html">이미지 파일</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>캠페인</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">타겟팅</a></li>
+                        <li><a href="#">캠페인 발송</a></li>
+                        <li><a href="#">발송 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>리포트</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">캠페인 현황 통계</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>시스템 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">작업</a></li>
+                        <li><a href="#">사용자</a></li>
+                        <li><a href="#">보안</a></li>
+                        <li><a href="#">환경</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- gnb 영역 끝 -->
+            <div class="user_info cf">
+                <div class="user">밀버스님</div>
+                <a href="#" class="logout">로그아웃</a>
+            </div>
+        </nav>
+        <!-- left menu 영역 끝 -->
+        <!-- container 영역 시작 -->
+        <section class="container">
+            <!-- 컨텐츠 영역 시작 -->
+            <div class="contents">
+                <!-- row 영역 시작 -->
+                <div class="row tooltip_area bottom-border cf">
+                    <div class="left">
+                        <!-- location 영역 -->
+                        <ul class="location">
+                            <li>홈</li>
+                            <li>메세지</li>
+                            <li>이미지 파일</li>
+                        </ul>
+                        <!-- tooltip 버튼 영역  -->
+                        <div class="tooltip_icon">
+                            <img src="../../image/ico_tooltip.png" alt="Tooltip" />
+                        </div>
+                        <!-- tooltip box 영역 시작 -->
+                        <div class="tooltip_box">
+                            <!-- tooltip bullet 영역 -->
+                            <div class="bullet"></div>
+                            <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                            스타일론 직장인이 26.69억(29.1%), <br />
+                            스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                        </div>
+                        <!-- tooltip box 영역 끝 -->
+                    </div>
+                    <div class="right">
+                        <!-- select 영역 시작 -->
+                        <div class="select style1 left-border">
+                            <!-- selected value -->
+                            <div class="value searchSelect" data="">기준선택</div>
+                            <!-- option -->
+                            <ul class="option">
+                                <li data="이미지명">이미지명</li>
+                            </ul>
+                        </div>
+                        <!-- select 영역 끝 -->
+                        <input type="text" class="searchInp left-border" placeholder="검색어입력" />
+                        <input type="submit" class="searchBtn" value="검색" onclick="return searchCheck();" />
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- row 영역 시작 -->
+                <div class="row bottom-border cf">
+                    <div class="left">
+                        <a href="javascript:void(0);" class="btn_basic imageCreate left right-border"
+                            onclick="uploadPopup();">모바일 컨텐츠 생성</a>
+                        <input type="button" class="btn_basic delete left right-border"
+                            onclick="popup.deleteClick('image', '');" value="삭제" />
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- section 영역 시작 -->
+                <div class="section">
+                    <!-- list_container 영역 시작 -->
+                    <div class="list_container cf">
+                        <div class="row_grid">
+                            <!-- column 1단위 영역 시작 -->
+                            <div class="column image_column">
+                                <!-- 비활성화 cover -->
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <!-- 체크박스 -->
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <!-- 이미지 타입 -->
+                                    <div class="image_type">모바일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <!-- 이미지명 -->
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <!-- 예시 이미지 영역 -->
+                                    <div class="image_box">
+                                        <img src="../../image/test_img9.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <!-- 수정일 -->
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <!-- 등록일 -->
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <!-- column 1단위 영역 끝 -->
+                            <div class="column image_column">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">모바일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img10.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column image_column">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">이메일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img11.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column image_column">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">모바일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img12.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column image_column">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">모바일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img12.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column image_column">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">모바일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="Y" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img10.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column image_column off">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">모바일</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="N" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img11.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                            <div class="column image_column off">
+                                <div class="hidden_cover"></div>
+                                <div class="img_head bg_color cf">
+                                    <label class="custom_check1"><input type="checkbox"
+                                            name="list" /><span></span></label>
+                                    <div class="image_type">RCS 슬라이드형 Medium</div>
+                                </div>
+                                <div class="img_head cf">
+                                    <h3>200922_SS20_OFF_2035_MMS</h3>
+                                    <div class="remove_info">
+                                        <input type="button" value="N" class="en_font useState" />
+                                        <span>수정</span>
+                                    </div>
+                                </div>
+                                <div class="row_body">
+                                    <div class="image_box">
+                                        <img src="../../image/test_img12.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="row_footer">
+                                    <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                    <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- list_container 영역 끝 -->
+                    <div class="btn_more"><img src="../../image/bullet_arrw1.png" alt="" />더보기</div>
+                    <div class="none list_ht bottom-border">
+                        조회된 결과가 없습니다.                            
+                    </div>
+                </div>
+                <!-- section 영역 끝 -->
+            </div>
+            <!-- 컨텐츠 영역 끝 -->
+            <!-- footer 영역 시작 -->
+            <footer class="footer">
+                &copy; Milvus Corp.
+            </footer>
+            <!-- footer 영역 끝 -->
+        </section>
+        <!-- container 영역 끝 -->
+    </div>
+
+    <!-- 새 이미지 파일 업로드 팝업 영역 시작 -->
+    <div class="layer_pop uploadPopup">
+        <div class="pop_container popup_size1">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">새 이미지 파일 업로드</div>
+            <div class="pop_inner">
+                <form action="" id="imageForm">
+                    <table class="pop_table_type1">
+                        <colgroup>
+                            <col width="103" />
+                            <col width="*" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>채널</th>
+                                <td>
+                                    <label class="custom_radio">모바일<input name="imageChannel" type="radio" value="mobile"
+                                            checked><span></span></label>
+                                    <label class="custom_radio">이메일<input name="imageChannel" type="radio"
+                                            value="mail"><span></span></label>
+                                    <label class="custom_radio">RCS<input name="imageChannel" type="radio"
+                                        value="rcs"><span></span></label>
+                                </td>
+                            </tr>
+                            <tr class="rcsImgForm rcs_option">
+                                <th>양식</th>
+                                <td>
+                                    <div class="select style1 rcs_select">
+                                        <!-- selected value -->
+                                        <div class="value" data="">RCS 양식 선택</div>
+                                        <!-- option -->
+                                        <ul class="option">
+                                            <li data="0">RCS 양식 선택</li>
+                                            <li data="1">가로형</li>
+                                            <li data="2">세로형 / Tall</li>
+                                            <li data="3">세로형 / Medium</li>
+                                            <li data="4">슬라이드형 / Small</li>
+                                            <li data="5">슬라이드형 / Medium</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>이미지 명</th>
+                                <td>
+                                    <input type="text" placeholder="이미지 명을 입력해주세요." name="imageName"
+                                        class="input_type1" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>이미지 파일</th>
+                                <td>
+                                    <input type="text" id="fileName" name="fileName" class="input_file" placeholder="이미지 파일을 선택해주세요."
+                                        readonly />
+                                    <span class="btn_file">파일 선택<input type="file" class="file" /></span>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- RCS guide text -->
+                    <ul class="guide_txt">
+                        <li class="on">※ 가로형 : 1MB 이하</li>
+                        <li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>
+                        <li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>
+                    </ul>
+                    <!-- 모바일 / 이메일 guide text -->
+                    <div class="left pop_error_txt other_guide">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>
+                    <div class="right pop_error_txt blue_point_color"></div>
+                    <div class="img_viewer noImg"></div>
+                    <div class="btn_row">
+                        <input type="button" class="btn_bg btn_size2 btn_center uploadSave" value="저장" />
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
+</body>
+<script>
+    $(function(){
+        //컨텐츠 사용 여부
+        $(document).on('click','.useState',function(){
+            let state = $(this).val();
+            if(state == 'Y'){
+                $(this).val('N');
+                $(this).parents('.column').addClass('off');
+            }else{
+                $(this).val('Y');
+                $(this).parents('.column').removeClass('off');
+            }
+        });
+    });
+
+    // 더보기 버튼 event
+    let moreBtn = document.querySelector('.btn_more');
+    moreBtn.addEventListener('click', function () {
+        $('.row_grid').append(rowAppend);
+    });  
+
+    let imageData = [
+                        {channel : 'mobile', detailType : '', name : '210202_모바일', useState : 'Y', imageURL : '../../image/test_img8.jpg', updDate : '2020.10.04 13:25', regDate : '2020.10.02 18:50'}
+                        ,{channel : 'rcs', detailType : 4, name : '210202_블랙핑크', useState : 'N', imageURL : '../../image/test_img13.jpg', updDate : '2020.10.04 13:25', regDate : '2020.10.02 18:50'}
+                        ,{channel : 'rcs', detailType : 2, name : '210202_Test1', useState : 'Y', imageURL : '../../image/test_img10.jpg', updDate : '2020.10.04 13:25', regDate : '2020.10.02 18:50'}
+                        ,{channel : 'rcs', detailType : 1, name : '210202_Test2', useState : 'Y', imageURL : '../../image/test_img14.jpg', updDate : '2020.10.04 13:25', regDate : '2020.10.02 18:50'}
+                     ];
+
+    // 더보기 HTML Append event
+    function rowAppend() {
+        let row = '';
+        for (let i = 0; i < 4; i++) {
+                                if(imageData[i]['useState'] == 'Y'){
+                                    row += '<div class="column image_column">';
+                                }
+                                if(imageData[i]['useState'] == 'N'){
+                                    row += '<div class="column image_column off">';
+                                }
+            row +=             '<div class="hidden_cover"></div>' +
+                                '<div class="img_head bg_color cf">' +
+                                    '<label class="custom_check1"><input type="checkbox" name="list" /><span></span></label>';
+                                    if(imageData[i]['channel'] == 'mobile'){
+                                        row += '<div class="image_type">모바일</div>';
+                                    }
+                                    if(imageData[i]['channel'] == 'mail'){
+                                        row += '<div class="image_type">이메일</div>';
+                                    }
+                                    if(imageData[i]['channel'] == 'rcs' &&  imageData[i]['detailType'] == 1){
+                                        row += '<div class="image_type">RCS 가로형</div>';
+                                    }
+                                    if(imageData[i]['channel'] == 'rcs' &&  imageData[i]['detailType'] == 2){
+                                        row += '<div class="image_type">RCS 세로형 Tall</div>';
+                                    }
+                                    if(imageData[i]['channel'] == 'rcs' &&  imageData[i]['detailType'] == 3){
+                                        row += '<div class="image_type">RCS 세로형 Medium</div>';
+                                    }
+                                    if(imageData[i]['channel'] == 'rcs' &&  imageData[i]['detailType'] == 4){
+                                        row += '<div class="image_type">RCS 슬라이드형 Small</div>';
+                                    }
+                                    if(imageData[i]['channel'] == 'rcs' &&  imageData[i]['detailType'] == 5){
+                                        row += '<div class="image_type">RCS 슬라이드형 Medium</div>';
+                                    }
+            row +=              '</div>' +
+                                '<div class="img_head cf">' +
+                                    '<h3>' + imageData[i]['name'] + '</h3>' +
+                                    '<div class="remove_info">';
+                                        if(imageData[i]['useState'] == 'Y'){
+                                            row +='<input type="button" value="Y" class="en_font useState" />';
+                                        }
+                                        if(imageData[i]['useState'] == 'N'){
+                                            row +='<input type="button" value="N" class="en_font useState" />';
+                                        }
+        row +=                        '<span>수정</span>' +
+                                    '</div>' +
+                                '</div>'+
+                                '<div class="row_body">' +
+                                    '<div class="image_box">' +
+                                        '<img src="' + imageData[i]['imageURL'] + '" alt="">' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="row_footer">' +
+                                    '<div class="date">수정일&nbsp;&nbsp;<span>' + imageData[i]['regDate'] + '</span></div>' +
+                                    '<div class="date">등록일&nbsp;&nbsp;<span>' + imageData[i]['updDate'] + '</span></div>' +
+                                '</div>' +
+                            '</div>';
+        }
+        return row;
+    }
+</script>
+
+</html>

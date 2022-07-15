@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.SysUserMapper">
+	<cache />
+	<select id="getUserListCnt" parameterType="Tblmi_usrDto"  resultType="Int">
+		SELECT Count(*)
+		FROM   TBLMI_USR AS usr
+			LEFT JOIN TBLMI_USR_AUTH AS auth
+					ON auth.usr_id = usr.usr_id
+			LEFT JOIN TBLMI_COMM_CD AS cd
+					ON cd.cd_id = auth.role_cd
+			LEFT JOIN TBLMI_USR AS infoApp
+					ON infoApp.usr_id = usr.appr_id
+					AND infoApp.usr_grp_cd = #{usr_grp_cd}
+		WHERE  cd.grp_id = 'ROLE_CD'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and usr.usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and usr.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_email)">
+				and usr.usr_email = #{usr_email}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+				and usr.usr_nm = #{usr_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+				and usr.usr_mob = #{usr_mob}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+				and usr.usr_id = #{usr_id}
+			</if>
+	</select>
+
+	<select id="getUserList" parameterType="Tblmi_usrDto"  resultType="Usr_searchDto">
+		select usr.seq
+			, usr.usr_id
+			, usr.usr_log_id
+			, usr.usr_email
+			, usr.usr_pw
+			, usr.usr_grp_cd
+			, usr.usr_nm
+			, usr.usr_tel
+			, usr.usr_mob
+			, usr.usr_st
+			, usr.appr_id
+			, infoApp.usr_email as appr_email
+			, usr.access_yn
+			, usr.last_log_in_dt
+			, usr.last_pw_upd_dt
+			, usr.reg_id
+			, usr.reg_dt
+			, usr.upd_id
+			, usr.upd_dt
+			, auth.role_cd
+			, cd.cd_nm
+		from tblmi_usr as usr
+			LEFT JOIN tblmi_usr_auth as auth
+					on auth.usr_id = usr.usr_id
+			LEFT JOIN tblmi_comm_cd as cd
+					on cd.cd_id = auth.role_cd
+			LEFT JOIN tblmi_usr as infoApp
+					on infoApp.usr_id = usr.appr_id
+					and infoApp.usr_grp_cd = #{usr_grp_cd}
+		where cd.grp_id = 'ROLE_CD'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and usr.usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and usr.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_email)">
+				and usr.usr_email = #{usr_email}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+				and usr.usr_nm = #{usr_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+				and usr.usr_mob = #{usr_mob}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+				and usr.usr_id = #{usr_id}
+			</if>
+			order by usr.REG_DT DESC
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+				LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+			</if>
+	</select>
+
+	<insert id="insertUser" parameterType="Tblmi_usrDto" useGeneratedKeys="true" keyProperty="usr_id">
+		insert into tblmi_usr
+		(
+					USR_ID,
+					USR_LOG_ID,
+					USR_EMAIL,
+					USR_PW,
+					USR_GRP_CD,
+					USR_NM,
+					USR_TEL,
+					ACCESS_YN,
+					USR_MOB,
+					USR_ST,
+					APPR_ID,
+					REG_ID,
+					REG_DT
+		)
+		VALUES
+		(			#{usr_id},
+					#{usr_log_id},
+					#{usr_email},
+					#{usr_pw},
+					#{usr_grp_cd},
+					#{usr_nm},
+					#{usr_tel},
+					#{access_yn},
+					#{usr_mob},
+					#{usr_st},
+					#{appr_id},
+					#{reg_id},
+					now()
+		)
+	</insert>
+
+	<update id="updateUser" parameterType="Tblmi_usrDto">
+		update tblmi_usr
+		set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+			USR_ID=#{usr_id},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_email)">
+			USR_EMAIL=#{usr_email},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_pw)">
+			USR_PW=#{usr_pw},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			USR_GRP_CD=#{usr_grp_cd},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+			USR_NM=#{usr_nm},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_tel)">
+			USR_TEL=#{usr_tel},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+			USR_MOB=#{usr_mob},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_st)">
+			USR_ST=#{usr_st},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(appr_id)">
+			appr_id=#{appr_id},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(access_yn)">
+			access_yn=#{access_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(last_pw_upd_dt)">
+			LAST_PW_UPD_DT=#{last_pw_upd_dt},
+		</if>
+		UPD_DT = now(), UPD_ID=#{upd_id}
+		where
+		seq = #{seq}
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and usr_grp_cd = #{usr_grp_cd}
+		</if>
+	</update>
+
+	<select id="getMaxUser" parameterType="Tblmi_usrDto"  resultType="Tblmi_usrDto">
+		select *
+		from tblmi_usr
+		where usr_grp_cd = #{usr_grp_cd}
+		and usr_id = (select max(usr_id) from tblmi_usr	where usr_grp_cd = #{usr_grp_cd})
+	</select>
+
+	<insert id="insertUserAuth" parameterType="Tblmi_usr_authDto">
+		insert into tblmi_usr_auth
+		(
+					USR_ID,
+					ROLE_CD,
+					REG_ID,
+					REG_DT
+		)
+		VALUES
+		(			#{usr_id},
+					#{role_cd},
+					#{reg_id},
+					now()
+		)
+		ON DUPLICATE KEY
+		UPDATE
+			role_cd = #{role_cd},
+			upd_id = #{upd_id},
+			upd_dt = now()
+		</insert>
+
+	<select id="duplicationCheckId" parameterType="Tblmi_usrDto" resultType="int">
+		SELECT count(*)
+		FROM TBLMI_USR
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_log_id)">
+				USR_LOG_ID=#{usr_log_id}
+			</if>
+		</where>
+	</select>
+
+	<select id="getUserLogCnt" parameterType="Tblmi_usr_log_hstDto" resultType="int">
+		SELECT Count(*)
+		FROM   TBLMI_USR_LOG_HST
+			where
+				usr_grp_cd = #{usr_grp_cd}
+				and usr_email = #{usr_email}
+	</select>
+
+	<select id="getUserLog" parameterType="Tblmi_usr_log_hstDto" resultType="Usr_log_searchDto">
+		SELECT
+			seq
+			, usr_grp_cd
+			, usr_id
+			, usr_email
+			, INET_NTOA(usr_ip) as usr_ip
+			, fail_yn
+			, reg_id
+			, reg_dt
+			, upd_id
+			, upd_dt
+		FROM   TBLMI_USR_LOG_HST
+			where
+				usr_grp_cd = #{usr_grp_cd}
+				and usr_email = #{usr_email}
+		order by REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+
+	<update id="updateUserAuth" parameterType="Tblmi_usr_authDto">
+		update tblmi_usr_auth
+		set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(role_cd)">
+			role_cd=#{role_cd},
+		</if>
+		UPD_DT = now(), UPD_ID=#{upd_id}
+		where
+		usr_id = #{usr_id}
+	</update>
+
+</mapper>
+
+
+
+
+

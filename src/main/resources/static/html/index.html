@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>miCRM</title>
+  <!-- common css -->
+  <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="../css/font.css" />
+  <!-- login css -->
+  <link rel="stylesheet" type="text/css" href="../css/login.css" />
+  <!-- common js -->
+  <script src="../js/jquery-3.3.1.min.js"></script>
+  <!-- validate.js -->
+  <script src="../js/jquery.validate.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // validator 유효성 검사
+      let validator = $("#logForm").validate({
+        errorElement: "div",
+        errorPlacement: function(error, element) {
+          element.parent("div").after(error);
+        },
+        rules: {
+          id: {
+            required: true,
+            email:true
+          },
+          password: {
+            required: true
+          }
+        },
+        messages: {
+          id: {
+            required: '*계정 정보를 확인 후 다시 시도해주세요.',
+            email: '아이디(이메일)는 이메일 형식으로 입력해주세요.'
+          },
+          password: {
+            required: '*계정 정보를 확인 후 다시 시도해주세요.'
+          }
+        }
+      });//end
+    });
+  </script>
+</head>
+
+<body>
+<div class="wrap">
+  <!-- header 영역 시작 -->
+  <header class="header cf">
+    <h1 class="logo" tabindex="0"><img src="../image/logo.png" alt="MICRM" /></h1>
+    <div class="icon_notice">알림 <span>3</span></div>
+  </header>
+  <!-- header 영역 끝 -->
+  <!-- left menu 영역 시작 -->
+  <nav class="nav">
+    <!-- gnb 영역 시작 -->
+    <ul class="gnb">
+      <li>
+        <span>회원 관리</span>
+        <ul class="sub_menu">
+          <li><a href="member/member.html">DB 회원</a></li>
+          <li><a href="member/rejection.html">수신거부 회원</a></li>
+          <li><a href="member/upload.html">업로드 회원</a></li>
+        </ul>
+      </li>
+      <li>
+        <span>메시지</span>
+        <ul class="sub_menu">
+          <li><a href="message/edmList.html">이메일</a></li>
+          <li><a href="message/smsList.html">모바일</a></li>
+          <li><a href="message/imageList.html">이미지 파일</a></li>
+        </ul>
+      </li>
+      <li>
+        <span>캠페인</span>
+        <ul class="sub_menu">
+          <li><a href="#">타겟팅</a></li>
+          <li><a href="#">캠페인 발송</a></li>
+          <li><a href="#">발송 현황</a></li>
+        </ul>
+      </li>
+      <li>
+        <span>리포트</span>
+        <ul class="sub_menu">
+          <li><a href="#">캠페인 현황 통계</a></li>
+        </ul>
+      </li>
+      <li>
+        <span>시스템 관리</span>
+        <ul class="sub_menu">
+          <li><a href="#">작업</a></li>
+          <li><a href="#">사용자</a></li>
+          <li><a href="#">보안</a></li>
+          <li><a href="#">환경</a></li>
+        </ul>
+      </li>
+    </ul>
+    <!-- gnb 영역 끝 -->
+  </nav>
+  <!-- left menu 영역 끝 -->
+  <!-- container 영역 시작 -->
+  <section class="container">
+    <!-- 컨텐츠 영역 시작 -->
+    <div class="contents">
+      <!-- row 영역 시작 -->
+      <div class="row border-bottom tooltip_area">
+        <!-- location 영역 -->
+        <ul class="location cf">
+          <li>홈</li>
+          <li>로그인</li>
+        </ul>
+        <!-- tooltip 버튼 영역  -->
+        <div class="tooltip_icon">
+          <img src="../image/ico_tooltip.png" alt="Tooltip"/>
+        </div>
+        <!-- tooltip box 영역 시작 -->
+        <div class="tooltip_box">
+          <!-- tooltip bullet 영역 -->
+          <div class="bullet"></div>
+          <span class="bold">계정 정보를 확인 후 시도해주세요.</span>
+          10회 비밀번호 오류 시 현재 접속중인 IP가 차단됩니<br />
+          다.
+        </div>
+        <!-- tooltip box 영역 끝 -->
+      </div>
+      <!-- row 영역 끝 -->
+      <!-- 로그인 영역 시작 -->
+      <div class="login">
+        <!-- log_form 영역 시작 -->
+        <div class="log_form">
+          <form id="logForm">
+            <div class="txt_input">
+              <!-- 아이디 -->
+              <input type="text" class="" name="id" placeholder="사용자 이메일" tabindex="1"/>
+            </div>
+            <div class="pw_input">
+              <!-- 비밀번호 -->
+              <input type="password" class="" name="password" placeholder="비밀번호"  tabindex="2"/>
+            </div>
+            <!-- 로그인 버튼 -->
+            <input type="submit" class="btn_login" value="로그인" tabindex="3"/>
+          </form>
+          <div class="log_info cf">
+            <!-- 아이디/비밀번호 저장 영역 시작 -->
+            <div class="log_check">
+              <label class="checkbox">
+                아이디/비밀번호 저장
+                <input type="checkbox" />
+                <span></span>
+              </label>
+            </div>
+            <!-- 아이디/비밀번호 저장 영역 끝 -->
+            <div class="log_find" onclick="inquiryPop();">
+              아이디/비밀번호 찾기
+            </div>
+          </div>
+        </div>
+        <!-- log_form 영역 끝 -->
+      </div>
+      <!-- 로그인 영역 끝 -->
+      <!-- footer 영역 시작 -->
+      <footer class="footer">
+        &copy; Milvus Corp.
+      </footer>
+      <!-- footer 영역 끝 -->
+    </div>
+    <!-- 컨텐츠 영역 끝 -->
+  </section>
+  <!-- container 영역 끝 -->
+</div>
+
+<!-- 아이디/비밀번호 찾기 팝업 영역 시작 -->
+<div class="layer_pop inquiryPopup">
+  <div class="pop_container popup_size1">
+    <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+    <div class="pop_title">아이디·비밀번호 찾기</div>
+    <div class="pop_inner">
+      <h2 class="table_tit">아이디 찾기</h2>
+      <form action="" id="idInquiry">
+        <table class="pop_table_type1">
+          <colgroup>
+            <col width="102" />
+            <col width="*" />
+          </colgroup>
+          <tbody>
+          <tr>
+            <th>이름</th>
+            <td>
+              <input type="text" name="idName" class="full_inp" placeholder="작성자(성함)을 입력해주세요."/>
+            </td>
+          </tr>
+          <tr>
+            <th>핸드폰 번호</th>
+            <td>
+              <input type="text" name="idPhone1" class="number_inp"/>
+              <span class="hyphen">-</span>
+              <input type="text" name="idPhone2" class="number_inp"/>
+              <span class="hyphen">-</span>
+              <input type="text" name="idPhone3" class="number_inp"/>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+      <div class="form_error" id="idError"></div>
+      <div class="btn_row margin-bottom">
+        <input type="button" class="btn_bg btn_idInquiry" value="찾기"/>
+      </div>
+
+      <h2 class="table_tit">비밀번호 찾기</h2>
+      <form action="" id="pwInquiry">
+        <table class="pop_table_type1">
+          <colgroup>
+            <col width="102" />
+            <col width="*" />
+          </colgroup>
+          <tbody>
+          <tr>
+            <th>이름</th>
+            <td>
+              <input type="text" name="pwName" class="full_inp" placeholder="작성자(성함)을 입력해주세요."/>
+            </td>
+          </tr>
+          <tr>
+            <th>핸드폰 번호</th>
+            <td>
+              <input type="text" name="pwPhone1" class="number_inp"/>
+              <span class="hyphen">-</span>
+              <input type="text" name="pwPhone2" class="number_inp"/>
+              <span class="hyphen">-</span>
+              <input type="text" name="pwPhone3" class="number_inp"/>
+            </td>
+          </tr>
+          <tr>
+            <th>이메일</th>
+            <td>
+              <input type="text" name="email" class="full_inp" placeholder="이메일을 입력해주세요."/>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+      <div class="form_error" id="pwError"></div>
+      <div class="btn_row">
+        <input type="button" class="btn_bg btn_pwInquiry" value="찾기" />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 아이디/비밀번호 찾기 팝업 영역 끝 -->
+
+<!-- 아이디 팝업 영역 시작 -->
+<div class="layer_pop idPopup">
+  <div class="pop_container popup_size2">
+    <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+    <div class="pop_title">아이디 찾기</div>
+    <div class="pop_inner">
+      <div class="alert_txt">
+        입력하신 정보와 일치하는 아이디 입니다.
+        <span class="en_font">milvus@milvus.co.kr</span>
+      </div>
+      <div class="btn_row">
+        <input type="button" class="btn_bg" value="확인" onclick="popupClose(this);" />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 아이디 팝업 영역 끝 -->
+
+<!-- 비밀번호 팝업 영역 시작 -->
+<div class="layer_pop pwPopup">
+  <div class="pop_container popup_size2">
+    <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+    <div class="pop_title">비밀번호 찾기</div>
+    <div class="pop_inner padding_none">
+      <div class="alert_txt">
+        입력하신 이메일 주소로 임시 비밀번호를 발송하였습니다.<br/>
+        임시 비밀번호로 로그인 후 비밀번호를 변경하시기 바랍니다.
+      </div>
+      <div class="btn_row">
+        <input type="button" class="btn_bg" value="확인" onclick="popupClose(this);"/>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 비밀번호 팝업 영역 끝 -->
+
+<!-- 시스템 공지사항 팝업 영역 시작 -->
+<div class="layer_pop noticePopup active">
+  <div class="pop_container popup_size1">
+    <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+    <div class="pop_title">시스템 공지사항</div>
+    <div class="pop_inner scroll_wrap">
+      <!-- 공지사항 타이틀 영역 -->
+      <h3>MICRM 서비스 일시 중단 안내</h3>
+      <!-- 내용 영역 시작 -->
+      <P>
+        서비스 이용에 불편을 드려 죄송합니다.<br/>
+        miCRM 시스템 점검으로 인하여 아래 기간동안 서비스가 일시 중단되오니 참고하시기 바랍니다.
+      </P>
+      <!-- 내용 영역 끝 -->
+      <!-- 상세 영역 시작 -->
+      <div class="section_box">
+        <div class="top">작업일정</div>
+        <div class="body">
+          <dl class="list_txt">
+            <dd>- 작업일시: 2020년 9월 18일(금) 00:00 ~ 18일(금) 06:00</dd>
+            <dd>- 작업내용: miCRM 시스템 정기 점검</dd>
+          </dl>
+          <div class="color_gray">※ 작업일정은 시스템작업 사정에 따라 변동 될 수 있습니다.</div>
+        </div>
+      </div>
+      <!-- 상세 영역 끝 -->
+    </div>
+    <!-- 팝업 열지 않음 영역 시작 -->
+    <div class="today">
+      <label class="custom_check1" onclick="setCookie('_todayCookie','done', 1)">오늘 이 창을 열지 않음<input type="checkbox" name=""><span></span></label>
+    </div>
+    <!-- 팝업 열지 않음 영역 끝 -->
+  </div>
+</div>
+<!-- 시스템 공지사항 팝업 영역 끝 -->
+
+<!-- 비밀번호 오류 팝업 영역 시작 -->
+<div class="layer_pop active">
+  <div class="pop_container popup_size1">
+    <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+    <div class="pop_title">비밀번호 오류</div>
+    <div class="pop_inner">
+      <p class="message">
+        비밀번호를 5회 이상 오입력하여 계정이 차단되었습니다.<br/>
+        임시 비밀번호 발급을 위해 관리자에게 문의 메일을 작성하세요.<br/>
+        관리자가 확인 후 해당 계정으로 임시 비밀번호를 발급해 드립니다.
+      </p>
+      <table class="pop_table_type1">
+        <colgroup>
+          <col width="102" />
+          <col width="*" />
+        </colgroup>
+        <tbody>
+        <tr>
+          <th>아이디</th>
+          <td>
+            <input type="text" name="" class="full_inp" placeholder="아이디를 입력해주세요."/>
+          </td>
+        </tr>
+        <tr>
+          <th>오류사유</th>
+          <td>
+            <div class="text_area">
+              <textarea name="" id="" cols="30" rows="10" placeholder="임시 비밀번호 발급을 요청하세요."></textarea>
+              <span class="byte">(<span class="en_font">200byte</span> 이하)</span>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="btn_row password_btn">
+        <input type="button" class="btn_bg inline" value="확인"/>
+        <input type="button" class="btn_bg inline grey_bg" value="취소"/>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 비밀번호 오류 팝업 영역 끝 -->
+</body>
+<script>
+  $(document).ready(function () {
+    // input 디자인 동작
+    $('.txt_input input').keydown(function () {
+      let errorLength = $(".txt_input input").parent().next('.error').length;
+      if(errorLength > 0){
+        if($(".txt_input input").parent().next('.error').css('display') == 'none'){
+          $('.pw_input input').css('border-top', 'none');
+        }else if($(".txt_input input").parent().next('.error').css('display') == 'block'){
+          $('.pw_input input').css('border-top', '1px solid #dddddd');
+        }
+      }
+    });
+
+    $('.btn_idInquiry').on('click', function(){
+      $('#idInquiry').submit();
+    });
+    $('.btn_pwInquiry').on('click', function(){
+      $('#pwInquiry').submit();
+    });
+  });
+
+  $('#idInquiry').validate({
+    onfocusout : false
+    , submitHandler: function() {
+      $('#idError').html('');
+      findIdPopup();
+      return false;
+    }
+    , errorPlacement : $.noop
+    , invalidHandler: function(form, validator) {
+      let errors = validator.numberOfInvalids();
+      if(errors){
+        $('#idError').html(validator.errorList[0].message);
+      }
+    }
+    ,rules:{
+      idName : {
+        required : true
+      }
+      , idPhone1 : {
+        required : true
+        ,number : true
+      }
+      , idPhone2 : {
+        required : true
+        ,number : true
+      }
+      , idPhone3 : {
+        required : true
+        ,number : true
+      }
+    }
+    , messages : {
+      idName : {
+        required : "이름을 입력해주세요."
+      }
+      , idPhone1 : {
+        required : "핸드폰 번호를 입력해 주세요."
+        ,number : "숫자만 입력해 주세요."
+      }
+      ,idPhone2 : {
+        required : "핸드폰 번호를 입력해 주세요."
+        ,number : "숫자만 입력해 주세요."
+      }
+      ,idPhone3 : {
+        required : "핸드폰 번호를 입력해 주세요."
+        ,number : "숫자만 입력해 주세요."
+      }
+    }
+  });
+  $('#pwInquiry').validate({
+    onfocusout : false
+    , submitHandler: function() {
+      $('#pwError').html('');
+      findPwPopup();
+      return false;
+    }
+    , errorPlacement : $.noop
+    , invalidHandler: function(form, validator) {
+      var errors = validator.numberOfInvalids();
+      if(errors){
+        $('#pwError').html(validator.errorList[0].message);
+      }
+    }
+    , rules:{
+      pwName : {
+        required : true
+      }
+      , pwPhone1 : {
+        required : true
+        ,number : true
+      }
+      , pwPhone2 : {
+        required : true
+        ,number : true
+      }
+      , pwPhone3 : {
+        required : true
+        ,number : true
+      }
+      , email : {
+        required :true
+        , email : true
+      }
+    }
+    , messages : {
+      pwName : {
+        required : "이름을 입력해주세요."
+      }
+      ,pwPhone1 : {
+        required : "핸드폰 번호를 입력해주세요."
+        ,number : "숫자만 입력해주세요."
+      }
+      ,pwPhone2 : {
+        required : "핸드폰 번호를 입력해주세요."
+        ,number : "숫자만 입력해주세요."
+      }
+      ,pwPhone3 : {
+        required : "핸드폰 번호를 입력해주세요."
+        ,number : "숫자만 입력해주세요."
+      }
+      ,email : {
+        required : "이메일을 입력해주세요."
+        ,email : "유효하지 않은 이메일 입니다."
+      }
+    }
+  });
+
+  function popupClose(close){
+    $(close).parents('.layer_pop').removeClass('active');
+  }
+
+  function inquiryPop(){
+    $('.inquiryPopup').addClass('active');
+  }
+
+  function findIdPopup(){
+    $('.idPopup').addClass('active');
+  }
+
+  function findPwPopup(){
+    $('.pwPopup').addClass('active');
+  }
+
+  window.onload = function(){
+    //tooltip 위치
+    let leftLocation = $('.tooltip_icon').offset().left;
+    let leftMinus = leftLocation - 198;
+    $('.bullet').css('left', leftMinus);
+  };
+
+</script>
+
+</html>

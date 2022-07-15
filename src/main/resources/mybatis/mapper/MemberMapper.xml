@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.MemberMapper">
+    <cache/>
+
+    <!-- ================================================================= insert ================================================================= -->
+    <insert id="insertGroupList" parameterType="Tblmi_group_listDto" useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO tblmi_target_grp
+            (
+                        grp_nm,
+                        usr_grp_cd,
+                        status,
+                        reg_id,
+                        reg_dt
+            )
+		VALUES
+		    (
+		                #{grp_nm},
+		                #{usr_grp_cd},
+		                #{status},
+		                #{reg_id},
+		                SYSDATE()
+            )
+	</insert>
+
+    <select id="selectOneGroup" parameterType="Tblmi_group_listDto" resultType="Tblmi_group_listDto">
+        SELECT seq
+            , grp_nm
+            , reg_id
+            , reg_dt
+            , upd_dt
+            , grp_cnt
+            , use_yn
+        FROM   TBLMI_TARGET_GRP
+        WHERE  status IN ( '0', '1' )
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+            and seq = #{seq}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+            and usr_grp_cd =#{usr_grp_cd}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_nm)">
+            and GRP_NM = #{grp_nm}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_id)">
+            and REG_ID = #{reg_id}
+        </if>
+    </select>
+
+    <select id="selectGroupList" parameterType="Tblmi_group_listDto" resultType="Tblmi_group_listDto">
+        SELECT seq
+            , grp_nm
+            , reg_id
+            , reg_dt
+            , upd_dt
+            , grp_cnt
+            , use_yn
+        FROM   TBLMI_TARGET_GRP
+        <where>
+            STATUS IN ('0','1')
+            and usr_grp_cd =#{usr_grp_cd}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_nm)">
+                and GRP_NM LIKE CONCAT('%',#{grp_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_cnt)">
+                and GRP_CNT = #{grp_cnt}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_id)">
+                and REG_ID = #{reg_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        <choose>
+                            <when test="reg_dt.equals(reg_dt_range)">
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ <= ]]> date_add(#{reg_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt_range)">
+                        <choose>
+                            <when test="upd_dt.equals(upd_dt_range)">
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ <= ]]> date_add(#{upd_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        order by tblmi_target_grp.REG_DT DESC
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+            LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+        </if>
+    </select>
+
+    <select id="selectGroupUserList" parameterType="Tblmi_group_usrDto" resultType="Tblmi_group_usrDto">
+        SELECT SEQ
+            ,USR_ID
+            ,USR_NM
+            ,USR_MOB
+            ,USR_EDM
+            ,USR_GDR
+            ,USR_ADDR
+            ,USR_ETC1
+            ,USR_ETC2
+            ,USR_ETC3
+            ,USR_ETC4
+            ,USR_ETC5
+            ,USR_ETC6
+            ,USR_ETC7
+            ,USR_ETC8
+            ,USR_ETC9
+            ,USR_ETC10
+        FROM tblmi_target_lst
+        WHERE DEL_YN = 'N' and GRP_NO =#{grp_no}
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+            and usr_id like concat('%', #{usr_id}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+            and usr_nm like concat('%', #{usr_nm}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+            and usr_mob like concat('%', #{usr_mob}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_edm)">
+            and usr_edm like concat('%', #{usr_edm}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_gdr)">
+            and usr_gdr like concat('%', #{usr_gdr}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_addr)">
+            and usr_addr like concat('%', #{usr_addr}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc1)">
+            and usr_etc1 LIKE CONCAT('%',#{usr_etc1},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc2)">
+            and usr_etc2 LIKE CONCAT('%',#{usr_etc2},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc3)">
+            and usr_etc3 LIKE CONCAT('%',#{usr_etc3},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc4)">
+            and usr_etc4 LIKE CONCAT('%',#{usr_etc4},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc5)">
+            and usr_etc5 LIKE CONCAT('%',#{usr_etc5},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc6)">
+            and usr_etc6 LIKE CONCAT('%',#{usr_etc6},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc7)">
+            and usr_etc7 LIKE CONCAT('%',#{usr_etc7},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc8)">
+            and usr_etc8 LIKE CONCAT('%',#{usr_etc8},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc9)">
+            and usr_etc9 LIKE CONCAT('%',#{usr_etc9},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc10)">
+            and usr_etc10 LIKE CONCAT('%',#{usr_etc10},'%')
+        </if>
+        order by tblmi_target_lst.SEQ
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+            LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+        </if>
+    </select>
+
+    <select id="selectGroupListCnt" parameterType="Tblmi_group_listDto" resultType="Int">
+        SELECT Count(seq)
+        FROM   TBLMI_TARGET_GRP
+        <where>
+            STATUS IN ('0','1')
+            and usr_grp_cd =#{usr_grp_cd}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_nm)">
+                and grp_nm LIKE CONCAT('%',#{grp_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_cnt)">
+                and GRP_CNT = #{grp_cnt}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_id)">
+                and REG_ID = #{reg_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        <choose>
+                            <when test="reg_dt.equals(reg_dt_range)">
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ <= ]]> date_add(#{reg_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt_range)">
+                        <choose>
+                            <when test="upd_dt.equals(upd_dt_range)">
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ <= ]]> date_add(#{upd_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectGroupUserListCnt" parameterType="Tblmi_group_usrDto" resultType="Int">
+        SELECT Count(seq)
+        FROM   TBLMI_TARGET_LST
+        WHERE  grp_no = #{grp_no}
+                AND del_yn = 'N'
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+            and usr_id like concat('%', #{usr_id}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+            and usr_nm like concat('%', #{usr_nm}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+            and usr_mob like concat('%', #{usr_mob}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_edm)">
+            and usr_edm like concat('%', #{usr_edm}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_gdr)">
+            and usr_gdr like concat('%', #{usr_gdr}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_addr)">
+            and usr_addr like concat('%', #{usr_addr}, '%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc1)">
+            and usr_etc1 LIKE CONCAT('%',#{usr_etc1},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc2)">
+            and usr_etc2 LIKE CONCAT('%',#{usr_etc2},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc3)">
+            and usr_etc3 LIKE CONCAT('%',#{usr_etc3},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc4)">
+            and usr_etc4 LIKE CONCAT('%',#{usr_etc4},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc5)">
+            and usr_etc5 LIKE CONCAT('%',#{usr_etc5},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc6)">
+            and usr_etc6 LIKE CONCAT('%',#{usr_etc6},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc7)">
+            and usr_etc7 LIKE CONCAT('%',#{usr_etc7},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc8)">
+            and usr_etc8 LIKE CONCAT('%',#{usr_etc8},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc9)">
+            and usr_etc9 LIKE CONCAT('%',#{usr_etc9},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc10)">
+            and usr_etc10 LIKE CONCAT('%',#{usr_etc10},'%')
+        </if>
+    </select>
+
+    <select id ="selectOneGroupUser" parameterType="Tblmi_group_usrDto" resultType="Tblmi_group_usrDto">
+        SELECT *
+        FROM tblmi_target_lst
+        where seq = #{seq}
+    </select>
+
+    <update id="updateGrpList" parameterType="Tblmi_group_listDto">
+        UPDATE tblmi_target_grp
+        SET upd_id = #{upd_id}
+           ,upd_dt = now()
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(status)">
+            ,status = #{status}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_cnt)">
+            ,grp_cnt = #{grp_cnt}
+        </if>
+        <where>
+            seq = #{seq}
+        </where>
+    </update>
+
+    <update id="updateGrpUseYn" parameterType="Tblmi_group_listDto">
+		UPDATE tblmi_target_grp
+		SET    use_yn = #{use_yn}
+		      ,upd_id = #{upd_id}
+		      ,upd_dt = now()
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and usr_grp_cd = #{usr_grp_cd}
+            </if>
+        </where>
+	</update>
+
+    <update id="deleteGrpList" parameterType="Tblmi_group_listDto">
+        UPDATE tblmi_target_grp
+        SET status = '3'
+            ,upd_dt = now()
+            ,upd_id = #{upd_id}
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and usr_grp_cd = #{usr_grp_cd}
+            </if>
+        </where>
+    </update>
+
+    <update id="deleteAllGrpList" parameterType="Tblmi_group_listDto">
+		 UPDATE tblmi_target_grp
+		 SET    status = '3'
+        	   ,upd_id = #{upd_id}
+        	   ,upd_dt = now()
+         <where>
+             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                 usr_grp_cd = #{usr_grp_cd}
+             </if>
+         </where>
+	</update>
+
+    <update id="deleteGrpUserList" parameterType="Tblmi_group_usrDto">
+        UPDATE tblmi_target_lst
+        SET DEL_YN = 'Y'
+            ,upd_dt = now()
+            ,upd_id = #{upd_id}
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_no)">
+                and grp_no = #{grp_no}
+            </if>
+        </trim>
+    </update>
+
+    <update id="deleteAllGrpUserList" parameterType="Tblmi_group_usrDto">
+        UPDATE tblmi_target_lst
+        SET    DEL_YN = 'Y'
+                ,upd_id = #{upd_id}
+                ,upd_dt = now()
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_no)">
+                and grp_no = #{grp_no}
+            </if>
+            <!--<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(searchValue)">
+                and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+            </if>-->
+        </trim>
+    </update>
+
+	<select id="getTblmiSupListCnt" parameterType="Sup_searchDto" resultType="Int">
+        SELECT Count(*)
+        FROM   TBLMI_SUP AS sup
+            LEFT JOIN TBLMI_COMM_CD AS chcd
+                    ON chcd.cd_id = sup.ch_type
+                    AND chcd.grp_id = 'COM0001'
+            LEFT JOIN TBLMI_COMM_CD AS supcd
+                    ON supcd.cd_id = sup.sup_type
+                    AND supcd.grp_id = 'SUP0001'
+            LEFT JOIN TBLMICP_CAMPAIGN AS camp
+                    ON camp.seq = sup.camp_id
+                    AND camp.usr_grp_cd = #{usr_grp_cd}
+        WHERE  sup.del_yn = 'N'
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+               and sup.USR_GRP_CD = #{usr_grp_cd}
+            </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sup_type)">
+            and sup.sup_type LIKE CONCAT('%',#{sup_type},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+            and sup.pro_id LIKE CONCAT('%',#{pro_id},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_type)">
+            and sup.ch_type LIKE CONCAT('%',#{ch_type},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_to)">
+            and sup.send_to LIKE CONCAT('%',#{send_to},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_id)">
+            and sup.camp_id LIKE CONCAT('%',#{camp_id},'%')
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_nm)">
+            and camp.camp_nm LIKE CONCAT('%',#{camp_nm},'%')
+        </if>
+	</select>
+
+	<select id="getTblmiSupList" parameterType="Sup_searchDto" resultType="Sup_searchDto">
+        SELECT sup.seq
+            , sup.camp_id
+            , camp.camp_nm AS camp_nm
+            , sup.pro_id
+            , supcd.cd_nm  AS sup_type
+            , chcd.cd_nm   AS ch_type
+            , sup.send_to
+            , sup.send_from
+            , sup.usr_grp_cd
+            /*,grp.GRP_NM  AS usr_grp_cd*/
+            , sup.sup_lnk
+            , sup.reg_id
+            , sup.reg_dt
+        FROM   TBLMI_SUP AS sup
+                LEFT JOIN TBLMI_COMM_CD AS chcd
+                        ON chcd.cd_id = sup.ch_type
+                        AND chcd.grp_id = 'COM0001'
+                LEFT JOIN TBLMI_COMM_CD AS supcd
+                        ON supcd.cd_id = sup.sup_type
+                        AND supcd.grp_id = 'SUP0001'
+                LEFT JOIN TBLMICP_CAMPAIGN AS camp
+                        ON camp.seq = sup.camp_id
+                        AND camp.usr_grp_cd = #{usr_grp_cd}
+        WHERE  sup.del_yn = 'N'
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and sup.USR_GRP_CD = #{usr_grp_cd}
+            </if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sup_type)">
+				and sup.sup_type LIKE CONCAT('%',#{sup_type},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+				and sup.pro_id LIKE CONCAT('%',#{pro_id},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_type)">
+				and sup.ch_type LIKE CONCAT('%',#{ch_type},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_to)">
+				and sup.send_to LIKE CONCAT('%',#{send_to},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_id)">
+				and sup.camp_id LIKE CONCAT('%',#{camp_id},'%')
+			</if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_nm)">
+                and camp.camp_nm LIKE CONCAT('%',#{camp_nm},'%')
+            </if>
+		order by sup.REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+    <insert id ="insertGrpUser" parameterType="java.util.Map">
+        INSERT INTO tblmi_target_lst
+                    (
+                                grp_no,
+                                usr_id,
+                                usr_nm,
+                                usr_mob,
+                                usr_edm,
+                                usr_gdr,
+                                usr_addr,
+                                usr_etc1,
+                                usr_etc2,
+                                usr_etc3,
+                                usr_etc4,
+                                usr_etc5,
+                                usr_etc6,
+                                usr_etc7,
+                                usr_etc8,
+                                usr_etc9,
+                                usr_etc10,
+                                use_yn,
+                                reg_id,
+                                reg_dt,
+                                upd_id,
+                                upd_dt
+                    )
+        values
+        <foreach item="item" separator="," collection="groupUserList">
+                    (
+                                #{item.grp_no,jdbcType=INTEGER},
+                                #{item.usr_id,jdbcType=VARCHAR},
+                                #{item.usr_nm,jdbcType=VARCHAR},
+                                #{item.usr_mob,jdbcType=VARCHAR},
+                                #{item.usr_edm,jdbcType=VARCHAR},
+                                #{item.usr_gdr,jdbcType=VARCHAR},
+                                #{item.usr_addr,jdbcType=VARCHAR},
+                                #{item.usr_etc1,jdbcType=VARCHAR},
+                                #{item.usr_etc2,jdbcType=VARCHAR},
+                                #{item.usr_etc3,jdbcType=VARCHAR},
+                                #{item.usr_etc4,jdbcType=VARCHAR},
+                                #{item.usr_etc5,jdbcType=VARCHAR},
+                                #{item.usr_etc6,jdbcType=VARCHAR},
+                                #{item.usr_etc7,jdbcType=VARCHAR},
+                                #{item.usr_etc8,jdbcType=VARCHAR},
+                                #{item.usr_etc9,jdbcType=VARCHAR},
+                                #{item.usr_etc10,jdbcType=VARCHAR},
+                                #{item.use_yn,jdbcType=VARCHAR},
+                                #{item.reg_id,jdbcType=VARCHAR},
+                                NOW(),
+                                #{item.upd_id,jdbcType=VARCHAR},
+                                NOW()
+                    )
+        </foreach>
+    </insert>
+
+    <delete id ="deleteTargetUser" parameterType="Tblmi_group_usrDto">
+        DELETE FROM tblmi_target_lst
+        WHERE GRP_NO = #{grp_no}
+    </delete>
+
+    <insert id="saveTblmiSup" parameterType="Tblmi_supDto" >
+       INSERT INTO tblmi_sup
+                    (
+                            camp_id,
+                            pro_id,
+                            sup_type,
+                            ch_type,
+                            send_to,
+                            send_from,
+                            usr_grp_cd,
+                            sup_lnk,
+                            del_yn,
+                            reg_id,
+                            reg_dt
+                    )
+        values
+                    (
+                            #{camp_id},
+                            #{pro_id},
+                            #{sup_type},
+                            #{ch_type},
+                            #{send_to},
+                            #{send_from},
+                            #{usr_grp_cd},
+                            #{sup_lnk},
+                            'N',
+                            #{reg_id},
+                            now()
+                    )
+        ON DUPLICATE KEY UPDATE
+        DEL_YN = 'N',
+        UPD_ID = #{reg_id},
+        UPD_DT = now()
+    </insert>
+
+    <insert id="saveTblmiSupList" parameterType="java.util.List" >
+        INSERT INTO tblmi_sup
+                    (
+                                camp_id,
+                                pro_id,
+                                sup_type,
+                                ch_type,
+                                send_to,
+                                send_from,
+                                usr_grp_cd,
+                                sup_lnk,
+                                del_yn,
+                                reg_id,
+                                reg_dt
+                    )
+                    VALUES
+                <foreach item="item" separator="," collection="list">
+                    (
+                                #{item.camp_id},
+                                #{item.pro_id},
+                                #{item.sup_type},
+                                #{item.ch_type},
+                                #{item.send_to},
+                                #{item.send_from},
+                                #{item.usr_grp_cd},
+                                #{item.sup_lnk},
+                                'N',
+                                #{item.reg_id},
+                                now()
+                    )
+                </foreach>
+        ON DUPLICATE KEY UPDATE
+        DEL_YN = 'N',
+        UPD_ID = #{list[0].reg_id},
+        UPD_DT = now()
+    </insert>
+
+    <update id="updateTblmiSup" parameterType="Sup_searchDto">
+        UPDATE TBLMI_SUP
+        set
+                DEL_YN = #{del_yn}
+                , DEL_DT = now()
+                , UPD_ID= #{upd_id}
+                , UPD_DT = now()
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and usr_grp_cd = #{usr_grp_cd}
+            </if>
+        </trim>
+    </update>
+
+    <select id ="selectGroupUserCnt" parameterType="Tblmi_group_usrDto" resultType="Int">
+        SELECT COUNT(SEQ)
+        FROM tblmi_target_lst
+        WHERE GRP_NO = #{grp_no}
+    </select>
+
+    <select id ="isExistGrpNm" parameterType="Tblmi_group_listDto" resultType="Int">
+        SELECT EXISTS(
+                    SELECT grp_nm
+                    FROM   tblmi_target_grp
+                    WHERE  grp_nm = #{grp_nm}
+                    and    status NOT IN ('3')
+             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                    and usr_grp_cd = #{usr_grp_cd}
+             </if>
+        )
+    </select>
+
+    <select id ="getTblmimst" parameterType="Tblmi_tbl_mstDto" resultType="Tblmi_tbl_mstDto">
+        SELECT *
+        from tblmi_tbl_mst as mst
+        where mst.TBL_GRP = #{tbl_grp}
+    </select>
+
+    <select id ="getTblInfoList" parameterType="Tblmi_tbl_infoDto" resultType="Tblmi_tbl_infoDto">
+        SELECT *
+        from tblmi_tbl_info as info
+        where info.TBL_ID = #{tbl_id}
+        order by info.seq
+    </select>
+
+    <select id="getTblTblSum" parameterType="Tblmi_tbl_sumDto" resultType="Tblmi_tbl_sumDto">
+        SELECT *
+        from tblmi_tbl_sum as tblSum
+        where tblSum.TBL_ID = #{tbl_id}
+
+    </select>
+
+    <select id ="getTblTblListCnt" parameterType="Tblmi_tbl_searchDto" resultType="Int">
+        SELECT count(*)
+        from ${tbl_id} as list
+        where
+            USE_YN = 'Y'
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_myn)">
+                and usr_myn = #{usr_myn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_eyn)">
+                and usr_eyn = #{usr_eyn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+                and usr_id LIKE CONCAT('%',#{usr_id},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+                and usr_mob LIKE CONCAT('%',#{usr_mob},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_edm)">
+                and usr_edm LIKE CONCAT('%',#{usr_edm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+                and usr_nm LIKE CONCAT('%',#{usr_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_gdr)">
+                and usr_gdr LIKE CONCAT('%',#{usr_gdr},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_addr)">
+                and usr_addr LIKE CONCAT('%',#{usr_addr},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc1)">
+                and usr_etc1 LIKE CONCAT('%',#{usr_etc1},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc2)">
+                and usr_etc2 LIKE CONCAT('%',#{usr_etc2},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc3)">
+                and usr_etc3 LIKE CONCAT('%',#{usr_etc3},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc4)">
+                and usr_etc4 LIKE CONCAT('%',#{usr_etc4},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc5)">
+                and usr_etc5 LIKE CONCAT('%',#{usr_etc5},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc6)">
+                and usr_etc6 LIKE CONCAT('%',#{usr_etc6},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc7)">
+                and usr_etc7 LIKE CONCAT('%',#{usr_etc7},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc8)">
+                and usr_etc8 LIKE CONCAT('%',#{usr_etc8},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc9)">
+                and usr_etc9 LIKE CONCAT('%',#{usr_etc9},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc10)">
+                and usr_etc10 LIKE CONCAT('%',#{usr_etc10},'%')
+            </if>
+        order by list.REG_DT desc
+    </select>
+
+    <select id ="getTblTblList" parameterType="Tblmi_tbl_listDto" resultType="Tblmi_tbl_listDto">
+        SELECT *
+        from ${tbl_id} as list
+            where
+            USE_YN = 'Y'
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_myn)">
+                and usr_myn = #{usr_myn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_eyn)">
+                and usr_eyn = #{usr_eyn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+                and usr_id LIKE CONCAT('%',#{usr_id},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+                and usr_mob LIKE CONCAT('%',#{usr_mob},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_edm)">
+                and usr_edm LIKE CONCAT('%',#{usr_edm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+                and usr_nm LIKE CONCAT('%',#{usr_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_gdr)">
+                and usr_gdr LIKE CONCAT('%',#{usr_gdr},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_addr)">
+                and usr_addr LIKE CONCAT('%',#{usr_addr},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc1)">
+                and usr_etc1 LIKE CONCAT('%',#{usr_etc1},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc2)">
+                and usr_etc2 LIKE CONCAT('%',#{usr_etc2},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc3)">
+                and usr_etc3 LIKE CONCAT('%',#{usr_etc3},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc4)">
+                and usr_etc4 LIKE CONCAT('%',#{usr_etc4},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc5)">
+                and usr_etc5 LIKE CONCAT('%',#{usr_etc5},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc6)">
+                and usr_etc6 LIKE CONCAT('%',#{usr_etc6},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc7)">
+                and usr_etc7 LIKE CONCAT('%',#{usr_etc7},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc8)">
+                and usr_etc8 LIKE CONCAT('%',#{usr_etc8},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc9)">
+                and usr_etc9 LIKE CONCAT('%',#{usr_etc9},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_etc10)">
+                and usr_etc10 LIKE CONCAT('%',#{usr_etc10},'%')
+            </if>
+        order by list.REG_DT desc
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+            LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+        </if>
+    </select>
+
+    <insert id ="insertOneTargetUser" parameterType="Tblmi_group_usrDto">
+        INSERT INTO tblmi_target_lst
+                    (
+                                grp_no,
+                                usr_id,
+                                usr_nm,
+                                usr_mob,
+                                usr_edm,
+                                usr_gdr,
+                                usr_addr,
+                                usr_etc1,
+                                usr_etc2,
+                                usr_etc3,
+                                usr_etc4,
+                                usr_etc5,
+                                usr_etc6,
+                                usr_etc7,
+                                usr_etc8,
+                                usr_etc9,
+                                usr_etc10,
+                                use_yn,
+                                reg_id,
+                                reg_dt
+                    )
+        VALUE       (
+                            #{grp_no},
+                            #{usr_id},
+                            #{usr_nm},
+                            #{usr_mob},
+                            #{usr_edm},
+                            #{usr_gdr},
+                            #{usr_addr},
+                            #{usr_etc1},
+                            #{usr_etc2},
+                            #{usr_etc3},
+                            #{usr_etc4},
+                            #{usr_etc5},
+                            #{usr_etc6},
+                            #{usr_etc7},
+                            #{usr_etc8},
+                            #{usr_etc9},
+                            #{usr_etc10},
+                            #{use_yn},
+                            #{reg_id},
+                            now()
+                     )
+    </insert>
+
+</mapper>
+
+
+
+
+

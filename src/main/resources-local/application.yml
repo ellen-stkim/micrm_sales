@@ -1,0 +1,48 @@
+jasypt:
+  encryptor:
+    password: milvuslucas
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    pool-size: 1
+    salt-generator-classname: org.jasypt.salt.RandomSaltGenerator
+    iv-generator-classname: org.jasypt.iv.RandomIvGenerator
+    string-output-type: base64
+
+server:
+  servlet:
+    session:
+      timeout: 3600
+    encoding:
+      enabled: true
+      charset: utf-8
+      force: true
+    error:
+      whitelabel:
+        enabled: false
+
+spring:
+  mvc:
+    favicon:
+      enabled: false
+    throw-exception-if-no-handler-found: true
+
+variable:
+  db-class: org.mariadb.jdbc.Driver
+  db-url: ENC(lwia58gbA2la4JVYbb/0GzOeKgRIERGvtqQJH6g+mYkimHuqmnS6nTeF96zr+1pNjeXxiT7mVg/ftj5+r5MP8q643U2xDVE48aDA7KzAm1K2KG/YCrYNnNjkpeWUkanQ)
+  db-username: ENC(OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p)
+  db-password: ENC(TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA==)
+
+  mail-username:
+  mail-password:
+
+  minio-url: http://125.131.213.7:9001
+  minio-bucket: img
+  minio-username:
+  minio-password:
+
+  static-path : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static"
+  tableau-url: "http://t.tableau-report.com/trusted"
+
+upload:
+  src : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
+  temp : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"

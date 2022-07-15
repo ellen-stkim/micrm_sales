@@ -1,0 +1,87 @@
+@charset "UTF-8";
+
+/*NotoSansCJKkr*/
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-Thin.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-Thin.woff") format("woff");
+  font-weight:100;
+  font-style:normal;
+}
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-Light.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-Light.woff") format("woff");
+  font-weight:300;
+  font-style:normal;
+}
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-DemiLight.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-DemiLight.woff") format("woff");
+  font-weight:400;
+  font-style:normal;
+}
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-Regular.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-Regular.woff") format("woff");
+  font-weight:500;
+  font-style:normal;
+}
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-Medium.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-Medium.woff") format("woff");
+  font-weight:600;
+  font-style:normal;
+}
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-Bold.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-Bold.woff") format("woff");
+  font-weight:700;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"NotoSansCJKkr";
+  src: url("../font/NotoSansCJKkr-Black.eot?#iefix") format('embedded-opentype'),
+  url("../font/NotoSansCJKkr-Black.woff") format("woff");
+  font-weight:900;
+  font-style:normal;
+}
+
+/* Helvetica */
+@font-face{
+  font-family:"Helvetica";
+  src: url("../font/HelveticaNeueLTStd-Md.eot") format('embedded-opentype'),
+  url("../font/HelveticaNeueLTStd-Md.woff") format("woff");
+  font-weight:600;
+  font-style:normal;
+}
+
+/* Gotham */
+@font-face{
+  font-family:"Gotham";
+  src: url("../font/Gotham-Bold.eot?#iefix") format('embedded-opentype'),
+  url("../font/Gotham-Bold.woff") format("woff");
+  font-weight:700;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"Gotham";
+  src: url("../font/Gotham-Medium.eot?#iefix") format('embedded-opentype'),
+  url("../font/Gotham-Medium.woff") format("woff");
+  font-weight:600;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"Gotham";
+  src: url("../font/Gotham-Book.eot?#iefix") format('embedded-opentype'),
+  url("../font/Gotham-Book.woff") format("woff");
+  font-weight:500;
+  font-style:normal;
+}

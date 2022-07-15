@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <!-- common js -->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/popup.js"></script>
+    <!-- validate.js -->
+    <script src="../../js/jquery.validate.min.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- header 영역 시작 -->
+        <header class="header cf">
+            <h1 class="logo"><a href="../index.html"><img src="../../image/logo.png" alt="MICRM" /></a></h1>
+            <div class="right cf">
+                <ol class="summary">
+                    <li><span>발송예정</span>&nbsp;3</li>
+                    <li><span>발송중</span>&nbsp;1</li>
+                    <li><span>승인요청</span>&nbsp;2</li>
+                </ol>
+                <div class="ico_notice"><span>알림</span>&nbsp;3</div>
+            </div>
+        </header>
+        <!-- header 영역 끝 -->
+        <!-- left menu 영역 시작 -->
+        <nav class="nav">
+            <!-- gnb 영역 시작 -->
+            <ul class="gnb">
+                <li>
+                    <span>회원 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="member.html">DB 회원</a></li>
+                        <li><a href="rejection.html">수신거부 회원</a></li>
+                        <li><a href="upload.html">업로드 회원</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>메시지</span>
+                    <ul class="sub_menu">
+                        <li><a href="../message/edmList.html">이메일</a></li>
+                        <li><a href="../message/smsList.html">모바일</a></li>
+                        <li><a href="../message/imageList.html">이미지 파일</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>캠페인</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">타겟팅</a></li>
+                        <li><a href="#">캠페인 발송</a></li>
+                        <li><a href="#">발송 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>리포트</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">캠페인 현황 통계</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>시스템 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="workList.html">작업</a></li>
+                        <li><a href="userManagement.html">사용자</a></li>
+                        <li><a href="ipSecurity.html">보안</a></li>
+                        <li class="on"><a href="mailSetting.html">환경</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- gnb 영역 끝 -->
+            <div class="user_info cf">
+                <div class="user">밀버스님</div>
+                <a href="#" class="logout">로그아웃</a>
+            </div>
+        </nav>
+        <!-- left menu 영역 끝 -->
+        <!-- container 영역 시작 -->
+        <section class="container">
+            <!-- 컨텐츠 영역 시작 -->
+            <div class="contents">
+                <!-- row 영역 시작 -->
+                <div class="row tooltip_area bottom-border cf">
+                    <div class="left">
+                        <!-- location 영역 -->
+                        <ul class="location">
+                            <li>홈</li>
+                            <li>시스템관리</li>
+                            <li>환경</li>
+                        </ul>
+                        <!-- tooltip 버튼 영역  -->
+                        <div class="tooltip_icon">
+                            <img src="../../image/ico_tooltip.png" alt="Tooltip" />
+                        </div>
+                        <!-- tooltip box 영역 시작 -->
+                        <div class="tooltip_box">
+                            <!-- tooltip bullet 영역 -->
+                            <div class="bullet"></div>
+                            <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                            스타일론 직장인이 26.69억(29.1%), <br />
+                            스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                        </div>
+                        <!-- tooltip box 영역 끝 -->
+                    </div>
+                    <div class="right">
+                        <!-- select 영역 시작 -->
+                        <div class="select style1 left-border">
+                            <!-- selected value -->
+                            <div class="value searchSelect" data="">기준선택</div>
+                            <!-- option -->
+                            <ul class="option">
+                                <li data="발신자명">발신자명</li>
+                                <li data="발신주소">발신주소</li>
+                                <li data="사용여부">사용여부</li>
+                            </ul>
+                        </div>
+                        <!-- select 영역 끝 -->
+                        <input type="text" class="searchInp left-border searchWord" placeholder="검색어입력" onkeyup="enterSubmit();" />
+                        <input type="submit" class="searchBtn" value="검색" onclick="return searchCheck();" />
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <ul class="tab_row">
+                    <!-- Tab menu -->
+                    <li><a href="mailSetting.html">메일 정보 설정</a></li>
+                    <li><a href="smsSetting.html">문자 정보 설정</a></li>
+                    <li class="on"><a href="testGroupSetting.html">테스트 그룹 설정</a></li>
+                    <li><a href="noticeSetting.html">공지사항 설정</a></li>
+                    <li><a href="approval.html">승인 절차 설정</a></li>
+                </ul>
+                <!-- section 영역 시작 -->
+                <div class="section">
+                    <div class="count border-bottom cf">
+                        <div class="total left">테스트 그룹 리스트</div>
+                        <input type="button" class="btn_add right" value="추가" onclick="testGroupPopup();" />
+                    </div>
+                    <!-- table 영역 시작 -->
+                    <table class="table">
+                        <colgroup>
+                            <col width="30%" />
+                            <col width="10%" />
+                            <col width="10%" />
+                            <col width="10%" />
+                            <col width="10%" />
+                            <col width="10%" />
+                            <col width="10%" />
+                            <col width="10%" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>그룹명</th>
+                                <th>타겟 수</th>
+                                <th>이메일</th>
+                                <th>모바일</th>
+                                <th>사용여부</th>
+                                <th>생성일</th>
+                                <th>수정일</th>
+                                <th>보기/삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Reebok_내부</td>
+                                <td class="en_font">10</td>
+                                <td class="en_font">6</td>
+                                <td class="en_font">7</td>
+                                <td class="en_font"><input type="button" class="use_state en_font btn_state" value="Y" /></td>
+                                <td class="en_font">2020.10.26</td>
+                                <td class="en_font">2020.11.05</td>
+                                <td>
+                                    <a href="testGroupDetail.html" class="btn_sm_line btn_inline size">보기</a>
+                                    <input type="button" class="btn_sm_line btn_inline size" value="삭제" onclick="deleteAlert(this);" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Reebok_외부</td>
+                                <td class="en_font">10</td>
+                                <td class="en_font">6</td>
+                                <td class="en_font">7</td>
+                                <td class="en_font"><input type="button" class="use_state en_font btn_state" value="N"/></td>
+                                <td class="en_font">2020.10.26</td>
+                                <td class="en_font">2020.11.05</td>
+                                <td>
+                                    <a href="testGroupDetail.html" class="btn_sm_line btn_inline size">보기</a>
+                                    <input type="button" class="btn_sm_line btn_inline size" value="삭제" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <!-- 검색 결과가 없는 경우 영역 시작 -->
+                            <!-- <tr class="no_data">
+                                    <td colspan="11">조회된 결과가 없습니다.</td>
+                                 </tr> -->
+                            <!-- 검색 결과가 없는 경우 영역 시작 -->
+                        </tbody>
+                    </table>
+                    <div class="btn_row bottom-border">
+                        <ul class="pager">
+                            <!-- 페이지 이동 버튼이 활성화 상태일 경우 addClass'active' -->
+                            <li class="first">First</li>
+                            <li class="prev">Prev</li>
+                            <!-- 페이지 번호가 활성화 상태일 경우 addClass'on' -->
+                            <li class="page on">1</li>
+                            <li class="page">2</li>
+                            <li class="page">3</li>
+                            <li class="page">4</li>
+                            <li class="page">5</li>
+                            <li class="page">6</li>
+                            <li class="page">7</li>
+                            <li class="page">8</li>
+                            <li class="page">9</li>
+                            <li class="page">10</li>
+                            <li class="next active">Next</li>
+                            <li class="last active">Last</li>
+                        </ul>
+                    </div>
+                    <!-- table 영역 끝 -->
+                </div>
+                <!-- section 영역 끝 -->  
+            </div>
+            <!-- 컨텐츠 영역 끝 -->
+            <!-- footer 영역 시작 -->
+            <footer class="footer">
+                &copy; Milvus Corp.
+            </footer>
+            <!-- footer 영역 끝 -->
+        </section>
+        <!-- container 영역 끝 -->
+    </div>
+    <!-- wrap end -->
+
+    <!-- 수신거부 추가 팝업 영역 시작 -->
+    <div class="layer_pop testGroupPopup">
+        <div class="pop_container popup_size6">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">테스트 그룹 추가</div>
+            <div class="pop_inner">
+                <article class="pop_section">
+                    <a href="#" class="btn_form_down position" download>양식 파일 다운로드</a>
+                    <div class="align_center">
+                        <input type="text" id="fileName" class="input_file" placeholder="파일을 선택해주세요." readonly />
+                        <span class="btn_file">선택<input type="file" class="file" /></span>
+                    </div>
+                </article>
+                <h3 class="popup_title">양식 파일 결과</h3>
+                <table class="pop_table_type2 pop_margin_bttm">
+                    <colgroup>
+                        <col width="20%" />
+                        <col width="20%" />
+                        <col width="20%" />
+                        <col width="20%" />
+                        <col width="20%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>이메일</th>
+                            <th>이메일 중복</th>
+                            <th>모바일</th>
+                            <th>모바일 중복</th>
+                            <th>합계</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="en_font">13</td>
+                            <td class="en_font blue_point_color">1</td>
+                            <td class="en_font">13</td>
+                            <td class="en_font">0</td>
+                            <td class="en_font">13</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3 class="popup_title">리스트 미리보기</h3>
+                <div class="scroll_tbl pop_margin_bttm">
+                    <table class="pop_table_type3 tbl_width1">
+                        <thead>
+                            <th>회원번호</th>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>이메일 수신동의</th>
+                            <th>모바일</th>
+                            <th>모바일 수신동의</th>
+                            <th>ETC1</th>
+                            <th>ETC2</th>
+                            <th>ETC3</th>
+                            <th>ETC4</th>
+                            <th>ETC5</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="en_font">11839223</td>
+                                <td>김영화</td>
+                                <td class="en_font">wendy@milvus.co.kr</td>
+                                <td class="en_font">Y</td>
+                                <td class="en_font">010-1234-1234</td>
+                                <td class="en_font">Y</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="en_font">12341234</td>
+                                <td>김보민</td>
+                                <td class="en_font">nicole@milvus.co.kr</td>
+                                <td class="en_font">Y</td>
+                                <td class="en_font">010-1234-1234</td>
+                                <td class="en_font">Y</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="en_font">11839229</td>
+                                <td>김유경</td>
+                                <td class="en_font">ellie@milvus.co.kr</td>
+                                <td class="en_font">Y</td>
+                                <td class="en_font">010-1234-1234</td>
+                                <td class="en_font">Y</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="en_font">11839227</td>
+                                <td>배윤호</td>
+                                <td class="en_font">black@milvus.co.kr</td>
+                                <td class="en_font">Y</td>
+                                <td class="en_font">010-1234-1234</td>
+                                <td class="en_font">Y</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="en_font">11839224</td>
+                                <td>안영진</td>
+                                <td class="en_font">greg@milvus.co.kr</td>
+                                <td class="en_font">Y</td>
+                                <td class="en_font">010-1234-1234</td>
+                                <td class="en_font">Y</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <!-- <tr class="no_data">
+                                <td class="en_font" colspan="11">조회된 결과가 없습니다.</td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center" value="저장" onclick="saveCheck();" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 수신거부 추가 팝업 영역 끝 -->
+
+</body>
+<script>
+    // 검색영역 enter key event
+    function enterSubmit() {
+        if (window.event.keyCode == 13) {
+            searchCheck();
+        }
+        return false;
+    }
+
+    $(document).ready(function () {
+        // 사용여부 click event
+        $('.use_state').on('click', function () {
+            let useValue = $(this).val();
+            if (useValue == 'Y') {
+                $(this).val('N');
+            } else {
+                $(this).val('Y');
+            }
+        });
+
+        $('.file').on('change', function () {
+            let fileName = $(this).val();
+            let format = fileName.slice(fileName.lastIndexOf('.') + 1).toLowerCase();
+            if (!(format == 'xlsx' || format == "csv")) {
+                alert("'xlsx', 'csv' 파일 형식만 업로드 가능 합니다.");
+            } else {
+                $("#fileName").val(fileName);
+            }
+        });
+    });
+
+
+    let deleteEl;
+    function deleteAlert(el) {
+        deleteEl = el;
+        let html = '';
+        html +=
+            '<div class="layer_pop alert active">' +
+            '<div class="pop_container popup_size3">' +
+            '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+            '<div class="pop_title">테스트 그룹 삭제</div>' +
+            '<div class="pop_inner">' +
+            '<div class="alert_txt">선택된 테스트 그룹을 삭제하시겠습니까?</div>' +
+            '<div class="btn_row">' +
+            '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="deleteRow(deleteEl);" value="확인" />' +
+            '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $('body .layer_pop.alert').remove();
+        $('body').append(html);
+        return false;
+    }
+
+    function deleteRow(row) {
+        $(row).parents('tr').remove();
+        $('.alert').removeClass('active');
+        return false;
+    }
+
+    function saveCheck() {
+        let fileVal = $('#fileName').val();
+        if (fileVal == '') {
+            alert('입력된 정보가 없습니다.');
+            return false;
+        } else {
+            $('.testGroupPopup').removeClass('active');
+            return true;
+        }
+    }
+
+    function testGroupPopup() {
+        $('.testGroupPopup').addClass('active');
+    }
+
+</script>
+
+</html>

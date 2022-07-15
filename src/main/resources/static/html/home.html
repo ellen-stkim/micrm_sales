@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css" />
+    <!-- fullcalendar css -->
+    <link rel="stylesheet" type="text/css" href='../css/fullcalendar.min.css' />
+    <!-- chart css -->
+    <link rel="stylesheet" type="text/css" href="../css/Chart.min.css" />
+    <!-- common js -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/jquery-ui.min.js"></script>
+    <script src="../js/popup.js"></script>
+    <!-- moment.js -->
+    <script src="../js/moment.min.js"></script>
+    <!-- fullcalendar.js -->
+    <script src="../js/fullcalendar.min.js"></script>
+    <!-- char.js -->
+    <script src="../js/Chart.min.js"></script>
+    <!-- progressbar.js -->
+    <script src="../js/progressbar.min.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- 알림 영역 시작 -->
+        <aside class="side_notice">
+            <div class="top bottom-border cf">
+                <h3>알림</h3>
+                <p>오늘의 새로운 알림이 있습니다.</p>
+                <button class="side_close" onclick="sideNoticeClose();"></button>
+            </div>
+            <div class="row cf">
+                <h4>작업내역</h4>
+                <p>최근 7일간 기록만 확인할 수 있습니다.</p>
+                <button class="refresh"></button>
+            </div>
+            <div class="body_list middle">
+                <!-- 작업내역 리스트 1단위 영역 시작 -->
+                <div class="article">
+                    <!-- 날짜 영역 -->
+                    <div class="date en_font">2021-02-04 13:00:00.0</div>
+                    <div class="notice_txt">
+                        210204_New_Campaign 발송이 시작되었습니다.
+                        <!-- New icon image -->
+                        <img src="/image/ico_new.png" alt=""/>
+                    </div>
+                </div>
+                <!-- 작업내역 리스트 1단위 영역 끝 -->
+            </div>
+            <div class="bottom top-border">
+                <div class="row cf">
+                    <h4>공지사항</h4>
+                </div>
+                <div class="body_list">
+                    <!-- 공지사항 리스트 1단위 영역 시작 -->
+                    <div class="article">
+                        <!-- 날짜 영역 -->
+                        <div class="date en_font">2021-02-04 13:00:00.0</div>
+                        <!-- 공지사항 제목 영역 -->
+                        <div class="notice_txt">
+                            시스템 점검 안내
+                        </div>
+                    </div>
+                    <!-- 공지사항 리스트 1단위 영역 끝 -->
+                </div>
+                <!-- 관리자 메일 문의 영역 -->
+                <button class="row_mail en_font">support@micrm.co.kr</button>
+            </div>
+        </aside>
+        <!-- 알림 영역 끝 -->
+        <!-- header 영역 시작 -->
+        <header class="header cf">
+            <h1 class="logo"><a href="home.html"><img src="../image/logo.png" alt="MICRM" /></a></h1>
+            <div class="right cf">
+                <ol class="summary">
+                    <li><span>발송예정</span>&nbsp;3</li>
+                    <li><span>발송중</span>&nbsp;1</li>
+                    <li><span>승인요청</span>&nbsp;2</li>
+                </ol>
+                <div class="ico_notice" onclick="sideNoticeOpen();"><span>알림</span><img src="/image/ico_new.png" alt=""/></div>
+            </div>
+        </header>
+        <!-- header 영역 끝 -->
+        <!-- left menu 영역 시작 -->
+        <nav class="nav">
+            <!-- gnb 영역 시작 -->
+            <ul class="gnb">
+                <li>
+                    <span>회원 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="member/member.html">DB 회원</a></li>
+                        <li><a href="member/rejection.html">수신거부 회원</a></li>
+                        <li><a href="member/upload.html">업로드 회원</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>메시지</span>
+                    <ul class="sub_menu">
+                        <li><a href="message/edmList.html">이메일</a></li>
+                        <li><a href="message/smsList.html">모바일</a></li>
+                        <li><a href="message/imageList.html">이미지 파일</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>캠페인</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">타겟팅</a></li>
+                        <li><a href="#">캠페인 발송</a></li>
+                        <li><a href="#">발송 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>리포트</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">캠페인 현황 통계</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>시스템 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">작업</a></li>
+                        <li><a href="#">사용자</a></li>
+                        <li><a href="#">보안</a></li>
+                        <li><a href="#">환경</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- gnb 영역 끝 -->
+            <div class="user_info cf">
+                <div class="user">밀버스님</div>
+                <a href="#" class="logout">로그아웃</a>
+            </div>
+        </nav>
+        <!-- left menu 영역 끝 -->
+        <!-- container 영역 시작 -->
+        <section class="container">
+            <!-- 컨텐츠 영역 시작 -->
+            <div class="contents">
+                <!-- row 영역 시작 -->
+                <div class="row tooltip_area bottom-border cf">
+                    <div class="left">
+                        <!-- location 영역 -->
+                        <ul class="location">
+                            <li>HOME</li>
+                        </ul>
+                        <!-- tooltip 버튼 영역  -->
+                        <div class="tooltip_icon">
+                            <img src="../image/ico_tooltip.png" alt="Tooltip" />
+                        </div>
+                        <!-- tooltip box 영역 시작 -->
+                        <div class="tooltip_box">
+                            <!-- tooltip bullet 영역 -->
+                            <div class="bullet"></div>
+                            <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                            스타일론 직장인이 26.69억(29.1%), <br />
+                            스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                        </div>
+                        <!-- tooltip box 영역 끝 -->
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- section 영역 시작 -->
+                <div class="section">
+                    <div class="main_calendar">
+                        <h2>발송 캘린더</h2>
+                        <!-- 월별 이동 달력 영역 시작 -->
+                        <div class="month_pop">
+                            <table class="month_tbl">
+                                <colgroup>
+                                    <col width="35" />
+                                    <col width="35" />
+                                    <col width="35" />
+                                    <col width="35" />
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="prev" onclick="prevYear();"></div>
+                                        </th>
+                                        <th class="year" colspan="2"></th>
+                                        <th>
+                                            <div class="next" onclick="nextYear();"></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="month_body"></tbody>
+                            </table>
+                        </div>
+                        <!-- 월별 이동 달력 영역 끝 -->
+                        <!-- [Fullcalendar.js] 영역 -->
+                        <div id="calendar"></div>
+                        <!-- 달력 범례 영역 시작 -->
+                        <div class="calendar_legend bottom-border">
+                            <div class="state1">발송취소</div>
+                            <div class="state2">발송대기</div>
+                            <div class="state3">발송완료</div>
+                            <div class="state4">승인대기</div>
+                        </div>
+                        <!-- 달력 범례 영역 끝 -->
+                    </div><!-- 'main_calendar' end -->
+
+                    <!-- 발송 요약 영역 시작 -->
+                    <div class="state_viewer right">
+                        <!-- basic start -->
+                        <div class="basic">
+                            <h3>발송 가능 회원 비중</h3>
+                            <!-- pregress 영역 시작 -->
+                            <div class="member_progress">
+                                <div class="top">
+                                    전체<span>1,523,894</span>
+                                </div>
+                                <div class="bottom cf">
+                                    <!-- [edm progress.js] -->
+                                    <div class="edm">
+                                        <p>1,277,975&nbsp;<span>(82%)</span></p>
+                                        <div id="edmProgress"></div>
+                                    </div>
+                                    <!-- [mms progress.js] -->
+                                    <div class="mms">
+                                        <p>886,154&nbsp;<span>(67%)</span></p>
+                                        <div class="" id="mmsProgress"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- pregress 영역 끝 -->
+                            <h3>9월 발송 현황</h3>
+                            <div class="status_graph">
+                                <!-- edm/mms 채널 선택 영역 시작 -->
+                                <div class="graph_btn cf">
+                                    <label class="edm on"><input type="checkbox" checked /><img
+                                            src="../image/ico_edm.png" alt="이메일" /></label>
+                                    <label class="mms on"><input type="checkbox" checked /><img
+                                            src="../image/ico_mobile.png" alt="문자" /></label>
+                                </div>
+                                <!-- edm/mms 채널 선택 영역 끝 -->
+                                <!-- [Chart.js] 영역 -->
+                                <div class="chart_box"><canvas id="myChart" width="277"></canvas></div>
+                                <div class="data cf">
+                                    <div>평균 발송 횟수<span class="blue_point_color">3.6</span></div>
+                                    <div>최대 발송 횟수<span class="blue_point_color">9</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- basic end -->
+
+                        <!-- 캠페인 요약 이메일 영역 시작 -->
+                        <div class="summary_modal edm_modal">
+                            <div class="btn_hide">닫기</div>
+                            <h3>캠페인 요약</h3>
+                            <div class="padding_inner">
+                                <!-- [state1 : eDM 발송취소],[state2 : eDM 발송대기],[state3 : eDM 발송완료],[state4 : eDM 승인대기]
+                  [state5 : mms 발송취소],[state6 : mms 발송대기],[state7 : mms 발송대기],[state8 : mms 승인대기]    -->
+                                <div class="title ellipsis state3">Superstar reminder</div>
+                                <div class="sum_info cf">
+                                    <!-- 발송 날짜 영역 -->
+                                    <div class="date">발송일정<span>2020년 9월 9일 오후 3시</span></div>
+                                    <!-- 발송 현황 영역 -->
+                                    <div class="state_txt">발송완료</div>
+                                </div>
+                                <!-- 이메일 viewer 영역 -->
+                                <div class="view">
+                                    <div class="img edm"><img src="../image/test_img1.jpg" alt="" /></div>
+                                </div>
+                                <!-- Target 영역 -->
+                                <div class="row_state arrow cf">
+                                    <div class="th">Target</div>
+                                    <div class="td">201,525</div>
+                                    <div class="td percents">-</div>
+                                </div>
+                                <!-- Success 영역 -->
+                                <div class="row_state arrow cf">
+                                    <div class="th">Success</div>
+                                    <div class="td">200,005</div>
+                                    <div class="td percents">99.2%</div>
+                                </div>
+                                <!-- Open 영역 -->
+                                <div class="row_state arrow cf">
+                                    <div class="th">Open</div>
+                                    <div class="td">82,533</div>
+                                    <div class="td percents">41.2%</div>
+                                </div>
+                                <!-- Click 영역 -->
+                                <div class="row_state cf">
+                                    <div class="th">Click</div>
+                                    <div class="td">7,210</div>
+                                    <div class="td percents">3.6%</div>
+                                </div>
+                                <!-- 상세 보러가기 버튼 -->
+                                <a href="#" class="btn_link">상세 보러가기</a>
+                            </div>
+                        </div>
+                        <!-- 캠페인 요약 이메일 영역 끝 -->
+                        <!-- 캠페인 요약 문자 영역 시작 -->
+                        <div class="summary_modal mms_modal">
+                            <div class="btn_hide">닫기</div>
+                            <h3>캠페인 요약</h3>
+                            <div class="padding_inner">
+                                <div class="title ellipsis state6">SYS reminder</div>
+                                <div class="sum_info cf">
+                                    <!-- 발송 날짜 영역 -->
+                                    <div class="date">발송일정<span>2020년 9월 9일 오후 3시</span></div>
+                                    <!-- 발송 현황 영역 -->
+                                    <div class="state_txt">발송대기</div>
+                                </div>
+                                <!-- 문자 viewer 영역 -->
+                                <div class="view">
+                                    <div class="img mms"><img src="../image/test_img2.jpg" alt="" /></div>
+                                    <p class="mms">(광고)[adidas] 9월 아디클럽 회원 혜택 안내<br />
+                                        ♥9월 MEMBERS ONLY♥</p>
+                                </div>
+                                <!-- Target 영역 -->
+                                <div class="row_state arrow cf">
+                                    <div class="th">Target</div>
+                                    <div class="td">98,562</div>
+                                    <div class="td percents">-</div>
+                                </div>
+                                <!-- Success 영역 -->
+                                <div class="row_state arrow cf">
+                                    <div class="th">Success</div>
+                                    <div class="td">-</div>
+                                    <div class="td percents">-</div>
+                                </div>
+                                <!-- Open 영역 -->
+                                <div class="row_state arrow cf">
+                                    <div class="th">Open</div>
+                                    <div class="td">-</div>
+                                    <div class="td percents">-</div>
+                                </div>
+                                <!-- Click 영역 -->
+                                <div class="row_state cf">
+                                    <div class="th">Click</div>
+                                    <div class="td">-</div>
+                                    <div class="td percents">-</div>
+                                </div>
+                                <!-- 상세 보러가기 버튼 -->
+                                <a href="#" class="btn_link">상세 보러가기</a>
+                            </div>
+                        </div>
+                        <!-- 캠페인 요약 문자 영역 끝 -->
+                    </div><!-- 'state_viewer' end -->
+                </div>
+                <!-- section 영역 끝 -->
+            </div>
+            <!-- 컨텐츠 영역 끝 -->
+            <!-- footer 영역 시작 -->
+            <footer class="footer">
+                &copy; Milvus Corp.
+            </footer>
+            <!-- footer 영역 끝 -->
+        </section>
+        <!-- container 영역 끝 -->
+    </div>
+    <!-- wrap end -->
+    <!-- 시스템 공지사항 팝업 영역 시작 -->
+    <div class="layer_pop noticePopup active">
+        <div class="pop_container popup_size1">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">시스템 공지사항</div>
+            <div class="pop_inner scroll_wrap">
+                <!-- 공지사항 타이틀 영역 -->
+                <h3>MICRM 서비스 일시 중단 안내</h3>
+                <!-- 내용 영역 시작 -->
+                <P>
+                    서비스 이용에 불편을 드려 죄송합니다.<br />
+                    miCRM 시스템 점검으로 인하여 아래 기간동안 서비스가 일시 중단되오니 참고하시기 바랍니다.
+                </P>
+                <!-- 내용 영역 끝 -->
+                <!-- 상세 영역 시작 -->
+                <div class="section_box">
+                    <div class="top">작업일정</div>
+                    <div class="body">
+                        <dl class="list_txt">
+                            <dd>- 작업일시: 2020년 9월 18일(금) 00:00 ~ 18일(금) 06:00</dd>
+                            <dd>- 작업내용: miCRM 시스템 정기 점검</dd>
+                        </dl>
+                        <div class="color_gray">※ 작업일정은 시스템작업 사정에 따라 변동 될 수 있습니다.</div>
+                    </div>
+                </div>
+                <!-- 상세 영역 끝 -->
+            </div>
+            <!-- 팝업 열지 않음 영역 시작 -->
+            <div class="today">
+                <label class="custom_check1" onclick="setCookie('_todayCookie','done', 1)">오늘 이 창을 열지 않음<input
+                        type="checkbox" name=""><span></span></label>
+            </div>
+            <!-- 팝업 열지 않음 영역 끝 -->
+        </div>
+    </div>
+    <!-- 시스템 공지사항 팝업 영역 끝 -->
+</body>
+<script>
+    $(function () {
+        $('.month_body').html(month);
+        // [Fullcalendar.js] option
+        // state 적용 class
+        // [state1 : eDM 발송취소],[state2 : eDM 발송대기],[state3 : eDM 발송완료],[state4 : eDM 승인대기]
+        // [state5 : mms 발송취소],[state6 : mms 발송대기],[state7 : mms 발송대기],[state8 : mms 승인대기]        
+        $('#calendar').fullCalendar({
+            contentHeight: 593,
+            header: {
+                left: 'prev, title, next',
+                center: '',
+                right: ''
+            },
+            defaultDate: '2020-10-13',
+            navLinks: false,
+            editable: false,
+            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+            views: {
+                month: {
+                    titleFormat: 'YYYY.MM',
+                    columnFormat: 'ddd'
+                },
+            },
+            eventLimit: true,
+            events: [
+                {
+                    id: "event1",
+                    className: "state1",
+                    title: '"CLICK", Superstar launching',
+                    start: '2020-10-09'
+                },
+                {
+                    className: "state3",
+                    title: 'Thanksgiving 1st',
+                    start: '2020-10-09'
+                },
+                {
+                    className: "state6",
+                    title: 'SYS Reminder',
+                    start: '2020-10-09'
+                },
+                {
+                    className: "state6",
+                    id: "event2",
+                    title: '"CLICK", Bounce back info',
+                    start: '2020-10-21'
+                },
+                {
+                    className: "state8",
+                    title: '★ 로그인만 해도 자동응모! 지금 바로 카카오페이 멤버십으로 로그인하기:',
+                    start: '2020-10-30'
+                },
+                {
+                    className: "state5",
+                    title: 'Superstar launching',
+                    start: '2020-10-10'
+                },
+                {
+                    className: "state6",
+                    title: 'Superstar launching',
+                    start: '2020-10-10'
+                },
+                {
+                    className: "state7",
+                    title: '(광고)[Reebok] 봄맞이 럭키드로우 이벤트★',
+                    start: '2020-10-10'
+                },
+                {
+                    className: "state7",
+                    title: '[Reebok] 라인프렌즈 사전예약 안내',
+                    start: '2020-10-27'
+                }
+            ]
+            , viewRender: function (view, element) {
+                let moment = $('#calendar').fullCalendar('getDate');
+                let mmYear = Number(moment.format('YYYY'));
+                let mmMonth = Number(moment.format('MM'));
+                $('.year').html(mmYear);
+                $('.year').attr('value', mmYear);
+                for (i = 0; i <= 11; i++) {
+                    if ($('.month').eq(i).data('month') == mmMonth) {
+                        $('.month').parent().siblings().removeClass('on');
+                        $('.month').eq(i).parent().addClass('on');
+                    }
+                }
+            },
+            eventClick: function (info) {
+                //캠페인 요약 open event
+                $('.summary_modal').removeClass('on');
+                if (info.id == "event1") {
+                    $('.edm_modal').addClass('on');
+                } else if (info.id == "event2") {
+                    $('.mms_modal').addClass('on');
+                } else {
+                    return false;
+                }
+            }
+        });
+        // 월별 달력 click event
+        $('.month').on('click', function () {
+            let dataMonth = $(this).attr('data-month');
+            let year = $(this).parents('.month_tbl').find('.year').attr('value');
+            let month = dataMonth.length == 1 ? "0" + dataMonth : dataMonth;
+            let fullDate = year + '-' + month;
+            let full = new Date(fullDate);
+            $("#calendar").fullCalendar("gotoDate", full);
+            $('.month_pop').hide();
+        });
+        // 월별 달력 open event
+        $('.btn_month').on('click', function () {
+            $('.month_pop').show();
+        });
+        // 월별 달력 close event
+        $('body, html').on('click', function (e) {
+            // select close
+            if (!$(e.target).hasClass('btn_month') && !$(e.target).hasClass('month_pop') && !$(e.target).hasClass('prev') && !$(e.target).hasClass('next')) {
+                $('.month_pop').hide();
+            }
+        });
+        // 발송 채널 click event
+        $('.graph_btn label input').on('click', function () {
+            $(this).parent('label').toggleClass('on');
+        });
+        // 캠페인 요약 close event
+        $('.btn_hide').on('click', function () {
+            $(this).parent('.summary_modal').removeClass('on');
+        });
+    });
+    // 월별 달력 Prev 
+    function prevYear() {
+        let todayYear = Number($('.year').attr('value'));
+        let year = todayYear - 1;
+        $('.year').attr('value', year);
+        $('.year').html(year);
+    }
+    // 월별 달력 Next 
+    function nextYear() {
+        let todayYear = Number($('.year').attr('value'));
+        let year = todayYear + 1;
+        $('.year').attr('value', year);
+        $('.year').html(year);
+    }
+    // 월별 달력 layout 생성
+    function month() {
+        month_html = "";
+        month_html += "<table class='month_tbl'><tr>"
+        for (i = 1; i <= 12; i++) {
+            month_html += "<td><div class='month' data-month='" + i + "'>" + i + "</div></td>";
+            if (i % 4 == "0") {
+                month_html += "</tr>";
+            }
+        }
+        month_html += "</tr></table>"
+        return month_html;
+    };
+    // eDM progress.js
+    var bar1 = new ProgressBar.Line(edmProgress, {
+        strokeWidth: 4,
+        easing: 'easeInOut',
+        duration: 1400,
+        color: '#618cd3',
+        trailColor: '#f4f4f4',
+        trailWidth: 4,
+        svgStyle: { width: '100%', height: '7px' }
+    });
+    bar1.animate(0.82);
+    // MMS progress.js
+    var bar2 = new ProgressBar.Line(mmsProgress, {
+        strokeWidth: 4,
+        easing: 'easeInOut',
+        duration: 1400,
+        color: '#618cd3',
+        trailColor: '#f4f4f4',
+        trailWidth: 4,
+        svgStyle: { width: '100%', height: '7px' }
+    });
+
+    bar2.animate(0.67);
+    // Chart.js  발송 현황
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1회', '2회', '3회', '4회', '5회 이상'],
+            datasets: [{
+                barPercentage: 0.3,
+                data: [15, 20, 30, 25, 10],
+                backgroundColor: [
+                    '#efefef',
+                    '#efefef',
+                    '#efefef',
+                    '#efefef',
+                    '#efefef'
+                ],
+                hoverBackgroundColor: [
+                    '#efefef',
+                    '#efefef',
+                    '#efefef',
+                    '#efefef',
+                    '#efefef'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            tooltips: false,
+            layout: {
+                padding: {
+                    top: 20,
+                    left: 0,
+                    right: 0
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        display: false
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        fontFamily: "NotoSansCJKkr",
+                        fontSize: 12
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            hover: {
+                animationDuration: 0
+            },
+            animation: {
+                duration: 1100,
+                easing: 'easeInOutQuart',
+                onComplete: function () {
+                    var chartInstance = this.chart,
+                        ctx = chartInstance.ctx;
+                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                    ctx.fillStyle = '#999999';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (bar, index) {
+                            var data = dataset.data[home];
+                            var addUnit = data + "%";
+                            ctx.fillText(addUnit, bar._model.x, bar._model.y - 5);
+                        });
+                    });
+                }
+            }
+        }
+    });
+</script>
+
+</html>

@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+*:focus{
+	outline: none;
+}
+.cke_ltr{
+	outline: none;
+	
+}
+
+.cke_panel_list {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+	outline: none;
+}
+
+.cke_panel_listItem {
+	margin: 0;
+}
+
+.cke_panel_listItem a {
+	padding: 4px;
+	margin: 1px;
+	display: block;
+	color: #8a8a8a !important;
+	text-decoration: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: default
+}
+
+.cke_panel_listItem:hover {
+	background: #ddd !important;
+}

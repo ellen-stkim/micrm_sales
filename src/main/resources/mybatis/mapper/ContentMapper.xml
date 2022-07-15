@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.ContentMapper">
+	<cache />
+
+	<insert id="insertContentMaster" parameterType="Tblmi_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO tblmi_cont_mst
+				(
+							ch_tp,
+							cont_nm,
+							cont_grp_cd,
+							reg_id,
+							reg_dt,
+							upd_id
+				)
+			values
+				(
+							#{ch_tp},
+							#{cont_nm},
+							#{cont_grp_cd},
+							#{reg_id},
+							now(),
+							#{upd_id}
+				)
+ 	</insert>
+
+	<insert id ="insertContent" parameterType="Tblmi_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO tblmi_cont_lst
+            (
+                        cont_cd,
+                        cont_tp,
+                        cont_sub,
+                        cont_top_body,
+                        cont_body,
+                        send_tp,
+                        send_to,
+                        send_nm,
+                        thm_url,
+                        br_yn,
+                        sup_yn,
+                        msg_tp,
+                        kko_img_cd,
+                        kko_img_url,
+                        kko_btn_nm,
+                        kko_btn_url,
+                        img_cd_1,
+                        img_cd_2,
+                        img_cd_3,
+                        img_cd_4,
+                        img_cd_5,
+                        img_cd_6,
+                        rcs_btn_ins_tp,
+                        rcs_btn_cnt,
+                        rcs_btn_obj,
+                        rcs_btn_1,
+                        rcs_btn_tp_1,
+                        rcs_btn_cont_1,
+                        rcs_btn_2,
+                        rcs_btn_tp_2,
+                        rcs_btn_cont_2,
+                        rcs_btn_3,
+                        rcs_btn_tp_3,
+                        rcs_btn_cont_3,
+                        key_id,
+                        rcs_footer,
+                        cont_grp_cd,
+                        use_yn,
+                        reg_id,
+                        reg_dt
+            )
+		values
+			(
+						#{cont_cd},
+						#{cont_tp},
+						#{cont_sub},
+						#{cont_top_body},
+						#{cont_body},
+						#{send_tp},
+						#{send_to},
+						#{send_nm},
+						#{thm_url},
+						#{br_yn},
+						#{sup_yn},
+						#{msg_tp},
+						#{kko_img_cd},
+						#{kko_img_url},
+						#{kko_btn_nm},
+						#{kko_btn_url},
+						#{img_cd_1},
+						#{img_cd_2},
+						#{img_cd_3},
+						#{img_cd_4},
+						#{img_cd_5},
+						#{img_cd_6},
+						#{rcs_btn_ins_tp},
+						#{rcs_btn_cnt},
+						#{rcs_btn_obj},
+						#{rcs_btn_1},
+						#{rcs_btn_tp_1},
+						#{rcs_btn_cont_1},
+						#{rcs_btn_2},
+						#{rcs_btn_tp_2},
+						#{rcs_btn_cont_2},
+						#{rcs_btn_3},
+						#{rcs_btn_tp_3},
+						#{rcs_btn_cont_3},
+						#{key_id},
+						#{rcs_footer},
+						#{cont_grp_cd},
+						#{use_yn},
+						#{reg_id},
+						now()
+			)
+	</insert>
+
+	<insert id="insertContentUrl" parameterType="Tblmi_cont_url_lstDto">
+		INSERT INTO tblmi_cont_url_lst
+            (
+                        cont_lst_cd,
+                        url_tag,
+                        url,
+                        url_id,
+                        url_type,
+                        map_id,
+                        map_cords
+            )
+		values
+			(
+						#{cont_lst_cd},
+						#{url_tag},
+						#{url},
+						#{url_id},
+						#{url_type},
+						#{map_id},
+						#{map_cords}
+			)
+		ON DUPLICATE KEY
+		UPDATE
+			CONT_LST_CD = #{cont_lst_cd},
+			URL_TAG = #{url_tag},
+			URL = #{url},
+			URL_ID = #{url_id},
+			URL_TYPE = #{url_type},
+			MAP_ID = #{map_id},
+			MAP_CORDS = #{map_cords}
+	</insert>
+
+	<select id ="isCheckMobileContentNm" parameterType="Tblmi_cont_mstDto" resultType="Int">
+		SELECT EXISTS
+			(
+				SELECT mst.cont_nm
+				FROM   tblmi_cont_mst AS mst
+				WHERE  mst.del_yn = 'N'
+					<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+						and mst.cont_grp_cd = #{cont_grp_cd}
+					</if>
+					<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+						and mst.seq != #{seq}
+					</if>
+					<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+						and mst.CONT_NM = #{cont_nm}
+					</if>
+			)
+	</select>
+
+
+	<!--<select id="selectMobileContent" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">
+		SELECT a.seq
+			, a.ch_tp
+			, a.cont_nm
+			, a.cont_grp_cd
+			, a.use_yn
+			, a.del_yn
+			, a.reg_dt
+			, ifnull(a.upd_dt, a.reg_dt) as upd_dt
+			, a.cont_tp_lst
+			, a.cont_tp_lst_nm
+			, b.cont_tp
+			, c.cd_nm AS cont_tp_nm
+			, b.CONT_SUB
+			, b.CONT_TOP_BODY
+			, b.CONT_BODY
+			, b.send_tp
+			, d.cd_nm AS send_tp_nm
+			, b.send_to
+			, b.send_nm
+			, b.thm_url
+			, b.br_yn
+			, b.sup_yn
+			, a.msg_tp_lst
+			, b.msg_tp
+			, b.kko_img_cd
+			, e.IMG_URL AS kko_image_url
+			, b.kko_img_url
+			, b.kko_BTN_nm
+			, b.KKO_BTN_URL
+			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
+			, CONCAT_WS(',', img_1.IMG_NM, img_2.IMG_NM, img_3.IMG_NM, img_4.IMG_NM ,img_5.IMG_NM, img_6.IMG_NM) AS IMG_NM_LST
+			, b.RCS_BTN_INS_TP
+			, b.RCS_BTN_CNT
+			, b.RCS_BTN_OBJ
+			, b.RCS_BTN_1
+			, b.RCS_BTN_TP_1
+			, b.RCS_BTN_CONT_1
+			, b.RCS_BTN_2
+			, b.RCS_BTN_TP_2
+			, b.RCS_BTN_CONT_2
+			, b.RCS_BTN_3
+			, b.RCS_BTN_TP_3
+			, b.RCS_BTN_CONT_3
+			, b.RCS_FOOTER
+		FROM (
+			SELECT mst.seq                                         AS seq
+				, mst.ch_tp                                        AS ch_tp
+				, mst.cont_nm                                       AS cont_nm
+				, mst.cont_grp_cd                                   AS cont_grp_cd
+				, mst.use_yn                                        AS use_yn
+				, mst.del_yn                                        AS del_yn
+				, mst.reg_dt                                        AS reg_dt
+				, mst.upd_dt                                        AS upd_dt
+				, GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
+				, Group_concat(lst.cont_tp)           			   AS cont_tp_lst
+				, Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
+				, Group_concat(lst.msg_tp)						   AS msg_tp_lst
+				, CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+				WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+				WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+				ELSE lst.SEQ END 							   AS lst_seq
+			FROM   tblmi_cont_mst AS mst
+				LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
+				INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+				and mst.del_yn = #{del_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and mst.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and mst.ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+				and mst.CONT_NM like concat('%', #{cont_nm}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+				and lst.cont_sub like concat('%', #{cont_sub}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+		</where>
+		GROUP  BY mst.seq
+		ORDER  BY mst.reg_dt DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+		) AS a
+		INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
+		INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
+		INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
+		LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
+		LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
+		LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
+		LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
+		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
+		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
+		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+	</select>-->
+
+	<select id="selectMobileContent" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">
+		SELECT a.seq
+			, a.ch_tp
+			, a.cont_nm
+			, a.cont_grp_cd
+			, a.use_yn
+			, a.del_yn
+			, a.reg_dt
+			, ifnull(a.upd_dt, a.reg_dt) as upd_dt
+			, a.cont_tp_lst
+			, a.cont_tp_lst_nm
+			, b.cont_tp
+			, c.cd_nm AS cont_tp_nm
+			, b.CONT_SUB
+			, b.CONT_TOP_BODY
+			, b.CONT_BODY
+			, b.send_tp
+			, d.cd_nm AS send_tp_nm
+			, b.send_to
+			, b.send_nm
+			, b.thm_url
+			, b.br_yn
+			, b.sup_yn
+			, a.msg_tp_lst
+			, b.msg_tp
+			, b.kko_img_cd
+			, e.IMG_URL AS kko_image_url
+			, b.kko_img_url
+			, b.kko_BTN_nm
+			, b.KKO_BTN_URL
+			, CONCAT(IFNULL(img_1.img_url,' '),',',IFNULL(img_2.img_url,' '),',',IFNULL(img_3.img_url,' '),',',IFNULL(img_4.img_url,' '),',',IFNULL( img_5.img_url,' '),',',IFNULL(img_6.img_url,' ')) AS IMG_LST
+			, CONCAT(IFNULL(img_1.img_nm,' '), ',' , IFNULL(img_2.img_nm,' '), ',' , IFNULL(img_3.img_nm,' '), ',' , IFNULL(img_4.img_nm,' '), ',' , IFNULL(img_5.img_nm,' '), ',' , IFNULL(img_6.img_nm,' ')) AS IMG_NM_LST
+			, b.RCS_BTN_INS_TP
+			, b.RCS_BTN_CNT
+			, b.RCS_BTN_OBJ
+			, b.RCS_BTN_1
+			, b.RCS_BTN_TP_1
+			, b.RCS_BTN_CONT_1
+			, b.RCS_BTN_2
+			, b.RCS_BTN_TP_2
+			, b.RCS_BTN_CONT_2
+			, b.RCS_BTN_3
+			, b.RCS_BTN_TP_3
+			, b.RCS_BTN_CONT_3
+			, b.RCS_FOOTER
+		FROM (
+		SELECT mst.seq                                         AS seq
+		, mst.ch_tp                                        AS ch_tp
+		, mst.cont_nm                                       AS cont_nm
+		, mst.cont_grp_cd                                   AS cont_grp_cd
+		, mst.use_yn                                        AS use_yn
+		, mst.del_yn                                        AS del_yn
+		, mst.reg_dt                                        AS reg_dt
+		, mst.upd_dt                                        AS upd_dt
+		, GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
+		, Group_concat(lst.cont_tp)           			   AS cont_tp_lst
+		, Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
+		, Group_concat(lst.msg_tp)						   AS msg_tp_lst
+		, CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+		WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+		WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+		ELSE lst.SEQ END 							   AS lst_seq
+		FROM   tblmi_cont_mst AS mst
+		LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
+		INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+				and mst.del_yn = #{del_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and mst.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and mst.ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+				and mst.CONT_NM like concat('%', #{cont_nm}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+				and lst.cont_sub like concat('%', #{cont_sub}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+		</where>
+		GROUP  BY mst.seq
+		ORDER  BY mst.reg_dt DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+		) AS a
+		INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
+		INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
+		INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
+		LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
+		LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
+		LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
+		LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
+		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
+		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
+		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+	</select>
+
+	<!-- 검색을 위해 상위,하위 컨텐츠 연결한 MoblieContent Cnt 뽑아내기 -->
+	<select id ="selectMobileContentCnt" parameterType="Tblmi_cont_mstDto" resultType="Int">
+		SELECT COUNT(mseq)
+		FROM(
+			SELECT m.seq AS mseq
+				,m.CH_TP
+				,m.cont_nm
+				,l.*
+			FROM tblmi_cont_mst m
+				INNER JOIN tblmi_cont_lst l
+					ON m.SEQ = l.CONT_CD
+			WHERE DEL_YN = 'N'
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+					AND m.ch_tp = #{ch_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+					AND m.cont_nm like concat ('%',#{cont_nm},'%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+					AND m.cont_grp_cd = #{cont_grp_cd}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+					AND m.use_yn = #{use_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+					AND l.cont_sub like concat ('%',#{cont_sub},'%')
+				</if>
+			GROUP BY mseq
+		)AS a
+	</select>
+
+
+	<insert id="contentUpload" parameterType="Tblmi_cont_imgDto">
+		INSERT INTO tblmi_cont_img
+            (
+                        ch_tp,
+                        img_nm,
+                        img_org_nm,
+                        img_file_nm,
+                        img_url,
+                        use_yn,
+                        del_yn,
+                        usr_grp_cd,
+                        reg_id,
+                        reg_dt
+            )
+		values
+			(
+						#{ch_tp},
+						#{img_nm},
+						#{img_org_nm},
+						#{img_file_nm},
+						#{img_url},
+						#{use_yn},
+						#{del_yn},
+						#{usr_grp_cd},
+						#{reg_id},
+						now()
+			)
+	</insert>
+
+	<select id="getImgList" parameterType="Tblmi_cont_imgDto" resultType="Tblmi_cont_imgDto">
+		SELECT *
+		FROM   TBLMI_CONT_IMG AS img
+		LEFT JOIN TBLMI_COMM_CD AS chcd
+			ON chcd.cd_id = img.ch_tp
+		WHERE  img.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and img.USR_GRP_CD = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and img.SEQ = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_nm)">
+				and img.img_nm like concat ('%',#{img_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and img.ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<choose>
+					<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+						<choose>
+							<when test="reg_dt.equals(reg_dt_range)">
+								and img.REG_DT = #{reg_dt}
+							</when>
+							<otherwise>
+								and (img.REG_DT >= #{reg_dt} and img.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+							</otherwise>
+						</choose>
+					</when>
+					<otherwise>
+						and img.REG_DT = #{reg_dt}
+					</otherwise>
+				</choose>
+			</if>
+		order by img.REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="getImgListCnt" parameterType="Tblmi_cont_imgDto" resultType="Int">
+		SELECT Count(*)
+		FROM   TBLMI_CONT_IMG AS img
+			LEFT JOIN TBLMI_COMM_CD AS chcd
+				ON chcd.cd_id = img.ch_tp
+		WHERE  img.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and img.USR_GRP_CD = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and img.SEQ = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and img.ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_nm)">
+				and img.img_nm like concat ('%',#{img_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<choose>
+					<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+						<choose>
+							<when test="reg_dt.equals(reg_dt_range)">
+								and img.REG_DT = #{reg_dt}
+							</when>
+							<otherwise>
+								and (img.REG_DT >= #{reg_dt} and img.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+							</otherwise>
+						</choose>
+					</when>
+					<otherwise>
+						and img.REG_DT = #{reg_dt}
+					</otherwise>
+				</choose>
+			</if>
+	</select>
+
+	<update id ="deleteMobileContent" parameterType="Tblmi_cont_mstDto">
+		UPDATE TBLMI_CONT_MST
+		SET    del_yn = #{del_yn}
+				, upd_id = #{upd_id}
+				, upd_dt = Now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and ch_tp = #{ch_tp}
+			</if>
+		</trim>
+	</update>
+
+	<update id ="updateMobileUseYn" parameterType="Tblmi_cont_mstDto">
+		UPDATE TBLMI_CONT_MST
+		SET    use_yn = #{use_yn}
+				, upd_id = #{upd_id}
+				, upd_dt = Now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and ch_tp = #{ch_tp}
+			</if>
+		</trim>
+	</update>
+
+	<update id="updateImgList" parameterType="Tblmi_cont_imgDto">
+		UPDATE TBLMI_CONT_IMG
+		SET    del_yn = #{del_yn}
+				, upd_id = #{upd_id}
+				, upd_dt = Now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+		</trim>
+	</update>
+
+	<select id="getEmdListCnt" parameterType="Tblmi_cont_mstDto" resultType="Int">
+		SELECT Count(*)
+		FROM   TBLMI_CONT_MST AS mst
+			LEFT JOIN TBLMI_CONT_LST AS lst
+				ON lst.cont_cd = mst.seq
+		<where>
+			mst.DEL_YN = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and mst.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and mst.ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+				and lst.cont_tp = #{cont_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+				and lst.cont_sub LIKE CONCAT('%',#{cont_sub},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and mst.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+				and mst.CONT_NM LIKE CONCAT('%',#{cont_nm},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="getEmdList" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
+		SELECT mst.seq                                            AS seq
+			,mst.ch_tp                                         AS ch_tp
+			,mst.cont_nm                                       AS cont_nm
+			,mst.cont_grp_cd                                   AS cont_grp_cd
+			,mst.use_yn                                        AS use_yn
+			,mst.del_yn                                        AS del_yn
+			,mst.reg_id                                        AS reg_id
+			,mst.reg_dt                                        AS reg_dt
+			,mst.upd_id                                        AS upd_id
+			,mst.upd_dt                                        AS upd_dt
+			,lst.seq                                           AS list_seq
+			,lst.cont_cd                                       AS cont_cd
+			,lst.cont_tp                                       AS cont_tp
+			,lst.cont_sub                                      AS cont_sub
+			,lst.cont_top_body                                 AS cont_top_body
+			,lst.cont_body                                     AS cont_body
+			,lst.send_tp                                       AS send_tp
+			, cd.cd_nm										   AS send_tp_nm
+			,lst.send_to                                       AS send_to
+			,Concat(setLst.list_nm, '(', setLst.list_val, ')') AS send_nm
+			,lst.thm_url                                       AS thm_url
+			,lst.br_yn                                         AS br_yn
+			,lst.sup_yn                                        AS sup_yn
+			,lst.msg_tp                                        AS msg_yp
+			,lst.use_yn                                        AS list_use_yn
+			,lst.reg_id                                        AS LIST_REG_ID
+			,lst.reg_dt                                        AS list_reg_dt
+			,lst.upd_id                                        AS list_upd_id
+			,lst.upd_dt                                        AS list_upd_dt
+		FROM   tblmi_cont_mst AS mst
+				LEFT JOIN tblmi_cont_lst AS lst
+					ON lst.cont_cd = mst.seq
+				LEFT JOIN tblmi_set_lst AS setLst
+					ON lst.send_to = setLst.seq
+				INNER JOIN tblmi_comm_cd AS cd
+					ON lst.send_tp = cd.cd_id
+		<where>
+			mst.DEL_YN = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and mst.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and mst.ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+				and lst.cont_tp = #{cont_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+				and lst.cont_sub LIKE CONCAT('%',#{cont_sub},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and mst.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+				and mst.CONT_NM LIKE CONCAT('%',#{cont_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<choose>
+					<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+						<choose>
+							<when test="reg_dt.equals(reg_dt_range)">
+								and mst.REG_DT = #{reg_dt}
+							</when>
+							<otherwise>
+								and (mst.REG_DT >= #{reg_dt} and mst.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+							</otherwise>
+						</choose>
+					</when>
+					<otherwise>
+						and mst.REG_DT = #{reg_dt}
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+		order by mst.REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="getEmdOne" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
+		SELECT mst.seq                                            AS seq
+		,mst.ch_tp                                         AS ch_tp
+		,mst.cont_nm                                       AS cont_nm
+		,mst.cont_grp_cd                                   AS cont_grp_cd
+		,mst.use_yn                                        AS use_yn
+		,mst.del_yn                                        AS del_yn
+		,mst.reg_id                                        AS reg_id
+		,mst.reg_dt                                        AS reg_dt
+		,mst.upd_id                                        AS upd_id
+		,mst.upd_dt                                        AS upd_dt
+		,lst.seq                                           AS list_seq
+		,lst.cont_cd                                       AS cont_cd
+		,lst.cont_tp                                       AS cont_tp
+		,lst.cont_sub                                      AS cont_sub
+		,lst.cont_top_body                                 AS cont_top_body
+		,lst.cont_body                                     AS cont_body
+		,lst.send_tp                                       AS send_tp
+		, cd.cd_nm										   AS send_tp_nm
+		,lst.send_to                                       AS send_to
+		,Concat(setLst.list_nm, '(', setLst.list_val, ')') AS send_nm
+		,lst.thm_url                                       AS thm_url
+		,lst.br_yn                                         AS br_yn
+		,lst.sup_yn                                        AS sup_yn
+		,lst.msg_tp                                        AS msg_yp
+		,lst.use_yn                                        AS list_use_yn
+		,lst.reg_id                                        AS LIST_REG_ID
+		,lst.reg_dt                                        AS list_reg_dt
+		,lst.upd_id                                        AS list_upd_id
+		,lst.upd_dt                                        AS list_upd_dt
+		FROM   tblmi_cont_mst AS mst
+				LEFT JOIN tblmi_cont_lst AS lst
+					ON lst.cont_cd = mst.seq
+				LEFT JOIN tblmi_set_lst AS setLst
+					ON lst.send_to = setLst.seq
+				INNER JOIN tblmi_comm_cd AS cd
+					on lst.send_tp = cd.cd_id
+		<where>
+			mst.DEL_YN = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and mst.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and mst.ch_tp = #{ch_tp}
+			</if>
+			<!--	<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                    and lst.cont_cd = #{seq}
+                </if>-->
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and mst.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+				and mst.CONT_NM = #{cont_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+				<choose>
+					<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+						<choose>
+							<when test="reg_dt.equals(reg_dt_range)">
+								and mst.REG_DT = #{reg_dt}
+							</when>
+							<otherwise>
+								and (mst.REG_DT >= #{reg_dt} and mst.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+							</otherwise>
+						</choose>
+					</when>
+					<otherwise>
+						and mst.REG_DT = #{reg_dt}
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+	</select>
+
+	<update id="updateEdmMstList" parameterType="Tblmi_cont_mstDto">
+		update tblmi_cont_mst set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+			DEL_YN = #{del_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			use_yn = #{use_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+			cont_nm = #{cont_nm},
+		</if>
+		UPD_ID= #{upd_id}, UPD_DT = now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+		</trim>
+	</update>
+
+	<update id="updateEdmList" parameterType="Tblmi_cont_lstDto">
+		update tblmi_cont_lst
+		set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_cd)">
+			CONT_CD = #{cont_cd},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+			CONT_TP = #{cont_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+			CONT_SUB = #{cont_sub},
+		</if>
+			CONT_TOP_BODY = #{cont_top_body},
+			CONT_BODY = #{cont_body},
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_tp)">
+			SEND_TP = #{send_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_to)">
+			SEND_TO = #{send_to},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(thm_url)">
+			THM_URL = #{thm_url},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(br_yn)">
+			BR_YN = #{br_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sup_yn)">
+			SUP_YN = #{sup_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(msg_tp)">
+			MSG_TP = #{msg_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			USE_YN = #{use_yn},
+		</if>
+		UPD_ID= #{upd_id}, UPD_DT = now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+		</trim>
+	</update>
+
+	<update id="updateMobileContentMst" parameterType="Tblmi_cont_mstDto">
+		update tblmi_cont_mst
+		set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+			DEL_YN = #{del_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			use_yn = #{use_yn},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+			cont_nm = #{cont_nm},
+		</if>
+		UPD_ID= #{upd_id}, UPD_DT = now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+			<!--<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(searchValue)">
+				and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+			</if>-->
+		</trim>
+	</update>
+
+	<!-- 버튼 , img는 있다가 없어질 수 있으므로 null 처리 제거 -->
+	<update id="updateMobileContent" parameterType="Tblmi_cont_lstDto">
+		update tblmi_cont_lst
+		set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+			CONT_TP = #{cont_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_tp)">
+			SEND_TP = #{send_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_to)">
+			SEND_TO = #{send_to},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(msg_tp)">
+			MSG_TP = #{msg_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(key_id)">
+			KEY_ID = #{key_id},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_1)">
+			rcs_btn_1 = #{rcs_btn_1},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_tp_1)">
+			rcs_btn_tp_1 = #{rcs_btn_tp_1},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_cont_1)">
+			rcs_btn_cont_1 = #{rcs_btn_cont_1},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_2)">
+			rcs_btn_2 = #{rcs_btn_2},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_tp_2)">
+			rcs_btn_tp_2 = #{rcs_btn_tp_2},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_cont_2)">
+			rcs_btn_cont_2 = #{rcs_btn_cont_2},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_3)">
+			rcs_btn_2 = #{rcs_btn_2},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_tp_3)">
+			rcs_btn_tp_2 = #{rcs_btn_tp_2},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_btn_cont_3)">
+			rcs_btn_cont_2 = #{rcs_btn_cont_2},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(rcs_footer)">
+			rcs_footer = #{rcs_footer},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			USE_YN = #{use_yn},
+		</if>
+		cont_sub = #{cont_sub},
+		cont_body = #{cont_body},
+		img_cd_1 = #{img_cd_1},
+		img_cd_2 = #{img_cd_2},
+		img_cd_3 = #{img_cd_3},
+		img_cd_4 = #{img_cd_4},
+		img_cd_5 = #{img_cd_5},
+		img_cd_6 = #{img_cd_6},
+		kko_img_cd = #{kko_img_cd},
+		kko_img_url = #{kko_img_url},
+		kko_btn_nm = #{kko_btn_nm},
+		kko_btn_url = #{kko_btn_url},
+		rcs_btn_ins_tp = #{rcs_btn_ins_tp},
+		rcs_btn_cnt = #{rcs_btn_cnt},
+		rcs_btn_obj = #{rcs_btn_obj},
+		UPD_ID= #{upd_id},
+		UPD_DT = now()
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+		</trim>
+	</update>
+
+	<!-- 하위 모바일 컨텐츠 사용이 'Y' 인 데이터 뽑아 내기 -->
+	<select id ="selectMobileContentUseTitle" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
+		SELECT m.*
+			, l.seq            AS list_seq
+			, l.cont_cd        AS cont_cd
+			, l.cont_tp        AS cont_tp
+			, l.cont_sub       AS cont_sub
+			, l.cont_body      AS cont_body
+			, l.send_to        AS send_to
+			, l.send_tp        AS send_tp
+			, l.msg_tp         AS msg_tp
+			, l.kko_img_cd     AS kko_img_cd
+			, l.kko_img_url    AS kko_img_url
+			, l.kko_btn_nm     AS kko_btn_nm
+			, l.kko_btn_url    AS kko_btn_url
+			, l.img_cd_1       AS img_cd_1
+			, l.img_cd_2       AS img_cd_2
+			, l.img_cd_3       AS img_cd_3
+			, l.img_cd_4       AS img_cd_4
+			, l.img_cd_5       AS img_cd_5
+			, l.img_cd_6       AS img_cd_6
+			, l.rcs_btn_1      AS rcs_btn_1
+			, l.rcs_btn_tp_1   AS rcs_btn_tp_1
+			, l.rcs_btn_cont_1 AS rcs_btn_cont_1
+			, l.rcs_btn_2      AS rcs_btn_2
+			, l.rcs_btn_tp_2   AS rcs_btn_tp_2
+			, l.rcs_btn_cont_2 AS rcs_btn_cont_2
+			, l.rcs_btn_3      AS rcs_btn_3
+			, l.rcs_btn_tp_3   AS rcs_btn_tp_3
+			, l.rcs_btn_cont_3 AS rcs_btn_cont_3
+			, l.use_yn         AS list_use_yn
+		FROM   TBLMI_CONT_MST m
+			INNER JOIN TBLMI_CONT_LST l
+				ON m.seq = l.cont_cd
+		WHERE  l.use_yn = 'Y'
+		AND m.del_yn = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+			and m.ch_tp = #{ch_tp}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+			and m.seq = #{seq}
+		</if>
+	</select>
+
+	<!-- RCS 이미지 경우는 나중에 생각한다 -->
+	<select id ="selectImgValue" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_imgDto">
+		SELECT img_org_nm
+			   , img_nm
+			   , img_url
+			   , img_file_nm
+		FROM   (SELECT seq
+					   , cont_tp
+					   , cont_sub
+					   , CASE
+						   WHEN cont_tp = 'DMTP02' THEN img_cd_1
+						   WHEN cont_tp = 'DMTP03' THEN kko_img_cd
+						   WHEN cont_tp = 'DMTP04' THEN img_cd_1
+						 end AS IMG
+				FROM   TBLMI_CONT_LST l) AS a
+			   INNER JOIN TBLMI_CONT_IMG AS b
+					   ON a.img = b.seq
+		WHERE a.seq = #{seq}
+	</select>
+
+	<update id="updateImgYn" parameterType="Tblmi_cont_imgDto">
+		update tblmi_cont_img
+		set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+			ch_tp = #{ch_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_nm)">
+			img_nm = #{img_nm},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_org_nm)">
+			img_org_nm = #{img_org_nm},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_file_nm)">
+			img_file_nm = #{img_file_nm},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_url)">
+			img_url = #{img_url},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			use_yn = #{use_yn},
+		</if>
+		UPD_DT = now(), UPD_ID=#{upd_id}
+		where
+			seq = #{seq}
+	</update>
+
+	<!-- Detail 모바일 컨텐츠 뽑아내기 -->
+	<!--<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
+		SELECT m.seq
+			   ,m.ch_tp
+			   ,m.cont_nm
+			   ,l.seq                                                  AS list_seq
+			   ,l.cont_cd                                              AS cont_cd
+			   ,l.cont_tp                                              AS cont_tp
+			   ,l.cont_sub                                             AS cont_sub
+			   ,l.cont_body                                            AS cont_body
+			   ,l.send_to                                              AS send_to
+			   ,l.send_tp                                              AS send_tp
+			   ,sender.list_val                                        AS send_num
+			   ,sender.list_nm                                         AS sender
+			   ,l.msg_tp                                               AS msg_tp
+			   ,l.kko_img_cd                                           AS kko_img_cd
+			   ,l.kko_img_url                                          AS kko_img_url
+			   ,kko_img.img_nm 									       AS kko_img_nm
+			   ,kko_img.img_url										   AS kko_img_lst
+			   ,l.kko_btn_nm                                           AS kko_btn_nm
+			   ,l.kko_btn_url                                          AS kko_btn_url
+			   ,l.img_cd_1                                             AS img_cd_1
+			   ,l.img_cd_2                                             AS img_cd_2
+			   ,l.img_cd_3                                             AS img_cd_3
+			   ,l.img_cd_4                                             AS img_cd_4
+			   ,l.img_cd_5                                             AS img_cd_5
+			   ,l.img_cd_6                                             AS img_cd_6
+			   ,Concat_ws(',', img_1.img_url, img_2.img_url, img_3.img_url,img_4.img_url, img_5.img_url, img_6.img_url) AS IMG_LST
+			   ,Concat_ws(',', img_1.img_nm, img_2.img_nm, img_3.img_nm, img_4.img_nm, img_5.img_nm, img_6.img_nm) AS IMG_NM_LST
+			   ,l.rcs_btn_obj										   AS rcs_btn_obj
+			   ,l.rcs_btn_1                                            AS rcs_btn_1
+			   ,l.rcs_btn_tp_1                                         AS rcs_btn_tp_1
+			   ,l.rcs_btn_cont_1                                       AS rcs_btn_cont_1
+			   ,l.rcs_btn_2                                            AS rcs_btn_2
+			   ,l.rcs_btn_tp_2                                         AS rcs_btn_tp_2
+			   ,l.rcs_btn_cont_2                                       AS rcs_btn_cont_2
+			   ,l.rcs_btn_3                                            AS rcs_btn_3
+			   ,l.rcs_btn_tp_3                                         AS rcs_btn_tp_3
+			   ,l.rcs_btn_cont_3                                       AS rcs_btn_cont_3
+			   ,l.rcs_footer                                           AS rcs_footer
+			   ,l.use_yn                                               AS list_use_yn
+		FROM   tblmi_cont_lst l
+			   INNER JOIN tblmi_cont_mst m
+					   ON l.cont_cd = m.seq
+			   LEFT JOIN tblmi_cont_img AS kko_img
+			   		  ON l.kko_img_cd = kko_img.seq
+			   LEFT JOIN tblmi_cont_img AS img_1
+					  ON l.img_cd_1 = img_1.seq
+			   LEFT JOIN tblmi_cont_img AS img_2
+					  ON l.img_cd_2 = img_2.seq
+			   LEFT JOIN tblmi_cont_img AS img_3
+					  ON l.img_cd_3 = img_3.seq
+			   LEFT JOIN tblmi_cont_img AS img_4
+					  ON l.img_cd_4 = img_4.seq
+			   LEFT JOIN tblmi_cont_img AS img_5
+					  ON l.img_cd_5 = img_5.seq
+			   LEFT JOIN tblmi_cont_img AS img_6
+					  ON l.img_cd_6 = img_6.seq
+			   LEFT JOIN tblmi_set_lst AS sender
+					  ON l.send_to = sender.seq
+		WHERE  m.seq = #{seq}
+		ORDER  BY l.seq;
+	</select>-->
+
+	<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
+		SELECT m.seq
+			   ,m.ch_tp
+			   ,m.cont_nm
+			   ,l.seq                                                  AS list_seq
+			   ,l.cont_cd                                              AS cont_cd
+			   ,l.cont_tp                                              AS cont_tp
+			   ,l.cont_sub                                             AS cont_sub
+			   ,l.cont_body                                            AS cont_body
+			   ,l.send_to                                              AS send_to
+			   ,l.send_tp                                              AS send_tp
+			   ,sender.list_val                                        AS send_num
+			   ,sender.list_nm                                         AS sender
+			   ,l.msg_tp                                               AS msg_tp
+			   ,l.kko_img_cd                                           AS kko_img_cd
+			   ,l.kko_img_url                                          AS kko_img_url
+			   ,kko_img.img_nm 									       AS kko_img_nm
+			   ,kko_img.img_url										   AS kko_img_lst
+			   ,l.kko_btn_nm                                           AS kko_btn_nm
+			   ,l.kko_btn_url                                          AS kko_btn_url
+			   ,l.img_cd_1                                             AS img_cd_1
+			   ,l.img_cd_2                                             AS img_cd_2
+			   ,l.img_cd_3                                             AS img_cd_3
+			   ,l.img_cd_4                                             AS img_cd_4
+			   ,l.img_cd_5                                             AS img_cd_5
+			   ,l.img_cd_6                                             AS img_cd_6
+			   ,CONCAT(IFNULL(img_1.img_url,' '),',',IFNULL(img_2.img_url,' '),',',IFNULL(img_3.img_url,' '),',',IFNULL(img_4.img_url,' '),',',IFNULL( img_5.img_url,' '),',',IFNULL(img_6.img_url,' ')) AS IMG_LST
+			   ,CONCAT(IFNULL(img_1.img_nm,' '), ',' , IFNULL(img_2.img_nm,' '), ',' , IFNULL(img_3.img_nm,' '), ',' , IFNULL(img_4.img_nm,' '), ',' , IFNULL(img_5.img_nm,' '), ',' , IFNULL(img_6.img_nm,' ')) AS IMG_NM_LST
+			   ,l.rcs_btn_obj										   AS rcs_btn_obj
+			   ,l.rcs_btn_1                                            AS rcs_btn_1
+			   ,l.rcs_btn_tp_1                                         AS rcs_btn_tp_1
+			   ,l.rcs_btn_cont_1                                       AS rcs_btn_cont_1
+			   ,l.rcs_btn_2                                            AS rcs_btn_2
+			   ,l.rcs_btn_tp_2                                         AS rcs_btn_tp_2
+			   ,l.rcs_btn_cont_2                                       AS rcs_btn_cont_2
+			   ,l.rcs_btn_3                                            AS rcs_btn_3
+			   ,l.rcs_btn_tp_3                                         AS rcs_btn_tp_3
+			   ,l.rcs_btn_cont_3                                       AS rcs_btn_cont_3
+			   ,l.rcs_footer                                           AS rcs_footer
+			   ,l.use_yn                                               AS list_use_yn
+		FROM   tblmi_cont_lst l
+			   INNER JOIN tblmi_cont_mst m
+					   ON l.cont_cd = m.seq
+			   LEFT JOIN tblmi_cont_img AS kko_img
+			   		  ON l.kko_img_cd = kko_img.seq
+			   LEFT JOIN tblmi_cont_img AS img_1
+					  ON l.img_cd_1 = img_1.seq
+			   LEFT JOIN tblmi_cont_img AS img_2
+					  ON l.img_cd_2 = img_2.seq
+			   LEFT JOIN tblmi_cont_img AS img_3
+					  ON l.img_cd_3 = img_3.seq
+			   LEFT JOIN tblmi_cont_img AS img_4
+					  ON l.img_cd_4 = img_4.seq
+			   LEFT JOIN tblmi_cont_img AS img_5
+					  ON l.img_cd_5 = img_5.seq
+			   LEFT JOIN tblmi_cont_img AS img_6
+					  ON l.img_cd_6 = img_6.seq
+			   LEFT JOIN tblmi_set_lst AS sender
+					  ON l.send_to = sender.seq
+		WHERE  m.seq = #{seq}
+		ORDER  BY l.seq;
+	</select>
+
+	<select id = "checkContNm" parameterType="Tblmi_cont_mstDto" resultType="Int">
+		SELECT count(*)
+		FROM   tblmi_cont_mst AS mst
+		where
+		mst.DEL_YN = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+			and mst.cont_grp_cd = #{cont_grp_cd}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+			and mst.seq != #{seq}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+			and mst.CONT_NM = #{cont_nm}
+		</if>
+	</select>
+
+	<select id ="selectLstSeq" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
+		SELECT SEQ
+		FROM tblmi_cont_lst
+		where cont_cd = #{cont_cd}
+	</select>
+
+	<delete id ="deleteRealContMst" parameterType="Tblmi_cont_mstDto">
+		DELETE
+		FROM tblmi_cont_mst
+		where seq = #{seq}
+	</delete>
+
+	<delete id ="deleteRealContLst" parameterType="Tblmi_cont_lstDto">
+		DELETE
+		FROM tblmi_cont_lst
+		where cont_cd = #{cont_cd}
+	</delete>
+
+	<delete id ="deleteRealContUrl" parameterType="Tblmi_cont_url_lstDto">
+		DELETE
+		FROM tblmi_cont_url_lst
+		where cont_lst_cd = #{cont_lst_cd}
+	</delete>
+
+	<select id="getImgNmCh" parameterType="Tblmi_cont_imgDto" resultType="Int">
+		SELECT Count(*)
+		FROM   TBLMI_CONT_IMG AS img
+		LEFT JOIN TBLMI_COMM_CD AS chcd
+		ON chcd.cd_id = img.ch_tp
+		WHERE  img.del_yn = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_nm)">
+			and img.img_nm = #{img_nm}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and img.USR_GRP_CD = #{usr_grp_cd}
+		</if>
+	</select>
+</mapper>
+
+
+
+
+

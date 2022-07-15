@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.ReportMapper">
+    <cache/>
+
+    <!-- ================================================================= select ================================================================= -->
+    <select id="getCampMstSearchCnt" parameterType="Program_SearchDto" resultType="int">
+        SELECT COUNT(*)
+            FROM tblmire_camp_mst AS a
+                INNER JOIN tblmicp_program AS b
+                    ON a.PRO_ID = b.PRO_ID AND b.PRO_TG_TP != 'TEST'
+                INNER JOIN tblmi_comm_cd AS c
+                    ON c.grp_id = 'COMST' and b.PRO_ST = c.CD_ID
+                INNER JOIN tblmi_usr AS d
+                    ON b.REG_ID = d.USR_ID
+                INNER JOIN tblmi_comm_cd AS e
+                    ON e.grp_id = 'TGTP' and b.PRO_TG_TP = e.cd_id
+                LEFT JOIN tblmite_target_grp AS ta1
+                    ON if(b.PRO_TG_TP = 'TEST', b.pro_tg_id, NULL) = ta1.seq -- 개별입력
+                LEFT JOIN tblmi_target_grp AS ta2
+                    ON if(b.PRO_TG_TP = 'TG01', b.pro_tg_id, NULL) = ta2.seq -- 타겟팅 그룹
+                LEFT JOIN tblmi_target_grp AS ta3
+                    ON if(b.PRO_TG_TP = 'TG02', b.pro_tg_id, NULL) = ta3.seq -- 업로드 그룹
+                LEFT JOIN tblmite_target_grp AS ta4
+                    ON if(b.PRO_TG_TP = 'TG99', b.pro_tg_id, NULL) = ta4.seq
+            <where>
+                a.usr_grp_cd = #{usr_grp_cd}
+                AND b.pro_st = '04'
+                AND b.pro_tg_tp NOT LIKE 'TEST%'
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+                    and b.pro_nm like CONCAT('%', #{pro_nm},'%')
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+                    and b.pro_tg_tp = #{pro_tg_tp}
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+                    and b.pro_tp = #{pro_tp}
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_ch)">
+                    and a.CAMP_CH = #{camp_ch}
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(target_nm)">
+                    <choose>
+                        <when test="pro_tg_tp == 'TEST'">
+                            and ta1.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                        <when test="pro_tg_tp == 'TG01'">
+                            and ta2.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                        <when test="pro_tg_tp == 'TG02'">
+                            and ta3.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                        <when test="pro_tg_tp == 'TG99'">
+                            and ta4.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                    </choose>
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+                    and b.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+                    and b.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+                </if>
+            </where>
+    </select>
+
+    <select id="getCampMstList" parameterType="Program_SearchDto" resultType="Map">
+        SELECT a.seq As seq
+                ,b.PRO_ID AS pro_id
+                , b.PRO_NM AS pro_nm
+                , b.PRO_ST AS pro_st
+                , b.min_start_dt AS start_dt
+                ,a.cont_id AS cont_id
+                , case
+                        when b.PRO_TG_TP = 'TEST' then '개별입력'
+                        when b.PRO_TG_TP = 'TG01' then ta2.GRP_NM
+                        when b.PRO_TG_TP = 'TG02' then ta3.GRP_NM
+                        when b.PRO_TG_TP = 'TG99' then ta4.GRP_NM
+                        ELSE NULL
+                    END AS target_nm
+                , c.cd_nm AS pro_st_nm
+                , a.CAMP_CH AS camp_ch -- 채널
+                , a.TOTAL_CNT AS total_cnt
+                , a.SUC_CNT AS suc_cnt
+                , IFNULL(a.OPEN_CNT,0) AS open_cnt
+                , IFNULL(a.CLICK_CNT,0) AS click_cnt
+            FROM tblmire_camp_mst AS a
+                INNER JOIN tblmicp_program AS b
+                    ON a.PRO_ID = b.PRO_ID AND b.PRO_TG_TP != 'TEST'
+                INNER JOIN tblmi_comm_cd AS c
+                    ON c.grp_id = 'COMST' and b.PRO_ST = c.CD_ID
+                INNER JOIN tblmi_usr AS d
+                    ON b.REG_ID = d.USR_ID
+                INNER JOIN tblmi_comm_cd AS e
+                    ON e.grp_id = 'TGTP' and b.PRO_TG_TP = e.cd_id
+                LEFT JOIN tblmite_target_grp AS ta1
+                    ON if(b.PRO_TG_TP = 'TEST', b.pro_tg_id, NULL) = ta1.seq -- 개별입력
+                LEFT JOIN tblmi_target_grp AS ta2
+                    ON if(b.PRO_TG_TP = 'TG01', b.pro_tg_id, NULL) = ta2.seq -- 타겟팅 그룹
+                LEFT JOIN tblmi_target_grp AS ta3
+                    ON if(b.PRO_TG_TP = 'TG02', b.pro_tg_id, NULL) = ta3.seq -- 업로드 그룹
+                LEFT JOIN tblmite_target_grp AS ta4
+                    ON if(b.PRO_TG_TP = 'TG99', b.pro_tg_id, NULL) = ta4.seq -- 테스트 그룹
+            <where>
+                a.usr_grp_cd = #{usr_grp_cd}
+                AND b.pro_st = '04'
+                AND b.pro_tg_tp NOT LIKE 'TEST%'
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+                    and b.pro_nm like CONCAT('%', #{pro_nm},'%')
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+                    and b.pro_tg_tp = #{pro_tg_tp}
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+                    and b.pro_tp = #{pro_tp}
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+                    and (d.usr_nm like CONCAT('%', #{usr_nm},'%') or d.usr_log_id like CONCAT('%', #{usr_nm},'%'))
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_ch)">
+                    and a.CAMP_CH = #{camp_ch}
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(target_nm)">
+                    <choose>
+                        <when test="pro_tg_tp == 'TEST'">
+                            and ta1.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                        <when test="pro_tg_tp == 'TG01'">
+                            and ta2.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                        <when test="pro_tg_tp == 'TG02'">
+                            and ta3.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                        <when test="pro_tg_tp == 'TG99'">
+                            and ta4.grp_nm like CONCAT('%', #{target_nm},'%')
+                        </when>
+                    </choose>
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+                    and b.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+                </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+                    and b.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+                </if>
+            </where>
+            ORDER BY a.REG_DT DESC
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+                LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+            </if>
+    </select>
+    <select id="getCampMstContIdByProId"  resultType="String">
+        SELECT  seq
+            FROM tblmire_camp_mst
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+                pro_id =#{pro_id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCampMstTotalDetail" resultType="Tblmire_camp_mstDto">
+        SELECT Count(*) AS seq
+            ,Sum(total_cnt) AS total_cnt
+            ,Sum(suc_cnt) AS suc_cnt
+            ,Sum(open_cnt) AS open_cnt
+            ,Sum(click_cnt) AS click_cnt
+            ,Sum(sale_cnt) AS sale_cnt
+            ,Sum(roi) AS roi
+            ,Min(start_dt) AS start_dt
+            ,Max(start_dt) AS end_dt
+            ,REPLACE(REPLACE(GROUP_CONCAT(
+                DISTINCT camp_ch  SEPARATOR  ' / '),'CH01','이메일'),'CH02','문자') AS camp_ch
+        FROM tblmire_camp_mst
+        <where> seq IN
+                    <foreach item="item" index="index" collection="list"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+        </where>
+    </select>
+
+    <select id="getCampMstTotalList" resultType="Map">
+        SELECT a.seq As seq
+                ,b.PRO_ID AS pro_id
+                , b.PRO_NM AS pro_nm
+                , b.PRO_ST AS pro_st
+                , b.min_start_dt as start_dt
+                , a.cont_id AS cont_id
+                ,  case
+                        when  lst.msg_tp Like 'DMCH21%' then json_extract(lst.cont_sub, '$.title1')
+                        ELSE lst.cont_sub
+                    END  AS cont_sub
+                , lst.cont_top_body  AS cont_top_body
+                , case
+                        when b.PRO_TG_TP = 'TEST' then '개별입력'
+                        when b.PRO_TG_TP = 'TG01' then ta2.GRP_NM
+                        when b.PRO_TG_TP = 'TG02' then ta3.GRP_NM
+                        when b.PRO_TG_TP = 'TG99' then ta4.GRP_NM
+                        ELSE NULL
+                    END AS target_nm
+                , c.cd_nm as pro_st_nm
+                , a.CAMP_CH AS camp_ch -- 채널
+                , a.TOTAL_CNT AS total_cnt
+                , a.SUC_CNT AS suc_cnt
+                , IFNULL(a.OPEN_CNT,0) AS open_cnt
+                , IFNULL(a.CLICK_CNT,0) AS click_cnt
+            FROM tblmire_camp_mst a
+                INNER JOIN tblmicp_program b ON a.PRO_ID = b.PRO_ID
+                INNER JOIN tblmi_comm_cd AS c
+                    ON c.grp_id = 'COMST' and b.PRO_ST = c.CD_ID
+                INNER JOIN tblmi_usr AS d
+                    ON a.REG_ID = d.USR_ID
+                LEFT JOIN tblmicp_cont_lst AS lst
+                    ON a.cont_id = lst.cont_cd
+                LEFT JOIN tblmite_target_grp AS ta1
+                    ON if(b.PRO_TG_TP = 'TEST', b.pro_tg_id, NULL) = ta1.seq -- 개별입력
+                LEFT JOIN tblmi_target_grp AS ta2
+                    ON if(b.PRO_TG_TP = 'TG01', b.pro_tg_id, NULL) = ta2.seq -- 타겟팅 그룹
+                LEFT JOIN tblmi_target_grp AS ta3
+                    ON if(b.PRO_TG_TP = 'TG02', b.pro_tg_id, NULL) = ta3.seq -- 업로드 그룹
+                LEFT JOIN tblmite_target_grp AS ta4
+                    ON if(b.PRO_TG_TP = 'TG99', b.pro_tg_id, NULL) = ta4.seq -- 테스트 그룹
+            WHERE b.pro_st = '04'
+                AND a.usr_grp_cd =#{usr_grp_cd}
+                AND a.seq IN
+                    <foreach item="item" index="index" collection="list"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+            GROUP BY a.seq
+            ORDER BY a.REG_DT DESC
+    </select>
+
+    <select id="getSnedResultDetail" resultType="Map">
+        SELECT
+            count(b.send_rst_det) AS total_tg -- 상세결과코드
+            , b.send_rst_det AS send_rst_det
+            , b.send_rst AS send_rst
+            , c.cd_val AS cd_val -- 코드
+            , c.cd_desc AS cd_desc -- 코드 설명
+            , CASE
+                    WHEN LEFT(send_rst_det, 1) IN ( '1', '4', '6', '9', 'A', 'B','C','D','E','f','J','k','L','M','o','t','U','V' ) THEN 'SOFT'
+                    WHEN LEFT(send_rst_det, 1) IN ( '2','3', '5', '7', '8', 'H','I','S' ) THEN 'HARD'
+                    ELSE 'XX'
+                END AS bounce_category
+        FROM tblmire_camp_mst AS a
+            LEFT JOIN tblmicp_send_hst AS b
+                ON b.camp_id = a.camp_id
+                    AND a.PRO_ID =b.PRO_ID
+            LEFT JOIN tblmi_comm_cd AS c
+                ON c.grp_id = 'SENDRESULT'  AND b.send_rst_det = c.CD_ID
+                    AND b.SEND_RST_TP = c.PAR_ID AND b.M_SERVER = c.cd_nm
+        WHERE  b.send_rst = '1'  -- 발송 실패
+                AND a.usr_grp_cd =#{usr_grp_cd}
+                AND a.seq IN
+                    <foreach item="item" index="index" collection="list"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+        GROUP BY b.send_rst_det
+    </select>
+
+    <select id="openTimingResult" resultType="HashMap">
+        SELECT
+            b.CAMP_NM
+            ,Sum(a.total_tg) AS TOTAL_TG
+            ,Sum(a.a00) AS A00
+            ,Sum(a.a01) AS A01
+            ,Sum(a.a02) AS A02
+            ,Sum(a.a03) AS A03
+            ,Sum(a.a04) AS A04
+            ,Sum(a.a05) AS A05
+            ,Sum(a.a06) AS A06
+            ,Sum(a.a07) AS A07
+            ,Sum(a.a08) AS A08
+            ,Sum(a.a09) AS A09
+            ,Sum(a.a10) AS A10
+            ,Sum(a.a11) AS A11
+            ,Sum(a.a12) AS A12
+            ,Sum(a.a13) AS A13
+            ,Sum(a.a14) AS A14
+            ,Sum(a.a15) AS A15
+            ,Sum(a.a16) AS A16
+            ,Sum(a.a17) AS A17
+            ,Sum(a.a18) AS A18
+            ,Sum(a.a19) AS A19
+            ,Sum(a.a20) AS A20
+            ,Sum(a.a21) AS A21
+            ,Sum(a.a22) AS A22
+            ,Sum(a.a23) AS A23
+            ,Sum(a.b00) AS B00
+            ,Sum(a.b01) AS B01
+            ,Sum(a.b02) AS B02
+            ,Sum(a.b03) AS B03
+            ,Sum(a.b04) AS B04
+            ,Sum(a.b05) AS B05
+            ,Sum(a.b06) AS B06
+            ,Sum(a.b07) AS B07
+            ,Sum(a.b08) AS B08
+            ,Sum(a.b09) AS B09
+            ,Sum(a.b10) AS B10
+            ,Sum(a.b11) AS B11
+            ,Sum(a.b12) AS B12
+            ,Sum(a.b13) AS B13
+            ,Sum(a.b14) AS B14
+            ,Sum(a.b15) AS B15
+            ,Sum(a.b16) AS B16
+            ,Sum(a.b17) AS B17
+            ,Sum(a.b18) AS B18
+            ,Sum(a.b19) AS B19
+            ,Sum(a.b20) AS B20
+            ,Sum(a.b21) AS B21
+            ,Sum(a.b22) AS B22
+            ,Sum(a.b23) AS B23
+            ,Sum(a.c00) AS C00
+            ,Sum(a.c01) AS C01
+            ,Sum(a.c02) AS C02
+            ,Sum(a.c03) AS C03
+            ,Sum(a.c04) AS C04
+            ,Sum(a.c05) AS C05
+            ,Sum(a.c06) AS C06
+            ,Sum(a.c07) AS C07
+            ,Sum(a.c08) AS C08
+            ,Sum(a.c09) AS C09
+            ,Sum(a.c10) AS C10
+            ,Sum(a.c11) AS C11
+            ,Sum(a.c12) AS C12
+            ,Sum(a.c13) AS C13
+            ,Sum(a.c14) AS C14
+            ,Sum(a.c15) AS C15
+            ,Sum(a.c16) AS C16
+            ,Sum(a.c17) AS C17
+            ,Sum(a.c18) AS C18
+            ,Sum(a.c19) AS C19
+            ,Sum(a.c20) AS C20
+            ,Sum(a.c21) AS C21
+            ,Sum(a.c22) AS C22
+            ,Sum(a.c23) AS C23
+            ,Sum(a.d00) AS D00
+            ,Sum(a.d01) AS D01
+            ,Sum(a.d02) AS D02
+            ,Sum(a.d03) AS D03
+            ,Sum(a.d04) AS D04
+            ,Sum(a.d05) AS D05
+            ,Sum(a.d06) AS D06
+            ,Sum(a.d07) AS D07
+            ,Sum(a.d08) AS D08
+            ,Sum(a.d09) AS D09
+            ,Sum(a.d10) AS D10
+            ,Sum(a.d11) AS D11
+            ,Sum(a.d12) AS D12
+            ,Sum(a.d13) AS D13
+            ,Sum(a.d14) AS D14
+            ,Sum(a.d15) AS D15
+            ,Sum(a.d16) AS D16
+            ,Sum(a.d17) AS D17
+            ,Sum(a.d18) AS D18
+            ,Sum(a.d19) AS D19
+            ,Sum(a.d20) AS D20
+            ,Sum(a.d21) AS D21
+            ,Sum(a.d22) AS D22
+            ,Sum(a.d23) AS D23
+            ,Sum(a.e00) AS E00
+            ,Sum(a.e01) AS E01
+            ,Sum(a.e02) AS E02
+            ,Sum(a.e03) AS E03
+            ,Sum(a.e04) AS E04
+            ,Sum(a.e05) AS E05
+            ,Sum(a.e06) AS E06
+            ,Sum(a.e07) AS E07
+            ,Sum(a.e08) AS E08
+            ,Sum(a.e09) AS E09
+            ,Sum(a.e10) AS E10
+            ,Sum(a.e11) AS E11
+            ,Sum(a.e12) AS E12
+            ,Sum(a.e13) AS E13
+            ,Sum(a.e14) AS E14
+            ,Sum(a.e15) AS E15
+            ,Sum(a.e16) AS E16
+            ,Sum(a.e17) AS E17
+            ,Sum(a.e18) AS E18
+            ,Sum(a.e19) AS E19
+            ,Sum(a.e20) AS E20
+            ,Sum(a.e21) AS E21
+            ,Sum(a.e22) AS E22
+            ,Sum(a.e23) AS E23
+            ,Sum(a.f00) AS F00
+            ,Sum(a.f01) AS F01
+            ,Sum(a.f02) AS F02
+            ,Sum(a.f03) AS F03
+            ,Sum(a.f04) AS F04
+            ,Sum(a.f05) AS F05
+            ,Sum(a.f06) AS F06
+            ,Sum(a.f07) AS F07
+            ,Sum(a.f08) AS F08
+            ,Sum(a.f09) AS F09
+            ,Sum(a.f10) AS F10
+            ,Sum(a.f11) AS F11
+            ,Sum(a.f12) AS F12
+            ,Sum(a.f13) AS F13
+            ,Sum(a.f14) AS F14
+            ,Sum(a.f15) AS F15
+            ,Sum(a.f16) AS F16
+            ,Sum(a.f17) AS F17
+            ,Sum(a.f18) AS F18
+            ,Sum(a.f19) AS F19
+            ,Sum(a.f20) AS F20
+            ,Sum(a.f21) AS F21
+            ,Sum(a.f22) AS F22
+            ,Sum(a.f23) AS F23
+            ,Sum(a.g00) AS G00
+            ,Sum(a.g01) AS G01
+            ,Sum(a.g02) AS G02
+            ,Sum(a.g03) AS G03
+            ,Sum(a.g04) AS G04
+            ,Sum(a.g05) AS G05
+            ,Sum(a.g06) AS G06
+            ,Sum(a.g07) AS G07
+            ,Sum(a.g08) AS G08
+            ,Sum(a.g09) AS G09
+            ,Sum(a.g10) AS G10
+            ,Sum(a.g11) AS G11
+            ,Sum(a.g12) AS G12
+            ,Sum(a.g13) AS G13
+            ,Sum(a.g14) AS G14
+            ,Sum(a.g15) AS G15
+            ,Sum(a.g16) AS G16
+            ,Sum(a.g17) AS G17
+            ,Sum(a.g18) AS G18
+            ,Sum(a.g19) AS G19
+            ,Sum(a.g20) AS G20
+            ,Sum(a.g21) AS G21
+            ,Sum(a.g22) AS G22
+            ,Sum(a.g23) AS G23
+        FROM tblmire_open_timing a
+            INNER JOIN tblmire_camp_mst b
+                ON a.CONT_ID = b.CONT_ID
+                    AND b.USR_GRP_CD = #{usr_grp_cd}
+                    AND b.seq IN
+                        <foreach item="item" index="index" collection="list"
+                                 open="(" separator="," close=")">
+                            #{item}
+                        </foreach>
+        GROUP BY b.seq
+
+    </select>
+
+    <select id="getLinkClickCnt" resultType="HashMap">
+        SELECT a.seq
+               ,a.cont_lst_cd
+               ,a.url_tag
+               ,a.url
+               ,a.url_id
+               ,b.click_cnt
+               ,b.per_cnt
+               ,Round(b.click_cnt / b.click_cnt, 2) link_per_cnt
+        FROM   tblmicp_cont_url_lst AS a
+               LEFT JOIN (SELECT url_id
+                                 ,Count(*)       click_cnt
+                                 ,Count(send_to) per_cnt
+                          FROM   tblmicp_track_url
+                          GROUP  BY url_id) AS b
+                    ON b.url_id = a.seq
+        WHERE  cont_lst_cd = #{cont_id}
+    </select>
+
+    <select id="getContentsLst" resultType="Content_view_Dto">
+        SELECT m.seq
+                ,m.ch_tp
+                ,m.cont_nm
+                ,l.seq            AS list_seq
+                ,l.cont_cd        AS cont_cd
+                ,l.cont_tp        AS cont_tp
+                ,l.cont_sub       AS cont_sub
+                ,l.cont_body      AS cont_body
+                ,l.send_to        AS send_to
+                ,l.send_tp        AS send_tp
+                ,sender.list_val  AS send_num
+                ,sender.list_nm   AS sender
+                ,l.msg_tp         AS msg_tp
+                ,l.kko_img_cd     AS kko_img_cd
+                ,l.kko_img_url    AS kko_img_url
+                ,kko_img.img_nm   AS kko_img_nm
+                ,kko_img.img_url  AS kko_img_lst
+                ,l.kko_btn_nm     AS kko_btn_nm
+                ,l.kko_btn_url    AS kko_btn_url
+                ,l.img_cd_1       AS img_cd_1
+                ,l.img_cd_2       AS img_cd_2
+                ,l.img_cd_3       AS img_cd_3
+                ,l.img_cd_4       AS img_cd_4
+                ,l.img_cd_5       AS img_cd_5
+                ,l.img_cd_6       AS img_cd_6
+                ,Concat(Ifnull(img_1.img_url, ' '), ',', Ifnull(img_2.img_url, ' '), ',', Ifnull(img_3.img_url, '  '), ',', Ifnull(img_4.img_url, ' '), ',', Ifnull(
+                    img_5.img_url, ' '), ',', Ifnull(img_6.img_url, '  '))               AS IMG_LST
+                ,Concat(Ifnull(img_1.img_nm, ' '), ',', Ifnull(img_2.img_nm, ' '), ',', Ifnull(
+                    img_3.img_nm, '  '), ',', Ifnull(img_4.img_nm, ' '), ',',
+                    Ifnull(img_5.img_nm, ' '), ',', Ifnull(img_6.img_nm, '  '))           AS IMG_NM_LST
+                ,l.rcs_btn_obj    AS rcs_btn_obj
+                ,l.rcs_btn_1      AS rcs_btn_1
+                ,l.rcs_btn_tp_1   AS rcs_btn_tp_1
+                ,l.rcs_btn_cont_1 AS rcs_btn_cont_1
+                ,l.rcs_btn_2      AS rcs_btn_2
+                ,l.rcs_btn_tp_2   AS rcs_btn_tp_2
+                ,l.rcs_btn_cont_2 AS rcs_btn_cont_2
+                ,l.rcs_btn_3      AS rcs_btn_3
+                ,l.rcs_btn_tp_3   AS rcs_btn_tp_3
+                ,l.rcs_btn_cont_3 AS rcs_btn_cont_3
+                ,l.rcs_footer     AS rcs_footer
+        FROM   tblmicp_cont_lst l
+               INNER JOIN tblmicp_cont_mst m
+                       ON l.cont_cd = m.seq
+               LEFT JOIN tblmi_cont_img AS kko_img
+                      ON l.kko_img_cd = kko_img.seq
+               LEFT JOIN tblmi_cont_img AS img_1
+                      ON l.img_cd_1 = img_1.seq
+               LEFT JOIN tblmi_cont_img AS img_2
+                      ON l.img_cd_2 = img_2.seq
+               LEFT JOIN tblmi_cont_img AS img_3
+                      ON l.img_cd_3 = img_3.seq
+               LEFT JOIN tblmi_cont_img AS img_4
+                      ON l.img_cd_4 = img_4.seq
+               LEFT JOIN tblmi_cont_img AS img_5
+                      ON l.img_cd_5 = img_5.seq
+               LEFT JOIN tblmi_cont_img AS img_6
+                      ON l.img_cd_6 = img_6.seq
+               LEFT JOIN tblmi_set_lst AS sender
+                      ON l.send_to = sender.seq
+        WHERE  l.seq = #{seq}
+        ORDER  BY l.seq
+    </select>
+
+</mapper>
+
+
+
+

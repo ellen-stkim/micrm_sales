@@ -1,0 +1,1211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.CampaignMapper" >
+	<cache />
+
+	<!-- ================================================================= select ================================================================= -->
+	<select id="sel_ContentsListCnt" parameterType="Tblmi_cont_mstDto" resultType="Int">
+		SELECT count(*)
+		FROM (
+			SELECT mst.seq   AS seq
+				, lst.seq	 AS lst_seq
+			FROM   tblmi_cont_mst AS mst
+				LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
+			    INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+			<where>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+					and mst.seq = #{seq}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+					and mst.del_yn = #{del_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+					and mst.use_yn = #{use_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+					and mst.cont_grp_cd = #{cont_grp_cd}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+					and mst.ch_tp = #{ch_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+					and mst.CONT_NM like concat('%', #{cont_nm}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+					<choose>
+						<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+							<choose>
+								<when test="reg_dt.equals(reg_dt_range)">
+									and mst.REG_DT = #{reg_dt}
+								</when>
+								<otherwise>
+									and (mst.REG_DT >= #{reg_dt} and mst.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+								</otherwise>
+							</choose>
+						</when>
+						<otherwise>
+							and mst.REG_DT = #{reg_dt}
+						</otherwise>
+					</choose>
+				</if>
+			</where>
+			GROUP  BY mst.seq
+		) AS a
+			INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
+			INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
+			INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
+			INNER JOIN tblmi_comm_cd AS f ON b.msg_tp = f.cd_id
+			INNER JOIN tblmi_set_lst AS g ON b.SEND_TO = g.SEQ
+	</select>
+
+	<select id="sel_ContentsList" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">
+		SELECT a.seq
+			, a.ch_tp
+			, a.cont_nm
+			, a.cont_grp_cd
+			, a.use_yn
+			, a.del_yn
+			, a.reg_dt
+			, ifnull(a.upd_dt, a.reg_dt) as upd_dt
+			, a.cont_tp_lst
+			, a.cont_tp_lst_nm
+			, b.cont_tp
+			, c.cd_nm AS cont_tp_nm
+			, b.CONT_SUB
+			, b.CONT_TOP_BODY
+			, b.CONT_BODY
+			, b.send_tp
+			, d.cd_nm AS send_tp_nm
+			, g.list_val as send_to
+			, g.list_nm AS send_nm
+			, b.thm_url
+			, b.br_yn
+			, b.sup_yn
+			, b.msg_tp
+			, f.cd_nm as msg_tp_nm
+			, b.kko_img_cd
+			, e.IMG_URL AS kko_image_url
+			, b.kko_img_url
+			, b.kko_BTN_nm
+			, b.KKO_BTN_URL
+			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
+			, b.RCS_BTN_INS_TP
+			, b.RCS_BTN_CNT
+			, b.RCS_BTN_OBJ
+			, b.RCS_BTN_1
+			, b.RCS_BTN_TP_1
+			, b.RCS_BTN_CONT_1
+			, b.RCS_BTN_2
+			, b.RCS_BTN_TP_2
+			, b.RCS_BTN_CONT_2
+			, b.RCS_BTN_3
+			, b.RCS_BTN_TP_3
+			, b.RCS_BTN_CONT_3
+			, b.RCS_FOOTER
+		FROM (
+			SELECT mst.seq                                         AS seq
+			    , mst.ch_tp                                        AS ch_tp
+			   , mst.cont_nm                                       AS cont_nm
+			   , mst.cont_grp_cd                                   AS cont_grp_cd
+			   , mst.use_yn                                        AS use_yn
+			   , mst.del_yn                                        AS del_yn
+			   , mst.reg_dt                                        AS reg_dt
+			   , mst.upd_dt                                        AS upd_dt
+			   , GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
+			   , Group_concat(lst.cont_tp)           			   AS cont_tp_lst
+			   , Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
+			   , CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+					  WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+					  WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+					ELSE lst.SEQ END 							   AS lst_seq
+			FROM   tblmi_cont_mst AS mst
+				   LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
+				   INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+			<where>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+					and mst.seq = #{seq}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+					and mst.del_yn = #{del_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+					and mst.use_yn = #{use_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+					and mst.cont_grp_cd = #{cont_grp_cd}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+					and mst.ch_tp = #{ch_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+					and mst.CONT_NM like concat('%', #{cont_nm}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+					<choose>
+						<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+							<choose>
+								<when test="reg_dt.equals(reg_dt_range)">
+									and mst.REG_DT = #{reg_dt}
+								</when>
+								<otherwise>
+									and (mst.REG_DT >= #{reg_dt} and mst.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+								</otherwise>
+							</choose>
+						</when>
+						<otherwise>
+							and mst.REG_DT = #{reg_dt}
+						</otherwise>
+					</choose>
+				</if>
+			</where>
+			GROUP  BY mst.seq
+			ORDER  BY mst.reg_dt DESC
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+				LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+			</if>
+		) AS a
+			INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
+			INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
+			INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
+			INNER JOIN tblmi_comm_cd AS f ON b.msg_tp = f.cd_id
+			INNER JOIN tblmi_set_lst AS g ON b.SEND_TO = g.SEQ
+			LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
+			LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
+			LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
+			LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
+			LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
+			LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
+			LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+	</select>
+
+	<select id="sel_camp_ContentsList" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">
+		SELECT a.seq
+			, a.ch_tp
+			, a.cont_nm
+			, a.cont_grp_cd
+			, a.reg_dt
+			, ifnull(a.upd_dt, a.reg_dt) as upd_dt
+			, a.cont_tp_lst
+			, a.cont_tp_lst_nm
+			, b.cont_tp
+			, c.cd_nm AS cont_tp_nm
+			, b.CONT_SUB
+			, b.CONT_TOP_BODY
+			, b.CONT_BODY
+			, b.send_tp
+			, d.cd_nm AS send_tp_nm
+			, b.send_to
+			, b.send_nm
+			, b.thm_url
+			, b.br_yn
+			, b.sup_yn
+			, b.msg_tp
+			, f.cd_nm as msg_tp_nm
+			, b.kko_img_cd
+			, e.IMG_URL AS kko_image_url
+			, b.kko_img_url
+			, b.kko_BTN_nm
+			, b.KKO_BTN_URL
+			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
+			, b.RCS_BTN_INS_TP
+			, b.RCS_BTN_CNT
+			, b.RCS_BTN_OBJ
+			, b.RCS_BTN_1
+			, b.RCS_BTN_TP_1
+			, b.RCS_BTN_CONT_1
+			, b.RCS_BTN_2
+			, b.RCS_BTN_TP_2
+			, b.RCS_BTN_CONT_2
+			, b.RCS_BTN_3
+			, b.RCS_BTN_TP_3
+			, b.RCS_BTN_CONT_3
+			, b.RCS_FOOTER
+		FROM (
+			SELECT mst.seq                                         AS seq
+				, mst.ch_tp                                        AS ch_tp
+			   , mst.cont_nm                                       AS cont_nm
+			   , mst.cont_grp_cd                                   AS cont_grp_cd
+			   , mst.reg_dt                                        AS reg_dt
+			   , mst.upd_dt                                        AS upd_dt
+			   , GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
+			   , Group_concat(lst.cont_tp)           			   AS cont_tp_lst
+			   , Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
+			   , CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+					  WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+					  WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+					ELSE lst.SEQ END 							   AS lst_seq
+			FROM   tblmicp_cont_mst AS mst
+				   LEFT JOIN tblmicp_cont_lst AS lst ON lst.cont_cd = mst.seq
+				   INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+			<where>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+					and mst.seq = #{seq}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+					and mst.cont_grp_cd = #{cont_grp_cd}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+					and mst.ch_tp = #{ch_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+					and mst.CONT_NM like concat('%', #{cont_nm}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+					<choose>
+						<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+							<choose>
+								<when test="reg_dt.equals(reg_dt_range)">
+									and mst.REG_DT = #{reg_dt}
+								</when>
+								<otherwise>
+									and (mst.REG_DT >= #{reg_dt} and mst.REG_DT <![CDATA[ < ]]> #{reg_dt_range})
+								</otherwise>
+							</choose>
+						</when>
+						<otherwise>
+							and mst.REG_DT = #{reg_dt}
+						</otherwise>
+					</choose>
+				</if>
+			</where>
+			GROUP  BY mst.seq
+			ORDER  BY mst.reg_dt DESC
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+				LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+			</if>
+		) AS a
+			INNER JOIN tblmicp_cont_lst AS b ON a.lst_seq = b.SEQ
+			INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
+			INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
+			INNER JOIN tblmi_comm_cd AS f ON b.msg_tp = f.cd_id
+			LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
+			LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
+			LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
+			LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
+			LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
+			LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
+			LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+	</select>
+
+	<select id="sel_camp_cont_mstOne" parameterType="Tblmicp_cont_mstDto" resultType="Tblmicp_cont_mstDto">
+		select *
+		from Tblmicp_cont_mst
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and SEQ = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+				and ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and cont_grp_cd = #{cont_grp_cd}
+			</if>
+		</where>
+		Limit 1
+	</select>
+	
+	<select id="sel_cont_lst" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
+		select  a.seq
+			, a.CONT_TP
+			, a.CONT_SUB
+			, a.CONT_TOP_BODY
+			, a.CONT_BODY
+			, a.SEND_TP
+			, b.list_val as send_to
+			, b.list_nm AS send_nm
+			, a.THM_URL
+			, a.BR_YN
+			, a.SUP_YN
+			, a.MSG_TP
+			, a.KKO_IMG_CD
+			, a.KKO_IMG_URL
+			, a.KKO_BTN_NM
+			, a.KKO_BTN_URL
+			, a.IMG_CD_1
+			, a.IMG_CD_2
+			, a.IMG_CD_3
+			, a.IMG_CD_4
+			, a.IMG_CD_5
+			, a.IMG_CD_6
+			, a.RCS_BTN_INS_TP
+			, a.RCS_BTN_CNT
+			, a.RCS_BTN_OBJ
+			, a.RCS_BTN_1
+			, a.RCS_BTN_TP_1
+			, a.RCS_BTN_CONT_1
+			, a.RCS_BTN_2
+			, a.RCS_BTN_TP_2
+			, a.RCS_BTN_CONT_2
+			, a.RCS_BTN_3
+			, a.RCS_BTN_TP_3
+			, a.RCS_BTN_CONT_3
+			, a.RCS_FOOTER
+			, a.KEY_ID
+			, a.CONT_GRP_CD
+			, #{reg_id} as reg_id
+		from Tblmi_cont_lst as a
+			INNER JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and a.SEQ = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_cd)">
+				and a.CONT_CD = #{cont_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+				and a.CONT_TP = #{cont_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and a.CONT_GRP_CD = #{cont_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and a.USE_YN = #{use_yn}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_cont_url_lst" parameterType="Tblmi_cont_url_lstDto" resultType="Tblmi_cont_url_lstDto">
+		select *
+		from Tblmi_cont_url_lst
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and SEQ = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_lst_cd)">
+				and cont_lst_cd = #{cont_lst_cd}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_tblmicp_send_hst_cnt" parameterType="Tblmicp_send_hstDto" resultType="int">
+		select count(*)
+		from tblmicp_send_hst
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+				and pro_id = #{pro_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_id)">
+				and camp_id = #{camp_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_id)">
+				and cont_id = #{cont_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tbl_id)">
+				and tbl_id = #{tbl_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tbl_lst_id)">
+				and tbl_lst_id = #{tbl_lst_id}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_tblmicp_send_hst" parameterType="Tblmicp_send_hstDto" resultType="Map">
+		select a.SEQ as SEND_HST_SEQ
+			, a.PRO_ID
+			, a.SEND_TO
+			, a.SEND_NM
+			, ifnull(b.SEQ, "") as SEQ
+			, ifnull(b.USR_ID, "") as USR_ID
+			, ifnull(b.USR_NM, "") as USR_NM
+			, ifnull(b.USR_MOB, "") as USR_MOB
+			, ifnull(b.USR_EDM, "") as USR_EDM
+			, ifnull(b.USR_GDR, "") as USR_GDR
+			, ifnull(b.USR_ADDR, "") as USR_ADDR
+			, ifnull(b.USR_ETC1, "") as USR_ETC1
+			, ifnull(b.USR_ETC2, "") as USR_ETC2
+			, ifnull(b.USR_ETC3, "") as USR_ETC3
+			, ifnull(b.USR_ETC4, "") as USR_ETC4
+			, ifnull(b.USR_ETC5, "") as USR_ETC5
+			, ifnull(b.USR_ETC6, "") as USR_ETC6
+			, ifnull(b.USR_ETC7, "") as USR_ETC7
+			, ifnull(b.USR_ETC8, "") as USR_ETC8
+			, ifnull(b.USR_ETC9, "") as USR_ETC9
+			, ifnull(b.USR_ETC10, "") as USR_ETC10
+		from tblmicp_send_hst as a
+			left join ${tbl_id} as b on a.TBL_LST_ID = b.seq
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+				and a.pro_id = #{pro_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_id)">
+				and a.camp_id = #{camp_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_id)">
+				and a.cont_id = #{cont_id}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_tblmicp_program" parameterType="Tblmicp_programDto" resultType="Tblmicp_programDto">
+		select *
+		from tblmicp_program
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+				and pro_id = #{pro_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+				and pro_tp = #{pro_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+				and pro_st = #{pro_st}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(appr_id)">
+				and appr_id = #{appr_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+				and pro_nm = #{pro_nm}
+			</if>
+		</where>
+	</select>
+	
+	<select id="sel_tblmicp_campaign" parameterType="Tblmicp_campaignDto" resultType="Tblmicp_campaignDto">
+		select *
+		from tblmicp_campaign
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+				and pro_id = #{pro_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_id)">
+				and cont_id = #{cont_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+				and start_dt <![CDATA[ >= #{start_dt} ]]>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				and start_dt <![CDATA[ <#{end_dt} ]]>
+			</if>
+		</where>
+
+	</select>
+
+	<select id="sel_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" resultType="Contents_lstDto">
+		select a.*
+			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
+			, CONCAT_WS(',', img_1.IMG_FILE_NM, img_2.IMG_FILE_NM, img_3.IMG_FILE_NM, img_4.IMG_FILE_NM, img_5.IMG_FILE_NM, img_6.IMG_FILE_NM) AS IMG_NM_LST
+			, e.IMG_URL as kko_image_url
+			, e.IMG_FILE_NM as kko_image_file_nm
+			, d.cd_nm AS send_tp_nm
+			, f.cd_val as msg_tp_val
+		from tblmicp_cont_lst as a
+			INNER JOIN tblmi_comm_cd AS d ON a.send_tp = d.cd_id
+			LEFT JOIN tblmi_cont_img AS e ON a.kko_img_cd = e.seq
+			INNER JOIN tblmi_comm_cd AS f ON a.msg_tp = f.cd_id
+			LEFT JOIN tblmi_cont_img AS img_1 ON a.IMG_CD_1 = img_1.seq
+			LEFT JOIN tblmi_cont_img AS img_2 ON a.IMG_CD_2 = img_2.seq
+			LEFT JOIN tblmi_cont_img AS img_3 ON a.IMG_CD_3 = img_3.seq
+			LEFT JOIN tblmi_cont_img AS img_4 ON a.IMG_CD_4 = img_4.seq
+			LEFT JOIN tblmi_cont_img AS img_5 ON a.IMG_CD_5 = img_5.seq
+			LEFT JOIN tblmi_cont_img AS img_6 ON a.IMG_CD_6 = img_6.seq
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and a.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+				and a.cont_tp = #{cont_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_cd)">
+				and a.cont_cd = #{cont_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and a.CONT_GRP_CD = #{cont_grp_cd}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_tblmicp_cont_url_lst" parameterType="Tblmicp_cont_url_lstDto" resultType="Tblmicp_cont_url_lstDto">
+		select *
+		from Tblmicp_cont_url_lst
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_lst_cd)">
+				and cont_lst_cd = #{cont_lst_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(url_tag)">
+				and url_tag = #{url_tag}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_apprLst" parameterType="Tblmi_usr_authDto" resultType="Tblmi_usrDto">
+		select a.usr_id
+			, a.usr_email
+			, a.usr_pw
+			, a.usr_grp_cd
+			, a.USR_NM
+			, a.usr_tel
+			, a.usr_mob
+		from tblmi_usr as a
+			inner join tblmi_usr_auth as b on a.usr_id = b.usr_id
+					and b.role_cd
+						<foreach collection="roleLst" item="list" open="in (" separator=" , " close=")">
+							#{list}
+						</foreach>
+		<where>
+			a.usr_grp_cd = #{usr_grp_cd}
+			and a.usr_st = '1'
+		</where>
+	</select>
+
+	<select id="sel_tblmi_traget_grp" parameterType="Tblmi_target_grpDto" resultType="Tblmi_target_grpDto">
+		select *
+		from tblmi_target_grp
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				and use_yn = #{use_yn}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_send_status_cnt" parameterType="String" resultType="Map">
+		SELECT camp_id
+			, COUNT(*) AS t_cnt
+			, count(if(send_rst is NULL, 1, null)) as w_cnt
+			, count(if(send_rst = '0', 1, null)) as s_cnt
+			, count(if(send_rst = '1', 1, null)) as f_cnt
+		FROM tblmicp_send_hst
+		<where>
+			pro_id = #{pro_id}
+		</where>
+		GROUP BY camp_id
+	</select>
+
+	<select id="sel_tarck_open_cnt" parameterType="String" resultType="Map">
+		SELECT camp_id
+			, COUNT(*) AS cnt
+		FROM tblmicp_track_open
+		<where>
+			pro_id = #{pro_id}
+		</where>
+		GROUP BY camp_id
+	</select>
+
+	<select id="sel_tarck_url_cnt" parameterType="String" resultType="Map">
+		SELECT camp_id
+			, COUNT(*) AS cnt
+		FROM (
+			SELECT camp_id
+				, msg_tp
+			FROM tblmicp_track_url
+			<where>
+				pro_id = #{pro_id}
+			</where>
+			GROUP BY pro_id, camp_id, tbl_id, tbl_lst_id
+		) AS z
+		GROUP BY camp_id
+	</select>
+
+	<select id="getProgramList" parameterType="Program_SearchDto" resultType="Program_SearchDto">
+		SELECT  a.pro_id
+			, b.cd_nm as pro_st_nm
+			, a.pro_st
+			, a.pro_tp as pro_tp
+			,a.pro_tg_tp
+			, a.PRO_nm
+			, a.min_start_dt as start_dt
+			, a.tar_cnt
+			, a.reg_id
+			, c.usr_nm
+			, c.usr_email
+			, a.pro_tg_tp
+			, e.cd_nm AS pro_tg_tp_nm
+			, a.pro_tg_id
+			, case
+				  when a.PRO_TG_TP = 'TEST' then '개별입력'
+				  when a.PRO_TG_TP = 'TG01' then ta2.GRP_NM
+				  when a.PRO_TG_TP = 'TG02' then ta3.GRP_NM
+				  when a.PRO_TG_TP = 'TG99' then ta4.GRP_NM
+				  ELSE NULL
+			   END AS target_nm
+		FROM tblmicp_program AS a
+			INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
+			INNER JOIN tblmi_usr AS c ON a.REG_ID = c.USR_ID
+			INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
+			LEFT JOIN tblmite_target_grp AS ta1 ON if(a.PRO_TG_TP = 'TEST', a.pro_tg_id, NULL) = ta1.seq 			-- 개별입력
+			LEFT JOIN tblmi_target_grp AS ta2 ON if(a.PRO_TG_TP = 'TG01', a.pro_tg_id, NULL) = ta2.seq  		 	-- 타겟팅 그룹
+			LEFT JOIN tblmi_target_grp AS ta3 ON if(a.PRO_TG_TP = 'TG02', a.pro_tg_id, NULL) = ta3.seq 		 		-- 업로드 그룹
+			LEFT JOIN tblmite_target_grp AS ta4 ON if(a.PRO_TG_TP = 'TG99', a.pro_tg_id, NULL) = ta4.seq 			-- 테스트 그룹
+		<where>
+			a.usr_grp_cd = #{usr_grp_cd}
+			and a.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+				and a.pro_tg_tp = #{pro_tg_tp}
+			</if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+                and a.pro_tp = #{pro_tp}
+            </if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+				and a.pro_st = #{pro_st}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+				and (c.usr_nm like CONCAT('%', #{usr_nm},'%') or c.usr_log_id like CONCAT('%', #{usr_nm},'%'))
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(target_nm)">
+				<choose>
+					<when test="pro_tg_tp == 'TEST'">
+						and ta1.grp_nm like CONCAT('%', #{target_nm},'%')
+					</when>
+					<when test="pro_tg_tp == 'TG01'">
+						and ta2.grp_nm like CONCAT('%', #{target_nm},'%')
+					</when>
+					<when test="pro_tg_tp == 'TG02'">
+						and ta3.grp_nm like CONCAT('%', #{target_nm},'%')
+					</when>
+					<when test="pro_tg_tp == 'TG99'">
+						and ta4.grp_nm like CONCAT('%', #{target_nm},'%')
+					</when>
+				</choose>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+				and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+			</if>
+		</where>
+		group by pro_id
+		order by  FIELD(a.pro_st, '98') DESC
+			, a.min_start_dt desc
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="getProgramSearchCnt" parameterType="Program_SearchDto" resultType="int">
+		select count(*)
+		from (
+			SELECT  a.pro_id
+			FROM tblmicp_program AS a
+				INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
+				INNER JOIN tblmi_usr AS c ON a.REG_ID = c.USR_ID
+				INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
+				LEFT JOIN tblmite_target_grp AS ta1 ON if(a.PRO_TG_TP = 'TEST', a.pro_tg_id, NULL) = ta1.seq 			-- 개별입력
+				LEFT JOIN tblmi_target_grp AS ta2 ON if(a.PRO_TG_TP = 'TG01', a.pro_tg_id, NULL) = ta2.seq  		 	-- 타겟팅 그룹
+				LEFT JOIN tblmi_target_grp AS ta3 ON if(a.PRO_TG_TP = 'TG02', a.pro_tg_id, NULL) = ta3.seq 		 		-- 업로드 그룹
+				LEFT JOIN tblmite_target_grp AS ta4 ON if(a.PRO_TG_TP = 'TG99', a.pro_tg_id, NULL) = ta4.seq 			-- 테스트 그룹
+			<where>
+				a.usr_grp_cd = #{usr_grp_cd}
+				and a.del_yn = 'N'
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+					and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+					and a.pro_tg_tp = #{pro_tg_tp}
+				</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+                    and a.pro_tp = #{pro_tp}
+                </if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+					and a.pro_st = #{pro_st}
+				</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+					and (c.usr_nm like CONCAT('%', #{usr_nm},'%') or c.usr_log_id like CONCAT('%', #{usr_nm},'%'))
+                </if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(target_nm)">
+					<choose>
+						<when test="pro_tg_tp == 'TEST'">
+							and ta1.grp_nm like CONCAT('%', #{target_nm},'%')
+						</when>
+						<when test="pro_tg_tp == 'TG01'">
+							and ta2.grp_nm like CONCAT('%', #{target_nm},'%')
+						</when>
+						<when test="pro_tg_tp == 'TG02'">
+							and ta3.grp_nm like CONCAT('%', #{target_nm},'%')
+						</when>
+						<when test="pro_tg_tp == 'TG99'">
+							and ta4.grp_nm like CONCAT('%', #{target_nm},'%')
+						</when>
+					</choose>
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+					and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+					and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+				</if>
+
+			</where>
+			group by pro_id
+		) as z
+	</select>
+	
+	<select id ="getTitleProgramCnt" resultType="Map" parameterType="Program_SearchDto">
+		SELECT COUNT(*)	 AS cnt 			-- 토탈
+		, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
+		, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
+		, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
+		, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
+		, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
+		, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
+		, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
+		FROM tblmicp_program as prg
+			LEFT JOIN tblmi_comm_cd AS proStCd ON (proStCd.cd_id = prg.pro_st and proStCd.grp_id = 'COMST')
+		<where>
+			prg.DEL_YN = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				AND prg.usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+				and prg.pro_tp = #{pro_tp}
+			</if>
+			<choose>
+				<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(appr_id)">
+					and prg.appr_id = #{appr_id}
+				</when>
+				<otherwise>
+					and prg.reg_id= #{reg_id}
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+
+	<select id="getProgramCnt" resultType="Map" parameterType="Program_SearchDto">
+		SELECT COUNT(*)	 AS cnt 			-- 토탈
+		, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
+		, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
+		, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
+		, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
+		, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
+		, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
+		, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
+		FROM tblmicp_program as prg
+			LEFT JOIN tblmi_comm_cd AS proStCd ON (proStCd.cd_id = prg.pro_st and proStCd.grp_id = 'COMST')
+			LEFT JOIN tblmi_comm_cd AS proTpCd ON (proTpCd.cd_id = prg.pro_tp and proTpCd.grp_id = 'PROTP')
+			LEFT JOIN tblmi_comm_cd AS tpTpCd ON (tpTpCd.cd_id = prg.pro_tg_tp and tpTpCd.grp_id = 'TGTP')
+			LEFT JOIN tblmi_usr AS usr ON usr.usr_id = prg.reg_id
+			LEFT JOIN tblmicp_campaign AS camp ON camp.pro_id = prg.pro_id
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+			<choose>
+				<when test="pro_tg_tp == 'TG01'">
+					/*INNER JOIN tblmi_tbl_mst as mst ON mst.seq = camp.send_tg_id*/
+				</when>
+				<when test="pro_tg_tp == 'TG02'">
+					LEFT JOIN tblmi_target_grp as tar ON tar.seq = prg.pro_tg_id
+				</when>
+				<when test="pro_tg_tp == 'TG99'">
+					/*INNER JOIN tblmite_target_grp as tar ON tar.seq = prg.pro_tg_id*/
+				</when>
+				<when test="pro_tg_tp == 'TEST'">
+				</when>
+			</choose>
+		</if>
+		where
+		prg.USR_GRP_CD = #{usr_grp_cd}
+		and prg.del_yn = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+			and prg.pro_id like CONCAT('%',  #{pro_id},'%')
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+			and prg.pro_nm like CONCAT('%',  #{pro_nm},'%')
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+			and prg.pro_tp =  #{pro_tp}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+			and camp.start_dt <![CDATA[ >= #{st_dt} ]]>
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+			and camp.start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+			and (usr.usr_nm like CONCAT('%', #{usr_nm},'%') or usr.usr_log_id like CONCAT('%', #{usr_nm},'%'))
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+			and prg.pro_tg_tp = #{pro_tg_tp}
+			<choose>
+				<when test="pro_tg_tp == 'TG01'">
+				</when>
+				<when test="pro_tg_tp == 'TG02'">
+					<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(target_nm)">
+						and tar.grp_nm like CONCAT('%', #{target_nm},'%')
+					</if>
+				</when>
+				<when test="pro_tg_tp == 'TG99'">
+				</when>
+				<when test="pro_tg_tp == 'TEST'">
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<select id="sel_send_program_cnt" parameterType="Tblmicp_programDto" resultType="Map">
+		SELECT a.pro_id
+			, a.pro_nm
+			, COUNT(*) 									 AS cnt
+			, count(if(b.SEND_RST IS null, 1, NULL))	 AS w_cnt
+			, count(if(b.SEND_RST = '0', 1, NULL))	 	 AS s_cnt
+			, count(if(b.SEND_RST = '1', 1, NULL))	 	 AS f_cnt
+		FROM tblmicp_program AS a
+			LEFT JOIN tblmicp_send_hst AS b ON a.PRO_ID = b.PRO_ID
+		<where>
+			a.pro_id = #{pro_id}
+			and a.usr_grp_cd = #{usr_grp_cd}
+		</where>
+	</select>
+
+	<select id="sel_send_program_rstLst" parameterType="Tblmicp_send_hstDto" resultType="SendResult_lstDto">
+		SELECT b.camp_nm
+			, a.send_to
+			, a.send_nm
+			, a.send_rep_time
+			, a.send_log_time
+			, case
+				WHEN a.send_rst IS NULL THEN if(b.START_DT > NOW(), '발송대기', '결과대기')
+				when a.send_rst = '0' then '발송성공'
+				ELSE '발송실패'
+		  	END AS send_rst
+			, a.send_rst_det
+			, c.cd_desc
+			, a.send_mdm
+		FROM tblmicp_send_hst AS a
+			INNER JOIN tblmicp_campaign AS b ON a.camp_id = b.seq
+			LEFT JOIN tblmi_comm_cd AS c ON c.grp_id = 'SENDRESULT' AND a.send_rst_det = c.CD_ID and a.M_SERVER = c.cd_nm
+		<where>
+			a.pro_id = #{pro_id}
+			and a.usr_grp_cd = #{usr_grp_cd}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_rst)">
+				and a.send_rst = #{send_rst}
+			</if>
+		</where>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="sel_programSendHst" parameterType="Tblmicp_send_hstDto" resultType="Tblmicp_send_hstDto">
+		SELECT #{pro_id}	 			AS pro_id
+			, a.seq 					AS camp_id
+			, a.CONT_ID 				AS cont_id
+			, #{tbl_id}	  				AS tbl_id
+			, b.SEQ 					AS tbl_lst_id
+		<choose>
+			<when test="camp_ch == 'CH01'">
+			, b.USR_EDM					AS send_to
+			</when>
+			<otherwise>
+			, b.USR_MOB		 			AS send_to
+			</otherwise>
+		</choose>
+			, b.USR_NM					AS send_nm
+			, #{send_yn}				AS send_yn
+			, #{auto_tp}				AS auto_tp
+			, #{usr_grp_cd}				AS usr_grp_cd
+			, #{reg_id}					AS reg_id
+			, a.camp_ch
+		FROM tblmicp_campaign AS a
+			INNER JOIN ${tbl_id} AS b ON a.SEND_TG_id = b.GRP_NO and del_yn = 'N'
+		<where>
+			a.seq = #{camp_id}
+			<if test="send_mdm != 'SENDTP02'">
+			and	NOT EXISTS (
+				SELECT 1
+				FROM tblmi_sup AS sup
+				WHERE sup.usr_grp_cd = #{usr_grp_cd}
+					and sup.del_yn = 'N'
+			<choose>
+				<when test="camp_ch == 'CH01'">
+					AND sup.send_to = b.USR_EDM
+				</when>
+				<otherwise>
+					AND sup.send_to = b.USR_MOB
+				</otherwise>
+			</choose>
+			)
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="getCampSearchCnt" resultType="Integer">
+		SELECT  COUNT(*)
+			FROM tblmicp_program as prg
+				LEFT JOIN tblmi_comm_cd AS proStCd
+					ON (proStCd.cd_id = prg.pro_st and proStCd.grp_id = 'COMST')
+				LEFT JOIN tblmi_comm_cd AS proTpCd
+					ON (proTpCd.cd_id = prg.pro_tp and proTpCd.grp_id = 'PROTP')
+				LEFT JOIN tblmi_comm_cd AS tpTpCd
+					ON (tpTpCd.cd_id = prg.pro_tg_tp and tpTpCd.grp_id = 'TGTP')
+				LEFT JOIN tblmi_usr AS usr
+					ON usr.usr_id = prg.reg_id
+				LEFT JOIN tblmicp_campaign AS camp
+				ON camp.pro_id = prg.pro_id
+				LEFT JOIN tblmicp_send_hst as sendHst
+				ON sendHst.CONT_ID =  camp.CONT_ID  AND SEND_RST =0
+				where
+					prg.USR_GRP_CD = '01' and prg.del_yn = 'N'
+				ORDER BY FIELD(prg.PRO_ST, '98') DESC
+					, prg.MIN_START_DT DESC
+
+	</select>
+	<!-- ================================================================= select ================================================================= -->
+
+
+	<!-- ================================================================= insert START ================================================================= -->
+
+	<insert id="ins_tblmicp_program" parameterType="Tblmicp_programDto" >
+		insert into tblmicp_program
+		(
+			pro_id, pro_tp, pro_st, pro_nm, pro_tg_tp, pro_tg_id, grp_cnt, camp_cnt, cont_cnt, tar_cnt, resp_cnt, usr_grp_cd, reg_id, appr_id
+			, plan_cost, off_cost, dev_cost, des_cost
+		)
+		values
+		(
+			#{pro_id}, #{pro_tp}, #{pro_st}, #{pro_nm}, #{pro_tg_tp}, #{pro_tg_id}, #{grp_cnt}, #{camp_cnt}, #{cont_cnt}, #{tar_cnt}, #{resp_cnt}, #{usr_grp_cd}, #{reg_id}, #{appr_id}
+			, #{plan_cost}, #{off_cost}, #{dev_cost}, #{des_cost}
+		)
+		ON DUPLICATE KEY UPDATE
+			pro_id = #{pro_id}
+			, pro_tp = #{pro_tp}
+			, pro_st = #{pro_st}
+			, pro_nm = #{pro_nm}
+			, pro_tg_tp = #{pro_tg_tp}
+			, pro_tg_id = #{pro_tg_id}
+			, grp_cnt = #{grp_cnt}
+			, camp_cnt = #{camp_cnt}
+			, cont_cnt = #{cont_cnt}
+			, tar_cnt = #{tar_cnt}
+			, resp_cnt = #{resp_cnt}
+			, usr_grp_cd = #{usr_grp_cd}
+			, appr_id = #{appr_id}
+			, plan_cost = #{plan_cost}
+			, off_cost = #{off_cost}
+			, dev_cost = #{dev_cost}
+			, des_cost = #{des_cost}
+			, upd_id = #{reg_id}
+	</insert>
+
+	<insert id="ins_tblmicp_campaign" parameterType="Tblmicp_campaignDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into Tblmicp_campaign
+		(pro_id, cont_id, send_tg_tp, send_tg_id, camp_st, camp_nm, camp_ch, test_tp, test_sampling, cont_cnt, test_cnt, real_cnt, usr_grp_cd, reg_id, sto, tar_cnt
+		, start_dt
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, send_st_tp</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, end_dt</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(suppressed)">, suppressed</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(duplicate)">, duplicate</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(test_dt)">, test_dt</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_gb)">, ab_gb</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_st)">, ab_st</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">, seq</if>
+		)
+		values
+		(
+		#{pro_id}, #{cont_id}, #{send_tg_tp}, #{send_tg_id}, #{camp_st}, #{camp_nm}, #{camp_ch}, #{test_tp}, #{test_sampling}, #{cont_cnt}, #{test_cnt}, #{real_cnt}, #{usr_grp_cd}, #{reg_id}, #{sto}, #{tar_cnt}
+		, #{start_dt}
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, #{send_st_tp}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, #{end_dt}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(suppressed)">, #{suppressed}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(duplicate)">, #{duplicate}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(test_dt)">, #{test_dt}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_gb)">, #{ab_gb}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_st)">, #{ab_st}</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">, #{seq}</if>
+		)
+		ON DUPLICATE KEY UPDATE
+			pro_id = #{pro_id}
+			, cont_id = #{cont_id}
+			, send_tg_tp = #{send_tg_tp}
+			, send_tg_id = #{send_tg_id}
+			, camp_st = #{camp_st}
+			, camp_nm = #{camp_nm}
+			, camp_ch = #{camp_ch}
+			, test_tp = #{test_tp}
+			, test_sampling = #{test_sampling}
+			, cont_cnt = #{cont_cnt}
+			, test_cnt = #{test_cnt}
+			, real_cnt = #{real_cnt}
+			, usr_grp_cd = #{usr_grp_cd}
+			, upd_id = #{reg_id}
+			, sto = #{sto}
+			, start_dt = #{start_dt}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, send_st_tp = #{send_st_tp}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, end_dt = #{end_dt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(suppressed)">, suppressed = #{suppressed}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(duplicate)">, duplicate = #{duplicate}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(test_dt)">, test_dt = #{test_dt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_gb)">, ab_gb = #{ab_gb}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_st)">, ab_st = #{ab_st}</if>
+	</insert>
+
+	<insert id="ins_cp_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into tblmicp_cont_mst
+		(CONT_SEQ, CH_TP, CONT_NM, CONT_GRP_CD, REG_ID)
+		select SEQ
+			, CH_TP
+			, CONT_NM
+			, CONT_GRP_CD
+			, #{reg_id}
+		from tblmi_cont_mst
+		<where>
+			seq = #{seq}
+			and cont_grp_cd = #{cont_grp_cd}
+		</where>
+	</insert>
+
+	<insert id="ins_cp_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into tblmicp_cont_lst
+		(CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
+		values
+		(#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}, #{kko_btn_nm}, #{kko_btn_url}, #{img_cd_1}, #{img_cd_2}, #{img_cd_3}, #{img_cd_4}, #{img_cd_5}, #{img_cd_6}, #{rcs_btn_ins_tp}, #{rcs_btn_cnt}, #{rcs_btn_obj}, #{rcs_btn_1}, #{rcs_btn_tp_1}, #{rcs_btn_cont_1}, #{rcs_btn_2}, #{rcs_btn_tp_2}, #{rcs_btn_cont_2}, #{rcs_btn_3}, #{rcs_btn_tp_3}, #{rcs_btn_cont_3}, #{rcs_footer}, #{key_id}, #{cont_grp_cd}, #{reg_id})
+	</insert>
+
+	<insert id="ins_cp_tblmicp_cont_url_lst" parameterType="Tblmicp_cont_url_lstDto" >
+		insert into tblmicp_cont_url_lst
+		(CONT_LST_CD, URL_TAG, URL, URL_ID, URL_TYPE, MAP_ID, MAP_CORDS)
+		values
+		<foreach collection="list" item="list" separator=" , " >
+			(#{list.cont_lst_cd}, #{list.url_tag}, #{list.url}, #{list.url_id}, #{list.url_type}, #{list.map_id}, #{list.map_cords})
+		</foreach>
+	</insert>
+
+	<insert id="ins_tblmicp_send_hst" parameterType="Tblmicp_send_hstDto">
+		insert into tblmicp_send_hst
+		(PRO_ID, CAMP_ID, CONT_ID, TBL_ID, TBL_LST_ID, CAMP_CH, SEND_TO, SEND_NM, USR_GRP_CD, REG_ID)
+		values
+		<foreach collection="list" item="list" separator=" , " >
+			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{list.camp_ch}, #{list.send_to}, #{list.send_nm}, #{list.usr_grp_cd}, #{list.reg_id})
+		</foreach>
+	</insert>
+
+	<insert id="ins_tblmicp_send_hst_lst" parameterType="Tblmicp_send_hstDto">
+		insert into tblmicp_send_hst
+		(PRO_ID, CAMP_ID, CONT_ID, TBL_ID, TBL_LST_ID, CAMP_CH, SEND_TO, SEND_NM, USR_GRP_CD, REG_ID)
+		values
+		<foreach collection="list" item="list" separator=" , " >
+			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{list.camp_ch}, #{list.send_to}, #{list.send_nm}, #{list.usr_grp_cd}, #{list.reg_id})
+		</foreach>
+	</insert>
+
+	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto">
+		insert into tblmicp_send_hst
+		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
+		values
+		<foreach collection="list" item="list" separator=" , " >
+			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch})
+		</foreach>
+	</insert>
+
+
+	<!-- ================================================================= insert END ================================================================= -->
+
+
+	<!-- ================================================================= update ================================================================= -->
+
+	<update id="upd_tblmicp_program" parameterType="Tblmicp_programDto">
+		update tblmicp_program
+			<trim prefix="SET" prefixOverrides=",">
+				upd_id = #{upd_id}
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tar_cnt) and tar_cnt != 0">, tar_cnt = #{tar_cnt}</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(resp_cnt) and resp_cnt != 0">, resp_cnt = #{resp_cnt}</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">, pro_st = #{pro_st}</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(min_start_dt)">, min_start_dt = #{min_start_dt}</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(max_start_dt)">, max_start_dt = #{max_start_dt}</if>
+			</trim>
+		<where>
+			pro_id = #{pro_id}
+		</where>
+	</update>
+
+	<update id="upd_tblmicp_camapaign" parameterType="Tblmicp_campaignDto">
+		update tblmicp_campaign
+			<trim prefix="SET" prefixOverrides=",">
+				upd_id = #{upd_id}
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tar_cnt) and tar_cnt != 0">, tar_cnt = #{tar_cnt}</if>
+			</trim>
+		<where>
+			seq = #{seq}
+		</where>
+	</update>
+
+	<update id="upd_tblmicp_camapaign_cnt_hst" parameterType="Tblmicp_campaignDto">
+		update tblmicp_campaign set
+			tar_cnt = (SELECT COUNT(*) FROM tblmicp_send_hst WHERE PRO_ID = #{pro_id} and CAMP_ID = #{seq})
+		<where>
+			seq = #{seq}
+		</where>
+	</update>
+
+	<update id="upd_tblmicp_program_cnt_hst" parameterType="String">
+		update tblmicp_program set
+			tar_cnt = (
+				SELECT ifnull(SUM(tar_cnt), 0) AS cnt
+				FROM tblmicp_campaign
+				WHERE pro_id = #{pro_id}
+				GROUP BY pro_id
+			)
+		<where>
+			pro_id = #{pro_id}
+		</where>
+	</update>
+
+	<!-- ================================================================= update ================================================================= -->
+
+	<!-- ================================================================= DELETE START ================================================================= -->
+
+	<delete id="del_tblmicp_program" parameterType="Tblmicp_programDto" >
+		delete from tblmicp_program
+		<where>
+			pro_id = #{pro_id}
+		</where>
+	</delete>
+
+	<delete id="del_tblmicp_campaign" parameterType="Tblmicp_campaignDto">
+		delete from Tblmicp_campaign
+		<where>
+			pro_id = #{pro_id}
+		</where>
+	</delete>
+
+	<delete id="del_err_tblmicp_cont_mst" parameterType="int">
+		delete from tblmicp_cont_mst
+		where seq = #{cont_id}
+	</delete>
+
+	<delete id="del_err_tblmicp_cont_lst" parameterType="int">
+		delete from tblmicp_cont_lst
+		where cont_cd = #{cont_id}
+	</delete>
+
+	<delete id="del_err_tblmicp_cont_url_lst" parameterType="int">
+		delete from tblmicp_cont_url_lst
+		WHERE EXISTS (
+			SELECT 1
+			FROM tblmicp_cont_lst AS lst
+			WHERE lst.cont_cd = #{cont_id}
+				AND lst.seq = tblmicp_cont_url_lst.CONT_LST_CD
+		)
+	</delete>
+
+	<delete id="del_err_tblmicp_send_hst" parameterType="String">
+		delete from tblmicp_send_hst
+		where pro_id = #{pro_id}
+	</delete>
+
+	<!-- ================================================================= DELETE END ================================================================= -->
+
+</mapper>
+
+
+
+

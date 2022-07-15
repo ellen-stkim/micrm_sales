@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.SysSecurityMapper" >
+	<cache />
+
+	<!-- ================================================================= select ================================================================= -->
+	<select id="getAdminIpBlockListCnt" parameterType="Tblmi_Block_lstDto" resultType="Int">
+		SELECT count(*)
+		FROM TBLMI_BLOCK_LST as blk
+			LEFT JOIN TBLMI_USR as usr
+					on blk.block_reg_usr = usr.usr_id
+			LEFT JOIN TBLMI_COMM_CD as comm
+					on comm.cd_id = blk.block_status and comm.grp_id = "BLOCKST"
+			LEFT JOIN TBLMI_USR as upusr
+					on blk.upd_id = upusr.usr_id
+			where blk.block_status != '2'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_type)">
+				and blk.block_type = #{block_type}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_target)">
+				and INET_NTOA(blk.block_target) like concat('%',#{block_target},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_status)">
+				and blk.block_status = #{block_status}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_usr)">
+				and blk.block_reg_usr like concat('%',#{block_reg_usr},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_id)">
+				and usr.usr_log_id like concat('%', #{block_reg_id}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_upd_id)">
+				and upousr.usr_log_id like concat('%', #{block_upd_id}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_grp_cd)">
+				and blk.block_grp_cd = #{block_grp_cd}
+			</if>
+	</select>
+	<!-- ================================================================= select ================================================================= -->
+	<select id="getAdminIpBlockList" parameterType="Tblmi_Block_lstDto" resultType="Block_searchDto">
+		SELECT
+			blk.seq as seq
+			,blk.block_type as block_type
+			,INET_NTOA(blk.block_target) as block_target
+			,blk.block_reg_usr as block_reg_usr
+			,blk.block_st_dt as block_st_dt
+			,blk.block_end_dt as block_end_dt
+			,blk.block_status as block_status
+			,blk.block_grp_cd as block_grp_cd
+			,blk.block_memo as block_memo
+			,blk.reg_id as reg_id
+			,blk.reg_dt as reg_dt
+			,blk.upd_id as upd_id
+			,blk.upd_dt as upd_dt
+			,comm.cd_nm as cd_nm
+			,usr.usr_log_id as block_reg_id
+			,upusr.usr_log_id as block_upd_id
+		FROM TBLMI_BLOCK_LST as blk
+			LEFT JOIN TBLMI_USR as usr
+					on blk.block_reg_usr = usr.usr_id
+			LEFT JOIN TBLMI_COMM_CD as comm
+					on comm.cd_id = blk.block_status and comm.grp_id = "BLOCKST"
+			LEFT JOIN TBLMI_USR as upusr
+				on blk.upd_id = upusr.usr_id
+		where blk.block_status != '2'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_type)">
+				blk.block_type = #{block_type}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_target)">
+				and INET_NTOA(blk.block_target) like concat('%',#{block_target},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_status)">
+				and blk.block_status = #{block_status}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_usr)">
+				and blk.block_reg_usr like concat('%',#{block_reg_usr},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_id)">
+				and usr.usr_log_id like concat('%', #{block_reg_id}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_upd_id)">
+				and upousr.usr_log_id like concat('%', #{block_upd_id}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_grp_cd)">
+				and blk.block_grp_cd = #{block_grp_cd}
+			</if>
+		order by blk.upd_dt desc
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+	<!-- ================================================================= update ================================================================= -->
+	<update id="updateBlockList" parameterType="Tblmi_Block_lstDto" >
+		UPDATE TBLMI_BLOCK_LST
+		SET
+				upd_dt = Sysdate()
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_type)">
+					,block_type = #{block_type}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_id)">
+					,upd_id = #{upd_id}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_status)">
+					,block_status = #{block_status}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_usr)">
+					,block_reg_usr = #{block_reg_usr}
+					,reg_dt = Sysdate()
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_id)">
+					,reg_id = #{block_reg_id}
+				</if>
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_target)">
+				and block_target = INET_ATON(#{block_target})
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_grp_cd)">
+				and block_grp_cd = #{block_grp_cd}
+			</if>
+		</where>
+	</update>
+	<!-- ================================================================= insert ================================================================= -->
+	<insert id="saveBlockList" parameterType="Tblmi_Block_lstDto" >
+		INSERT INTO TBLMI_BLOCK_LST
+            (
+                        block_type,
+                        block_target,
+                        block_reg_usr,
+                        block_st_dt,
+                        block_status,
+                        block_grp_cd,
+                        reg_id,
+                        reg_dt
+            )
+		VALUES
+		    (
+		                #{block_type},
+                        INET_ATON(#{block_target}),
+                        #{block_reg_usr},
+                        Sysdate(),
+                        #{block_status},
+                        #{block_grp_cd},
+                        #{reg_id},
+                        Sysdate()
+            )
+	</insert>
+
+	<!-- ================================================================= select ================================================================= -->
+	<select id="getAdminUserLogCnt" parameterType="Tblmi_usr_hstDto" resultType="Int">
+		SELECT count(*)
+		FROM Tblmi_usr_hst as hst
+			LEFT JOIN TBLMI_USR as usr
+					on hst.usr_id = usr.usr_id
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_ip)">
+				INET_NTOA(hst.usr_ip) like concat('%',#{usr_ip},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_detail)">
+				and (hst.work_detail || hst.work_url) like concat('%',#{work_detail},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+				and usr.usr_log_id = #{usr_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and hst.usr_grp_cd = #{usr_grp_cd}
+			</if>
+		</where>
+	</select>
+	<!-- ================================================================= select ================================================================= -->
+	<select id="getAdminUserLogList" parameterType="Tblmi_usr_hstDto" resultType="UsrHst_searchDto">
+		SELECT
+			hst.seq as seq
+			,hst.usr_grp_cd as usr_grp_cd
+			,hst.usr_seq as usr_seq
+			,hst.usr_id as usr_id
+			,INET_NTOA(hst.usr_ip) as usr_ip
+			,hst.work_url as work_url
+			,hst.work_detail as work_detail
+			,hst.reg_id as reg_id
+			,hst.reg_dt as reg_dt
+			,hst.upd_id as upd_id
+			,hst.upd_dt as upd_dt
+			,usr.usr_log_id as usr_nm
+		FROM Tblmi_usr_hst as hst
+			LEFT JOIN TBLMI_USR as usr
+					on hst.usr_id = usr.usr_id
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_ip)">
+				INET_NTOA(hst.usr_ip) like concat('%',#{usr_ip},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_detail)">
+				and hst.work_detail like concat('%',#{work_detail},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+				and usr.usr_log_id like concat('%',#{usr_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+				and usr.usr_id like concat('%',#{usr_id},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and hst.usr_grp_cd = #{usr_grp_cd}
+			</if>
+		</where>
+		order by hst.reg_dt desc
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<!-- ================================================================= select ================================================================= -->
+	<select id="getIpBlockList" parameterType="Tblmi_Block_lstDto" resultType="Block_searchDto">
+		SELECT
+		blk.seq as seq
+		,blk.block_type as block_type
+		,INET_NTOA(blk.block_target) as block_target
+		,blk.block_reg_usr as block_reg_usr
+		,blk.block_st_dt as block_st_dt
+		,blk.block_end_dt as block_end_dt
+		,blk.block_status as block_status
+		,blk.block_grp_cd as block_grp_cd
+		,blk.block_memo as block_memo
+		,blk.reg_id as reg_id
+		,blk.reg_dt as reg_dt
+		,blk.upd_id as upd_id
+		,blk.upd_dt as upd_dt
+		,comm.cd_nm as cd_nm
+		,usr.usr_log_id as block_reg_id
+		,upusr.usr_log_id as block_upd_id
+		FROM TBLMI_BLOCK_LST as blk
+		LEFT JOIN TBLMI_USR as usr
+		on blk.block_reg_usr = usr.usr_id
+		LEFT JOIN TBLMI_COMM_CD as comm
+		on comm.cd_id = blk.block_status and comm.grp_id = "BLOCKST"
+		LEFT JOIN TBLMI_USR as upusr
+		on blk.upd_id = upusr.usr_id
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_type)">
+				blk.block_type = #{block_type}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_target)">
+				and INET_NTOA(blk.block_target) like concat('%',#{block_target},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_status)">
+				and blk.block_status = #{block_status}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_usr)">
+				and blk.block_reg_usr like concat('%',#{block_reg_usr},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_reg_id)">
+				and usr.usr_log_id like concat('%', #{block_reg_id}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_upd_id)">
+				and upousr.usr_log_id like concat('%', #{block_upd_id}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(block_grp_cd)">
+				and blk.block_grp_cd = #{block_grp_cd}
+			</if>
+		</where>
+		order by blk.upd_dt desc
+	</select>
+</mapper>
+
+
+
+

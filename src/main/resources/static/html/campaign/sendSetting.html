@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <!-- common js -->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/popup.js"></script>
+    <script src="../../js/jquery-ui.min.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- header 영역 시작 -->
+        <header class="header cf">
+            <h1 class="logo"><a href="../index.html"><img src="../../image/logo.png" alt="MICRM" /></a></h1>
+            <div class="right cf">
+                <ol class="summary">
+                    <li><span>발송예정</span>&nbsp;3</li>
+                    <li><span>발송중</span>&nbsp;1</li>
+                    <li><span>승인요청</span>&nbsp;2</li>
+                </ol>
+                <div class="ico_notice"><span>알림</span>&nbsp;3</div>
+            </div>
+        </header>
+        <!-- header 영역 끝 -->
+        <!-- left menu 영역 시작 -->
+        <nav class="nav">
+            <!-- gnb 영역 시작 -->
+            <ul class="gnb">
+                <li>
+                    <span>회원 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="../member/member.html">DB 회원</a></li>
+                        <li><a href="../member/rejection.html">수신거부 회원</a></li>
+                        <li><a href="../member/upload.html">업로드 회원</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>메시지</span>
+                    <ul class="sub_menu">
+                        <li><a href="edmList.html">이메일</a></li>
+                        <li><a href="smsList.html">모바일</a></li>
+                        <li><a href="imageList.html">이미지 파일</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>캠페인</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">타겟팅</a></li>
+                        <li class="on"><a href="sendSetting.html">캠페인 발송</a></li>
+                        <li><a href="sendStatus.html">발송 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>리포트</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">캠페인 현황 통계</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>시스템 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">작업</a></li>
+                        <li><a href="#">사용자</a></li>
+                        <li><a href="#">보안</a></li>
+                        <li><a href="#">환경</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- gnb 영역 끝 -->
+            <div class="user_info cf">
+                <div class="user">밀버스님</div>
+                <a href="#" class="logout">로그아웃</a>
+            </div>
+        </nav>
+        <!-- left menu 영역 끝 -->
+        <!-- container 영역 시작 -->
+        <section class="container">
+            <!-- 컨텐츠 영역 시작 -->
+            <div class="contents">
+                <!-- row 영역 시작 -->
+                <div class="row tooltip_area bottom-border min-width cf">
+                    <div class="left">
+                        <!-- location 영역 -->
+                        <ul class="location">
+                            <li>홈</li>
+                            <li>캠페인</li>
+                            <li>캠페인 발송</li>
+                        </ul>
+                        <!-- tooltip 버튼 영역  -->
+                        <div class="tooltip_icon">
+                            <img src="../../image/ico_tooltip.png" alt="Tooltip" />
+                        </div>
+                        <!-- tooltip box 영역 시작 -->
+                        <div class="tooltip_box">
+                            <!-- tooltip bullet 영역 -->
+                            <div class="bullet"></div>
+                            <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                            스타일론 직장인이 26.69억(29.1%), <br />
+                            스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                        </div>
+                        <!-- tooltip box 영역 끝 -->
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- row 영역 시작 -->
+                <div class="row bottom-border min-width cf">
+                    <div class="left">
+                        <a href="#" class="btn_basic ico_save left right-border" onclick="temporarySave();">임시저장</a>
+                        <!-- <input type="button" class="btn_basic ico_simulaiton left right-border" value="시뮬레이션"/> -->
+                        <input type="button" class="btn_basic ico_test left right-border" value="테스트" onclick="testGroupPopup();"/>
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <!-- section 영역 시작 -->
+                <div class="section">
+                    <div class="send bottom-border cf">
+                        <div class="left_column">
+                            <div class="row flex bottom-border cf">
+                                <!-- 캠페인 명 영역 시작 -->
+                                <div class="th right-border">캠페인 명</div>
+                                <div class="td right-border"><input type="text" class="width1" id="campaignName"placeholder="캠페인 명 입력"/></div>
+                                <!-- 캠페인 명 영역 끝 -->
+                                <!-- 캠페인 타겟 영역 시작 -->
+                                <div class="th right-border">캠페인 타겟</div>
+                                <div class="td right-border grow">
+                                    <input type="text" placeholder="타겟 선택" class="width2 left"/>
+                                    <span class="btn_sm_line right" onclick="targetCheckPopup();">선택</span>
+                                </div>
+                                <!-- 캠페인 타겟 영역 끝 -->
+                                <!-- 캠페인 컨트롤 그룹 영역 시작 -->
+                                <div class="th right-border">컨트롤 그룹</div>
+                                <div class="td">
+                                    <input type="text" class="width3 en_font" placeholder="00" oninput="numberReplace(this);" onkeyup="handleInput(this);"/>
+                                    <span class="en_font">%</span>
+                                </div>
+                                <!-- 캠페인 컨트롤 그룹 영역 끝 -->
+                            </div>
+                            <article class="setting_area">
+                                <div class="title">캠페인 발송 셋팅</div>
+                                <div class="set_area">
+                                    <!-- 타겟 리스트 1단위 영역 시작 -->
+                                    <div class="target_area cf">
+                                        <div class="row bottom-border cf">
+                                            <div class="number en_font">1</div>
+                                            <div class="setting_name">
+                                                <!-- 타겟명 -->
+                                                <h3>TARGET A</h3>
+                                                <!-- 타겟 수 -->
+                                                <span>(<span class="en_font">15,126</span> 명)</span>
+                                            </div>
+                                            <!-- 타겟 추출 날짜 -->
+                                            <div class="date right">
+                                                <span class="en_font">2020</span>년 
+                                                <span class="en_font">10</span>월 
+                                                <span class="en_font">13</span>일 
+                                                <span class="en_font">15</span>시 
+                                                <span class="en_font">06</span>분 기준
+                                            </div>
+                                        </div>
+                                        <!-- 발송 유형 영역 시작 -->
+                                        <div class="step right-border">
+                                            <div class="row bottom-border">
+                                                <div class="th">발송 유형</div>
+                                                <div class="td">
+                                                    <div class="toggle right">단일 발송</div>
+                                                </div>
+                                            </div>
+                                            <div class="low_area"></div>
+                                        </div>
+                                        <!-- 발송 유형 영역 끝 -->
+                                        <!-- 컨텐츠 선택 영역 시작 -->
+                                        <div class="step right-border">
+                                            <div class="row bottom-border">
+                                                <div class="th">컨텐츠</div>
+                                                <div class="td"></div>
+                                            </div>
+                                            <div class="low_area">
+                                                <div class="conts_area">
+                                                    <input type="text" class="input" readonly placeholder="컨텐츠를 선택해주세요."/>
+                                                    <!-- 컨텐츠 선택 버튼 -->
+                                                    <input type="button" class="btn_sm_line" value="선택" onclick="contentsSettingPopup();"/>
+                                                    <!-- 컨텐츠 미리보기 버튼 -->
+                                                    <div class="btn_sm_line view">미리보기</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 컨텐츠 선택 영역 끝 -->
+                                        <!-- 발송 일정 선택 영역 시작 -->
+                                        <div class="step">
+                                            <div class="row bottom-border">
+                                                <div class="th">발송일정</div>
+                                                <div class="td"></div>
+                                            </div>
+                                            <div class="low_area">
+                                                <div class="schedule_area">
+                                                    <div class="bottom-border cf">
+                                                        <!-- select 영역 시작 -->
+                                                        <div class="select">
+                                                            <!-- selected value -->
+                                                            <div class="value searchSelect" data="">일괄발송</div>
+                                                            <!-- option -->
+                                                            <ul class="option">
+                                                                <li data="">일괄발송</li>
+                                                                <li data="">시간 최적화</li>
+                                                                <li data="">요일 최적화</li>
+                                                            </ul>
+                                                        </div>
+                                                        <!-- select 영역 끝 -->
+                                                    </div>
+                                                    <div class="bottom-border cf">
+                                                        <!-- select 영역 시작 -->
+                                                        <div class="select" id="re_state">
+                                                            <!-- selected value -->
+                                                            <div class="value searchSelect" data="0">예약발송</div>
+                                                            <!-- option -->
+                                                            <ul class="option">
+                                                                <li data="0">예약발송</li>
+                                                                <li data="1">즉시발송</li>
+                                                            </ul>
+                                                        </div>
+                                                        <!-- select 영역 끝 -->
+                                                    </div>
+                                                    <div class="re_option active bottom-border cf">
+                                                        <!-- 날짜 선택 영역 -->
+                                                        <input type="text" class="input_style en_font calendar" placeholder="YYYY.MM.DD" id="dataCalendar"/>
+                                                    </div>
+                                                    <div  class="re_option active bottom-border reservation cf">
+                                                        <!-- 시간 입력 영역 -->
+                                                        <input type="text" class="input_style" placeholder="00시 00분"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 발송 일정 선택 영역 끝 -->
+                                    </div>
+                                    <!-- 타겟 리스트 1단위 영역 끝 -->
+                                    <!-- 타겟 리스트 1단위 영역 시작 -->
+                                    <!--
+                                    <div class="target_area cf">
+                                        <div class="row bottom-border cf">
+                                            <div class="number en_font">1</div>
+                                            <div class="setting_name">
+                                                <h3>TARGET A</h3>
+                                                <span>(<span class="en_font">15,126</span> 명)</span>
+                                            </div>
+                                            <div class="date right">
+                                                <span class="en_font">2020</span>년 
+                                                <span class="en_font">10</span>월 
+                                                <span class="en_font">13</span>일 
+                                                <span class="en_font">15</span>시 
+                                                <span class="en_font">06</span>분 기준
+                                            </div>
+                                        </div>
+                                        <div class="step right-border">
+                                            <div class="row bottom-border">
+                                                <div class="th">발송 유형</div>
+                                                <div class="td">                      
+                                                    <div class="btn_sm_line right">변경</div>  
+                                                    <div class="toggle right">
+                                                        <span class="switch_label">단일 발송</span>    
+                                                        <label class="btn_switch">
+                                                            <input type="checkbox" name="" onchange="">
+                                                            <span></span>
+                                                        </label>  
+                                                        <span class="switch_label en_font">A/B TEST</span> 
+                                                    </div>                                       
+                                                </div>
+                                            </div>
+                                            <div class="low_area">
+                                                <table class="tableType2">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>발송 그룸</th>
+                                                            <td><span class="en_font">30%</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>수집 기간(시작)</th>
+                                                            <td><span class="en_font">2020-10-16</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>수집 기간(종료)</th>
+                                                            <td><span class="en_font">2020-10-18</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>성과 확인</th>
+                                                            <td><span class="en_font">Open</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>발송 시간</th>
+                                                            <td><span class="en_font">2020-11-01 13:00</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="step right-border">
+                                            <div class="row bottom-border">
+                                                <div class="th">컨텐츠</div>
+                                                <div class="td"></div>
+                                            </div>
+                                            <div class="low_area">
+                                                <div class="conts_area">
+                                                    <input type="text" class="input" readonly placeholder="컨텐츠를 선택해주세요."/>
+                                                    <input type="button" class="btn_sm_line" value="선택"/>
+                                                    <div class="btn_sm_line view">미리보기</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="step">
+                                            <div class="row bottom-border">
+                                                <div class="th">발송일정</div>
+                                                <div class="td"></div>
+                                            </div>
+                                            <div class="low_area">
+                                                <div class="schedule_area">
+                                                    <div class="bottom-border cf">
+                                                        <div class="select">
+                                                            <div class="value searchSelect" data="">일괄발송</div>
+                                                            <ul class="option">
+                                                                <li data="">일괄발송</li>
+                                                                <li data="">시간 최적화</li>
+                                                                <li data="">요일 최적화</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bottom-border cf">
+                                                        <div class="select">
+                                                            <div class="value searchSelect" data="">예약발송</div>
+                                                            <ul class="option">
+                                                                <li data="">예약발송</li>
+                                                                <li data="">즉시발송</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bottom-border cf">
+                                                        <input type="text" class="input_style en_font calendar" placeholder="YYYY.MM.DD" id="dataCalendar"/>
+                                                    </div>
+                                                    <div  class="cf">
+                                                        <input type="text" class="input_style" placeholder="00시 00분"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <!-- 타겟 리스트 1단위 영역 끝 -->
+                                </div>
+                                <!-- <div class="none">
+                                    타겟을 선택해 주세요.
+                                </div> -->
+                            </article>
+                        </div>
+                        <div class="right_column">
+                            <div class="row">
+                                <div class="th"><div class="ellipsis"></div>미리보기</div>
+                            </div>
+                            <div class="inner">
+                                <!-- 미리보기 영역 -->
+                                <!--<div class="thumbnail"><img src="../../image/hyurcjsrty20200720162700.png" alt=""></div>-->
+                                <!-- [모바일 카카오] 시작 -->
+                                <!--
+                                <div class="round_box">
+                                    <div class="sms">
+                                        <img src="../../image/test_img7.jpg" alt="">
+                                    </div>
+                                    <p class="sms_txt">
+                                        (광고)[adidas] 20% 바운스 백 할인 쿠폰 증정<br /><br />
+                                        #name#님,<br />
+                                        9월 2일~3일 동안 ZX 알카인 제품을 구매해주신 회원님께<br />
+                                        20% BOUNCE BACK 쿠폰이 발급되었습니다.<br />
+                                    </p>
+                                    <a href="#" target="_blank" class="sms_btn">자세히 보기</a>
+                                </div> -->
+                                <!-- [모바일 카카오] 끝 -->
+
+                                <!-- [모바일 카카오 텍스만] 시작 -->
+                                <!-- <div class="round_box">
+                                    <div class="sms_txt">
+                                        (광고)[adidas] VVIP 이벤트<br><br>
+
+                                        아디다스 VVIP #name님, 안녕하세요.<br>
+                                        여름 시즌을 맞아<br>
+                                        반팔티, 슬리퍼 등 바캉스 아이템을<br>
+                                        할인 판매 합니다.<br>
+
+                                        또한 20만원 이상 구매하신 분들께<br>
+                                        비치백을 사은품으로 증정합니다.<br><br>
+
+                                        더운 여름에 지치신 고객님들에게<br>
+                                        항상 행복한 일이 가득하시기를 바랍니다.<br>
+
+                                        이벤트는 오프라인, 온라인, 모바일앱에서<br>
+                                        동시 진행하니 많은 참여 부탁드립니다.<br>
+                                    </div>
+                                </div> -->
+                                <!-- [모바일 카카오 텍스만] 끝 -->
+                                <!-- [모바일 문자] 시작 -->
+                                <!-- <div class="sms_box">
+                                    <div class="sms_title" id="sms_title">(광고 Test)</div>
+                                    <div class="sms_img"></div>
+                                    <div class="sms_txt">
+                                        (광고)[adidas] VVIP 이벤트<br /><br />
+
+                                        아디다스 VVIP #name님, 안녕하세요.<br />
+                                        여름 시즌을 맞아<br />
+                                        반팔티, 슬리퍼 등 바캉스 아이템을<br />
+                                        할인 판매 합니다.<br />
+
+                                        또한 20만원 이상 구매하신 분들께<br />
+                                        비치백을 사은품으로 증정합니다.<br /><br />
+
+                                        더운 여름에 지치신 고객님들에게<br />
+                                        항상 행복한 일이 가득하시기를 바랍니다.<br />
+
+                                        이벤트는 오프라인, 온라인, 모바일앱에서<br />
+                                        동시 진행하니 많은 참여 부탁드립니다.<br /><br />
+
+                                        *아디다스앱에서 확인하기:<br /><br />
+                                    </div>
+                                </div> -->
+                                <!-- [모바일 문자] 끝 -->
+
+                                <!-- [모바일 RCS 텍스트형] 시작 -->
+                                <!-- <div class="rcs_txt_type">
+                                    <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                    <p>
+                                        얼죽아 고객님에게<br>
+                                        스타벅스 아이스 아메리카노<br>
+                                        쿠폰을 드립니다.
+                                    </p>              
+                                    <div class="rcs_action">주문하러 갈래요</div>
+                                </div> -->
+                                <!-- [모바일 RCS 텍스트형] 끝 -->
+
+                                <!-- [RCS 가로형 Left] 시작 -->
+                                <!-- <div class="rcs_horizontal cf">
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                    </div>
+                                    <div class="txt_area">
+                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                        <p>
+                                            얼죽아 고객님에게<br>
+                                            스타벅스 아이스 아메리카노<br>
+                                            쿠폰을 드립니다.
+                                        </p>              
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>          
+                                </div> -->
+                                <!-- [RCS 가로형 Left] 시작 -->
+                                <!-- [RCS 가로형 Right] 시작 -->
+                                <!-- <div class="rcs_horizontal cf">                    
+                                    <div class="txt_area">
+                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                        <p>
+                                            얼죽아 고객님에게<br>
+                                            스타벅스 아이스 아메리카노<br>
+                                            쿠폰을 드립니다.
+                                        </p>              
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>  
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                    </div>        
+                                </div> -->
+                                <!-- [RCS 가로형 Right] 끝 -->
+                                <!-- [RCS 세로형 Tall] 시작 -->
+                                <!-- <div class="rcs_vertical tall cf">  
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                    </div>
+                                    <div class="txt_area">
+                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                        <p>
+                                            세련되고 자신만의 스타일을 추구하는<br>
+                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                            지금 만나보세요.
+                                        </p>
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>
+                                </div> -->
+                                <!-- [RCS 세로형 Tall] 끝 -->
+                                <!-- [RCS 세로형 Medium] 시작 -->
+                                <!-- <div class="rcs_vertical medium cf">
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                    </div>
+                                    <div class="txt_area">
+                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                        <p>
+                                            세련되고 자신만의 스타일을 추구하는<br>
+                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                            지금 만나보세요.
+                                        </p>
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>
+                                </div> -->
+                                <!-- [RCS 세로형 Medium] 끝 -->
+                                <!-- [RCS 슬라이드형 Small] 시작 -->
+                                <div class="rcs_inner">
+                                    <div class="slide_area">
+                                        <!-- slide prev/next 버튼 영역 -->
+                                        <div class="rcs_prev">
+                                            <img src="../../image/ico_rcs_prev.png" alt="">
+                                        </div>
+                                        <div class="rcs_next">
+                                            <img src="../../image/ico_rcs_next.png" alt="">
+                                        </div>
+
+                                        <div class="swiper-container slideSwiper small">
+                                            <div class="swiper-wrapper">
+                                                <!--슬라이드 1단위 영역 시작-->
+                                                <div class="swiper-slide slide0">
+                                                    <div class="rcs_head">[WEB발신]광고</div>
+                                                    <section>
+                                                        <!--이미지 영역-->
+                                                        <div class="img_area"></div>
+                                                        <div class="txt_area">
+                                                            <h3>제목 영역</h3>
+                                                            <p>내용 영역</p>
+                                                            <!--액션 버튼 영역-->
+                                                            <div class="rcs_btn_wrap">
+                                                                <div class="rcs_btn">버튼1</div>
+                                                                <div class="rcs_btn">버튼2</div>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                <!--슬라이드 1단위 영역 끝-->
+                                            </div>
+                                            <!--슬라이드 페이지 번호 영역-->
+                                            <div class="rcs_paging en_font"></div>
+                                            <!-- 수신거부 번호 표시 영역 -->
+                                            <div class="rcs_register">
+                                                무료 수신거부 :
+                                                <span id="rejectionArea">000-0000-0000</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- [RCS 슬라이드형 Small] 끝 -->
+                                <!-- [RCS 슬라이드형 Medium] 시작 -->
+                                <!--
+                                <div class="rcs_inner">
+                                    <div class="slide_area">
+                                        &lt;!&ndash; slide prev/next 버튼 영역 &ndash;&gt;
+                                        <div class="rcs_prev">
+                                            <img src="../../image/ico_rcs_prev.png" alt="">
+                                        </div>
+                                        <div class="rcs_next">
+                                            <img src="../../image/ico_rcs_next.png" alt="">
+                                        </div>
+
+                                        <div class="swiper-container slideSwiper medium">
+                                            <div class="swiper-wrapper">
+                                                &lt;!&ndash; 슬라이드 1단위 영역 시작 &ndash;&gt;
+                                                <div class="swiper-slide slide0">
+                                                    <div class="rcs_head">[WEB발신]광고</div>
+                                                    <section>
+                                                        &lt;!&ndash; 이미지 영역 &ndash;&gt;
+                                                        <div class="img_area"></div>
+                                                        <div class="txt_area">
+                                                            <h3>제목 영역</h3>
+                                                            <p>내용 영역</p>
+                                                            &lt;!&ndash; 액션 버튼 영역 &ndash;&gt;
+                                                            <div class="rcs_btn_wrap">
+                                                                <div class="rcs_btn">버튼1</div>
+                                                                <div class="rcs_btn">버튼2</div>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                &lt;!&ndash; 슬라이드 1단위 영역 끝 &ndash;&gt;
+                                            </div>
+                                            &lt;!&ndash; 슬라이드 페이지 번호 영역 &ndash;&gt;
+                                            <div class="rcs_paging en_font"></div>
+                                            &lt;!&ndash; 수신거부 번호 표시 영역 &ndash;&gt;
+                                            <div class="rcs_register">
+                                                무료 수신거부 :
+                                                <span id="rejectionArea">000-0000-0000</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+                                <!-- [RCS 슬라이드형 Medium] 끝 -->            
+                            </div>
+                            <!-- 승인요청 버튼 -->
+                            <div class="btn_bg" onclick="requestPopup();">승인요청</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- section 영역 끝 -->
+                <!-- footer 영역 시작 -->
+                <footer class="footer">
+                    &copy; Milvus Corp.
+                </footer>
+                <!-- footer 영역 끝 -->
+            </div>
+            <!-- 컨텐츠 영역 끝 -->
+        </section>
+        <!-- container 영역 끝 -->
+    </div>
+    
+    <!-- 타겟 선택 팝업 영역 시작 -->
+    <div class="layer_pop" id="targetCheckPopup">
+        <div class="pop_container popup_size4">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">타겟 선택</div>
+            <div class="pop_inner">
+                <div class="radio_type">
+                    <label class="block_radio"><input name="ex2" type="radio" checked/><span>업로드 그룹</span></label>
+                </div>
+                <div class="form_search">
+                    <!-- 검색 영역 시작 -->
+                    <input type="text" class="calendar" id="from" placeholder="생성일 선택" />
+                    <span class="hyphen"></span>
+                    <input type="text" class="calendar" id="to" placeholder="생성일 선택" />
+                    <div class="input_txt left-border-none">
+                        <input type="text" placeholder="타겟 명 검색" />
+                        <input type="button" class="btn_search" value="검색" />
+                    </div>
+                    <!-- 검색 영역 끝 -->
+                </div>
+                <table class="pop_table table_fixed" id="targetList">
+                    <colgroup>
+                        <col width="35"/>
+                        <col width="302"/>
+                        <col width="130"/>
+                        <col width="*"/>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>타겟 명</th>
+                            <th>타겟 수</th>
+                            <th>생성일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 리스트 1단위 영역 시작 -->
+                        <tr>
+                            <td>
+                                <label class="custom_radio"><input name="" type="radio"
+                                        value=""><span></span></label>
+                            </td>
+                            <td>
+                                <!-- 타겟명 -->
+                                <div  class="ellipsis">200928_MONDAY_13TH_(1)</div>
+                            </td>
+                            <!-- 타겟 수 -->
+                            <td class="en_font">13,455</td>
+                            <!-- 생성일 -->
+                            <td class="en_font">2020-10-05 16:14:00</td>
+                        </tr>
+                        <!-- 리스트 1단위 영역 끝 -->
+                    </tbody>
+                </table>
+                <div class="btn_row bottom-border">
+                    <ul class="pager">
+                        <li class="first">First</li>
+                        <li class="prev">Prev</li>
+                        <li class="page on">1</li>
+                        <li class="page">2</li>
+                        <li class="page">3</li>
+                        <li class="page">4</li>
+                        <li class="page">5</li>
+                        <li class="page">6</li>
+                        <li class="page">7</li>
+                        <li class="page">8</li>
+                        <li class="page">9</li>
+                        <li class="page">10</li>
+                        <li class="next active">Next</li>
+                        <li class="last active">Last</li>
+                    </ul>
+                </div>
+                <!-- 오류 메시지 영역 -->
+                <div class="pop_error_txt blue_point_color" id="targetError"></div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center" onclick="targetCheck();" value="확인" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 타겟 선택 팝업 영역 끝 -->
+
+    <!-- 컨텐츠 선택 팝업 영역 시작 -->
+    <div class="layer_pop contentsSetting" id="settingPopup">
+        <div class="pop_container popup_size8">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">컨텐츠 선택</div>
+            <div class="pop_inner">
+                <div class="form_search">
+                    <!-- 이메일/모바일 선택 -->
+                    <div class="" id="contents_tab">
+                        <label class="block_radio"><input name="ex" type="radio" checked/><span>이메일</span></label>
+                        <label class="block_radio"><input name="ex" type="radio"/><span>모바일</span></label>
+                    </div>
+                    <!-- 검색 영역 시작 -->
+                    <input type="text" class="calendar" id="from" placeholder="등록일 선택" />
+                    <span class="hyphen"></span>
+                    <input type="text" class="calendar" id="to" placeholder="등록일 선택" />
+                    <div class="input_txt left-border-none">
+                        <input type="text" placeholder="컨텐츠 명 검색" id="contentsName" />
+                        <input type="button" class="btn_search" value="검색" onclick="contentsSearch();" />
+                    </div>
+                    <!-- 검색 영역 끝 -->
+                    <!-- 오류 메시지 영역 -->
+                    <div class="blue_point_color" id="erre_area1">컨텐츠 명을 입력해주세요.</div>
+                </div>
+                <div class="option_div">
+                    <div class="image_container">
+                        <!-- 조회된 결과가 없는 경우 -->
+                        <!-- <div class="none_data">조회된 결과가 없습니다.</div> -->
+                        <!-- 이메일 리스트 1단위 영역 시작 -->
+                        <div class="image_column">
+                            <div class="top">
+                                <!-- 체크박스 -->
+                                <label class="custom_radio"><input type="radio" name=""
+                                        value="../../image/test_img9.jpg" /><span></span></label>
+                                <!-- 이미지명 -->
+                                <span class="title">2001002_Oct_Newsletter_A</span>
+                            </div>
+                            <div class="row_top cf">
+                                <!-- 컨텐츠 type -->
+                                <div class="contents_type">광고</div>
+                                <!-- 제목 -->
+                                <h4>BEYONCE X SUPERSTAR 콜라보</h4>
+                            </div>
+                            <div class="body">
+                                <!-- 이미지 썸네일 -->
+                                <div class="thumbnail">
+                                    <img src="../../image/test_img3.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="row_footer">
+                                <!-- 수정일 -->
+                                <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                <!-- 등록일 -->
+                                <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                            </div>
+                        </div>
+                        <!-- 이메일 리스트 1단위 영역 끝 -->
+                        <!-- 모바일 리스트 1단위 영역 시작 -->
+                        <div class="image_column">
+                            <div class="top">
+                                <!-- 체크박스 -->
+                                <label class="custom_radio"><input type="radio" name=""
+                                        value="../../image/test_img9.jpg" /><span></span></label>
+                                <ul class="sms_type cf">
+                                    <li>카카오</li>
+                                    <li>모바일</li>
+                                </ul>
+                            </div>
+                            <div class="top bg_none">
+                                <!-- 템플릿 명 -->
+                                <span class="title">2001002_Oct_Newsletter_A</span>
+                            </div>
+                            <div class="row_top cf">
+                                <!-- 컨텐츠 type -->
+                                <div class="contents_type">광고</div>
+                                <!-- 제목 -->
+                                <h4>BEYONCE X SUPERSTAR 콜라보</h4>
+                            </div>
+                            <div class="body sms_height">
+                               <!-- **** 카카오 layout 시작 ***** -->
+                               <div class="round_box">
+                                    <!-- 이미지 영역 -->
+                                    <div class="sms">
+                                        <img src="../../image/test_img7.jpg" alt="">
+                                    </div>
+                                    <!-- 텍스트 영역 -->
+                                    <p class="sms_txt">
+                                        (광고)[adidas] 20% 바운스 백 할인 쿠폰 증정<br /><br />
+                                        #name#님,<br />
+                                        9월 2일~3일 동안 ZX 알카인 제품을 구매해주신 회원님께<br />
+                                        20% BOUNCE BACK 쿠폰이 발급되었습니다.<br />
+                                    </p>
+                                    <!-- 카카오 링크 버튼 영역 -->
+                                    <a href="#" target="_blank" class="sms_btn">자세히 보기</a>
+                                </div>
+                                <!-- **** 카카오 layout 끝 ***** -->
+                                <!-- **** 카카오 텍스트만 layout 시작 ***** -->
+                                <!--
+                                <div class="round_box">
+                                    <div class="sms_txt">
+                                        (광고)[adidas] VVIP 이벤트<br><br>
+
+                                        아디다스 VVIP #name님, 안녕하세요.<br>
+                                        여름 시즌을 맞아<br>
+                                        반팔티, 슬리퍼 등 바캉스 아이템을<br>
+                                        할인 판매 합니다.<br>
+
+                                        또한 20만원 이상 구매하신 분들께<br>
+                                        비치백을 사은품으로 증정합니다.<br><br>
+
+                                        더운 여름에 지치신 고객님들에게<br>
+                                        항상 행복한 일이 가득하시기를 바랍니다.<br>
+
+                                        이벤트는 오프라인, 온라인, 모바일앱에서<br>
+                                        동시 진행하니 많은 참여 부탁드립니다.<br><br>
+
+                                        *아디다스앱에서 확인하기:<br><br>
+                                    </div>
+                                </div>
+                                -->
+                                <!-- **** 카카오 텍스트만 layout 끝 ***** -->
+                                <!-- [모바일 문자] 시작 -->
+                                <!-- <div class="sms_box">
+                                    <div class="sms_title" id="sms_title">(광고 Test)</div>
+                                    <div class="sms_img"></div>
+                                    <div class="sms_txt">
+                                        (광고)[adidas] VVIP 이벤트<br /><br />
+
+                                        아디다스 VVIP #name님, 안녕하세요.<br />
+                                        여름 시즌을 맞아<br />
+                                        반팔티, 슬리퍼 등 바캉스 아이템을<br />
+                                        할인 판매 합니다.<br />
+
+                                        또한 20만원 이상 구매하신 분들께<br />
+                                        비치백을 사은품으로 증정합니다.<br /><br />
+
+                                        더운 여름에 지치신 고객님들에게<br />
+                                        항상 행복한 일이 가득하시기를 바랍니다.<br />
+
+                                        이벤트는 오프라인, 온라인, 모바일앱에서<br />
+                                        동시 진행하니 많은 참여 부탁드립니다.<br /><br />
+
+                                        *아디다스앱에서 확인하기:<br /><br />
+                                    </div>
+                                </div> -->
+                                <!-- [모바일 문자] 끝 -->
+                                <!-- **** RCS 텍스트형 시작 ***** -->
+                                <!-- <div class="rcs_txt_type">
+                                    <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                    <p>
+                                        얼죽아 고객님에게<br>
+                                        스타벅스 아이스 아메리카노<br>
+                                        쿠폰을 드립니다.
+                                    </p>              
+                                    <div class="rcs_action">주문하러 갈래요</div>
+                                </div> -->
+                                <!-- **** RCS 텍스트형 끝 ***** -->
+                                <!-- **** RCS 가로형 Left 시작 ***** -->
+                                <!-- <div class="rcs_horizontal cf">
+                                        <div class="img_area">
+                                            <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                        </div>
+                                        <div class="txt_area">
+                                            <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                            <p>
+                                                얼죽아 고객님에게<br>
+                                                스타벅스 아이스 아메리카노<br>
+                                                쿠폰을 드립니다.
+                                            </p>              
+                                            <div class="rcs_action">주문하러 갈래요</div>
+                                        </div>          
+                                    </div> -->
+                                <!-- **** RCS 가로형 Left 끝 ***** -->
+                                <!-- **** RCS 가로형 Right 시작 ***** -->
+                                <!-- <div class="rcs_horizontal cf">                    
+                                    <div class="txt_area">
+                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                        <p>
+                                            얼죽아 고객님에게<br>
+                                            스타벅스 아이스 아메리카노<br>
+                                            쿠폰을 드립니다.
+                                        </p>              
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>  
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                    </div>        
+                                </div> -->
+                                <!-- **** RCS 가로형 Right 끝 ***** -->                         
+                                <!-- **** RCS 세로형 Tall 시작 ***** -->
+                                <!-- <div class="rcs_vertical tall cf">  
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                    </div>                    
+                                    <div class="txt_area">
+                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                        <p>
+                                            세련되고 자신만의 스타일을 추구하는<br>
+                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                            지금 만나보세요.
+                                        </p>              
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>                                
+                                </div> -->
+                                <!-- **** RCS 세로형 Tall 끝 ***** -->
+                                <!-- **** RCS 세로형 Medium 시작 ***** -->
+                                <!-- <div class="rcs_vertical medium cf">  
+                                    <div class="img_area">
+                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                    </div>                    
+                                    <div class="txt_area">
+                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                        <p>
+                                            세련되고 자신만의 스타일을 추구하는<br>
+                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                            지금 만나보세요.
+                                        </p>              
+                                        <div class="rcs_action">주문하러 갈래요</div>
+                                    </div>                                
+                                </div> -->
+                                <!-- **** RCS 세로형 Medium 끝 ***** -->
+                                <!-- **** RCS 슬라이드형 small 시작 ***** -->
+                                <!--
+                                <div class="rcs_slide_wrap">
+                                    <div class="rcs_slide_inner">
+                                        <div class="slide small cf">  
+                                            <div class="img_area">
+                                                <img src="../../image/test_rcs_slide_sm.jpg" alt="">
+                                            </div>                    
+                                            <div class="txt_area">
+                                                <h3>(광고)[락포트] 토탈모션 컬렉션을 만나보세요!</h3>
+                                                <p>
+                                                    지금 바로 토탈모션 컬렉션을<br>
+                                                    만나보세요.<br>
+                                                    당신에게 최고의 선택입니다.
+                                                </p>              
+                                                <div class="rcs_action">주문하러 갈래요</div>
+                                            </div>                                
+                                        </div>
+                                        <div class="slide small cf">  
+                                            <div class="img_area">
+                                                <img src="../../image/test_rcs_slide_sm2.jpg" alt="">
+                                            </div>                    
+                                            <div class="txt_area">
+                         
+                                            </div>                                
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- **** RCS 슬라이드형 small 끝 ***** -->
+                                <!-- **** RCS 슬라이드형 Medium 시작 ***** -->
+                                <!-- <div class="rcs_slide_wrap">
+                                    <div class="rcs_slide_inner">
+                                        <div class="slide medium cf">  
+                                            <div class="img_area">
+                                                <img src="../../image/test_rcs_slide_sm.jpg" alt="">
+                                            </div>                    
+                                            <div class="txt_area">
+                                                <h3>(광고)[락포트] 토탈모션 컬렉션을 만나보세요!</h3>
+                                                <p>
+                                                    지금 바로 토탈모션 컬렉션을<br>
+                                                    만나보세요.<br>
+                                                    당신에게 최고의 선택입니다.
+                                                </p>              
+                                                <div class="rcs_action">주문하러 갈래요</div>
+                                            </div>                                
+                                        </div>
+                                        <div class="slide medium cf">  
+                                            <div class="img_area">
+                                                <img src="../../image/test_rcs_slide_sm2.jpg" alt="">
+                                            </div>                    
+                                            <div class="txt_area">
+                         
+                                            </div>                                
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- **** RCS 슬라이드형 Medium 끝 ***** -->
+                            </div>
+                            <div class="row_footer">
+                                <!-- 수정일 -->
+                                <div class="date">수정일&nbsp;&nbsp;<span>2020.10.04 13:25</span></div>
+                                <!-- 등록일 -->
+                                <div class="date">등록일&nbsp;&nbsp;<span>2020.10.02 18:50</span></div>
+                            </div>
+                        </div>
+                        <!-- 모바일 리스트 1단위 영역 끝 -->  
+                    </div>
+                    <div class="btn_row bottom-border left-border right-border">
+                        <ul class="pager">
+                            <li class="first">First</li>
+                            <li class="prev">Prev</li>
+                            <li class="page on">1</li>
+                            <li class="page">2</li>
+                            <li class="page">3</li>
+                            <li class="page">4</li>
+                            <li class="page">5</li>
+                            <li class="page">6</li>
+                            <li class="page">7</li>
+                            <li class="page">8</li>
+                            <li class="page">9</li>
+                            <li class="page">10</li>
+                            <li class="next active">Next</li>
+                            <li class="last active">Last</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 오류 메시지 영역 -->
+                <div class="pop_error_txt blue_point_color" id="erre_area2">컨텐츠를 선택해주세요.</div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center" id="" onclick="contentsSave();" value="저장" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 컨텐츠 선택 팝업 영역 끝 -->
+
+    <!-- 테스트 발송 팝업 영역 시작 -->
+    <div class="layer_pop" id="testGroupPopup">
+        <div class="pop_container popup_size2">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">테스트 발송</div>
+            <div class="pop_inner">
+                <div class="sendArea cf">
+                    <div class="left">
+                        <div class="top">
+                            <h3>컨텐츠</h3>
+                            <!-- Tab Nav 영역 -->
+                            <ul class="tab_nav cf">
+                                <li class="on">1</li>
+                            </ul>
+                        </div>
+                        <div class="info">
+                            <table class="info_table">
+                                <colgroup>
+                                    <col width="105"/>
+                                    <col width="220"/>
+                                    <col width="105"/>
+                                    <col width="110"/>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>캠페인 명</th>
+                                        <td colspan="3"><input type="text" class="" value="201006_NEW_TARGETING_A"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>타겟</th>
+                                        <td class="ellipsis">201006_NEW_TARGETING_A</td>
+                                        <th>총 명수</th>
+                                        <td class="ellipsis en_font">15,126</td>
+                                    </tr>
+                                    <tr>
+                                        <th>발송 일시</th>
+                                        <td colspan="3" class="en_font">2020-10-06 14:20</td>
+                                    </tr>
+                                    <tr>
+                                        <th>컨텐츠 명</th>
+                                        <td colspan="3" class="ellipsis">201006_NEW_TARGETING_A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>발송 주소</th>
+                                        <td colspan="3" class="ellipsis">adidas(adidas@adidas.com)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>제목</th>
+                                        <td colspan="3"><input type="text" class="title" value="최대 50% 할인이 오늘까지!"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="100%" class="padding_none">
+                                            <!-- 미리보기 영역 시작 -->
+                                            <div class="view">
+                                                <div class="thumbnail"><img src="../../image/hyurcjsrty20200720162700.png" alt=""></div>
+                                                <!-- [모바일 카카오] 시작 -->
+                                                <!-- <div class="round_box">
+                                                    <div class="sms">
+                                                        <img src="../../image/test_img7.jpg" alt="">
+                                                    </div>
+                                                    <p class="sms_txt">
+                                                        (광고)[adidas] 20% 바운스 백 할인 쿠폰 증정<br /><br />
+                                                        #name#님,<br />
+                                                        9월 2일~3일 동안 ZX 알카인 제품을 구매해주신 회원님께<br />
+                                                        20% BOUNCE BACK 쿠폰이 발급되었습니다.<br />
+                                                    </p>
+                                                    <a href="#" target="_blank" class="sms_btn">자세히 보기</a>
+                                                </div> -->
+                                                <!-- [모바일 카카오] 끝 -->
+
+                                                <!-- [모바일 카카오 텍스트만] 시작 -->
+                                                <!-- <div class="round_box">
+                                                    <div class="sms_txt">
+                                                        (광고)[adidas] VVIP 이벤트<br><br>
+
+                                                        아디다스 VVIP #name님, 안녕하세요.<br>
+                                                        여름 시즌을 맞아<br>
+                                                        반팔티, 슬리퍼 등 바캉스 아이템을<br>
+                                                        할인 판매 합니다.<br>
+
+                                                        또한 20만원 이상 구매하신 분들께<br>
+                                                        비치백을 사은품으로 증정합니다.<br><br>
+
+                                                        더운 여름에 지치신 고객님들에게<br>
+                                                        항상 행복한 일이 가득하시기를 바랍니다.<br>
+
+                                                        이벤트는 오프라인, 온라인, 모바일앱에서<br>
+                                                        동시 진행하니 많은 참여 부탁드립니다.<br>
+                                                    </div>
+                                                </div> -->
+                                                <!-- [모바일 카카오 텍스트만] 끝 -->
+                                                <!-- [모바일 문자] 시작 -->
+                                                <!-- <div class="sms_box">
+                                                    <div class="sms_title" id="sms_title">(광고 Test)</div>
+                                                    <div class="sms_img"></div>
+                                                    <div class="sms_txt">
+                                                        (광고)[adidas] VVIP 이벤트<br /><br />
+
+                                                        아디다스 VVIP #name님, 안녕하세요.<br />
+                                                        여름 시즌을 맞아<br />
+                                                        반팔티, 슬리퍼 등 바캉스 아이템을<br />
+                                                        할인 판매 합니다.<br />
+
+                                                        또한 20만원 이상 구매하신 분들께<br />
+                                                        비치백을 사은품으로 증정합니다.<br /><br />
+
+                                                        더운 여름에 지치신 고객님들에게<br />
+                                                        항상 행복한 일이 가득하시기를 바랍니다.<br />
+
+                                                        이벤트는 오프라인, 온라인, 모바일앱에서<br />
+                                                        동시 진행하니 많은 참여 부탁드립니다.<br /><br />
+
+                                                        *아디다스앱에서 확인하기:<br /><br />
+                                                    </div>
+                                                </div> -->
+                                                <!-- [모바일 문자] 끝 -->
+
+                                                <!-- [모바일 RCS 텍스트형] 시작 -->
+                                                <!-- <div class="rcs_txt_type">
+                                                    <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                                    <p>
+                                                        얼죽아 고객님에게<br>
+                                                        스타벅스 아이스 아메리카노<br>
+                                                        쿠폰을 드립니다.
+                                                    </p>              
+                                                    <div class="rcs_action">주문하러 갈래요</div>
+                                                </div> -->
+                                                <!-- [모바일 RCS 텍스트형] 끝 -->
+
+                                                <!-- [RCS 가로형 Left] 시작 -->
+                                                <!-- <div class="rcs_horizontal cf">
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                                    </div>
+                                                    <div class="txt_area">
+                                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                                        <p>
+                                                            얼죽아 고객님에게<br>
+                                                            스타벅스 아이스 아메리카노<br>
+                                                            쿠폰을 드립니다.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>          
+                                                </div> -->
+                                                <!-- [RCS 가로형 Left] 시작 -->
+                                                <!-- [RCS 가로형 Right] 시작 -->
+                                                <!-- <div class="rcs_horizontal cf">                    
+                                                    <div class="txt_area">
+                                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                                        <p>
+                                                            얼죽아 고객님에게<br>
+                                                            스타벅스 아이스 아메리카노<br>
+                                                            쿠폰을 드립니다.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>  
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                                    </div>        
+                                                </div> -->
+                                                <!-- [RCS 가로형 Right] 끝 -->
+                                                <!-- [RCS 세로형 Tall] 시작 -->
+                                                <!-- <div class="rcs_vertical tall cf">  
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                                    </div>                    
+                                                    <div class="txt_area">
+                                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                                        <p>
+                                                            세련되고 자신만의 스타일을 추구하는<br>
+                                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                                            지금 만나보세요.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>                                
+                                                </div> -->
+                                                <!-- [RCS 세로형 Tall] 끝 -->
+                                                <!-- [RCS 세로형 Medium] 시작 -->
+                                                <!-- <div class="rcs_vertical medium cf">  
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                                    </div>                    
+                                                    <div class="txt_area">
+                                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                                        <p>
+                                                            세련되고 자신만의 스타일을 추구하는<br>
+                                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                                            지금 만나보세요.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>                                
+                                                </div> -->
+                                                <!-- [RCS 세로형 Medium] 끝 -->
+                                                <!-- [RCS 슬라이드형 Small] 시작 -->
+            <!--                                <div class="rcs_inner">-->
+            <!--                                    <div class="slide_area">-->
+            <!--                                        &lt;!&ndash; slide prev/next 버튼 영역 &ndash;&gt;-->
+            <!--                                        <div class="rcs_prev">-->
+            <!--                                            <img src="../../image/ico_rcs_prev.png" alt="">-->
+            <!--                                        </div>-->
+            <!--                                        <div class="rcs_next">-->
+            <!--                                            <img src="../../image/ico_rcs_next.png" alt="">-->
+            <!--                                        </div>-->
+
+            <!--                                        <div class="swiper-container slideSwiper small">-->
+            <!--                                            <div class="swiper-wrapper">-->
+            <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 시작 &ndash;&gt;-->
+            <!--                                                <div class="swiper-slide slide0">-->
+            <!--                                                    <div class="rcs_head">[WEB발신]광고</div>-->
+            <!--                                                    <section>-->
+            <!--                                                        &lt;!&ndash; 이미지 영역 &ndash;&gt;-->
+            <!--                                                        <div class="img_area"></div>-->
+            <!--                                                        <div class="txt_area">-->
+            <!--                                                            <h3>제목 영역</h3>-->
+            <!--                                                            <p>내용 영역</p>-->
+            <!--                                                            &lt;!&ndash; 액션 버튼 영역 &ndash;&gt;-->
+            <!--                                                            <div class="rcs_btn_wrap">-->
+            <!--                                                                <div class="rcs_btn">버튼1</div>-->
+            <!--                                                                <div class="rcs_btn">버튼2</div>-->
+            <!--                                                            </div>-->
+            <!--                                                        </div>-->
+            <!--                                                    </section>-->
+            <!--                                                </div>-->
+            <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 끝 &ndash;&gt;-->
+            <!--                                            </div>-->
+            <!--                                            &lt;!&ndash; 슬라이드 페이지 번호 영역 &ndash;&gt;-->
+            <!--                                            <div class="rcs_paging en_font"></div>-->
+            <!--                                            &lt;!&ndash; 수신거부 번호 표시 영역 &ndash;&gt;-->
+            <!--                                            <div class="rcs_register">-->
+            <!--                                                무료 수신거부 :-->
+            <!--                                                <span id="rejectionArea">000-0000-0000</span>-->
+            <!--                                            </div>-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
+                                                <!-- [RCS 슬라이드형 Small] 끝 -->
+                                                <!-- [RCS 슬라이드형 Medium] 시작 -->
+            <!--                                <div class="rcs_inner">-->
+            <!--                                    <div class="slide_area">-->
+            <!--                                        &lt;!&ndash; slide prev/next 버튼 영역 &ndash;&gt;-->
+            <!--                                        <div class="rcs_prev">-->
+            <!--                                            <img src="../../image/ico_rcs_prev.png" alt="">-->
+            <!--                                        </div>-->
+            <!--                                        <div class="rcs_next">-->
+            <!--                                            <img src="../../image/ico_rcs_next.png" alt="">-->
+            <!--                                        </div>-->
+
+            <!--                                        <div class="swiper-container slideSwiper medium">-->
+            <!--                                            <div class="swiper-wrapper">-->
+            <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 시작 &ndash;&gt;-->
+            <!--                                                <div class="swiper-slide slide0">-->
+            <!--                                                    <div class="rcs_head">[WEB발신]광고</div>-->
+            <!--                                                    <section>-->
+            <!--                                                        &lt;!&ndash; 이미지 영역 &ndash;&gt;-->
+            <!--                                                        <div class="img_area"></div>-->
+            <!--                                                        <div class="txt_area">-->
+            <!--                                                            <h3>제목 영역</h3>-->
+            <!--                                                            <p>내용 영역</p>-->
+            <!--                                                            &lt;!&ndash; 액션 버튼 영역 &ndash;&gt;-->
+            <!--                                                            <div class="rcs_btn_wrap">-->
+            <!--                                                                <div class="rcs_btn">버튼1</div>-->
+            <!--                                                                <div class="rcs_btn">버튼2</div>-->
+            <!--                                                            </div>-->
+            <!--                                                        </div>-->
+            <!--                                                    </section>-->
+            <!--                                                </div>-->
+            <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 끝 &ndash;&gt;-->
+            <!--                                            </div>-->
+            <!--                                            &lt;!&ndash; 슬라이드 페이지 번호 영역 &ndash;&gt;-->
+            <!--                                            <div class="rcs_paging en_font"></div>-->
+            <!--                                            &lt;!&ndash; 수신거부 번호 표시 영역 &ndash;&gt;-->
+            <!--                                            <div class="rcs_register">-->
+            <!--                                                무료 수신거부 :-->
+            <!--                                                <span id="rejectionArea">000-0000-0000</span>-->
+            <!--                                            </div>-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
+                                                <!-- [RCS 슬라이드형 Medium] 끝 -->
+                                            </div>
+                                            <!-- 미리보기 영역 끝 -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="right testgroup">
+                        <div class="inner">
+                            <!-- 테스트 그룹 선택 select 영역 시작 -->
+                            <div class="select">
+                                <div class="value" data="" id="testGroupVal">테스트 그룹 선택</div>
+                                <ul class="option">
+                                    <li data="">테스트 그룹 선택</li>
+                                    <li data="">EX1</li>
+                                </ul>
+                            </div>
+                            <!-- 테스트 그룹 선택 select 영역 끝 -->
+                            <div class="group_area">
+                                <h3>개별 추가</h3>
+                                <!-- 개별 추가 table 영역 시작 -->
+                                <table class="pop_table_type3 align">
+                                    <thead>
+                                        <tr>
+                                            <th>이름</th>
+                                            <th>이메일</th>
+                                            <th>모바일</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="text" class="input"/></td>
+                                            <td><input type="text" class="input"/></td>
+                                            <td><input type="text" class="input"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- 개별 추가 table 영역 끝 -->
+                                <!-- 개별 추가 버튼 영역 -->
+                                <div class="btn_sm_line size">개별 추가</div>
+                                <div class="row_text">
+                                    <img src="../../image/ico_arrow1.png" alt=""/>&nbsp;&nbsp;기존 테스트 멤버를 유지하고 추가됩니다.
+                                </div>
+                                <h3>테스트 발송 리스트</h3>
+                                <div class="vertical_scroll">
+                                    <!-- 테스트 발송 리스트 영역 시작 -->
+                                    <table class="pop_table_type3 table_fixed">
+                                        <colgroup>
+                                            <col width="130"/>
+                                            <col width="130"/>
+                                            <col width="*"/>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th>이름</th>
+                                                <th>채널</th>
+                                                <th>주소</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>밀버스</td>
+                                                <td>이메일</td>
+                                                <td class="td">
+                                                    <span>milvus@milvus.co.kr</span>                                                    
+                                                    <span class="delete">삭제</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>밀버스</td>
+                                                <td>모바일</td>
+                                                <td class="td">
+                                                    <span>010-1234-1234</span>                                                    
+                                                    <span class="delete">삭제</span>
+                                                </td>                                            
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- 테스트 발송 리스트 영역 끝 -->
+                                </div>
+                            </div>
+                            <!-- [테스트 그룹 미선택 화면] -->
+                            <!-- <div class="no_data">
+                                <span>테스트 그룹을 선택해주세요.</span>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>     
+                <!-- 오류 메시지 영역 -->
+                <div class="pop_error_txt blue_point_color" id="erre_area3">테스트 타겟을 선택해주세요.</div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center" id="" value="발송" onclick="testSendSave();"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 테스트 발송 팝업 영역 끝 -->
+
+    <!-- 테스트 발송 안내 팝업 시작 -->
+    <div class="layer_pop alert" id="alert1">
+        <div class="pop_container popup_size3">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title">테스트 발송 안내</div>
+            <div class="pop_inner">
+                <div class="alert_txt">
+                    <span class="en_font">6</span>명에게 테스트 발송을 진행합니다.
+                </div>            
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_inline" onclick="testConfirm();" value="확인" />
+                    <input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />
+                </div>                  
+            </div>
+        </div>
+    </div>
+    <!-- 테스트 발송 안내 팝업 끝 -->
+
+    <!-- 승인요청 팝업 영역 시작 -->
+    <div class="layer_pop" id="requestPopup">
+        <div class="pop_container popup_size2">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">승인요청</div>
+            <div class="pop_inner">
+                <div class="sendArea cf">
+                    <div class="left cf">
+                        <div class="top">
+                            <h3>컨텐츠</h3>
+                            <!-- Tab Nav 영역 -->
+                            <ul class="tab_nav cf">
+                                <li class="on">1</li>
+                            </ul>
+                        </div>
+                        <div class="info">
+                            <table class="info_table">
+                                <colgroup>
+                                    <col width="105"/>
+                                    <col width="220"/>
+                                    <col width="105"/>
+                                    <col width="110"/>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>캠페인 명</th>
+                                        <td colspan="3" class="ellipsis">201006_NEW_TARGETING_A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>타겟</th>
+                                        <td class="ellipsis">201006_NEW_TARGETING_A</td>
+                                        <th>총 명수</th>
+                                        <td class="ellipsis en_font">15,126</td>
+                                    </tr>
+                                    <tr>
+                                        <th>발송 일시</th>
+                                        <td colspan="3" class="en_font">2020-10-06 14:20</td>
+                                    </tr>
+                                    <tr>
+                                        <th>컨텐츠 명</th>
+                                        <td colspan="3" class="ellipsis">201006_NEW_TARGETING_A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>발송 주소</th>
+                                        <td colspan="3" class="ellipsis">adidas(adidas@adidas.com)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>제목</th>
+                                        <td colspan="3" class="ellipsis title">최대 50% 할인이 오늘까지! </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="100%" class="padding_none">
+                                            <!-- 미리 보기 영역 -->
+                                            <div class="view">
+                                                <div class="thumbnail"><img src="../../image/hyurcjsrty20200720162700.png" alt=""></div>
+                                                <!-- [모바일 카카오] 시작 -->
+                                                <!-- <div class="round_box">
+                                                    <div class="sms">
+                                                        <img src="../../image/test_img7.jpg" alt="">
+                                                    </div>
+                                                    <p class="sms_txt">
+                                                        (광고)[adidas] 20% 바운스 백 할인 쿠폰 증정<br /><br />
+                                                        #name#님,<br />
+                                                        9월 2일~3일 동안 ZX 알카인 제품을 구매해주신 회원님께<br />
+                                                        20% BOUNCE BACK 쿠폰이 발급되었습니다.<br />
+                                                    </p>
+                                                    <a href="#" target="_blank" class="sms_btn">자세히 보기</a>
+                                                </div> -->
+                                                <!-- [모바일 카카오] 끝 -->
+
+                                                <!-- [모바일 카카오 텍스트만] 시작 -->
+                                                <!-- <div class="round_box">
+                                                    <div class="sms_txt">
+                                                        (광고)[adidas] VVIP 이벤트<br><br>
+
+                                                        아디다스 VVIP #name님, 안녕하세요.<br>
+                                                        여름 시즌을 맞아<br>
+                                                        반팔티, 슬리퍼 등 바캉스 아이템을<br>
+                                                        할인 판매 합니다.<br>
+
+                                                        또한 20만원 이상 구매하신 분들께<br>
+                                                        비치백을 사은품으로 증정합니다.<br><br>
+
+                                                        더운 여름에 지치신 고객님들에게<br>
+                                                        항상 행복한 일이 가득하시기를 바랍니다.<br>
+
+                                                        이벤트는 오프라인, 온라인, 모바일앱에서<br>
+                                                        동시 진행하니 많은 참여 부탁드립니다.<br>
+                                                    </div>
+                                                </div> -->
+                                                <!-- [모바일 카카오 텍스트만] 끝 -->
+                                                <!-- [모바일 문자] 시작 -->
+                                                <!-- <div class="sms_box">
+                                                    <div class="sms_title" id="sms_title">(광고 Test)</div>
+                                                    <div class="sms_img"></div>
+                                                    <div class="sms_txt">
+                                                        (광고)[adidas] VVIP 이벤트<br /><br />
+
+                                                        아디다스 VVIP #name님, 안녕하세요.<br />
+                                                        여름 시즌을 맞아<br />
+                                                        반팔티, 슬리퍼 등 바캉스 아이템을<br />
+                                                        할인 판매 합니다.<br />
+
+                                                        또한 20만원 이상 구매하신 분들께<br />
+                                                        비치백을 사은품으로 증정합니다.<br /><br />
+
+                                                        더운 여름에 지치신 고객님들에게<br />
+                                                        항상 행복한 일이 가득하시기를 바랍니다.<br />
+
+                                                        이벤트는 오프라인, 온라인, 모바일앱에서<br />
+                                                        동시 진행하니 많은 참여 부탁드립니다.<br /><br />
+
+                                                        *아디다스앱에서 확인하기:<br /><br />
+                                                    </div>
+                                                </div> -->
+                                                <!-- [모바일 문자] 끝 -->
+
+                                                <!-- [모바일 RCS 텍스트형] 시작 -->
+                                                <!-- <div class="rcs_txt_type">
+                                                    <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                                    <p>
+                                                        얼죽아 고객님에게<br>
+                                                        스타벅스 아이스 아메리카노<br>
+                                                        쿠폰을 드립니다.
+                                                    </p>              
+                                                    <div class="rcs_action">주문하러 갈래요</div>
+                                                </div> -->
+                                                <!-- [모바일 RCS 텍스트형] 끝 -->
+
+                                                <!-- [RCS 가로형 Left] 시작 -->
+                                                <!-- <div class="rcs_horizontal cf">
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                                    </div>
+                                                    <div class="txt_area">
+                                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                                        <p>
+                                                            얼죽아 고객님에게<br>
+                                                            스타벅스 아이스 아메리카노<br>
+                                                            쿠폰을 드립니다.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>          
+                                                </div> -->
+                                                <!-- [RCS 가로형 Left] 시작 -->
+                                                <!-- [RCS 가로형 Right] 시작 -->
+                                                <!-- <div class="rcs_horizontal cf">                    
+                                                    <div class="txt_area">
+                                                        <h3>(광고) 스타벅스 쿠폰 발급 안내</h3>
+                                                        <p>
+                                                            얼죽아 고객님에게<br>
+                                                            스타벅스 아이스 아메리카노<br>
+                                                            쿠폰을 드립니다.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>  
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_horizontal1.jpg" alt="">
+                                                    </div>        
+                                                </div> -->
+                                                <!-- [RCS 가로형 Right] 끝 -->
+                                                <!-- [RCS 세로형 Tall] 시작 -->
+                                                <!-- <div class="rcs_vertical tall cf">  
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                                    </div>                    
+                                                    <div class="txt_area">
+                                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                                        <p>
+                                                            세련되고 자신만의 스타일을 추구하는<br>
+                                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                                            지금 만나보세요.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>                                
+                                                </div> -->
+                                                <!-- [RCS 세로형 Tall] 끝 -->
+                                                <!-- [RCS 세로형 Medium] 시작 -->
+                                                <!-- <div class="rcs_vertical medium cf">  
+                                                    <div class="img_area">
+                                                        <img src="../../image/test_rcs_ver_md.jpg" alt="">
+                                                    </div>                    
+                                                    <div class="txt_area">
+                                                        <h3>[몽블랑] 레이디스 워치 신상 이벤트 세일!</h3>
+                                                        <p>
+                                                            세련되고 자신만의 스타일을 추구하는<br>
+                                                            현대 여성을 위한 몽블랑의 여성 워치를<br>
+                                                            지금 만나보세요.
+                                                        </p>              
+                                                        <div class="rcs_action">주문하러 갈래요</div>
+                                                    </div>                                
+                                                </div> -->
+                                                <!-- [RCS 세로형 Medium] 끝 -->
+                                                <!-- [RCS 슬라이드형 Small] 시작 -->
+                <!--                                <div class="rcs_inner">-->
+                <!--                                    <div class="slide_area">-->
+                <!--                                        &lt;!&ndash; slide prev/next 버튼 영역 &ndash;&gt;-->
+                <!--                                        <div class="rcs_prev">-->
+                <!--                                            <img src="../../image/ico_rcs_prev.png" alt="">-->
+                <!--                                        </div>-->
+                <!--                                        <div class="rcs_next">-->
+                <!--                                            <img src="../../image/ico_rcs_next.png" alt="">-->
+                <!--                                        </div>-->
+
+                <!--                                        <div class="swiper-container slideSwiper small">-->
+                <!--                                            <div class="swiper-wrapper">-->
+                <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 시작 &ndash;&gt;-->
+                <!--                                                <div class="swiper-slide slide0">-->
+                <!--                                                    <div class="rcs_head">[WEB발신]광고</div>-->
+                <!--                                                    <section>-->
+                <!--                                                        &lt;!&ndash; 이미지 영역 &ndash;&gt;-->
+                <!--                                                        <div class="img_area"></div>-->
+                <!--                                                        <div class="txt_area">-->
+                <!--                                                            <h3>제목 영역</h3>-->
+                <!--                                                            <p>내용 영역</p>-->
+                <!--                                                            &lt;!&ndash; 액션 버튼 영역 &ndash;&gt;-->
+                <!--                                                            <div class="rcs_btn_wrap">-->
+                <!--                                                                <div class="rcs_btn">버튼1</div>-->
+                <!--                                                                <div class="rcs_btn">버튼2</div>-->
+                <!--                                                            </div>-->
+                <!--                                                        </div>-->
+                <!--                                                    </section>-->
+                <!--                                                </div>-->
+                <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 끝 &ndash;&gt;-->
+                <!--                                            </div>-->
+                <!--                                            &lt;!&ndash; 슬라이드 페이지 번호 영역 &ndash;&gt;-->
+                <!--                                            <div class="rcs_paging en_font"></div>-->
+                <!--                                            &lt;!&ndash; 수신거부 번호 표시 영역 &ndash;&gt;-->
+                <!--                                            <div class="rcs_register">-->
+                <!--                                                무료 수신거부 :-->
+                <!--                                                <span id="rejectionArea">000-0000-0000</span>-->
+                <!--                                            </div>-->
+                <!--                                        </div>-->
+                <!--                                    </div>-->
+                <!--                                </div>-->
+                                                <!-- [RCS 슬라이드형 Small] 끝 -->
+                                                <!-- [RCS 슬라이드형 Medium] 시작 -->
+                <!--                                <div class="rcs_inner">-->
+                <!--                                    <div class="slide_area">-->
+                <!--                                        &lt;!&ndash; slide prev/next 버튼 영역 &ndash;&gt;-->
+                <!--                                        <div class="rcs_prev">-->
+                <!--                                            <img src="../../image/ico_rcs_prev.png" alt="">-->
+                <!--                                        </div>-->
+                <!--                                        <div class="rcs_next">-->
+                <!--                                            <img src="../../image/ico_rcs_next.png" alt="">-->
+                <!--                                        </div>-->
+
+                <!--                                        <div class="swiper-container slideSwiper medium">-->
+                <!--                                            <div class="swiper-wrapper">-->
+                <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 시작 &ndash;&gt;-->
+                <!--                                                <div class="swiper-slide slide0">-->
+                <!--                                                    <div class="rcs_head">[WEB발신]광고</div>-->
+                <!--                                                    <section>-->
+                <!--                                                        &lt;!&ndash; 이미지 영역 &ndash;&gt;-->
+                <!--                                                        <div class="img_area"></div>-->
+                <!--                                                        <div class="txt_area">-->
+                <!--                                                            <h3>제목 영역</h3>-->
+                <!--                                                            <p>내용 영역</p>-->
+                <!--                                                            &lt;!&ndash; 액션 버튼 영역 &ndash;&gt;-->
+                <!--                                                            <div class="rcs_btn_wrap">-->
+                <!--                                                                <div class="rcs_btn">버튼1</div>-->
+                <!--                                                                <div class="rcs_btn">버튼2</div>-->
+                <!--                                                            </div>-->
+                <!--                                                        </div>-->
+                <!--                                                    </section>-->
+                <!--                                                </div>-->
+                <!--                                                &lt;!&ndash; 슬라이드 1단위 영역 끝 &ndash;&gt;-->
+                <!--                                            </div>-->
+                <!--                                            &lt;!&ndash; 슬라이드 페이지 번호 영역 &ndash;&gt;-->
+                <!--                                            <div class="rcs_paging en_font"></div>-->
+                <!--                                            &lt;!&ndash; 수신거부 번호 표시 영역 &ndash;&gt;-->
+                <!--                                            <div class="rcs_register">-->
+                <!--                                                무료 수신거부 :-->
+                <!--                                                <span id="rejectionArea">000-0000-0000</span>-->
+                <!--                                            </div>-->
+                <!--                                        </div>-->
+                <!--                                    </div>-->
+                <!--                                </div>-->
+                                                <!-- [RCS 슬라이드형 Medium] 끝 -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="right confirm">
+                        <!-- 캠페인 Type Tab Nav -->
+                        <div class="option_area" id="type_tab">
+                            <div class="on">이메일</div>
+                            <div>모바일</div>
+                        </div>
+                        <div class="inner bottom-border cf">
+                            <div class="top"><h3>캠페인 확인사항</h3></div>
+                            <!-- [이메일] 확인사항 리스트 영역 시작 -->
+                            <div class="tab_contents active">
+                                <!-- 진행도 영역 시작 -->
+                                <div class="row_progress">
+                                    <span class="tit">진행도</span>
+                                    <div class="middle">
+                                        <div class="progress_wrap"><div class="bar_inner" id="mailBar"></div></div>
+                                        <div class="percents en_font"><span id="mailCount">0</span>%</div>
+                                    </div>
+                                    <div class="btn">
+                                        <div class="btn_sm_line size" onclick="allCheck('mail');">모두 확인</div>
+                                    </div>
+                                </div>
+                                <!-- 진행도 영역 끝 -->
+                                <div class="vertical_scroll">
+                                    <dl class="confirm_list" id="mailCheck">
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>광고 메시지의 경우 제목에 (광고) 문구를 기입하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    광고성 메일 표기 의무 사항
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>발송 타겟 및 타겟 모수를 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    타겟 조건 및 모수 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>발송 주소를 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    예) milvus: milvus@milvus.co.kr
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>컨텐츠 오탈자 및 디자인을 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    1) 이메일 제목 내 앞뒤 빈칸<br/>
+                                                    2) 디자인 깨짐 현상
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>컨텐츠에 날짜가 있다면 요청 날짜(이벤트 날짜)와 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    컨텐츠 내 이벤트의 날짜 & 실제 이벤트 날짜 동일 여부
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>기입된 날짜와 요일이 모두 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    예 : 2020년 9월 2일 (금) -> (수)
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>컨텐츠에 금액이 표시된 경우, 요청 금액과 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    제품 가격 & 요청 금액 일치 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>수신동의일자를 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    타겟 데이터 업데이트 일자 기준
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>URL이 정상적으로 접속됩니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    URL 접속 정상 여부<br/>
+                                                    GA UTM 코드 정상 노출 여부 및 UTM 코드로 인한 링크 오픈 오류 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>발송 일시가 요청 일시와 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    트래킹 코드 작성 여부 및 정상 트래킹 여부 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>포털 별 정상 수신 여부를 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    Google / Naver / Daum 등 정상 수신 여부 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <!-- [이메일] 확인사항 리스트 영역 끝 -->
+                            <!-- [모바일] 확인사항 리스트 영역 시작 -->
+                            <div class="tab_contents">
+                                <!-- 진행도 영역 시작-->
+                                <div class="row_progress">
+                                    <span class="tit">진행도</span>
+                                    <div class="middle">
+                                        <div class="progress_wrap"><div class="bar_inner" id="mobileBar"></div></div>
+                                        <div class="percents en_font"><span id="mobileCount">0</span>%</div>
+                                    </div>
+                                    <div class="btn">
+                                        <div class="btn_sm_line size" onclick="allCheck('mobile');">모두 확인</div>
+                                    </div>
+                                </div>
+                                <!-- 진행도 영역 끝 -->
+                                <div class="vertical_scroll">
+                                    <dl class="confirm_list" id="mobileCheck">
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>광고 메시지의 경우 제목에 (광고) 문구를 기입하였습니까?(안내 메시지인 경우 (안내) 문구 기입)</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    광고성 문자 표기 의무 사항<br/>
+                                                    카카오톡 : (광고) 문구 자동 기입, 별도 추가 불필요<br/>
+                                                    LMS : (광고)필수
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>제목에 전송자의 명칭 및 연락처를 기입하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    광고성 문자 표기 의무 사항<br/>
+                                                    전송자 명칭(문자 맨 앞 작성 필요)<br/>
+                                                    예. [밀버스]<br/>
+                                                    연락처<br/>
+                                                    예. 고객센터: 1588-1234
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>광고 발송 건의 경우 하단 무료수신거부번호 내용을 기입하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    광고성 문자 표기 의무 사항<br/>
+                                                    예 : 무료수신거부 : 080-000-0000
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>컨텐츠 오탈자를 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    1) 띄어쓰기<br/>
+                                                    2) 맞춤법<br/>
+                                                    3) 동일한 표현 한/영 통일<br/>
+                                                    4) 제목 내에 T / TEST 여부
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>컨텐츠에 날짜가 있다면 요청 날짜(이벤트 날짜)와 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    컨텐츠 내 이벤트의 날짜 & 실제 이벤트 날짜 동일 여부
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>기입된 날짜와 요일이 모두 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    예 : 2020년 9월 2일 (금) -> (수)
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>컨텐츠에 금액이 표시된 경우, 요청 금액과 일치합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    제품 가격 & 요청 금액 일치 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>개인화 매칭이 모두 정상적으로 작동합니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    개인화 코드 정상 매칭 여부 확인<br/>
+                                                    예) ‘이름 개인화’ 님 ->  밀버스 님
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>URL이 정상적으로 접속됩니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    URL 접속 정상 여부<br/>
+                                                    GA UTM 코드 정상 노출 여부 및 UTM 코드로 인한 링크 오픈 오류 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>트래킹 링크가 정상적으로 작동합니까?(정상 접속 여부, 트래킹 작동 여부 등)</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    트래킹 코드 작성 여부 및 정상 트래킹 여부 확인
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                        <dd class="cf">
+                                            <div class="col">
+                                                <label class="custom_check1"><input type="checkbox"/><span></span></label>
+                                            </div>
+                                            <div class="col">
+                                                <p>통신3사 정상 수신 여부를 확인하였습니까?</p>
+                                            </div>
+                                            <div class="col ico_tooltip">
+                                                <img src="../../image/ico_tooltip2.png" alt=""/>
+                                            </div>
+                                            <div class="toolip_text">
+                                                <span>
+                                                    SKT / KT / LG U+<br/>
+                                                    (U+ 스팸 발생이 잦아 유의 필요)
+                                                </span>
+                                            </div>                                           
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <!-- [모바일] 확인사항 리스트 영역 끝 -->
+
+                            <!-- 승인 담당자 선택 영역 -->
+                            <div class="row border">
+                                <div class="th right-border">승인 담당자 선택</div>
+                                <div class="td width1">
+                                    <div class="select">
+                                        <div class="value" data="" id="">밀버스 <span class="en_font">(milvus@milvus.co.kr / 010-1234-1234)</span></div>
+                                        <ul class="option">
+                                            <li data="">밀버스 <span class="en_font">(milvus@milvus.co.kr / 010-1234-1234)</span></li>
+                                            <li data="">EX1</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 캠페인 비용 입력 영역 -->
+                            <table class="pop_table_type2">
+                                <colgroup>
+                                    <col width="104"/>
+                                    <col width="*"/>
+                                    <col width="104"/>
+                                    <col width="*"/>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>기획비</th>
+                                        <td>
+                                            <input type="text" placeholder="0" class="en_font" onkeyup="numberReplace(this);"/><span>원</span>
+                                        </td>
+                                        <th>오퍼비</th>
+                                        <td>
+                                            <input type="text" placeholder="0" class="en_font" onkeyup="numberReplace(this);"/><span>원</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>개발비</th>
+                                        <td>
+                                            <input type="text" placeholder="0" class="en_font" onkeyup="numberReplace(this);"/><span>원</span>
+                                        </td>
+                                        <th>디자인비</th>
+                                        <td>
+                                            <input type="text" placeholder="0" class="en_font" onkeyup="numberReplace(this);"/><span>원</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- 발송 예상 비용 & 상세비용 확인 영역 -->
+                            <div class="bottom">
+                                <div class="left">
+                                    <span class="th">발송 예상 비용(원)</span>
+                                    <span class="td en_font">0</span>
+                                </div>
+                                <div class="right">
+                                    <p>※ 실제 비용과 다를 수 있습니다.</p>
+                                    <div class="btn_sm_line size" onclick="detailPrice();">상세비용 확인하기</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pop_error_txt blue_point_color" id="erre_area4">캠페인 확인사항을 검토해 주세요.</div>
+                        <div class="btn_row">
+                            <input type="button" class="btn_bg btn_size2 btn_center" id="" value="승인요청" onclick="requestConfirm();"/>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+            <!-- 타겟 별 상세 비용 팝업 시작 -->
+            <div class="pop_container" id="detailPrice">
+                <input type="button" value="닫기" class="btn_pop_close" onclick="detailPriceClose();"/>
+                <div class="pop_title">타겟 별 상세 비용</div>
+                <div class="pop_inner">
+                    <!-- 타겟 리스트 1단위 영역 시작 -->
+                    <dl class="price_box">
+                        <dt>
+                            <h3 class="name ellipsis">TARGET A</h3>
+                            <span class="num en_font">(15,126명)</span>
+                        </dt>
+                        <dd class="cf">
+                            <div class="top">
+                                <div class="inline en_font">
+                                    <!-- 발송 컨텐츠 타입 -->
+                                    <span class="name ellipsis">Email</span>
+                                    <!-- 금액 -->
+                                    <span class="price">0원</span>
+                                </div>
+                            </div>
+                            <div class="total">
+                                <!-- 총 금액 -->
+                                <span class="en_font blue_point_color">0</span><span>원</span>
+                            </div>
+                        </dd>
+                    </dl>
+                    <!-- 타겟 리스트 1단위 영역 끝 -->
+                    <table class="pop_table_type2 unit">
+                        <thead>
+                            <tr>
+                                <th class="en_font">SMS/RCS<br/>SMS</th>
+                                <th class="en_font">LMS/RCS<br/>LMS</th>
+                                <th class="en_font">MMS/RCS<br/>MMS</th>
+                                <th><span class="en_font">RCS</span><br/>템플릿</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="en_font">7.2</span>원</td>
+                                <td><span class="en_font">23.7</span>원</td>
+                                <td><span class="en_font">45.2</span>원</td>
+                                <td><span class="en_font">5.2</span>원</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="sub_txt">* RCS/카카오/문자 비용은 타겟 수의 1:3:6 비율로 측정됩니다.</p>
+                </div>
+            </div> <!-- 타겟 별 상세 비용 팝업 끝 -->
+        </div>
+    </div>
+    <!-- 테스트 발송 팝업 영역 끝 -->
+
+    <!-- alert 팝업 Type1 -->
+    <div class="layer_pop alert" id="type1">
+        <div class="pop_container popup_size3">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title"></div>
+            <div class="pop_inner">
+                <div class="alert_txt">
+                    승인요청 시, 승인 담당자에게<br/> 
+                    승인요청 메일이 발송되며, 해당 발송 건은<br/>
+                    승인 대기 상태로 변경됩니다. 요청하시겠습니까?
+                </div>
+                <div class="btn_row">
+                        <input type="button" class="btn_bg btn_size2 btn_center" onclick="popupClose(this);" value="확인" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alert 팝업 Type2 -->
+    <div class="layer_pop alert" id="type2">
+        <div class="pop_container popup_size3">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title"></div>
+            <div class="pop_inner">
+                <div class="alert_txt"></div>                
+                <div class="btn_row">
+                        <input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="확인" />
+                        <input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    // RCS slide swiper
+    var mySwiper = new Swiper('.slideSwiper', {
+        // Optional parameters
+        direction: 'horizontal',
+        // If we need pagination
+        pagination: {
+            el: '.rcs_paging',
+            type: 'fraction',
+        },
+        // Navigation arrows
+        navigation: {
+            nextEl: '.rcs_next',
+            prevEl: '.rcs_prev',
+        },
+    });
+    $(function(){
+        //[타겟 선택 팝업] 검색 기간 달력
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd'
+            , monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+            , showMonthAfterYear: true
+            , yearSuffix: "."
+        });
+
+        //[타겟 선택 팝업]시작일 달력
+        $('#from').datepicker({
+            onSelect: function (selected) {
+                $("#to").datepicker("option", "minDate", selected)
+            }
+        });
+
+        //[타겟 선택 팝업]종료일 달력
+        $('#to').datepicker({
+            onSelect: function (selected) {
+                $("#from").datepicker("option", "maxDate", selected)
+            }
+        });
+
+        //[타겟 선택 팝업] 업로드 / 타겟 DB 선택 
+        $('.option_area div').on('click',function(){
+            $(this).addClass('on').siblings().removeClass('on');
+        });
+
+        //예약일 달력
+        $('#dataCalendar').datepicker({
+            dateFormat: 'yy-mm-dd'
+            , monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+            , showMonthAfterYear: true
+            , yearSuffix: "."
+        });
+
+        //예약 발송 인 경우 입력 영역 생성 
+        $('#re_state .option li').on('click',function(){
+            let dateValue = $(this).attr('data');
+            if(dateValue == 0){
+                $('.re_option').addClass('active');
+            }else{
+                $('.re_option').removeClass('active');
+            }
+        });
+
+        //테스트 발송 리스트 삭제
+        $(document).on('click','.delete',function(){
+            $(this).parents('tr').remove();
+        });
+
+        // 캠페인 확인사항 툴팁 mouseover
+        $('.ico_tooltip').mouseover(function(){
+            let layerTop = $('#requestPopup .pop_container').offset().top;
+            let tooltipTop = $(this).find('img').offset().top;
+            let totalTop = tooltipTop - layerTop;
+            let tooltipHt = $(this).next('.toolip_text').outerHeight();
+            let tooltipMg = (tooltipHt / 2) - 8;
+            $(this).next('.toolip_text').css({'top':totalTop,'marginTop':-tooltipMg});
+            $(this).next('.toolip_text').addClass('on');
+        });
+        // 캠페인 확인사항 툴팁 mouseleave
+        $('.ico_tooltip').mouseleave(function(){
+            $(this).next('.toolip_text').removeClass('on');
+        });
+
+        //메일 캠페인 확인 사항 진행도 계산 동작
+        $('#mailCheck input[type="checkbox"]').on('change',function(){
+            let total = $('#mailCheck input[type="checkbox"]').length;
+            let checkCount = $('#mailCheck input[type="checkbox"]').filter(':checked').length;
+            let percents = Math.floor(checkCount / total * 100);
+            $('#mailBar').css('width',percents + '%');
+            $('#mailCount').html(percents);
+        });
+
+        //모바일 캠페인 확인 사항 진행도 계산 동작
+        $('#mobileCheck input[type="checkbox"]').on('change',function(){
+            let total = $('#mobileCheck input[type="checkbox"]').length;
+            let checkCount = $('#mobileCheck input[type="checkbox"]').filter(':checked').length;
+            let percents = Math.floor(checkCount / total * 100);
+            $('#mobileBar').css('width',percents + '%');
+            $('#mobileCount').html(percents);
+        });
+
+        $('#type_tab div').on('click',function(){
+            let tabIndex = $('#type_tab div').index(this);
+            $('.tab_contents').eq(tabIndex).addClass('active').siblings().removeClass('active');
+
+        });
+    });
+
+    /* 컨트롤 그룹 (숫자만 입력가능 두자리까지만 허용) */
+    function handleInput(number){
+        let max = 2;
+        number.value = number.value.substr(0,max);
+    }
+
+    // [타겟 선택 팝업] 
+    function targetCheck(){
+        let count = $('#targetList').find('input').filter(':checked').length;
+        if(count == 0){
+            $('#targetError').html('타겟을 선택해주세요.');
+            return false;
+        }else{
+            $('#targetError').html('');
+            return false;
+        }
+    }
+
+    // 타겟 선택 팝업 open event
+    function targetCheckPopup(){
+        $('#targetCheckPopup').addClass('active');
+    }
+
+    //컨텐츠 선택 검색 버튼 click event
+    function contentsSearch(){
+        let name = $('#contentsName').val();
+        if(name == '' || name == undefined || name == 'name'){
+            $('#erre_area1').html('컨텐츠 명을 입력해주세요.2');
+            return false;
+        }else{
+            $('#erre_area1').html('');
+            return false;
+        }
+    }
+
+    //컨텐츠 선택 저장 버튼 click event
+    function contentsSave(){
+        let count = $('.image_container').find('input[type="radio"]').filter(':checked').length;
+        if(count <= 0){
+            $('#erre_area2').html('컨텐츠를 선택해주세요.');
+            return false;
+        }else{
+            $('#erre_area2').html('');
+            return false;
+        }
+    }
+
+    // 컨텐츠 선택 팝업 open event
+    function contentsSettingPopup(){
+        $('#settingPopup').addClass('active');
+    }
+
+     // 테스트 발송 팝업 open event
+     function testGroupPopup(){
+        $('#testGroupPopup').addClass('active');
+    }
+
+    // 테스트 발송 팝업 발송 버튼 click event
+    function testSendSave(){
+        let address = $('#testGroupVal').attr('data');
+        let error = $('#error_area3');
+
+        // 타겟 미선택 알림 문구
+        if(address == ''){
+            $(error).html('테스트 타겟을 선택해주세요.');
+            return false;
+        }else{
+            $(error).html('');
+            $('#alert1').addClass('active');
+        }
+    }
+
+    // 테스트 발송 안내 팝업 확인 버튼 event
+    function testConfirm(){
+        $('.layer_pop').removeClass('active');
+    }
+
+    //모두 확인 체크 동작
+    function allCheck(type){
+        if(type == 'mail'){
+            $('#mailCheck input[type="checkbox"]').prop('checked', true);
+            $('#mailBar').css('width','100%');
+            $('#mailCount').html('100');
+        }
+        if(type == 'mobile'){
+            $('#mobileCheck input[type="checkbox"]').prop('checked', true);
+            $('#mobileBar').css('width','100%');
+            $('#mobileCount').html('100');
+        }
+        return false;
+    }
+
+    //승인요청 팝업 open event
+    function requestPopup(){
+        $('#requestPopup').addClass('active');
+    }
+
+    // 임시 저장 시 유효성 체크
+    function temporarySave(){
+        let campaignName = $('#campaignName').val();
+        if(campaignName == ''){
+            popup.popAlert('캠페인 명을 입력해 주세요.');
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    // 타겟 별 상세 비용 팝업 open event
+    function detailPrice(){
+        $('#detailPrice').show();
+    }
+
+    // 타겟 별 상세 비용 팝업 close event
+    function detailPriceClose(){
+        $('#detailPrice').hide();
+    }
+
+    //승인요청 팝업 버튼
+    function requestConfirm(){
+        $('#type1').addClass('active');
+    }
+    
+
+</script>
+
+</html>

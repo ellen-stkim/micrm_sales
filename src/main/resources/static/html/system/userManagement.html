@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miCRM</title>
+    <!-- common css -->
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <!-- common js -->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/popup.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- header 영역 시작 -->
+        <header class="header cf">
+            <h1 class="logo"><a href="../index.html"><img src="../../image/logo.png" alt="MICRM" /></a></h1>
+            <div class="right cf">
+                <ol class="summary">
+                    <li><span>발송예정</span>&nbsp;3</li>
+                    <li><span>발송중</span>&nbsp;1</li>
+                    <li><span>승인요청</span>&nbsp;2</li>
+                </ol>
+                <div class="ico_notice"><span>알림</span>&nbsp;3</div>
+            </div>
+        </header>
+        <!-- header 영역 끝 -->
+        <!-- left menu 영역 시작 -->
+        <nav class="nav">
+            <!-- gnb 영역 시작 -->
+            <ul class="gnb">
+                <li>
+                    <span>회원 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="member.html">DB 회원</a></li>
+                        <li><a href="rejection.html">수신거부 회원</a></li>
+                        <li><a href="upload.html">업로드 회원</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>메시지</span>
+                    <ul class="sub_menu">
+                        <li><a href="../message/edmList.html">이메일</a></li>
+                        <li><a href="../message/smsList.html">모바일</a></li>
+                        <li><a href="../message/imageList.html">이미지 파일</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>캠페인</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">타겟팅</a></li>
+                        <li><a href="#">캠페인 발송</a></li>
+                        <li><a href="#">발송 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>리포트</span>
+                    <ul class="sub_menu">
+                        <li><a href="#">캠페인 현황 통계</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>시스템 관리</span>
+                    <ul class="sub_menu">
+                        <li><a href="workList.html">작업</a></li>
+                        <li class="on"><a href="userManagement.html">사용자</a></li>
+                        <li><a href="ipSecurity.html">보안</a></li>
+                        <li><a href="mailSetting.html">환경</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- gnb 영역 끝 -->
+            <div class="user_info cf">
+                <div class="user">밀버스님</div>
+                <a href="#" class="logout">로그아웃</a>
+            </div>
+        </nav>
+        <!-- left menu 영역 끝 -->
+        <!-- container 영역 시작 -->
+        <section class="container">
+            <!-- 컨텐츠 영역 시작 -->
+            <div class="contents">
+                <!-- row 영역 시작 -->
+                <div class="row tooltip_area bottom-border cf">
+                    <div class="left">
+                        <!-- location 영역 -->
+                        <ul class="location">
+                            <li>홈</li>
+                            <li>시스템관리</li>
+                            <li>사용자</li>
+                        </ul>
+                        <!-- tooltip 버튼 영역  -->
+                        <div class="tooltip_icon">
+                            <img src="../../image/ico_tooltip.png" alt="Tooltip" />
+                        </div>
+                        <!-- tooltip box 영역 시작 -->
+                        <div class="tooltip_box">
+                            <!-- tooltip bullet 영역 -->
+                            <div class="bullet"></div>
+                            <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
+                                나오론이 52.4억(57.2%)으로 가장 많은 비중을
+                                차지합니다.</span>
+                            스타일론 직장인이 26.69억(29.1%), <br />
+                            스타일론 자영업자가 4.1억(4.47%)입니다.<br />
+                        </div>
+                        <!-- tooltip box 영역 끝 -->
+                    </div>
+                    <div class="right">
+                        <!-- select 영역 시작 -->
+                        <div class="select style1 left-border">
+                            <!-- selected value -->
+                            <div class="value searchSelect" data="">기준선택</div>
+                            <!-- option -->
+                            <ul class="option">
+                                <li data="상태">상태</li>
+                                <li data="이름">이름</li>
+                                <li data="이메일">이메일</li>
+                                <li data="휴대폰번호">휴대폰번호</li>
+                                <li data="권한">권한</li>
+                                <li data="담당승인자">담당승인자</li>
+                            </ul>
+                        </div>
+                        <!-- select 영역 끝 -->
+                        <input type="text" class="searchInp left-border searchWord" placeholder="검색어입력" onkeyup="enterSubmit();" />
+                        <input type="submit" class="searchBtn" value="검색" onclick="return searchCheck();" />
+                    </div>
+                </div>
+                <!-- row 영역 끝 -->
+                <ul class="tab_row">
+                    <li class="on"><a href="userManagement.html">사용자 관리</a></li>
+                    <li><a href="permission.html">권한 설정</a></li>
+                </ul>
+                <!-- section 영역 시작 -->
+                <div class="section">
+                    <!-- 검색 결과 영역 시작 -->
+                    <div class="count border-bottom cf">
+                        <div class="total left">전체 사용자 관리</div>
+                        <input type="button" class="btn_add right" value="추가" onclick="accountPopup();" />
+                    </div>
+                    <!-- 검색 결과 영역 끝 -->
+                    <!-- table 영역 시작 -->
+                    <table class="table management">
+                        <colgroup>
+                            <col width="7%" />
+                            <col width="7%" />
+                            <col width="15.4%" />
+                            <col width="12.4%" />
+                            <col width="7%" />
+                            <col width="15.4%" />
+                            <col width="12.4%" />
+                            <col width="12.4%" />
+                            <col width="11%" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>상태</th>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>휴대폰번호</th>
+                                <th>권한</th>
+                                <th>담당 승인자</th>
+                                <th>마지막 로그인</th>
+                                <th>마지막 비밀번호 변경</th>
+                                <th>수정/상태 변경</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 정상 -->
+                            <tr>
+                                <td class="userStatus">정상</td>
+                                <td>김영화</td>
+                                <td class="en_font">wendy_reebok@mi_crm.co.kr</td>
+                                <td class="en_font">010-8316-7603</td>
+                                <td>관리자</td>
+                                <td class="en_font">blake_reebok@mi_crm.co.kr</td>
+                                <td class="en_font">20.11.12 14:14:11</td>
+                                <td class="en_font">20.10.30 17:22:40</td>
+                                <td>
+                                    <a href="userDetail.html" class="btn_sm_line">수정</a>
+                                    <div class="btn_sm_line" onclick="userStatus(this);" data="0">미사용</div>
+                                </td>
+                            </tr>
+                            <!-- 미사용 -->
+                            <tr>
+                                <td class="userStatus">미사용</td>
+                                <td>배윤호</td>
+                                <td class="en_font">blake_reebok@mi_crm.co.kr</td>
+                                <td class="en_font">010-7470-8375</td>
+                                <td>관리자</td>
+                                <td class="en_font">blake_reebok@mi_crm.co.kr</td>
+                                <td class="en_font">20.11.12 14:14:11</td>
+                                <td class="en_font">20.10.30 17:22:40</td>
+                                <td>
+                                    <a href="userDetail.html" class="btn_sm_line">수정</a>
+                                    <div class="btn_sm_line" onclick="userStatus(this);" data="1">복구</div>
+                                </td>
+                            </tr>
+                            <!-- 로그인 차당 -->
+                            <tr>
+                                <td class="userStatus">차단</td>
+                                <td>정하은</td>
+                                <td class="en_font">halo_reebok@mi_crm.co.kr</td>
+                                <td class="en_font">010-4031-3259</td>
+                                <td>뷰어</td>
+                                <td class="en_font">blake_reebok@mi_crm.co.kr</td>
+                                <td class="en_font">20.11.12 14:14:11</td>
+                                <td class="en_font">20.10.30 17:22:40</td>
+                                <td>
+                                    <div class="btn_sm_line width" onclick="userStatus(this);" data="2">해제</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <!-- 검색 결과가 없는 경우 영역 시작 -->
+                            <!-- <tr class="no_data">
+                                    <td colspan="9">조회된 결과가 없습니다.</td>
+                                </tr> -->
+                            <!-- 검색 결과가 없는 경우 영역 시작 -->
+                        </tbody>
+                    </table>
+                    <div class="btn_row bottom-border">
+                        <ul class="pager">
+                            <!-- 페이지 이동 버튼이 활성화 상태일 경우 addClass'active' -->
+                            <li class="first">First</li>
+                            <li class="prev">Prev</li>
+                            <!-- 페이지 번호가 활성화 상태일 경우 addClass'on' -->
+                            <li class="page on">1</li>
+                            <li class="page">2</li>
+                            <li class="page">3</li>
+                            <li class="page">4</li>
+                            <li class="page">5</li>
+                            <li class="page">6</li>
+                            <li class="page">7</li>
+                            <li class="page">8</li>
+                            <li class="page">9</li>
+                            <li class="page">10</li>
+                            <li class="next active">Next</li>
+                            <li class="last active">Last</li>
+                        </ul>
+                    </div>
+                    <!-- table 영역 끝 -->
+                </div>
+                <!-- section 영역 끝 --> 
+            </div>
+            <!-- 컨텐츠 영역 끝 -->
+            <!-- footer 영역 시작 -->
+            <footer class="footer">
+                &copy; Milvus Corp.
+            </footer>
+            <!-- footer 영역 끝 -->
+        </section>
+        <!-- container 영역 끝 -->
+    </div>
+    <!-- wrap end -->
+
+    <!-- 사용자 신규 추가 팝업 영역 시작 -->
+    <div class="layer_pop accountPopup">
+        <div class="pop_container popup_size1">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+            <div class="pop_title">사용자 신규 추가</div>
+            <div class="pop_inner">
+                <table class="pop_table_type1">
+                    <colgroup>
+                        <col width="103" />
+                        <col width="*" />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>이름</th>
+                            <td>
+                                <input type="text" id="userName" placeholder="이름을 입력해주세요." name="" class="input_type1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이메일</th>
+                            <td>
+                                <input type="text" id="userMail" placeholder="사용자의 이메일을 입력해주세요." name="" class="input_type1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>권한</th>
+                            <td class="pd_none">
+                                <!-- select 영역 시작 -->
+                                <div class="select style1">
+                                    <!-- selected value -->
+                                    <div class="value" id="authority" data="">선택</div>
+                                    <!-- option -->
+                                    <ul class="option">
+                                        <li data="캠페인">캠페인</li>
+                                        <li data="승인">승인</li>
+                                    </ul>
+                                </div>
+                                <!-- select 영역 끝 -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>승인 담당자</th>
+                            <td class="pd_none">
+                                <!-- select 영역 시작 -->
+                                <div class="select style1">
+                                    <!-- selected value -->
+                                    <div class="value" id="manager" data="">선택</div>
+                                    <!-- option -->
+                                    <ul class="option">
+                                        <li data="ex1">ex1</li>
+                                        <li data="ex2">ex2</li>
+                                    </ul>
+                                </div>
+                                <!-- select 영역 끝 -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>새 비밀번호</th>
+                            <td>
+                                <input type="password" placeholder="새 비밀번호를 입력해주세요." id="password"
+                                    class="input_type1 pwd" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>새 비밀번호 확인</th>
+                            <td>
+                                <input type="password" placeholder="새 비밀번호를 입력해주세요." id="comfirmPsw"
+                                    class="input_type1 pwd" />
+                                <div class="right blue_point_color" id="errorArea1"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pop_error_txt blue_point_color" id="errorArea2"></div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center" onclick="accountFormCheck(this);"
+                        value="저장" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 사용자 신규 추가 팝업 영역 끝 -->
+</body>
+<script>
+    // 검색영역 enter key event
+    function enterSubmit() {
+        if (window.event.keyCode == 13) {
+            searchCheck();
+        }
+        return false;
+    }
+
+    // 계정 변경 확인 팝업
+    let deleteEl;
+    function userStatus(user) {
+        let userStatus = Number(user.getAttribute('data'));
+        stateEl = user;
+        let html = '';
+        html +=
+            '<div class="layer_pop alert active">' +
+            '<div class="pop_container popup_size3">' +
+            '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+            '<div class="pop_title">계정 상태 변경</div>' +
+            '<div class="pop_inner">';
+                if(userStatus == 0){
+                    html += '<div class="alert_txt">미사용 처리를 하시겠습니까?</div>';
+                }if(userStatus == 1){
+                    html += '<div class="alert_txt">복구 처리를 하시겠습니까?</div>';
+                }if(userStatus == 2){
+                    html += '<div class="alert_txt">해제 처리를 하시겠습니까?</div>';
+                }
+        html +=    '<div class="btn_row">' +
+            '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="state(stateEl);" value="확인" />' +
+            '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $('body .layer_pop.alert').remove();
+        $('body').append(html);
+        return false;
+    }
+
+    // 계정 상태 변경 동작
+    function state(row) {
+        let userStatus = Number(row.getAttribute('data'));
+        if(userStatus == 0){
+            $(row).attr('data', 1);
+            $(row).text('복구');
+            $(row).parent().siblings('.userStatus').text('미사용');
+        }if(userStatus == 1){
+            $(row).attr('data', 0);
+            $(row).text('미사용');
+            $(row).parent().siblings('.userStatus').text('정상');
+        }if(userStatus == 2){
+            $(row).parent().html(
+                '<a href="userDetail.html" class="btn_sm_line">수정</a>' +
+                '<div class="btn_sm_line" onclick="userStatus(this);" data="0">미사용</div>'
+            );
+            $(row).parent().siblings('.userStatus').text('정상');
+        }
+        $('body .layer_pop.alert').remove();
+        return false;
+    }
+
+    //유효성 체크
+    function accountFormCheck(el) {
+        let name = document.getElementById('userName').value;
+        let email = document.getElementById('userMail').value;
+        let authority = document.getElementById('authority').getAttribute('data');
+        let manager = document.getElementById('manager').getAttribute('data');
+        let password = document.getElementById('password').value;
+        let comfirm = document.getElementById('comfirmPsw').value;
+        let regMail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        let regPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$/;
+        let error1 = document.getElementById('errorArea1');
+        let error2 = document.getElementById('errorArea2');
+
+        error1.innerHTML = '';
+        error2.innerHTML = '';
+
+        if (name === '') {
+            error2.innerHTML = '이름을 입력해주세요.';
+            return false;
+        } if (email === '') {
+            error2.innerHTML = '이메일을 입력해주세요.';
+            return false;
+        } if (!regMail.test(email)) {
+            error2.innerHTML = '이메일 형식에 맞게 입력해주세요.';
+            return false;
+        } if (authority == '') {
+            error2.innerHTML = '권한을 선택해주세요.';
+            return false;
+        } if (manager == '') {
+            error2.innerHTML = '승인 담당자를 선택해주세요.';
+            return false;
+        } if (password == '') {
+            error2.innerHTML = '비밀번호를 입력해주세요.';
+            return false;
+        } if (!regPwd.test(password)) {
+            error2.innerHTML = '8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.';
+            return false;
+        } if (comfirm == '') {
+            error1.innerHTML = '비밀번호를 입력해주세요.';
+            return false;
+        } if (password != comfirm) {
+            error1.innerHTML = '비밀번호가 일치하지 않습니다.';
+            return false;
+        } else {
+            //submit
+            popupClose(el);
+        }
+    }
+
+    //신규 사용자 추가 팝업
+    function accountPopup() {
+        $('.accountPopup').addClass('active');
+    }
+</script>
+
+</html>

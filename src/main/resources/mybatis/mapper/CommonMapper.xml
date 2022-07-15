@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.CommonMapper">
+	<cache />
+
+	<!-- ================================================================= select ================================================================= -->
+	<select id="sel_login" parameterType="Tblmi_usrDto"  resultType="Tblmi_usrDto">
+		select *
+		from tblmi_usr
+		<where>
+			usr_log_id = #{usr_log_id}
+			and usr_pw = #{usr_pw}
+		</where>
+	</select>
+
+	<select id="sel_tblmi_usr" parameterType="Tblmi_usrDto"  resultType="Tblmi_usrDto">
+		select *
+		from tblmi_usr
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_log_id)">
+				usr_log_id = #{usr_log_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+				and usr_nm = #{usr_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_mob)">
+				and usr_mob = #{usr_mob}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+				and usr_id = #{usr_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_email)">
+				and usr_email = #{usr_email}
+			</if>
+		</where>
+	</select>
+
+	<select id="sel_tblmi_usr_auth" parameterType="Tblmi_usr_authDto" resultType="Tblmi_usr_authDto">
+		select *
+		from tblmi_usr_auth
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+				usr_id = #{usr_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(role_cd)">
+				role_cd = #{role_cd}
+			</if>
+		</where>
+	</select>
+	<!-- ================================================================= select ================================================================= -->
+
+
+	<!-- ================================================================= insert ================================================================= -->
+	<insert id="ins_tblmi_usr_log_hst" parameterType="Tblmi_usr_log_hstDto">
+		INSERT INTO tblmi_usr_log_hst
+            (
+                        usr_grp_cd,
+                        usr_id,
+                        usr_email,
+                        usr_ip,
+                        fail_yn,
+                        reg_dt
+            )
+		values
+			(
+						#{usr_grp_cd},
+						#{usr_id},
+						#{usr_email},
+						INET_ATON(#{usr_ip}),
+						#{fail_yn},
+						SYSDATE()
+			)
+ 	</insert>
+	<!-- ================================================================= insert ================================================================= -->
+
+	<!-- ================================================================= update ================================================================= -->
+	<update id="upd_tblmi_usr_log_in_dt" parameterType="Tblmi_usrDto">
+			UPDATE TBLMI_USR
+			SET    last_log_in_dt = Sysdate()
+			<where>
+				usr_id = #{usr_id}
+			</where>
+	</update>
+	<!-- ================================================================= update ================================================================= -->
+
+	<insert id="test" parameterType="String">
+		INSERT INTO `db_micrm_test`.`test` (`test`) VALUES (#{test})
+	</insert>
+
+	<!-- 공통 세팅 테이블 Select-->
+	<select id ="selectSetList" parameterType="Tblmi_set_lst" resultType="Tblmi_set_lst">
+		SELECT *
+		FROM
+		tblmi_set_lst
+		WHERE DEL_DT = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+			and list_tp_id = #{list_tp_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+			and list_dt_id = #{list_dt_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and usr_grp_cd = #{usr_grp_cd}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(def_yn)">
+			and def_yn = #{def_yn}
+		</if>
+		ORDER BY
+		FIELD(DEF_YN, 'Y') DESC,
+		REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+		LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+	</if>
+	</select>
+
+	<select id ="selectSetListCnt" parameterType="Tblmi_set_lst" resultType="Int">
+		SELECT COUNT(seq)
+		FROM tblmi_set_lst
+		WHERE DEL_DT = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+			and list_tp_id = #{list_tp_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+			and list_dt_id = #{list_dt_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and usr_grp_cd = #{usr_grp_cd}
+		</if>
+	</select>
+
+	<update id ="updateUserPw" parameterType="Tblmi_usrDto">
+		update tblmi_usr
+		set usr_pw = #{usr_pw}
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_log_id)">
+				usr_log_id = #{usr_log_id}
+			</if>
+		</where>
+	</update>
+
+
+	<insert id="insertUserHistoryLog" parameterType="Tblmi_usr_hstDto">
+		INSERT INTO		tblmi_usr_hst
+						(
+						usr_grp_cd
+						,usr_seq
+						,usr_id
+						,usr_ip
+						,work_url
+						,work_detail
+						,reg_id
+						,reg_dt
+						)
+		VALUES			(
+						#{usr_grp_cd}
+						,#{usr_seq}
+						,#{usr_id}
+						,INET_ATON(#{usr_ip})
+						,#{work_url}
+						,#{work_detail}
+						,#{usr_id}
+						,now()
+						)
+	</insert>
+
+	<select id="getBlockBlockDto" parameterType="Tblmi_Block_lstDto" resultType="Tblmi_Block_lstDto">
+		SELECT
+			seq
+			, block_type
+			, block_target
+			, block_reg_usr
+			, block_st_dt
+			, block_end_dt
+			, block_status
+		  FROM TBLMI_BLOCK_LST
+		 WHERE block_target =INET_ATON(#{block_target})
+				AND block_grp_cd = #{block_grp_cd}
+				AND (block_end_dt >= NOW() or block_end_dt is null)
+				AND block_status != '2'
+	</select>
+</mapper>
+
+
+
+
+
