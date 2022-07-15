@@ -6,8 +6,6 @@ interface MicrmUserDao {
 
     fun sel_tblmi_usr( usrDto : Tblmi_usrDto) : Tblmi_usrDto
 
-    fun sel_login(usrDto : Tblmi_usrDto) : Tblmi_usrDto
-
     fun sel_check_id(usrDto : Tblmi_usrDto) : HashMap<String,String>
 
     fun updateUserPw(usrDto : Tblmi_usrDto) : HashMap<String,String>

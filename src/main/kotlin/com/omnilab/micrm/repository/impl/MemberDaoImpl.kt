@@ -92,144 +92,12 @@ class MemberDaoImpl : MemberDao {
 
     }*/
 
-    override fun selectOneGroup(groupListDto: Tblmi_group_listDto): Tblmi_group_listDto {
-        return sqlSession.selectOne("selectOneGroup", groupListDto)
-    }
-
-    override fun selectGroupList(groupListDto: Tblmi_group_listDto): List<Tblmi_group_listDto> {
-        return sqlSession.selectList("selectGroupList", groupListDto)
-    }
-
-    override fun selectGroupUserList(groupUserDto: Tblmi_group_usrDto): List<Tblmi_group_listDto> {
-        return sqlSession.selectList("selectGroupUserList", groupUserDto)
-    }
-
-    override fun selectGroupListCnt(groupListDto: Tblmi_group_listDto): Int {
-        return sqlSession.selectOne("selectGroupListCnt", groupListDto)
-    }
-
-    override fun selectGroupUserListCnt(groupUserDto: Tblmi_group_usrDto): Int {
-        return sqlSession.selectOne("selectGroupUserListCnt", groupUserDto)
-    }
-
-    override fun selectGroupUserCnt(groupUserDto: Tblmi_group_usrDto): Int {
-        return sqlSession.selectOne("selectGroupUserCnt", groupUserDto)
-    }
-
-    override fun selectOneGroupUser(groupUserDto: Tblmi_group_usrDto): Tblmi_group_usrDto {
-        return sqlSession.selectOne("selectOneGroupUser", groupUserDto)
-    }
-
     override fun updateGroupList(groupListDto: Tblmi_group_listDto) {
         sqlSession.update("updateGrpList", groupListDto)
     }
 
-    override fun updateGroupState(groupListDto: Tblmi_group_listDto) {
-        sqlSession.update("updateGrpUseYn", groupListDto)
-    }
-
     override fun deleteGrpUser(groupUserDto: Tblmi_group_usrDto) {
         sqlSession.delete("deleteTargetUser", groupUserDto)
-    }
-
-    override fun deleteGrpList(groupList: List<Tblmi_group_listDto>) {
-        for (i in groupList) {
-            sqlSession.update("deleteGrpList", i);
-        }
-    }
-
-    override fun deleteGrpAllList(groupListDto: Tblmi_group_listDto) {
-        sqlSession.update("deleteAllGrpList", groupListDto)
-    }
-
-    override fun deleteGrpUserList(groupUserList: List<Tblmi_group_usrDto>) {
-        for (i in groupUserList) {
-            sqlSession.update("deleteGrpUserList", i);
-        }
-    }
-
-    override fun deleteGrpUserAllList(groupUserDto: Tblmi_group_usrDto) {
-        sqlSession.update("deleteAllGrpUserList", groupUserDto)
-    }
-
-    override fun excelDownGrpUserList(book: Workbook, groupUserDto: Tblmi_group_usrDto) {
-        // 대용량 처리를 위해 ResultHandler 적용
-        sqlSession.select("selectGroupUserList", groupUserDto, object : ResultHandler<Any?> {
-
-            var sheet = book.getSheet("sheet1")
-            var i = sheet.lastRowNum + 1
-
-            override fun handleResult(resultContext: ResultContext<*>) {
-                val row = sheet.createRow(i)
-                val groupUserDtoR: Tblmi_group_usrDto = resultContext.resultObject as Tblmi_group_usrDto
-                row.createCell(0).setCellValue(groupUserDtoR.usr_id)
-                row.createCell(1).setCellValue(groupUserDtoR.usr_nm)
-                //row.createCell(2).setCellValue(CommonUtils.numberToPhone(groupUserDtoR.usr_mob))
-
-                if (!CommonUtils.isEmptyObject(groupUserDtoR.usr_mob)) {
-                    row.createCell(2).setCellValue(CommonUtils.numberToPhone(groupUserDtoR.usr_mob))
-                }
-
-                row.createCell(3).setCellValue(groupUserDtoR.usr_edm)
-                row.createCell(4).setCellValue(groupUserDtoR.usr_gdr)
-                row.createCell(5).setCellValue(groupUserDtoR.usr_addr)
-                row.createCell(6).setCellValue(groupUserDtoR.usr_etc1)
-                row.createCell(7).setCellValue(groupUserDtoR.usr_etc2)
-                row.createCell(8).setCellValue(groupUserDtoR.usr_etc3)
-                row.createCell(9).setCellValue(groupUserDtoR.usr_etc4)
-                row.createCell(10).setCellValue(groupUserDtoR.usr_etc5)
-                row.createCell(11).setCellValue(groupUserDtoR.usr_etc6)
-                row.createCell(12).setCellValue(groupUserDtoR.usr_etc7)
-                row.createCell(13).setCellValue(groupUserDtoR.usr_etc8)
-                row.createCell(14).setCellValue(groupUserDtoR.usr_etc9)
-                row.createCell(15).setCellValue(groupUserDtoR.usr_etc10)
-                i++
-            }
-        })
-    }
-
-    override fun getTblmiSupListCnt(dto: Tblmi_supDto): Int {
-        return sqlSession.selectOne("getTblmiSupListCnt", dto)
-    }
-
-    override fun getTblmiSupList(dto: Tblmi_supDto): List<Tblmi_supDto> {
-        return sqlSession.selectList("getTblmiSupList", dto)
-    }
-
-    override fun saveTblmiSupList(dto: Tblmi_supDto): Int {
-        return sqlSession.insert("saveTblmiSup", dto)
-    }
-
-    override fun saveTblmiSupList(dtoList: List<Tblmi_supDto>): Int {
-        return sqlSession.insert("saveTblmiSupList", dtoList)
-    }
-
-    override fun updateTblmiSupList(dto: Tblmi_supDto): Int {
-        return sqlSession.update("updateTblmiSup", dto)
-    }
-
-    override fun downloadTblmiSup(book: Workbook, dto: Tblmi_supDto) {
-        sqlSession.select("getTblmiSupList", dto, object : ResultHandler<Any?> {
-
-            var sheet = book.getSheet("sheet1")
-            var i = sheet.lastRowNum + 1
-            override fun handleResult(resultContext: ResultContext<*>) {
-                val row = sheet.createRow(i)
-                val reusultDto: Sup_searchDto = resultContext.resultObject as Sup_searchDto
-                row.createCell(0).setCellValue(reusultDto.sup_type)
-                row.createCell(1).setCellValue(reusultDto.pro_id)
-                row.createCell(2).setCellValue(reusultDto.ch_type)
-                row.createCell(3).setCellValue(reusultDto.send_to)
-                row.createCell(4).setCellValue(reusultDto.camp_nm)
-                row.createCell(5).setCellValue(reusultDto.reg_dt)
-                i++
-            }
-        })
-    }
-
-    // 그룹명 존재여부 확인
-    override fun isExistGrpNam(groupListDto: Tblmi_group_listDto): Int {
-        return sqlSession.selectOne("isExistGrpNm", groupListDto)
     }
 
     //member 마스터 테이블 정보 가져오기
@@ -247,51 +115,8 @@ class MemberDaoImpl : MemberDao {
         return sqlSession.selectOne("getTblTblSum", dto)
     }
 
-    //member 리스트
-    override fun getTblTblList(dto: Tblmi_tbl_listDto): List<Tblmi_tbl_listDto> {
-        return sqlSession.selectList("getTblTblList", dto)
-    }
-
-    //member 리스트 카운트
-    override fun getTblTblListCnt(dto: Tblmi_tbl_listDto): Int {
-        return sqlSession.selectOne("getTblTblListCnt", dto)
-    }
-
-    override fun downloadTblmiList(book: Workbook, dto: Tblmi_tbl_listDto) {
-        sqlSession.select("getTblTblList", dto, object : ResultHandler<Any?> {
-
-            var sheet = book.getSheet("sheet1")
-            var i = sheet.lastRowNum + 1
-            override fun handleResult(resultContext: ResultContext<*>) {
-                val row = sheet.createRow(i)
-                val reusultDto: Tblmi_tbl_listDto = resultContext.resultObject as Tblmi_tbl_listDto
-
-                //toString 한 내용이 null 이면 excel에 null 기입.
-                row.createCell(0).setCellValue(reusultDto.usr_id)
-                row.createCell(1).setCellValue(reusultDto.usr_nm)
-                row.createCell(2).setCellValue(CommonUtils.numberToPhone(reusultDto.usr_mob))
-                row.createCell(3).setCellValue(reusultDto.usr_myn)
-                row.createCell(4).setCellValue(reusultDto.usr_edm)
-                row.createCell(5).setCellValue(reusultDto.usr_eyn)
-                row.createCell(6).setCellValue(reusultDto.usr_gdr)
-                row.createCell(7).setCellValue(reusultDto.usr_addr)
-                row.createCell(8).setCellValue(reusultDto.usr_etc1)
-                row.createCell(9).setCellValue(reusultDto.usr_etc2)
-                row.createCell(10).setCellValue(reusultDto.usr_etc3)
-                row.createCell(11).setCellValue(reusultDto.usr_etc4)
-                row.createCell(12).setCellValue(reusultDto.usr_etc5)
-                row.createCell(13).setCellValue(reusultDto.usr_etc6)
-                row.createCell(14).setCellValue(reusultDto.usr_etc7)
-                row.createCell(15).setCellValue(reusultDto.usr_etc8)
-                row.createCell(16).setCellValue(reusultDto.usr_etc9)
-                row.createCell(17).setCellValue(reusultDto.usr_etc10)
-                i++
-            }
-        })
-    }
-
-    override fun insertOneTargetUser(dto: Tblmi_group_usrDto): Int {
-        return sqlSession.insert("insertOneTargetUser", dto)
+    override fun selectGroupUserListCnt(groupUserDto: Tblmi_group_usrDto): Int {
+        return sqlSession.selectOne("selectGroupUserListCnt", groupUserDto)
     }
 
     override fun insertTargetGrp(file: MultipartFile, excel_file: InputStream, dto: Tblmi_group_usrDto): Map<String, Any> {

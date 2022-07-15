@@ -245,48 +245,6 @@ function numberReplace(number) {
 }
 
 
-// 알림 Open event
-function sideNoticeOpen() {
-
-    const res = function(response) {
-        const $doc = new DOMParser().parseFromString(response, "text/html");
-        $("#alarmTitle").html($("#alarmTitle", $doc).html())
-        $("#work_body").html($("#work_body_list", $doc).html())
-        $("#notice_body").html($("#notice_body_list", $doc).html())
-        $("#ico_notice").html('<span>알림</span>');
-    }
-
-    let data = [];
-    com_ajax.ajax('post', '/sys/setting/selectAlarmList.ajax', data, res);
-    $('.side_notice').addClass('active');
-}
-
-// 알림 Refresh Event
-function refreshWork() {
-
-    const res = function(response) {
-        const $doc = new DOMParser().parseFromString(response, "text/html");
-        $("#work_body").html($("#work_body_list", $doc).html())
-    }
-    let data = [];
-    com_ajax.ajax('post', '/sys/setting/selectAlarmAndUpdate.ajax', data, res);
-}
-
-// 알림 Close event
-function sideNoticeClose() {
-
-    const res = function(response) {
-        if(response.status == true){
-            console.log("success")
-        } else {
-            popup.popAlert("오류가 발생했습니다 관리자에게 문의하세요");
-        }
-        $('.side_notice').removeClass('active');
-    }
-    let data = [];
-    com_ajax.ajax('post','/sys/setting/updateAlarmStatus.ajax', data ,res)
-}
-
 /* 날짜를 자동으로 계산해서 1개월 2개월 3개월 6개월 편하게 입력해줌 */
 function quickDate(i, startName, endName){
     // i = 오늘 날짜로부터 계산할 개월 수

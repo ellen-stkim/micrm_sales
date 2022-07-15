@@ -16,20 +16,6 @@ class SysSecurityDaoImpl : SysSecurityDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun getAdminIpBlockListCnt(dto : Tblmi_block_lstDto): Int{
-        return sqlSession.selectOne("getAdminIpBlockListCnt", dto)
-    }
-
-    override fun getAdminIpBlockList(dto : Tblmi_block_lstDto): MutableList<Block_searchDto>{
-        return sqlSession.selectList("getAdminIpBlockList", dto)
-    }
-    override fun updateBlockLst(dto : Tblmi_block_lstDto) : Int{
-        return sqlSession.update("updateBlockList", dto)
-    }
-
-    override fun saveBlockList(dto : Tblmi_block_lstDto) : Int{
-        return sqlSession.insert("saveBlockList", dto)
-    }
 
     override fun getAdminUserLogCnt(dto : Tblmi_usr_hstDto): Int{
         return sqlSession.selectOne("getAdminUserLogCnt", dto)
@@ -39,7 +25,4 @@ class SysSecurityDaoImpl : SysSecurityDao {
         return sqlSession.selectList("getAdminUserLogList", dto)
     }
 
-    override fun getIpBlockList(dto : Tblmi_block_lstDto): MutableList<Block_searchDto>{
-        return sqlSession.selectList("getIpBlockList", dto)
-    }
 }

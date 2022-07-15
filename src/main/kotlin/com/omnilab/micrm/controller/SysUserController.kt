@@ -37,29 +37,6 @@ class SysUserController {
     @Qualifier("CampaignServiceImpl")
     private lateinit var campaignService : CampaignService
 
-    /**
-     * @Method Name  : titleCnt
-     * @Since    : 2021. 03. 25.
-     * @author   : Grayson
-     * @return   : Map<String,String>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 상위 타이틀 개수 구하기
-     * @title : 상위 타이틀 개수 구하기
-     */
-    @ModelAttribute("titleCnt")
-    fun titleCnt() : Map<String,String> {
-        val paramMap : MutableMap<String,String> = HashMap();
-        val prdMap = campaignService.getTitleProgramCnt()
-
-        paramMap["alarmCnt"] = sysSettingService.checkAlarmCnt().toString()
-        paramMap["sendExpect"] = prdMap["sendExpect"].toString()
-        paramMap["sending"] = prdMap["sending"].toString()
-        paramMap["apprCnt"] = prdMap["apprCnt"].toString()
-
-        return paramMap
-    }
 
     @GetMapping("/userManagement.mi")
     fun userManagement(): ModelAndView {

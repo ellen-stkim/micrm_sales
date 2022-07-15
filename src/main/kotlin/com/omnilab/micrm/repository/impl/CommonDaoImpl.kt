@@ -20,16 +20,8 @@ class CommonDaoImpl : CommonDao {
         return sqlSession.selectOne("sel_tblmi_usr", dto)
     }
 
-    override fun sel_tblmi_usr_authOne(dto: Tblmi_usr_authDto): Tblmi_usr_authDto {
-        return sqlSession.selectOne("sel_tblmi_usr_auth", dto)
-    }
-
     override fun sel_tblmi_usr(dto: Tblmi_usrDto): List<Tblmi_usrDto> {
         return sqlSession.selectList("sel_tblmi_usr", dto)
-    }
-
-    override fun sel_tblmi_usr_auth(dto: Tblmi_usr_authDto): List<Tblmi_usr_authDto> {
-        return sqlSession.selectList("sel_tblmi_usr_auth", dto)
     }
 
     override fun insertUserHistoryLog(dto: Tblmi_usr_hstDto): Int {
