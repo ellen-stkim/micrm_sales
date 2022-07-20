@@ -24,6 +24,8 @@ fun main(args: Array<String>) {
 
     log.error("=========================")
     log.error(enc.encrypt("jdbc:mariadb://192.168.0.3/test_db_micrm_sales"))
+    log.error(enc.encrypt("img"))
+    log.error(enc.encrypt("img_milvus_1@3"))
     log.error("=========================")
 
 }

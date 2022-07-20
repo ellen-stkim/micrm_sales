@@ -36,8 +36,8 @@ variable:
 
   minio-url: http://125.131.213.7:9001
   minio-bucket: img
-  minio-username:
-  minio-password:
+  minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
+  minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
 
   static-path : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static"
   tableau-url: "http://t.tableau-report.com/trusted"
