@@ -432,21 +432,7 @@
     });
     var notInPop = [];
 
-    function getNoticePop(notInPop) {
-        var res = function (response) {
-            $("#noticePopAppend").html(response);
-        };
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = (1 + now.getMonth());
-        month = month >= 10 ? month : '0' + month;
-        var day = now.getDate();
-        day = day >= 10 ? day : '0' + day;
-        var todayDate = year + '-' + month + '-' + day;
-        var param = {noti_popyn: 'Y', noti_bgn_dttm: todayDate, notInPop: notInPop};
-        com_ajax.ajax('post', '${baseURL}/sys/setting/getNoticePop.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
 
-    }
 
     function thispopupClose(close) {
         $(close).parents('.layer_pop').css('display', 'none');
@@ -466,7 +452,6 @@
         for (var i = 0; i < ca.length; i++) {
             notInPop.push($.trim(ca[i].split('=')[0]));
         }
-        getNoticePop(notInPop);
     }
 
 

@@ -63,10 +63,6 @@
             <!-- Tab menu -->
             <li<c:if test="${urlPath eq '/sys/setting/mailSetting.mi'}"> class='on'</c:if>><a href="/sys/setting/mailSetting.mi">메일 정보 설정</a></li>
             <li<c:if test = "${urlPath eq '/sys/setting/smsSetting.mi'}"> class='on'</c:if>><a href="/sys/setting/smsSetting.mi">문자 정보 설정</a></li>
-            <li<c:if test = "${urlPath eq '/sys/setting/testGroup.mi'}"> class='on'</c:if>><a href="/sys/setting/testGroup.mi">테스트 그룹 설정</a></li>
-            <sec:authorize access="hasRole('R10')">
-                <li<c:if test="${urlPath eq '/sys/setting/noticeSetting.mi'}"> class='on'</c:if>><a href="/sys/setting/noticeSetting.mi">공지사항 설정</a></li>
-            </sec:authorize>
             <%--<li><a href="approval.html">승인 절차 설정</a></li>--%>
         </ul>
         <!-- section 영역 시작 -->

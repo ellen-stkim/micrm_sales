@@ -61,8 +61,7 @@
                                         <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
                                     </c:if>
                                     <c:if test="${kakaoCnt eq 0}">
-                                        <input name="formatType" type="checkbox" value="kakao" class="formatType"
-                                               disabled/>
+                                        <input name="formatType" type="checkbox" value="kakao" class="formatType" disabled/>
                                     </c:if>
                                     <span>카카오톡</span>
                                 </label>

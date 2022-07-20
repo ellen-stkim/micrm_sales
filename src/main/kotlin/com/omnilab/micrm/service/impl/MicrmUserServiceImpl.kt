@@ -25,10 +25,6 @@ class MicrmUserServiceImpl : MicrmUserService {
     @Autowired
     private lateinit var commonService: CommonService
 
-    override fun sel_tblmi_usr(usrDto: Tblmi_usrDto): Tblmi_usrDto {
-        return micrmUserDao.sel_tblmi_usr(usrDto)
-    }
-
     override fun checkUserPassWord(password: String): Boolean {
 
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()

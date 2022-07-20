@@ -17,11 +17,6 @@ class MicrmUserDaoImpl : MicrmUserDao {
         return userInfo!!
     }
 
-    override fun sel_login(usrDto: Tblmi_usrDto): Tblmi_usrDto {
-        val userInfo : Tblmi_usrDto = sqlSession.selectOne("sel_login",usrDto)
-        return userInfo
-    }
-
     override fun sel_check_id(usrDto: Tblmi_usrDto): HashMap<String, String> {
         val statusMap = HashMap<String,String>()
         val userInfo : Tblmi_usrDto?= sqlSession.selectOne("sel_tblmi_usr",usrDto)
