@@ -1,6 +1,5 @@
 package com.mablic.template_kotlin
 
-import com.omnilab.micrm.common.CommonUtils
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig
 import org.slf4j.Logger
@@ -24,9 +23,7 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error(enc.encrypt("jdbc:mariadb://125.131.213.7/test_db_micrm_sales"))
-    log.error(enc.encrypt("test_micrm"))
-    log.error(enc.encrypt("test_micrm_2020##"))
+    log.error(enc.encrypt("jdbc:mariadb://192.168.0.3/test_db_micrm_sales"))
     log.error("=========================")
 
 }
