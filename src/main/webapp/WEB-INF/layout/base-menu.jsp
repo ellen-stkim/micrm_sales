@@ -13,7 +13,7 @@
 		<li>
 			<span>메시지</span>
 			<ul class="sub_menu">
-				<li<c:if test="${fn:contains(urlPath,'/cont/edm')}"> class='on'</c:if>><a href="/cont/edmLst.mi">이메일</a></li>
+				<%--<li<c:if test="${fn:contains(urlPath,'/cont/edm')}"> class='on'</c:if>><a href="/cont/edmLst.mi">이메일</a></li>--%>
 				<li<c:if test="${fn:contains(urlPath, '/cont/mdm')}"> class='on'</c:if>><a href="/cont/mdmLst.mi">모바일</a></li>
 				<li<c:if test="${urlPath eq '/cont/imgLst.mi'}"> class='on'</c:if>><a href="/cont/imgLst.mi">이미지 파일</a></li>
 			</ul>
