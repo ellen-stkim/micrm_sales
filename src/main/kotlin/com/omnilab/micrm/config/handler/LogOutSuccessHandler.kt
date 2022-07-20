@@ -23,6 +23,6 @@ class LogOutSuccessHandler : LogoutSuccessHandler {
                 log.error("session invalidate Error {} : {}", e.javaClass.name, e.message)
             }
         }
-        rep.sendRedirect("/index")
+        rep.sendRedirect("/index.mi")
     }
 }
