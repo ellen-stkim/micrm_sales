@@ -40,6 +40,55 @@ class SysSettingController {
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
 
+    /**
+     * @Method Name  : mappingSetting
+     * @Since    : 2022. 07. 25
+     * @author   : Lisa
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑 정보 설정 페이지 조회
+     * @title : 매핑 정보 설정 페이지 조회
+     */
+    @GetMapping("/mappingSetting.mi")
+    fun mappingSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/mappingSetting")
+        val dto = SetLst_searchDto()
+        val map = sysSettingService.getSmsSettingList(dto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+
+        return view;
+    }
+
+    /**
+     * @Method Name  : getMappingSettingList
+     * @Since    : 2022. 07. 25
+     * @author   : Lisa
+     * @param    : lstStDto: SetLst_searchDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑 정보 설정 페이지 가져오기
+     * @title : 매핑 정보 설정 페이지 가져오기
+     */
+
+    @PostMapping("/getMappingSettingList.ajax")
+    fun getMappingSettingList(@ModelAttribute("form") lstStDto: SetLst_searchDto) : ModelAndView {
+        val view = ModelAndView("sys/setting/ajax/getMappingSettingList")
+        val map = sysSettingService.getSmsSettingList(lstStDto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+        return view;
+    }
+
+    /**
+     * 
+     */
     @GetMapping("/mailSetting.mi")
     fun mailSetting(): ModelAndView {
         val view = ModelAndView("sys/setting/mailSetting")

@@ -39,10 +39,10 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
 
-  static-path : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static"
+  static-path : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static"
   tableau-url: "http://t.tableau-report.com/trusted"
 
 upload:
-  src : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
-  temp : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+  src : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
+  temp : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
