@@ -180,6 +180,26 @@
 				AND (block_end_dt >= NOW() or block_end_dt is null)
 				AND block_status != '2'
 	</select>
+
+	<!-- 매핑정보 - 공통 세팅 테이블 Select-->
+	<select id ="selectMappingList" parameterType="Tblmi_set_lst" resultType="Tblmi_set_lst">
+		SELECT *
+		FROM
+		tblmi_set_lst
+		WHERE DEL_DT = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+			and list_tp_id = #{list_tp_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+			and list_dt_id = #{list_dt_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and usr_grp_cd = #{usr_grp_cd}
+		</if>
+		ORDER BY
+		FIELD(DEF_YN, 'Y') DESC,
+		REG_DT DESC
+	</select>
 </mapper>
 
 

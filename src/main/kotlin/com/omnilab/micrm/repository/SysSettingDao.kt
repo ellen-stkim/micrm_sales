@@ -36,4 +36,12 @@ interface SysSettingDao {
 
     fun updateSetLst(dto: Tblmi_set_lstDto) : Int
 
+    fun getMappingSettingListCnt(dto: Tblmi_set_lstDto) : Int
+
+    fun getMappingSettingList(dto : Tblmi_set_lstDto) : List<Tblmi_set_lstDto>
+
+    fun isExistMapping (dto : Tblmi_set_lstDto) : Int
+
+    fun isExistModifyMapping(dto : Tblmi_set_lstDto) : Int
+
 }

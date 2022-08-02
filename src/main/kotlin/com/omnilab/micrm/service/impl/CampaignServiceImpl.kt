@@ -29,7 +29,7 @@ import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 @Service("CampaignServiceImpl")
-class CampaignServiceImpl : CampaignService {
+class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -80,7 +80,7 @@ class CampaignServiceImpl : CampaignService {
     private lateinit var sysSettingDao: SysSettingDao;
 
     @Autowired
-    private lateinit var commonService: CommonService
+    private lateinit var commonService: com.omnilab.micrm.service.CommonService
 
 
     override fun programSend(pro_id: String, auto_tp: Boolean) {

@@ -6,15 +6,14 @@ import javax.servlet.http.HttpSessionListener
 
 class SessionListener: HttpSessionListener {
 
-
     val logger = LoggerFactory.getLogger(this::class.java)
-
-    override fun sessionDestroyed(se: HttpSessionEvent?) {
-        super.sessionDestroyed(se)
+    override fun sessionCreated(p0: HttpSessionEvent?) {
+        TODO("Not yet implemented")
     }
 
-    override fun sessionCreated(se: HttpSessionEvent) {
-        super.sessionCreated(se)
+    override fun sessionDestroyed(p0: HttpSessionEvent?) {
+        TODO("Not yet implemented")
     }
+
 
 }

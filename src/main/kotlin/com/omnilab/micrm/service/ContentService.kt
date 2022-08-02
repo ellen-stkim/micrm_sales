@@ -33,4 +33,6 @@ interface ContentService {
 
     fun previewJsonService(dto : Tblmi_cont_lstDto) : Map<String,Any>
 
+    fun selectMappingList(dto: Tblmi_set_lstDto) : Map<String, Any>
+
 }

@@ -379,4 +379,8 @@ class EmailContentServiceImpl : ContentService {
     override fun previewJsonService(dto: Tblmi_cont_lstDto): Map<String, Any> {
         TODO("Not yet implemented")
     }
+
+    override fun selectMappingList(dto: Tblmi_set_lstDto): Map<String, Any> {
+        TODO("Not yet implemented")
+    }
 }

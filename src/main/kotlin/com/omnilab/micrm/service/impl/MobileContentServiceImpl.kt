@@ -69,7 +69,7 @@ class MobileContentServiceImpl : ContentService {
 
         try {
 
-            tblmiContMstDto.ch_tp = "CH02"
+            tblmiContMstDto.ch_tp = "CH03"
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
@@ -688,7 +688,7 @@ class MobileContentServiceImpl : ContentService {
 
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
 
-        searchDto.ch_tp = "CH02"
+        searchDto.ch_tp = "CH03"
         searchDto.del_yn = "N"
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
@@ -2400,6 +2400,28 @@ class MobileContentServiceImpl : ContentService {
         dataMap["jsonContent"] = viewDto;
 
         return dataMap;
+    }
+
+    /**
+     * @Method Name  : selectMappingList
+     * @Since    : 2022. 08. 02.
+     * @author   : SSW
+     * @param    : tblmiSetLstDto: Tblmi_set_lstDto
+     * @return   : Map<String, Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑정보 리스트 가져오기
+     * @title : 매핑정보 리스트 가져오기
+     */
+    override fun selectMappingList(tblmiSetLstDto: Tblmi_set_lstDto): Map<String, Any> {
+
+        val searchDto = tblmiSetLstDto as SetLst_searchDto
+        val paramMap: MutableMap<String, Any> = HashMap()
+
+        paramMap["list"] = contentDao.selectMappingList(searchDto)
+
+        return paramMap
     }
 
 }

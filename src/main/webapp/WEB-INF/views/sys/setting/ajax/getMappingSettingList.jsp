@@ -16,7 +16,6 @@
         <table class="table mail_tbl">
             <colgroup>
                 <col width="3%" />
-<%--                <col width="12.8%" />--%>
                 <col width="15.8%" />
                 <col width="25.8%" />
                 <col width="15.8%" />
@@ -26,7 +25,6 @@
             <thead>
             <tr>
                 <th></th>
-<%--                <th>기본</th>--%>
                 <th>Key</th>
                 <th>Value</th>
                 <th>생성일</th>
@@ -42,28 +40,23 @@
                         <input type="hidden" name="changeSender" value="${n.list_nm}"/>
                         </label>
                     </td>
-<%--                    <td>--%>
-<%--                        <c:if test = "${n.def_yn == 'Y'}">--%>
-<%--                            <img src="${baseURL}/image/ico_basic.png" alt="" />--%>
-<%--                        </c:if>--%>
-<%--                    </td>--%>
                     <td class="en_font">${n.list_nm}</td>
                     <td class="en_font">${cutil:numberToPhone(n.list_val)}</td>
                     <td class="en_font">${n.reg_dt}</td>
                     <td class="en_font">
                         <c:if test = "${fn:trim(n.use_yn) == 'Y'}">
                             <input type="button" class="use_state en_font btn_state" value="Y"
-                                   onclick="updateSmsLstYn('${n.seq}','${n.use_yn}')"
+                                   onclick="updateMappingLstYn('${n.seq}','${n.use_yn}')"
                             />
                         </c:if>
                         <c:if test = "${fn:trim(n.use_yn) == 'N'}">
                             <input type="button" class="use_state en_font btn_state" value="N"
-                                   onclick="updateSmsLstYn('${n.seq}','${n.use_yn}')"
+                                   onclick="updateMappingLstYn('${n.seq}','${n.use_yn}')"
                             />
                         </c:if>
                     </td>
                     <td>
-                        <input type="button" class="btn_sm_line btn_inline size" value="수정" onclick="numberRePopup('${n.seq}');" />
+                        <input type="button" class="btn_sm_line btn_inline size" value="수정" onclick="mappingRePopup('${n.seq}');" />
                         <input type="button" class="btn_sm_line btn_inline size" value="삭제" onclick="deleteAlert(this ,'${n.seq}');" />
                     </td>
                 </tr>
@@ -72,7 +65,7 @@
         </table>
         <div class="btn_row bottom-border">
             <ul class="pager">
-                <ui:pagination paginationInfo="${page}" type="image" jsFunction="getSmsSettingList"/>
+                <ui:pagination paginationInfo="${page}" type="image" jsFunction="getMappingSettingList"/>
             </ul>
         </div>
         <input type ="hidden" id ="nowPageNo" value ="${pageNo}"/>
@@ -81,7 +74,6 @@
         <table class="table mail_tbl">
             <colgroup>
                 <col width="3%" />
-                <col width="12.8%" />
                 <col width="15.8%" />
                 <col width="25.8%" />
                 <col width="15.8%" />
@@ -91,9 +83,8 @@
             <thead>
             <tr>
                 <th></th>
-                <th>기본</th>
-                <th>발신자명</th>
-                <th>발신번호</th>
+                <th>Key</th>
+                <th>Value</th>
                 <th>생성일</th>
                 <th>사용여부</th>
                 <th>수정/삭제</th>
@@ -102,7 +93,7 @@
             <tbody>
             <!-- 검색 결과가 없는 경우 영역 시작 -->
             <tr class="no_data">
-                <td colspan="100%">조회된 결과가 없습니다.</td>
+                <td colspan="6">조회된 결과가 없습니다.</td>
             </tr>
             </tbody>
         </table>

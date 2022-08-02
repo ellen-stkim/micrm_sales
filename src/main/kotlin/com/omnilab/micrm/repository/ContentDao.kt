@@ -75,4 +75,7 @@ interface ContentDao {
     fun selectLstSeq(dto : Tblmi_cont_lstDto) : List<Tblmi_cont_lstDto>
 
     fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int
+
+    // 매핑정보를 가져온다
+    fun selectMappingList(tblmiSetLstDto: Tblmi_set_lstDto) : List<Tblmi_set_lstDto>
 }

@@ -53,7 +53,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         httpSecurity.addFilterBefore(filter, CsrfFilter::class.java)
                 .csrf().ignoringAntMatchers("/rest/**", "/api/**")
             .and()
-                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi")
+                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/cont/mdmCreate.mi")
                 .permitAll()
             .and()
                 .authorizeRequests().anyRequest().authenticated()

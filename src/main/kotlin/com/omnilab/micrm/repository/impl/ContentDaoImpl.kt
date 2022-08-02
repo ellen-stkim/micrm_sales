@@ -149,4 +149,8 @@ class ContentDaoImpl : ContentDao {
     override fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int{
         return sqlSession.selectOne("getImgNmCh", dto)
     }
+
+    override fun selectMappingList(tblmiSetLstDto: Tblmi_set_lstDto): List<Tblmi_set_lstDto> {
+        return sqlSession.selectList("selectMappingList",tblmiSetLstDto)
+    }
 }

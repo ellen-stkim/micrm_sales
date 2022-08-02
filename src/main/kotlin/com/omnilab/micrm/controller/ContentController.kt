@@ -54,7 +54,7 @@ class ContentController  {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : CampaignService
+    private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
@@ -121,42 +121,15 @@ class ContentController  {
     @GetMapping("/mdmCreate.mi")
     fun mdmCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mdmCreate")
-        val map = sysSettingService.getDBValue();
 
-        val kkoDto = SetLst_searchDto()
-        kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        kkoDto.list_tp_id = "CH02"
-        kkoDto.list_dt_id = "DMTP03"
-        kkoDto.def_yn = "Y"
-        val kkoSenderMap = mobileContentService.selectSenderList(kkoDto)
-
-        val smsDto = SetLst_searchDto()
-        smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        smsDto.list_tp_id = "CH02"
-        smsDto.list_dt_id = "DMTP02"
-        smsDto.def_yn = "Y"
-        val smsSenderMap = mobileContentService.selectSenderList(smsDto)
-
-
-        val rcsDto = SetLst_searchDto()
-        rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        rcsDto.list_tp_id = "CH02"
-        rcsDto.list_dt_id = "DMTP04"
-        rcsDto.def_yn = "Y"
-        val rcsSenderMap = mobileContentService.selectSenderList(rcsDto)
-
-
-        val cntMap = mobileContentService.isCheckSender()
+        val sptpDto = SetLst_searchDto()
+        sptpDto.usr_grp_cd = "04"   // 테스트용 세일즈포스 테스트 그룹
+        sptpDto.list_tp_id = "CH03"
+        sptpDto.list_dt_id = "SPTP01"
+        val sptpMap = mobileContentService.selectMappingList(sptpDto)
 
         // 개인화 변수 추가하기
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-        view.addObject("list",kkoSenderMap["list"])
-        view.addObject("smsSender",smsSenderMap["list"])
-        view.addObject("rcsSender",rcsSenderMap["list"])
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
+        view.addObject("mappingList", sptpMap["list"]);
 
         return view
     }
