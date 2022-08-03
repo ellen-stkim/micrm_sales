@@ -29,6 +29,55 @@ class SalesforceController {
     @Qualifier("MobileContentServiceImpl")
     private lateinit var mobileContentService: ContentService
 
+    @ResponseBody
+    @GetMapping("/config.json")
+    fun configJson(): String {
+        return "{\n" +
+                "  \"workflowApiVersion\": \"1.1\",\n" +
+                "  \"metaData\": {\n" +
+                "    \"icon\": \"image/ico_new.png\",\n" +
+                "    \"category\": \"message\"\n" +
+                "  },\n" +
+                "  \"type\": \"REST\",\n" +
+                "  \"lang\": {\n" +
+                "    \"en-US\": {\n" +
+                "      \"name\": \"miCRM\",\n" +
+                "      \"description\": \"miCRM\"\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"arguments\": {\n" +
+                "    \"execute\": {\n" +
+                "      \"url\": \"https://sales.milvusapp.com/sf/execute\",\n" +
+                "      \"useJwt\": true\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"configurationArguments\": {\n" +
+                "    \"save\": {\n" +
+                "      \"url\": \"https://sales.milvusapp.com/sf/save\"\n" +
+                "    },\n" +
+                "    \"publish\": {\n" +
+                "      \"url\": \"https://sales.milvusapp.com/sf/publish\"\n" +
+                "    },\n" +
+                "    \"validate\": {\n" +
+                "      \"url\": \"https://sales.milvusapp.com/sf/validate\"\n" +
+                "    },\n" +
+                "    \"stop\": {\n" +
+                "      \"url\": \"https://sales.milvusapp.com/sf/stop\"\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"wizardSteps\": [\n" +
+                "    { \"label\": \"Step 1\", \"key\": \"step1\" }\n" +
+                "  ],\n" +
+                "  \"userInterfaces\": {\n" +
+                "    \"configModal\": {\n" +
+                "      \"height\": 600,\n" +
+                "      \"width\": 800,\n" +
+                "      \"fullscreen\": true\n" +
+                "    }\n" +
+                "  }\n" +
+                "}"
+    }
+
     /**
      * @Method Name  : salesIndex.html
      * @Since    : 2022. 08. 03.

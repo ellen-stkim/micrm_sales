@@ -43,7 +43,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
         super.configure(web)
-        web.ignoring().antMatchers("/font/**", "/css/**", "/js/**", "/image/**", "/inc/**", "/js/**", "/static/favicon.ico", "/html/**", "/*.ico", "/sf/config.json")
+        web.ignoring().antMatchers("/font/**", "/css/**", "/js/**", "/image/**", "/inc/**", "/js/**", "/static/favicon.ico", "/html/**", "/*.ico")
         web.httpFirewall(allowUrlHttpFirewall())
     }
 
