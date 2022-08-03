@@ -13,6 +13,10 @@
 <script src="/js/smsCreate.js"></script>
 <!-- image upload js -->
 <script src="/js/imageUpload.js"></script>
+
+<!-- salesforce js -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/js/postmonger.js"></script>
 <!-- container 영역 시작 -->
 <section class="container">
     <!-- 컨텐츠 영역 시작 -->
@@ -27,6 +31,7 @@
                     <li>모바일</li>
                     <li>모바일 컨텐츠 생성</li>
                 </ul>
+                <textarea id="configuration" style="width: 100%; height: 60px;"></textarea>
                 <!-- tooltip 버튼 영역  -->
 <%--                <div class="tooltip_icon">--%>
 <%--                    <img src="${baseURL}/image/ico_tooltip.png" alt="Tooltip"/>--%>
@@ -755,6 +760,10 @@
     });
 
     $(function () {
+        var config = {baseUrl: "/js/"};
+        var dependencies = ["customActivity"];
+        require(config, dependencies);
+
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');

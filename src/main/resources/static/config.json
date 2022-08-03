@@ -1,0 +1,44 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "image/ico_new.png",
+    "category": "message"
+  },
+  "type": "REST",
+  "lang": {
+    "en-US": {
+      "name": "miCRM",
+      "description": "miCRM"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "url": "http://localhost:8080/cont/sf/execute",
+      "useJwt": true
+    }
+  },
+  "configurationArguments": {
+    "save": {
+      "url": "http://localhost:8080/cont/sf/save"
+    },
+    "publish": {
+      "url": "http://localhost:8080/cont/sf/publish"
+    },
+    "validate": {
+      "url": "http://localhost:8080/cont/sf/validate"
+    },
+    "stop": {
+      "url": "http://localhost:8080/cont/sf/stop"
+    }
+  },
+  "wizardSteps": [
+    { "label": "Step 1", "key": "step1" }
+  ],
+  "userInterfaces": {
+    "configModal": {
+      "height": 600,
+      "width": 800,
+      "fullscreen": true
+    }
+  }
+}

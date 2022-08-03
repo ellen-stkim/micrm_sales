@@ -65,6 +65,7 @@ class MvcConfig : WebMvcConfigurer {
         registry.addResourceHandler("/html/**").addResourceLocations("classpath:/static/html/").setCachePeriod(TimeUnit.DAYS.toSeconds(7).toInt()).resourceChain(true).addResolver(EncodedResourceResolver()).addResolver(PathResourceResolver())
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.ico").setCachePeriod(TimeUnit.DAYS.toSeconds(7).toInt()).resourceChain(true).addResolver(EncodedResourceResolver()).addResolver(PathResourceResolver())
         registry.addResourceHandler("/download/**").addResourceLocations("classpath:/static/download/").setCachePeriod(TimeUnit.DAYS.toSeconds(7).toInt()).resourceChain(true).addResolver(EncodedResourceResolver()).addResolver(PathResourceResolver())
+        registry.addResourceHandler("/config.json").addResourceLocations("classpath:/static/config.json").setCachePeriod(TimeUnit.DAYS.toSeconds(7).toInt()).resourceChain(true).addResolver(EncodedResourceResolver()).addResolver(PathResourceResolver())
     }
 
     override fun addViewControllers(registry: ViewControllerRegistry) {

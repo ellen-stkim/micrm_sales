@@ -5,14 +5,11 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
-import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
 import com.omnilab.micrm.service.SysSettingService
 import org.apache.commons.io.FilenameUtils
-import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -35,6 +32,9 @@ import javax.servlet.http.HttpSession
 class ContentController  {
 
     val logger = LoggerFactory.getLogger(this::class.java)
+
+    // Installed Packages - JWT Signing Secret
+    private val secretKey = "DhnXzuGdfn2ibIlzs1_4S8X1FgztsKv7Bf1_0FtQgx3cf_CXXIA4gzATZGQ4lA6zDK3ZRagm_vges7YqDQKRnnhUjmJWNM-mOdo3jd5s6BDUox_lSyTr0GvMosQvS17KWWtdhEsctd7YeSK9qH4C-ju0nfmrjmvy8nHDiwc04AJRCzM-5XvZ0ZWmbpz3brcyYXhf0NTB4Q6Szft0Fe_ihxvT0nwuR6atdmQjTxH36FGukpqMPFFzoSe2n5aHQQ2"
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -1028,6 +1028,45 @@ class ContentController  {
     @PostMapping("/getDBValue.ajax")
     fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
         return sysSettingService.getDBValue();
+    }
+
+    // ========================= Salesforce ==============================//
+
+    @ResponseBody
+    @PostMapping("/sf/save")
+    fun save() {
+        logger.info("save")
+    }
+
+    @ResponseBody
+    @PostMapping("/sf/publish")
+    fun publish(@RequestBody data: String?) {
+        logger.info("publish")
+    }
+
+    @ResponseBody
+    @PostMapping("/sf/validate")
+    fun validate(@RequestBody data: String?) {
+        logger.info("validate")
+    }
+
+    @ResponseBody
+    @PostMapping("/sf/stop")
+    fun stop() {
+        logger.info("stop")
+    }
+
+    @ResponseBody
+    @PostMapping("/sf/execute")
+    fun execute() {
+        logger.info("execute")
+    }
+
+    @GetMapping("/error")
+    fun error(): String {
+        logger.error("error")
+
+        return "index"
     }
 
 }
