@@ -72,32 +72,32 @@ class SalesforceController {
     }
 
     @ResponseBody
-    @PostMapping("/save")
+    @PostMapping("/save.service")
     fun save() {
         logger.info("save")
     }
 
     @ResponseBody
-    @PostMapping("/publish")
+    @PostMapping("/publish.service")
     fun publish() {
         logger.info("publish")
     }
 
     @ResponseBody
-    @PostMapping("/validate")
+    @PostMapping("/validate.service")
     fun validate() {
         logger.info("validate")
     }
 
     @ResponseBody
-    @PostMapping("/stop")
+    @PostMapping("/stop.service")
     fun stop() {
         logger.info("stop")
     }
 
     // done 동작
     @ResponseBody
-    @PostMapping("/execute")
+    @PostMapping("/execute.service")
     fun execute() {
         logger.info("execute")
     }

@@ -53,7 +53,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         filter.encoding = "UTF-8"
         filter.setForceEncoding(true)
         httpSecurity.addFilterBefore(filter, CsrfFilter::class.java)
-                .csrf().ignoringAntMatchers("/rest/**", "/api/**")
+                .csrf().ignoringAntMatchers("/rest/**", "/api/**", "/sf/**")
             .and()
                 .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/sf/**")
                 .permitAll()
