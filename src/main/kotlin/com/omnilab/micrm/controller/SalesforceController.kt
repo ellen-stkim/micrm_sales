@@ -89,7 +89,7 @@ class SalesforceController {
      * @Method Decription : 세일즈포스 뷰 페이지 조회
      * @title : 세일즈포스 뷰 페이지
      */
-    @GetMapping("/index.html")
+    @GetMapping("/index.mi")
     fun mdmCreate(): ModelAndView {
         val view = ModelAndView("cont/salesforce")
 
