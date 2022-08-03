@@ -2,16 +2,21 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.service.ContentService
-import com.omnilab.micrm.service.SysSettingService
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.Resource
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import javax.servlet.http.HttpSession
+import java.io.InputStreamReader
+
 
 @Controller
 @RequestMapping("/sf")
@@ -32,50 +37,10 @@ class SalesforceController {
     @ResponseBody
     @GetMapping("/config.json")
     fun configJson(): String {
-        return "{\n" +
-                "  \"workflowApiVersion\": \"1.1\",\n" +
-                "  \"metaData\": {\n" +
-                "    \"icon\": \"image/ico_new.png\",\n" +
-                "    \"category\": \"message\"\n" +
-                "  },\n" +
-                "  \"type\": \"REST\",\n" +
-                "  \"lang\": {\n" +
-                "    \"en-US\": {\n" +
-                "      \"name\": \"miCRM\",\n" +
-                "      \"description\": \"miCRM\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"arguments\": {\n" +
-                "    \"execute\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/execute\",\n" +
-                "      \"useJwt\": true\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"configurationArguments\": {\n" +
-                "    \"save\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/save\"\n" +
-                "    },\n" +
-                "    \"publish\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/publish\"\n" +
-                "    },\n" +
-                "    \"validate\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/validate\"\n" +
-                "    },\n" +
-                "    \"stop\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/stop\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"wizardSteps\": [\n" +
-                "    { \"label\": \"Step 1\", \"key\": \"step1\" }\n" +
-                "  ],\n" +
-                "  \"userInterfaces\": {\n" +
-                "    \"configModal\": {\n" +
-                "      \"height\": 600,\n" +
-                "      \"width\": 800,\n" +
-                "      \"fullscreen\": true\n" +
-                "    }\n" +
-                "  }\n" +
-                "}"
+        val resource: Resource = ClassPathResource("static/config.json")
+        val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
+        val str: String = json.toJSONString()
+        return str.replace("\\", "")
     }
 
     /**
@@ -89,7 +54,7 @@ class SalesforceController {
      * @Method Decription : 세일즈포스 뷰 페이지 조회
      * @title : 세일즈포스 뷰 페이지
      */
-    @GetMapping("/index.html")
+    @GetMapping("/index.mi")
     fun mdmCreate(): ModelAndView {
         val view = ModelAndView("cont/salesforce")
 
