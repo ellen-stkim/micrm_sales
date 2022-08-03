@@ -1,34 +1,34 @@
 {
   "workflowApiVersion": "1.1",
   "metaData": {
-    "icon": "image/ico_new.png",
+    "icon": "images/sms.png",
     "category": "message"
   },
   "type": "REST",
   "lang": {
     "en-US": {
-      "name": "miCRM",
-      "description": "miCRM"
+      "name": "sswTest1",
+      "description": "test"
     }
   },
   "arguments": {
     "execute": {
-      "url": "https://sales.milvusapp.com/sf/execute",
+      "url": "https://sswtest2.herokuapp.com/execute",
       "useJwt": true
     }
   },
   "configurationArguments": {
     "save": {
-      "url": "https://sales.milvusapp.com/sf/save"
+      "url": "https://sswtest2.herokuapp.com/save"
     },
     "publish": {
-      "url": "https://sales.milvusapp.com/sf/publish"
+      "url": "https://sswtest2.herokuapp.com/publish"
     },
     "validate": {
-      "url": "https://sales.milvusapp.com/sf/validate"
+      "url": "https://sswtest2.herokuapp.com/validate"
     },
     "stop": {
-      "url": "https://sales.milvusapp.com/sf/stop"
+      "url": "https://sswtest2.herokuapp.com/stop"
     }
   },
   "wizardSteps": [

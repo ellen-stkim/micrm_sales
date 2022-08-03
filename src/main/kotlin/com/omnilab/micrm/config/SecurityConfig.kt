@@ -92,7 +92,6 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
                 .headers().frameOptions().sameOrigin()
-                .addHeaderWriter(StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM https://exacttarget.com"))
            /*.and()
                 .authorizeRequests().antMatchers("/m05/security.mi").access("hasRole('USR') or hasRole('ADM') or hasRole('SYS')");*/
     }
