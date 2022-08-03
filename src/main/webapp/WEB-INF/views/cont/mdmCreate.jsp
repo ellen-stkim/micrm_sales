@@ -13,10 +13,6 @@
 <script src="/js/smsCreate.js"></script>
 <!-- image upload js -->
 <script src="/js/imageUpload.js"></script>
-
-<!-- salesforce js -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-<script type="text/javascript" src="/js/postmonger.js"></script>
 <!-- container 영역 시작 -->
 <section class="container">
     <!-- 컨텐츠 영역 시작 -->
@@ -31,7 +27,6 @@
                     <li>모바일</li>
                     <li>모바일 컨텐츠 생성</li>
                 </ul>
-                <textarea id="configuration" style="width: 100%; height: 60px;"></textarea>
                 <!-- tooltip 버튼 영역  -->
 <%--                <div class="tooltip_icon">--%>
 <%--                    <img src="${baseURL}/image/ico_tooltip.png" alt="Tooltip"/>--%>
@@ -62,15 +57,31 @@
                         <div class="td flex_row">
                             <div class="sms_option cf">
                                 <label class="custom_check2 kakao">
-                                    <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
+                                    <c:if test="${kakaoCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
+                                    </c:if>
+                                    <c:if test="${kakaoCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="kakao" class="formatType"
+                                               disabled/>
+                                    </c:if>
                                     <span>카카오톡</span>
                                 </label>
                                 <label class="custom_check2 sms">
-                                    <input name="formatType" type="checkbox" value="sms" class="formatType" />
+                                    <c:if test = "${smsCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="sms" class="formatType" />
+                                    </c:if>
+                                    <c:if test = "${smsCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="sms" class="formatType" disabled/>
+                                    </c:if>
                                     <span>문자</span>
                                 </label>
                                 <label class="custom_check2 rcs">
-                                    <input name="formatType" type="checkbox" value="rcs" class="formatType"/>
+                                    <c:if test ="${rcsCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="rcs" class="formatType"/>
+                                    </c:if>
+                                    <c:if test ="${rcsCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="rcs" class="formatType" disabled/>
+                                    </c:if>
                                     <span class="en_font">RCS</span>
                                 </label>
                             </div>
@@ -81,7 +92,7 @@
                                                                                           value="0"
                                                                                           checked/><span></span></label>
                                     <label class="custom_radio db_radio">업로드<input name="dbInfo" type="radio"
-                                                                                   value="1" disabled/><span></span></label>
+                                                                                   value="1"/><span></span></label>
                                 </div>
                             </div>
                             <div class="inner_option area2">
@@ -147,20 +158,6 @@
                                             <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
                                         </div>
                                     </div>
-                                    <div class="row body">
-                                        <div class="th">수신 번호</div>
-                                        <div class="column_1">
-                                            <div class="select" id="recv_to" name="edmDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${mappingList}">
-                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="input_area">
                                         <div class="block">
                                             <div class="row">
@@ -200,8 +197,8 @@
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
                                                         <ul class="option">
-                                                            <c:forEach var="item" items="${mappingList}">
-                                                                <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                                            <c:forEach var="item" items="${columnNm}" varStatus="status">
+                                                                <li data="{{${columnValue[status.count]}}}">${item}</li>
                                                             </c:forEach>
                                                         </ul>
                                                     </div>
@@ -338,20 +335,6 @@
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','sms')">변경</span>
                                         </div>
                                     </div>
-                                    <div class="row body">
-                                        <div class="th">수신 번호</div>
-                                        <div class="column_1">
-                                            <div class="select" id="sms_recv_to" name="edmDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${mappingList}">
-                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="input_area left">
                                         <div class="block">
                                             <div class="row">
@@ -400,8 +383,8 @@
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
                                                         <ul class="option">
-                                                            <c:forEach var="item" items="${mappingList}">
-                                                                <li data="${item.list_val}">${item.list_nm}</li>
+                                                            <c:forEach var="item" items="${columnNm}" varStatus="status">
+                                                                <li data="{{${columnValue[status.count]}}}">${item}</li>
                                                             </c:forEach>
                                                         </ul>
                                                     </div>
@@ -512,20 +495,6 @@
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','textrcs')">변경</span>
                                         </div>
                                     </div>
-                                    <div class="row body">
-                                        <div class="th">수신 번호</div>
-                                        <div class="column_1">
-                                            <div class="select" id="recv_text_rcs" name="edmDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${mappingListList}">
-                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                                             <div class="input_area left">
                                                 <div class="block">
                                                     <div class="row">
@@ -536,8 +505,9 @@
                                                                 <!-- selected value -->
                                                                 <div class="value" data="0">개인화 변수</div>
                                                                 <ul class="option">
-                                                                    <c:forEach var="item" items="${mappingList}">
-                                                                        <li data="${item.list_val}">${item.list_nm}</li>
+                                                                    <c:forEach var="item" items="${columnNm}"
+                                                                               varStatus="status">
+                                                                        <li data="{{${columnValue[status.count]}}}">${item}</li>
                                                                     </c:forEach>
                                                                 </ul>
                                                             </div>
@@ -760,10 +730,6 @@
     });
 
     $(function () {
-        var config = {baseUrl: "/js/"};
-        var dependencies = ["customActivity"];
-        require(config, dependencies);
-
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');

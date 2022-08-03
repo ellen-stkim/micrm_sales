@@ -43,7 +43,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
         super.configure(web)
-        web.ignoring().antMatchers("/font/**", "/css/**", "/js/**", "/image/**", "/inc/**", "/js/**", "/static/favicon.ico", "/html/**", "/*.ico", "/config.json")
+        web.ignoring().antMatchers("/font/**", "/css/**", "/js/**", "/image/**", "/inc/**", "/js/**", "/static/favicon.ico", "/html/**", "/*.ico", "/sf/config.json")
         web.httpFirewall(allowUrlHttpFirewall())
     }
 
@@ -55,7 +55,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         httpSecurity.addFilterBefore(filter, CsrfFilter::class.java)
                 .csrf().ignoringAntMatchers("/rest/**", "/api/**")
             .and()
-                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/cont/mdmCreate.mi", "/cont/sf/**", "/cont/error")
+                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/sf/**")
                 .permitAll()
             .and()
                 .authorizeRequests().anyRequest().authenticated()

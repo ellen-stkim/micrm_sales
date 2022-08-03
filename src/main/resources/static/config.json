@@ -13,22 +13,22 @@
   },
   "arguments": {
     "execute": {
-      "url": "https://sales.milvusapp.com/cont/sf/execute",
+      "url": "https://sales.milvusapp.com/sf/execute",
       "useJwt": true
     }
   },
   "configurationArguments": {
     "save": {
-      "url": "https://sales.milvusapp.com/cont/sf/save"
+      "url": "https://sales.milvusapp.com/sf/save"
     },
     "publish": {
-      "url": "https://sales.milvusapp.com/cont/sf/publish"
+      "url": "https://sales.milvusapp.com/sf/publish"
     },
     "validate": {
-      "url": "https://sales.milvusapp.com/cont/sf/validate"
+      "url": "https://sales.milvusapp.com/sf/validate"
     },
     "stop": {
-      "url": "https://sales.milvusapp.com/cont/sf/stop"
+      "url": "https://sales.milvusapp.com/sf/stop"
     }
   },
   "wizardSteps": [
