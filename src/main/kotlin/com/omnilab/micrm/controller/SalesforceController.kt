@@ -36,57 +36,11 @@ class SalesforceController {
 
     @ResponseBody
     @GetMapping("/config.json")
-    fun configJson(): String {
-        /**
+    fun configJson(): JSONObject {
         val resource: Resource = ClassPathResource("static/config.json")
         val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
-        val str: String = json.toJSONString()
-        return str.replace("\\", "")
-        */
-        return "{\n" +
-                "  \"workflowApiVersion\": \"1.1\",\n" +
-                "  \"metaData\": {\n" +
-                "    \"icon\": \"image/ico_new.png\",\n" +
-                "    \"category\": \"message\"\n" +
-                "  },\n" +
-                "  \"type\": \"REST\",\n" +
-                "  \"lang\": {\n" +
-                "    \"en-US\": {\n" +
-                "      \"name\": \"miCRM\",\n" +
-                "      \"description\": \"miCRM\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"arguments\": {\n" +
-                "    \"execute\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/execute.service\",\n" +
-                "      \"useJwt\": true\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"configurationArguments\": {\n" +
-                "    \"save\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/save.service\"\n" +
-                "    },\n" +
-                "    \"publish\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/publish.service\"\n" +
-                "    },\n" +
-                "    \"validate\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/validate.service\"\n" +
-                "    },\n" +
-                "    \"stop\": {\n" +
-                "      \"url\": \"https://sales.milvusapp.com/sf/stop.service\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"wizardSteps\": [\n" +
-                "    { \"label\": \"Step 1\", \"key\": \"step1\" }\n" +
-                "  ],\n" +
-                "  \"userInterfaces\": {\n" +
-                "    \"configModal\": {\n" +
-                "      \"height\": 600,\n" +
-                "      \"width\": 800,\n" +
-                "      \"fullscreen\": true\n" +
-                "    }\n" +
-                "  }\n" +
-                "}"
+        //val str: String = json.toJSONString()
+        return json
     }
 
     /**
