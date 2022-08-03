@@ -11,8 +11,6 @@ import org.springframework.security.web.firewall.HttpFirewall
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
-import java.util.EnumSet
-
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -24,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.header.writers.StaticHeadersWriter
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
+import java.util.*
 
 import javax.servlet.DispatcherType
 import javax.servlet.Filter
@@ -90,6 +92,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
                 .headers().frameOptions().sameOrigin()
+                .addHeaderWriter(StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM https://exacttarget.com"))
            /*.and()
                 .authorizeRequests().antMatchers("/m05/security.mi").access("hasRole('USR') or hasRole('ADM') or hasRole('SYS')");*/
     }

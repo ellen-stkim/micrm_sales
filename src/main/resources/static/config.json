@@ -13,13 +13,13 @@
   },
   "arguments": {
     "execute": {
-      "url": "https://sales.milvusapp.com//cont/sf/execute",
+      "url": "https://sales.milvusapp.com/cont/sf/execute",
       "useJwt": true
     }
   },
   "configurationArguments": {
     "save": {
-      "url": "https://sales.milvusapp.com//cont/sf/save"
+      "url": "https://sales.milvusapp.com/cont/sf/save"
     },
     "publish": {
       "url": "https://sales.milvusapp.com/cont/sf/publish"
