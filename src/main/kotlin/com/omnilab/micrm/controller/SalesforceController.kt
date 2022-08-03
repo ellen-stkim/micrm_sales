@@ -114,13 +114,13 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/publish")
-    fun publish(@RequestBody data: String?) {
+    fun publish() {
         logger.info("publish")
     }
 
     @ResponseBody
     @PostMapping("/validate")
-    fun validate(@RequestBody data: String?) {
+    fun validate() {
         logger.info("validate")
     }
 
