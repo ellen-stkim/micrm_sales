@@ -8,6 +8,7 @@ define(["postmonger"], function (Postmonger) {
 	var fuel2token = null;
 	var eventDefinitionKey = null;
 	var flag = true;
+	var cnt = 0;
 
 	$(window).ready(onRender);
 
@@ -85,14 +86,6 @@ define(["postmonger"], function (Postmonger) {
 				}
 			});
 		});
-
-        // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-		if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
-		    getUser(fuelapiRestHost, fuel2token);
-		} else {
-		    // mappingLst(usr_grp_cd);
-
-		}
 	}
 
     // 사용자 조회
@@ -116,6 +109,17 @@ define(["postmonger"], function (Postmonger) {
 		
 		if(tokens) {
 			fuel2token = tokens.fuel2token;
+			cnt++;
+
+			if(cnt == 2) {
+                // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
+                if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
+                    getUser(fuelapiRestHost, fuel2token);
+                } else {
+                    // mappingLst(usr_grp_cd);
+
+                }
+			}
 		}
 	}
 
@@ -124,6 +128,17 @@ define(["postmonger"], function (Postmonger) {
 		
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;
+			cnt++;
+
+			if(cnt == 2) {
+                // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
+                if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
+                    getUser(fuelapiRestHost, fuel2token);
+                } else {
+                    // mappingLst(usr_grp_cd);
+
+                }
+			}
 		}
 	}
 	
