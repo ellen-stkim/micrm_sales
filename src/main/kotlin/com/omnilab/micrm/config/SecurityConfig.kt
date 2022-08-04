@@ -93,7 +93,8 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
             .and()
                 .headers()
                 //    .addHeaderWriter(StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM mc.exacttarget.com"))
-                    .frameOptions().sameOrigin().disable()
+                //    .frameOptions().sameOrigin()
+                    .frameOptions().disable()
            /*.and()
                 .authorizeRequests().antMatchers("/m05/security.mi").access("hasRole('USR') or hasRole('ADM') or hasRole('SYS')");*/
     }
