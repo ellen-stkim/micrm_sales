@@ -46,3 +46,6 @@ upload:
   src : "E:/IdeaProjects/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
   content : "E:/IdeaProjects/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
   temp : "E:/IdeaProjects/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+
+journey-builder:
+  jwt: "fpvagRmRTeOwRfG_RgDxXuT3eFfNjy64dtj071DodFZT8WkFExWhgcyU6uM8TkO9CZ3NTjDA3Kh2oV1k9cJMZDsPnXoJaV8crJhWblhT_bdj1fC6v-gE0vcmf43a1l-sMfAes_By55f9XULqBh6_wptYKx6tAOABo41pkrxgJmSd0xtDSeK8-0m7R2iMu7PmLnagOdxZf8-L_r2lem8v9vlGjoBjbGdX45w9FkW0soHgmYNeC_uPbr-xz3ZpJw2"

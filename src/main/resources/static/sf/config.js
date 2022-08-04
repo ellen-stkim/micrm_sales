@@ -36,6 +36,7 @@
   ],
   "userInterfaces": {
     "configModal": {
+      "url": "index.mi",
       "height": 600,
       "width": 800,
       "fullscreen": true

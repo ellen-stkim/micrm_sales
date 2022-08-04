@@ -2,6 +2,14 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.service.ContentService
+
+import org.apache.http.HttpEntity
+import org.apache.http.HttpStatus
+import org.apache.http.StatusLine
+import org.apache.http.client.methods.CloseableHttpResponse
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.util.EntityUtils
+import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
@@ -10,12 +18,15 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import java.io.InputStreamReader
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator;
+import org.eclipse.jdt.internal.compiler.parser.Parser.name
+import org.springframework.beans.factory.annotation.Value
+import java.util.*
+import javax.crypto.spec.SecretKeySpec
 
 
 @Controller
@@ -25,8 +36,10 @@ class SalesforceController {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     // Installed Packages - JWT Signing Secret
-    private val secretKey = "DhnXzuGdfn2ibIlzs1_4S8X1FgztsKv7Bf1_0FtQgx3cf_CXXIA4gzATZGQ4lA6zDK3ZRagm_vges7YqDQKRnnhUjmJWNM-mOdo3jd5s6BDUox_lSyTr0GvMosQvS17KWWtdhEsctd7YeSK9qH4C-ju0nfmrjmvy8nHDiwc04AJRCzM-5XvZ0ZWmbpz3brcyYXhf0NTB4Q6Szft0Fe_ihxvT0nwuR6atdmQjTxH36FGukpqMPFFzoSe2n5aHQQ2"
 
+
+    @Value("\${upload.content}")
+    private val secretKey: String? = null
     //@Autowired
     //lateinit var salesforceService: SalesforceService;
 
@@ -39,7 +52,6 @@ class SalesforceController {
     fun configJson(): JSONObject {
         val resource: Resource = ClassPathResource("static/config.json")
         val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
-        //val str: String = json.toJSONString()
         return json
     }
 
@@ -67,6 +79,7 @@ class SalesforceController {
 
         // 개인화 변수 추가하기
         view.addObject("mappingList", sptpMap["list"]);
+        // TODO: 끝
 
         return view
     }
@@ -98,8 +111,63 @@ class SalesforceController {
     // done 동작
     @ResponseBody
     @PostMapping("/execute.service")
-    fun execute() {
+    fun execute(@RequestBody data : String) {
         logger.info("execute")
+
+        var response: CloseableHttpResponse? = null
+
+        try {
+            // jwt
+            val chunks: List<String> = data.split("\\.")
+            val decoder: Base64.Decoder = Base64.getUrlDecoder()
+            val payload: String = String(decoder.decode(chunks[1]))
+            logger.info("payload: $payload")
+            val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
+            val secretKeySpec = SecretKeySpec(secretKey?.toByteArray() ?: null, sa.jcaName)
+            val tokenWithoutSignature = chunks[0] + "." + chunks[1]
+            val signature = chunks[2]
+            val validator = DefaultJwtSignatureValidator(sa, secretKeySpec)
+
+            // jwt 확인
+            if (!validator.isValid(tokenWithoutSignature, signature)) {
+                logger.info("Could not verify JWT token integrity!")
+            } else {
+                val jsonParser = JSONParser()
+                var jsonObj = jsonParser.parse(payload) as JSONObject
+                val inArguments: JSONArray = jsonObj["inArguments"] as JSONArray
+                val argument: JSONObject = inArguments.get(0) as JSONObject
+                val host = argument["host"] as String
+                val token = argument["token"] as String
+                val phone = argument["phone"] as String
+                logger.info("phone: $phone\nhost: $host\ntoken: $token")
+
+                // 토큰정보 조회 - enterpriseId, organizationId, userId
+                /**
+                val httpGet = HttpGet("$host/platform/v1/tokenContext")
+                httpGet.addHeader("Content-type", "application/json")
+                httpGet.addHeader("Authorization", "Bearer $token")
+                response = httpClient.execute(httpGet)
+                val entity: HttpEntity = response.entity
+                val responseBody = EntityUtils.toString(entity, "UTF-8")
+                val statusLine: StatusLine = response.statusLine
+                logger.info("StatusCode: " + statusLine.getStatusCode())
+                if (statusLine.getStatusCode() === HttpStatus.SC_OK) {
+                    jsonObj = jsonParser.parse(responseBody) as JSONObject
+                    val enterprise = jsonObj["enterprise"] as JSONObject
+                    val organization = jsonObj["organization"] as JSONObject
+                    val user = jsonObj["user"] as JSONObject
+                    val enterpriseId = enterprise["id"] as Long
+                    val organizationId = organization["id"] as Long
+                    val userId = user["id"] as Long
+                    logger.info("\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId")
+                } else {
+                    logger.error("tokenContext fail: $responseBody")
+                }
+                */
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     @GetMapping("/error")

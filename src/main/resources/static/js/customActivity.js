@@ -95,14 +95,13 @@ define(["postmonger"], function (Postmonger) {
 		}
 	}
 	
-	function save() {		
-		if(false) {
-			alert('미입력');
+	function save() {
+		if($('#recv_to').val() == '' || $('#recv_to').val() == null) {
+			alert('수신 번호를 선택해 주세요.');
 			connection.trigger('ready');
 		} else {
 			payload["arguments"].execute.inArguments = [{
-				name: "{{Event." + eventDefinitionKey + "." + "Name" + "}}",
-				phone: "{{Event." + eventDefinitionKey + "." + "Phone" + "}}"
+				phone: "{{Event." + eventDefinitionKey + "." + $('#recv_to').val() + "}}",
 			}];
 	
 			payload["metaData"].isConfigured = true;
