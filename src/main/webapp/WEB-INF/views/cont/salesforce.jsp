@@ -153,7 +153,7 @@
                                             <div class="select" id="kakao_recv_to" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option mappingList">
+                                                <ul class="option mappingLst">
                                                 </ul>
                                             </div>
                                             <input type="hidden" id="kakao_recv"/>
@@ -197,7 +197,7 @@
                                                     <div class="select" id="kakaoValue" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingList">
+                                                        <ul class="option mappingLst">
                                                         </ul>
                                                     </div>
                                                     <div class="select" id="kakaoValue" name="defaultDB">
@@ -339,7 +339,7 @@
                                             <div class="select" id="sms_recv_to" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option mappingList">
+                                                <ul class="option mappingLst">
                                                 </ul>
                                             </div>
                                         </div>
@@ -391,7 +391,7 @@
                                                     <div class="select" id="smsContsVal" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingList">
+                                                        <ul class="option mappingLst">
                                                         </ul>
                                                     </div>
                                                     <div class="select" id="smsContsVal" name="defaultDB">
@@ -507,7 +507,7 @@
                                             <div class="select" id="recv_text_rcs" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option mappingList">
+                                                <ul class="option mappingLst">
                                                 </ul>
                                             </div>
                                         </div>
@@ -521,7 +521,7 @@
                                                             <div class="select rcsContsVal" name="edmDB">
                                                                 <!-- selected value -->
                                                                 <div class="value" data="0">개인화 변수</div>
-                                                                <ul class="option mappingList">
+                                                                <ul class="option mappingLst">
                                                                 </ul>
                                                             </div>
                                                             <div class="select rcsContsVal" name="defaultDB">
