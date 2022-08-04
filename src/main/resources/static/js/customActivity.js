@@ -8,7 +8,6 @@ define(["postmonger"], function (Postmonger) {
 	var fuel2token = null;
 	var eventDefinitionKey = null;
 	var flag = true;
-	var usr_grp_cd = null;
 
 	$(window).ready(onRender);
 
@@ -78,7 +77,7 @@ define(["postmonger"], function (Postmonger) {
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
 				if(key === 'usr_grp_cd') {
-				    usr_grp_cd = val;
+				    $('#usr_grp_cd').val(val);
 				} else if(key === 'host') {
 				    fuelapiRestHost = val;
 				} else if(key === 'token') {
@@ -88,7 +87,7 @@ define(["postmonger"], function (Postmonger) {
 		});
 
         // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-		if(usr_grp_cd == '' || usr_grp_cd == null) {
+		if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
 		    getUser(fuelapiRestHost, fuel2token);
 		} else {
 		    // mappingLst(usr_grp_cd);
@@ -100,8 +99,8 @@ define(["postmonger"], function (Postmonger) {
 	function getUser(host, token) {
 	    const res = function(response) {
             if (response.status == "true") {
-                usr_grp_cd = response.usr_grp_cd;
-                alert(usr_grp_cd);
+                $('#usr_grp_cd').val(response.usr_grp_cd);
+                alert($('#usr_grp_cd').val());
                 // mappingLst(usr_grp_cd);
             } else {
                 // 조회실패

@@ -663,6 +663,7 @@
                     </div>
                 </div>
         </div>
+        <input type="hidden" id="usr_grp_cd"/>
         <!-- section 영역 끝 -->
     </div>
     <!-- 컨텐츠 영역 끝 -->
