@@ -31,6 +31,7 @@ import javax.crypto.spec.SecretKeySpec
 
 @Controller
 @RequestMapping("/sf")
+@CrossOrigin(origins = ["https://mc.exacttarget.com"])
 class SalesforceController {
 
     val logger = LoggerFactory.getLogger(this::class.java)
