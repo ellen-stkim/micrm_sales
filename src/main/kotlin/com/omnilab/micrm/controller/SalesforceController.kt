@@ -1,7 +1,9 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.service.ContentService
+import com.omnilab.micrm.service.SalesforceService
 
 import org.apache.http.HttpEntity
 import org.apache.http.HttpStatus
@@ -35,13 +37,12 @@ class SalesforceController {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    // Installed Packages - JWT Signing Secret
-
 
     @Value("\${upload.content}")
     private val secretKey: String? = null
-    //@Autowired
-    //lateinit var salesforceService: SalesforceService;
+
+    @Autowired
+    lateinit var salesforceService: SalesforceService;
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -82,6 +83,26 @@ class SalesforceController {
         // TODO: 끝
 
         return view
+    }
+
+    // =================================================== Salesforce ===================================================== //
+
+    /**
+     * @Method Name  : getUser
+     * @Since    : 2022. 08. 04.
+     * @author   : SSW
+     * @param    : dto: SalesforceDto
+     * @return   : Map<String, Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 사용자 조회
+     * @title : 사용자 조회
+     */
+    @ResponseBody
+    @PostMapping("/getUser.ajax")
+    fun getUser(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
+        return salesforceService.getUser(dto)
     }
 
     @ResponseBody

@@ -8,6 +8,7 @@ define(["postmonger"], function (Postmonger) {
 	var fuel2token = null;
 	var eventDefinitionKey = null;
 	var flag = true;
+	var usr_grp_cd = null;
 
 	$(window).ready(onRender);
 
@@ -34,12 +35,14 @@ define(["postmonger"], function (Postmonger) {
 		
 		// refresh
 		connection.trigger('ready');
-		
+
+		/**
 		setTimeout(function() {
 			if(flag) {
 				location.href='error';
 			}
 		}, 1000);
+		*/
 	}
 	
 	function onRequestedDataSources(dataSources){
@@ -74,9 +77,38 @@ define(["postmonger"], function (Postmonger) {
 
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
-				console.log(key + ": " + val);
+				if(key === 'usr_grp_cd') {
+				    usr_grp_cd = val;
+				} else if(key === 'host') {
+				    fuelapiRestHost = val;
+				} else if(key === 'token') {
+				    fuel2token = val;
+				}
 			});
 		});
+
+        // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
+		if(usr_grp_cd == '' || usr_grp_cd == null) {
+		    getUser(fuelapiRestHost, fuel2token);
+		} else {
+		    // mappingLst(usr_grp_cd);
+		}
+	}
+
+    // 사용자 조회
+	function getUser(host, token) {
+	    const res = function(response) {
+            if (response.status == "true") {
+                usr_grp_cd = response.usr_grp_cd;
+                alert(usr_grp_cd);
+                // mappingLst(usr_grp_cd);
+            } else {
+                // 조회실패
+                alert('사용자 조회에 실패하였습니다.');
+            }
+        }
+        let param = {host: host, token: token}
+        com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
 	}
 
 	function onGetTokens(tokens) {
@@ -100,8 +132,13 @@ define(["postmonger"], function (Postmonger) {
 			alert('수신 번호를 선택해 주세요.');
 			connection.trigger('ready');
 		} else {
+		    // 저장과 동일한 구성
+
+
 			payload["arguments"].execute.inArguments = [{
+			    formatType
 				phone: "{{Event." + eventDefinitionKey + "." + $('#kakao_recv').val() + "}}",
+
 			}];
 	
 			payload["metaData"].isConfigured = true;
