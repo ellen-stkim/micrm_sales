@@ -81,7 +81,7 @@ class SalesforceServiceImpl : SalesforceService {
         val returnMap: MutableMap<String, Any> = HashMap()
         dto.list_tp_id = "CH03"
         dto.list_dt_id = "SPTP01"
-        returnMap["list"] = salesforceDao.mappingLst(dto)
+        returnMap["mappingLst"] = salesforceDao.mappingLst(dto)
         return returnMap
     }
 
