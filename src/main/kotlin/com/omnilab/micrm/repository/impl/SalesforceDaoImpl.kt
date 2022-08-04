@@ -16,7 +16,7 @@ class SalesforceDaoImpl : SalesforceDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun mappingLst(dto: SalesforceDto): List<Tblmi_set_lstDto> {
+    override fun mappingLst(dto: SalesforceDto): List<SalesforceDto> {
         return sqlSession.selectList("selectMappingLst", dto)
     }
 

@@ -5,6 +5,6 @@ import com.omnilab.micrm.model.table.Tblmi_set_lstDto
 
 interface SalesforceDao {
 
-    fun mappingLst(dto: SalesforceDto): List<Tblmi_set_lstDto>
+    fun mappingLst(dto: SalesforceDto): List<SalesforceDto>
 
 }
