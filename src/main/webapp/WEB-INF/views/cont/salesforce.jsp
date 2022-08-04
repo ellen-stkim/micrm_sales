@@ -52,7 +52,7 @@
         <!-- row 영역 끝 -->
         <!-- section 영역 시작 -->
         <div class="section">
-            <form:form id="form" action="/cont/mobileInsert.service" method="post">
+            <form:form id="form" action="#" method="post">
                 <div class="create_sms cf">
                     <div class="row head bottom-border">
                         <div class="th">템플릿 명</div>
@@ -2154,7 +2154,7 @@
             previewSlideLoad();
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
 
@@ -2179,7 +2179,7 @@
             }
         }
         let param = {cont_nm: cont_nm}
-        com_ajax.ajax('post', '${baseURL}/cont/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 버튼 타입 Hidden 값 추가
@@ -2289,7 +2289,7 @@
 
         param.push({name: 'pageNo', value: nowPage})
 
-        com_ajax.ajax('post', '${baseURL}/cont/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sf/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 발신자 번호 input 저장하기
@@ -2369,7 +2369,7 @@
             }
         }
         param.push({name: 'pageNo', value: nowPage});
-        com_ajax.ajax('post', '${baseURL}/cont/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sf/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 이미지 리스트 Input 저장하기
@@ -2501,7 +2501,7 @@
                 getDBValue();
                 adTypeCheck();
             }
-            com_ajax.ajax('get', '/cont/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
         if(checkType == 'vertical'){
             let res = function(response){
@@ -2511,7 +2511,7 @@
                 getDBValue();
                 adTypeCheck();
             }
-            com_ajax.ajax('get', '/cont/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
         if(checkType == 'slide'){
             let res = function(response){
@@ -2533,7 +2533,7 @@
                     },
                 });
             }
-            com_ajax.ajax('get', '/cont/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
     }
 
@@ -2839,7 +2839,7 @@
         }
         data.append("img_nm", imgNm);
 
-        com_ajax.ajax_file('${baseURL}/cont/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax_file('${baseURL}/sf/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
 
