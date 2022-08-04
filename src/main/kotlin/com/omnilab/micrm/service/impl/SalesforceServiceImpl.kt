@@ -40,7 +40,7 @@ class SalesforceServiceImpl : SalesforceService {
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, "UTF-8")
             val statusLine: StatusLine = response.statusLine
-            logger.info("StatusCode: " + statusLine.getStatusCode())
+            logger.error("StatusCode: " + statusLine.getStatusCode())
             if (statusLine.getStatusCode() === HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
                 val jsonObj = jsonParser.parse(responseBody) as JSONObject
@@ -50,7 +50,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val enterpriseId = enterprise["id"] as Long
                 val organizationId = organization["id"] as Long
                 val userId = user["id"] as Long
-                logger.info("\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId")
+                logger.error("\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId")
 
                 // TODO: usr_grp_cd 조회하기
                 dto.enterpriseId = enterpriseId

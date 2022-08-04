@@ -142,7 +142,7 @@ class SalesforceController {
             val chunks: List<String> = data.split("\\.")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
             val payload: String = String(decoder.decode(chunks[1]))
-            logger.info("payload: $payload")
+            logger.error("payload: $payload")
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
             val secretKeySpec = SecretKeySpec(secretKey?.toByteArray() ?: null, sa.jcaName)
             val tokenWithoutSignature = chunks[0] + "." + chunks[1]
@@ -151,7 +151,7 @@ class SalesforceController {
 
             // jwt 확인
             if (!validator.isValid(tokenWithoutSignature, signature)) {
-                logger.info("Could not verify JWT token integrity!")
+                logger.error("Could not verify JWT token integrity!")
             } else {
                 val jsonParser = JSONParser()
                 var jsonObj = jsonParser.parse(payload) as JSONObject
@@ -160,31 +160,7 @@ class SalesforceController {
                 val host = argument["host"] as String
                 val token = argument["token"] as String
                 val phone = argument["phone"] as String
-                logger.info("phone: $phone\nhost: $host\ntoken: $token")
-
-                // 토큰정보 조회 - enterpriseId, organizationId, userId
-                /**
-                val httpGet = HttpGet("$host/platform/v1/tokenContext")
-                httpGet.addHeader("Content-type", "application/json")
-                httpGet.addHeader("Authorization", "Bearer $token")
-                response = httpClient.execute(httpGet)
-                val entity: HttpEntity = response.entity
-                val responseBody = EntityUtils.toString(entity, "UTF-8")
-                val statusLine: StatusLine = response.statusLine
-                logger.info("StatusCode: " + statusLine.getStatusCode())
-                if (statusLine.getStatusCode() === HttpStatus.SC_OK) {
-                    jsonObj = jsonParser.parse(responseBody) as JSONObject
-                    val enterprise = jsonObj["enterprise"] as JSONObject
-                    val organization = jsonObj["organization"] as JSONObject
-                    val user = jsonObj["user"] as JSONObject
-                    val enterpriseId = enterprise["id"] as Long
-                    val organizationId = organization["id"] as Long
-                    val userId = user["id"] as Long
-                    logger.info("\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId")
-                } else {
-                    logger.error("tokenContext fail: $responseBody")
-                }
-                */
+                logger.error("phone: $phone\nhost: $host\ntoken: $token")
             }
         } catch (e: Exception) {
             e.printStackTrace()
