@@ -25,6 +25,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.header.writers.StaticHeadersWriter
 import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
+import org.springframework.web.servlet.function.RequestPredicates.headers
 import java.util.*
 
 import javax.servlet.DispatcherType
@@ -52,7 +53,16 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         val filter = CharacterEncodingFilter()
         filter.encoding = "UTF-8"
         filter.setForceEncoding(true)
-        httpSecurity.addFilterBefore(filter, CsrfFilter::class.java)
+
+        httpSecurity.antMatcher("/sf/index.mi")
+                .authorizeRequests().antMatchers("/sf/index.mi")
+                .permitAll()
+            .and()
+                .headers().frameOptions().disable()
+
+        httpSecurity
+            .regexMatcher("^((?!" + "/WEB-INF/views/cont/salesforce.jsp" + ").)*$")
+            .addFilterBefore(filter, CsrfFilter::class.java)
                 .csrf().ignoringAntMatchers("/rest/**", "/api/**", "/sf/**")
             .and()
                 .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/sf/**")
@@ -91,10 +101,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
-                .headers()
-            //    .addHeaderWriter(StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM mc.exacttarget.com"))
-                //    .frameOptions().sameOrigin()
-                    .frameOptions().disable()
+                .headers().frameOptions().sameOrigin()
            /*.and()
                 .authorizeRequests().antMatchers("/m05/security.mi").access("hasRole('USR') or hasRole('ADM') or hasRole('SYS')");*/
     }

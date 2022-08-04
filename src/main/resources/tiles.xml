@@ -20,6 +20,12 @@
         <put-attribute name="body" value="/WEB-INF/views/home.jsp"/>
     </definition>
 
+    <!-- salesforce -->
+    <definition name="cont/salesforce" template="/WEB-INF/layout/decorator-salesforce.jsp">
+        <put-attribute name="head" value="/WEB-INF/layout/base-header.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/views/cont/salesforce.jsp"/>
+    </definition>
+
     <!-- default -->
     <definition name="*/*" extends="main-layout">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
