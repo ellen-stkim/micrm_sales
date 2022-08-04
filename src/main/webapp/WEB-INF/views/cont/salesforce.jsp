@@ -991,7 +991,7 @@
             let txt = $('.kakao_txt').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다. ");
-                $('.kakao_txt').val(txt + '{' + data + '}');
+                $('.kakao_txt').val(txt + '{{' + data + '}}');
             }
         });
 
@@ -1001,7 +1001,7 @@
             let txt = $('#sms .title').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                $('#sms .title').val(txt + '{' + data + '}');
+                $('#sms .title').val(txt + '{{' + data + '}}');
             }
         });
 
@@ -1011,7 +1011,7 @@
             let txt = $('.sms_txt').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                $('.sms_txt').val(txt + '{' + data + '}');
+                $('.sms_txt').val(txt + '{{' + data + '}}');
             }
         });
 
@@ -1024,14 +1024,14 @@
                 let inputTitle = $('.rcsTitle');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                    $(inputTitle).val(txt + '{' + data + '}');
+                    $(inputTitle).val(txt + '{{' + data + '}}');
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsTitle').val();
                 let inputTitle = $(this).parents('.row').siblings().find('.rcsTitle');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                    $(inputTitle).val(txt + '{' + data + '}');
+                    $(inputTitle).val(txt + '{{' + data + '}}');
                 }
             }
         });
@@ -1045,14 +1045,14 @@
                 let txtContents = $('.rcsContents');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                    $(txtContents).val(txt + '{' + data + '}');
+                    $(txtContents).val(txt + '{{' + data + '}}');
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsContents').val();
                 let textContents = $(this).parents('.row').siblings().find('.rcsContents');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                    $(textContents).val(txt + '{' + data + '}');
+                    $(textContents).val(txt + '{{' + data + '}}');
                 }
             }
         });
