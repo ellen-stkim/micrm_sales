@@ -108,33 +108,31 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/save.service")
     fun save() {
-        logger.info("save")
+
     }
 
     @ResponseBody
     @PostMapping("/publish.service")
     fun publish() {
-        logger.info("publish")
+
     }
 
     @ResponseBody
     @PostMapping("/validate.service")
     fun validate() {
-        logger.info("validate")
+
     }
 
     @ResponseBody
     @PostMapping("/stop.service")
     fun stop() {
-        logger.info("stop")
+
     }
 
     // done 동작
     @ResponseBody
     @PostMapping("/execute.service")
     fun execute(@RequestBody data : String) {
-        logger.info("execute")
-
         var response: CloseableHttpResponse? = null
 
         try {

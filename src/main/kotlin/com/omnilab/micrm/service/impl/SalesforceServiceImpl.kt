@@ -31,6 +31,8 @@ class SalesforceServiceImpl : SalesforceService {
         val host: String = dto.host as String
         val token: String = dto.token as String
 
+        var msg = ""
+
         try {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
@@ -40,7 +42,7 @@ class SalesforceServiceImpl : SalesforceService {
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, "UTF-8")
             val statusLine: StatusLine = response.statusLine
-            println("StatusCode: " + statusLine.getStatusCode())
+
             if (statusLine.getStatusCode() === HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
                 val jsonObj = jsonParser.parse(responseBody) as JSONObject
@@ -50,7 +52,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val enterpriseId = enterprise["id"] as Long
                 val organizationId = organization["id"] as Long
                 val userId = user["id"] as Long
-                println("\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId")
+                msg += "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
                 // TODO: usr_grp_cd 조회하기
                 dto.enterpriseId = enterpriseId
@@ -60,6 +62,7 @@ class SalesforceServiceImpl : SalesforceService {
                 dto.list_dt_id = "SPTP01"
                 // returnMap["usr_grp_cd"] = salesforceDao.getUsrGrpCd(dto)
                 returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
+                returnMap["msg"] = msg // 테스트용 결과 확인
                 status = "true"
             } else {
                 logger.error("tokenContext fail: $responseBody")

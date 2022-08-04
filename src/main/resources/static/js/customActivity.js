@@ -93,7 +93,7 @@ define(["postmonger"], function (Postmonger) {
 	    const res = function(response) {
             if (response.status == "true") {
                 $('#usr_grp_cd').val(response.usr_grp_cd);
-                alert($('#usr_grp_cd').val());
+                alert(response.msg);
                 // mappingLst(usr_grp_cd);
             } else {
                 // 조회실패
