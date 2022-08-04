@@ -762,7 +762,7 @@
     $(function () {
         var config = {baseUrl: "/js/"};
         var dependencies = ["customActivity"];
-        //require(config, dependencies);
+        require(config, dependencies);
 
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
