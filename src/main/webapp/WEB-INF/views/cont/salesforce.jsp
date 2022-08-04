@@ -153,10 +153,7 @@
                                             <div class="select" id="kakao_recv_to" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${mappingList}">
-                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                    </c:forEach>
+                                                <ul class="option mappingList">
                                                 </ul>
                                             </div>
                                             <input type="hidden" id="kakao_recv"/>
@@ -200,10 +197,7 @@
                                                     <div class="select" id="kakaoValue" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option">
-                                                            <c:forEach var="item" items="${mappingList}">
-                                                                <li data="{{${item.list_val}}}">${item.list_nm}</li>
-                                                            </c:forEach>
+                                                        <ul class="option mappingList">
                                                         </ul>
                                                     </div>
                                                     <div class="select" id="kakaoValue" name="defaultDB">
@@ -345,10 +339,7 @@
                                             <div class="select" id="sms_recv_to" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${mappingList}">
-                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                    </c:forEach>
+                                                <ul class="option mappingList">
                                                 </ul>
                                             </div>
                                         </div>
@@ -400,10 +391,7 @@
                                                     <div class="select" id="smsContsVal" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option">
-                                                            <c:forEach var="item" items="${mappingList}">
-                                                                <li data="${item.list_val}">${item.list_nm}</li>
-                                                            </c:forEach>
+                                                        <ul class="option mappingList">
                                                         </ul>
                                                     </div>
                                                     <div class="select" id="smsContsVal" name="defaultDB">
@@ -519,10 +507,7 @@
                                             <div class="select" id="recv_text_rcs" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${mappingListList}">
-                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                    </c:forEach>
+                                                <ul class="option mappingList">
                                                 </ul>
                                             </div>
                                         </div>
@@ -536,10 +521,7 @@
                                                             <div class="select rcsContsVal" name="edmDB">
                                                                 <!-- selected value -->
                                                                 <div class="value" data="0">개인화 변수</div>
-                                                                <ul class="option">
-                                                                    <c:forEach var="item" items="${mappingList}">
-                                                                        <li data="${item.list_val}">${item.list_nm}</li>
-                                                                    </c:forEach>
+                                                                <ul class="option mappingList">
                                                                 </ul>
                                                             </div>
                                                             <div class="select rcsContsVal" name="defaultDB">
@@ -762,8 +744,8 @@
     });
 
     $(function () {
-        var config = {baseUrl: "/js/"};
-        var dependencies = ["customActivity"];
+        let config = {baseUrl: "/js/"};
+        let dependencies = ["customActivity"];
         require(config, dependencies);
 
         //load 시 byte 계산

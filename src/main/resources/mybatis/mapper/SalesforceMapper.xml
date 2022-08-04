@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.SalesforceMapper">
+    <cache />
+
+    <!-- 매핑정보 - 공통 세팅 테이블 Select-->
+    <select id ="selectMappingLst" parameterType="SalesforceDto" resultType="SalesforceDto">
+        SELECT *
+        FROM
+        tblmi_set_lst
+        WHERE DEL_DT = 'N'
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+            and list_tp_id = #{list_tp_id}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+            and list_dt_id = #{list_dt_id}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+            and usr_grp_cd = #{usr_grp_cd}
+        </if>
+        ORDER BY
+        FIELD(DEF_YN, 'Y') DESC,
+        REG_DT DESC
+    </select>
+
+</mapper>

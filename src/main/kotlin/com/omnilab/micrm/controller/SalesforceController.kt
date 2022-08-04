@@ -69,20 +69,7 @@ class SalesforceController {
      */
     @GetMapping("/index.mi")
     fun mdmCreate(): ModelAndView {
-        val view = ModelAndView("cont/salesforce")
-
-        // TODO: usr_grp_cd 값을 DB 에서 조회 후 페이지에서 ajax 로 조회해야함
-        val sptpDto = SetLst_searchDto()
-        sptpDto.usr_grp_cd = "04"   // 테스트용 세일즈포스 테스트 그룹
-        sptpDto.list_tp_id = "CH03"
-        sptpDto.list_dt_id = "SPTP01"
-        val sptpMap = mobileContentService.selectMappingList(sptpDto)
-
-        // 개인화 변수 추가하기
-        view.addObject("mappingList", sptpMap["list"]);
-        // TODO: 끝
-
-        return view
+        return ModelAndView("cont/salesforce")
     }
 
     // =================================================== Salesforce ===================================================== //
@@ -103,6 +90,24 @@ class SalesforceController {
     @PostMapping("/getUser.ajax")
     fun getUser(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
         return salesforceService.getUser(dto)
+    }
+
+    /**
+     * @Method Name  : mappingLst
+     * @Since    : 2022. 08. 04.
+     * @author   : SSW
+     * @param    : dto: SalesforceDto
+     * @return   : Map<String, Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 사용자 조회
+     * @title : 사용자 조회
+     */
+    @ResponseBody
+    @PostMapping("/getUser.ajax")
+    fun mappingLst(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
+        return salesforceService.mappingLst(dto)
     }
 
     @ResponseBody

@@ -1,24 +1,21 @@
 define(["postmonger"], function (Postmonger) {
 	"use strict";
 
-	var connection = new Postmonger.Session();
+	let connection = new Postmonger.Session();
 	
-	var payload = {};
-	var fuelapiRestHost = null;
-	var fuel2token = null;
-	var eventDefinitionKey = null;
-	var flag = true;
-	var cnt = 0;
+	let payload = {};
+	let fuelapiRestHost = null;
+	let fuel2token = null;
+	let eventDefinitionKey = null;
+	let flag = true;
+	let cnt = 0;
 
 	$(window).ready(onRender);
 
 	connection.on("initActivity", initialize);
 	connection.on("requestedTokens", onGetTokens);
 	connection.on("requestedEndpoints", onGetEndpoints);
-	
-	connection.on('requestedInteraction', onRequestedInteraction);
 	connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
-	connection.on('requestedDataSources', onRequestedDataSources);
 	
 	connection.on('clickedNext', save);
 
@@ -44,17 +41,9 @@ define(["postmonger"], function (Postmonger) {
 		}, 1000);
 		*/
 	}
-	
-	function onRequestedDataSources(dataSources){
-		console.log('dataSources == ' + JSON.stringify(dataSources));
-	}
-
-	function onRequestedInteraction (interaction) {	
-		console.log('interaction == ' + JSON.stringify(interaction));
-	 }
 
 	 function onRequestedTriggerEventDefinition(eventDefinitionModel) {
-		console.log('eventDefinitionModel == ' + JSON.stringify(eventDefinitionModel));
+		//console.log('eventDefinitionModel == ' + JSON.stringify(eventDefinitionModel));
 		
 		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	}
@@ -93,8 +82,7 @@ define(["postmonger"], function (Postmonger) {
 	    const res = function(response) {
             if (response.status == "true") {
                 $('#usr_grp_cd').val(response.usr_grp_cd);
-                alert(response.msg);
-                // mappingLst(usr_grp_cd);
+                mappingLst();
             } else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
@@ -104,8 +92,10 @@ define(["postmonger"], function (Postmonger) {
         com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
 	}
 
+	//
+
 	function onGetTokens(tokens) {
-		console.log("tokens == " + JSON.stringify(tokens));
+		//console.log("tokens == " + JSON.stringify(tokens));
 		
 		if(tokens) {
 			fuel2token = tokens.fuel2token;
@@ -116,15 +106,14 @@ define(["postmonger"], function (Postmonger) {
                 if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
                     getUser(fuelapiRestHost, fuel2token);
                 } else {
-                    // mappingLst(usr_grp_cd);
-
+                    mappingLst();
                 }
 			}
 		}
 	}
 
 	function onGetEndpoints(endpoints) {
-		console.log("endpoints == " + JSON.stringify(endpoints));
+		//console.log("endpoints == " + JSON.stringify(endpoints));
 		
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;
@@ -135,11 +124,26 @@ define(["postmonger"], function (Postmonger) {
                 if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
                     getUser(fuelapiRestHost, fuel2token);
                 } else {
-                    // mappingLst(usr_grp_cd);
-
+                    mappingLst();
                 }
 			}
 		}
+	}
+
+	// 개인화 변수 조회
+	function mappingLst() {
+	    const res = function(response) {
+	        let list = response.mappingLst;
+	        let html = '';
+
+	        for(let i=0; i<list.length; i++) {
+	            let item = list[i];
+                html += '<li data="' + item.list_val + '">' + item.list_nm + '!</li>';
+	        }
+	        $('.mappingLst').html(html);
+        }
+        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
+        com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
 	}
 	
 	function save() {

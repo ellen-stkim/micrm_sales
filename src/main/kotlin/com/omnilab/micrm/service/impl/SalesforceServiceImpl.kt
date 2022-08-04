@@ -1,6 +1,8 @@
 package com.omnilab.micrm.service.impl
 
 import com.omnilab.micrm.model.SalesforceDto
+import com.omnilab.micrm.model.SetLst_searchDto
+import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.service.SalesforceService
 import org.apache.http.HttpEntity
 import org.apache.http.HttpStatus
@@ -21,8 +23,8 @@ class SalesforceServiceImpl : SalesforceService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-//    @Autowired
-//    lateinit var salesforceDao: SalesforceDao
+    @Autowired
+    lateinit var salesforceDao: SalesforceDao
 
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
         val returnMap: MutableMap<String, Any> = HashMap()
@@ -72,6 +74,14 @@ class SalesforceServiceImpl : SalesforceService {
         }
 
         returnMap["status"] = status
+        return returnMap
+    }
+
+    override fun mappingLst(dto: SalesforceDto): Map<String, Any> {
+        val returnMap: MutableMap<String, Any> = HashMap()
+        dto.list_tp_id = "CH03"
+        dto.list_dt_id = "SPTP01"
+        returnMap["list"] = salesforceDao.mappingLst(dto)
         return returnMap
     }
 

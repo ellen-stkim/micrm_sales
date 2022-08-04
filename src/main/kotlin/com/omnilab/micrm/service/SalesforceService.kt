@@ -6,4 +6,6 @@ interface SalesforceService {
 
     fun getUser(dto: SalesforceDto): Map<String, Any>
 
+    fun mappingLst(dto: SalesforceDto) : Map<String, Any>
+
 }

@@ -2402,26 +2402,4 @@ class MobileContentServiceImpl : ContentService {
         return dataMap;
     }
 
-    /**
-     * @Method Name  : selectMappingList
-     * @Since    : 2022. 08. 02.
-     * @author   : SSW
-     * @param    : tblmiSetLstDto: Tblmi_set_lstDto
-     * @return   : Map<String, Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 매핑정보 리스트 가져오기
-     * @title : 매핑정보 리스트 가져오기
-     */
-    override fun selectMappingList(tblmiSetLstDto: Tblmi_set_lstDto): Map<String, Any> {
-
-        val searchDto = tblmiSetLstDto as SetLst_searchDto
-        val paramMap: MutableMap<String, Any> = HashMap()
-
-        paramMap["list"] = contentDao.selectMappingList(searchDto)
-
-        return paramMap
-    }
-
 }
