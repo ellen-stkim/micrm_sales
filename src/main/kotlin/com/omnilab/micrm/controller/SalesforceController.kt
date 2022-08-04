@@ -31,7 +31,6 @@ import javax.crypto.spec.SecretKeySpec
 
 @Controller
 @RequestMapping("/sf")
-@CrossOrigin(origins = ["https://mc.exacttarget.com"])
 class SalesforceController {
 
     val logger = LoggerFactory.getLogger(this::class.java)
@@ -68,6 +67,7 @@ class SalesforceController {
      * @title : 세일즈포스 뷰 페이지
      */
     @GetMapping("/index.mi")
+    //@CrossOrigin("https://mc.exacttarget.com")
     fun mdmCreate(): ModelAndView {
         val view = ModelAndView("cont/salesforce")
 
