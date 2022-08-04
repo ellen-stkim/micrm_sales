@@ -30,7 +30,6 @@ class SalesforceServiceImpl : SalesforceService {
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
         val returnMap: MutableMap<String, Any> = HashMap()
         var status: String = "false"
-
         val host: String = dto.host as String
         val token: String = dto.token as String
 
