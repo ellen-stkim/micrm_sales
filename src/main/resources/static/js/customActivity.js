@@ -92,6 +92,7 @@ define(["postmonger"], function (Postmonger) {
 		    getUser(fuelapiRestHost, fuel2token);
 		} else {
 		    // mappingLst(usr_grp_cd);
+
 		}
 	}
 

@@ -762,7 +762,7 @@
 
     $(function () {
         var config = {baseUrl: "/js/"};
-        var dependencies = ["customActivity?v=00001"];
+        var dependencies = ["customActivity"];
         //require(config, dependencies);
 
         //load 시 byte 계산
