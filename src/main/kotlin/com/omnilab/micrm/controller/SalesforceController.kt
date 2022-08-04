@@ -50,7 +50,7 @@ class SalesforceController {
     @ResponseBody
     @GetMapping("/config.json")
     fun configJson(): JSONObject {
-        val resource: Resource = ClassPathResource("static/config.json")
+        val resource: Resource = ClassPathResource("static/sf/config.json")
         val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
         return json
     }
