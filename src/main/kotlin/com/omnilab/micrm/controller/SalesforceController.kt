@@ -1,16 +1,10 @@
 package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.model.SalesforceDto
-import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
 
-import org.apache.http.HttpEntity
-import org.apache.http.HttpStatus
-import org.apache.http.StatusLine
 import org.apache.http.client.methods.CloseableHttpResponse
-import org.apache.http.client.methods.HttpGet
-import org.apache.http.util.EntityUtils
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -25,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView
 import java.io.InputStreamReader
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator;
-import org.eclipse.jdt.internal.compiler.parser.Parser.name
 import org.springframework.beans.factory.annotation.Value
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
@@ -105,7 +98,7 @@ class SalesforceController {
      * @title : 사용자 조회
      */
     @ResponseBody
-    @PostMapping("/getUser.ajax")
+    @PostMapping("/mappingLst.ajax")
     fun mappingLst(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
         return salesforceService.mappingLst(dto)
     }
