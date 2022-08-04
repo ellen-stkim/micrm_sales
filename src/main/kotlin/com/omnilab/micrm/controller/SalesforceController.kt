@@ -67,7 +67,6 @@ class SalesforceController {
      * @title : 세일즈포스 뷰 페이지
      */
     @GetMapping("/index.mi")
-    //@CrossOrigin("https://mc.exacttarget.com")
     fun mdmCreate(): ModelAndView {
         val view = ModelAndView("cont/salesforce")
 

@@ -92,7 +92,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
                 .headers()
-                //    .addHeaderWriter(StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM mc.exacttarget.com"))
+            //    .addHeaderWriter(StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM mc.exacttarget.com"))
                 //    .frameOptions().sameOrigin()
                     .frameOptions().disable()
            /*.and()
