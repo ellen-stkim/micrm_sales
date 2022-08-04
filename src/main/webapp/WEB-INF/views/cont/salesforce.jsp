@@ -978,7 +978,7 @@
         });
 
         // 카카오 수신 번호 option click event
-        $('#kakao_recv_to .option li').on('click', function () {
+        $(document).on('click', '#kakao_recv_to .option li', function() {
             let data = $(this).attr('data');
             if (data != 0) {
                 $('#kakao_recv').val(data);
@@ -986,7 +986,7 @@
         });
 
         // 카카오 개인 변수 option click event
-        $('#kakaoValue .option li').on('click', function () {
+        $(document).on('click', '#kakaoValue .option li', function() {
             let data = $(this).attr('data');
             let txt = $('.kakao_txt').val();
             if (data != 0) {
@@ -996,7 +996,7 @@
         });
 
         // SMS 제목 개인화 변수 option click event
-        $('#smsTitleVal .option li').on('click', function () {
+        $(document).on('click', '#smsTitleVal .option li', function() {
             let data = $(this).attr('data');
             let txt = $('#sms .title').val();
             if (data != 0) {
@@ -1006,7 +1006,7 @@
         });
 
         // SMS 개인화 변수 option click event
-        $('#smsContsVal .option li').on('click', function () {
+        $(document).on('click', '#smsContsVal .option li', function() {
             let data = $(this).attr('data');
             let txt = $('.sms_txt').val();
             if (data != 0) {
