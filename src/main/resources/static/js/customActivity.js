@@ -136,7 +136,6 @@ define(["postmonger"], function (Postmonger) {
 
 
 			payload["arguments"].execute.inArguments = [{
-			    formatType
 				phone: "{{Event." + eventDefinitionKey + "." + $('#kakao_recv').val() + "}}",
 
 			}];
