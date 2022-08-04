@@ -96,12 +96,12 @@ define(["postmonger"], function (Postmonger) {
 	}
 	
 	function save() {
-		if($('#recv_to').val() == '' || $('#recv_to').val() == null) {
+		if($('#kakao_recv').val() == '' || $('#kakao_recv').val() == null) {
 			alert('수신 번호를 선택해 주세요.');
 			connection.trigger('ready');
 		} else {
 			payload["arguments"].execute.inArguments = [{
-				phone: "{{Event." + eventDefinitionKey + "." + $('#recv_to').val() + "}}",
+				phone: "{{Event." + eventDefinitionKey + "." + $('#kakao_recv').val() + "}}",
 			}];
 	
 			payload["metaData"].isConfigured = true;

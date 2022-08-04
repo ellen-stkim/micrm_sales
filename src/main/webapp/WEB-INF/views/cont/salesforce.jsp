@@ -150,7 +150,7 @@
                                     <div class="row body">
                                         <div class="th">수신 번호</div>
                                         <div class="column_1">
-                                            <div class="select" id="recv_to" name="edmDB">
+                                            <div class="select" id="kakao_recv_to" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">수신번호 개인화 변수</div>
                                                 <ul class="option">
@@ -159,6 +159,7 @@
                                                     </c:forEach>
                                                 </ul>
                                             </div>
+                                            <input type="hidden" id="kakao_recv"/>
                                         </div>
                                     </div>
                                     <div class="input_area">
@@ -990,6 +991,14 @@
                 imgElement.remove();
             } else {
                 return false;
+            }
+        });
+
+        // 카카오 수신 번호 option click event
+        $('#kakao_recv_to .option li').on('click', function () {
+            let data = $(this).attr('data');
+            if (data != 0) {
+                $('#kakao_recv').val(data);
             }
         });
 
