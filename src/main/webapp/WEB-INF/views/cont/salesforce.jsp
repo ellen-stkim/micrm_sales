@@ -31,7 +31,7 @@
                     <li>모바일</li>
                     <li>모바일 컨텐츠 생성</li>
                 </ul>
-                <textarea id="configuration" style="width: 100%; height: 60px;"></textarea>
+<%--                <textarea id="configuration" style="width: 100%; height: 60px;"></textarea>--%>
                 <!-- tooltip 버튼 영역  -->
 <%--                <div class="tooltip_icon">--%>
 <%--                    <img src="${baseURL}/image/ico_tooltip.png" alt="Tooltip"/>--%>
@@ -53,6 +53,9 @@
         <!-- section 영역 시작 -->
         <div class="section">
             <form:form id="form" action="#" method="post">
+                <input type="hidden" id="seq" name="seq" value="7"/>
+                <input type="hidden" id="usr_grp_cd" name="usr_grp_cd"/>
+                <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
                 <div class="create_sms cf">
                     <div class="row head bottom-border">
                         <div class="th">템플릿 명</div>
@@ -74,7 +77,7 @@
                                     <span class="en_font">RCS</span>
                                 </label>
                             </div>
-                            <div class="inner_option">
+<%--                            <div class="inner_option">
                                 <div class="th left-border">개인화 구분</div>
                                 <div class="td">
                                     <label class="custom_radio en_font db_radio">DB<input name="dbInfo" type="radio"
@@ -83,7 +86,7 @@
                                     <label class="custom_radio db_radio">업로드<input name="dbInfo" type="radio"
                                                                                    value="1" disabled/><span></span></label>
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="inner_option area2">
                                 <div class="th left-border">유형선택</div>
                                 <div class="td cf">
@@ -287,10 +290,7 @@
                                             <div class="select column_4 left-border" id="smsTitleVal" name="edmDB">
                                                 <!-- selected value -->
                                                 <div class="value" data="0">제목 개인화 변수</div>
-                                                <ul class="option">
-                                                    <c:forEach var="item" items="${columnNm}" varStatus="status">
-                                                        <li data="{{${columnValue[status.count]}}}">${item}</li>
-                                                    </c:forEach>
+                                                <ul class="option mappingLst">
                                                 </ul>
                                             </div>
                                             <div class="select column_4 left-border" id="smsTitleVal" name="defaultDB">
@@ -645,7 +645,6 @@
                     </div>
                 </div>
         </div>
-        <input type="hidden" id="usr_grp_cd"/>
         <!-- section 영역 끝 -->
     </div>
     <!-- 컨텐츠 영역 끝 -->
@@ -726,14 +725,30 @@
         $('.rcsTitleVal[name="defaultDB"] .option').html(defaultDB);
         $('.rcsContsVal[name="defaultDB"] .option').html(defaultDB);
 
-        if (dbValue == '0') {
+        //if (dbValue == '0') {
             $('div[name="edmDB"]').show();
             $('div[name="defaultDB"]').hide();
+        //}
+        //if (dbValue == '1') {
+        //    $('div[name="edmDB"]').hide();
+        //    $('div[name="defaultDB"]').show();
+        //}
+    }
+
+    // 개인화 변수 조회 - 로컬 테스트용
+    function mappingLst() {
+        const res = function(response) {
+            let list = response.mappingLst;
+            let html = '';
+
+            for(let i=0; i<list.length; i++) {
+                let item = list[i];
+                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+            }
+            $('.mappingLst').html(html);
         }
-        if (dbValue == '1') {
-            $('div[name="edmDB"]').hide();
-            $('div[name="defaultDB"]').show();
-        }
+        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
+        com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
     }
 
     $(document).ready(function () {
@@ -746,7 +761,18 @@
     $(function () {
         let config = {baseUrl: "/js/"};
         let dependencies = ["customActivity"];
-        require(config, dependencies);
+        //require(config, dependencies);
+
+        // local test
+        $('#usr_grp_cd').val('04');
+        $('#cont_grp_cd').val($('#usr_grp_cd').val());
+        mappingLst();
+
+        if($('#seq').val() != '' || $('#seq').val() != null) {
+            mobileInfo();
+        }
+        // local test
+
 
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
@@ -939,7 +965,13 @@
 
         // 프리뷰에서 저장 버튼 누르기
         $(document).on('click', '#saveBtn' , function() {
-            $("#form").submit();
+            //$("#form").submit();
+
+            if($('#seq').val() == '' || $('#seq').val() == null) {
+                mobileSave();
+            } else {
+                popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
+            }
         });
 
         // RCS 선택 이미지 삭제
@@ -1631,6 +1663,110 @@
         });
     });
 
+    // 저장
+    function mobileSave() {
+        const res = function(response) {
+            if(response.status) {
+                $('#seq').val(response.seq);
+                $('.layer_pop.active').removeClass('active');
+            } else {
+                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+            }
+        }
+        let data = $("#form").serializeArray();
+        com_ajax.ajax('post', '${baseURL}/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}')
+    }
+
+    // 수정
+    function mobileEdit() {
+
+    }
+
+    // 정보 조회
+    function mobileInfo() {
+        const res = function(response) {
+            let list = response.list;
+            let filePath = response.filePath;
+
+            // 템플릿 명
+            $('.template_name').val(list[0].cont_nm);
+
+            // 컨텐츠 포맷
+            $('.formatType').each(function() {
+                if($(this).val() == 'kakao' && list[0].list_use_yn == 'Y') {
+                    $(this).trigger('click');
+                } else if($(this).val() == 'sms' && list[1].list_use_yn == 'Y') {
+                    $(this).trigger('click');
+                } else if($(this).val() == 'rcs' && list[2].list_use_yn == 'Y') {
+                    $(this).trigger('click');
+                }
+            });
+
+            // 유형선택
+            if(list[0].send_tp == 'SENDTP01') {
+                $('input[name="commonType"][value=ad]').prop('checked', true);
+            } else if(list[0].send_tp == 'SENDTP02') {
+                $('input[name="commonType"][value=guide]').prop('checked', true);
+            }
+            $('input[name="kko_option"]').val($('input[name="commonType"]').val());
+            $('input[name="sms_option"]').val($('input[name="commonType"]').val());
+            $('input[name="rcs_option"]').val($('input[name="commonType"]').val());
+
+            // 카카오톡 시작
+            // 문자 제목
+            $('.kakaoTitle').val(list[0].cont_sub);
+
+            // 발신 번호
+            $('#send_to').val(list[0].sender + (phoneFormatter(list[0].send_num)));
+            $('#send_to_list').val(list[0].send_to);
+
+            // 이미지 선택
+            $('#kakaoImage').val(list[0].kko_img_nm);
+            $('#kakao_img_cd').val(list[0].kko_img_cd);
+            if(list[0].kko_img_lst != null) {
+                $('input[name="kko_view_img_url"]').val(filePath + list[0].kko_img_lst);
+            }
+
+            // 이미지 링크 주소
+            $('input[name="kko_img_url"]').val(list[0].kko_img_url);
+
+            // 이미지 미리보기
+            if(list[0].kko_img_lst != null && list[0].kko_img_url == null) {
+                $('#js-kakao-img').html('<a href="' + list[0].kko_img_lst + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
+            } else if(list[0].kko_img_lst != null && list[0].kko_img_url != null) {
+                $('#js-kakao-img').html('<a href="' + list[0].kko_img_url + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
+            }
+
+            // 버튼 링크 제목
+            $('input[name="kko_btn_nm"]').val(list[0].kko_btn_nm);
+
+            // 버튼 링크 주소
+            $('input[name="kko_btn_url"]').val(list[0].kko_btn_url);
+            if(list[0].kko_btn_url == null) {
+                $('.kakaoLinkBtn').val('생성');
+            } else {
+                $('.kakaoLinkBtn').val('삭제');
+            }
+
+            // 카카오톡 본문 입력창
+            $('textarea[name="kakao_body"]').text(list[0].cont_body);
+            if(list[0].kko_btn_nm == null) {
+                $('.kakao_link').remove();
+            }
+            // 카카오톡 끝
+
+            // 문자 시작
+
+            // 문자 끝
+
+            // RCS 시작
+
+            // RCS 끝
+        }
+        let param = {seq: $('#seq').val()}
+        com_ajax.ajax('post', '${baseURL}/sf/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+    }
+
     // 카카오, SMS 유효성 검사
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
@@ -2178,7 +2314,7 @@
                 popup.popAlert(response.message)
             }
         }
-        let param = {cont_nm: cont_nm}
+        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val()}
         com_ajax.ajax('post', '${baseURL}/sf/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -2287,7 +2423,7 @@
             param.push({name: 'list_dt_id', value: 'DMTP04'});
         }
 
-        param.push({name: 'pageNo', value: nowPage})
+        param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()})
 
         com_ajax.ajax('post', '${baseURL}/sf/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -2368,7 +2504,7 @@
                 param.push({name: 'ch_tp', value: 'IMGTP08'});
             }
         }
-        param.push({name: 'pageNo', value: nowPage});
+        param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
         com_ajax.ajax('post', '${baseURL}/sf/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
@@ -2838,9 +2974,31 @@
             data.append("ch_tp", ch_tp);
         }
         data.append("img_nm", imgNm);
+        data.append("usr_grp_cd", $('#usr-grp_cd').val());
 
         com_ajax.ajax_file('${baseURL}/sf/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
+
+    function phoneFormatter(num){
+        var formatNum;
+
+        if(num != null) {
+            if(num.length==11){
+                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            }else if(num.length==8){
+                formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2');
+            }else{
+                if(num.indexOf('02')==0){
+                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+                }else{
+                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+            }
+        }
+
+        return formatNum;
+    }
+
 
 
 </script>

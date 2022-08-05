@@ -4,6 +4,8 @@ import org.apache.ibatis.type.Alias
 
 @Alias("SalesforceDto")
 class SalesforceDto {
+    var seq: Int? = null
+
     var host: String? = null
     var token: String? = null
 

@@ -51,7 +51,7 @@ define(["postmonger"], function (Postmonger) {
 	function initialize(data) {
 		if (data) {
 			payload = data;
-			document.getElementById('configuration').value = JSON.stringify(data, null, 2);
+			//document.getElementById('configuration').value = JSON.stringify(data, null, 2);
 			flag = false;
 		}
 		
@@ -68,6 +68,7 @@ define(["postmonger"], function (Postmonger) {
 			$.each(inArgument, function (key, val) {
 				if(key === 'usr_grp_cd') {
 				    $('#usr_grp_cd').val(val);
+				    $('#cont_grp_cd').val(val);
 				} else if(key === 'host') {
 				    fuelapiRestHost = val;
 				} else if(key === 'token') {
@@ -82,6 +83,7 @@ define(["postmonger"], function (Postmonger) {
 	    const res = function(response) {
             if (response.status == "true") {
                 $('#usr_grp_cd').val(response.usr_grp_cd);
+                $('#cont_grp_cd').val(response.usr_grp_cd);
                 mappingLst();
             } else {
                 // 조회실패

@@ -2,10 +2,7 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.Content_list_CreateDto
-import com.omnilab.micrm.model.Image_searchDto
-import com.omnilab.micrm.model.SalesforceDto
-import com.omnilab.micrm.model.SetLst_searchDto
+import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
@@ -100,6 +97,49 @@ class SalesforceController {
 
     // =================================================== Mobile ========================================================= //
 
+    /**
+     * @Method Name  : insertMoblieContent
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : content_list_dto: Content_list_CreateDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 모바일 컨텐츠 생성하기
+     * @title : 모바일 컨텐츠 생성하기
+     */
+
+    @ResponseBody
+    @PostMapping("/mobileInsert.service")
+    fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
+        //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+
+        val statusMap = salesforceService.insertContentList(content_list_dto);
+        return statusMap;
+    }
+
+    @ResponseBody
+    @PostMapping("/mobileInfo.ajax")
+    fun selectMobileContent(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
+        val statusMap: MutableMap<String, Any> = hashMapOf()
+
+        val tblmiContMstdto = Tblmi_cont_mstDto()
+        tblmiContMstdto.seq = dto.seq
+
+        val listMap: Map<String, Any> = mobileContentService.selectOneContentView(tblmiContMstdto)
+
+        statusMap["list"] = listMap["list"] as List<Content_view_Dto>
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        statusMap["filePath"] = uploadPrefix?.cd_val as String
+
+        return statusMap
+    }
+
     /** @Method Name  : previewService
      * @Since    : 2021. 05. 31.
      * @author   : Grayson
@@ -160,7 +200,7 @@ class SalesforceController {
     @PostMapping("/isCheckTmplateNm.ajax")
     fun isCheckTemplateName(@ModelAttribute contMstdto: Tblmi_cont_mstDto) : HashMap<String,String>{
 
-        val result = mobileContentService.checkContNm(contMstdto)
+        val result = salesforceService.checkContNm(contMstdto)
         val statusMap = HashMap<String,String>()
 
         if(result == 0) {
@@ -188,7 +228,7 @@ class SalesforceController {
     @PostMapping("/senderMobileList.ajax")
     fun selectSenderMobileList(@ModelAttribute dto : SetLst_searchDto): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/senderMobileListAjax")
-        val senderMap = mobileContentService.selectSenderList(dto)
+        val senderMap = salesforceService.selectSenderList(dto)
 
         view.addObject("list", senderMap["list"])
         view.addObject("page", senderMap["page"])
@@ -214,7 +254,7 @@ class SalesforceController {
     fun selectImgListForPopUp(@ModelAttribute tblmiContImgdto: Image_searchDto): ModelAndView {
 
         val view = ModelAndView("cont/mobile/ajax/mdmImgListAjax")
-        val senderMap = imageService.selectImgForPopup(tblmiContImgdto)
+        val senderMap = salesforceService.selectImgForPopup(tblmiContImgdto)
 
         view.addObject("list", senderMap["list"])
         view.addObject("page", senderMap["page"])
@@ -307,7 +347,7 @@ class SalesforceController {
     fun contentUpload(@RequestParam("file") file: MultipartFile?, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
         var map: MutableMap<String, Any> = hashMapOf()
         //이미지명 중복 체크 추가.
-        val imgNmCh = imageService.getImgNmCh(dto)
+        val imgNmCh = salesforceService.getImgNmCh(dto)
         if(imgNmCh > 0 ){
             map["imgCheck"] = 0
             map["imgCheckErr"] = "중복된 이미지명입니다."
