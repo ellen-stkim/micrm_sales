@@ -119,6 +119,28 @@ class SalesforceController {
         return statusMap;
     }
 
+    /**
+     * @Method Name  : updateMoblieContent
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : content_list_dto: Content_list_CreateDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 모바일 컨텐츠 수정하기
+     * @title : 모바일 컨텐츠 수정하기
+     */
+
+    @ResponseBody
+    @PostMapping("/mobileUpdate.service")
+    fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
+        //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+
+        val statusMap = salesforceService.updateContentList(content_list_dto);
+        return statusMap;
+    }
+
     @ResponseBody
     @PostMapping("/mobileInfo.ajax")
     fun selectMobileContent(@ModelAttribute dto: SalesforceDto): Map<String, Any> {

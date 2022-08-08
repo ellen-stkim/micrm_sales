@@ -53,7 +53,7 @@
         <!-- section 영역 시작 -->
         <div class="section">
             <form:form id="form" action="#" method="post">
-                <input type="hidden" id="seq" name="seq" value="7"/>
+                <input type="hidden" id="seq" name="mst_seq" value="7"/>
                 <input type="hidden" id="usr_grp_cd" name="usr_grp_cd"/>
                 <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
                 <div class="create_sms cf">
@@ -117,6 +117,7 @@
                     </ul>
                     <div class="tab_contents">
                         <div class="sms_form right-border cover cf" id="kakao">
+                            <input type="hidden" name="list_seq" value=""/>
                             <h2>카카오톡</h2>
                             <div class="flex_box">
                                 <div class="left_area">
@@ -273,6 +274,7 @@
                     </div><!-- kakao end-->
                     <div class="tab_contents">
                         <div class="sms_form cover" id="sms">
+                            <input type="hidden" name="list_seq" value=""/>
                             <h2>문자</h2>
                             <div class="flex_box">
                                 <div class="left_area">
@@ -451,6 +453,7 @@
                     <div class="tab_contents">
                         <!-- RCS -->
                         <div class="sms_form right-border cover" id="rcs">
+                            <input type="hidden" name="list_seq" value=""/>
                             <h2>RCS</h2>
                             <div class="row body">
                                 <div class="th">포맷카드</div>
@@ -965,8 +968,6 @@
 
         // 프리뷰에서 저장 버튼 누르기
         $(document).on('click', '#saveBtn' , function() {
-            //$("#form").submit();
-
             if($('#seq').val() == '' || $('#seq').val() == null) {
                 mobileSave();
             } else {
@@ -1674,12 +1675,20 @@
             }
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 수정
     function mobileEdit() {
-
+        const res = function(response) {
+            if(response.status) {
+                $('.layer_pop.active').removeClass('active');
+            } else {
+                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+            }
+        }
+        let data = $("#form").serializeArray();
+        com_ajax.ajax('post', '${baseURL}/sf/mobileUpdate.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 정보 조회
@@ -1711,6 +1720,11 @@
             $('input[name="kko_option"]').val($('input[name="commonType"]').val());
             $('input[name="sms_option"]').val($('input[name="commonType"]').val());
             $('input[name="rcs_option"]').val($('input[name="commonType"]').val());
+
+            // seq
+            $('#kakao input[name="list_seq"]').val(list[0].list_seq);
+            $('#sms input[name="list_seq"]').val(list[1].list_seq);
+            $('#rcs input[name="list_seq"]').val(list[2].list_seq);
 
             // 카카오톡 시작
             // 문자 제목
@@ -1855,7 +1869,9 @@
                         $('.rcs_layout .button-name span span').text(list[2].btnText[0].length);
                     }
 
-                    $('.rcs_btn_wrap').append('<div class="rcs_btn" data="1">' + list[2].btnText[0] + '</div>');
+                    if(list[2].btnText[0] != null) {
+                        $('.rcs_btn_wrap').append('<div class="rcs_btn" data="1">' + list[2].btnText[0] + '</div>');
+                    }
                 } else if(list[2].msg_tp == 'DMCH206') {
                     // 카드 양식
                     $('input[name="rcs_msg_tp"][value="lms"]').prop('checked', true);
@@ -1930,7 +1946,7 @@
                 }
 
                 // 내용
-                $('textarea[name="rcs_body"]').text(list[2].cont_body);
+                $('textarea[name="rcs_body"]').val(list[2].cont_body);
 
                 // 무료수신거부
                 $('input[name="rcs_footer"]').val(list[2].rcs_footer);
@@ -1971,7 +1987,7 @@
                 $('#verticalImg').val(list[2].img_cd_1);
 
                 // 내용
-                $('textarea[name="rcs_body"]').text(textAreaParsing(list[2].cont_body));
+                $('textarea[name="rcs_body"]').val(textAreaParsing(list[2].cont_body));
 
                 // 버튼 액션
                 for(var i=0; i<2; i++) {
@@ -2032,7 +2048,7 @@
                 }
 
                 // 내용
-                $('textarea[name="rcs_body"]').text(list[2].cont_body);
+                $('textarea[name="rcs_body"]').val(list[2].cont_body);
 
                 // 무료수신거부
                 $('input[name="rcs_footer"]').val(list[2].rcs_footer);
@@ -2187,8 +2203,13 @@
                     $('#titleArea' + i).text(list[2].slideTitle[i]);
                     $('#textArea' + i).text(list[2].slideBody[i]);
 
-                    $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
-                    $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                    if(list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
+                        $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
+                    }
+
+                    if(list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
+                        $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                    }
                 }
 
                 // 무료수신거부
@@ -2747,7 +2768,7 @@
                 popup.popAlert(response.message)
             }
         }
-        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val()}
+        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: $('#seq').val()}
         com_ajax.ajax('post', '${baseURL}/sf/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 

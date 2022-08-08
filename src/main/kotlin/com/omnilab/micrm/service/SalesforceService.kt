@@ -14,6 +14,8 @@ interface SalesforceService {
 
     fun insertContentList(dto : Tblmi_cont_lstDto) : Map<String, Any>
 
+    fun updateContentList(dto : Tblmi_cont_lstDto) : Map<String, Any>
+
     fun checkContNm(dto:Tblmi_cont_mstDto):Int
 
     fun selectSenderList(dto: Tblmi_set_lstDto) : Map<String, Any>

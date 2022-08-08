@@ -627,6 +627,471 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
     /**
+     * @Method Name  : updateContentLst
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : contentListCreatedto : Content_list_CreateDto
+     * @return   : Map<String, Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 모바일 컨텐츠 수정하기
+     * @title  : 모바일 컨텐츠 수정
+     */
+    override fun updateContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
+        val contentListCreatedto = dto as Content_list_CreateDto
+
+        //logger.error("UPDATE dto :" + contentListCreatedto.toString())
+
+        //val userInfo = UsefulUtils.sessionUser()
+        val usr_id: String = "salesforce"
+        val usr_grp_cd = contentListCreatedto.cont_grp_cd
+        val statusMap: MutableMap<String, Any> = HashMap()
+        val tblmiContMstDto = Tblmi_cont_mstDto()
+
+        val isByte = isCheckByte(contentListCreatedto);
+
+        if (!isByte) {
+            statusMap["status"] = false
+            return statusMap
+        }
+
+        tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
+        tblmiContMstDto.ch_tp = "CH02"
+        tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
+        tblmiContMstDto.reg_id = usr_id
+        tblmiContMstDto.upd_id = usr_id
+        tblmiContMstDto.cont_grp_cd = usr_grp_cd
+
+        contentDao.updateMobileMst(tblmiContMstDto);
+
+        val len = contentListCreatedto.send_to_list!!.size - 1;
+
+        for (i in 0..len) {
+            // 항상 3번 Insert 작업을 진행한다.
+
+            // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
+            val tblmiContLstdto = Tblmi_cont_lstDto()
+
+            tblmiContLstdto.seq = contentListCreatedto.list_seq!![i].toInt()
+            tblmiContLstdto.cont_cd = tblmiContMstDto.seq
+            tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
+            tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
+            tblmiContLstdto.send_nm = null
+            tblmiContLstdto.thm_url = null
+            tblmiContLstdto.br_yn = "N"
+            tblmiContLstdto.sup_yn = "N"
+            tblmiContLstdto.reg_id = usr_id
+            tblmiContLstdto.upd_id = usr_id
+            tblmiContLstdto.cont_grp_cd = usr_grp_cd
+
+            val formatList = contentListCreatedto.formatType
+
+            // 인덱스 번호 0 : 카카오
+            if (i == 0) {
+
+                // 체크 여부에 따라 USE_YN 설정
+                if (formatList!!.contains("kakao")) {
+                    tblmiContLstdto.use_yn = "Y"
+                } else {
+                    tblmiContLstdto.use_yn = "N"
+                }
+
+                tblmiContLstdto.cont_tp = "DMTP03" // 카카오
+                tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+
+                val kkoOption = contentListCreatedto.kko_option!!.trim()
+                if (kkoOption.equals("ad")) {
+                    // 광고 처리
+                    tblmiContLstdto.send_tp = "SENDTP01"
+                } else if (kkoOption.equals("guide")) {
+                    // 안내 처리
+                    tblmiContLstdto.send_tp = "SENDTP02"
+                }
+
+                // 카카오 이미지 처리
+                if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                    tblmiContLstdto.kko_img_cd = null
+                } else {
+                    tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                }
+
+                tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
+                tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
+                tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+            }
+
+            // 인덱스 번호 1: SMS (문자 )
+            if (i == 1) {
+                if (formatList!!.contains("sms")) {
+                    tblmiContLstdto.use_yn = "Y"
+                } else {
+                    tblmiContLstdto.use_yn = "N"
+                }
+                tblmiContLstdto.cont_tp = "DMTP02"
+
+                // SMS 광고 , 안내 유형 선택
+                val smsOption = contentListCreatedto.sms_option!!.trim()
+
+                if (smsOption.equals("ad")) {
+                    // 광고 처리
+                    tblmiContLstdto.send_tp = "SENDTP01"
+                } else if (smsOption.equals("guide")) {
+                    // 안내 처리
+                    tblmiContLstdto.send_tp = "SENDTP02"
+                }
+
+                val smsMsgTp = contentListCreatedto.sms_msg_tp
+
+                // SMS 문자 타입 설정
+                if (smsMsgTp.equals("LMS")) {
+                    tblmiContLstdto.msg_tp = "DMCH202"
+                    tblmiContLstdto.img_cd_1 = null
+                } else if (smsMsgTp.equals("MMS")) {
+                    tblmiContLstdto.msg_tp = "DMCH203"
+                    tblmiContLstdto.img_cd_1 = contentListCreatedto.mds_img_cd
+                } else {
+                    tblmiContLstdto.msg_tp = "DMCH201"
+                    tblmiContLstdto.img_cd_1 = null
+                }
+                tblmiContLstdto.cont_body = contentListCreatedto.sms_body
+            }
+
+            // 인덱스 번호 2: RCS 분기 처리
+            if (i == 2) {
+
+                // RCS 포멧타입 변경에 따라 Key 값이 바뀔 수 있으므로 활성화 해준다
+
+                tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1?.toInt()
+                tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2?.toInt()
+                tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3?.toInt()
+                tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4?.toInt()
+                tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5?.toInt()
+                tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6?.toInt()
+
+                // USE_YN 처리
+                if (formatList!!.contains("rcs")) {
+                    tblmiContLstdto.use_yn = "Y"
+                } else {
+                    tblmiContLstdto.use_yn = "N"
+                }
+
+                tblmiContLstdto.cont_tp = "DMTP04"
+                tblmiContLstdto.rcs_footer = contentListCreatedto.rcs_footer
+
+                // rcs 광고 , 유형 선택
+                val rcsOption = contentListCreatedto.rcs_option!!.trim()
+
+                if (rcsOption.equals("ad")) {
+                    // 광고 처리
+                    tblmiContLstdto.send_tp = "SENDTP01"
+                } else if (rcsOption.equals("guide")) {
+                    // 안내 처리
+                    tblmiContLstdto.send_tp = "SENDTP02"
+                }
+
+                val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
+                val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
+
+                if (rcsFormatType.equals("text")) {
+                    // RCS 텍스트 형의 경우
+                    if (rcsMsgType.equals("sms")) {
+                        // SMS의 경우
+                        tblmiContLstdto.msg_tp = "DMCH205"
+
+                        // RCS SMS key 값 설정
+                        val cdDto = Tblmi_comm_cdDto()
+                        cdDto.grp_id = "RCS_SMS_MSG_ID"
+                        cdDto.cd_id = usr_grp_cd
+
+                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                        if (codeDto != null) {
+                            tblmiContLstdto.key_id = codeDto.cd_val
+                        }
+
+                    } else if (rcsMsgType.equals("lms")) {
+                        // LMS의 경우
+                        tblmiContLstdto.msg_tp = "DMCH206"
+
+                        // RCS LMS Key 값 설정
+                        val cdDto = Tblmi_comm_cdDto()
+                        cdDto.grp_id = "RCS_LMS_MSG_ID"
+                        cdDto.cd_id = usr_grp_cd
+
+                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                        if (codeDto != null) {
+                            tblmiContLstdto.key_id = codeDto.cd_val
+                        }
+                    }
+                    tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
+                }
+                // RCS 가로형 서비스 중단으로 인한 삭제 처리
+                /*else if (rcsFormatType.equals("horizontal")) {
+                    if (rcsMsgType.equals("left")) {
+
+                        tblmiContLstdto.msg_tp = "DMCH209"
+                    } else if (rcsMsgType.equals("right")) {
+                        tblmiContLstdto.msg_tp = "DMCH210"
+                    }
+
+                    val jsonBody = JSONObject()
+                    jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
+                    jsonBody["description"] = contentListCreatedto.rcs_body
+                    tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
+                    tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
+
+                }*/
+                else if (rcsFormatType.equals("vertical")) {
+                    // RCS 세로형의 경우
+                    if (rcsMsgType.equals("tall")) {
+                        // tall형 인 경우
+                        tblmiContLstdto.msg_tp = "DMCH207"
+
+                        // RCS 세로형 Tall Key 값 설정
+                        val cdDto = Tblmi_comm_cdDto()
+                        cdDto.grp_id = "RCS_L_TALL_MSG_ID"
+                        cdDto.cd_id = usr_grp_cd
+
+                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                        if (codeDto != null) {
+                            tblmiContLstdto.key_id = codeDto.cd_val
+                        }
+
+                    } else if (rcsMsgType.equals("medium")) {
+                        // medium인 경우
+                        tblmiContLstdto.msg_tp = "DMCH208"
+
+                        // RCS 세로형 Medium Key 값 설정
+                        val cdDto = Tblmi_comm_cdDto()
+                        cdDto.grp_id = "RCS_L_MD_MSG_ID"
+                        cdDto.cd_id = usr_grp_cd
+
+                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                        if (codeDto != null) {
+                            tblmiContLstdto.key_id = codeDto.cd_val
+                        }
+
+                    }
+
+                    // Json 바디 형태로 저장
+                    val jsonBody = JSONObject()
+                    jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
+                    jsonBody["description"] = contentListCreatedto.rcs_body
+                    tblmiContLstdto.cont_body = jsonBody.toString()
+                    //.replace("\\r\\n", "\\\\r\\\\n")
+                    tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
+
+                } else if (rcsFormatType.equals("slide")) {
+                    // 슬라이드 형의 경우 타입 설정
+                    if (rcsMsgType.equals("small")) {
+                        tblmiContLstdto.msg_tp = "DMCH211"
+                    } else if (rcsMsgType.equals("medium")) {
+                        tblmiContLstdto.msg_tp = "DMCH212"
+                    }
+                    // RCS 슬라이드 관련 INSERT 처리
+                    rcsSlideSetting(contentListCreatedto, tblmiContLstdto)
+                } else {
+                    // 에러 발생
+                    logger.error("RCS TYPE 에러 발생")
+                }
+
+                // RCS 버튼 체크 기능 개발
+                if (rcsFormatType.equals("slide")) {
+                    // Slide 여러개 Button 처리
+                    rcsButtonMakeJsonStringSlide(contentListCreatedto, tblmiContLstdto)
+                } else {
+                    // Button 처리
+                    //logger.error("rcs button 수정 json");
+                    rcsButtonMakeJsonString(contentListCreatedto, tblmiContLstdto)
+                }
+
+            }
+            contentDao.updateMobileContent(tblmiContLstdto)
+
+            val lastSeq = tblmiContLstdto.seq
+
+            /**
+             *  URL 저장하기 로직
+             *  카카오, 모바일 같은 경우 알맞게 저장된다
+             *  RCS의 경우
+             *      1) slide가 아닐때 버튼 순서대로 들어간다
+             *      2) slide형태는 최대 버튼 개수가 2개 이므로 2개씩 끊어서 판단한다
+             *      (ex : urlBtn3, urlBtn5 로 저장 되었다면 카드 2의 1번 버튼 ,카드 3의 1번 버튼에 저장됨 )
+             */
+
+            if (i == 0) {
+                // 카카오 url 링크 저장
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
+                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                    contUrlDto.url_tag = "img"
+                    contUrlDto.url = contentListCreatedto.kko_img_url
+                    contUrlDto.url_id = "kkoImg001"
+                    contUrlDto.cont_lst_cd = lastSeq
+                    contentDao.insertContentUrl(contUrlDto)
+                }
+                // btn 처리
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
+                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                    contUrlDto.url_tag = "btn"
+                    contUrlDto.url = contentListCreatedto.kko_btn_url
+                    contUrlDto.url_id = "kkoBtn001"
+                    contUrlDto.cont_lst_cd = lastSeq
+                    contentDao.insertContentUrl(contUrlDto)
+                }
+                // 카카오 본문 a 링크 저장 테스트
+                val url_kakao_body = contentListCreatedto.kakao_body
+
+                if (url_kakao_body?.contains("{{") == true) {
+
+                    //logger.error("contain url kakao_body : " + url_kakao_body)
+
+                    val regex = "\\{\\{[^{]+}}"
+                    val p = Pattern.compile(regex)
+                    val matcher = p.matcher(url_kakao_body)
+
+                    var start = 0
+                    var chk = true
+                    var i = 0
+                    var idx = 0;
+
+                    while (chk) {
+                        if (matcher.find(start)) {
+                            start = matcher.start() + matcher.group().length
+                            val url = matcher.group()
+                                .replace("{{", "")
+                                .replace("}}", "")
+                            if (url.contains("http") || url.contains("https")) {
+                                idx++
+                                // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
+                                //logger.error("parsing url : " + url)
+                                val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                                contUrlDto.url_tag = "a"
+                                contUrlDto.url = url
+                                if (idx >= 10) {
+                                    contUrlDto.url_id = "kkoTrk0" + idx
+                                } else {
+                                    contUrlDto.url_id = "kkoTrk00" + idx
+                                }
+                                contUrlDto.cont_lst_cd = lastSeq
+                                contentDao.insertContentUrl(contUrlDto)
+                            }
+                        } else {
+                            chk = false
+                        }
+                    }
+
+                }
+            }
+            if (i == 1) {
+                // 모바일 url 링크 저장
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
+                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                    contUrlDto.url_tag = "a"
+                    contUrlDto.url = contentListCreatedto.mms_imgurl
+                    contUrlDto.url_id = "mmsImg001"
+                    contUrlDto.cont_lst_cd = lastSeq
+                    contentDao.insertContentUrl(contUrlDto)
+                }
+
+                /*if (!CommonUtils.isEmptyObject(contentListCreatedto.sms_trackinglink)) {
+                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                    contUrlDto.url_tag = "a"
+                    contUrlDto.url = contentListCreatedto.sms_trackinglink
+                    contUrlDto.url_id = "smsTrk001"
+                    contUrlDto.cont_lst_cd = lastSeq
+                    contentDao.insertContentUrl(contUrlDto)
+                }
+*/
+                val url_sms_body = contentListCreatedto.sms_body
+
+                if (url_sms_body?.contains("{{") == true) {
+
+                    val regex = "\\{\\{[^{]+}}"
+                    val p = Pattern.compile(regex)
+                    val matcher = p.matcher(url_sms_body)
+
+                    var start = 0
+                    var chk = true
+                    var i = 0
+                    var idx = 0;
+
+                    while (chk) {
+                        if (matcher.find(start)) {
+                            start = matcher.start() + matcher.group().length
+                            val url = matcher.group()
+                                .replace("{{", "")
+                                .replace("}}", "")
+                            if (url.contains("http") || url.contains("https")) {
+                                idx++
+                                // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
+                                //logger.error("parsing url : " + url)
+                                val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                                contUrlDto.url_tag = "a"
+                                contUrlDto.url = url
+                                if (idx >= 10) {
+                                    contUrlDto.url_id = "smsTrk0" + idx
+                                } else {
+                                    contUrlDto.url_id = "smsTrk00" + idx
+                                }
+                                contUrlDto.cont_lst_cd = lastSeq
+                                contentDao.insertContentUrl(contUrlDto)
+                            }
+                        } else {
+                            chk = false
+                        }
+                    }
+
+                }
+            }
+
+            if (i == 2) {
+                //logger.error("rcs 버튼 url");
+                val urlLen = contentListCreatedto?.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
+
+                if (urlLen != null) {
+                    // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
+                    for (i in 0 until urlLen) {
+
+                        val urlValue = contentListCreatedto?.url_value?.get(i)?.trim()
+                        val fallback_url_position = contentListCreatedto?.fallback_url_04?.get(i)?.trim()
+                        val fallback_url_query = contentListCreatedto?.fallback_url_05?.get(i)?.trim()
+
+                        if (!CommonUtils.isEmptyObject(urlValue)) {
+                            val contUrlDto = Tblmi_cont_url_lstDto()
+                            contUrlDto.url_tag = "btn"
+                            contUrlDto.url = urlValue
+                            contUrlDto.url_id = "urlBtn" + (i + 1)
+                            contUrlDto.cont_lst_cd = lastSeq
+                            contentDao.insertContentUrl(contUrlDto)
+                        }
+
+                        if (!CommonUtils.isEmptyObject(fallback_url_position)) {
+                            val contUrlDto = Tblmi_cont_url_lstDto()
+                            contUrlDto.url_tag = "btn"
+                            contUrlDto.url = fallback_url_position
+                            contUrlDto.url_id = "fallPosiBtn" + (i + 1)
+                            contUrlDto.cont_lst_cd = lastSeq
+                            contentDao.insertContentUrl(contUrlDto)
+                        }
+
+                        if (!CommonUtils.isEmptyObject(fallback_url_query)) {
+                            val contUrlDto = Tblmi_cont_url_lstDto()
+                            contUrlDto.url_tag = "btn"
+                            contUrlDto.url = fallback_url_query
+                            contUrlDto.url_id = "fallQueryBtn" + (i + 1)
+                            contUrlDto.cont_lst_cd = lastSeq
+                            contentDao.insertContentUrl(contUrlDto)
+                        }
+                    }
+                }
+            }
+        }
+        statusMap["status"] = true
+        return statusMap
+    }
+
+    /**
      * @Method Name  : isCheckByte
      * @Since    : 2021. 03. 24
      * @author   : Grayson
