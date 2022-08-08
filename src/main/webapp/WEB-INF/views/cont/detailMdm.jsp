@@ -5163,7 +5163,7 @@
         $('.layer_pop').removeClass('active');
         let view = '';
 
-        $('input[name="cont_sub_list"]').val('');
+        $('#rcs input[name="cont_sub_list"]').val('');  // RCS만 초기화
         $('textarea[name="rcs_body"]').val('');
         $('input[name="rcs_footer"]').val('');
         $('#rejectionArea').html('');
