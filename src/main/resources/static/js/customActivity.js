@@ -197,6 +197,7 @@ define(["postmonger"], function (Postmonger) {
     function mobileSave() {
         const res = function(response) {
             if(response.status) {
+                $('#seq').val(response.seq);
                 save();
             } else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
