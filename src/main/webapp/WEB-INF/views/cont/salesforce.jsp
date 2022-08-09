@@ -1669,12 +1669,15 @@
             // 유형선택
             if(list[0].send_tp == 'SENDTP01') {
                 $('input[name="commonType"][value=ad]').trigger('click');
+                $('input[name="kko_option"]').val('ad');
+                $('input[name="sms_option"]').val('ad');
+                $('input[name="rcs_option"]').val('ad');
             } else if(list[0].send_tp == 'SENDTP02') {
                 $('input[name="commonType"][value=guide]').trigger('click');
+                $('input[name="kko_option"]').val('guide');
+                $('input[name="sms_option"]').val('guide');
+                $('input[name="rcs_option"]').val('guide');
             }
-            $('input[name="kko_option"]').val($('input[name="commonType"]').val());
-            $('input[name="sms_option"]').val($('input[name="commonType"]').val());
-            $('input[name="rcs_option"]').val($('input[name="commonType"]').val());
 
             // seq
             $('#kakao input[name="list_seq"]').val(list[0].list_seq);
