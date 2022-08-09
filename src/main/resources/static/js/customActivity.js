@@ -208,7 +208,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, null, null);
     }
 
     // 수정
@@ -221,6 +221,6 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, null, null);
     }
 });
