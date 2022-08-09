@@ -69,8 +69,11 @@ define(["postmonger"], function (Postmonger) {
 				if(key === 'usr_grp_cd') {
 				    $('#usr_grp_cd').val(val);
 				    $('#cont_grp_cd').val(val);
-				} else if(key === 'recv_phone') {
-
+				} else if(key === 'phone') {
+                    $('#recv_phone').val(val);
+                    $('#recv_phone_to .value').data($('#recv_phone_to li[data="' + val + '"]').data()).text($('#recv_phone_to li[data="' + val + '"]').text());
+				} else if(key === 'seq') {
+				    $('#seq').val(seq);
 				}
 			});
 		});
@@ -205,7 +208,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 수정
@@ -218,6 +221,6 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/sf/mobileUpdate.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 });
