@@ -53,7 +53,7 @@
         <!-- section 영역 시작 -->
         <div class="section">
             <form:form id="form" action="#" method="post">
-                <input type="hidden" id="seq" name="mst_seq" value="7"/>
+                <input type="hidden" id="seq" name="mst_seq" value=""/>
                 <input type="hidden" id="usr_grp_cd" name="usr_grp_cd"/>
                 <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
                 <div class="create_sms cf">

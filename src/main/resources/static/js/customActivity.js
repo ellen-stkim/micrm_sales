@@ -167,8 +167,30 @@ define(["postmonger"], function (Postmonger) {
         if($('#seq').val() == '' || $('#seq').val() == null) {
             mobileSave();
         } else {
-            popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
+            let html = '';
+            html +=
+                '<div class="layer_pop alert active">' +
+                '<div class="pop_container popup_size3">' +
+                '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+                '<div class="pop_title"></div>' +
+                '<div class="pop_inner">' +
+                '<div class="alert_txt">모바일 컨텐츠를 수정 하시겠습니까?</div>' +
+                '<div class="btn_row">' +
+                '<input type="button" class="btn_bg btn_size2 btn_inline" id="editPreview" value="확인" />' +
+                '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $('body .layer_pop.alert').remove();
+            $('body').append(html);
+            return false;
         }
+    });
+
+    // 프리뷰 저장
+    $(document).on('click', '#editPreview', function() {
+        mobileEdit();
     });
 
     // 저장
