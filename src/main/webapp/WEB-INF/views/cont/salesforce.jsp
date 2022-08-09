@@ -1462,9 +1462,7 @@
             $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
         });
 
-
         $('#previewBtn').on('click', function () {
-
             let tamplate = $('.template_name');
             let smsFormat = $('.formatType:checked').val();
             let smsFormatLength = $('.formatType:checked').length;
@@ -1472,6 +1470,11 @@
             $('.create_sms').find('.outline').removeClass('outline');
 
             if (tamplate.val() != '') {
+                if($('#recv_phone').val() == '' || $('#recv_phone').val() == null) {
+                   popup.popAlert('수신 번호를 선택해 주세요.');
+                   return false;
+                }
+
                 if (smsFormatLength == 1) {
                     if (smsFormat == 'kakao') {
                         let kakaoSubmit = kakaoValidate();

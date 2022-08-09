@@ -140,7 +140,7 @@ define(["postmonger"], function (Postmonger) {
 
 	        for(let i=0; i<list.length; i++) {
 	            let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '!</li>';
+                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
 	        }
 	        $('.mappingLst').html(html);
         }
@@ -149,18 +149,14 @@ define(["postmonger"], function (Postmonger) {
 	}
 	
 	function save() {
-		if($('#recv_phone').val() == '' || $('#recv_phone').val() == null) {
-            popup.popAlert('수신 번호를 선택해 주세요.');
-            connection.trigger('ready');
-        } else {
-		    // 저장과 동일한 구성
-			payload["arguments"].execute.inArguments = [{
-				phone: "{{Event." + eventDefinitionKey + "." + $('#recv_phone').val() + "}}"
-			}];
-	
-			payload["metaData"].isConfigured = true;
-			connection.trigger("updateActivity", payload);
-		}
+        // 저장과 동일한 구성
+        payload["arguments"].execute.inArguments = [{
+            phone: "{{Event." + eventDefinitionKey + "." + $('#recv_phone').val() + "}}",
+            seq: "{{Event." + eventDefinitionKey + "." + $('#seq').val() + "}}",
+        }];
+
+        payload["metaData"].isConfigured = true;
+        connection.trigger("updateActivity", payload);
 	}
 
     // 프리뷰에서 저장 버튼 누르기
