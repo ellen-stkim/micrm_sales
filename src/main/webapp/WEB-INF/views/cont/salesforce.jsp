@@ -103,6 +103,18 @@
                                     <input type="hidden" name="rcs_option" class="radioAd" value="ad"/>
                                 </div>
                             </div>
+                            <div class="th left-border">수신 번호</div>
+                            <div class="inner_option area2">
+                                <div class="td cf" style="width: 100%;">
+                                    <div class="select" id="recv_phone_to" name="edmDB">
+                                        <!-- selected value -->
+                                        <div class="value" data="0">개인화 변수</div>
+                                        <ul class="option mappingLst">
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" id="recv_phone"/>
+                                </div>
+                            </div>
                         </div>
                     </div><!-- //row end -->
                     <!-- no-data -->
@@ -149,18 +161,6 @@
                                                    </c:if>
                                             />
                                             <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].seq}"/>
-                                        </div>
-                                    </div>
-                                    <div class="row body">
-                                        <div class="th">수신 번호</div>
-                                        <div class="column_1">
-                                            <div class="select" id="kakao_recv_to" name="edmDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option mappingLst">
-                                                </ul>
-                                            </div>
-                                            <input type="hidden" id="kakao_recv"/>
                                         </div>
                                     </div>
                                     <div class="input_area">
@@ -335,17 +335,6 @@
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','sms')">변경</span>
                                         </div>
                                     </div>
-                                    <div class="row body">
-                                        <div class="th">수신 번호</div>
-                                        <div class="column_1">
-                                            <div class="select" id="sms_recv_to" name="edmDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option mappingLst">
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="input_area left">
                                         <div class="block">
                                             <div class="row">
@@ -502,17 +491,6 @@
                                                    readonly/>
                                             <input type="hidden" name="send_to_list" id="text_send_num" value="${rcsSender[0].seq}"/>
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','textrcs')">변경</span>
-                                        </div>
-                                    </div>
-                                    <div class="row body">
-                                        <div class="th">수신 번호</div>
-                                        <div class="column_1">
-                                            <div class="select" id="recv_text_rcs" name="edmDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">수신번호 개인화 변수</div>
-                                                <ul class="option mappingLst">
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
                                             <div class="input_area left">
@@ -766,17 +744,6 @@
         let dependencies = ["customActivity"];
         //require(config, dependencies);
 
-        // local test
-        $('#usr_grp_cd').val('04');
-        $('#cont_grp_cd').val($('#usr_grp_cd').val());
-        mappingLst();
-
-        if($('#seq').val() != '' || $('#seq').val() != null) {
-            mobileInfo();
-        }
-        // local test
-
-
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');
@@ -967,6 +934,7 @@
         });
 
         // 프리뷰에서 저장 버튼 누르기
+        /**
         $(document).on('click', '#saveBtn' , function() {
             if($('#seq').val() == '' || $('#seq').val() == null) {
                 mobileSave();
@@ -974,6 +942,7 @@
                 popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
             }
         });
+        */
 
         // RCS 선택 이미지 삭제
         $(document).on('click', '#rcs .delete_img', function () {
@@ -1010,11 +979,11 @@
             }
         });
 
-        // 카카오 수신 번호 option click event
-        $(document).on('click', '#kakao_recv_to .option li', function() {
+        // 수신 번호 option click event
+        $(document).on('click', '#recv_phone_to .option li', function() {
             let data = $(this).attr('data');
             if (data != 0) {
-                $('#kakao_recv').val(data);
+                $('#recv_phone').val(data);
             }
         });
 
@@ -1663,33 +1632,6 @@
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
         });
     });
-
-    // 저장
-    function mobileSave() {
-        const res = function(response) {
-            if(response.status) {
-                $('#seq').val(response.seq);
-                $('.layer_pop.active').removeClass('active');
-            } else {
-                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
-            }
-        }
-        let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
-
-    // 수정
-    function mobileEdit() {
-        const res = function(response) {
-            if(response.status) {
-                $('.layer_pop.active').removeClass('active');
-            } else {
-                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
-            }
-        }
-        let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/sf/mobileUpdate.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
 
     // 정보 조회
     function mobileInfo() {

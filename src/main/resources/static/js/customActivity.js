@@ -33,10 +33,10 @@ define(["postmonger"], function (Postmonger) {
 		// refresh
 		connection.trigger('ready');
 
-		/**
+		/** 에러페이지 리턴이 필요하면
 		setTimeout(function() {
 			if(flag) {
-				location.href='error';
+				location.href='error.mi';
 			}
 		}, 1000);
 		*/
@@ -69,10 +69,8 @@ define(["postmonger"], function (Postmonger) {
 				if(key === 'usr_grp_cd') {
 				    $('#usr_grp_cd').val(val);
 				    $('#cont_grp_cd').val(val);
-				} else if(key === 'host') {
-				    fuelapiRestHost = val;
-				} else if(key === 'token') {
-				    fuel2token = val;
+				} else if(key === 'recv_phone') {
+
 				}
 			});
 		});
@@ -85,6 +83,10 @@ define(["postmonger"], function (Postmonger) {
                 $('#usr_grp_cd').val(response.usr_grp_cd);
                 $('#cont_grp_cd').val(response.usr_grp_cd);
                 mappingLst();
+
+                if($('#seq').val() != '' || $('#seq').val() != null) {
+                    mobileInfo();
+                }
             } else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
@@ -93,8 +95,6 @@ define(["postmonger"], function (Postmonger) {
         let param = {host: host, token: token}
         com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
 	}
-
-	//
 
 	function onGetTokens(tokens) {
 		//console.log("tokens == " + JSON.stringify(tokens));
@@ -149,21 +149,53 @@ define(["postmonger"], function (Postmonger) {
 	}
 	
 	function save() {
-		if($('#kakao_recv').val() == '' || $('#kakao_recv').val() == null) {
-			alert('수신 번호를 선택해 주세요.');
-			connection.trigger('ready');
-		} else {
+		if($('#recv_phone').val() == '' || $('#recv_phone').val() == null) {
+            popup.popAlert('수신 번호를 선택해 주세요.');
+            connection.trigger('ready');
+        } else {
 		    // 저장과 동일한 구성
-
-
 			payload["arguments"].execute.inArguments = [{
-				phone: "{{Event." + eventDefinitionKey + "." + $('#kakao_recv').val() + "}}",
-
+				phone: "{{Event." + eventDefinitionKey + "." + $('#recv_phone').val() + "}}"
 			}];
 	
 			payload["metaData"].isConfigured = true;
-	
 			connection.trigger("updateActivity", payload);
-		}		
+		}
 	}
+
+    // 프리뷰에서 저장 버튼 누르기
+    $(document).on('click', '#saveBtn' , function() {
+        if($('#seq').val() == '' || $('#seq').val() == null) {
+            mobileSave();
+        } else {
+            popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
+        }
+    });
+
+    // 저장
+    function mobileSave() {
+        const res = function(response) {
+            if(response.status) {
+                $('#seq').val(response.seq);
+                $('.layer_pop.active').removeClass('active');
+            } else {
+                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+            }
+        }
+        let data = $("#form").serializeArray();
+        com_ajax.ajax('post', '${baseURL}/sf/mobileInsert.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    // 수정
+    function mobileEdit() {
+        const res = function(response) {
+            if(response.status) {
+                $('.layer_pop.active').removeClass('active');
+            } else {
+                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+            }
+        }
+        let data = $("#form").serializeArray();
+        com_ajax.ajax('post', '${baseURL}/sf/mobileUpdate.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
 });
