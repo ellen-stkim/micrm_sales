@@ -1650,6 +1650,10 @@
             // 템플릿 명
             $('.template_name').val(list[0].cont_nm);
 
+            // 수신 번호
+            $('#recv_phone_to .value').data($('#recv_phone').val());
+            $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + $('#recv_phone').val() + '"]').text());
+
             // 컨텐츠 포맷
             $('.formatType').each(function() {
                 if($(this).val() == 'kakao' && list[0].list_use_yn == 'Y') {
