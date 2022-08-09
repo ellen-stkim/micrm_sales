@@ -70,6 +70,7 @@ define(["postmonger"], function (Postmonger) {
                     $('#recv_phone').val(val);
                     $('#recv_phone_to .value').data($('#recv_phone_to li[data="' + val + '"]').data());
                     $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + val + '"]').text());
+                    alert($('#recv_phone_to li[data="' + val + '"]').data() + '/' + $('#recv_phone_to li[data="' + val + '"]').text() + '/' + val);
 				} else if(key === 'seq') {
 				    $('#seq').val(val);
 				}
