@@ -17,7 +17,7 @@ define(["postmonger"], function (Postmonger) {
 	connection.on("requestedEndpoints", onGetEndpoints);
 	connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
 	
-	connection.on('clickedNext', save);
+	connection.on('clickedNext', saveClick);
 
 	function onRender() {
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
@@ -147,9 +147,12 @@ define(["postmonger"], function (Postmonger) {
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
         com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
 	}
-	
+
+	function saveClick() {
+	    $('#previewBtn').trigger('click');
+	}
+
 	function save() {
-        // 저장과 동일한 구성
         payload["arguments"].execute.inArguments = [{
             phone: "{{Event." + eventDefinitionKey + "." + $('#recv_phone').val() + "}}",
             seq: "{{Event." + eventDefinitionKey + "." + $('#seq').val() + "}}",
@@ -161,16 +164,12 @@ define(["postmonger"], function (Postmonger) {
 
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {
-        previewSave();
-    });
-
-    function previewSave() {
         if($('#seq').val() == '' || $('#seq').val() == null) {
             mobileSave();
         } else {
             popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
         }
-    }
+    });
 
     // 저장
     function mobileSave() {
