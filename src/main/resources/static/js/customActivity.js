@@ -71,7 +71,8 @@ define(["postmonger"], function (Postmonger) {
 				    $('#cont_grp_cd').val(val);
 				} else if(key === 'phone') {
                     $('#recv_phone').val(val);
-                    $('#recv_phone_to .value').data($('#recv_phone_to li[data="' + val + '"]').data()).text($('#recv_phone_to li[data="' + val + '"]').text());
+                    $('#recv_phone_to .value').data($('#recv_phone_to li[data="' + val + '"]').data());
+                    $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + val + '"]').text());
 				} else if(key === 'seq') {
 				    $('#seq').val(seq);
 				}
