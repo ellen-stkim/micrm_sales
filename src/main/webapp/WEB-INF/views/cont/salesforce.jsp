@@ -1668,9 +1668,9 @@
 
             // 유형선택
             if(list[0].send_tp == 'SENDTP01') {
-                $('input[name="commonType"][value=ad]').prop('checked', true);
+                $('input[name="commonType"][value=ad]').trigger('click');
             } else if(list[0].send_tp == 'SENDTP02') {
-                $('input[name="commonType"][value=guide]').prop('checked', true);
+                $('input[name="commonType"][value=guide]').trigger('click');
             }
             $('input[name="kko_option"]').val($('input[name="commonType"]').val());
             $('input[name="sms_option"]').val($('input[name="commonType"]').val());
