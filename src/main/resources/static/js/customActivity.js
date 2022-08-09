@@ -161,19 +161,22 @@ define(["postmonger"], function (Postmonger) {
 
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {
+        previewSave();
+    });
+
+    function previewSave() {
         if($('#seq').val() == '' || $('#seq').val() == null) {
             mobileSave();
         } else {
             popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
         }
-    });
+    }
 
     // 저장
     function mobileSave() {
         const res = function(response) {
             if(response.status) {
-                $('#seq').val(response.seq);
-                $('.layer_pop.active').removeClass('active');
+                save();
             } else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
             }
@@ -186,7 +189,7 @@ define(["postmonger"], function (Postmonger) {
     function mobileEdit() {
         const res = function(response) {
             if(response.status) {
-                $('.layer_pop.active').removeClass('active');
+                save();
             } else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
             }
