@@ -66,15 +66,12 @@ define(["postmonger"], function (Postmonger) {
 
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
-				if(key === 'usr_grp_cd') {
-				    $('#usr_grp_cd').val(val);
-				    $('#cont_grp_cd').val(val);
-				} else if(key === 'phone') {
+				if(key === 'phoneText') {
                     $('#recv_phone').val(val);
                     $('#recv_phone_to .value').data($('#recv_phone_to li[data="' + val + '"]').data());
                     $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + val + '"]').text());
 				} else if(key === 'seq') {
-				    $('#seq').val(seq);
+				    $('#seq').val(val);
 				}
 			});
 		});
@@ -160,7 +157,8 @@ define(["postmonger"], function (Postmonger) {
 	function save() {
         payload["arguments"].execute.inArguments = [{
             phone: "{{Event." + eventDefinitionKey + "." + $('#recv_phone').val() + "}}",
-            seq: "{{Event." + eventDefinitionKey + "." + $('#seq').val() + "}}",
+            phoneText: $('#recv_phone').val(),
+            seq: $('#seq').val(),
         }];
 
         payload["metaData"].isConfigured = true;
