@@ -1642,6 +1642,11 @@
             let list = response.list;
             let filePath = response.filePath;
 
+            if(list == null) {
+                $('#seq').val('');
+                return false;
+            }
+
             // 템플릿 명
             $('.template_name').val(list[0].cont_nm);
 

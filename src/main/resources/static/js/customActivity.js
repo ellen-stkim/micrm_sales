@@ -84,7 +84,7 @@ define(["postmonger"], function (Postmonger) {
                 $('#cont_grp_cd').val(response.usr_grp_cd);
                 mappingLst();
 
-                if($('#seq').val() != '' || $('#seq').val() != null) {
+                if($('#seq').val() != '' && $('#seq').val() != null) {
                     mobileInfo();
                 }
             } else {
@@ -105,7 +105,7 @@ define(["postmonger"], function (Postmonger) {
 
 			if(cnt == 2) {
                 // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-                if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
+                if($('#usr_grp_cd').val() == '' && $('#usr_grp_cd').val() == null) {
                     getUser(fuelapiRestHost, fuel2token);
                 } else {
                     mappingLst();
@@ -123,7 +123,7 @@ define(["postmonger"], function (Postmonger) {
 
 			if(cnt == 2) {
                 // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-                if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
+                if($('#usr_grp_cd').val() == '' && $('#usr_grp_cd').val() == null) {
                     getUser(fuelapiRestHost, fuel2token);
                 } else {
                     mappingLst();
@@ -164,7 +164,7 @@ define(["postmonger"], function (Postmonger) {
 
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {
-        if($('#seq').val() == '' || $('#seq').val() == null) {
+        if($('#seq').val() == '' && $('#seq').val() == null) {
             mobileSave();
         } else {
             let html = '';
