@@ -149,6 +149,7 @@ define(["postmonger"], function (Postmonger) {
 	}
 
 	function saveClick() {
+	    connection.trigger('ready');
 	    $('#previewBtn').trigger('click');
 	}
 
