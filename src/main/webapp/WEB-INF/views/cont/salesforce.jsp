@@ -1653,6 +1653,7 @@
             // 수신 번호
             $('#recv_phone_to .value').data($('#recv_phone').val());
             $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + $('#recv_phone').val() + '"]').text());
+            $('#recv_phone_to .value').css('color', 'rgb(34, 34, 34)');
 
             // 컨텐츠 포맷
             $('.formatType').each(function() {
@@ -1681,161 +1682,275 @@
             $('#rcs input[name="list_seq"]').val(list[2].list_seq);
 
             // 카카오톡 시작
-            // 문자 제목
-            $('.kakaoTitle').val(list[0].cont_sub);
+            if(list[0].list_use_yn == 'Y') {
+                // 문자 제목
+                $('.kakaoTitle').val(list[0].cont_sub);
 
-            // 발신 번호
-            if(list[0].send_to != null) {
-                $('#send_to').val(list[0].sender + '(' + phoneFormatter(list[0].send_num) + ')');
-                $('#kakao_send_to_num').val(list[0].send_to);
-            }
+                // 발신 번호
+                if(list[0].send_to != null) {
+                    $('#send_to').val(list[0].sender + '(' + phoneFormatter(list[0].send_num) + ')');
+                    $('#kakao_send_to_num').val(list[0].send_to);
+                }
 
-            // 이미지 선택
-            $('#kakaoImage').val(list[0].kko_img_nm);
-            $('#kakao_img_cd').val(list[0].kko_img_cd);
-            if(list[0].kko_img_lst != null) {
-                $('input[name="kko_view_img_url"]').val(filePath + list[0].kko_img_lst);
-            }
+                // 이미지 선택
+                $('#kakaoImage').val(list[0].kko_img_nm);
+                $('#kakao_img_cd').val(list[0].kko_img_cd);
+                if(list[0].kko_img_lst != null) {
+                    $('input[name="kko_view_img_url"]').val(filePath + list[0].kko_img_lst);
+                }
 
-            // 이미지 링크 주소
-            $('input[name="kko_img_url"]').val(list[0].kko_img_url);
+                // 이미지 링크 주소
+                $('input[name="kko_img_url"]').val(list[0].kko_img_url);
 
-            // 이미지 미리보기
-            if(list[0].kko_img_lst != null && list[0].kko_img_url == null) {
-                $('#js-kakao-img').html('<a href="' + list[0].kko_img_lst + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
-            } else if(list[0].kko_img_lst != null && list[0].kko_img_url != null) {
-                $('#js-kakao-img').html('<a href="' + list[0].kko_img_url + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
-            }
+                // 이미지 미리보기
+                if(list[0].kko_img_lst != null && list[0].kko_img_url == null) {
+                    $('#js-kakao-img').html('<a href="' + list[0].kko_img_lst + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
+                } else if(list[0].kko_img_lst != null && list[0].kko_img_url != null) {
+                    $('#js-kakao-img').html('<a href="' + list[0].kko_img_url + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
+                }
 
-            // 버튼 링크 제목
-            $('input[name="kko_btn_nm"]').val(list[0].kko_btn_nm);
+                // 버튼 링크 제목
+                $('input[name="kko_btn_nm"]').val(list[0].kko_btn_nm);
 
-            // 버튼 링크 주소
-            $('input[name="kko_btn_url"]').val(list[0].kko_btn_url);
-            if(list[0].kko_btn_url == null) {
-                $('.kakaoLinkBtn').val('생성');
-            } else {
-                $('.kakaoLinkBtn').val('삭제');
-            }
+                // 버튼 링크 주소
+                $('input[name="kko_btn_url"]').val(list[0].kko_btn_url);
+                if(list[0].kko_btn_url == null) {
+                    $('.kakaoLinkBtn').val('생성');
+                } else {
+                    $('.kakaoLinkBtn').val('삭제');
+                }
 
-            // 카카오톡 본문 입력창
-            $('textarea[name="kakao_body"]').text(list[0].cont_body);
-            if(list[0].kko_btn_nm == null) {
-                $('.kakao_link').remove();
-            } else {
-                 $('textarea[name="kakao_body"]').after('<a href="' + list[0].kko_btn_url + '" class="kakao_link" target="_blank">' + list[0].kko_btn_nm + '</a>');
+                // 카카오톡 본문 입력창
+                $('textarea[name="kakao_body"]').text(list[0].cont_body);
+                if(list[0].kko_btn_nm == null) {
+                    $('.kakao_link').remove();
+                } else {
+                     $('textarea[name="kakao_body"]').after('<a href="' + list[0].kko_btn_url + '" class="kakao_link" target="_blank">' + list[0].kko_btn_nm + '</a>');
+                }
             }
             // 카카오톡 끝
 
             // 문자 시작
-            // 문자 제목
-            $('.smsTitle').val(list[1].cont_sub);
+            if(list[1].list_use_yn == 'Y') {
+                // 문자 제목
+                $('.smsTitle').val(list[1].cont_sub);
 
-            // 발신 번호
-            if(list[1].send_to != null) {
-                $('#sms_send_to').val(list[1].sender + '(' + phoneFormatter(list[1].send_num) + ')');
-                $('#sms_send_to_num').val(list[1].send_to);
+                // 발신 번호
+                if(list[1].send_to != null) {
+                    $('#sms_send_to').val(list[1].sender + '(' + phoneFormatter(list[1].send_num) + ')');
+                    $('#sms_send_to_num').val(list[1].send_to);
+                }
+
+                // 문자 종류
+                $('input[name="sms_msg_tp"][value="' + list[1].msg_tp + '"]').prop('checked', true);
+
+                // 이미지 선택
+                if(list[1].msg_tp == 'DMCH203') {
+                    var sms_img_nm_lst = list[1].img_nm_lst.split(',');
+                    var sms_img_lst = list[1].img_lst.split(',');
+                    $('#smsImage').val(sms_img_nm_lst[0]);
+                    $('#mds_img_cd').val(list[1].img_cd_1);
+
+                    $('input[name="mms_imgurl"]').val(sms_img_lst[0]);
+
+                    // 이미지 미리보기
+                    $('#js-sms-img').html('<a href="' + sms_img_lst[0] + '" target="_blank"><img src="' + filePath + sms_img_lst[0] + '"/></a>');
+                }
+
+                // 문자 본문 입력창
+                $('textarea[name="sms_body"]').text(list[1].cont_body);
             }
-
-            // 문자 종류
-            $('input[name="sms_msg_tp"][value="' + list[1].msg_tp + '"]').prop('checked', true);
-
-            // 이미지 선택
-            if(list[1].msg_tp == 'DMCH203') {
-                var sms_img_nm_lst = list[1].img_nm_lst.split(',');
-                var sms_img_lst = list[1].img_lst.split(',');
-                $('#smsImage').val(sms_img_nm_lst[0]);
-                $('#mds_img_cd').val(list[1].img_cd_1);
-
-                $('input[name="mms_imgurl"]').val(sms_img_lst[0]);
-
-                // 이미지 미리보기
-                $('#js-sms-img').html('<a href="' + sms_img_lst[0] + '" target="_blank"><img src="' + filePath + sms_img_lst[0] + '"/></a>');
-            }
-
-            // 문자 본문 입력창
-            $('textarea[name="sms_body"]').text(list[1].cont_body);
             // 문자 끝
 
             // RCS 시작
-            // 포맷카드
-            if(list[2].msg_tp == 'DMCH205' || list[2].msg_tp == 'DMCH206') {
-                // RCS TEXT형 Layout
-                $('input[name="rcs_format_type"][value="text"]').prop('checked', true);
+            if(list[2].list_use_yn == 'Y') {
+                // 포맷카드
+                if(list[2].msg_tp == 'DMCH205' || list[2].msg_tp == 'DMCH206') {
+                    // RCS TEXT형 Layout
+                    $('input[name="rcs_format_type"][value="text"]').prop('checked', true);
 
-                if(list[2].msg_tp == 'DMCH205') {
-                    // 카드 양식
-                    $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
-                    rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
+                    if(list[2].msg_tp == 'DMCH205') {
+                        // 카드 양식
+                        $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
+                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
+
+                        // 버튼 액션
+                        if(list[2].btnType[0] == 'clipboardAction') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN01');
+                            $('.action_select .value').data('RBTN01').text('복사하기');
+
+                            $('input[name="copy_value"]').val(list[2].btnData[0][0]);
+                        } else if(list[2].btnType[0] == 'urlAction') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN02');
+                            $('.action_select .value').data('RBTN02').text('URL연결');
+
+                            $('input[name="url_value"]').val(list[2].btnData[0][0]);
+                        } else if(list[2].btnType[0] == 'dialerAction') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN03');
+                            $('.action_select .value').data('RBTN03').text('전화걸기');
+
+                            $('input[name="phone_value_03"]').val(list[2].btnData[0][0]);
+                        } else if(list[2].btnType[0] == 'latitude') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN04');
+                            $('.action_select .value').data('RBTN04').text('지도보여주기(좌표)');
+
+                            $('input[name="latitude_value"]').val(list[2].btnData[0][0]);
+                            $('input[name="longitude_value"]').val(list[2].btnData[0][1]);
+                            $('input[name="location_value_04"]').val(list[2].btnData[0][2]);
+                            $('input[name="fallback_url_04"]').val(list[2].btnData[0][3]);
+                        } else if(list[2].btnType[0] == 'query') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN05');
+                            $('.action_select .value').data('RBTN05').text('지도보여주기(쿼리)');
+
+                            $('input[name="location_value_05"]').val(list[2].btnData[0][0]);
+                            $('input[name="fallback_url_05"]').val(list[2].btnData[0][1]);
+                        } else if(list[2].btnType[0] == 'requestLocationPush') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN06');
+                            $('.action_select .value').data('RBTN06').text('현재위치공유');
+                        } else if(list[2].btnType[0] == 'calendarAction') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN07');
+                            $('.action_select .value').data('RBTN07').text('캘린더등록');
+
+                            $('input[name="start_date"]').val(list[2].btnData[0][0]);
+                            $('input[name="end_date"]').val(list[2].btnData[0][1]);
+                            $('input[name="calendar_title"]').val(list[2].btnData[0][2]);
+                            $('input[name="calendar_body"]').val(list[2].btnData[0][3]);
+                        } else if(list[2].btnType[0] == 'composeAction') {
+                            $('input[name="rcs_btn_tp_1"]').val('RBTN08');
+                            $('.action_select .value').data('RBTN08').text('메세지전송');
+
+                            $('input[name="phone_value_08"]').val(list[2].btnData[0][0]);
+                            $('input[name="message_value"]').val(list[2].btnData[0][1]);
+                        }
+
+                        // 버튼 명
+                        $('input[name="rcs_btn_1"]').val(list[2].btnText[0]);
+                        if(list[2].btnText[0] != null) {
+                            $('.rcs_layout .button-name span span').text(list[2].btnText[0].length);
+                        }
+
+                        if(list[2].btnText[0] != null) {
+                            $('.rcs_btn_wrap').append('<div class="rcs_btn" data="1">' + list[2].btnText[0] + '</div>');
+                        }
+                    } else if(list[2].msg_tp == 'DMCH206') {
+                        // 카드 양식
+                        $('input[name="rcs_msg_tp"][value="lms"]').prop('checked', true);
+                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
+
+                        // 문자 제목
+                        $('.rcsTitle').val(list[2].cont_sub);
+
+                        // 버튼 액션
+                        for(var i=0; i<3; i++) {
+                            if(list[2].btnType[i] == 'clipboardAction') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN01');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN01').text('복사하기');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="copy_value"]').val(list[2].btnData[i][0]);
+                            } else if(list[2].btnType[i] == 'urlAction') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN02');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN02').text('URL연결');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="url_value"]').val(list[2].btnData[i][0]);
+                            } else if(list[2].btnType[i] == 'dialerAction') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN03');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN03').text('전화걸기');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_03"]').val(list[2].btnData[i][0]);
+                            } else if(list[2].btnType[i] == 'latitude') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN04');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN04').text('지도보여주기(좌표)');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="latitude_value"]').val(list[2].btnData[i][0]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="longitude_value"]').val(list[2].btnData[i][1]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_04"]').val(list[2].btnData[i][2]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_04"]').val(list[2].btnData[i][3]);
+                            } else if(list[2].btnType[i] == 'query') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN05');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN05').text('지도보여주기(쿼리)');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_05"]').val(list[2].btnData[i][0]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_05"]').val(list[2].btnData[i][1]);
+                            } else if(list[2].btnType[i] == 'requestLocationPush') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN06');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN06').text('현재위치공유');
+                            } else if(list[2].btnType[i] == 'calendarAction') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN07');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN07').text('캘린더등록');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="start_date"]').val(list[2].btnData[i][0]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="end_date"]').val(list[2].btnData[i][1]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_title"]').val(list[2].btnData[i][2]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_body"]').val(list[2].btnData[i][3]);
+                            } else if(list[2].btnType[i] == 'composeAction') {
+                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN08');
+                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN08').text('메세지전송');
+
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_08"]').val(list[2].btnData[i][0]);
+                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="message_value"]').val(list[2].btnData[i][1]);
+                            }
+
+                            // 버튼 명
+                            $('input[name="rcs_btn_' + (i + 1) + '"]').val(list[2].btnText[i]);
+                            if(list[2].btnText[i] != null) {
+                                $('.rcs_layout .button-name:nth-child(' + (idx+1) + ') span span').text(list[2].btnText[i].length);
+                                $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + (i+1) + '">' + list[2].btnText[i] + '</div>');
+                            }
+                        }
+                    }
+
+                    // 발신 번호
+                    if(list[2].send_to != null) {
+                        $('#send_text_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
+                        $('#text_send_num').val(list[2].send_to);
+                    }
+
+                    // 내용
+                    $('textarea[name="rcs_body"]').val(list[2].cont_body);
+
+                    // 무료수신거부
+                    $('input[name="rcs_footer"]').val(list[2].rcs_footer);
+
+                    // 발신
+                    if(list[2].send_tp == 'SENDTP01') {
+                        $('.rcs_head').text('[WEB발신]광고');
+                    } else if(list[2].send_tp == 'SENDTP02') {
+                        $('.rcs_head').text('[WEB발신]');
+                    }
+
+                    $('#textArea0').html(replaceBr(list[2].cont_body));
+                } else if(list[2].msg_tp == 'DMCH207' || list[2].msg_tp == 'DMCH208') {
+                    // RCS 세로형 Layout
+                    $('input[name="rcs_format_type"][value="vertical"]').prop('checked', true);
+
+                    if(list[2].msg_tp == 'DMCH207') {
+                        // 카드 양식
+                        $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
+                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
+                    } else if(list[2].msg_tp == 'DMCH208') {
+                        // 카드 양식
+                        $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
+                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
+                    }
+
+                    // 발신 번호
+                    if(list[2].send_to != null) {
+                        $('#send_vertical_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
+                        $('#vertical_send_num').val(list[2].send_to);
+                    }
+
+                    // 이미지 선택
+                    var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
+                    if(rcs_img_nm_lst[0] != null) {
+                        $('#verticalImage').val(rcs_img_nm_lst[0]);
+                    }
+                    $('#verticalImg').val(list[2].img_cd_1);
+
+                    // 내용
+                    $('textarea[name="rcs_body"]').val(textAreaParsing(list[2].cont_body));
 
                     // 버튼 액션
-                    if(list[2].btnType[0] == 'clipboardAction') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN01');
-                        $('.action_select .value').data('RBTN01').text('복사하기');
-
-                        $('input[name="copy_value"]').val(list[2].btnData[0][0]);
-                    } else if(list[2].btnType[0] == 'urlAction') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN02');
-                        $('.action_select .value').data('RBTN02').text('URL연결');
-
-                        $('input[name="url_value"]').val(list[2].btnData[0][0]);
-                    } else if(list[2].btnType[0] == 'dialerAction') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN03');
-                        $('.action_select .value').data('RBTN03').text('전화걸기');
-
-                        $('input[name="phone_value_03"]').val(list[2].btnData[0][0]);
-                    } else if(list[2].btnType[0] == 'latitude') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN04');
-                        $('.action_select .value').data('RBTN04').text('지도보여주기(좌표)');
-
-                        $('input[name="latitude_value"]').val(list[2].btnData[0][0]);
-                        $('input[name="longitude_value"]').val(list[2].btnData[0][1]);
-                        $('input[name="location_value_04"]').val(list[2].btnData[0][2]);
-                        $('input[name="fallback_url_04"]').val(list[2].btnData[0][3]);
-                    } else if(list[2].btnType[0] == 'query') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN05');
-                        $('.action_select .value').data('RBTN05').text('지도보여주기(쿼리)');
-
-                        $('input[name="location_value_05"]').val(list[2].btnData[0][0]);
-                        $('input[name="fallback_url_05"]').val(list[2].btnData[0][1]);
-                    } else if(list[2].btnType[0] == 'requestLocationPush') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN06');
-                        $('.action_select .value').data('RBTN06').text('현재위치공유');
-                    } else if(list[2].btnType[0] == 'calendarAction') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN07');
-                        $('.action_select .value').data('RBTN07').text('캘린더등록');
-
-                        $('input[name="start_date"]').val(list[2].btnData[0][0]);
-                        $('input[name="end_date"]').val(list[2].btnData[0][1]);
-                        $('input[name="calendar_title"]').val(list[2].btnData[0][2]);
-                        $('input[name="calendar_body"]').val(list[2].btnData[0][3]);
-                    } else if(list[2].btnType[0] == 'composeAction') {
-                        $('input[name="rcs_btn_tp_1"]').val('RBTN08');
-                        $('.action_select .value').data('RBTN08').text('메세지전송');
-
-                        $('input[name="phone_value_08"]').val(list[2].btnData[0][0]);
-                        $('input[name="message_value"]').val(list[2].btnData[0][1]);
-                    }
-
-                    // 버튼 명
-                    $('input[name="rcs_btn_1"]').val(list[2].btnText[0]);
-                    if(list[2].btnText[0] != null) {
-                        $('.rcs_layout .button-name span span').text(list[2].btnText[0].length);
-                    }
-
-                    if(list[2].btnText[0] != null) {
-                        $('.rcs_btn_wrap').append('<div class="rcs_btn" data="1">' + list[2].btnText[0] + '</div>');
-                    }
-                } else if(list[2].msg_tp == 'DMCH206') {
-                    // 카드 양식
-                    $('input[name="rcs_msg_tp"][value="lms"]').prop('checked', true);
-                    rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
-
-                    // 문자 제목
-                    $('.rcsTitle').val(list[2].cont_sub);
-
-                    // 버튼 액션
-                    for(var i=0; i<3; i++) {
+                    for(var i=0; i<2; i++) {
                         if(list[2].btnType[i] == 'clipboardAction') {
                             $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN01');
                             $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN01').text('복사하기');
@@ -1891,283 +2006,175 @@
                             $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + (i+1) + '">' + list[2].btnText[i] + '</div>');
                         }
                     }
-                }
-
-                // 발신 번호
-                if(list[2].send_to != null) {
-                    $('#send_text_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
-                    $('#text_send_num').val(list[2].send_to);
-                }
-
-                // 내용
-                $('textarea[name="rcs_body"]').val(list[2].cont_body);
-
-                // 무료수신거부
-                $('input[name="rcs_footer"]').val(list[2].rcs_footer);
-
-                // 발신
-                if(list[2].send_tp == 'SENDTP01') {
-                    $('.rcs_head').text('[WEB발신]광고');
-                } else if(list[2].send_tp == 'SENDTP02') {
-                    $('.rcs_head').text('[WEB발신]');
-                }
-
-                $('#textArea0').html(replaceBr(list[2].cont_body));
-            } else if(list[2].msg_tp == 'DMCH207' || list[2].msg_tp == 'DMCH208') {
-                // RCS 세로형 Layout
-                $('input[name="rcs_format_type"][value="vertical"]').prop('checked', true);
-
-                if(list[2].msg_tp == 'DMCH207') {
-                    // 카드 양식
-                    $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
-                    rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
-                } else if(list[2].msg_tp == 'DMCH208') {
-                    // 카드 양식
-                    $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
-                    rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
-                }
-
-                // 발신 번호
-                if(list[2].send_to != null) {
-                    $('#send_vertical_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
-                    $('#vertical_send_num').val(list[2].send_to);
-                }
-
-                // 이미지 선택
-                var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
-                if(rcs_img_nm_lst[0] != null) {
-                    $('#verticalImage').val(rcs_img_nm_lst[0]);
-                }
-                $('#verticalImg').val(list[2].img_cd_1);
-
-                // 내용
-                $('textarea[name="rcs_body"]').val(textAreaParsing(list[2].cont_body));
-
-                // 버튼 액션
-                for(var i=0; i<2; i++) {
-                    if(list[2].btnType[i] == 'clipboardAction') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN01');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN01').text('복사하기');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="copy_value"]').val(list[2].btnData[i][0]);
-                    } else if(list[2].btnType[i] == 'urlAction') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN02');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN02').text('URL연결');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="url_value"]').val(list[2].btnData[i][0]);
-                    } else if(list[2].btnType[i] == 'dialerAction') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN03');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN03').text('전화걸기');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_03"]').val(list[2].btnData[i][0]);
-                    } else if(list[2].btnType[i] == 'latitude') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN04');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN04').text('지도보여주기(좌표)');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="latitude_value"]').val(list[2].btnData[i][0]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="longitude_value"]').val(list[2].btnData[i][1]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_04"]').val(list[2].btnData[i][2]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_04"]').val(list[2].btnData[i][3]);
-                    } else if(list[2].btnType[i] == 'query') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN05');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN05').text('지도보여주기(쿼리)');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_05"]').val(list[2].btnData[i][0]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_05"]').val(list[2].btnData[i][1]);
-                    } else if(list[2].btnType[i] == 'requestLocationPush') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN06');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN06').text('현재위치공유');
-                    } else if(list[2].btnType[i] == 'calendarAction') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN07');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN07').text('캘린더등록');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="start_date"]').val(list[2].btnData[i][0]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="end_date"]').val(list[2].btnData[i][1]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_title"]').val(list[2].btnData[i][2]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_body"]').val(list[2].btnData[i][3]);
-                    } else if(list[2].btnType[i] == 'composeAction') {
-                        $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN08');
-                        $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN08').text('메세지전송');
-
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_08"]').val(list[2].btnData[i][0]);
-                        $('.custom_box:nth-child(' + (idx+1) + ') input[name="message_value"]').val(list[2].btnData[i][1]);
-                    }
-
-                    // 버튼 명
-                    $('input[name="rcs_btn_' + (i + 1) + '"]').val(list[2].btnText[i]);
-                    if(list[2].btnText[i] != null) {
-                        $('.rcs_layout .button-name:nth-child(' + (idx+1) + ') span span').text(list[2].btnText[i].length);
-                        $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + (i+1) + '">' + list[2].btnText[i] + '</div>');
-                    }
-                }
-
-                // 내용
-                $('textarea[name="rcs_body"]').val(list[2].cont_body);
-
-                // 무료수신거부
-                $('input[name="rcs_footer"]').val(list[2].rcs_footer);
-
-                // 발신
-                $('.rcs_head').text('[WEB발신]');
-
-                var rcs_img_lst = list[2].img_lst.split(',');
-                if(rcs_img_lst[0] != null) {
-                    $('.img_area').html('<img src="' + filePath + rcs_img_lst[0] + '" onerror="this.src=\"/image/bg_none.png\""/>');
-                    $('input[name="rcs_img_url_1"]').val(rcs_img_lst[0]);
-                }
-
-                $('#titleArea0').html(list[2].cont_sub);
-                $('#textArea0').html(list[2].cont_body);
-            } else if(list[2].msg_tp == 'DMCH211' || list[2].msg_tp == 'DMCH212') {
-                $('input[name="rcs_format_type"][value="slide"]').prop('checked', true);
-
-                // 카드 양식
-                if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 3) {
-                   $('.slide_type .value').data('0').text('Small / 3장');
-                } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 4) {
-                   $('.slide_type .value').data('1').text('Small / 4장');
-                } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 5) {
-                   $('.slide_type .value').data('2').text('Small / 5장');
-                } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 6) {
-                   $('.slide_type .value').data('3').text('Small / 6장');
-                } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 3) {
-                   $('.slide_type .value').data('4').text('Small / 3장');
-                } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 4) {
-                   $('.slide_type .value').data('5').text('Small / 4장');
-                } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 5) {
-                   $('.slide_type .value').data('6').text('Small / 5장');
-                } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 6) {
-                   $('.slide_type .value').data('7').text('Small / 6장');
-                }
-
-                // 발신 번호
-                if(list[2].send_to != null) {
-                    $('#send_slice_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
-                    $('#slide_send_num').val(list[2].send_to);
-                }
-
-                // 카드 탭
-                for(var i=1; i<=list[2].cardSize; i++) {
-                    if(i == 1) {
-                        $('.slide_tab').append('<div id="cardOn" class="cardOn on" data="' + i + '">카드' + i + '</div>');
-                    } else {
-                        $('.slide_tab').append('<div id="cardOn" class="cardOn" data="' + i + '">카드' + i + '</div>');
-                    }
-                }
-
-                // 카드 그리기
-                var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
-                for(var i=0; i<list[2].cardSize; i++) {
-                    // 이미지 선택
-                    var imgNm = rcs_img_nm_lst[i];
-                    $('#slide' + i).val(imgNm);
-
-                    if(list[2].img_cd_1 != null && i == 0) {
-                        $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_1);
-                    }
-                    if(list[2].img_cd_2 != null && i == 1) {
-                        $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_2);
-                    }
-                    if(list[2].img_cd_3 != null && i == 2) {
-                        $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_3);
-                    }
-                    if(list[2].img_cd_4 != null && i == 3) {
-                        $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_4);
-                    }
-                    if(list[2].img_cd_5 != null && i == 4) {
-                        $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_5);
-                    }
-                    if(list[2].img_cd_6 != null && i == 5) {
-                        $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_6);
-                    }
-
-                    // 문자 제목
-                    $('.rcsTitle:nth-child(' + (i+1) + ')').val(list[2].slideTitle[i]);
 
                     // 내용
-                    $('.rcsContents:nth-child(' + (i+1) + ')').val(textAreaParsing(list[2].slideBody[i]));
+                    $('textarea[name="rcs_body"]').val(list[2].cont_body);
 
-                    var btn = null;
-                    // 버튼 액션 선택
-                    for(var j=0; j<2; j++) {
-                        btn = list[2].cont_btn_json[i]['suggestions'][j];
+                    // 무료수신거부
+                    $('input[name="rcs_footer"]').val(list[2].rcs_footer);
 
-                        if(btn['action']['clipboardAction']['copyToClipboard'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN01');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN01').text('복사하기');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="copy_value"]:nth-child(' + (j+1) + ')').val(btn['action']['clipboardAction']['copyToClipboard']['text']);
-                        }
-                        if(btn['action']['urlAction']['openUrl'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN02');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN02').text('URL연결');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="url_value"]:nth-child(' + (j+1) + ')').val(btn['action']['urlAction']['openUrl']['url']);
-                        }
-                        if(btn['action']['dialerAction'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN03');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN03').text('전화걸기');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_03"]:nth-child(' + (j+1) + ')').val(btn['action']['dialerAction']['dialPhoneNumber']['phoneNumber']);
-                        }
-                        if(btn['action']['mapAction']['showLocation']['location']['latitude'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN04');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN04').text('지도보여주기(좌표)');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="latitude_value"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['latitude']);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="longitude_value"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['longitude']);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['label']);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
-                        }
-                        if(btn['action']['mapAction']['showLocation']['location']['query'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN05');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN05').text('지도보여주기(쿼리)');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['query']);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
-                        }
-                        if(btn['action']['mapAction']['showLocation'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN06');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN06').text('현재위치공유');
-                        }
-                        if(btn['action']['calendarAction'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN07');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN07').text('캘린더등록');
-                            var startTime = btn['action']['calendarAction']['createCalendarEvent']['startTime'].split('T');
-                            var endTime = btn['action']['calendarAction']['createCalendarEvent']['endTime'].split('T');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="start_date"]:nth-child(' + (j+1) + ')').val(startTime[0]);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="end_date"]:nth-child(' + (j+1) + ')').val(endTime[0]);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_title"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['title']);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_body"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['description']);
-                        }
-                        if(btn['action']['composeAction'] != null) {
-                            $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN08');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN08').text('메세지전송');
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_08"]:nth-child(' + (j+1) + ')').val(btn['action']['composeAction']['composeTextMessage']['phoneNumber']);
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="message_value"]:nth-child(' + (j+1) + ')').val(btn['action']['composeAction']['composeTextMessage']['text']);
-                        }
+                    // 발신
+                    $('.rcs_head').text('[WEB발신]');
 
-                        // 버튼 명
-                        $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="slide_rcs_btn_1"]:nth-child(' + (j+1) + ')').val(btn['action']['displayText']);
-                        if(btn['action']['displayText'] != null) {
-                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .button-name:nth-child(' + (j+1) + ') span span').text(btn['action']['displayText'].length);
+                    var rcs_img_lst = list[2].img_lst.split(',');
+                    if(rcs_img_lst[0] != null) {
+                        $('.img_area').html('<img src="' + filePath + rcs_img_lst[0] + '" onerror="this.src=\"/image/bg_none.png\""/>');
+                        $('input[name="rcs_img_url_1"]').val(rcs_img_lst[0]);
+                    }
+
+                    $('#titleArea0').html(list[2].cont_sub);
+                    $('#textArea0').html(list[2].cont_body);
+                } else if(list[2].msg_tp == 'DMCH211' || list[2].msg_tp == 'DMCH212') {
+                    $('input[name="rcs_format_type"][value="slide"]').prop('checked', true);
+
+                    // 카드 양식
+                    if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 3) {
+                       $('.slide_type .value').data('0').text('Small / 3장');
+                    } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 4) {
+                       $('.slide_type .value').data('1').text('Small / 4장');
+                    } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 5) {
+                       $('.slide_type .value').data('2').text('Small / 5장');
+                    } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 6) {
+                       $('.slide_type .value').data('3').text('Small / 6장');
+                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 3) {
+                       $('.slide_type .value').data('4').text('Small / 3장');
+                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 4) {
+                       $('.slide_type .value').data('5').text('Small / 4장');
+                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 5) {
+                       $('.slide_type .value').data('6').text('Small / 5장');
+                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 6) {
+                       $('.slide_type .value').data('7').text('Small / 6장');
+                    }
+
+                    // 발신 번호
+                    if(list[2].send_to != null) {
+                        $('#send_slice_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
+                        $('#slide_send_num').val(list[2].send_to);
+                    }
+
+                    // 카드 탭
+                    for(var i=1; i<=list[2].cardSize; i++) {
+                        if(i == 1) {
+                            $('.slide_tab').append('<div id="cardOn" class="cardOn on" data="' + i + '">카드' + i + '</div>');
+                        } else {
+                            $('.slide_tab').append('<div id="cardOn" class="cardOn" data="' + i + '">카드' + i + '</div>');
                         }
                     }
 
-                    if(imgNm != null) {
-                        $('.slide' + i + ' .img_area').html('<img src="' + filePath + imgNm + '" onerror="this.src = \"/image/bg_none.png\""/>');
-                        $('input[name="rcs_img_url_' + (i+1) + '"]').val(filePath + imgNm);
+                    // 카드 그리기
+                    var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
+                    for(var i=0; i<list[2].cardSize; i++) {
+                        // 이미지 선택
+                        var imgNm = rcs_img_nm_lst[i];
+                        $('#slide' + i).val(imgNm);
+
+                        if(list[2].img_cd_1 != null && i == 0) {
+                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_1);
+                        }
+                        if(list[2].img_cd_2 != null && i == 1) {
+                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_2);
+                        }
+                        if(list[2].img_cd_3 != null && i == 2) {
+                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_3);
+                        }
+                        if(list[2].img_cd_4 != null && i == 3) {
+                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_4);
+                        }
+                        if(list[2].img_cd_5 != null && i == 4) {
+                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_5);
+                        }
+                        if(list[2].img_cd_6 != null && i == 5) {
+                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_6);
+                        }
+
+                        // 문자 제목
+                        $('.rcsTitle:nth-child(' + (i+1) + ')').val(list[2].slideTitle[i]);
+
+                        // 내용
+                        $('.rcsContents:nth-child(' + (i+1) + ')').val(textAreaParsing(list[2].slideBody[i]));
+
+                        var btn = null;
+                        // 버튼 액션 선택
+                        for(var j=0; j<2; j++) {
+                            btn = list[2].cont_btn_json[i]['suggestions'][j];
+
+                            if(btn['action']['clipboardAction']['copyToClipboard'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN01');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN01').text('복사하기');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="copy_value"]:nth-child(' + (j+1) + ')').val(btn['action']['clipboardAction']['copyToClipboard']['text']);
+                            }
+                            if(btn['action']['urlAction']['openUrl'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN02');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN02').text('URL연결');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="url_value"]:nth-child(' + (j+1) + ')').val(btn['action']['urlAction']['openUrl']['url']);
+                            }
+                            if(btn['action']['dialerAction'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN03');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN03').text('전화걸기');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_03"]:nth-child(' + (j+1) + ')').val(btn['action']['dialerAction']['dialPhoneNumber']['phoneNumber']);
+                            }
+                            if(btn['action']['mapAction']['showLocation']['location']['latitude'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN04');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN04').text('지도보여주기(좌표)');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="latitude_value"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['latitude']);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="longitude_value"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['longitude']);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['label']);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
+                            }
+                            if(btn['action']['mapAction']['showLocation']['location']['query'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN05');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN05').text('지도보여주기(쿼리)');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['query']);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
+                            }
+                            if(btn['action']['mapAction']['showLocation'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN06');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN06').text('현재위치공유');
+                            }
+                            if(btn['action']['calendarAction'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN07');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN07').text('캘린더등록');
+                                var startTime = btn['action']['calendarAction']['createCalendarEvent']['startTime'].split('T');
+                                var endTime = btn['action']['calendarAction']['createCalendarEvent']['endTime'].split('T');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="start_date"]:nth-child(' + (j+1) + ')').val(startTime[0]);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="end_date"]:nth-child(' + (j+1) + ')').val(endTime[0]);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_title"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['title']);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_body"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['description']);
+                            }
+                            if(btn['action']['composeAction'] != null) {
+                                $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN08');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN08').text('메세지전송');
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_08"]:nth-child(' + (j+1) + ')').val(btn['action']['composeAction']['composeTextMessage']['phoneNumber']);
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="message_value"]:nth-child(' + (j+1) + ')').val(btn['action']['composeAction']['composeTextMessage']['text']);
+                            }
+
+                            // 버튼 명
+                            $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="slide_rcs_btn_1"]:nth-child(' + (j+1) + ')').val(btn['action']['displayText']);
+                            if(btn['action']['displayText'] != null) {
+                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .button-name:nth-child(' + (j+1) + ') span span').text(btn['action']['displayText'].length);
+                            }
+                        }
+
+                        if(imgNm != null) {
+                            $('.slide' + i + ' .img_area').html('<img src="' + filePath + imgNm + '" onerror="this.src = \"/image/bg_none.png\""/>');
+                            $('input[name="rcs_img_url_' + (i+1) + '"]').val(filePath + imgNm);
+                        }
+
+                        $('#titleArea' + i).text(list[2].slideTitle[i]);
+                        $('#textArea' + i).text(list[2].slideBody[i]);
+
+                        if(list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
+                            $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
+                        }
+
+                        if(list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
+                            $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                        }
                     }
 
-                    $('#titleArea' + i).text(list[2].slideTitle[i]);
-                    $('#textArea' + i).text(list[2].slideBody[i]);
-
-                    if(list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
-                        $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
-                    }
-
-                    if(list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
-                        $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
-                    }
+                    // 무료수신거부
+                    $('input[name="rcs_footer"]').val(list[2].rcs_footer);
                 }
-
-                // 무료수신거부
-                $('input[name="rcs_footer"]').val(list[2].rcs_footer);
             }
             // RCS 끝
         }
