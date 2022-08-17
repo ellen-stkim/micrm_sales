@@ -92,7 +92,10 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
-                .headers().frameOptions().disable().addHeaderWriter(CustomXFrameOptionsHeaderWriter())
+                .headers()
+                    .xssProtection()
+                .and()
+                    .contentSecurityPolicy("frame-ancestors 'self' mc.exacttarget.com;")
     }
 
     @Throws(Exception::class)
@@ -121,22 +124,6 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         firewall.setAllowUrlEncodedSlash(true)
         firewall.setAllowUrlEncodedDoubleSlash(true)
         return firewall
-    }
-
-    private class CustomXFrameOptionsHeaderWriter : HeaderWriter {
-        private val defaultHeaderWriter: XFrameOptionsHeaderWriter = XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN)
-        private val allowUrl: String = "\\/sf\\/.*"
-        private val log = LoggerFactory.getLogger(this.javaClass)
-
-        override fun writeHeaders(req: HttpServletRequest, rep: HttpServletResponse) {
-            log.error("Referer : {}", req.getHeader("Referer"))
-            log.error("HOST : {}", req.getHeader("HOST"))
-            log.error("X-FORWARDED-HOST : {}", req.getHeader("X-FORWARDED-HOST"))
-
-            if (!req.requestURI.contains(allowUrl)) {
-                defaultHeaderWriter.writeHeaders(req, rep)
-            }
-        }
     }
 
 }
