@@ -505,7 +505,7 @@ class SalesforceController {
     // done 동작
     @ResponseBody
     @PostMapping("/execute.service")
-    fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data : Object) {
+    fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: Object) {
         var response: CloseableHttpResponse? = null
         logger.error("data {}", data)
         logger.error("reader {}", IOUtils.toString(req.reader))
