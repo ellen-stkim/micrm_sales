@@ -15,6 +15,7 @@ import org.springframework.core.io.FileSystemResource
 import org.springframework.http.MediaType
 import org.springframework.http.converter.ByteArrayHttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.ResourceHttpMessageConverter
 import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.mobile.device.DeviceResolverRequestFilter
@@ -87,6 +88,7 @@ class MvcConfig : WebMvcConfigurer {
         converters.add(StringConverter())
         converters.add(JacksonConverter())
         converters.add(byteArrayHttpMessageConverter())
+        converters.add(ResourceHttpMessageConverter())
     }
 
     @Bean // naver-lucy-filter
