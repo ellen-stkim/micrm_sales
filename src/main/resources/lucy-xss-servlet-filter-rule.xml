@@ -58,5 +58,8 @@
         <url-rule>
             <url disable="true">/cont/mobileUpdate.service</url>
         </url-rule>
+        <url-rule>
+            <url disable="true">/sf/execute.service</url>
+        </url-rule>
     </url-rule-set>
 </config>
