@@ -508,8 +508,6 @@ class SalesforceController {
     fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String) {
         var response: CloseableHttpResponse? = null
         logger.error("data {}", data)
-        logger.error("reader {}", IOUtils.toString(req.reader))
-
         /*
         try {
             // jwt
