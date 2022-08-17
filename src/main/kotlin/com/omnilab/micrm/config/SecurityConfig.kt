@@ -1,36 +1,36 @@
 package com.omnilab.micrm.config
 
+import com.google.common.collect.ImmutableSet
 import com.omnilab.micrm.config.handler.AuthenticationHandler
 import com.omnilab.micrm.config.handler.LoginFailHandler
 import com.omnilab.micrm.config.handler.LoginSuccessHandler
 import com.omnilab.micrm.service.CustomAuthenticationProvider
-
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.web.firewall.StrictHttpFirewall
-import org.springframework.security.web.firewall.HttpFirewall
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
-
-import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.web.csrf.CsrfFilter
-import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.web.header.writers.StaticHeadersWriter
-import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.csrf.CsrfFilter
+import org.springframework.security.web.firewall.HttpFirewall
+import org.springframework.security.web.firewall.StrictHttpFirewall
+import org.springframework.security.web.header.HeaderWriter
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
-import org.springframework.web.servlet.function.RequestPredicates.headers
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode
+import org.springframework.web.filter.CharacterEncodingFilter
 import java.util.*
-
 import javax.servlet.DispatcherType
 import javax.servlet.Filter
-import kotlin.jvm.Throws
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 
 @EnableWebSecurity
 class SecurityConfig: WebSecurityConfigurerAdapter() {
@@ -92,10 +92,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
-                //.headers().frameOptions().sameOrigin()
-                .headers().frameOptions().disable()
-           /*.and()
-                .authorizeRequests().antMatchers("/m05/security.mi").access("hasRole('USR') or hasRole('ADM') or hasRole('SYS')");*/
+                .headers().frameOptions().disable().addHeaderWriter(CustomXFrameOptionsHeaderWriter())
     }
 
     @Throws(Exception::class)
@@ -124,6 +121,19 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         firewall.setAllowUrlEncodedSlash(true)
         firewall.setAllowUrlEncodedDoubleSlash(true)
         return firewall
+    }
+
+    private class CustomXFrameOptionsHeaderWriter : HeaderWriter {
+        private val defaultHeaderWriter: XFrameOptionsHeaderWriter = XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN)
+        private val allowUrl: String = "\\/sf\\/.*"
+        private val log = LoggerFactory.getLogger(this.javaClass)
+
+        override fun writeHeaders(request: HttpServletRequest, response: HttpServletResponse) {
+            log.error("{}, {}", request.requestURI, request.requestURI.contains(allowUrl))
+            if (!request.requestURI.contains(allowUrl)) {
+                defaultHeaderWriter.writeHeaders(request, response)
+            }
+        }
     }
 
 }

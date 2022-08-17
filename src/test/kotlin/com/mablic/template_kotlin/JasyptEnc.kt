@@ -23,9 +23,10 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error(enc.encrypt("jdbc:mariadb://192.168.0.3/test_db_micrm_sales"))
-    log.error(enc.encrypt("img"))
-    log.error(enc.encrypt("img_milvus_1@3"))
+    log.error(enc.decrypt("lwia58gbA2la4JVYbb/0GzOeKgRIERGvtqQJH6g+mYkimHuqmnS6nTeF96zr+1pNjeXxiT7mVg/ftj5+r5MP8q643U2xDVE48aDA7KzAm1K2KG/YCrYNnNjkpeWUkanQ"))
+    log.error(enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
+    log.error(enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+
     log.error("=========================")
 
 }
