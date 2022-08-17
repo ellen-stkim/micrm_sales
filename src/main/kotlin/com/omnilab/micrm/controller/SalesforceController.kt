@@ -378,18 +378,17 @@ class SalesforceController {
         if (file != null) {
             map["imgCheck"] = 1
             val userInfo = UsefulUtils.sessionUser()
-            var contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
+            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
             map = fileUpload.upload(contentFilePath, file, request);
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
             }else{
                 if(dto.ch_tp != "IMGTP01"){
                     val fileName = map["file_nm"]
-                    var image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.getWidth()
-                    val imageHeight: Int = image.getWidth()
-                    if(image.getWidth() < 500 || image.getHeight() < 250) {
-
+                    val image : BufferedImage = ImageIO.read(file.inputStream)
+                    val imageWidth: Int = image.width
+                    val imageHeight: Int = image.width
+                    if(imageWidth < 500 || imageHeight < 250) {
                         val newWidth = 500
                         val newHeight = 500
                         val ratio: Double
@@ -418,7 +417,6 @@ class SalesforceController {
                         g.dispose()
 
                         ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath(contentFilePath + "/" + fileName), FilenameUtils.getName(contentFilePath + "/" + fileName)))
-
                         resizeImage.flush()
                         image.flush()
                     }
