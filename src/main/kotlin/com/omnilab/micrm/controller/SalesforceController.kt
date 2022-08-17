@@ -507,8 +507,7 @@ class SalesforceController {
     @PostMapping("/execute.service")
     fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String) {
         var response: CloseableHttpResponse? = null
-        logger.error("data {}", data)
-        /*
+
         try {
             // jwt
             val chunks: List<String> = data.split("\\.")
@@ -537,7 +536,6 @@ class SalesforceController {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-         */
     }
 
     @GetMapping("/error")
