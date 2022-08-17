@@ -478,26 +478,26 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/save.service")
-    fun save() {
-
+    fun save(@RequestBody data : String) {
+        logger.info("/save.service data: \n$data");
     }
 
     @ResponseBody
     @PostMapping("/publish.service")
-    fun publish() {
-
+    fun publish(@RequestBody data : String) {
+        logger.info("/save.service data: \n$data");
     }
 
     @ResponseBody
     @PostMapping("/validate.service")
-    fun validate() {
-
+    fun validate(@RequestBody data : String) {
+        logger.info("/save.service data: \n$data");
     }
 
     @ResponseBody
     @PostMapping("/stop.service")
-    fun stop() {
-
+    fun stop(@RequestBody data : String) {
+        logger.info("/save.service data: \n$data");
     }
 
     // done 동작
