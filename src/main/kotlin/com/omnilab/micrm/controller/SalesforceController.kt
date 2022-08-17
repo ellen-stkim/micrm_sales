@@ -502,8 +502,7 @@ class SalesforceController {
     }
 
     // done 동작
-    @ResponseBody
-    @PostMapping(value = arrayOf("/execute.service"), consumes = arrayOf("application/jwt"))
+    @PostMapping("/execute.service")
     fun execute(@RequestBody data : String) {
         var response: CloseableHttpResponse? = null
 
