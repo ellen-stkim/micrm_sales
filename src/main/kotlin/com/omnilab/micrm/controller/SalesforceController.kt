@@ -10,7 +10,6 @@ import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
 import com.omnilab.micrm.service.SalesforceService
 import com.omnilab.micrm.service.SysSettingService
-import io.jsonwebtoken.Jwts
 
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.json.simple.JSONArray
@@ -504,13 +503,13 @@ class SalesforceController {
 
     // done 동작
     @ResponseBody
-    @PostMapping("/execute.service")
-    fun execute(@RequestBody data : String) {
+    @PostMapping(value = arrayOf("/execute.service"), consumes = arrayOf("application/jwt"))
+    fun execute(@RequestParam data : String) {
         var response: CloseableHttpResponse? = null
 
         try {
             // jwt
-            val chunks: List<String> = data.toString().split("\\.")
+            val chunks: List<String> = data.split("\\.")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
             val payload: String = String(decoder.decode(chunks[1]))
             logger.error("payload: $payload")
