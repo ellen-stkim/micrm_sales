@@ -502,8 +502,9 @@ class SalesforceController {
     }
 
     // done 동작
+    @ResponseBody
     @PostMapping("/execute.service")
-    fun execute(@RequestBody data : String) {
+    fun execute(data : String) {
         var response: CloseableHttpResponse? = null
 
         try {
