@@ -39,13 +39,13 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
 
-  static-path : "/web/tomcat_micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static"
+  static-path : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "http://t.tableau-report.com/trusted"
 
 upload:
-  src : "/web/tomcat_micrm_sales/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "/web/tomcat_micrm_sales/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
-  temp : "/web/tomcat_micrm_sales/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+  src : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
+  temp : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
 
 journey-builder:
   jwt: "kGFe7MeVxM76D-I-So-ic833CgWXoG4-gt_bUsb3JyKCmWZ5JHBlSzKkdykVgOVcSQhhCTwNDcAQI4JEz-O248T5DlXVhiNDsKmsjhdxTgX7LGb0K1H1Jc_zxUVFM84Uw62TSclpgQQSmWoawhK_KFiHBoS07G-U6gXf1t8W50jIeP9OzY7TGW5If8NY_y6c2m1OsrDjmEndL9yMxvyoDHPU8egvvdK0Sh7WKa-4KpHmfyM1cWeEVqtawnYmMQ2"
