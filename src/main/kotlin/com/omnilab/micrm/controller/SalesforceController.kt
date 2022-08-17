@@ -49,7 +49,7 @@ class SalesforceController {
     val logger = LoggerFactory.getLogger(this::class.java)
 
 
-    @Value("\${upload.content}")
+    @Value("\${journey-builder.jwt}")
     private val secretKey: String? = null
 
     @Autowired
@@ -510,10 +510,10 @@ class SalesforceController {
 
         try {
             // jwt
-            val chunks: List<String> = data.split("\\.")
+            val chunks: List<String> = data.split(".")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
             val payload: String = String(decoder.decode(chunks[1]))
-            logger.error("payload: $payload")
+            logger.info("payload: $payload")
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
             val secretKeySpec = SecretKeySpec(secretKey?.toByteArray() ?: null, sa.jcaName)
             val tokenWithoutSignature = chunks[0] + "." + chunks[1]
@@ -528,10 +528,10 @@ class SalesforceController {
                 var jsonObj = jsonParser.parse(payload) as JSONObject
                 val inArguments: JSONArray = jsonObj["inArguments"] as JSONArray
                 val argument: JSONObject = inArguments.get(0) as JSONObject
-                val host = argument["host"] as String
-                val token = argument["token"] as String
                 val phone = argument["phone"] as String
-                logger.error("phone: $phone\nhost: $host\ntoken: $token")
+                val phoneText = argument["phoneText"] as String
+                val seq = argument["seq"] as String
+                logger.info("phone: $phone\nphoneText: $phoneText\nseq: $seq")
             }
         } catch (e: Exception) {
             e.printStackTrace()
