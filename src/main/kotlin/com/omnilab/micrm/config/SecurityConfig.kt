@@ -95,7 +95,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .headers()
                     .xssProtection()
                 .and()
-                    .contentSecurityPolicy("frame-ancestors 'self' https://mc.exacttarget.com;")
+                    .contentSecurityPolicy("frame-ancestors 'self' *.exacttarget.com *.marketingcloudapps.com;")
     }
 
     @Throws(Exception::class)
