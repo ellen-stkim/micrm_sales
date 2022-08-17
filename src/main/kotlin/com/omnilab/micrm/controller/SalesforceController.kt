@@ -503,10 +503,9 @@ class SalesforceController {
 
     // done 동작
     @ResponseBody
-    @PostMapping(value = arrayOf("/execute.service"), consumes = arrayOf("application/jwt"))
+    @PostMapping(value = ["/execute.service"], consumes = ["application/jwt"])
     fun execute(@RequestParam data : String) {
         var response: CloseableHttpResponse? = null
-
         try {
             // jwt
             val chunks: List<String> = data.split("\\.")

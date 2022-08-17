@@ -176,6 +176,7 @@ class MvcConfig : WebMvcConfigurer {
         val converter = MappingJackson2HttpMessageConverter()
         val mediatype = ArrayList<MediaType>()
         mediatype.add(MediaType.APPLICATION_JSON)
+        mediatype.add(MediaType.parseMediaType("application/jwt;charset=UTF-8"))
         converter.supportedMediaTypes = mediatype
         return converter
     }
