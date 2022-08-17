@@ -503,9 +503,11 @@ class SalesforceController {
 
     // done 동작
     @ResponseBody
-    @PostMapping(value = ["/execute.service"], consumes = ["application/jwt"])
-    fun execute(@RequestParam data : String) {
+    //@PostMapping(value = ["/execute.service"], consumes = ["application/jwt"])
+    fun execute(@RequestParam data : Object) {
         var response: CloseableHttpResponse? = null
+        logger.error("{}", data)
+        /*
         try {
             // jwt
             val chunks: List<String> = data.split("\\.")
@@ -534,6 +536,7 @@ class SalesforceController {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+         */
     }
 
     @GetMapping("/error")
