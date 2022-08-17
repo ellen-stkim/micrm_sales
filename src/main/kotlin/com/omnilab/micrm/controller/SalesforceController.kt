@@ -506,9 +506,9 @@ class SalesforceController {
     @ResponseBody
     //@PostMapping(value = ["/execute.service"], consumes = ["application/jwt"])
     @PostMapping("/execute.service")
-    fun execute(req: HttpServletRequest, rep: HttpServletResponse) {
+    fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data : Object) {
         var response: CloseableHttpResponse? = null
-        logger.error("parameterNames {}", req.parameterNames)
+        logger.error("data {}", data)
         logger.error("reader {}", IOUtils.toString(req.reader))
 
         /*
