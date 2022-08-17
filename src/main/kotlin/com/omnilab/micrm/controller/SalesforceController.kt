@@ -28,6 +28,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator;
 import org.apache.commons.io.FilenameUtils
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.MediaType
 import org.springframework.web.multipart.MultipartFile
 import java.awt.Image
 import java.awt.image.BufferedImage
@@ -502,7 +503,7 @@ class SalesforceController {
 
     // done 동작
     @ResponseBody
-    @PostMapping("/execute.service")
+    @PostMapping(value = arrayOf("/execute.service"), consumes = arrayOf("application/jwt"))
     fun execute(@RequestBody data : String) {
         var response: CloseableHttpResponse? = null
 
