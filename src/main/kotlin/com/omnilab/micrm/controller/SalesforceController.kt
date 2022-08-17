@@ -485,19 +485,19 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/publish.service")
     fun publish(@RequestBody data : Object) {
-        logger.info("/save.service data: \n$data.toString()");
+        logger.info("/save.service data: \n${data.toString()}");
     }
 
     @ResponseBody
     @PostMapping("/validate.service")
     fun validate(@RequestBody data : Object) {
-        logger.info("/save.service data: \n$data.toString()");
+        logger.info("/save.service data: \n${data.toString()}");
     }
 
     @ResponseBody
     @PostMapping("/stop.service")
     fun stop(@RequestBody data : Object) {
-        logger.info("/save.service data: \n$data.toString()");
+        logger.info("/save.service data: \n${data.toString()}");
     }
 
     // done 동작
