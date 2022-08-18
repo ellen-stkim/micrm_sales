@@ -53,8 +53,6 @@ class SalesforceServiceImpl : SalesforceService {
         val host: String = dto.host as String
         val token: String = dto.token as String
 
-        var msg = ""
-
         try {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
@@ -74,7 +72,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val enterpriseId = enterprise["id"] as Long
                 val organizationId = organization["id"] as Long
                 val userId = user["id"] as Long
-                msg += "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
+                val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
                 // TODO: usr_grp_cd 조회하기
                 dto.enterpriseId = enterpriseId
