@@ -9,8 +9,8 @@
         select *
         from Tblmi_usr
         <where>
-            usr_sales_org_id = #{usr_sales_org_id}
-            and usr_sales_id = #{usr_sales_id}
+            usr_sales_org_id = #{organizationId}
+            and usr_sales_id = #{userId}
         </where>
 
     </select>
