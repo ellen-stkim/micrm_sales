@@ -9,8 +9,12 @@
         select *
         from Tblmi_usr
         <where>
-            usr_sales_org_id = #{organizationId}
-            and usr_sales_id = #{userId}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(organizationId)">
+                and usr_sales_org_id = #{organizationId}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(userId)">
+                and usr_sales_id = #{userId}
+            </if>
         </where>
 
     </select>

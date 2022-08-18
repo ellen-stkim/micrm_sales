@@ -21,6 +21,11 @@ class SalesforceDto {
     var list_dt_id : String? = null // 리스트 상세 타입 Id
     var usr_grp_cd : String? = null // 사용자 소속 코드
 
+    constructor()
+    constructor(organizationId: Long){
+        this.organizationId = organizationId
+    }
+
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }

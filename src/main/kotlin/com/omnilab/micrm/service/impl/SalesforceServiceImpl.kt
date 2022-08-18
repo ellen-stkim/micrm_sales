@@ -88,8 +88,14 @@ class SalesforceServiceImpl : SalesforceService {
                 dto.list_tp_id = "CH03"
                 dto.list_dt_id = "SPTP01"
 
-                val userInfo = salesforceDao.sel_usrInfo(dto)
+                var userInfo = salesforceDao.sel_usrInfo(dto)
                 if(userInfo == null){
+                    userInfo = salesforceDao.sel_usrInfo(SalesforceDto(organizationId))
+                    val commDto = Tblmi_comm_cdDto()
+                    commDto.grp_id = "SALES_REST_URL"
+                    commDto.cd_id = userInfo!!.usr_grp_cd
+                    val urlInfo = systemDao.getCommCD(commDto)
+
                     val headers = HttpHeaders()
                     headers.contentType = MediaType.APPLICATION_JSON
                     val acceptableMediaType: MutableList<MediaType> = ArrayList()
@@ -97,7 +103,7 @@ class SalesforceServiceImpl : SalesforceService {
                     headers.accept = acceptableMediaType
                     headers.set("Authorization", "Bearer $token")
 
-                    val result: ResponseEntity<String> = restTemplate.exchange("$host/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                    val result: ResponseEntity<String> = restTemplate.exchange("${urlInfo!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
                     logger.error("{}", result)
                 }else{
                     returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
