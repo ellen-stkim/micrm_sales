@@ -21,21 +21,6 @@
                         <li>메세지</li>
                         <li>모바일</li>
                     </ul>
-                    <!-- tooltip 버튼 영역  -->
-<%--                    <div class="tooltip_icon">--%>
-<%--                        <img src="/image/ico_tooltip.png" alt="Tooltip"/>--%>
-<%--                    </div>--%>
-                    <!-- tooltip box 영역 시작 -->
-<%--                    <div class="tooltip_box">--%>
-<%--                        <!-- tooltip bullet 영역 -->--%>
-<%--                        <div class="bullet"></div>--%>
-<%--                        <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br/>--%>
-<%--                                나오론이 52.4억(57.2%)으로 가장 많은 비중을--%>
-<%--                                차지합니다.</span>--%>
-<%--                        스타일론 직장인이 26.69억(29.1%), <br/>--%>
-<%--                        스타일론 자영업자가 4.1억(4.47%)입니다.<br/>--%>
-<%--                    </div>--%>
-                    <!-- tooltip box 영역 끝 -->
                 </div>
                 <div class="right">
                     <!-- select 영역 시작 -->
@@ -99,10 +84,9 @@
 </div>
 
 <script>
-
-    $(document).ready(function(){
-        selectMobileList(1)
-    })
+    $(function(){
+        selectMobileList(1);
+    });
 
     $(document).on('click','.useState',function(){
         let state = $(this).val();
@@ -118,7 +102,6 @@
     $(function(){
         $('#searchItems ul li').on('click',function(){
             let searchItem = $(this).attr('data');
-            console.log(searchItem);
 
             if(searchItem == "cont_nm" || searchItem == "cont_sub"){
                 $("#searchValue").val('');
@@ -152,26 +135,25 @@
             $("#searchValue").val(yn_data)
         }
 
-        var res = function (response) {
-            var $doc = new DOMParser().parseFromString(response, "text/html");
+        let res = function (response) {
+            let $doc = new DOMParser().parseFromString(response, "text/html");
             $('.row_grid').html($("#body", $doc).html());
             $("#pageBtn").html($("#pageHtml", $doc).html());
         };
 
-        var param = $("#searchForm").serializeArray();
+        let param = $("#searchForm").serializeArray();
         param.push({name : 'pageNo', value : pageNo});
         com_ajax.ajax('post', '${baseURL}/cont/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 리스트 버튼으로 추가 가져오기
     function getMobileListAdd(pageNo){
-
-        var res = function (response) {
-            var $doc = new DOMParser().parseFromString(response, "text/html");
+        let res = function (response) {
+            let $doc = new DOMParser().parseFromString(response, "text/html");
             $('.row_grid').append($("#body", $doc).html());
             $("#pageBtn").html($("#pageHtml", $doc).html());
         };
-        var param = $("#searchForm").serializeArray();
+        let param = $("#searchForm").serializeArray();
         param.push({name : 'pageNo', value : parseInt(pageNo) +1});
         com_ajax.ajax('post', '${baseURL}/cont/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -281,33 +263,6 @@
         com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
-
-   /* function deleteMdmList(){
-        let checkbox = document.getElementsByName("list");
-        let checkboxLength = checkbox.length;
-        let count = 0;
-        for(let a=0; a < checkboxLength; a++){
-            if(checkbox[a].checked){
-                count++;
-            }
-        }
-        console.log("checkbox : " + checkbox);
-        console.log("checkboxLength :" + checkboxLength);
-
-        if(count == 0){
-            popup.deleteAlert('false', "삭제할 컨텐츠를 선택해주세요.");
-
-        }else {
-            deleteEdmCheck('true', count + "개의 컨텐츠를 삭제하시겠습니까?");
-        }
-    }*/
-
-
-
-
-
     let type = ['kakao', 'MMS','SMS', 'rcsText', 'rcsHorizontalLeft', 'rcsHorizontalRight', 'rcsVerticalTall', 'rcsVerticalMedium', 'rcsSlideSmall', 'rcsSlideMedium'];
-    // 더보기 버튼 클릭시 layout append function
-
 
 </script>

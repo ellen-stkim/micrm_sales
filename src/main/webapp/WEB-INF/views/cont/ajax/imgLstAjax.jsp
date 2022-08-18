@@ -26,7 +26,6 @@
                  <h3>${item.img_nm}</h3>
                 <div class="remove_info">
                     <input type="button" value="${item.use_yn}" class="en_font useState right-border" name="use_yn" onclick="useState('${item.seq}', this);"/>
-                        <%-- <span  onclick="updateImg('${item.seq}')">수정</span>--%>
                 </div>
             </div>
             <div class="row_body">
@@ -45,11 +44,10 @@
                        </c:choose>
                     </span>
                 </div>
-
                 <!-- 등록일 -->
                 <div class="date">등록일&nbsp;&nbsp;
                     <span>
-                            ${cutil:stringDateParse(item.reg_dt)}
+                        ${cutil:stringDateParse(item.reg_dt)}
                     </span>
                 </div>
             </div>
@@ -69,7 +67,6 @@
             </c:if>
         </c:otherwise>
     </c:choose>
-
   <input type="hidden" name="nowPageNo" id="nowPageNo" value="${pageNo}"/>
   <input type="hidden" name="nowPage" id="nowPage" value="${page}"/>
 </span>

@@ -16,12 +16,14 @@
          <div class="row body">
             <div class="th">카드 양식</div>
             <div class="column_1">
-               <label class="custom_radio en_font">Tall<input name="rcs_msg_tp" class="lowType"
-                                                             type="radio" value="tall" checked
-               /><span></span></label>
-               <label class="custom_radio en_font">Medium<input name="rcs_msg_tp" class="lowType"
-                                                             type="radio" value="medium"
-               /><span></span></label>
+               <label class="custom_radio en_font">Tall
+                  <input name="rcs_msg_tp" class="lowType" type="radio" value="tall" checked/>
+                  <span></span>
+               </label>
+               <label class="custom_radio en_font">Medium
+                  <input name="rcs_msg_tp" class="lowType" type="radio" value="medium"/>
+                  <span></span>
+               </label>
             </div>
          </div>
          <div class="row body">
@@ -32,8 +34,7 @@
                   <!-- selected value -->
                   <div class="value" data="0">개인화 변수</div>
                   <ul class="option">
-                     <c:forEach var="item" items="${columnNm}"
-                                varStatus="status">
+                     <c:forEach var="item" items="${columnNm}" varStatus="status">
                         <li data="{{${columnValue[status.count]}}}">${item}</li>
                      </c:forEach>
                   </ul>
@@ -41,7 +42,7 @@
                <div class="select column_4 left-border rcsTitleVal" name="defaultDB">
                   <!-- selected value -->
                   <div class="value" data="0">개인화 변수</div>
-                  <ul class="option" id="">
+                  <ul class="option">
                      <li data="{{USR_ID}}">회원번호</li>
                      <li data="{{USR_NM}}">이름</li>
                      <li data="{{USR_MOB}}">모바일</li>

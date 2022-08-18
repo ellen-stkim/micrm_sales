@@ -18,7 +18,7 @@
             <c:if test="${content.use_yn eq 'N'}">
                 <div class="column off">
             </c:if>
-                    <!-- 비활성화 cover -->
+                <!-- 비활성화 cover -->
                 <div class="hidden_cover"></div>
                 <div class="sms_head bg_color cf">
                     <!-- 체크박스 -->
@@ -59,12 +59,12 @@
                 <div class="sms_head cf">
                     <!-- 템플릿명 -->
                     <h3>${content.cont_nm}</h3>
+                    <%--
                     <div class="remove_info">
-                            <input type="button" value="${content.use_yn}" class="en_font useState"
-                                   onclick="updateUseState('${content.seq}', this);"/>
-                        <!--<a href="#" onclick = "detailMobileContent('${content.seq}')">수정</a>-->
+                        <input type="button" value="${content.use_yn}" class="en_font useState" onclick="updateUseState('${content.seq}', this);"/>
                         <a href="/cont/mdmDetail/${content.seq}.mi">수정</a>
                     </div>
+                    --%>
                 </div>
                 <div class="row_top cf">
                     <!-- 컨텐츠 type -->

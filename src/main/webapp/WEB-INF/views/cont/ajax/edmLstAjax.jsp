@@ -17,8 +17,10 @@
         <div class="hidden_cover"></div>
         <div class="row_head cf">
             <!-- 체크박스 -->
-            <label class="custom_check1"><input type="checkbox" value="${item.seq}"
-                                                name="list"/><span></span></label>
+            <label class="custom_check1">
+                <input type="checkbox" value="${item.seq}" name="list"/>
+                <span></span>
+            </label>
             <!-- 템플릿명 -->
             <h3>${item.cont_nm}</h3>
             <div class="remove_info">
@@ -38,7 +40,7 @@
         <div class="row_body">
             <!-- edm 이미지 영역 -->
             <div class="edm">
-                     <img src='${filePath}${item.thm_url}' alt=""  onerror="this.src = '/image/bg_none_wide.png'">
+                <img src='${filePath}${item.thm_url}' alt=""  onerror="this.src = '/image/bg_none_wide.png'">
             </div>
         </div>
         <div class="row_footer">
@@ -61,7 +63,7 @@
     </div>
 </c:forEach>
 </span>
-    <!-- list_container 영역 끝 -->
+<!-- list_container 영역 끝 -->
 <span id="pageHtml">
     <c:choose>
          <c:when test="${nextCk eq true}">

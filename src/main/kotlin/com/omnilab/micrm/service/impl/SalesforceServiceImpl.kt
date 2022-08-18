@@ -27,7 +27,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
 import java.util.regex.Pattern
 
 @Service("SalesforceServiceImpl")
@@ -36,7 +41,11 @@ class SalesforceServiceImpl : SalesforceService {
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
 
     @Autowired
-    lateinit var salesforceDao: SalesforceDao
+    private lateinit var salesforceDao: SalesforceDao
+
+    @Autowired
+    @Qualifier("restTemplate")
+    private lateinit var restTemplate: RestTemplate
 
     @Autowired
     @Qualifier("SysSettingDaoImpl")
@@ -48,8 +57,6 @@ class SalesforceServiceImpl : SalesforceService {
 
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
         val returnMap: MutableMap<String, Any> = HashMap()
-        var status: String = "false"
-
         val host: String = dto.host as String
         val token: String = dto.token as String
 
@@ -74,25 +81,35 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
-                // TODO: usr_grp_cd 조회하기
+                //사용자 조회
                 dto.enterpriseId = enterpriseId
                 dto.organizationId = organizationId
                 dto.userId = userId
                 dto.list_tp_id = "CH03"
                 dto.list_dt_id = "SPTP01"
-                logger.error("{}", dto)
-                // returnMap["usr_grp_cd"] = salesforceDao.getUsrGrpCd(dto)
-                returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
-                returnMap["msg"] = msg // 테스트용 결과 확인
-                status = "true"
+
+                val userInfo = salesforceDao.sel_usrInfo(dto)
+                if(userInfo == null){
+                    val headers = HttpHeaders()
+                    headers.contentType = MediaType.APPLICATION_JSON
+                    val acceptableMediaType: MutableList<MediaType> = ArrayList()
+                    acceptableMediaType.add(MediaType.APPLICATION_JSON)
+                    headers.accept = acceptableMediaType
+                    headers.set("Authorization", "Bearer $token")
+
+                    val result: ResponseEntity<String> = restTemplate.exchange("$host/platformv2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                    logger.error("{}", result)
+                }else{
+                    returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
+                    returnMap["msg"] = msg // 테스트용 결과 확인
+                    returnMap["status"] = "true"
+                }
             } else {
                 logger.error("tokenContext fail: $responseBody")
             }
         } catch(e: Exception) {
             logger.error("salesforce getUser :", e)
         }
-
-        returnMap["status"] = status
         return returnMap
     }
 

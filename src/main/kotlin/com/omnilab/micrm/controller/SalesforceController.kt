@@ -456,7 +456,6 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/getUser.ajax")
     fun getUser(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
-        logger.error("{}", dto)
         return salesforceService.getUser(dto)
     }
 

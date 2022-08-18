@@ -33,18 +33,18 @@
             <c:choose>
                <c:when test="${not empty list}">
                   <c:forEach var="item" items="${list}" varStatus="status">
-            <tr>
-               <td>
-                  <label class="custom_radio">
-                     <input type="hidden" name="send_to" value="${item.seq}"/>
-                     <input name="emailAddress" type="radio" value="${item.list_nm}(${item.list_val})" <c:if test="${item.def_yn eq 'Y'}">checked</c:if>>
-                    <span> </span>
-                  </label>
-               </td>
-               <td>${item.list_nm}</td>
-               <td>${item.list_etc}</td>
-               <td class="en_font">${item.list_val}</td>
-            </tr>
+                     <tr>
+                        <td>
+                           <label class="custom_radio">
+                              <input type="hidden" name="send_to" value="${item.seq}"/>
+                              <input name="emailAddress" type="radio" value="${item.list_nm}(${item.list_val})" <c:if test="${item.def_yn eq 'Y'}">checked</c:if>>
+                             <span> </span>
+                           </label>
+                        </td>
+                        <td>${item.list_nm}</td>
+                        <td>${item.list_etc}</td>
+                        <td class="en_font">${item.list_val}</td>
+                     </tr>
                   </c:forEach>
                </c:when>
                <c:otherwise></c:otherwise>
