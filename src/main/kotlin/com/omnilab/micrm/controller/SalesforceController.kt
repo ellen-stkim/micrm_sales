@@ -116,7 +116,6 @@ class SalesforceController {
     @PostMapping("/mobileInsert.service")
     fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
         //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-
         val statusMap = salesforceService.insertContentList(content_list_dto);
         return statusMap;
     }
@@ -515,7 +514,7 @@ class SalesforceController {
             val payload: String = String(decoder.decode(chunks[1]))
             logger.error("payload: $payload")
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
-            val secretKeySpec = SecretKeySpec(secretKey?.toByteArray() ?: null, sa.jcaName)
+            val secretKeySpec = SecretKeySpec(secretKey?.toByteArray(), sa.jcaName)
             val tokenWithoutSignature = chunks[0] + "." + chunks[1]
             val signature = chunks[2]
             val validator = DefaultJwtSignatureValidator(sa, secretKeySpec)

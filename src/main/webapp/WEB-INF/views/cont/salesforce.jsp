@@ -31,21 +31,6 @@
                     <li>모바일</li>
                     <li>모바일 컨텐츠 생성</li>
                 </ul>
-<%--                <textarea id="configuration" style="width: 100%; height: 60px;"></textarea>--%>
-                <!-- tooltip 버튼 영역  -->
-<%--                <div class="tooltip_icon">--%>
-<%--                    <img src="${baseURL}/image/ico_tooltip.png" alt="Tooltip"/>--%>
-<%--                </div>--%>
-                <!-- tooltip box 영역 시작 -->
-<%--                <div class="tooltip_box">--%>
-<%--                    <!-- tooltip bullet 영역 -->--%>
-<%--                    <div class="bullet"></div>--%>
-<%--                    <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br/>--%>
-<%--                                나오론이 52.4억(57.2%)으로 가장 많은 비중을--%>
-<%--                                차지합니다.</span>--%>
-<%--                    스타일론 직장인이 26.69억(29.1%), <br/>--%>
-<%--                    스타일론 자영업자가 4.1억(4.47%)입니다.<br/>--%>
-<%--                </div>--%>
                 <!-- tooltip box 영역 끝 -->
             </div>
         </div>
@@ -59,8 +44,9 @@
                 <div class="create_sms cf">
                     <div class="row head bottom-border">
                         <div class="th">템플릿 명</div>
-                        <div class="td right-border"><input type="text" class="txt_input template_name" name="cont_nm"
-                                                            placeholder="템플릿 명을 입력하세요."/></div>
+                        <div class="td right-border">
+                            <input type="text" class="txt_input template_name" name="cont_nm" placeholder="템플릿 명을 입력하세요."/>
+                        </div>
                         <div class="th">컨텐츠 포맷</div>
                         <div class="td flex_row">
                             <div class="sms_option cf">
@@ -77,16 +63,6 @@
                                     <span class="en_font">RCS</span>
                                 </label>
                             </div>
-<%--                            <div class="inner_option">
-                                <div class="th left-border">개인화 구분</div>
-                                <div class="td">
-                                    <label class="custom_radio en_font db_radio">DB<input name="dbInfo" type="radio"
-                                                                                          value="0"
-                                                                                          checked/><span></span></label>
-                                    <label class="custom_radio db_radio">업로드<input name="dbInfo" type="radio"
-                                                                                   value="1" disabled/><span></span></label>
-                                </div>
-                            </div>--%>
                             <div class="inner_option area2">
                                 <div class="th left-border">유형선택</div>
                                 <div class="td cf">
@@ -136,8 +112,6 @@
                                     <div class="row body">
                                         <div class="th">문자 제목</div>
                                         <div class="column_1">
-                                                <%--<input type="text" class="title kakaoTitle" name="cont_sub"
-                                                       placeholder="문자 제목을 입력하세요." />--%>
                                             <input type="text" class="title kakaoTitle" name="cont_sub_list"
                                                    placeholder="문자 제목을 입력하세요."/>
                                             <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>

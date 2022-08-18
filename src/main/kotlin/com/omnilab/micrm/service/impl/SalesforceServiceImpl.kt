@@ -23,6 +23,7 @@ import org.apache.http.util.EntityUtils
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -32,7 +33,7 @@ import java.util.regex.Pattern
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
 
-    val logger = LoggerFactory.getLogger(this::class.java)
+    val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
 
     @Autowired
     lateinit var salesforceDao: SalesforceDao
@@ -61,10 +62,10 @@ class SalesforceServiceImpl : SalesforceService {
             httpGet.addHeader("Authorization", "Bearer $token")
             val response: CloseableHttpResponse = client.execute(httpGet) as CloseableHttpResponse
             val entity: HttpEntity = response.entity
-            val responseBody = EntityUtils.toString(entity, "UTF-8")
+            val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
             val statusLine: StatusLine = response.statusLine
 
-            if (statusLine.getStatusCode() === HttpStatus.SC_OK) {
+            if (statusLine.statusCode == HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
                 val jsonObj = jsonParser.parse(responseBody) as JSONObject
                 val enterprise = jsonObj["enterprise"] as JSONObject
@@ -81,6 +82,7 @@ class SalesforceServiceImpl : SalesforceService {
                 dto.userId = userId
                 dto.list_tp_id = "CH03"
                 dto.list_dt_id = "SPTP01"
+                logger.error("userId : {}", userId)
                 // returnMap["usr_grp_cd"] = salesforceDao.getUsrGrpCd(dto)
                 returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
                 returnMap["msg"] = msg // 테스트용 결과 확인
