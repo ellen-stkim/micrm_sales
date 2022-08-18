@@ -82,7 +82,7 @@ class SalesforceServiceImpl : SalesforceService {
                 dto.userId = userId
                 dto.list_tp_id = "CH03"
                 dto.list_dt_id = "SPTP01"
-                logger.error("userId : {}", userId)
+                logger.error("{}", dto)
                 // returnMap["usr_grp_cd"] = salesforceDao.getUsrGrpCd(dto)
                 returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
                 returnMap["msg"] = msg // 테스트용 결과 확인
