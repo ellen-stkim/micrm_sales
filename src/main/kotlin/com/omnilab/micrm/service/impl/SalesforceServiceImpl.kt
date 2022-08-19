@@ -69,7 +69,7 @@ class SalesforceServiceImpl : SalesforceService {
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
             val statusLine: StatusLine = response.statusLine
-
+            logger.error("responseBody : {}", responseBody)
             if (statusLine.statusCode == HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
                 val jsonObj = jsonParser.parse(responseBody) as JSONObject
@@ -106,7 +106,7 @@ class SalesforceServiceImpl : SalesforceService {
                     acceptableMediaType.add(MediaType.APPLICATION_JSON)
                     headers.accept = acceptableMediaType
 
-                    val getToken: ResponseEntity<String> = restTemplate.exchange("${restUrl.cd_val}/v1/requestToken", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                    val getToken: ResponseEntity<String> = restTemplate.exchange("${restUrl.cd_val}/v1/requestToken", HttpMethod.POST, org.springframework.http.HttpEntity(null, headers), String::class.java)
                     logger.error("{}", getToken)
 
 
