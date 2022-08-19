@@ -60,6 +60,7 @@ class SalesforceServiceImpl : SalesforceService {
         val host: String = dto.host as String
         val token: String = dto.token as String
 
+        logger.error("token : {}", token)
         try {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
@@ -108,9 +109,6 @@ class SalesforceServiceImpl : SalesforceService {
 
                     val getToken: ResponseEntity<String> = restTemplate.exchange("${restUrl.cd_val}/v1/requestToken", HttpMethod.POST, org.springframework.http.HttpEntity(null, headers), String::class.java)
                     logger.error("{}", getToken)
-
-
-
 
                     /*
                     headers.set("Authorization", "Bearer $token")
