@@ -94,6 +94,9 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_desc)">
 				and CD_DESC = #{cd_desc}
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(par_id)">
+				and PAR_ID = #{par_id}
+			</if>
 		</where>
 	</select>
 

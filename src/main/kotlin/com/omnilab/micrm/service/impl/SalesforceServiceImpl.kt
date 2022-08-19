@@ -92,19 +92,31 @@ class SalesforceServiceImpl : SalesforceService {
                 if(userInfo == null){
                     userInfo = salesforceDao.sel_usrInfo(SalesforceDto(organizationId))
                     val commDto = Tblmi_comm_cdDto()
-                    commDto.grp_id = "SALES_REST_URL"
                     commDto.cd_id = userInfo!!.usr_grp_cd
-                    val urlInfo = systemDao.getCommCD(commDto)
+                    commDto.par_id = "SALESFORCE"
+                    val urlInfo = systemDao.getCommCDLst(commDto)
 
+                    // Get Token
+                    val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+                    val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
+                    val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
                     val headers = HttpHeaders()
                     headers.contentType = MediaType.APPLICATION_JSON
                     val acceptableMediaType: MutableList<MediaType> = ArrayList()
                     acceptableMediaType.add(MediaType.APPLICATION_JSON)
                     headers.accept = acceptableMediaType
-                    headers.set("Authorization", "Bearer $token")
 
+                    val getToken: ResponseEntity<String> = restTemplate.exchange("${restUrl.cd_val}/v1/requestToken", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                    logger.error("{}", getToken)
+
+
+
+
+                    /*
+                    headers.set("Authorization", "Bearer $token")
                     val result: ResponseEntity<String> = restTemplate.exchange("${urlInfo!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
                     logger.error("{}", result)
+                    */
                 }else{
                     returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
                     returnMap["msg"] = msg // 테스트용 결과 확인
