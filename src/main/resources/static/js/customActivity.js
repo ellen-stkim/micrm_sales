@@ -89,6 +89,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let param = {host: host, fuel2token: fuel2token, token: token}
+		console.log(param);
         com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
 	}
 
