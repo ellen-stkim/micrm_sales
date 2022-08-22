@@ -58,9 +58,9 @@ class SalesforceServiceImpl : SalesforceService {
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
         logger.error("dto : {}", dto)
         val returnMap: MutableMap<String, Any> = HashMap()
-        val host: String = dto.host as String
-        val token: String = dto.token as String
-        val fuel2token: String = dto.fuel2token as String
+        val host: String = dto.host!!
+        val token: String = dto.token!!
+        val fuel2token: String = dto.fuelToken!! 
 
         try {
             val client: HttpClient = HttpClients.createDefault()
