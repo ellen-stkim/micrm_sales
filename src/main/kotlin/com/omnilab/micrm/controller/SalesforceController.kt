@@ -10,7 +10,9 @@ import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
 import com.omnilab.micrm.service.SalesforceService
 import com.omnilab.micrm.service.SysSettingService
-
+import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
+import org.apache.commons.io.FilenameUtils
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
@@ -18,22 +20,17 @@ import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.ModelAndView
-import java.io.InputStreamReader
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator;
-import org.apache.commons.io.FilenameUtils
-import org.apache.commons.io.IOUtils
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.MediaType
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.ModelAndView
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.InputStreamReader
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
 import javax.imageio.ImageIO
@@ -455,7 +452,12 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/getUser.ajax")
-    fun getUser(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
+    fun getUser(@ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse): Map<String, Any> {
+        val parameterNames: Enumeration<String> = req.getParameterNames()
+        while (parameterNames.hasMoreElements()) {
+            val paramName = parameterNames.nextElement()
+            logger.error("{} : {}", paramName, req.getParameterValues(paramName))
+        }
         return salesforceService.getUser(dto)
     }
 

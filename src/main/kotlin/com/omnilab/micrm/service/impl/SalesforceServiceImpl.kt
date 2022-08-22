@@ -60,13 +60,13 @@ class SalesforceServiceImpl : SalesforceService {
         val returnMap: MutableMap<String, Any> = HashMap()
         val host: String = dto.host!!
         val token: String = dto.token!!
-        val fuel2token: String = dto.token2!!
+        //val token2: String = dto.token2!!
 
         try {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
             httpGet.addHeader("Content-type", "application/json")
-            httpGet.addHeader("Authorization", "Bearer $fuel2token")
+            httpGet.addHeader("Authorization", "Bearer $token")
             val response: CloseableHttpResponse = client.execute(httpGet) as CloseableHttpResponse
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
