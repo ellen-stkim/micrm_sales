@@ -31,6 +31,9 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.util.regex.Pattern
@@ -54,6 +57,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     @Qualifier("ContentDaoImpl")
     private lateinit var contentDao: ContentDao
+
+    @Autowired
+    private lateinit var authenticationManager: AuthenticationManager
+
 
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
         logger.error("dto : {}", dto)
@@ -91,15 +98,28 @@ class SalesforceServiceImpl : SalesforceService {
                 dto.list_tp_id = "CH03"
                 dto.list_dt_id = "SPTP01"
 
-                var userInfo = salesforceDao.sel_usrInfo(dto)
+                val userInfo = salesforceDao.sel_usrInfo(dto)
                 if(userInfo == null){
-                    userInfo = salesforceDao.sel_usrInfo(SalesforceDto(organizationId))
+                    val commDto = Tblmi_comm_cdDto()
+                    commDto.par_id = "SALESFORCE"
+                    commDto.cd_id = "01"
+                    commDto.grp_id = "SALES_MID"
+                    val usrGrpCd = systemDao.getCommCD(commDto)
+
+                    if(usrGrpCd == null){
+                        returnMap["status"] = "false"
+                    }else{
+                        returnMap["usr_grp_cd"] = usrGrpCd.cd_val!!  // 테스트용 세일즈포스 테스트 그룹
+                        returnMap["msg"] = msg // 테스트용 결과 확인
+                        returnMap["status"] = "true"
+                    }
+                    // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
+                    /*
                     val commDto = Tblmi_comm_cdDto()
                     commDto.cd_id = userInfo!!.usr_grp_cd
                     commDto.par_id = "SALESFORCE"
                     val urlInfo = systemDao.getCommCDLst(commDto)
 
-                    // Get Token
                     val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
                     val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
                     val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
@@ -112,9 +132,12 @@ class SalesforceServiceImpl : SalesforceService {
 
                     headers.set("Authorization", "Bearer $token")
                     val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-                    logger.error("{}", result)
+                    */
                 }else{
-                    returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
+                    val token: Authentication = UsernamePasswordAuthenticationToken(userInfo.usr_id, userInfo.usr_id)
+                    val auth = authenticationManager.authenticate(token)
+
+                    returnMap["usr_grp_cd"] = userInfo.usr_grp_cd!!  // 테스트용 세일즈포스 테스트 그룹
                     returnMap["msg"] = msg // 테스트용 결과 확인
                     returnMap["status"] = "true"
                 }
