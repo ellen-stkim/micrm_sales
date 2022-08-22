@@ -113,7 +113,7 @@ define(["postmonger"], function (Postmonger) {
 
 	function onGetEndpoints(endpoints) {
 		//console.log("endpoints == " + JSON.stringify(endpoints));
-		console.log("onGetEndpoints " + tokens);
+		console.log("onGetEndpoints " + endpoints);
 
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;
