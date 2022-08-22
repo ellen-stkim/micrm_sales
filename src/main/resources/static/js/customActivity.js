@@ -86,7 +86,7 @@ define(["postmonger"], function (Postmonger) {
             } else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
-				location.reload();
+				parent.location.reload();
             }
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
