@@ -10,7 +10,7 @@ class SalesforceDto {
 
     var host: String? = null
     var token: String? = null
-    val token2: String? = null
+    var fuel2token: String? = null
 
     var enterpriseId: Long? = null
     var organizationId: Long? = null

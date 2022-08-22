@@ -453,11 +453,6 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/getUser.ajax")
     fun getUser(@ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse): Map<String, Any> {
-        val parameterNames: Enumeration<String> = req.getParameterNames()
-        while (parameterNames.hasMoreElements()) {
-            val paramName = parameterNames.nextElement()
-            logger.error("{} : {}", paramName, req.getParameterValues(paramName))
-        }
         return salesforceService.getUser(dto)
     }
 
