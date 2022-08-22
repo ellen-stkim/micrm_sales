@@ -73,7 +73,7 @@ define(["postmonger"], function (Postmonger) {
 	}
 
     // 사용자 조회
-	function getUser(host, token) {
+	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
             if (response.status == "true") {
                 $('#usr_grp_cd').val(response.usr_grp_cd);
@@ -88,14 +88,12 @@ define(["postmonger"], function (Postmonger) {
                 alert('사용자 조회에 실패하였습니다.');
             }
         }
-        let param = {host: host, token: token}
+        let param = {host: host, fuel2token: fuel2token, token: token}
         com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
 	}
 
 	function onGetTokens(tokens) {
 		//console.log("tokens == " + JSON.stringify(tokens));
-		console.log("onGetTokens ");
-		console.log(tokens);
 
 		if(tokens) {
 			fuel2token = tokens.fuel2token;
@@ -104,7 +102,7 @@ define(["postmonger"], function (Postmonger) {
 			if(cnt == 2) {
                 // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
                 if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
-                    getUser(fuelapiRestHost, fuel2token);
+                    getUser(fuelapiRestHost, fuel2token, tokens.token);
                 } else {
                     mappingLst();
                 }
@@ -114,8 +112,6 @@ define(["postmonger"], function (Postmonger) {
 
 	function onGetEndpoints(endpoints) {
 		//console.log("endpoints == " + JSON.stringify(endpoints));
-		console.log("onGetEndpoints ");
-		console.log(endpoints);
 
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;

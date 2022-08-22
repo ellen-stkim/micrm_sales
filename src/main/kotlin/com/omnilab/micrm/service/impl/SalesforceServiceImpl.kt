@@ -65,7 +65,7 @@ class SalesforceServiceImpl : SalesforceService {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
             httpGet.addHeader("Content-type", "application/json")
-            httpGet.addHeader("Authorization", "Bearer $token")
+            httpGet.addHeader("Authorization", "Bearer $fuel2token")
             val response: CloseableHttpResponse = client.execute(httpGet) as CloseableHttpResponse
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
@@ -102,20 +102,16 @@ class SalesforceServiceImpl : SalesforceService {
                     val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
                     val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
                     val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
+
                     val headers = HttpHeaders()
                     headers.contentType = MediaType.APPLICATION_JSON
                     val acceptableMediaType: MutableList<MediaType> = ArrayList()
                     acceptableMediaType.add(MediaType.APPLICATION_JSON)
                     headers.accept = acceptableMediaType
 
-                    val getToken: ResponseEntity<String> = restTemplate.exchange("${restUrl.cd_val}/v1/requestToken", HttpMethod.POST, org.springframework.http.HttpEntity(null, headers), String::class.java)
-                    logger.error("{}", getToken)
-
-                    /*
                     headers.set("Authorization", "Bearer $token")
-                    val result: ResponseEntity<String> = restTemplate.exchange("${urlInfo!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                    val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
                     logger.error("{}", result)
-                    */
                 }else{
                     returnMap["usr_grp_cd"] = "04"  // 테스트용 세일즈포스 테스트 그룹
                     returnMap["msg"] = msg // 테스트용 결과 확인
