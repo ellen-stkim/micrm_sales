@@ -88,8 +88,7 @@ define(["postmonger"], function (Postmonger) {
                 alert('사용자 조회에 실패하였습니다.');
             }
         }
-        let param = {host: host, fuel2token: fuel2token, token: token}
-		console.log(param);
+        let param = { host: host, fuelToken: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
 	}
 
