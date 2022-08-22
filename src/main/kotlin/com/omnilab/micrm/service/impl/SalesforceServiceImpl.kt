@@ -10,6 +10,7 @@ import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
+import com.omnilab.micrm.service.CustomAuthenticationProvider
 import com.omnilab.micrm.service.SalesforceService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import org.apache.http.HttpEntity
@@ -32,6 +33,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
@@ -59,7 +61,7 @@ class SalesforceServiceImpl : SalesforceService {
     private lateinit var contentDao: ContentDao
 
     @Autowired
-    private lateinit var authenticationManager: AuthenticationManager
+    private lateinit var customAuthenticationProvider: AuthenticationProvider
 
 
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
@@ -135,7 +137,7 @@ class SalesforceServiceImpl : SalesforceService {
                     */
                 }else{
                     val token: Authentication = UsernamePasswordAuthenticationToken(userInfo.usr_id, userInfo.usr_id)
-                    val auth = authenticationManager.authenticate(token)
+                    val auth = customAuthenticationProvider.authenticate(token)
 
                     returnMap["usr_grp_cd"] = userInfo.usr_grp_cd!!  // 테스트용 세일즈포스 테스트 그룹
                     returnMap["msg"] = msg // 테스트용 결과 확인
