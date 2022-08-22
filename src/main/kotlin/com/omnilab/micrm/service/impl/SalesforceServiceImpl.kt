@@ -59,6 +59,7 @@ class SalesforceServiceImpl : SalesforceService {
         val returnMap: MutableMap<String, Any> = HashMap()
         val host: String = dto.host as String
         val token: String = dto.token as String
+        val fuel2token: String = dto.fuel2token as String
         logger.error("dto : {}", dto)
 
         try {
