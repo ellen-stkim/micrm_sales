@@ -104,8 +104,8 @@ class SalesforceServiceImpl : SalesforceService {
                 if(userInfo == null){
                     val commDto = Tblmi_comm_cdDto()
                     commDto.par_id = "SALESFORCE"
-                    commDto.cd_id = "01"
                     commDto.grp_id = "SALES_MID"
+                    commDto.cd_id = organizationId.toString()
                     val usrGrpCd = systemDao.getCommCD(commDto)
 
                     if(usrGrpCd == null){
