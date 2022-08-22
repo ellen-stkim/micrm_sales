@@ -60,7 +60,7 @@ class SalesforceServiceImpl : SalesforceService {
         val returnMap: MutableMap<String, Any> = HashMap()
         val host: String = dto.host!!
         val token: String = dto.token!!
-        val fuel2token: String = dto.fuelToken!! 
+        val fuel2token: String = dto.token2!!
 
         try {
             val client: HttpClient = HttpClients.createDefault()
