@@ -94,7 +94,7 @@ define(["postmonger"], function (Postmonger) {
 
 	function onGetTokens(tokens) {
 		//console.log("tokens == " + JSON.stringify(tokens));
-		console.log(tokens);
+		console.log("onGetTokens " + tokens);
 
 		if(tokens) {
 			fuel2token = tokens.fuel2token;
@@ -113,6 +113,8 @@ define(["postmonger"], function (Postmonger) {
 
 	function onGetEndpoints(endpoints) {
 		//console.log("endpoints == " + JSON.stringify(endpoints));
+		console.log("onGetEndpoints " + tokens);
+
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;
 			cnt++;
