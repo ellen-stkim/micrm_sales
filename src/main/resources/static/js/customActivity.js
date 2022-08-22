@@ -95,6 +95,7 @@ define(["postmonger"], function (Postmonger) {
 	function onGetTokens(tokens) {
 		//console.log("tokens == " + JSON.stringify(tokens));
 		console.log(tokens);
+
 		if(tokens) {
 			fuel2token = tokens.fuel2token;
 			cnt++;
