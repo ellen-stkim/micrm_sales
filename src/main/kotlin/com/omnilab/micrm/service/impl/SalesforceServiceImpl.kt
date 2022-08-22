@@ -59,8 +59,7 @@ class SalesforceServiceImpl : SalesforceService {
         val returnMap: MutableMap<String, Any> = HashMap()
         val host: String = dto.host as String
         val token: String = dto.token as String
-
-        logger.error("token : {}", token)
+        logger.error("dto : {}", dto)
         try {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
