@@ -60,6 +60,7 @@ class SalesforceServiceImpl : SalesforceService {
         val host: String = dto.host as String
         val token: String = dto.token as String
         logger.error("dto : {}", dto)
+        
         try {
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
@@ -70,6 +71,7 @@ class SalesforceServiceImpl : SalesforceService {
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
             val statusLine: StatusLine = response.statusLine
             logger.error("responseBody : {}", responseBody)
+
             if (statusLine.statusCode == HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
                 val jsonObj = jsonParser.parse(responseBody) as JSONObject
