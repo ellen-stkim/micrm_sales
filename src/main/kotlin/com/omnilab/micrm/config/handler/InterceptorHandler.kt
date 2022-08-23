@@ -7,10 +7,12 @@ import com.omnilab.micrm.repository.CommonDao
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.http.ResponseCookie
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+
 
 class InterceptorHandler : HandlerInterceptor {
 
@@ -27,6 +29,7 @@ class InterceptorHandler : HandlerInterceptor {
     }
 
     override fun postHandle(req: HttpServletRequest, rep: HttpServletResponse, handler: Any, modelAndView: ModelAndView?) {
+        rep.setHeader("Set-Cookie", "JSESSIONID=" + req.requestedSessionId + "; path=/; Secure;  SameSite=None")
         super.postHandle(req, rep, handler, modelAndView)
     }
 

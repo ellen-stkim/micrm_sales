@@ -72,14 +72,6 @@ class MvcConfig : WebMvcConfigurer {
         registry.addViewController("/").setViewName("forward:/index.mi")
     }
 
-    @Bean
-    fun interceptorhandler(): InterceptorHandler {
-        return InterceptorHandler()
-    }
-    /*override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(InterceptorHandler())
-    }*/
-
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(interceptorhandler())
     }
@@ -89,6 +81,11 @@ class MvcConfig : WebMvcConfigurer {
         converters.add(JacksonConverter())
         converters.add(byteArrayHttpMessageConverter())
         converters.add(ResourceHttpMessageConverter())
+    }
+
+    @Bean
+    fun interceptorhandler(): InterceptorHandler {
+        return InterceptorHandler()
     }
 
     @Bean // naver-lucy-filter
