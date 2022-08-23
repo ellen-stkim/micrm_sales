@@ -94,7 +94,6 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
-
                 val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
                 val auth = customAuthenticationProvider.authenticate(token)
                 if (auth.isAuthenticated) {
@@ -103,6 +102,7 @@ class SalesforceServiceImpl : SalesforceService {
                     returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                     returnMap["msg"] = msg
                     returnMap["status"] = "true"
+                    logger.error("{}", "이야호호호옿옿ㅇ홍홍호옿오호")
                 }else{
                     returnMap["status"] = "false"
                 }
