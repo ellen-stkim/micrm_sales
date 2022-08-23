@@ -2,10 +2,7 @@ package com.omnilab.micrm.service
 
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.Block_searchDto
-import com.omnilab.micrm.model.table.Tblmi_block_lstDto
-import com.omnilab.micrm.model.table.Tblmi_usrDto
-import com.omnilab.micrm.model.table.Tblmi_usr_authDto
-import com.omnilab.micrm.model.table.Tblmi_usr_log_hstDto
+import com.omnilab.micrm.model.table.*
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,13 +46,30 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         val userInfo: Tblmi_usrDto? = sqlSession.selectOne("sel_login", loginDto)
 
         if(userInfo == null){
-            val info: Tblmi_usrDto? = sqlSession.selectOne("sel_tblmi_usr", loginDto)
-            if(info != null){
-                sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(info.usr_grp_cd!!, info.usr_id!!, info.usr_email!!, ip, "1"))
+            val commDto = Tblmi_comm_cdDto()
+            commDto.par_id = "SALESFORCE"
+            commDto.grp_id = "SALES_MID"
+            commDto.cd_id = usr_email
+            val usrGrpCd = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", commDto)
+
+            if(usrGrpCd == null){
+                val info: Tblmi_usrDto? = sqlSession.selectOne("sel_tblmi_usr", loginDto)
+                if(info != null){
+                    sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(info.usr_grp_cd!!, info.usr_id!!, info.usr_email!!, ip, "1"))
+                }else{
+                    sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(usr_email, ip, "1"))
+                }
+                throw BadCredentialsException("BAD")
             }else{
-                sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(usr_email, ip, "1"))
+                //세일즈 포스 접속
+                val result = UsernamePasswordAuthenticationToken(usr_email, "", null)
+                val uInfo = Tblmi_usrDto()
+                uInfo.usr_sales_id = usr_pw
+                uInfo.usr_sales_org_id = usr_email
+                uInfo.usr_grp_cd = usrGrpCd.cd_val
+                result.details = uInfo
+                return result
             }
-            throw BadCredentialsException("BAD")
         }else{
             val usrSt = userInfo.usr_st
             if(usrSt.equals("2")){
@@ -66,7 +80,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 throw BadCredentialsException("차단 계정입니다. 관리자에 문의해 주세요.")
             }
             /*IP 차단 확인*/
-            val blockDto : Tblmi_block_lstDto = Tblmi_block_lstDto()
+            val blockDto = Tblmi_block_lstDto()
             blockDto.block_target = ip
             blockDto.block_grp_cd = userInfo.usr_grp_cd
             val ipBlockDto : List<Tblmi_block_lstDto> = sqlSession.selectList("getBlockBlockDto", blockDto)

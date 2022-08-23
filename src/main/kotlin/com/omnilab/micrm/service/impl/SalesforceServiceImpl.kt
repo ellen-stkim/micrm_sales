@@ -36,6 +36,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.util.regex.Pattern
@@ -93,56 +94,38 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
-                //사용자 조회
-                dto.enterpriseId = enterpriseId
-                dto.organizationId = organizationId
-                dto.userId = userId
-                dto.list_tp_id = "CH03"
-                dto.list_dt_id = "SPTP01"
 
-                val userInfo = salesforceDao.sel_usrInfo(dto)
-                if(userInfo == null){
-                    val commDto = Tblmi_comm_cdDto()
-                    commDto.par_id = "SALESFORCE"
-                    commDto.grp_id = "SALES_MID"
-                    commDto.cd_id = organizationId.toString()
-                    val usrGrpCd = systemDao.getCommCD(commDto)
-
-                    if(usrGrpCd == null){
-                        returnMap["status"] = "false"
-                    }else{
-                        returnMap["usr_grp_cd"] = usrGrpCd.cd_val!!  // 테스트용 세일즈포스 테스트 그룹
-                        returnMap["msg"] = msg // 테스트용 결과 확인
-                        returnMap["status"] = "true"
-                    }
-                    // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
-                    /*
-                    val commDto = Tblmi_comm_cdDto()
-                    commDto.cd_id = userInfo!!.usr_grp_cd
-                    commDto.par_id = "SALESFORCE"
-                    val urlInfo = systemDao.getCommCDLst(commDto)
-
-                    val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
-                    val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
-                    val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
-
-                    val headers = HttpHeaders()
-                    headers.contentType = MediaType.APPLICATION_JSON
-                    val acceptableMediaType: MutableList<MediaType> = ArrayList()
-                    acceptableMediaType.add(MediaType.APPLICATION_JSON)
-                    headers.accept = acceptableMediaType
-
-                    headers.set("Authorization", "Bearer $token")
-                    val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-                    */
-                }else{
-                    val token: Authentication = UsernamePasswordAuthenticationToken(userInfo.usr_id, userInfo.usr_id)
-                    val auth = customAuthenticationProvider.authenticate(token)
-
-                    returnMap["usr_grp_cd"] = userInfo.usr_grp_cd!!  // 테스트용 세일즈포스 테스트 그룹
-                    returnMap["msg"] = msg // 테스트용 결과 확인
+                val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+                val auth = customAuthenticationProvider.authenticate(token)
+                if (auth.isAuthenticated) {
+                    SecurityContextHolder.getContext().authentication = auth
+                    val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
+                    returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
+                    returnMap["msg"] = msg
                     returnMap["status"] = "true"
+                }else{
+                    returnMap["status"] = "false"
                 }
+                // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
+                /*
+                val commDto = Tblmi_comm_cdDto()
+                commDto.cd_id = userInfo!!.usr_grp_cd
+                commDto.par_id = "SALESFORCE"
+                val urlInfo = systemDao.getCommCDLst(commDto)
+
+                val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+                val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
+                val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
+
+                val headers = HttpHeaders()
+                headers.contentType = MediaType.APPLICATION_JSON
+                val acceptableMediaType: MutableList<MediaType> = ArrayList()
+                acceptableMediaType.add(MediaType.APPLICATION_JSON)
+                headers.accept = acceptableMediaType
+
+                headers.set("Authorization", "Bearer $token")
+                val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                */
             } else {
                 logger.error("tokenContext fail: $responseBody")
             }
