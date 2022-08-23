@@ -51,15 +51,30 @@
                         <div class="td flex_row">
                             <div class="sms_option cf">
                                 <label class="custom_check2 kakao">
-                                    <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
+                                    <c:if test="${kakaoCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
+                                    </c:if>
+                                    <c:if test="${kakaoCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="kakao" class="formatType" disabled/>
+                                    </c:if>
                                     <span>카카오톡</span>
                                 </label>
                                 <label class="custom_check2 sms">
-                                    <input name="formatType" type="checkbox" value="sms" class="formatType" />
+                                    <c:if test = "${smsCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="sms" class="formatType" />
+                                    </c:if>
+                                    <c:if test = "${smsCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="sms" class="formatType" disabled/>
+                                    </c:if>
                                     <span>문자</span>
                                 </label>
                                 <label class="custom_check2 rcs">
-                                    <input name="formatType" type="checkbox" value="rcs" class="formatType"/>
+                                    <c:if test ="${rcsCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="rcs" class="formatType"/>
+                                    </c:if>
+                                    <c:if test ="${rcsCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="rcs" class="formatType" disabled/>
+                                    </c:if>
                                     <span class="en_font">RCS</span>
                                 </label>
                             </div>
@@ -178,28 +193,6 @@
                                                         <ul class="option mappingLst">
                                                         </ul>
                                                     </div>
-                                                    <div class="select" id="kakaoValue" name="defaultDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option">
-                                                            <li data="{{USR_ID}}">회원번호</li>
-                                                            <li data="{{USR_NM}}">이름</li>
-                                                            <li data="{{USR_MOB}}">모바일</li>
-                                                            <li data="{{USR_EDM}}">이메일</li>
-                                                            <li data="{{USR_GDR}}">성별</li>
-                                                            <li data="{{USR_ADDR}}">주소</li>
-                                                            <li data="{{USR_ETC1}}">ETC1</li>
-                                                            <li data="{{USR_ETC2}}">ETC2</li>
-                                                            <li data="{{USR_ETC3}}">ETC3</li>
-                                                            <li data="{{USR_ETC4}}">ETC4</li>
-                                                            <li data="{{USR_ETC5}}">ETC5</li>
-                                                            <li data="{{USR_ETC6}}">ETC6</li>
-                                                            <li data="{{USR_ETC7}}">ETC7</li>
-                                                            <li data="{{USR_ETC8}}">ETC8</li>
-                                                            <li data="{{USR_ETC9}}">ETC9</li>
-                                                            <li data="{{USR_ETC10}}">ETC10</li>
-                                                        </ul>
-                                                    </div>
                                                     <!-- select 영역 끝 -->
                                                 </div>
                                             </div>
@@ -236,7 +229,7 @@
                                 <div class="viewer_area">
                                     <div class="top">카카오톡 본문 입력창</div>
                                     <div class="inner">
-                                        <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10"
+                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
                                                   onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
                                     </div>
                                     <div class="byte">
@@ -269,29 +262,6 @@
                                                 <ul class="option mappingLst">
                                                 </ul>
                                             </div>
-                                            <div class="select column_4 left-border" id="smsTitleVal" name="defaultDB">
-                                                <!-- selected value -->
-                                                <div class="value" data="0">제목 개인화 변수</div>
-                                                <ul class="option">
-                                                    <li data="{{USR_ID}}">회원번호</li>
-                                                    <li data="{{USR_NM}}">이름</li>
-                                                    <li data="{{USR_MOB}}">모바일</li>
-                                                    <li data="{{USR_EDM}}">이메일</li>
-                                                    <li data="{{USR_GDR}}">성별</li>
-                                                    <li data="{{USR_ADDR}}">주소</li>
-                                                    <li data="{{USR_ETC1}}">ETC1</li>
-                                                    <li data="{{USR_ETC2}}">ETC2</li>
-                                                    <li data="{{USR_ETC3}}">ETC3</li>
-                                                    <li data="{{USR_ETC4}}">ETC4</li>
-                                                    <li data="{{USR_ETC5}}">ETC5</li>
-                                                    <li data="{{USR_ETC6}}">ETC6</li>
-                                                    <li data="{{USR_ETC7}}">ETC7</li>
-                                                    <li data="{{USR_ETC8}}">ETC8</li>
-                                                    <li data="{{USR_ETC9}}">ETC9</li>
-                                                    <li data="{{USR_ETC10}}">ETC10</li>
-                                                </ul>
-                                            </div>
-                                            <!-- select 영역 끝 -->
                                         </div>
                                     </div>
                                     <div class="row body">
@@ -314,16 +284,18 @@
                                             <div class="row">
                                                 <div class="th">문자 종류</div>
                                                 <div class="td">
-                                                    <label class="custom_radio">LMS<input class="smsType" name="sms_msg_tp"
-                                                                                          type="radio"
-                                                                                          value="LMS"
-                                                                                          checked/><span></span></label>
-                                                    <label class="custom_radio">MMS<input class="smsType" name="sms_msg_tp"
-                                                                                          type="radio"
-                                                                                          value="MMS"/><span></span></label>
-                                                    <label class="custom_radio">SMS<input class="smsType" name="sms_msg_tp"
-                                                                                          type="radio"
-                                                                                          value="SMS"/><span></span></label>
+                                                    <label class="custom_radio">LMS
+                                                        <input class="smsType" name="sms_msg_tp" type="radio" value="LMS" checked/>
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="custom_radio">MMS
+                                                        <input class="smsType" name="sms_msg_tp" type="radio" value="MMS"/>
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="custom_radio">SMS
+                                                        <input class="smsType" name="sms_msg_tp" type="radio" value="SMS"/>
+                                                        <span></span>
+                                                    </label>
                                                 </div>
                                                 <input type="hidden" name="mms_imgurl"/>
                                             </div>
@@ -334,11 +306,9 @@
                                                         <!--<img src="../../image/btn_delete1.png" alt="삭제">-->
                                                         <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                     </div>
-                                                    <input type="text" class="txt_input" name="" id="smsImage"
-                                                           placeholder="이미지를 선택해 주세요." readonly/>
+                                                    <input type="text" class="txt_input" name="" id="smsImage" placeholder="이미지를 선택해 주세요." readonly/>
                                                     <input type="hidden" name="mds_img_cd" value=""/>
-                                                    <span class="btn_sm_line" data="smsImage"
-                                                          onclick="imageListPopUp('1', 'smsImage');">선택</span>
+                                                    <span class="btn_sm_line" data="smsImage" onclick="imageListPopUp('1', 'smsImage');">선택</span>
                                                 </div>
                                             </div>
                                             <div class="row flex_row input-img">
@@ -359,29 +329,6 @@
                                                         <ul class="option mappingLst">
                                                         </ul>
                                                     </div>
-                                                    <div class="select" id="smsContsVal" name="defaultDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option">
-                                                            <li data="{{USR_ID}}">회원번호</li>
-                                                            <li data="{{USR_NM}}">이름</li>
-                                                            <li data="{{USR_MOB}}">모바일</li>
-                                                            <li data="{{USR_EDM}}">이메일</li>
-                                                            <li data="{{USR_GDR}}">성별</li>
-                                                            <li data="{{USR_ADDR}}">주소</li>
-                                                            <li data="{{USR_ETC1}}">ETC1</li>
-                                                            <li data="{{USR_ETC2}}">ETC2</li>
-                                                            <li data="{{USR_ETC3}}">ETC3</li>
-                                                            <li data="{{USR_ETC4}}">ETC4</li>
-                                                            <li data="{{USR_ETC5}}">ETC5</li>
-                                                            <li data="{{USR_ETC6}}">ETC6</li>
-                                                            <li data="{{USR_ETC7}}">ETC7</li>
-                                                            <li data="{{USR_ETC8}}">ETC8</li>
-                                                            <li data="{{USR_ETC9}}">ETC9</li>
-                                                            <li data="{{USR_ETC10}}">ETC10</li>
-                                                        </ul>
-                                                    </div>
-                                                    <!-- select 영역 끝 -->
                                                 </div>
                                             </div>
                                         </div>
@@ -389,8 +336,7 @@
                                             <div class="row">
                                                 <div class="th">추적 링크 생성</div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input" id="smsTracking"
-                                                           placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                     <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                     <input type="hidden" name="sms_trackinglink"/>
                                                 </div>
@@ -403,8 +349,7 @@
                                     <div class="inner">
 <%--                                        <div class="sms_title" id="sms_title"></div>--%>
 <%--                                        <div class="sms_img"></div>--%>
-                                        <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10"
-                                                  onkeyup="smsCreate.byteCount(this, 'sms');"></textarea>
+                                        <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'sms');"></textarea>
                                     </div>
                                     <div class="byte">
                                         <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
@@ -421,18 +366,21 @@
                             <div class="row body">
                                 <div class="th">포맷카드</div>
                                 <div class="column_2 right-border">
-                                    <label class="type_check"><input type="radio" name="rcs_format_type" class="rcsType"
-                                                                     value="text"
-                                                                     checked/><span>텍스트형</span></label>
+                                    <label class="type_check">
+                                        <input type="radio" name="rcs_format_type" class="rcsType" value="text" checked />
+                                        <span>텍스트형</span>
+                                    </label>
                                     <%--<label class="type_check"><input type="radio" name="rcs_format_type" class="rcsType"
                                                                      value="horizontal"
                                                                      /><span>가로형</span></label>--%>
-                                    <label class="type_check"><input type="radio" name="rcs_format_type" class="rcsType"
-                                                                     value="vertical"
-                                                                     /><span>세로형</span></label>
-                                    <label class="type_check"><input type="radio" name="rcs_format_type" class="rcsType"
-                                                                     value="slide"
-                                                                     /><span>슬라이드형</span></label>
+                                    <label class="type_check">
+                                        <input type="radio" name="rcs_format_type" class="rcsType" value="vertical" />
+                                        <span>세로형</span>
+                                    </label>
+                                    <label class="type_check">
+                                        <input type="radio" name="rcs_format_type" class="rcsType" value="slide"/>
+                                        <span>슬라이드형</span>
+                                    </label>
                                 </div>
                                 <div class="view_title left">미리보기</div>
                             </div>
@@ -443,12 +391,14 @@
                                     <div class="row body">
                                         <div class="th">카드 양식</div>
                                         <div class="column_1">
-                                            <label class="custom_radio en_font">SMS<input name="rcs_msg_tp" class="lowType"
-                                                                                          type="radio" value="sms" checked
-                                                                                          /><span></span></label>
-                                            <label class="custom_radio en_font">LMS<input name="rcs_msg_tp" class="lowType"
-                                                                                          type="radio" value="lms"
-                                                                                          /><span></span></label>
+                                            <label class="custom_radio en_font">SMS
+                                                <input name="rcs_msg_tp" class="lowType" type="radio" value="sms" checked />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">LMS
+                                                <input name="rcs_msg_tp" class="lowType" type="radio" value="lms"/>
+                                                <span></span>
+                                            </label>
                                         </div>
                                     </div>
                                     <span id="js-title-area"></span>
@@ -479,37 +429,12 @@
                                                                 <ul class="option mappingLst">
                                                                 </ul>
                                                             </div>
-                                                            <div class="select rcsContsVal" name="defaultDB">
-                                                                <!-- selected value -->
-                                                                <div class="value" data="0">개인화 변수</div>
-                                                                <ul class="option" id="dbHtml">
-                                                                    <li data="{{USR_ID}}">회원번호</li>
-                                                                    <li data="{{USR_NM}}">이름</li>
-                                                                    <li data="{{USR_MOB}}">모바일</li>
-                                                                    <li data="{{USR_EDM}}">이메일</li>
-                                                                    <li data="{{USR_GDR}}">성별</li>
-                                                                    <li data="{{USR_ADDR}}">주소</li>
-                                                                    <li data="{{USR_ETC1}}">ETC1</li>
-                                                                    <li data="{{USR_ETC2}}">ETC2</li>
-                                                                    <li data="{{USR_ETC3}}">ETC3</li>
-                                                                    <li data="{{USR_ETC4}}">ETC4</li>
-                                                                    <li data="{{USR_ETC5}}">ETC5</li>
-                                                                    <li data="{{USR_ETC6}}">ETC6</li>
-                                                                    <li data="{{USR_ETC7}}">ETC7</li>
-                                                                    <li data="{{USR_ETC8}}">ETC8</li>
-                                                                    <li data="{{USR_ETC9}}">ETC9</li>
-                                                                    <li data="{{USR_ETC10}}">ETC10</li>
-                                                                </ul>
-                                                            </div>
-                                                            <!-- select 영역 끝 -->
                                                         </div>
                                                     </div>
                                                     <div class="row rcs_textarea">
                                                         <div class="th top-border">내용</div>
                                                         <div class="td top-border">
-                                                            <textarea class="rcsContents" name="rcs_body" id="" cols="30"
-                                                                      rows="10" placeholder="내용을 입력해주세요."
-                                                                      onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
+                                                            <textarea class="rcsContents" name="rcs_body" cols="30" rows="10" placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -541,9 +466,7 @@
                                                         <div class="row">
                                                             <div class="th">버튼 명</div>
                                                             <div class="td button-name">
-                                                                <input type="text" name="rcs_btn_1" class="txt_input action_name"
-                                                                       data="1" onkeyup="rcsCreate.buttonCount(this, 'text');"
-                                                                       placeholder="버튼 명을 입력해주세요."/>
+                                                                <input type="text" name="rcs_btn_1" class="txt_input action_name" data="1" onkeyup="rcsCreate.buttonCount(this, 'text');" placeholder="버튼 명을 입력해주세요."/>
                                                                 <span class="text-count en_font"><span>0</span>/17</span>
                                                             </div>
                                                         </div>
@@ -557,10 +480,7 @@
                                                     <div class="row">
                                                         <div class="th">무료수신거부</div>
                                                         <div class="td">
-                                                            <input type="text" name="rcs_footer"
-                                                                   class="txt_input rejection_num width"
-                                                                   oninput="rcsCreate.rejection(this);"
-                                                                   placeholder="수신거부 번호를 입력해주세요."/>
+                                                            <input type="text" name="rcs_footer" class="txt_input rejection_num width" oninput="rcsCreate.rejection(this);" placeholder="수신거부 번호를 입력해주세요."/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -614,64 +534,55 @@
 <!-- 새 이미지 파일 업로드 팝업 영역 시작 -->
 <span id="imgListHtml"></span>
 <!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
-
 <form:form id="tblmisetForm" name="tblmisetForm" onsubmit="return false">
-    <span id="callPopUp">
-    </span>
+    <span id="callPopUp"></span>
 </form:form>
 
 <form:form id="imgSetForm" name="imgSetForm" onsubmit="return false">
 <span id="imgPopUp">
-        <div class="layer_pop imagePopup">
-    <div class="pop_container popup_size2">
-        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
-        <div class="pop_title">이미지 선택</div>
-        <div class="pop_inner">
-            <div class="form_search">
-                <!-- 검색 영역 시작 -->
-                <input type="text" class="calendar" name="reg_dt" id="from" placeholder="등록일 선택"/>
-                <span class="hyphen"></span>
-                <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
-                <div class="input_txt left-border-none">
-                    <input type="text"  name='img_nm' placeholder="이미지 명 입력"/>
-                    <input type="button" class="btn_search" onclick="imageListPaging('1')" value="검색"/>
+    <div class="layer_pop imagePopup">
+        <div class="pop_container popup_size2">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title">이미지 선택</div>
+            <div class="pop_inner">
+                <div class="form_search">
+                    <!-- 검색 영역 시작 -->
+                    <input type="text" class="calendar" name="reg_dt" id="from" placeholder="등록일 선택"/>
+                    <span class="hyphen"></span>
+                    <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
+                    <div class="input_txt left-border-none">
+                        <input type="text"  name='img_nm' placeholder="이미지 명 입력"/>
+                        <input type="button" class="btn_search" onclick="imageListPaging('1')" value="검색"/>
+                    </div>
+                    <!-- 검색 영역 끝 -->
+                    <!-- 새 이미지 등록 버튼 -->
+                    <div class="btn_new_image" onclick="imgUploadPop();">새 이미지 등록</div>
                 </div>
-                <!-- 검색 영역 끝 -->
-
-                <!-- 새 이미지 등록 버튼 -->
-                <div class="btn_new_image" onclick="imgUploadPop();">새 이미지 등록</div>
+                <form action="" id="imagePop">
+                    <div class="image_container" id="bodyDom">
+                    </div>
+                </form>
+                <div class="btn_row bottom-border left-border right-border">
+                    <ul class="pager" id="pagingDom"></ul>
+                    <input type="hidden" id="imgType" name="imgType" value=""/>
+                </div>
+                <div class="pop_error_txt blue_point_color"></div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장" onclick="imgSendSave();"/>
+                </div>
             </div>
-            <form action="" id="imagePop">
-                <div class="image_container" id="bodyDom">
-                </div>
-        </form>
-        <div class="btn_row bottom-border left-border right-border">
-            <ul class="pager" id="pagingDom">
-            </ul>
-            <input type="hidden" id="imgType" name="imgType" value=""/>
-        </div>
-        <div class="pop_error_txt blue_point_color"></div>
-        <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장"
-                   onclick="imgSendSave();"/>
         </div>
     </div>
-</div>
-</div>
 </span>
 </form:form>
-
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
-
-
 <script>
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
     function getDBValue() {
-        let dbValue = $('input[name="dbInfo"]:checked').val();
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
         let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
 
@@ -680,14 +591,8 @@
         $('.rcsTitleVal[name="defaultDB"] .option').html(defaultDB);
         $('.rcsContsVal[name="defaultDB"] .option').html(defaultDB);
 
-        //if (dbValue == '0') {
-            $('div[name="edmDB"]').show();
-            $('div[name="defaultDB"]').hide();
-        //}
-        //if (dbValue == '1') {
-        //    $('div[name="edmDB"]').hide();
-        //    $('div[name="defaultDB"]').show();
-        //}
+        $('div[name="edmDB"]').show();
+        $('div[name="defaultDB"]').hide();
     }
 
     // 개인화 변수 조회 - 로컬 테스트용
@@ -706,14 +611,12 @@
         com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
     }
 
-    $(document).ready(function () {
+    $(function () {
         $('input[name="dbInfo"]').on('change', function () {
             getDBValue();
         });//end
         getDBValue();
-    });
 
-    $(function () {
         let config = {baseUrl: "/js/"};
         let dependencies = ["customActivity"];
         require(config, dependencies);
@@ -906,17 +809,6 @@
                 return false;
             }
         });
-
-        // 프리뷰에서 저장 버튼 누르기
-        /**
-        $(document).on('click', '#saveBtn' , function() {
-            if($('#seq').val() == '' || $('#seq').val() == null) {
-                mobileSave();
-            } else {
-                popup.confirmAlertCallback("모바일 컨텐츠를 수정 하시겠습니까?", "mobileEdit()");
-            }
-        });
-        */
 
         // RCS 선택 이미지 삭제
         $(document).on('click', '#rcs .delete_img', function () {
@@ -1198,7 +1090,6 @@
                 $(area).html(layout);
             }
             if (actionVal == "RBTN02") {
-
                 layout += '<div class="row">' +
                     '<div class="th top-border">URL</div>' +
                     '<div class="td top-border">' +

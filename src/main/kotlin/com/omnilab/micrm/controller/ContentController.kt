@@ -538,7 +538,6 @@ class ContentController  {
     @GetMapping("/imgLst.mi")
     fun imgLst(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/imgLst")
-        //val dto : Tblmi_cont_imgDto = Tblmi_cont_imgDto()
         val dto = Image_searchDto()
 
         val map = imageService.getImgList(dto)

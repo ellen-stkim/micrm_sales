@@ -61,8 +61,7 @@
                                         <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
                                     </c:if>
                                     <c:if test="${kakaoCnt eq 0}">
-                                        <input name="formatType" type="checkbox" value="kakao" class="formatType"
-                                               disabled/>
+                                        <input name="formatType" type="checkbox" value="kakao" class="formatType" disabled/>
                                     </c:if>
                                     <span>카카오톡</span>
                                 </label>
@@ -88,11 +87,14 @@
                             <div class="inner_option">
                                 <div class="th left-border">개인화 구분</div>
                                 <div class="td">
-                                    <label class="custom_radio en_font db_radio">DB<input name="dbInfo" type="radio"
-                                                                                          value="0"
-                                                                                          checked/><span></span></label>
-                                    <label class="custom_radio db_radio">업로드<input name="dbInfo" type="radio"
-                                                                                   value="1"/><span></span></label>
+                                    <label class="custom_radio en_font db_radio">DB
+                                        <input name="dbInfo" type="radio" value="0" checked/>
+                                        <span></span>
+                                    </label>
+                                    <label class="custom_radio db_radio">업로드
+                                        <input name="dbInfo" type="radio" value="1"/>
+                                        <span></span>
+                                    </label>
                                 </div>
                             </div>
                             <div class="inner_option area2">
@@ -131,10 +133,8 @@
                                     <div class="row body">
                                         <div class="th">문자 제목</div>
                                         <div class="column_1">
-                                                <%--<input type="text" class="title kakaoTitle" name="cont_sub"
-                                                       placeholder="문자 제목을 입력하세요." />--%>
-                                            <input type="text" class="title kakaoTitle" name="cont_sub_list"
-                                                   placeholder="문자 제목을 입력하세요."/>
+                                                <%--<input type="text" class="title kakaoTitle" name="cont_sub" placeholder="문자 제목을 입력하세요." />--%>
+                                            <input type="text" class="title kakaoTitle" name="cont_sub_list" placeholder="문자 제목을 입력하세요."/>
                                             <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@
                                                 <div class="th">개인화 변수</div>
                                                 <div class="td">
                                                     <!-- select 영역 시작 -->
-                                                    <div class="select" id="kakaoValue" name="edmDB">
+                                                    <div class="select" id="" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
                                                         <ul class="option">
@@ -260,7 +260,7 @@
                                 <div class="viewer_area">
                                     <div class="top">카카오톡 본문 입력창</div>
                                     <div class="inner">
-                                        <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10"
+                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
                                                   onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
                                     </div>
                                     <div class="byte">
@@ -722,14 +722,11 @@
         }
     }
 
-    $(document).ready(function () {
+    $(function () {
         $('input[name="dbInfo"]').on('change', function () {
             getDBValue();
         });//end
         getDBValue();
-    });
-
-    $(function () {
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');
