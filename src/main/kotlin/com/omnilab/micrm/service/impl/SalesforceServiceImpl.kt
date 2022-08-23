@@ -81,7 +81,7 @@ class SalesforceServiceImpl : SalesforceService {
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
             val statusLine: StatusLine = response.statusLine
-            logger.error("responseBody : {}", responseBody)
+            //logger.error("responseBody : {}", responseBody)
 
             if (statusLine.statusCode == HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
@@ -1210,16 +1210,13 @@ class SalesforceServiceImpl : SalesforceService {
      */
 
     private fun rcsSlideSetting(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
-        val len = contentListCreatedto?.slide_cont_sub?.size
+        val len = contentListCreatedto.slide_cont_sub?.size
         var slideCnt = 0
 
         if (len != 0) {
-
             val jsonTitle = JSONObject()
             val jsonBody = JSONObject()
-
             for (i in 0 until len!!) {
-
                 slideCnt++
                 val titleIdx = "title" + slideCnt
                 val descriptionIdx = "description" + slideCnt
@@ -1230,7 +1227,6 @@ class SalesforceServiceImpl : SalesforceService {
                 // API -> title , body 모두 입력 (body는 title,description 모두 입력)
                 jsonBody[titleIdx] = contentListCreatedto.slide_cont_sub?.get(i)
                 jsonBody[descriptionIdx] = contentListCreatedto.slide_cont_body?.get(i)
-
             }
 
             val title = jsonTitle.toString()
@@ -1243,7 +1239,7 @@ class SalesforceServiceImpl : SalesforceService {
             val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim()
 
             val cdDto = Tblmi_comm_cdDto()
-            cdDto.cd_id = UsefulUtils.sessionUser().usr_grp_cd
+            cdDto.cd_id = UsefulUtils.sessionUser()?.usr_grp_cd
 
             if (rcsMsgType == "small") {
                 // RCS 슬라 이드형 Small 일 경우
@@ -1914,7 +1910,10 @@ class SalesforceServiceImpl : SalesforceService {
     override fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto): Map<String, Any> {
         // 클릭 값에 따라 이미지가 다르게 보여져야함
         val searchDto = tblmiContImgdto as Image_searchDto
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser()?.usr_grp_cd
+
+        val auth = SecurityContextHolder.getContext().authentication
+        logger.error("{}", auth)
 
         val paginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
         val paramMap: MutableMap<String, Any> = HashMap()
@@ -1946,7 +1945,7 @@ class SalesforceServiceImpl : SalesforceService {
     override fun getImgNmCh(dto:Tblmi_cont_imgDto): Int{
         val idto : Tblmi_cont_imgDto = Tblmi_cont_imgDto()
         idto.img_nm = dto.img_nm
-        //idto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        idto.usr_grp_cd = UsefulUtils.sessionUser()!!.usr_grp_cd
         return contentDao.getImgNmCh(idto)
 
     }

@@ -18,12 +18,15 @@ class UsefulUtils {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     companion object {
-        fun sessionUser(): Tblmi_usrDto {
+        fun sessionUser(): Tblmi_usrDto? {
             val authentication = SecurityContextHolder.getContext().authentication
-            val log = LoggerFactory.getLogger(this::class.java)
-            log.error("{}", authentication)
-            val loginDto: Tblmi_usrDto = authentication.details as Tblmi_usrDto
-            return loginDto
+            if(authentication.isAuthenticated){
+                val loginDto: Tblmi_usrDto = authentication.details as Tblmi_usrDto
+                return loginDto
+            }else{
+                return null
+            }
+
         }
 
         fun makePage(currentPageNo: Int, pageSize: Int, recordCounterPage: Int): PaginationInfo {
