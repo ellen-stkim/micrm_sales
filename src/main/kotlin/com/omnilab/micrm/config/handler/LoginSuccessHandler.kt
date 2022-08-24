@@ -26,6 +26,7 @@ class LoginSuccessHandler : AuthenticationSuccessHandler {
 
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(req: HttpServletRequest, rep: HttpServletResponse, auth: Authentication) {
+        log.error("onAuthenticationSuccess")
         val loginDto : Tblmi_usrDto = auth.details as Tblmi_usrDto
         val session: HttpSession? = req.session
         session?.setAttribute("userId", loginDto.usr_id)

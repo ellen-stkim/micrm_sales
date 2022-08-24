@@ -62,7 +62,6 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 throw BadCredentialsException("BAD")
             }else{
                 //세일즈 포스 접속
-                log.error("{}", "세일즈 포스 접속")
                 val result = UsernamePasswordAuthenticationToken(usr_email, "", null)
                 val uInfo = Tblmi_usrDto()
                 uInfo.usr_id = usr_pw
