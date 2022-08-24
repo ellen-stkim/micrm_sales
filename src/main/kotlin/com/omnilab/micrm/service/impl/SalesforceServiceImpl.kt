@@ -27,6 +27,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -91,9 +92,9 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
-                val check = SecurityContextHolder.getContext().authentication
+                val check: Authentication = SecurityContextHolder.getContext().authentication
                 logger.error("{}", check)
-                if(check.isAuthenticated){
+                if(check !is AnonymousAuthenticationToken){
                     val loginDto: Tblmi_usrDto = check.details as Tblmi_usrDto
                     if(session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
                         if(loginDto.usr_sales_id.isNullOrEmpty()){
@@ -107,7 +108,7 @@ class SalesforceServiceImpl : SalesforceService {
                         SecurityContextHolder.clearContext()
                         val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
                         val auth = customAuthenticationProvider.authenticate(token)
-                        if (auth.isAuthenticated) {
+                        if (auth !is AnonymousAuthenticationToken) {
                             session.setAttribute("MID", userId)
                             SecurityContextHolder.getContext().authentication = auth
                             val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
