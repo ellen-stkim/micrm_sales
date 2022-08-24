@@ -9,4 +9,5 @@ interface SalesforceDao {
     fun sel_usrInfo(dto: SalesforceDto): Tblmi_usrDto?
     fun mappingLst(dto: SalesforceDto): List<SalesforceDto>
 
+    fun upd_usrInfo(dto: Tblmi_usrDto): Int
 }

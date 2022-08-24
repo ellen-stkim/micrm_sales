@@ -5,10 +5,11 @@ import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
+import javax.servlet.http.HttpSession
 
 interface SalesforceService {
 
-    fun getUser(dto: SalesforceDto): Map<String, Any>
+    fun getUser(dto: SalesforceDto, session: HttpSession): Map<String, Any>
 
     fun mappingLst(dto: SalesforceDto) : Map<String, Any>
 

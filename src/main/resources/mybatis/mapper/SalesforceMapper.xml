@@ -38,4 +38,11 @@
         ORDER BY FIELD(DEF_YN, 'Y') DESC, REG_DT DESC
     </select>
 
+    <update id="upd_usrInfo" parameterType="SalesforceDto">
+        update Tblmi_usr set
+            usr_sales_id = #{usr_sales_id}
+        <where>
+            usr_id = #{usr_id}
+        </where>
+    </update>
 </mapper>

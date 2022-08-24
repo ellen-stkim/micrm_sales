@@ -25,4 +25,7 @@ class SalesforceDaoImpl : SalesforceDao {
         return sqlSession.selectList("selectMappingLst", dto)
     }
 
+    override fun upd_usrInfo(dto: Tblmi_usrDto): Int {
+        return sqlSession.update("upd_usrInfo", dto)
+    }
 }

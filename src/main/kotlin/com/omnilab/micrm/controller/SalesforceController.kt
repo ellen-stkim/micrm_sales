@@ -452,7 +452,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/getUser.ajax")
     fun getUser(@ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
-        return salesforceService.getUser(dto)
+        return salesforceService.getUser(dto, session)
     }
 
     /**

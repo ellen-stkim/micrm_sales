@@ -36,6 +36,7 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 import java.util.regex.Pattern
+import javax.servlet.http.HttpSession
 
 
 @Service("SalesforceServiceImpl")
@@ -62,7 +63,7 @@ class SalesforceServiceImpl : SalesforceService {
     private lateinit var customAuthenticationProvider: AuthenticationProvider
 
 
-    override fun getUser(dto: SalesforceDto): Map<String, Any> {
+    override fun getUser(dto: SalesforceDto, session: HttpSession): Map<String, Any> {
         val returnMap: MutableMap<String, Any> = HashMap()
         val host: String = dto.host!!
         val token: String = dto.token!!
@@ -90,37 +91,66 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
-                val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
-                val auth = customAuthenticationProvider.authenticate(token)
-                if (auth.isAuthenticated) {
-                    SecurityContextHolder.getContext().authentication = auth
-                    val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
-                    returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
-                    returnMap["msg"] = msg
-                    returnMap["status"] = "true"
+                val check = SecurityContextHolder.getContext().authentication
+                if(check.isAuthenticated){
+                    val loginDto: Tblmi_usrDto = check.details as Tblmi_usrDto
+                    if(session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
+                        if(loginDto.usr_sales_id.isNullOrEmpty()){
+                            loginDto.usr_sales_id = userId.toString()
+                            salesforceDao.upd_usrInfo(loginDto)
+                        }
+                        returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
+                        returnMap["msg"] = msg
+                        returnMap["status"] = "true"
+                    }else{
+                        SecurityContextHolder.clearContext()
+                        val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+                        val auth = customAuthenticationProvider.authenticate(token)
+                        if (auth.isAuthenticated) {
+                            session.setAttribute("MID", userId)
+                            SecurityContextHolder.getContext().authentication = auth
+                            val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
+                            returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
+                            returnMap["msg"] = msg
+                            returnMap["status"] = "true"
+                        }else{
+                            returnMap["status"] = "false"
+                        }
+                    }
                 }else{
-                    returnMap["status"] = "false"
+                    val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+                    val auth = customAuthenticationProvider.authenticate(token)
+                    if (auth.isAuthenticated) {
+                        session.setAttribute("MID", userId)
+                        SecurityContextHolder.getContext().authentication = auth
+                        val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
+                        returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
+                        returnMap["msg"] = msg
+                        returnMap["status"] = "true"
+                    }else{
+                        returnMap["status"] = "false"
+                    }
+                    // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
+                    /*
+                    val commDto = Tblmi_comm_cdDto()
+                    commDto.cd_id = userInfo!!.usr_grp_cd
+                    commDto.par_id = "SALESFORCE"
+                    val urlInfo = systemDao.getCommCDLst(commDto)
+
+                    val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+                    val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
+                    val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
+
+                    val headers = HttpHeaders()
+                    headers.contentType = MediaType.APPLICATION_JSON
+                    val acceptableMediaType: MutableList<MediaType> = ArrayList()
+                    acceptableMediaType.add(MediaType.APPLICATION_JSON)
+                    headers.accept = acceptableMediaType
+
+                    headers.set("Authorization", "Bearer $token")
+                    val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+                    */
                 }
-                // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
-                /*
-                val commDto = Tblmi_comm_cdDto()
-                commDto.cd_id = userInfo!!.usr_grp_cd
-                commDto.par_id = "SALESFORCE"
-                val urlInfo = systemDao.getCommCDLst(commDto)
-
-                val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
-                val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
-                val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
-
-                val headers = HttpHeaders()
-                headers.contentType = MediaType.APPLICATION_JSON
-                val acceptableMediaType: MutableList<MediaType> = ArrayList()
-                acceptableMediaType.add(MediaType.APPLICATION_JSON)
-                headers.accept = acceptableMediaType
-
-                headers.set("Authorization", "Bearer $token")
-                val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-                */
             } else {
                 logger.error("tokenContext fail: $responseBody")
             }
