@@ -1943,11 +1943,10 @@ class SalesforceServiceImpl : SalesforceService {
      * @title : 이미지면 중복확인
      */
     override fun getImgNmCh(dto:Tblmi_cont_imgDto): Int{
-        val idto : Tblmi_cont_imgDto = Tblmi_cont_imgDto()
+        val idto = Tblmi_cont_imgDto()
         idto.img_nm = dto.img_nm
-        idto.usr_grp_cd = UsefulUtils.sessionUser()!!.usr_grp_cd
+        idto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         return contentDao.getImgNmCh(idto)
-
     }
 
 }

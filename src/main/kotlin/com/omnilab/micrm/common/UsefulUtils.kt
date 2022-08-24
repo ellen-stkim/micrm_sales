@@ -20,7 +20,6 @@ class UsefulUtils {
     companion object {
         fun sessionUser(): Tblmi_usrDto {
             val authentication = SecurityContextHolder.getContext().authentication
-            val log = LoggerFactory.getLogger(this::class.java)
             val loginDto: Tblmi_usrDto = authentication.details as Tblmi_usrDto
             return loginDto
         }
