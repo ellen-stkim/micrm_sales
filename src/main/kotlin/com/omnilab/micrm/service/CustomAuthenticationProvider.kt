@@ -64,7 +64,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 val roles = ArrayList<GrantedAuthority>()
                 roles.add(SimpleGrantedAuthority("ROLE_SALES"))
                 //세일즈 포스 접속
-                val result = UsernamePasswordAuthenticationToken(usr_email, "", null)
+                val result = UsernamePasswordAuthenticationToken(usr_email, "", roles)
                 val uInfo = Tblmi_usrDto()
                 uInfo.usr_id = usr_pw
                 uInfo.usr_sales_id = usr_pw
