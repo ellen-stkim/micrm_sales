@@ -502,12 +502,11 @@ class SalesforceController {
     @PostMapping("/execute.service")
     fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String) {
         var response: CloseableHttpResponse? = null
-
         try {
             // jwt
             val chunks: List<String> = data.split(".")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
-            val payload: String = String(decoder.decode(chunks[1]))
+            val payload = String(decoder.decode(chunks[1]))
             logger.info("payload: $payload")
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
             val secretKeySpec = SecretKeySpec(secretKey?.toByteArray(), sa.jcaName)

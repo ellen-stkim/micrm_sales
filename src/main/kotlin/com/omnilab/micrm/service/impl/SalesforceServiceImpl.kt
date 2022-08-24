@@ -162,9 +162,11 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
     override fun mappingLst(dto: SalesforceDto): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
         val returnMap: MutableMap<String, Any> = HashMap()
         dto.list_tp_id = "CH03"
         dto.list_dt_id = "SPTP01"
+        dto.usr_grp_cd = userInfo.usr_grp_cd!!
         returnMap["mappingLst"] = salesforceDao.mappingLst(dto)
         return returnMap
     }
