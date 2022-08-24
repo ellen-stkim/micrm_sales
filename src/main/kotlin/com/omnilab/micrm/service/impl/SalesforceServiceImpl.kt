@@ -10,7 +10,6 @@ import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
-import com.omnilab.micrm.service.CustomAuthenticationProvider
 import com.omnilab.micrm.service.SalesforceService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import org.apache.http.HttpEntity
@@ -28,18 +27,16 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.util.regex.Pattern
+
 
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
@@ -101,7 +98,10 @@ class SalesforceServiceImpl : SalesforceService {
                     returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                     returnMap["msg"] = msg
                     returnMap["status"] = "true"
-                    logger.error("{}", SecurityContextHolder.getContext().authentication)
+                    val req = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?)!!.request
+                    val session = req.session
+                    session.setAttribute("test", "test")
+
                 }else{
                     returnMap["status"] = "false"
                 }
@@ -1907,6 +1907,10 @@ class SalesforceServiceImpl : SalesforceService {
      * @title : 선택 이미지 팝업
      */
     override fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto): Map<String, Any> {
+        val req = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?)!!.request
+        val session = req.session
+        logger.error("값 : {}", session.getAttribute("test"));
+
         // 클릭 값에 따라 이미지가 다르게 보여져야함
         val searchDto = tblmiContImgdto as Image_searchDto
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd

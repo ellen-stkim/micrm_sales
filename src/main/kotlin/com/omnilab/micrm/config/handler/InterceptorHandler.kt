@@ -29,7 +29,6 @@ class InterceptorHandler : HandlerInterceptor {
     }
 
     override fun postHandle(req: HttpServletRequest, rep: HttpServletResponse, handler: Any, modelAndView: ModelAndView?) {
-        logger.error("JSESSIONID = {}", req.requestedSessionId)
         rep.setHeader("Set-Cookie", "JSESSIONID=" + req.requestedSessionId + "; HttpOnly; path=/; Secure; SameSite=None;")
         super.postHandle(req, rep, handler, modelAndView)
     }
