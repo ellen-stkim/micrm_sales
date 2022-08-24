@@ -92,6 +92,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
                 val check = SecurityContextHolder.getContext().authentication
+                logger.error("{}", check)
                 if(check.isAuthenticated){
                     val loginDto: Tblmi_usrDto = check.details as Tblmi_usrDto
                     if(session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
