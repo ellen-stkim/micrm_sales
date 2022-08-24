@@ -56,10 +56,9 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         httpSecurity.addFilterBefore(filter, CsrfFilter::class.java)
                 .csrf().ignoringAntMatchers("/rest/**", "/api/**", "/sf/**")
             .and()
-                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/sf/**")
-                .permitAll()
-            .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi").permitAll()
+                .antMatchers("/sf/**").access("hasAnyRole('SALES')")
+                .anyRequest().access("hasAnyRole('WEB')")
                 // 로그인 설정
             .and()
                 .formLogin()

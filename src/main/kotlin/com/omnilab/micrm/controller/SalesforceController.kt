@@ -452,7 +452,6 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/getUser.ajax")
     fun getUser(@ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
-        session.setAttribute("test", "rewarawrawraw");
         return salesforceService.getUser(dto)
     }
 
@@ -471,7 +470,6 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/mappingLst.ajax")
     fun mappingLst(@ModelAttribute dto: SalesforceDto, session: HttpSession): Map<String, Any> {
-        logger.error("test {}", session.getAttribute("test"))
         return salesforceService.mappingLst(dto)
     }
 

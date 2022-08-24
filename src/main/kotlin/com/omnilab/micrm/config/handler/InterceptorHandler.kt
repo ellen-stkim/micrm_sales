@@ -85,6 +85,7 @@ class InterceptorHandler : HandlerInterceptor {
                 var returnCheck = commonDao.insertUserHistoryLog(dto)
             }
         }catch (ex2 : Throwable){
+
         }
     }
 

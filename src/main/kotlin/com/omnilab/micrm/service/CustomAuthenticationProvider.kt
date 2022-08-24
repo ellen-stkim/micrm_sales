@@ -61,6 +61,8 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 }
                 throw BadCredentialsException("BAD")
             }else{
+                val roles = ArrayList<GrantedAuthority>()
+                roles.add(SimpleGrantedAuthority("ROLE_SALES"))
                 //세일즈 포스 접속
                 val result = UsernamePasswordAuthenticationToken(usr_email, "", null)
                 val uInfo = Tblmi_usrDto()
@@ -93,6 +95,8 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             sqlSession.update("upd_tblmi_usr_log_in_dt", userInfo)
             val roleList: List<Tblmi_usr_authDto> = sqlSession.selectList("sel_tblmi_usr_auth", Tblmi_usr_authDto(userInfo.usr_id!!))
             val roles = ArrayList<GrantedAuthority>()
+            roles.add(SimpleGrantedAuthority("ROLE_SALES"))
+            roles.add(SimpleGrantedAuthority("ROLE_WEB"))
             for(role in roleList){
                 roles.add(SimpleGrantedAuthority("ROLE_${role.role_cd}"))
             }
