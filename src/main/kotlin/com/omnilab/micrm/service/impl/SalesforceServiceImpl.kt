@@ -66,7 +66,6 @@ class SalesforceServiceImpl : SalesforceService {
 
 
     override fun getUser(dto: SalesforceDto): Map<String, Any> {
-        logger.error("dto : {}", dto)
         val returnMap: MutableMap<String, Any> = HashMap()
         val host: String = dto.host!!
         val token: String = dto.token!!
@@ -1629,7 +1628,7 @@ class SalesforceServiceImpl : SalesforceService {
                         jsonActionObject["calendarAction"] = jsonTitleObject
                         jsonPostBack["data"] = "set_by_chatbot_create_calendar_event"
 
-                        logger.error("jsonActionObj : " + jsonActionObject)
+                        //logger.error("jsonActionObj : " + jsonActionObject)
 
                     } else if (contentListCreatedto.rcs_btn_tp_1.equals("RBTN08")) {
                         //logger.error("rbtn08");
@@ -1907,8 +1906,6 @@ class SalesforceServiceImpl : SalesforceService {
      * @title : 선택 이미지 팝업
      */
     override fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto): Map<String, Any> {
-        val auth = SecurityContextHolder.getContext().authentication
-        logger.error("{}", auth)
         // 클릭 값에 따라 이미지가 다르게 보여져야함
         val searchDto = tblmiContImgdto as Image_searchDto
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
