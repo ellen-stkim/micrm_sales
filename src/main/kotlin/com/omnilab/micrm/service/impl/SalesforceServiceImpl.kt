@@ -101,6 +101,7 @@ class SalesforceServiceImpl : SalesforceService {
                     returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                     returnMap["msg"] = msg
                     returnMap["status"] = "true"
+                    logger.error("{}", SecurityContextHolder.getContext().authentication)
                 }else{
                     returnMap["status"] = "false"
                 }
