@@ -64,6 +64,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 //세일즈 포스 접속
                 val result = UsernamePasswordAuthenticationToken(usr_email, "", null)
                 val uInfo = Tblmi_usrDto()
+                uInfo.usr_id = usr_pw
                 uInfo.usr_sales_id = usr_pw
                 uInfo.usr_sales_org_id = usr_email
                 uInfo.usr_grp_cd = usrGrpCd.cd_val

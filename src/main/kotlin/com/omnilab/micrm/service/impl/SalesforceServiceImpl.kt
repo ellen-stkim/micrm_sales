@@ -102,7 +102,6 @@ class SalesforceServiceImpl : SalesforceService {
                     returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                     returnMap["msg"] = msg
                     returnMap["status"] = "true"
-                    logger.error("{}", "이야호호호옿옿ㅇ홍홍호옿오호")
                 }else{
                     returnMap["status"] = "false"
                 }
