@@ -15,11 +15,12 @@ import kotlin.reflect.full.memberProperties
 
 class UsefulUtils {
 
-    val logger = LoggerFactory.getLogger(this::class.java)
-
     companion object {
+        val logger = LoggerFactory.getLogger(this::class.java)
+
         fun sessionUser(): Tblmi_usrDto {
             val authentication = SecurityContextHolder.getContext().authentication
+            logger.error("{}", authentication)
             val loginDto: Tblmi_usrDto = authentication.details as Tblmi_usrDto
             return loginDto
         }
