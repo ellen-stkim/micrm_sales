@@ -98,10 +98,6 @@ class SalesforceServiceImpl : SalesforceService {
                     returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                     returnMap["msg"] = msg
                     returnMap["status"] = "true"
-                    val req = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?)!!.request
-                    val session = req.session
-                    session.setAttribute("test", "test")
-
                 }else{
                     returnMap["status"] = "false"
                 }
@@ -1907,10 +1903,6 @@ class SalesforceServiceImpl : SalesforceService {
      * @title : 선택 이미지 팝업
      */
     override fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto): Map<String, Any> {
-        val req = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?)!!.request
-        val session = req.session
-        logger.error("값 : {}", session.getAttribute("test"));
-
         // 클릭 값에 따라 이미지가 다르게 보여져야함
         val searchDto = tblmiContImgdto as Image_searchDto
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd

@@ -113,7 +113,7 @@ class SalesforceController {
     @PostMapping("/mobileInsert.service")
     fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
         //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val statusMap = salesforceService.insertContentList(content_list_dto);
+        val statusMap = salesforceService.insertContentList(content_list_dto)
         return statusMap;
     }
 
@@ -134,8 +134,7 @@ class SalesforceController {
     @PostMapping("/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
         //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-
-        val statusMap = salesforceService.updateContentList(content_list_dto);
+        val statusMap = salesforceService.updateContentList(content_list_dto)
         return statusMap;
     }
 
@@ -452,7 +451,8 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/getUser.ajax")
-    fun getUser(@ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse): Map<String, Any> {
+    fun getUser(@ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
+        session.setAttribute("test", "rewarawrawraw");
         return salesforceService.getUser(dto)
     }
 
@@ -470,7 +470,8 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/mappingLst.ajax")
-    fun mappingLst(@ModelAttribute dto: SalesforceDto): Map<String, Any> {
+    fun mappingLst(@ModelAttribute dto: SalesforceDto, session: HttpSession): Map<String, Any> {
+        logger.error("test {}", session.getAttribute("test"))
         return salesforceService.mappingLst(dto)
     }
 
