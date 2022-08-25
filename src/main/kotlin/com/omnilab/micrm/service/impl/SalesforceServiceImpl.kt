@@ -293,6 +293,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                 tblmiContLstdto.cont_cd = tblmiContMstDto.seq   // 마스터 코드 삽입
                 tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
+                tblmiContLstdto.from_to = contentListCreatedto.from_to
                 tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
                 tblmiContLstdto.send_nm = null
                 tblmiContLstdto.thm_url = null
