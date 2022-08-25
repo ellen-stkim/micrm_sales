@@ -135,21 +135,8 @@
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1">
-                                            <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
-                                                <%--<input type="text" class="sms_number smsNumber" name="send_to" id="send_to"
-                                                       value ="${list[0].list_val}"
-                                                       readonly/>--%>
-                                            <%--<input type="text" class="sms_number smsNumber_kko" id="send_to"
-                                                   value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly/>--%>
-                                            <input type="text" class="sms_number smsNumber_kko" id="send_to"
-                                                   <c:if test = "${fn:trim(list[0].list_nm) != ''}">
-                                                       value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly
-                                                   </c:if>
-                                                   <c:if test = "${fn:trim(list[0].list_nm) == ''}">
-                                                        placeholder ="발신 번호를 입력해주세요"
-                                                   </c:if>
-                                            />
-                                            <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].seq}"/>
+                                            <input type="text" class="sms_number smsNumber_kko" id="send_to" placeholder ="발신 번호를 선택 해주세요" />
+                                            <input type="hidden" name="send_to_list" id="kakao_send_to_num" value=""/>
                                         </div>
                                     </div>
                                     <div class="input_area">
@@ -159,10 +146,8 @@
                                                 <div class="td">
                                                     <div class="delete_img" data="kakao"><img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                     </div>
-                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage"
-                                                           placeholder="이미지를 선택해 주세요." readonly/>
-                                                    <span class="btn_sm_line" data="kakaoImage"
-                                                          onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly/>
+                                                    <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                     <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
                                                     <input type="hidden" name="kko_view_img_url" value=""> <!-- 프리뷰를 위한 이미지 URL -->
                                                 </div>
@@ -267,15 +252,8 @@
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1">
-                                            <input type="text" class="sms_number smsNumber" id="sms_send_to"
-                                                   <c:if test ="${fn:trim(smsSender[0].list_nm) != ''}">
-                                                       value="${smsSender[0].list_nm}(${cutil:numberToPhone(smsSender[0].list_val)})"
-                                                   </c:if>
-                                                    <c:if test ="${fn:trim(smsSender[0].list_nm) == ''}">
-                                                        placeholder="발신 번호를 입력해주세요."
-                                                    </c:if>
-                                                   readonly/>
-                                            <input type="hidden" name="send_to_list" id="sms_send_to_num" value="${smsSender[0].seq}"/>
+                                            <input type="text" class="sms_number smsNumber" id="sms_send_to" placeholder="발신 번호를 선택 해주세요." readonly/>
+                                            <input type="hidden" name="send_to_list" id="sms_send_to_num" value=""/>
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','sms')">변경</span>
                                         </div>
                                     </div>
@@ -405,15 +383,8 @@
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1" id ="send_text_column">
-                                            <input type="text" class="sms_number smsNumber" id="send_text_rcs"
-                                                   <c:if test = "${fn:trim(rcsSender[0].list_nm)!= ''}">
-                                                       value="${rcsSender[0].list_nm}(${cutil:numberToPhone(rcsSender[0].list_val)})"
-                                                   </c:if>
-                                                    <c:if test = "${fn:trim(rcsSender[0].list_nm) == ''}">
-                                                        placeholder="발신 번호를 입력해주세요."
-                                                    </c:if>
-                                                   readonly/>
-                                            <input type="hidden" name="send_to_list" id="text_send_num" value="${rcsSender[0].seq}"/>
+                                            <input type="text" class="sms_number smsNumber" id="send_text_rcs" placeholder="발신 번호를 선택 해주세요." readonly/>
+                                            <input type="hidden" name="send_to_list" id="text_send_num" value=""/>
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','textrcs')">변경</span>
                                         </div>
                                     </div>

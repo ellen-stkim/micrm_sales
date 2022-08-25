@@ -10,6 +10,7 @@ import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
+import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import org.apache.http.HttpEntity
@@ -60,6 +61,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Qualifier("ContentDaoImpl")
     private lateinit var contentDao: ContentDao
 
+    @Autowired(required = true)
+    @Qualifier("MobileContentServiceImpl")
+    private lateinit var mobileContentService: ContentService
+
     @Autowired
     private lateinit var customAuthenticationProvider: AuthenticationProvider
 
@@ -103,6 +108,27 @@ class SalesforceServiceImpl : SalesforceService {
                         returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                         returnMap["msg"] = msg
                         returnMap["status"] = "true"
+
+                        val kkoDto = SetLst_searchDto()
+                        kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                        kkoDto.list_tp_id = "CH02"
+                        kkoDto.list_dt_id = "DMTP03"
+                        kkoDto.def_yn = "Y"
+                        returnMap["kko"] = mobileContentService.selectSenderList(kkoDto)
+
+                        val smsDto = SetLst_searchDto()
+                        smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                        smsDto.list_tp_id = "CH02"
+                        smsDto.list_dt_id = "DMTP02"
+                        smsDto.def_yn = "Y"
+                        returnMap["mdm"] = mobileContentService.selectSenderList(smsDto)
+
+                        val rcsDto = SetLst_searchDto()
+                        rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                        rcsDto.list_tp_id = "CH02"
+                        rcsDto.list_dt_id = "DMTP04"
+                        rcsDto.def_yn = "Y"
+                        returnMap["rcs"] = mobileContentService.selectSenderList(rcsDto)
                     }else{
                         SecurityContextHolder.clearContext()
                         val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
@@ -114,6 +140,27 @@ class SalesforceServiceImpl : SalesforceService {
                             returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                             returnMap["msg"] = msg
                             returnMap["status"] = "true"
+
+                            val kkoDto = SetLst_searchDto()
+                            kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                            kkoDto.list_tp_id = "CH02"
+                            kkoDto.list_dt_id = "DMTP03"
+                            kkoDto.def_yn = "Y"
+                            returnMap["kko"] = mobileContentService.selectSenderList(kkoDto)
+
+                            val smsDto = SetLst_searchDto()
+                            smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                            smsDto.list_tp_id = "CH02"
+                            smsDto.list_dt_id = "DMTP02"
+                            smsDto.def_yn = "Y"
+                            returnMap["mdm"] = mobileContentService.selectSenderList(smsDto)
+
+                            val rcsDto = SetLst_searchDto()
+                            rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                            rcsDto.list_tp_id = "CH02"
+                            rcsDto.list_dt_id = "DMTP04"
+                            rcsDto.def_yn = "Y"
+                            returnMap["rcs"] = mobileContentService.selectSenderList(rcsDto)
                         }else{
                             returnMap["status"] = "false"
                         }
@@ -128,6 +175,27 @@ class SalesforceServiceImpl : SalesforceService {
                         returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
                         returnMap["msg"] = msg
                         returnMap["status"] = "true"
+
+                        val kkoDto = SetLst_searchDto()
+                        kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                        kkoDto.list_tp_id = "CH02"
+                        kkoDto.list_dt_id = "DMTP03"
+                        kkoDto.def_yn = "Y"
+                        returnMap["kko"] = mobileContentService.selectSenderList(kkoDto)
+
+                        val smsDto = SetLst_searchDto()
+                        smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                        smsDto.list_tp_id = "CH02"
+                        smsDto.list_dt_id = "DMTP02"
+                        smsDto.def_yn = "Y"
+                        returnMap["mdm"] = mobileContentService.selectSenderList(smsDto)
+
+                        val rcsDto = SetLst_searchDto()
+                        rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                        rcsDto.list_tp_id = "CH02"
+                        rcsDto.list_dt_id = "DMTP04"
+                        rcsDto.def_yn = "Y"
+                        returnMap["rcs"] = mobileContentService.selectSenderList(rcsDto)
                     }else{
                         returnMap["status"] = "false"
                     }

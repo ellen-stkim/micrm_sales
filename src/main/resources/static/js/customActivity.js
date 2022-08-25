@@ -83,7 +83,22 @@ define(["postmonger"], function (Postmonger) {
                 if($('#seq').val() != '' && $('#seq').val() != null) {
                     mobileInfo();
                 }
-            } else {
+
+				if(response.kko){
+					$("#send_to").val(response.kko[0].list_nm + "(" + response.kko[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
+					$("#send_to_list").val(response.kko[0].seq);
+				}
+				if(response.mdm){
+					$("#sms_send_to").val(response.mdm[0].list_nm + "(" + response.mdm[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
+					$("#sms_send_to_num").val(response.mdm[0].seq);
+				}
+				if(response.rcs){
+					$("#send_text_rcs").val(response.rcs[0].list_nm + "(" + response.rcs[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
+					$("#text_send_num").val(response.rcs[0].seq);
+				}
+			}
+
+             else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
 				parent.location.reload();

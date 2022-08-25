@@ -91,7 +91,8 @@ class SalesforceController {
      */
     @GetMapping("/index.mi")
     fun mdmCreate(): ModelAndView {
-        return ModelAndView("cont/salesforce")
+        val view =  ModelAndView("cont/salesforce")
+        return view
     }
 
     // =================================================== Mobile ========================================================= //
