@@ -57,7 +57,9 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .csrf().ignoringAntMatchers("/rest/**", "/api/**", "/sf/**")
             .and()
                 .authorizeRequests()
-                    .antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi", "/sf/config.json", "/sf/index.mi", "/sf/getUser.ajax", "/sf/save.service", "/publish.service", "/validate.service", "/stop.service").permitAll()
+                    .antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error"
+                        ,"/mcr/check/id.ajax" ,"/mcr/find/pw.ajax", "/mcr/send/password.service", "/check.mi", "/error.mi"
+                        , "/sf/config.json", "/sf/index.mi", "/sf/getUser.ajax", "/sf/save.service", "/sf/publish.service", "/sf/validate.service", "/sf/stop.service").permitAll()
                     .antMatchers("/sf/**").access("hasAnyRole('SALES')")
                     .anyRequest().access("hasAnyRole('WEB')")
                 // 로그인 설정
