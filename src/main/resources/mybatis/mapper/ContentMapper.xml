@@ -34,6 +34,7 @@
                         cont_sub,
                         cont_top_body,
                         cont_body,
+             			from_to,
                         send_tp,
                         send_to,
                         send_nm,
@@ -77,6 +78,7 @@
 						#{cont_sub},
 						#{cont_top_body},
 						#{cont_body},
+			 			#{from_to},
 						#{send_tp},
 						#{send_to},
 						#{send_nm},
@@ -842,6 +844,9 @@
 		set
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
 			CONT_TP = #{cont_tp},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(from_to)">
+			FROM_TO = #{from_to},
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_tp)">
 			SEND_TP = #{send_tp},

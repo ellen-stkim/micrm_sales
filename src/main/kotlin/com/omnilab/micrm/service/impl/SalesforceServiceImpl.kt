@@ -258,7 +258,6 @@ class SalesforceServiceImpl : SalesforceService {
         val statusMap: MutableMap<String, Any> = HashMap()
         val contentListCreatedto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
-        val usr_id: String = "salesforce"
         val cont_grp_cd = contentListCreatedto.cont_grp_cd
 
         //logger.error("Ins Dto : " + dto.toString());
@@ -277,9 +276,8 @@ class SalesforceServiceImpl : SalesforceService {
         try {
             tblmiContMstDto.ch_tp = "CH03"
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
-            //tblmiContMstDto.reg_id = userInfo.usr_id
-            //tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
-            tblmiContMstDto.reg_id = usr_id
+            tblmiContMstDto.reg_id = userInfo.usr_id
+            tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
             tblmiContMstDto.cont_grp_cd = cont_grp_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
@@ -289,7 +287,6 @@ class SalesforceServiceImpl : SalesforceService {
             val len = contentListCreatedto.send_to_list!!.size - 1;
 
             for (i in 0..len) {
-
                 // 항상 3번 Insert 작업을 진행한다.
                 // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
                 val tblmiContLstdto = Tblmi_cont_lstDto()
@@ -301,16 +298,14 @@ class SalesforceServiceImpl : SalesforceService {
                 tblmiContLstdto.thm_url = null
                 tblmiContLstdto.br_yn = "N"
                 tblmiContLstdto.sup_yn = "N"
-                //tblmiContLstdto.reg_id = userInfo.usr_id
-                //tblmiContLstdto.cont_grp_cd = userInfo.usr_grp_cd
-                tblmiContLstdto.reg_id = usr_id
+                tblmiContLstdto.reg_id = userInfo.usr_id
+                tblmiContLstdto.cont_grp_cd = userInfo.usr_grp_cd
                 tblmiContLstdto.cont_grp_cd = cont_grp_cd
 
                 val formatList = contentListCreatedto.formatType
 
                 // 인덱스 번호 0 : 카카오
                 if (i == 0) {
-
                     // 제목 저장
                     tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
 
@@ -438,7 +433,7 @@ class SalesforceServiceImpl : SalesforceService {
                             // SMS Key 값 설정
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_SMS_MSG_ID"
-                            //cdDto.cd_id = userInfo.usr_grp_cd
+                            cdDto.cd_id = userInfo.usr_grp_cd
                             cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
@@ -453,7 +448,7 @@ class SalesforceServiceImpl : SalesforceService {
                             // LMS 키 값 설정
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_LMS_MSG_ID"
-                            //cdDto.cd_id = userInfo.usr_grp_cd
+                            cdDto.cd_id = userInfo.usr_grp_cd
                             cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
@@ -509,7 +504,7 @@ class SalesforceServiceImpl : SalesforceService {
                             // RCS 세로형 Tall Key 값 설정
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_L_TALL_MSG_ID"
-                            //cdDto.cd_id = userInfo.usr_grp_cd
+                            cdDto.cd_id = userInfo.usr_grp_cd
                             cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
@@ -524,7 +519,7 @@ class SalesforceServiceImpl : SalesforceService {
                             // RCS 세로형 Medium Key 값 설정
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_L_MD_MSG_ID"
-                            //cdDto.cd_id = userInfo.usr_grp_cd
+                            cdDto.cd_id = userInfo.usr_grp_cd
                             cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
@@ -558,7 +553,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     // RCS 버튼 체크 기능 개발
-                    if (rcsFormatType.equals("slide")) {
+                    if (rcsFormatType == "slide") {
                         rcsButtonMakeJsonStringSlide(contentListCreatedto, tblmiContLstdto)
                     } else {
                         // Button이 1개이상 존재할때 Json형태로 버튼 Insert
@@ -584,7 +579,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 카카오 이미지 URL 링크 저장
                     if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
-                        val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                        val contUrlDto = Tblmi_cont_url_lstDto()
                         contUrlDto.url_tag = "img"
                         contUrlDto.url = contentListCreatedto.kko_img_url
                         contUrlDto.url_id = "kkoImg001"
@@ -594,7 +589,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 카카오 버튼 링크 저장
                     if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
-                        val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                        val contUrlDto = Tblmi_cont_url_lstDto()
                         contUrlDto.url_tag = "btn"
                         contUrlDto.url = contentListCreatedto.kko_btn_url
                         contUrlDto.url_id = "kkoBtn001"
@@ -676,7 +671,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 if (url.contains("http") || url.contains("https")) {
                                     // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
                                     idx++
-                                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                                    val contUrlDto = Tblmi_cont_url_lstDto()
                                     contUrlDto.url_tag = "a"
                                     contUrlDto.url = url
                                     if (idx >= 10) {
@@ -745,8 +740,8 @@ class SalesforceServiceImpl : SalesforceService {
             val lstSeqDto = Tblmi_cont_lstDto()
             lstSeqDto.cont_cd = tblmiContMstDto.seq
             val urlSeqLstList = contentDao.selectLstSeq(lstSeqDto)
-            for (i in 0 until urlSeqLstList.size) {
-                val seq = urlSeqLstList[i].seq
+            for (element in urlSeqLstList) {
+                val seq = element.seq
                 contentDao.deleteRealContUrl(Tblmi_cont_url_lstDto(seq))
             }
             // mst 삭제하기
@@ -778,8 +773,8 @@ class SalesforceServiceImpl : SalesforceService {
 
         //logger.error("UPDATE dto :" + contentListCreatedto.toString())
 
-        //val userInfo = UsefulUtils.sessionUser()
-        val usr_id: String = "salesforce"
+        val userInfo = UsefulUtils.sessionUser()
+        val usr_id: String = userInfo.usr_id!!
         val usr_grp_cd = contentListCreatedto.cont_grp_cd
         val statusMap: MutableMap<String, Any> = HashMap()
         val tblmiContMstDto = Tblmi_cont_mstDto()
@@ -1182,13 +1177,13 @@ class SalesforceServiceImpl : SalesforceService {
 
             if (i == 2) {
                 //logger.error("rcs 버튼 url");
-                val urlLen = contentListCreatedto?.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
+                val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
 
                 if (urlLen != null) {
                     // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
                     for (i in 0 until urlLen) {
 
-                        val urlValue = contentListCreatedto?.url_value?.get(i)?.trim()
+                        val urlValue = contentListCreatedto.url_value?.get(i)?.trim()
                         val fallback_url_position = contentListCreatedto?.fallback_url_04?.get(i)?.trim()
                         val fallback_url_query = contentListCreatedto?.fallback_url_05?.get(i)?.trim()
 

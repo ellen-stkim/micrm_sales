@@ -100,10 +100,9 @@
                                     <div class="select" id="recv_phone_to" name="edmDB">
                                         <!-- selected value -->
                                         <div class="value" data="0">개인화 변수</div>
-                                        <ul class="option mappingLst">
-                                        </ul>
+                                        <ul class="option mappingLst"></ul>
                                     </div>
-                                    <input type="hidden" id="recv_phone"/>
+                                    <input type="hidden" id="from_to"/>
                                 </div>
                             </div>
                         </div>
@@ -175,8 +174,7 @@
                                                     <div class="select" id="kakaoValue" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingLst">
-                                                        </ul>
+                                                        <ul class="option mappingLst"></ul>
                                                     </div>
                                                     <!-- select 영역 끝 -->
                                                 </div>
