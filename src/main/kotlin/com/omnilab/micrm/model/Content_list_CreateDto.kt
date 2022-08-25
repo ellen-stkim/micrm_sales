@@ -121,7 +121,6 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
 
     var sales_id:String? = null
 
-
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }

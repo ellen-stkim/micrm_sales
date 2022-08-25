@@ -815,34 +815,30 @@
 
 	<update id="updateMobileContentMst" parameterType="Tblmi_cont_mstDto">
 		update tblmi_cont_mst set
+			UPD_ID= #{upd_id}
+			, UPD_DT = now()
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_id)">
-			SALES_ID = #{sales_id},
+			, SALES_ID = #{sales_id}
 		</if>
-		SALES_ID
-	    <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
-			DEL_YN = #{del_yn},
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+			, DEL_YN = #{del_yn}
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-			use_yn = #{use_yn},
+			,use_yn = #{use_yn},
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
-			cont_nm = #{cont_nm},
+			,cont_nm = #{cont_nm},
 		</if>
-		UPD_ID= #{upd_id}, UPD_DT = now()
 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				seq = #{seq}
 			</if>
-			<!--<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(searchValue)">
-				and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
-			</if>-->
 		</trim>
 	</update>
 
 	<!-- 버튼 , img는 있다가 없어질 수 있으므로 null 처리 제거 -->
 	<update id="updateMobileContent" parameterType="Tblmi_cont_lstDto">
-		update tblmi_cont_lst
-		set
+		update tblmi_cont_lst set
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
 			CONT_TP = #{cont_tp},
 		</if>

@@ -769,9 +769,6 @@ class SalesforceServiceImpl : SalesforceService {
      */
     override fun updateContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
         val contentListCreatedto = dto as Content_list_CreateDto
-
-        //logger.error("UPDATE dto :" + contentListCreatedto.toString())
-
         val userInfo = UsefulUtils.sessionUser()
         val usr_id: String = userInfo.usr_id!!
         val usr_grp_cd = contentListCreatedto.cont_grp_cd
@@ -791,6 +788,7 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.reg_id = usr_id
         tblmiContMstDto.upd_id = usr_id
         tblmiContMstDto.cont_grp_cd = usr_grp_cd
+        tblmiContMstDto.sales_id = contentListCreatedto.sales_id
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
