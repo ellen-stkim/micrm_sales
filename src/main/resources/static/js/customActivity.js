@@ -87,7 +87,7 @@ define(["postmonger"], function (Postmonger) {
 
 				if(response.kko.list){
 					$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
-					$("#send_to_list").val(response.kko.list[0].seq);
+					$("#kakao_send_to_num").val(response.kko.list[0].seq);
 				}
 				if(response.mdm.list){
 					$("#sms_send_to").val(response.mdm.list[0].list_nm + "(" + numberToPhone(response.mdm.list[0].list_val) + ")");
