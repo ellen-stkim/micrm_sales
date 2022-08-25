@@ -75,7 +75,8 @@ define(["postmonger"], function (Postmonger) {
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
-            if (response.status == "true") {
+			console.log(response);
+            if (response.status === "true") {
                 $('#usr_grp_cd').val(response.usr_grp_cd);
                 $('#cont_grp_cd').val(response.usr_grp_cd);
                 mappingLst();
