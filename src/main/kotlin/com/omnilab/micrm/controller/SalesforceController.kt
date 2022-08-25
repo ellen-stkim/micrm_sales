@@ -523,10 +523,6 @@ class SalesforceController {
                 var jsonObj = jsonParser.parse(payload) as JSONObject
                 val inArguments: JSONArray = jsonObj["inArguments"] as JSONArray
                 val argument: JSONObject = inArguments.get(0) as JSONObject
-                val phone = argument["phone"] as String
-                val phoneText = argument["phoneText"] as String
-                val seq = argument["seq"] as String
-                logger.info("phone: $phone\nphoneText: $phoneText\nseq: $seq")
             }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -156,8 +156,8 @@ define(["postmonger"], function (Postmonger) {
 
 	function save() {
         payload["arguments"].execute.inArguments = [{
-            phone: "{{Event." + eventDefinitionKey + ".Name}}"
-			, name: "{{Event." + eventDefinitionKey + ".Phone}}"
+            phone: "{{Event." + eventDefinitionKey + ".Phone}}"
+			, name: "{{Event." + eventDefinitionKey + ".Name}}"
 			, email: "{{Event." + eventDefinitionKey + ".Email}}"
 			, seq: $('#seq').val()
         }];
@@ -203,6 +203,7 @@ define(["postmonger"], function (Postmonger) {
             if(response.status) {
                 $('#seq').val(response.seq);
                 save();
+				console.log(payload);
             } else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
             }
@@ -217,6 +218,7 @@ define(["postmonger"], function (Postmonger) {
         const res = function(response) {
             if(response.status) {
                 save();
+				console.log(payload);
             } else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
             }
