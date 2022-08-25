@@ -8,7 +8,6 @@ define(["postmonger"], function (Postmonger) {
 	let fuel2token = null;
 	let token = null;
 	let eventDefinitionKey = null;
-	let journeyId = null;
 	let model = null;
 	let flag = true;
 	let cnt = 0;
@@ -92,7 +91,6 @@ define(["postmonger"], function (Postmonger) {
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		model = eventDefinitionModel;
-		journeyId = eventDefinitionModel.id;
 		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	});
 
@@ -153,11 +151,11 @@ define(["postmonger"], function (Postmonger) {
 
 	function save() {
         payload["arguments"].execute.inArguments = [{
-            phone: "{{Event." + eventDefinitionKey + "." + $('#recv_phone').val() + "}}",
-            phoneText: $('#recv_phone').val(),
-            seq: $('#seq').val(),
+            phone: "{{Event." + eventDefinitionKey + ".Name}}"
+			, name: "{{Event." + eventDefinitionKey + ".Phone}}"
+			, email: "{{Event." + eventDefinitionKey + ".Email}}"
+			, seq: $('#seq').val()
         }];
-
         payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
 	}
@@ -207,7 +205,7 @@ define(["postmonger"], function (Postmonger) {
         let data = $("#form").serializeArray();
 		data.push({ name :"sales_id",  value : journeyId});
 		console.log(model);
-		//com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, null, null);
+		com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, null, null);
     }
 
     // 수정
