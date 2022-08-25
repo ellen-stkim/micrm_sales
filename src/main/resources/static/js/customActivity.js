@@ -8,6 +8,7 @@ define(["postmonger"], function (Postmonger) {
 	let fuel2token = null;
 	let token = null;
 	let eventDefinitionKey = null;
+	let journeyId = null;
 	let flag = true;
 	let cnt = 0;
 
@@ -90,8 +91,7 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
-		console.log("requestedTriggerEventDefinition");
-		console.log(eventDefinitionModel);
+		journeyId = eventDefinitionModel.id;
 		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	});
 
@@ -194,7 +194,6 @@ define(["postmonger"], function (Postmonger) {
 
     // 저장
     function mobileSave() {
-		console.log("save");
 		console.log(payload);
         const res = function(response) {
             if(response.status) {
@@ -205,13 +204,12 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let data = $("#form").serializeArray();
+		data.push("SALES_ID", journeyId);
         com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, null, null);
     }
 
     // 수정
     function mobileEdit() {
-		console.log("edit");
-		console.log(payload);
         const res = function(response) {
             if(response.status) {
                 save();
@@ -219,7 +217,8 @@ define(["postmonger"], function (Postmonger) {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
             }
         }
-        let data = $("#form").serializeArray();
+		let data = $("#form").serializeArray();
+		data.push("SALES_ID", journeyId);
         com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, null, null);
     }
 });

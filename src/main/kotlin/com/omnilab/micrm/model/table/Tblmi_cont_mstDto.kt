@@ -10,6 +10,7 @@ open class Tblmi_cont_mstDto {
     var seq: Int ?= null
     var ch_tp : String ?= null  // 채널 타입
     var cont_nm : String ?= null    // 콘텐츠 명
+    var sales_id : String ?= null    //그룹 코드
     var cont_grp_cd : String ?= null    //그룹 코드
     var use_yn : String ?= null
     var del_yn : String ?= null

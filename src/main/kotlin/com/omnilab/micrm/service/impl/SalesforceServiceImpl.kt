@@ -260,9 +260,6 @@ class SalesforceServiceImpl : SalesforceService {
         val userInfo = UsefulUtils.sessionUser()
         val cont_grp_cd = contentListCreatedto.cont_grp_cd
 
-        //logger.error("Ins Dto : " + dto.toString());
-        //logger.error("Ins ContetnLstDto : " + contentListCreatedto.toString());
-
         val isByte = isCheckByte(contentListCreatedto);
 
         if (!isByte) {
@@ -279,6 +276,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
             tblmiContMstDto.cont_grp_cd = cont_grp_cd
+            tblmiContMstDto.sales_id = dto.sales_id
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
