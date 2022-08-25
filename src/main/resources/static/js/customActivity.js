@@ -85,18 +85,17 @@ define(["postmonger"], function (Postmonger) {
                     mobileInfo();
                 }
 
-				if(response.kko){
-					console.log(response.kko[0]);
-					$("#send_to").val(response.kko[0].list_nm + "(" + response.kko[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
-					$("#send_to_list").val(response.kko[0].seq);
+				if(response.kko.list){
+					$("#send_to").val(response.kko.list[0].list_nm + "(" + response.kko.list[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
+					$("#send_to_list").val(response.kko.list[0].seq);
 				}
-				if(response.mdm){
-					$("#sms_send_to").val(response.mdm[0].list_nm + "(" + response.mdm[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
-					$("#sms_send_to_num").val(response.mdm[0].seq);
+				if(response.mdm.list){
+					$("#sms_send_to").val(response.mdm.list[0].list_nm + "(" + response.mdm.list[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
+					$("#sms_send_to_num").val(response.mdm.list[0].seq);
 				}
-				if(response.rcs){
-					$("#send_text_rcs").val(response.rcs[0].list_nm + "(" + response.rcs[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
-					$("#text_send_num").val(response.rcs[0].seq);
+				if(response.rcs.list){
+					$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + response.rcs.list[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
+					$("#text_send_num").val(response.rcs.list[0].seq);
 				}
 			}
 
