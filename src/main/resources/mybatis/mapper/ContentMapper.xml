@@ -968,22 +968,20 @@
 			   , img_url
 			   , img_file_nm
 		FROM   (SELECT seq
-					   , cont_tp
-					   , cont_sub
-					   , CASE
+					 , cont_tp
+					 , cont_sub
+					 , CASE
 						   WHEN cont_tp = 'DMTP02' THEN img_cd_1
 						   WHEN cont_tp = 'DMTP03' THEN kko_img_cd
 						   WHEN cont_tp = 'DMTP04' THEN img_cd_1
-						 end AS IMG
-				FROM   TBLMI_CONT_LST l) AS a
-			   INNER JOIN TBLMI_CONT_IMG AS b
-					   ON a.img = b.seq
+						end AS IMG
+				FROM TBLMI_CONT_LST l) AS a
+			   		INNER JOIN TBLMI_CONT_IMG AS b ON a.img = b.seq
 		WHERE a.seq = #{seq}
 	</select>
 
 	<update id="updateImgYn" parameterType="Tblmi_cont_imgDto">
-		update tblmi_cont_img
-		set
+		update tblmi_cont_img set
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
 			ch_tp = #{ch_tp},
 		</if>

@@ -102,7 +102,7 @@
                                         <div class="value" data="0">개인화 변수</div>
                                         <ul class="option mappingLst"></ul>
                                     </div>
-                                    <input type="hidden" id="from_to"/>
+                                    <input type="hidden" id="recv_phone" name="from_to"/>
                                 </div>
                             </div>
                         </div>
