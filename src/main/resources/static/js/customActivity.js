@@ -208,7 +208,6 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let data = $("#form").serializeArray();
-		data.push({ name :"sales_id",  value : journeyId});
 		console.log(model);
 		com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, null, null);
     }
@@ -223,7 +222,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
 		let data = $("#form").serializeArray();
-		data.push({ name :"sales_id",  value : journeyId});
+		console.log(model);
         com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, null, null);
     }
 });
