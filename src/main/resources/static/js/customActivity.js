@@ -8,9 +8,9 @@ define(["postmonger"], function (Postmonger) {
 	let fuel2token = null;
 	let token = null;
 	let eventDefinitionKey = null;
-	let model = null;
 	let flag = true;
 	let cnt = 0;
+	let bindList = [];
 
 	$(window).ready(function (){
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
@@ -44,9 +44,7 @@ define(["postmonger"], function (Postmonger) {
 		let inArguments = hasInArguments ? payload["arguments"].execute.inArguments : {};
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
-				if(key === 'phoneText') {
-					$('#recv_phone').val(val);
-				} else if(key === 'seq') {
+				if(key === 'seq') {
 					$('#seq').val(val);
 				}
 			});
@@ -90,7 +88,6 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
-		model = eventDefinitionModel;
 		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	});
 
@@ -100,8 +97,7 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("requestedInteraction", function (interaction){
-		console.log("interaction");
-		console.log(interaction);
+		//console.log(interaction);
 	});
 
     // 사용자 조회
@@ -147,7 +143,8 @@ define(["postmonger"], function (Postmonger) {
 	        for(let i=0; i<list.length; i++) {
 	            let item = list[i];
                 html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-	        }
+	        	bindList.push()
+			}
 	        $('.mappingLst').html(html);
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
