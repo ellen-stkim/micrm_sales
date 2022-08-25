@@ -1267,7 +1267,7 @@ class SalesforceServiceImpl : SalesforceService {
             val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim()
 
             val cdDto = Tblmi_comm_cdDto()
-            cdDto.cd_id = UsefulUtils.sessionUser()?.usr_grp_cd
+            cdDto.cd_id = UsefulUtils.sessionUser().usr_grp_cd
 
             if (rcsMsgType == "small") {
                 // RCS 슬라 이드형 Small 일 경우
@@ -1910,7 +1910,7 @@ class SalesforceServiceImpl : SalesforceService {
         val paramMap: MutableMap<String, Any> = HashMap()
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
 
-        //searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
         paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
