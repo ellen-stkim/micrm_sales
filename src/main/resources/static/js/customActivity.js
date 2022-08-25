@@ -90,6 +90,8 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
+		console.log(requestedTriggerEventDefinition);
+		console.log(eventDefinitionModel);
 		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	});
 
