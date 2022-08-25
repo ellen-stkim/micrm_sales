@@ -143,7 +143,7 @@ define(["postmonger"], function (Postmonger) {
 	        for(let i=0; i<list.length; i++) {
 	            let item = list[i];
                 html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-	        	bindList.push()
+	        	bindList.push(item.list_val);
 			}
 	        $('.mappingLst').html(html);
         }
@@ -152,13 +152,16 @@ define(["postmonger"], function (Postmonger) {
 	}
 
 	function save() {
-        payload["arguments"].execute.inArguments = [{
-            phone: "{{Event." + eventDefinitionKey + ".Phone}}"
-			, name: "{{Event." + eventDefinitionKey + ".Name}}"
-			, email: "{{Event." + eventDefinitionKey + ".Email}}"
-			, seq: $('#seq').val()
-        }];
-        payload["metaData"].isConfigured = true;
+        let dataList = [];
+		let data = {};
+		for(let i=0; i< bindList.length; i++) {
+			let temp = bindList[i];
+			data.temp = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+		}
+		data.seq = $('#seq').val();
+		dataList.push(data);
+		payload["arguments"].execute.inArguments = dataList;
+		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
 	}
 
