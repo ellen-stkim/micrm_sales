@@ -581,9 +581,7 @@
     }
 
     $(function () {
-        $('input[name="dbInfo"]').on('change', function () {
-            getDBValue();
-        });//end
+        $('input[name="dbInfo"]').on('change', function () { getDBValue(); });//end
         getDBValue();
 
         let config = {baseUrl: "/js/"};

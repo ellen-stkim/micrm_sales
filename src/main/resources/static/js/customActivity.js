@@ -11,15 +11,7 @@ define(["postmonger"], function (Postmonger) {
 	let flag = true;
 	let cnt = 0;
 
-	$(window).ready(onRender);
-
-	connection.on("initActivity", initialize);
-	connection.on("requestedTokens", onGetTokens);
-	connection.on("requestedEndpoints", onGetEndpoints);
-	connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
-	connection.on('clickedNext', saveClick);
-
-	function onRender() {
+	$(window).ready(function (){
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
 		connection.trigger('requestTokens');
@@ -27,50 +19,47 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestInteraction');
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
+		connection.trigger('updateActivity');
 
 		// refresh
 		connection.trigger('ready');
 
 		/** 에러페이지 리턴이 필요하면
-		setTimeout(function() {
+		 setTimeout(function() {
 			if(flag) {
 				location.href='error.mi';
 			}
 		}, 1000);
-		*/
-	}
+		 */
+	});
 
-	 function onRequestedTriggerEventDefinition(eventDefinitionModel) {
-		//console.log('eventDefinitionModel == ' + JSON.stringify(eventDefinitionModel));
-		
-		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
-	}
-
-	function initialize(data) {
+	connection.on("initActivity", function (data) {
+		console.log(data);
 		if (data) {
 			payload = data;
-			//document.getElementById('configuration').value = JSON.stringify(data, null, 2);
 			flag = false;
 		}
-		
-		var hasInArguments = Boolean(
-			payload["arguments"] &&
-				payload["arguments"].execute &&
-				payload["arguments"].execute.inArguments &&
-				payload["arguments"].execute.inArguments.length > 0
-		);
+		let hasInArguments = Boolean(payload["arguments"] && payload["arguments"].execute && payload["arguments"].execute.inArguments && payload["arguments"].execute.inArguments.length > 0 );
 
-		var inArguments = hasInArguments ? payload["arguments"].execute.inArguments : {};
-
+		let inArguments = hasInArguments ? payload["arguments"].execute.inArguments : {};
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
 				if(key === 'phoneText') {
-                    $('#recv_phone').val(val);
+					$('#recv_phone').val(val);
 				} else if(key === 'seq') {
-				    $('#seq').val(val);
+					$('#seq').val(val);
 				}
 			});
 		});
+	});
+	connection.on("requestedTokens", onGetTokens);
+	connection.on("requestedEndpoints", onGetEndpoints);
+	connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
+	connection.on('clickedNext', saveClick);
+
+	function onRequestedTriggerEventDefinition(eventDefinitionModel) {
+		//console.log('eventDefinitionModel == ' + JSON.stringify(eventDefinitionModel));
+		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	}
 
     // 사용자 조회
