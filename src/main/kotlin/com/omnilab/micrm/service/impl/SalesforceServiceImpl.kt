@@ -257,7 +257,7 @@ class SalesforceServiceImpl : SalesforceService {
     override fun insertContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
         val statusMap: MutableMap<String, Any> = HashMap()
         val contentListCreatedto = dto as Content_list_CreateDto
-        //val userInfo = UsefulUtils.sessionUser()
+        val userInfo = UsefulUtils.sessionUser()
         val usr_id: String = "salesforce"
         val cont_grp_cd = contentListCreatedto.cont_grp_cd
 

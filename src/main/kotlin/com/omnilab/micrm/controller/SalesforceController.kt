@@ -113,7 +113,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/mobileInsert.service")
     fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
-        //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val statusMap = salesforceService.insertContentList(content_list_dto)
         return statusMap;
     }
