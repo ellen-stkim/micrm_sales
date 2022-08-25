@@ -35,7 +35,6 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("initActivity", function (data) {
-		console.log(data);
 		if (data) {
 			payload = data;
 			flag = false;

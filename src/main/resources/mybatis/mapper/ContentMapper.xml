@@ -814,9 +814,12 @@
 	</update>
 
 	<update id="updateMobileContentMst" parameterType="Tblmi_cont_mstDto">
-		update tblmi_cont_mst
-		set
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+		update tblmi_cont_mst set
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_id)">
+			SALES_ID = #{sales_id},
+		</if>
+		SALES_ID
+	    <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
 			DEL_YN = #{del_yn},
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">

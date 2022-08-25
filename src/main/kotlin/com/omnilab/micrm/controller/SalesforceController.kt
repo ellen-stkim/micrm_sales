@@ -134,7 +134,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): Map<String, Any> {
-        //content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val statusMap = salesforceService.updateContentList(content_list_dto)
         return statusMap;
     }
