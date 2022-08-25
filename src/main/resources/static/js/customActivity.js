@@ -99,6 +99,11 @@ define(["postmonger"], function (Postmonger) {
 		$('#previewBtn').trigger('click');
 	});
 
+	connection.on("requestedInteraction", function (interaction){
+		console.log("interaction");
+		console.log(interaction);
+	});
+
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
