@@ -1483,8 +1483,8 @@
             $('.template_name').val(list[0].cont_nm);
 
             // 수신 번호
-            $('#recv_phone_to .value').data($('#recv_phone').val());
-            $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + $('#recv_phone').val() + '"]').text());
+            $('#recv_phone_to .value').data(list[0].from_to);
+            $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + list[0].from_to + '"]').text());
             $('#recv_phone_to .value').css('color', 'rgb(34, 34, 34)');
 
             // 컨텐츠 포맷
