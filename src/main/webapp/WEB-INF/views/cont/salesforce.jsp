@@ -1486,6 +1486,7 @@
             $('#recv_phone_to .value').data(list[0].from_to);
             $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + list[0].from_to + '"]').text());
             $('#recv_phone_to .value').css('color', 'rgb(34, 34, 34)');
+            $("#recv_phone").val(list[0].from_to)
 
             // 컨텐츠 포맷
             $('.formatType').each(function() {
