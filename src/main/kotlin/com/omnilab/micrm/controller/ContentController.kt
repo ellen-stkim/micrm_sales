@@ -208,7 +208,7 @@ class ContentController  {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         val view = ModelAndView("/cont/detailMdm")
-        val map = sysSettingService.getDBValue();
+        val map = sysSettingService.getDBValue()
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
 

@@ -147,17 +147,14 @@ class SalesforceController {
 
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = dto.seq
-
         val listMap: Map<String, Any> = mobileContentService.selectOneContentView(tblmiContMstdto)
 
         statusMap["list"] = listMap["list"] as List<Content_view_Dto>
-
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
         val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
         statusMap["filePath"] = uploadPrefix?.cd_val as String
-
         return statusMap
     }
 

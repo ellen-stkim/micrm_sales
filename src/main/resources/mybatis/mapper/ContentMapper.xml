@@ -1106,25 +1106,17 @@
 			   ,l.rcs_btn_cont_3                                       AS rcs_btn_cont_3
 			   ,l.rcs_footer                                           AS rcs_footer
 			   ,l.use_yn                                               AS list_use_yn
+				, l.from_to												AS from_to
 		FROM   tblmi_cont_lst l
-			   INNER JOIN tblmi_cont_mst m
-					   ON l.cont_cd = m.seq
-			   LEFT JOIN tblmi_cont_img AS kko_img
-			   		  ON l.kko_img_cd = kko_img.seq
-			   LEFT JOIN tblmi_cont_img AS img_1
-					  ON l.img_cd_1 = img_1.seq
-			   LEFT JOIN tblmi_cont_img AS img_2
-					  ON l.img_cd_2 = img_2.seq
-			   LEFT JOIN tblmi_cont_img AS img_3
-					  ON l.img_cd_3 = img_3.seq
-			   LEFT JOIN tblmi_cont_img AS img_4
-					  ON l.img_cd_4 = img_4.seq
-			   LEFT JOIN tblmi_cont_img AS img_5
-					  ON l.img_cd_5 = img_5.seq
-			   LEFT JOIN tblmi_cont_img AS img_6
-					  ON l.img_cd_6 = img_6.seq
-			   LEFT JOIN tblmi_set_lst AS sender
-					  ON l.send_to = sender.seq
+		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
+		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq
+		   LEFT JOIN tblmi_cont_img AS img_1 ON l.img_cd_1 = img_1.seq
+		   LEFT JOIN tblmi_cont_img AS img_2 ON l.img_cd_2 = img_2.seq
+		   LEFT JOIN tblmi_cont_img AS img_3 ON l.img_cd_3 = img_3.seq
+		   LEFT JOIN tblmi_cont_img AS img_4 ON l.img_cd_4 = img_4.seq
+		   LEFT JOIN tblmi_cont_img AS img_5 ON l.img_cd_5 = img_5.seq
+		   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
+		   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
 		WHERE  m.seq = #{seq}
 		ORDER  BY l.seq;
 	</select>
