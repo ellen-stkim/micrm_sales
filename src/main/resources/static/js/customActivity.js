@@ -52,15 +52,51 @@ define(["postmonger"], function (Postmonger) {
 			});
 		});
 	});
-	connection.on("requestedTokens", onGetTokens);
-	connection.on("requestedEndpoints", onGetEndpoints);
-	connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
-	connection.on('clickedNext', saveClick);
 
-	function onRequestedTriggerEventDefinition(eventDefinitionModel) {
-		//console.log('eventDefinitionModel == ' + JSON.stringify(eventDefinitionModel));
+	connection.on("requestedTokens", function (tokens){
+		//console.log("tokens == " + JSON.stringify(tokens));
+		if(tokens) {
+			fuel2token = tokens.fuel2token;
+			token = tokens.token;
+			cnt++;
+
+			if(cnt == 2) {
+				// payload에 usr_grp_cd가 없으면 DB에서 조회한다.
+				if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
+					getUser(fuelapiRestHost, fuel2token, tokens.token);
+				} else {
+					mappingLst();
+				}
+			}
+		}
+	});
+
+	connection.on("requestedEndpoints", function(endpoints){
+		//console.log("endpoints == " + JSON.stringify(endpoints));
+		if(endpoints) {
+			fuelapiRestHost = endpoints.fuelapiRestHost;
+			cnt++;
+
+			if(cnt == 2) {
+				// payload에 usr_grp_cd가 없으면 DB에서 조회한다.
+				if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
+					getUser(fuelapiRestHost, fuel2token, token);
+				} else {
+					mappingLst();
+				}
+			}
+		}
+	});
+
+	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
+	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
-	}
+	});
+
+	connection.on('clickedNext', function (){
+		connection.trigger('ready');
+		$('#previewBtn').trigger('click');
+	});
 
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
@@ -86,9 +122,7 @@ define(["postmonger"], function (Postmonger) {
 					$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 					$("#text_send_num").val(response.rcs.list[0].seq);
 				}
-			}
-
-             else {
+			}else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
 				parent.location.reload();
@@ -96,43 +130,6 @@ define(["postmonger"], function (Postmonger) {
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
-	}
-
-	function onGetTokens(tokens) {
-		//console.log("tokens == " + JSON.stringify(tokens));
-
-		if(tokens) {
-			fuel2token = tokens.fuel2token;
-			token = tokens.token;
-			cnt++;
-
-			if(cnt == 2) {
-                // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-                if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
-                    getUser(fuelapiRestHost, fuel2token, tokens.token);
-                } else {
-                    mappingLst();
-                }
-			}
-		}
-	}
-
-	function onGetEndpoints(endpoints) {
-		//console.log("endpoints == " + JSON.stringify(endpoints));
-
-		if(endpoints) {
-			fuelapiRestHost = endpoints.fuelapiRestHost;
-			cnt++;
-
-			if(cnt == 2) {
-                // payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-                if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
-                    getUser(fuelapiRestHost, fuel2token, token);
-                } else {
-                    mappingLst();
-                }
-			}
-		}
 	}
 
 	// 개인화 변수 조회
@@ -149,11 +146,6 @@ define(["postmonger"], function (Postmonger) {
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
         com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
-	}
-
-	function saveClick() {
-	    connection.trigger('ready');
-	    $('#previewBtn').trigger('click');
 	}
 
 	function save() {
@@ -200,6 +192,8 @@ define(["postmonger"], function (Postmonger) {
 
     // 저장
     function mobileSave() {
+		console.log("save");
+		console.log(payload);
         const res = function(response) {
             if(response.status) {
                 $('#seq').val(response.seq);
@@ -214,6 +208,8 @@ define(["postmonger"], function (Postmonger) {
 
     // 수정
     function mobileEdit() {
+		console.log("edit");
+		console.log(payload);
         const res = function(response) {
             if(response.status) {
                 save();
