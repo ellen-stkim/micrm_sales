@@ -1,5 +1,6 @@
 package com.omnilab.micrm.controller
 
+import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
@@ -502,13 +503,13 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/execute.service")
     fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String) {
-        var response: CloseableHttpResponse? = null
         try {
             // jwt
             val chunks: List<String> = data.split(".")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
             val payload = String(decoder.decode(chunks[1]))
             logger.info("payload: $payload")
+
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
             val secretKeySpec = SecretKeySpec(secretKey?.toByteArray(), sa.jcaName)
             val tokenWithoutSignature = chunks[0] + "." + chunks[1]
@@ -519,10 +520,10 @@ class SalesforceController {
             if (!validator.isValid(tokenWithoutSignature, signature)) {
                 logger.error("Could not verify JWT token integrity!")
             } else {
-                val jsonParser = JSONParser()
-                var jsonObj = jsonParser.parse(payload) as JSONObject
-                val inArguments: JSONArray = jsonObj["inArguments"] as JSONArray
-                val argument: JSONObject = inArguments.get(0) as JSONObject
+                val gson = GsonBuilder().create()
+                val data = gson.fromJson(payload, Map::class.java)
+                val inArguments = data["inArguments"]
+                logger.error("{}", inArguments)
             }
         } catch (e: Exception) {
             e.printStackTrace()
