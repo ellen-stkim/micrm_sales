@@ -824,10 +824,10 @@
 			, DEL_YN = #{del_yn}
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-			,use_yn = #{use_yn},
+			, use_yn = #{use_yn},
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
-			,cont_nm = #{cont_nm},
+			, cont_nm = #{cont_nm}
 		</if>
 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">

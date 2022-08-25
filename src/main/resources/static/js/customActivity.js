@@ -217,7 +217,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
 		let data = $("#form").serializeArray();
-		data.push("SALES_ID", journeyId);
+		data.push("sales_id", journeyId);
         com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, null, null);
     }
 });
