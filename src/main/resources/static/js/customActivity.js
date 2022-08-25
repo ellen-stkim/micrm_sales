@@ -86,6 +86,7 @@ define(["postmonger"], function (Postmonger) {
                 }
 
 				if(response.kko){
+					console.log(response.kko[0]);
 					$("#send_to").val(response.kko[0].list_nm + "(" + response.kko[0].list_val.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) + ")");
 					$("#send_to_list").val(response.kko[0].seq);
 				}
