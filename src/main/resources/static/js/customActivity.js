@@ -97,7 +97,7 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("requestedInteraction", function (interaction){
-		//console.log(interaction);
+		console.log(interaction);
 	});
 
     // 사용자 조회
