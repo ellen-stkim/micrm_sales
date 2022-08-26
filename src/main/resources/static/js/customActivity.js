@@ -156,7 +156,7 @@ define(["postmonger"], function (Postmonger) {
 		let data = {};
 		for(let i=0; i< bindList.length; i++) {
 			let temp = bindList[i];
-			data.temp = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 		}
 		data.seq = $('#seq').val();
 		dataList.push(data);
@@ -214,16 +214,7 @@ define(["postmonger"], function (Postmonger) {
     function mobileEdit() {
         const res = function(response) {
             if(response.status) {
-                //save();
-				let dataList = [];
-				let data = {};
-				for(let i=0; i< bindList.length; i++) {
-					let temp = bindList[i];
-					data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
-				}
-				data.seq = $('#seq').val();
-				dataList.push(data);
-				console.log(dataList);
+                save();
             } else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
             }
