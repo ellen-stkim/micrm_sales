@@ -198,7 +198,6 @@ define(["postmonger"], function (Postmonger) {
 
     // 저장
     function mobileSave() {
-		console.log(payload);
         const res = function(response) {
             if(response.status) {
                 $('#seq').val(response.seq);
@@ -220,7 +219,7 @@ define(["postmonger"], function (Postmonger) {
 				let data = {};
 				for(let i=0; i< bindList.length; i++) {
 					let temp = bindList[i];
-					data.temp = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+					data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 				}
 				data.seq = $('#seq').val();
 				dataList.push(data);
