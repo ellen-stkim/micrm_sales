@@ -827,8 +827,26 @@
 		update tblmi_cont_mst set
 			UPD_ID= #{upd_id}
 			, UPD_DT = now()
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_id)">
-			, SALES_ID = #{sales_id}
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
+			, SALES_NM = #{sales_nm}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+			, avo_id = #{avo_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inten_id)">
+			, inten_id = #{inten_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(orig_id)">
+			, orig_id = #{orig_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
+			, inta_key = #{inta_key}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
+			, inta_ve = #{inta_ve}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
+			, SALES_NM = #{sales_nm}
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
 			, DEL_YN = #{del_yn}
