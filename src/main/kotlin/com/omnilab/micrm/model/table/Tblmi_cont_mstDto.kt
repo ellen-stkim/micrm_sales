@@ -16,6 +16,7 @@ open class Tblmi_cont_mstDto: Cloneable {
     var orig_id: String? = null
     var inta_key: String? = null
     var inta_ve: String? = null
+    var pub_yn: String? = null
     var cont_grp_cd : String ?= null    //그룹 코드
     var use_yn : String ?= null
     var del_yn : String ?= null
