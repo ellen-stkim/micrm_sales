@@ -276,7 +276,12 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
             tblmiContMstDto.cont_grp_cd = cont_grp_cd
-            tblmiContMstDto.sales_id = dto.sales_id
+            tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
+            tblmiContMstDto.avo_id = contentListCreatedto.avo_id
+            tblmiContMstDto.inten_id = contentListCreatedto.inten_id
+            tblmiContMstDto.orig_id = contentListCreatedto.orig_id
+            tblmiContMstDto.inta_key = contentListCreatedto.inta_key
+            tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
@@ -788,7 +793,12 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.reg_id = usr_id
         tblmiContMstDto.upd_id = usr_id
         tblmiContMstDto.cont_grp_cd = usr_grp_cd
-        tblmiContMstDto.sales_id = contentListCreatedto.sales_id
+        tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
+        tblmiContMstDto.avo_id = contentListCreatedto.avo_id
+        tblmiContMstDto.inten_id = contentListCreatedto.inten_id
+        tblmiContMstDto.orig_id = contentListCreatedto.orig_id
+        tblmiContMstDto.inta_key = contentListCreatedto.inta_key
+        tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
