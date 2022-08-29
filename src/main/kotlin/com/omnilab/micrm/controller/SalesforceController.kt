@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -475,25 +477,38 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/save.service")
     fun save(@RequestBody data : Object) {
-        logger.info("/save.service data: \n${data.toString()}");
+        logger.info("/save.service data: $data")
     }
 
     @ResponseBody
     @PostMapping("/publish.service")
-    fun publish(@RequestBody data : Object) {
-        logger.info("/publish.service data: \n${data.toString()}");
+    fun publish(@RequestBody data : Object): ResponseEntity<Any> {
+        logger.info("/publish.service data: $data")
+        return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    @ResponseBody
+    @PostMapping("/unpublish.service")
+    fun unpublish(@RequestBody data : Object) {
+        logger.info("/publish.service data: $data")
     }
 
     @ResponseBody
     @PostMapping("/validate.service")
     fun validate(@RequestBody data : Object) {
-        logger.info("/validate.service data: \n${data.toString()}");
+        logger.info("/validate.service data: $data")
     }
 
     @ResponseBody
     @PostMapping("/stop.service")
     fun stop(@RequestBody data : Object) {
-        logger.info("/stop.service data: \n${data.toString()}");
+        logger.info("/stop.service data: $data")
+    }
+
+    @ResponseBody
+    @PostMapping("/TestSave.service")
+    fun TestSave(@RequestBody data : Object) {
+        logger.info("/TestSave.service data: \n${data.toString()}");
     }
 
     // done 동작

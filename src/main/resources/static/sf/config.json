@@ -24,11 +24,17 @@
     "publish": {
       "url": "https://sales.milvusapp.com/sf/publish.service"
     },
+    "unpublish": {
+      "url": "https://sales.milvusapp.com/sf/unpublish.service"
+    },
     "validate": {
       "url": "https://sales.milvusapp.com/sf/validate.service"
     },
     "stop": {
       "url": "https://sales.milvusapp.com/sf/stop.service"
+    },
+    "TestSave": {
+      "url": "https://sales.milvusapp.com/sf/TestSave.service"
     }
   },
   "wizardSteps": [
