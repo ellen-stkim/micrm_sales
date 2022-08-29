@@ -10,6 +10,7 @@ define(["postmonger"], function (Postmonger) {
 	let model = null;
 	let flag = true;
 	let cnt = 0;
+	let eventDefinitionKey;
 	let bindList = [];
 
 	$(window).ready(function (){
@@ -88,7 +89,7 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
-		model = eventDefinitionModel;
+		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 	});
 
 	connection.on('clickedNext', function (){
@@ -97,8 +98,7 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("requestedInteraction", function (interaction){
-		console.log(interaction);
-		console.log(interaction.definitionId);
+		model = interaction;
 	});
 
     // 사용자 조회
@@ -157,7 +157,7 @@ define(["postmonger"], function (Postmonger) {
 		let data = {};
 		for(let i=0; i< bindList.length; i++) {
 			let temp = bindList[i];
-			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+			data[temp] = "{{Event." + model.eventDefinitionKey + "." + temp + "}}"
 		}
 		data.seq = $('#seq').val();
 		dataList.push(data);
