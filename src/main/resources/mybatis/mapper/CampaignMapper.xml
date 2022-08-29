@@ -253,67 +253,6 @@
 		Limit 1
 	</select>
 
-	<select id="sel_cont_lst" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
-		select  a.seq
-			, a.CONT_TP
-			, a.CONT_SUB
-			, a.CONT_TOP_BODY
-			, a.CONT_BODY
-			, a.SEND_TP
-			, b.list_val as send_to
-			, b.list_nm AS send_nm
-			, a.THM_URL
-			, a.BR_YN
-			, a.SUP_YN
-			, a.MSG_TP
-			, a.KKO_IMG_CD
-			, a.KKO_IMG_URL
-			, a.KKO_BTN_NM
-			, a.KKO_BTN_URL
-			, a.IMG_CD_1
-			, a.IMG_CD_2
-			, a.IMG_CD_3
-			, a.IMG_CD_4
-			, a.IMG_CD_5
-			, a.IMG_CD_6
-			, a.RCS_BTN_INS_TP
-			, a.RCS_BTN_CNT
-			, a.RCS_BTN_OBJ
-			, a.RCS_BTN_1
-			, a.RCS_BTN_TP_1
-			, a.RCS_BTN_CONT_1
-			, a.RCS_BTN_2
-			, a.RCS_BTN_TP_2
-			, a.RCS_BTN_CONT_2
-			, a.RCS_BTN_3
-			, a.RCS_BTN_TP_3
-			, a.RCS_BTN_CONT_3
-			, a.RCS_FOOTER
-			, a.KEY_ID
-			, a.CONT_GRP_CD
-			, #{reg_id} as reg_id
-		from Tblmi_cont_lst as a
-			INNER JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
-		<where>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-				and a.SEQ = #{seq}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_cd)">
-				and a.CONT_CD = #{cont_cd}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
-				and a.CONT_TP = #{cont_tp}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
-				and a.CONT_GRP_CD = #{cont_grp_cd}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-				and a.USE_YN = #{use_yn}
-			</if>
-		</where>
-	</select>
-
-
 	<select id="sel_tblmicp_send_hst" parameterType="Tblmicp_send_hstDto" resultType="Map">
 		select a.SEQ as SEND_HST_SEQ
 			, a.PRO_ID

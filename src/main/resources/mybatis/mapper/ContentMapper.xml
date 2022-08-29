@@ -397,8 +397,7 @@
 				,m.cont_nm
 				,l.*
 			FROM tblmi_cont_mst m
-				INNER JOIN tblmi_cont_lst l
-					ON m.SEQ = l.CONT_CD
+				INNER JOIN tblmi_cont_lst l ON m.SEQ = l.CONT_CD
 			WHERE DEL_YN = 'N'
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
 					AND m.ch_tp = #{ch_tp}
@@ -686,34 +685,34 @@
 
 	<select id="getEmdOne" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
 		SELECT mst.seq                                            AS seq
-		,mst.ch_tp                                         AS ch_tp
-		,mst.cont_nm                                       AS cont_nm
-		,mst.cont_grp_cd                                   AS cont_grp_cd
-		,mst.use_yn                                        AS use_yn
-		,mst.del_yn                                        AS del_yn
-		,mst.reg_id                                        AS reg_id
-		,mst.reg_dt                                        AS reg_dt
-		,mst.upd_id                                        AS upd_id
-		,mst.upd_dt                                        AS upd_dt
-		,lst.seq                                           AS list_seq
-		,lst.cont_cd                                       AS cont_cd
-		,lst.cont_tp                                       AS cont_tp
-		,lst.cont_sub                                      AS cont_sub
-		,lst.cont_top_body                                 AS cont_top_body
-		,lst.cont_body                                     AS cont_body
-		,lst.send_tp                                       AS send_tp
-		, cd.cd_nm										   AS send_tp_nm
-		,lst.send_to                                       AS send_to
-		,Concat(setLst.list_nm, '(', setLst.list_val, ')') AS send_nm
-		,lst.thm_url                                       AS thm_url
-		,lst.br_yn                                         AS br_yn
-		,lst.sup_yn                                        AS sup_yn
-		,lst.msg_tp                                        AS msg_yp
-		,lst.use_yn                                        AS list_use_yn
-		,lst.reg_id                                        AS LIST_REG_ID
-		,lst.reg_dt                                        AS list_reg_dt
-		,lst.upd_id                                        AS list_upd_id
-		,lst.upd_dt                                        AS list_upd_dt
+			,mst.ch_tp                                         AS ch_tp
+			,mst.cont_nm                                       AS cont_nm
+			,mst.cont_grp_cd                                   AS cont_grp_cd
+			,mst.use_yn                                        AS use_yn
+			,mst.del_yn                                        AS del_yn
+			,mst.reg_id                                        AS reg_id
+			,mst.reg_dt                                        AS reg_dt
+			,mst.upd_id                                        AS upd_id
+			,mst.upd_dt                                        AS upd_dt
+			,lst.seq                                           AS list_seq
+			,lst.cont_cd                                       AS cont_cd
+			,lst.cont_tp                                       AS cont_tp
+			,lst.cont_sub                                      AS cont_sub
+			,lst.cont_top_body                                 AS cont_top_body
+			,lst.cont_body                                     AS cont_body
+			,lst.send_tp                                       AS send_tp
+			, cd.cd_nm										   AS send_tp_nm
+			,lst.send_to                                       AS send_to
+			,Concat(setLst.list_nm, '(', setLst.list_val, ')') AS send_nm
+			,lst.thm_url                                       AS thm_url
+			,lst.br_yn                                         AS br_yn
+			,lst.sup_yn                                        AS sup_yn
+			,lst.msg_tp                                        AS msg_yp
+			,lst.use_yn                                        AS list_use_yn
+			,lst.reg_id                                        AS LIST_REG_ID
+			,lst.reg_dt                                        AS list_reg_dt
+			,lst.upd_id                                        AS list_upd_id
+			,lst.upd_dt                                        AS list_upd_dt
 		FROM   tblmi_cont_mst AS mst
 				LEFT JOIN tblmi_cont_lst AS lst
 					ON lst.cont_cd = mst.seq
@@ -973,11 +972,9 @@
 			, l.rcs_btn_tp_3   AS rcs_btn_tp_3
 			, l.rcs_btn_cont_3 AS rcs_btn_cont_3
 			, l.use_yn         AS list_use_yn
-		FROM   TBLMI_CONT_MST m
-			INNER JOIN TBLMI_CONT_LST l
-				ON m.seq = l.cont_cd
+		FROM   TBLMI_CONT_MST m INNER JOIN TBLMI_CONT_LST l ON m.seq = l.cont_cd
 		WHERE  l.use_yn = 'Y'
-		AND m.del_yn = 'N'
+			AND m.del_yn = 'N'
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
 			and m.ch_tp = #{ch_tp}
 		</if>
@@ -1096,45 +1093,49 @@
 
 	<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
 		SELECT m.seq
-			   ,m.ch_tp
-			   ,m.cont_nm
-			   ,l.seq                                                  AS list_seq
-			   ,l.cont_cd                                              AS cont_cd
-			   ,l.cont_tp                                              AS cont_tp
-			   ,l.cont_sub                                             AS cont_sub
-			   ,l.cont_body                                            AS cont_body
-			   ,l.send_to                                              AS send_to
-			   ,l.send_tp                                              AS send_tp
-			   ,sender.list_val                                        AS send_num
-			   ,sender.list_nm                                         AS sender
-			   ,l.msg_tp                                               AS msg_tp
-			   ,l.kko_img_cd                                           AS kko_img_cd
-			   ,l.kko_img_url                                          AS kko_img_url
-			   ,kko_img.img_nm 									       AS kko_img_nm
-			   ,kko_img.img_url										   AS kko_img_lst
-			   ,l.kko_btn_nm                                           AS kko_btn_nm
-			   ,l.kko_btn_url                                          AS kko_btn_url
-			   ,l.img_cd_1                                             AS img_cd_1
-			   ,l.img_cd_2                                             AS img_cd_2
-			   ,l.img_cd_3                                             AS img_cd_3
-			   ,l.img_cd_4                                             AS img_cd_4
-			   ,l.img_cd_5                                             AS img_cd_5
-			   ,l.img_cd_6                                             AS img_cd_6
-			   ,CONCAT(IFNULL(img_1.img_url,' '),',',IFNULL(img_2.img_url,' '),',',IFNULL(img_3.img_url,' '),',',IFNULL(img_4.img_url,' '),',',IFNULL( img_5.img_url,' '),',',IFNULL(img_6.img_url,' ')) AS IMG_LST
-			   ,CONCAT(IFNULL(img_1.img_nm,' '), ',' , IFNULL(img_2.img_nm,' '), ',' , IFNULL(img_3.img_nm,' '), ',' , IFNULL(img_4.img_nm,' '), ',' , IFNULL(img_5.img_nm,' '), ',' , IFNULL(img_6.img_nm,' ')) AS IMG_NM_LST
-			   ,l.rcs_btn_obj										   AS rcs_btn_obj
-			   ,l.rcs_btn_1                                            AS rcs_btn_1
-			   ,l.rcs_btn_tp_1                                         AS rcs_btn_tp_1
-			   ,l.rcs_btn_cont_1                                       AS rcs_btn_cont_1
-			   ,l.rcs_btn_2                                            AS rcs_btn_2
-			   ,l.rcs_btn_tp_2                                         AS rcs_btn_tp_2
-			   ,l.rcs_btn_cont_2                                       AS rcs_btn_cont_2
-			   ,l.rcs_btn_3                                            AS rcs_btn_3
-			   ,l.rcs_btn_tp_3                                         AS rcs_btn_tp_3
-			   ,l.rcs_btn_cont_3                                       AS rcs_btn_cont_3
-			   ,l.rcs_footer                                           AS rcs_footer
-			   ,l.use_yn                                               AS list_use_yn
-				, l.from_to												AS from_to
+			, m.ch_tp
+			, m.cont_nm
+			, l.seq                                                                                                AS list_seq
+			, l.cont_cd                                                                                            AS cont_cd
+			, l.cont_tp                                                                                            AS cont_tp
+			, l.cont_sub                                                                                           AS cont_sub
+			, l.cont_body                                                                                          AS cont_body
+			, l.send_to                                                                                            AS send_to
+			, l.send_tp                                                                                            AS send_tp
+			, sender.list_val                                                                                      AS send_num
+			, sender.list_nm                                                                                       AS sender
+			, l.msg_tp                                                                                             AS msg_tp
+			, l.kko_img_cd                                                                                         AS kko_img_cd
+			, l.kko_img_url                                                                                        AS kko_img_url
+			, kko_img.img_nm                                                                                       AS kko_img_nm
+			, kko_img.img_url                                                                                      AS kko_img_lst
+			, l.kko_btn_nm                                                                                         AS kko_btn_nm
+			, l.kko_btn_url                                                                                        AS kko_btn_url
+			, l.img_cd_1                                                                                           AS img_cd_1
+			, l.img_cd_2                                                                                           AS img_cd_2
+			, l.img_cd_3                                                                                           AS img_cd_3
+			, l.img_cd_4                                                                                           AS img_cd_4
+			, l.img_cd_5                                                                                           AS img_cd_5
+			, l.img_cd_6                                                                                           AS img_cd_6
+			, CONCAT(IFNULL(img_1.img_url, ' '), ',', IFNULL(img_2.img_url, ' '), ',', IFNULL(img_3.img_url, ' '), ',',
+				  IFNULL(img_4.img_url, ' '), ',', IFNULL(img_5.img_url, ' '), ',',
+				  IFNULL(img_6.img_url, ' '))                                                                   AS IMG_LST
+			, CONCAT(IFNULL(img_1.img_nm, ' '), ',', IFNULL(img_2.img_nm, ' '), ',', IFNULL(img_3.img_nm, ' '), ',',
+				  IFNULL(img_4.img_nm, ' '), ',', IFNULL(img_5.img_nm, ' '), ',',
+				  IFNULL(img_6.img_nm, ' '))                                                                    AS IMG_NM_LST
+			, l.rcs_btn_obj                                                                                        AS rcs_btn_obj
+			, l.rcs_btn_1                                                                                          AS rcs_btn_1
+			, l.rcs_btn_tp_1                                                                                       AS rcs_btn_tp_1
+			, l.rcs_btn_cont_1                                                                                     AS rcs_btn_cont_1
+			, l.rcs_btn_2                                                                                          AS rcs_btn_2
+			, l.rcs_btn_tp_2                                                                                       AS rcs_btn_tp_2
+			, l.rcs_btn_cont_2                                                                                     AS rcs_btn_cont_2
+			, l.rcs_btn_3                                                                                          AS rcs_btn_3
+			, l.rcs_btn_tp_3                                                                                       AS rcs_btn_tp_3
+			, l.rcs_btn_cont_3                                                                                     AS rcs_btn_cont_3
+			, l.rcs_footer                                                                                         AS rcs_footer
+			, l.use_yn                                                                                             AS list_use_yn
+			, l.from_to                                                                                            AS from_to
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
 		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq

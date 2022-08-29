@@ -2010,7 +2010,6 @@ class SalesforceServiceImpl : SalesforceService {
         val searchDto = tblmiContImgdto as Image_searchDto
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
 
-
         val paginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
         val paramMap: MutableMap<String, Any> = HashMap()
 
@@ -2045,4 +2044,50 @@ class SalesforceServiceImpl : SalesforceService {
         return contentDao.getImgNmCh(idto)
     }
 
+
+    override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
+        return try{
+            val usrId = UsefulUtils.sessionUser().usr_id
+
+            val mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+            val cpMstDto = Tblmicp_cont_mstDto(mstDto.seq)
+            cpMstDto.reg_id = usrId
+            cpMstDto.upd_id = usrId
+            salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+
+            val contListDto = Tblmi_cont_lstDto()
+            contListDto.cont_cd = mstDto.seq
+            contListDto.reg_id = usrId
+            contListDto.upd_id = usrId
+            val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+
+            for(i in contLst){
+                val oriSeq = i.seq.toString()
+                
+                // 리스트 삽입
+                val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
+                tblmicp_cont_lstDto.seq = null
+                tblmicp_cont_lstDto.cont_cd = cpMstDto.seq
+                tblmicp_cont_lstDto.reg_id = usrId
+                tblmicp_cont_lstDto.upd_id = usrId
+                salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
+
+                //기존 url 리스트 삭제
+                val tblmicp_cont_url_lstDto = Tblmicp_cont_url_lstDto(tblmicp_cont_lstDto.seq)
+                salesforceDao.del_tblmicp_cont_url_lst(tblmicp_cont_url_lstDto)
+
+                //신규 url 리스트 삽입
+                val map = HashMap<String, Any>()
+                map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
+                map["list_seq"] = oriSeq
+
+                salesforceDao.ins_tblmicp_cont_url_lst(map)
+            }
+            throw Exception("강제 에러 발생~")
+            true
+        }catch (e: Exception){
+            logger.error("campaingContent", e)
+            false
+        }
+    }
 }

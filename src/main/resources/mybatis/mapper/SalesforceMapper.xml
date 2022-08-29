@@ -38,6 +38,193 @@
         ORDER BY FIELD(DEF_YN, 'Y') DESC, REG_DT DESC
     </select>
 
+    <select id="sel_tblmi_cont_mst" parameterType="Tblmi_cont_mst" resultType="Tblmi_cont_mst">
+        select *
+        from Tblmi_cont_mst
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+                and ch_tp = #{ch_tp}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+                and avo_id = #{avo_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inten_id)">
+                and inten_id = #{inten_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(orig_id)">
+                and orig_id = #{orig_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
+                and inta_key = #{inta_key}
+            </if>
+        </where>
+    </select>
+
+    <select id="sel_tblmi_cont_lst" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
+        select  a.seq
+        , a.CONT_TP
+        , a.CONT_SUB
+        , a.CONT_TOP_BODY
+        , a.CONT_BODY
+        , a.SEND_TP
+        , b.list_val as send_to
+        , b.list_nm AS send_nm
+        , a.THM_URL
+        , a.BR_YN
+        , a.SUP_YN
+        , a.MSG_TP
+        , a.KKO_IMG_CD
+        , a.KKO_IMG_URL
+        , a.KKO_BTN_NM
+        , a.KKO_BTN_URL
+        , a.IMG_CD_1
+        , a.IMG_CD_2
+        , a.IMG_CD_3
+        , a.IMG_CD_4
+        , a.IMG_CD_5
+        , a.IMG_CD_6
+        , a.RCS_BTN_INS_TP
+        , a.RCS_BTN_CNT
+        , a.RCS_BTN_OBJ
+        , a.RCS_BTN_1
+        , a.RCS_BTN_TP_1
+        , a.RCS_BTN_CONT_1
+        , a.RCS_BTN_2
+        , a.RCS_BTN_TP_2
+        , a.RCS_BTN_CONT_2
+        , a.RCS_BTN_3
+        , a.RCS_BTN_TP_3
+        , a.RCS_BTN_CONT_3
+        , a.RCS_FOOTER
+        , a.KEY_ID
+        , a.CONT_GRP_CD
+        , #{reg_id} as reg_id
+        from Tblmi_cont_lst as a
+            INNER JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and a.SEQ = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_cd)">
+                and a.CONT_CD = #{cont_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+                and a.CONT_TP = #{cont_tp}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+                and a.CONT_GRP_CD = #{cont_grp_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and a.USE_YN = #{use_yn}
+            </if>
+        </where>
+    </select>
+
+    <!-- ===================================================== insert ===================================================== -->
+    <insert id="ins_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
+        insert into tblmicp_cont_mst (
+           cont_seq
+           , ch_tp
+           , cont_nm
+           , sales_nm
+           , avo_id
+           , inten_id
+           , orig_id
+           , inta_key
+           , inta_ve
+           , pub_yn
+           , cont_grp_cd
+           , reg_id
+           , upd_id
+        )
+        values (
+           #{cont_seq}
+           , #{ch_tp}
+           , #{cont_nm}
+           , #{sales_nm}
+           , #{avo_id}
+           , #{inten_id}
+           , #{orig_id}
+           , #{inta_key}
+           , #{inta_ve}
+           , #{pub_yn}
+           , #{cont_grp_cd}
+           , #{reg_id}
+           , #{upd_id}
+        )
+        ON DUPLICATE KEY UPDATE
+            cont_seq = values(cont_seq)
+            , cont_nm = values(cont_nm)
+            , sales_nm = values(sales_nm)
+            , inta_ve = values(inta_ve)
+            , pub_yn = values(pub_yn)
+            , upd_id = values(upd_id)
+    </insert>
+
+    <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
+        insert into tblmicp_cont_lst
+            (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
+        values
+            (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}, #{kko_btn_nm}, #{kko_btn_url}, #{img_cd_1}, #{img_cd_2}, #{img_cd_3}, #{img_cd_4}, #{img_cd_5}, #{img_cd_6}, #{rcs_btn_ins_tp}, #{rcs_btn_cnt}, #{rcs_btn_obj}, #{rcs_btn_1}, #{rcs_btn_tp_1}, #{rcs_btn_cont_1}, #{rcs_btn_2}, #{rcs_btn_tp_2}, #{rcs_btn_cont_2}, #{rcs_btn_3}, #{rcs_btn_tp_3}, #{rcs_btn_cont_3}, #{rcs_footer}, #{key_id}, #{cont_grp_cd}, #{reg_id})
+        ON DUPLICATE KEY UPDATE
+            cont_sub = values(cont_sub)
+            , cont_top_body = values(cont_top_body)
+            , cont_body = values(cont_body)
+            , send_tp = values(send_tp)
+            , send_to = values(send_to)
+            , send_nm = values(send_nm)
+            , thm_url = values(thm_url)
+            , br_yn = values(br_yn)
+            , sup_yn = values(sup_yn)
+            , msg_tp = values(msg_tp)
+            , kko_img_cd = values(kko_img_cd)
+            , kko_img_url = values(kko_img_url)
+            , kko_btn_nm = values(kko_btn_nm)
+            , kko_btn_url = values(kko_btn_url)
+            , img_cd_1 = values(img_cd_1)
+            , img_cd_2 = values(img_cd_2)
+            , img_cd_3 = values(img_cd_3)
+            , img_cd_4 = values(img_cd_4)
+            , img_cd_5 = values(img_cd_5)
+            , img_cd_6 = values(img_cd_6)
+            , rcs_btn_ins_tp = values(rcs_btn_ins_tp)
+            , rcs_btn_cnt = values(rcs_btn_cnt)
+            , rcs_btn_obj = values(rcs_btn_obj)
+            , rcs_btn_1 = values(rcs_btn_1)
+            , rcs_btn_tp_1 = values(rcs_btn_tp_1)
+            , rcs_btn_cont_1 = values(rcs_btn_cont_1)
+            , rcs_btn_2 = values(rcs_btn_2)
+            , rcs_btn_tp_2 = values(rcs_btn_tp_2)
+            , rcs_btn_cont_2 = values(rcs_btn_cont_2)
+            , rcs_btn_3 = values(rcs_btn_3)
+            , rcs_btn_tp_3 = values(rcs_btn_tp_3)
+            , rcs_btn_cont_3 = values(rcs_btn_cont_3)
+            , rcs_footer = values(rcs_footer)
+            , key_id = values(key_id)
+            , cont_grp_cd = values(cont_grp_cd)
+            , upd_id = values(upd_id)
+    </insert>
+
+    <insert id="ins_tblmicp_cont_url_lst" parameterType="HashMap">
+        insert into tblmicp_cont_url_lst
+        (CONT_LST_CD, URL_TAG, URL, URL_ID, URL_TYPE, MAP_ID, MAP_CORDS)
+        select
+            #{cont_lst_cd}
+            , url_tag
+            , url
+            , url_id
+            , url_type
+            , map_id
+            , map_cords
+        from tblmi_cont_url_lst
+        where cont_list_cd = #{list_seq}
+    </insert>
+
+    <!-- ===================================================== update ===================================================== -->
+
     <update id="upd_usrInfo" parameterType="SalesforceDto">
         update Tblmi_usr set
             usr_sales_id = #{usr_sales_id}
@@ -45,4 +232,12 @@
             usr_id = #{usr_id}
         </where>
     </update>
+
+    <!-- ===================================================== delete ===================================================== -->
+
+    <delete id="del_tblmicp_cont_url_lst" parameterType="Tblmicp_cont_url_lstDto">
+        delete from tblmicp_cont_url_lst
+        where cont_list_cd = #{cont_list_cd}
+    </delete>
+
 </mapper>

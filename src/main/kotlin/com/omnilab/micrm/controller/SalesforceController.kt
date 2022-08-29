@@ -7,6 +7,7 @@ import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
+import com.omnilab.micrm.model.table.Tblmicp_cont_mstDto
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
 import com.omnilab.micrm.service.SalesforceService
@@ -476,8 +477,9 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/save.service")
-    fun save(@RequestBody data : Object): ResponseEntity<Any> {
+    fun save(@RequestBody data : Tblmi_cont_mstDto): ResponseEntity<Any> {
         logger.info("/save.service data: $data")
+        val save = salesforceService.campaingContent(data)
         return ResponseEntity(null, HttpStatus.OK)
     }
 
