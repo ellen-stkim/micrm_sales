@@ -21,6 +21,7 @@ class CommonExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException::class)
     fun handlesdConflict(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, e: NoHandlerFoundException) {
 		try {
+            logger.error("error", e)
             rep.sendRedirect("/html/not.html")
         } catch (err: Exception) {
 
@@ -40,6 +41,7 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(value = [RequestRejectedException::class])
     fun rejected(e: RequestRejectedException): String {
+        logger.error("error", e)
 		return "redirect:/html/error2.html"
     }
 
