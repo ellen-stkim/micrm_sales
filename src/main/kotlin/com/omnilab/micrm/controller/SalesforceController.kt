@@ -476,8 +476,9 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/save.service")
-    fun save(@RequestBody data : Object) {
+    fun save(@RequestBody data : Object): ResponseEntity<Any> {
         logger.info("/save.service data: $data")
+        return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @ResponseBody
@@ -489,14 +490,16 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/unpublish.service")
-    fun unpublish(@RequestBody data : Object) {
+    fun unpublish(@RequestBody data : Object): ResponseEntity<Any> {
         logger.info("/publish.service data: $data")
+        return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @ResponseBody
     @PostMapping("/validate.service")
-    fun validate(@RequestBody data : Object) {
+    fun validate(@RequestBody data : Object): ResponseEntity<Any> {
         logger.info("/validate.service data: $data")
+        return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @ResponseBody
