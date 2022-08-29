@@ -477,9 +477,9 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/save.service")
-    fun save(@RequestBody data : Tblmi_cont_mstDto): ResponseEntity<Any> {
+    fun save(@RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/save.service data: $data")
-        val save = salesforceService.campaingContent(data)
+        //val save = salesforceService.campaingContent(data)
         return ResponseEntity(null, HttpStatus.OK)
     }
 
