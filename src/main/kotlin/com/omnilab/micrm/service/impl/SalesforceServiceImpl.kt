@@ -2047,11 +2047,8 @@ class SalesforceServiceImpl : SalesforceService {
 
     override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
         return try{
-            val userInfo = UsefulUtils.sessionUser()
-            logger.error("{}", userInfo)
-            val usrId = userInfo.usr_id
-
             val mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+            val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
             val cpMstDto = Tblmicp_cont_mstDto(mstDto.seq)
             cpMstDto.reg_id = usrId
             cpMstDto.upd_id = usrId
