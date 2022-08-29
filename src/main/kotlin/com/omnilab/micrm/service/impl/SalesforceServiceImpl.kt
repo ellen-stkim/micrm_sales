@@ -2047,11 +2047,11 @@ class SalesforceServiceImpl : SalesforceService {
 
     override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
         return try{
-            val mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+            val mstDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
             val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
-            val cpMstDto = Tblmicp_cont_mstDto(mstDto.seq)
-            cpMstDto.reg_id = usrId
-            cpMstDto.upd_id = usrId
+            val cpMstDto = Tblmicp_cont_mstDto(mstDto)
+            cpMstDto.avo_id = dto.avo_id
+            cpMstDto.inta_ve = dto.inta_ve
             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
             val contListDto = Tblmi_cont_lstDto()

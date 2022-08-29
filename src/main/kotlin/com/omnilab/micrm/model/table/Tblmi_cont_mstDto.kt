@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
 
 @Alias("Tblmi_cont_mstDto")
-open class Tblmi_cont_mstDto {
+open class Tblmi_cont_mstDto: Cloneable {
 
     var seq: Int ?= null
     var ch_tp : String ?= null  // 채널 타입
@@ -38,4 +38,7 @@ open class Tblmi_cont_mstDto {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }
 
+    public override fun clone(): Tblmicp_cont_mstDto {
+        return super.clone() as Tblmicp_cont_mstDto
+    }
 }
