@@ -479,7 +479,14 @@ class SalesforceController {
     @PostMapping("/save.service")
     fun save(@RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/save.service data: $data")
-        //val save = salesforceService.campaingContent(data)
+        val dto = Tblmi_cont_mstDto()
+        dto.avo_id = data["activityObjectID"].toString()
+        dto.inten_id = data["interactionId"].toString()
+        dto.orig_id = data["originalDefinitionId"].toString()
+        dto.inta_key = data["interactionKey"].toString()
+        dto.inta_ve = data["interactionVersion"].toString()
+        val save = salesforceService.campaingContent(dto)
+
         return ResponseEntity(null, HttpStatus.OK)
     }
 
