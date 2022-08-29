@@ -73,6 +73,13 @@ class MobileContentServiceImpl : ContentService {
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
+            tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
+            tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
+            tblmiContMstDto.avo_id = contentListCreatedto.avo_id
+            tblmiContMstDto.inten_id = contentListCreatedto.inten_id
+            tblmiContMstDto.orig_id = contentListCreatedto.orig_id
+            tblmiContMstDto.inta_key = contentListCreatedto.inta_key
+            tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
 
             contentDao.insertContentMaster(tblmiContMstDto);
 

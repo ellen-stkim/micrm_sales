@@ -119,7 +119,12 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var map_id:List<String>? = null
     var map_cords:List<String>? = null
 
-    var sales_id:String? = null
+    var sales_nm: String? = null
+    var avo_id: String? = null
+    var inten_id: String? = null
+    var orig_id: String? = null
+    var inta_key: String? = null
+    var inta_ve: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
