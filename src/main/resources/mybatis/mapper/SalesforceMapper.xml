@@ -38,7 +38,7 @@
         ORDER BY FIELD(DEF_YN, 'Y') DESC, REG_DT DESC
     </select>
 
-    <select id="sel_tblmi_cont_mst" parameterType="Tblmi_cont_mst" resultType="Tblmi_cont_mst">
+    <select id="sel_tblmi_cont_mst" parameterType="Tblmi_cont_mstDto" resultType="Tblmi_cont_mstDto">
         select *
         from Tblmi_cont_mst
         <where>
