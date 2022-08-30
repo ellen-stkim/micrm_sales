@@ -2178,6 +2178,8 @@ class SalesforceServiceImpl : SalesforceService {
                 proDto.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
                 proDto.pro_tp = "SALES"
                 proDto.pro_st = "03" // 발송 진행 중
+                proDto.pro_tg_tp = "TG01"
+                proDto.pro_tg_id = "SALES"
                 proDto.cont_cnt = contLst.size
                 proDto.camp_cnt = contLst.size
                 proDto.pro_nm = contLst[0].sales_nm
@@ -2193,7 +2195,7 @@ class SalesforceServiceImpl : SalesforceService {
                     for(i in contLst){
                         val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
                         campaignDto.cont_id = i.seq
-                        campaignDto.send_tg_tp = proDto.pro_tg_tp
+                        campaignDto.send_tg_tp = "TG01"
                         campaignDto.send_tg_id = "SALES"
                         campaignDto.camp_st = "03"
                         campaignDto.camp_nm = i.cont_nm
