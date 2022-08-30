@@ -54,6 +54,17 @@ define(["postmonger"], function (Postmonger) {
 		});
 	});
 
+	connection.on('initEvent', function(payload) {
+		console.log("initEvent");
+		console.log(payload);
+	});
+
+
+	connection.on('updateActivity', function(payload) {
+		console.log("updateActivity");
+	});
+
+
 	connection.on("requestedTokens", function (tokens){
 		//console.log("tokens == " + JSON.stringify(tokens));
 		if(tokens) {
@@ -168,6 +179,7 @@ define(["postmonger"], function (Postmonger) {
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
+		console.log(payload);
 	}
 
     // 프리뷰에서 저장 버튼 누르기
