@@ -54,17 +54,6 @@ define(["postmonger"], function (Postmonger) {
 		});
 	});
 
-	connection.on('initEvent', function(payload) {
-		console.log("initEvent");
-		console.log(payload);
-	});
-
-
-	connection.on('updateActivity', function(payload) {
-		console.log("updateActivity");
-	});
-
-
 	connection.on("requestedTokens", function (tokens){
 		//console.log("tokens == " + JSON.stringify(tokens));
 		if(tokens) {
@@ -177,7 +166,7 @@ define(["postmonger"], function (Postmonger) {
 		data.seq = $('#seq').val();
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
-		payload["metaData"].isConfigured = true;
+		//payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
 		console.log(payload);
 	}
@@ -215,7 +204,6 @@ define(["postmonger"], function (Postmonger) {
 
     // 저장
     function mobileSave() {
-		connection.trigger('updateEvent', payload);
         const res = function(response) {
             if(response.status) {
                 $('#seq').val(response.seq);
@@ -236,7 +224,6 @@ define(["postmonger"], function (Postmonger) {
 
     // 수정
     function mobileEdit() {
-		connection.trigger('updateEvent', payload);
         const res = function(response) {
             if(response.status) {
                 save();
