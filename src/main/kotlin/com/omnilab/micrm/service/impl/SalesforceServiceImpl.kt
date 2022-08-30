@@ -2079,6 +2079,8 @@ class SalesforceServiceImpl : SalesforceService {
             headers.accept = acceptableMediaType
             headers.contentLength = postDataBytes.size.toLong()
 
+            logger.error("{}", "${authUrl!!.cd_val}/v2/token")
+
             val tokenResult: ResponseEntity<String> = restTemplate.exchange("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(postData, headers), String::class.java)
 
             logger.error("tokenResult {}", tokenResult)
