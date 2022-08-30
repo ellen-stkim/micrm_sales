@@ -511,7 +511,6 @@ class SalesforceController {
         dto.inta_key = data["interactionKey"].toString()
         dto.inta_ve = data["interactionVersion"].toString()
         dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-
         val save = salesforceService.publish(dto)
         return if(save){
             ResponseEntity(null, HttpStatus.OK)
@@ -523,7 +522,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/unpublish.service")
     fun unpublish(@RequestBody data : Object): ResponseEntity<Any> {
-        logger.info("/publish.service data: $data")
+        logger.info("/unpublish.service data: $data")
         return ResponseEntity(null, HttpStatus.OK)
     }
 
