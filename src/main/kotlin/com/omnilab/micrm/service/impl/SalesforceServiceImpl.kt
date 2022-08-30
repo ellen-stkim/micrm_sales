@@ -1,5 +1,7 @@
 package com.omnilab.micrm.service.impl
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Content_list_CreateDto
@@ -45,6 +47,7 @@ import org.springframework.web.context.request.ServletRequestAttributes
 import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
+import kotlin.math.log
 
 
 @Service("SalesforceServiceImpl")
@@ -2066,23 +2069,21 @@ class SalesforceServiceImpl : SalesforceService {
             val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
             val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
 
-            val postData: LinkedMultiValueMap<String, String> = LinkedMultiValueMap<String, String>()
+            val g: Gson = GsonBuilder().create()
+            val postData = HashMap<String, String>()
             postData["grant_type"] = "client_credentials"
             postData["client_id"] =  cid.toString()
             postData["client_secret"] = sec.toString()
-            val postDataBytes = postData.toString().toByteArray(charset(StandardCharsets.UTF_8.toString()))
 
             val headers = HttpHeaders()
             headers.contentType = MediaType.APPLICATION_JSON
             val acceptableMediaType: MutableList<MediaType> = ArrayList()
             acceptableMediaType.add(MediaType.APPLICATION_JSON)
             headers.accept = acceptableMediaType
-            headers.contentLength = postDataBytes.size.toLong()
 
-            logger.error("{}", "${authUrl!!.cd_val}/v2/token")
+            val tokenResult: ResponseEntity<String> = restTemplate.exchange("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(g.toJson(postData), headers), String::class.java)
 
-            val tokenResult: ResponseEntity<String> = restTemplate.exchange("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(postData, headers), String::class.java)
-
+            logger.error("{}", g.toJson(postData))
             logger.error("tokenResult {}", tokenResult)
             //headers.set("Authorization", "Bearer $token")
             //val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
