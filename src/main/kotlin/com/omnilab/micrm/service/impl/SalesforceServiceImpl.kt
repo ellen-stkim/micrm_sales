@@ -2091,56 +2091,59 @@ class SalesforceServiceImpl : SalesforceService {
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
                     for(activity in activities){
-                        val sales_nm = data["name"].toString()
-                        val avo_nm = activity["name"].toString()
-                        val activityObjectID: String = activity["id"].toString()
-                        val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
+                        val type = data["type"].toString()
+                        if(type == "REST"){
+                            val sales_nm = data["name"].toString()
+                            val avo_nm = activity["name"].toString()
+                            val activityObjectID: String = activity["id"].toString()
+                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
 
-                        logger.error("sales_nm {}", sales_nm)
-                        logger.error("avo_nm {}", avo_nm)
-                        logger.error("activityObjectID {}", activityObjectID)
-                        logger.error("seq {}", seq)
-                        /*
-                        val temp = Tblmi_cont_mstDto()
-                        val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+                            logger.error("sales_nm {}", sales_nm)
+                            logger.error("avo_nm {}", avo_nm)
+                            logger.error("activityObjectID {}", activityObjectID)
+                            logger.error("seq {}", seq)
+                            /*
+                            val temp = Tblmi_cont_mstDto()
+                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
 
-                        val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
-                        val cpMstDto = Tblmicp_cont_mstDto(mstDto)
-                        cpMstDto.avo_id = dto.avo_id
-                        cpMstDto.inta_ve = dto.inta_ve
-                        salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+                            val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
+                            val cpMstDto = Tblmicp_cont_mstDto(mstDto)
+                            cpMstDto.avo_id = dto.avo_id
+                            cpMstDto.inta_ve = dto.inta_ve
+                            salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
-                        logger.error("{}", cpMstDto)
+                            logger.error("{}", cpMstDto)
 
-                        val contListDto = Tblmi_cont_lstDto()
-                        contListDto.cont_cd = mstDto.seq
-                        contListDto.reg_id = usrId
-                        contListDto.upd_id = usrId
-                        val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+                            val contListDto = Tblmi_cont_lstDto()
+                            contListDto.cont_cd = mstDto.seq
+                            contListDto.reg_id = usrId
+                            contListDto.upd_id = usrId
+                            val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
 
-                        for(i in contLst){
-                            val oriSeq = i.seq.toString()
+                            for(i in contLst){
+                                val oriSeq = i.seq.toString()
 
-                            // 리스트 삽입
-                            val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
-                            tblmicp_cont_lstDto.seq = null
-                            tblmicp_cont_lstDto.cont_cd = cpMstDto.seq
-                            tblmicp_cont_lstDto.reg_id = usrId
-                            tblmicp_cont_lstDto.upd_id = usrId
-                            salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
+                                // 리스트 삽입
+                                val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
+                                tblmicp_cont_lstDto.seq = null
+                                tblmicp_cont_lstDto.cont_cd = cpMstDto.seq
+                                tblmicp_cont_lstDto.reg_id = usrId
+                                tblmicp_cont_lstDto.upd_id = usrId
+                                salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
 
-                            //기존 url 리스트 삭제
-                            val tblmicp_cont_url_lstDto = Tblmicp_cont_url_lstDto(tblmicp_cont_lstDto.seq)
-                            salesforceDao.del_tblmicp_cont_url_lst(tblmicp_cont_url_lstDto)
+                                //기존 url 리스트 삭제
+                                val tblmicp_cont_url_lstDto = Tblmicp_cont_url_lstDto(tblmicp_cont_lstDto.seq)
+                                salesforceDao.del_tblmicp_cont_url_lst(tblmicp_cont_url_lstDto)
 
-                            //신규 url 리스트 삽입
-                            val map = HashMap<String, Any>()
-                            map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
-                            map["list_seq"] = oriSeq
+                                //신규 url 리스트 삽입
+                                val map = HashMap<String, Any>()
+                                map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
+                                map["list_seq"] = oriSeq
 
-                            salesforceDao.ins_tblmicp_cont_url_lst(map)
+                                salesforceDao.ins_tblmicp_cont_url_lst(map)
+                            }
+                             */
                         }
-                         */
                     }
                     return true
                 }else{

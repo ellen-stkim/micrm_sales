@@ -486,10 +486,10 @@ class SalesforceController {
         dto.inta_key = data["interactionKey"].toString()
         dto.inta_ve = data["interactionVersion"].toString()
         val save = salesforceService.campaingContent(dto)
-        if(save){
-            return ResponseEntity(null, HttpStatus.OK)
+        return if(save){
+            ResponseEntity(null, HttpStatus.OK)
         }else{
-            return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+            ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 

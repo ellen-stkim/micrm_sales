@@ -29,6 +29,7 @@ class CommonExceptionHandler {
     }
 
     //잘못된 요청
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(value = [HttpRequestMethodNotSupportedException::class])
     fun handleException(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, e: HttpRequestMethodNotSupportedException) {
 		try {
@@ -39,12 +40,14 @@ class CommonExceptionHandler {
         }
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = [RequestRejectedException::class])
     fun rejected(e: RequestRejectedException): String {
         logger.error("error", e)
 		return "redirect:/html/error2.html"
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = [Exception::class])
     fun handleException(e: Exception): String {
 		logger.error("error", e)
