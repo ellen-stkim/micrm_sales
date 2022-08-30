@@ -236,6 +236,14 @@
             , map_cords
         from tblmi_cont_url_lst
         where cont_lst_cd = #{list_seq}
+        ON DUPLICATE KEY UPDATE
+             url_tag = values(url_tag)
+            , url = values(url)
+            , url_type = values(url_type)
+            , map_id = values(map_id)
+            , map_cords = values(map_cords)
+            , upd_id = values(upd_id)
+            , upd_dt = current_timestamp 
     </insert>
 
     <!-- ===================================================== update ===================================================== -->
