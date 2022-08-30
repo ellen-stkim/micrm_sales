@@ -24,7 +24,7 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestInteraction');
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
-		//connection.trigger('updateActivity');
+		connection.trigger('updateActivity');
 
 		// refresh
 		connection.trigger('ready');
@@ -105,7 +105,6 @@ define(["postmonger"], function (Postmonger) {
 
 	connection.on("requestedInteraction", function (interaction){
 		model = interaction;
-		console.log(model);
 	});
 
     // 사용자 조회
