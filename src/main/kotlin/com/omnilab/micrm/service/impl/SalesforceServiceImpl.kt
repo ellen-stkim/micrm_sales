@@ -2094,7 +2094,6 @@ class SalesforceServiceImpl : SalesforceService {
                 val token = tokenMap["access_token"].toString()
                 val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
                 if(result["result"] as Boolean){
-                    logger.error("{}", result["data"])
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
                     for(activity in activities){

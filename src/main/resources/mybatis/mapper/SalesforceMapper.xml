@@ -157,39 +157,42 @@
                 and  inta_key = #{inta_key}
         </selectKey>
         insert into tblmicp_cont_mst (
-           cont_seq
-           , ch_tp
-           , cont_nm
-           , sales_nm
-           , avo_id
-           , inten_id
-           , orig_id
-           , inta_key
-           , inta_ve
-           , pub_yn
-           , cont_grp_cd
-           , reg_id
-           , upd_id
+            cont_seq
+            , ch_tp
+            , cont_nm
+            , sales_nm
+            , avo_nm
+            , avo_id
+            , inten_id
+            , orig_id
+            , inta_key
+            , inta_ve
+            , pub_yn
+            , cont_grp_cd
+            , reg_id
+            , upd_id
         )
         values (
-           #{cont_seq}
-           , #{ch_tp}
-           , #{cont_nm}
-           , #{sales_nm}
-           , #{avo_id}
-           , #{inten_id}
-           , #{orig_id}
-           , #{inta_key}
-           , #{inta_ve}
-           , #{pub_yn}
-           , #{cont_grp_cd}
-           , #{reg_id}
-           , #{upd_id}
+            #{cont_seq}
+            , #{ch_tp}
+            , #{cont_nm}
+            , #{sales_nm}
+            , #{avo_nm}
+            , #{avo_id}
+            , #{inten_id}
+            , #{orig_id}
+            , #{inta_key}
+            , #{inta_ve}
+            , #{pub_yn}
+            , #{cont_grp_cd}
+            , #{reg_id}
+            , #{upd_id}
         )
         ON DUPLICATE KEY UPDATE
             cont_seq = values(cont_seq)
             , cont_nm = values(cont_nm)
             , sales_nm = values(sales_nm)
+            , avo_nm = values(avo_nm)
             , inta_ve = values(inta_ve)
             , pub_yn = values(pub_yn)
             , upd_id = values(upd_id)
