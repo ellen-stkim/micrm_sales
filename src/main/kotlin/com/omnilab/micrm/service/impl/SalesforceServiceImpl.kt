@@ -44,6 +44,7 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import java.net.HttpURLConnection
 import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
@@ -2081,12 +2082,19 @@ class SalesforceServiceImpl : SalesforceService {
             acceptableMediaType.add(MediaType.APPLICATION_JSON)
             headers.accept = acceptableMediaType
 
-            val tokenResult: ResponseEntity<String> = restTemplate.exchange("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(g.toJson(postData), headers), String::class.java)
-
-            logger.error("tokenResult {}", tokenResult)
-            //headers.set("Authorization", "Bearer $token")
-            //val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-
+            val tokenResult = connection("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, g.toJson(postData), null)
+            if(tokenResult["result"] as Boolean){
+                val tokenMap = g.fromJson(tokenResult["body"].toString(), MutableMap::class.java)
+                val token = tokenMap["access_token"].toString()
+                val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
+                if(result["result"] as Boolean){
+                    logger.error("{}", result["body"])
+                }else{
+                    return false
+                }
+             }else {
+                return false
+            }
             /*
             val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
             val cpMstDto = Tblmicp_cont_mstDto(mstDto)
@@ -2129,6 +2137,36 @@ class SalesforceServiceImpl : SalesforceService {
         }catch (e: Exception){
             logger.error("campaingContent", e)
             throw Exception("rollback")
+        }
+    }
+
+    private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {
+        val re_map: MutableMap<String, Any> = HashMap()
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        val acceptableMediaType: MutableList<MediaType> = ArrayList()
+        acceptableMediaType.add(MediaType.APPLICATION_JSON)
+        headers.accept = acceptableMediaType
+        if(authKey != null){
+            headers.set("Authorization", "Bearer $authKey")
+        }
+        try{
+            val result: ResponseEntity<String> = restTemplate.exchange(url, method, org.springframework.http.HttpEntity(data, headers), String::class.java)
+            val status = result.statusCode.value()
+            re_map["result"] = status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE
+            re_map["status"] = status
+            if(result.body == null){
+                re_map["data"] = ""
+            }else{
+                re_map["data"] = result.body!!
+                //log.error("{}", result.body)
+            }
+            return re_map
+        }catch (e: Exception){
+            logger.error("connection {}", e)
+            re_map["result"] = false
+            return re_map
         }
     }
 }
