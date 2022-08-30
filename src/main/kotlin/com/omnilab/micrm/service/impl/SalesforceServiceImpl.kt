@@ -2094,6 +2094,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val token = tokenMap["access_token"].toString()
                 val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
                 if(result["result"] as Boolean){
+                    logger.error("{}", result["data"])
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
                     for(activity in activities){
@@ -2101,7 +2102,7 @@ class SalesforceServiceImpl : SalesforceService {
                         if(type == "REST"){
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
-                            val avo_id: String = activity["id"].toString()
+                            val avo_id = activity["id"].toString()
                             val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
 
                             val temp = Tblmi_cont_mstDto(seq.toInt())
@@ -2221,6 +2222,8 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
+        val inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        logger.error("{}", inArguments)
 
         return true
     }
