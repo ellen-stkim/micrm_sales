@@ -541,13 +541,13 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/TestSave.service")
     fun TestSave(@RequestBody data : Object) {
-        logger.info("/TestSave.service data: \n${data.toString()}");
+        logger.info("/TestSave.service data: $data");
     }
 
     // done 동작
     @ResponseBody
     @PostMapping("/execute.service")
-    fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String) {
+    fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String): ResponseEntity<Any> {
         try {
             // jwt
             val chunks: List<String> = data.split(".")
@@ -570,8 +570,11 @@ class SalesforceController {
                 val inArguments = data["inArguments"]
                 logger.error("{}", inArguments)
             }
+            return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+            //return ResponseEntity(null, HttpStatus.OK)
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.error("execute.service", e)
+            return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
