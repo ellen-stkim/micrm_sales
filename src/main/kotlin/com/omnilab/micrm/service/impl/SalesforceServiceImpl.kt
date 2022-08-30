@@ -2189,7 +2189,8 @@ class SalesforceServiceImpl : SalesforceService {
                 proDto.orig_id = dto.orig_id
                 proDto.inta_key = dto.inta_key
                 proDto.inta_ve = dto.inta_ve
-                campaignDao.ins_program(proDto)
+                val pro = campaignDao.ins_program(proDto)
+                pro == 1
             }else{
                 true
             }
