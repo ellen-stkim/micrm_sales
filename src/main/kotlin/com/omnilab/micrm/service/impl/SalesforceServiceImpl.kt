@@ -9,6 +9,7 @@ import com.omnilab.micrm.model.Image_searchDto
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
@@ -44,6 +45,7 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import java.math.BigDecimal
 import java.net.HttpURLConnection
 import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
@@ -70,6 +72,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     @Qualifier("ContentDaoImpl")
     private lateinit var contentDao: ContentDao
+
+    @Autowired
+    @Qualifier("CampaignDaoImpl")
+    private lateinit var campaignDao: CampaignDao
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -2154,6 +2160,30 @@ class SalesforceServiceImpl : SalesforceService {
             logger.error("campaingContent", e)
             throw Exception("rollback")
         }
+    }
+
+    override fun publish(dto: Tblmicp_cont_mstDto): Boolean {
+        val save = salesforceDao.upd_tblmicp_cont_mst(dto)
+        return if(save == 1){
+            if(dto.pub_yn == "Y"){
+                logger.error("{}", dto)
+                val proDto = Tblmicp_programDto()
+                proDto.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
+                //proDto.cont_cnt = contLst.size
+                //proDto.camp_cnt = contLst.size
+                proDto.pro_st = "00"
+            }else{
+                true
+            }
+            true
+        }else{
+            false
+        }
+    }
+
+    override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
+
+        return true
     }
 
     private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {

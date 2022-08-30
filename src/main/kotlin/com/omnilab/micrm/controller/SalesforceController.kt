@@ -8,6 +8,7 @@ import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmicp_cont_mstDto
+import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
@@ -510,8 +511,9 @@ class SalesforceController {
         dto.inta_key = data["interactionKey"].toString()
         dto.inta_ve = data["interactionVersion"].toString()
         dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-        val save = salesforceDao.upd_tblmicp_cont_mst(dto)
-        return if(save == 1){
+
+        val save = salesforceService.publish(dto)
+        return if(save){
             ResponseEntity(null, HttpStatus.OK)
         }else{
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)

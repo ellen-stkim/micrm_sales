@@ -17,4 +17,6 @@ interface SalesforceService {
 
     fun campaingContent(dto: Tblmi_cont_mstDto): Boolean
 
+    fun publish(dto: Tblmicp_cont_mstDto): Boolean
+    fun sendCampaign(map: MutableMap<String, Any>): Boolean
 }
