@@ -24,7 +24,6 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestInteraction');
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
-		//connection.trigger('updateEvent', payload);
 
 		// refresh
 		connection.trigger('ready');
@@ -204,6 +203,7 @@ define(["postmonger"], function (Postmonger) {
 
     // 저장
     function mobileSave() {
+		connection.trigger('updateEvent', payload);
         const res = function(response) {
             if(response.status) {
                 $('#seq').val(response.seq);
@@ -224,6 +224,7 @@ define(["postmonger"], function (Postmonger) {
 
     // 수정
     function mobileEdit() {
+		connection.trigger('updateEvent', payload);
         const res = function(response) {
             if(response.status) {
                 save();
