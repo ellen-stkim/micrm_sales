@@ -2062,6 +2062,7 @@ class SalesforceServiceImpl : SalesforceService {
             val urlInfo = systemDao.getCommCDLst(commDto)
 
             val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+            val authUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
             val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
             val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
 
@@ -2078,7 +2079,7 @@ class SalesforceServiceImpl : SalesforceService {
             headers.accept = acceptableMediaType
             headers.contentLength = postDataBytes.size.toLong()
 
-            val tokenResult: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(postData, headers), String::class.java)
+            val tokenResult: ResponseEntity<String> = restTemplate.exchange("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(postData, headers), String::class.java)
 
             logger.error("tokenResult {}", tokenResult)
             //headers.set("Authorization", "Bearer $token")
