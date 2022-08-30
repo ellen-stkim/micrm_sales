@@ -11,6 +11,7 @@ define(["postmonger"], function (Postmonger) {
 	let cnt = 0;
 	let eventDefinitionKey;
 	let bindList = [];
+	let eventModel = null;
 
 	// Configuration variables
 	let eventSchema = ''; // variable is used in parseEventSchema()
@@ -35,10 +36,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-	});
-
-	$(window).on('message', function (e) {
-		console.log(e);
 	});
 
 	connection.on("initActivity", function (data) {
@@ -96,8 +93,13 @@ define(["postmonger"], function (Postmonger) {
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		if(eventDefinitionModel){
+			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 		}
+	});
+
+	connection.on("requestedInteraction", function (interaction){
+		model = interaction;
 	});
 
 	connection.on('clickedNext', function (){
@@ -105,8 +107,9 @@ define(["postmonger"], function (Postmonger) {
 		$('#previewBtn').trigger('click');
 	});
 
-	connection.on("requestedInteraction", function (interaction){
-		model = interaction;
+	connection.on('requestedInteractionDefaults', function(settings) {
+		console.log("requestedInteractionDefaults");
+		console.log(settings);
 	});
 
     // 사용자 조회
