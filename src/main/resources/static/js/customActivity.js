@@ -36,7 +36,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-		parseEventSchema();
 	});
 
 	connection.on("initActivity", function (data) {
@@ -169,7 +168,7 @@ define(["postmonger"], function (Postmonger) {
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
-        connection.trigger("updateEvent", payload);
+        connection.trigger("updateActivity", payload);
 	}
 
     // 프리뷰에서 저장 버튼 누르기
