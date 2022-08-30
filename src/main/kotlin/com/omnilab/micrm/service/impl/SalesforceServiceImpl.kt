@@ -2107,6 +2107,9 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.sales_nm = sales_nm
                             cpMstDto.avo_nm = avo_nm
                             cpMstDto.avo_id = avo_id
+                            cpMstDto.inten_id = dto.inten_id
+                            cpMstDto.orig_id = dto.orig_id
+                            cpMstDto.inta_key = dto.inta_key
                             cpMstDto.inta_ve = dto.inta_ve
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 

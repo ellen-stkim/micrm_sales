@@ -50,8 +50,12 @@ class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = [Exception::class])
     fun handleException(e: Exception): String {
-		logger.error("error", e)
-        return "redirect:/html/error2.html"
+        if(e.message != "rollback"){
+            logger.error("error", e)
+        }else{
+            logger.error("error", "rollback")
+        }
+		return "redirect:/html/error2.html"
     }
 
     /*@ExceptionHandler(value = [Exception::class])
