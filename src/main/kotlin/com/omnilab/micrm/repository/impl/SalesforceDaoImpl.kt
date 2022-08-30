@@ -20,7 +20,7 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.selectOne("sel_usrInfo", dto)
     }
 
-    override fun mappingLst(dto: SalesforceDto): List<SalesforceDto> {
+    override fun mappingLst(dto: SalesforceDto): MutableList<SalesforceDto> {
         return sqlSession.selectList("selectMappingLst", dto)
     }
 
@@ -28,9 +28,14 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.selectOne("sel_tblmi_cont_mstOne", dto)
     }
 
-    override fun sel_tblmi_cont_lst(dto: Tblmi_cont_lstDto): List<Tblmi_cont_lstDto> {
+    override fun sel_tblmi_cont_lst(dto: Tblmi_cont_lstDto): MutableList<Tblmi_cont_lstDto> {
         return sqlSession.selectList("sel_tblmi_cont_lst", dto)
     }
+
+    override fun sel_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): MutableList<Tblmicp_cont_mstDto> {
+        return sqlSession.selectList("sel_tblmicp_cont_mst", dto)
+    }
+
     /*
     override fun ins_tblmicp_cont(dto: Tblmicp_cont_mstDto): Boolean {
         return true

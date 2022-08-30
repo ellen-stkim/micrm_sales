@@ -29,6 +29,10 @@ open class Tblmicp_programDto {
     var reg_dt: String? = null
     var upd_id: String? = null
     var upd_dt: String? = null
+    var inten_id: String? = null
+    var orig_id: String? = null
+    var inta_key: String? = null
+    var inta_ve: String? = null
 
     constructor()
     constructor(pro_id: String?){

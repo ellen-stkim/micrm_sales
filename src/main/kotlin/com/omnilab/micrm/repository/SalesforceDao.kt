@@ -6,9 +6,10 @@ import com.omnilab.micrm.model.table.*
 interface SalesforceDao {
 
     fun sel_usrInfo(dto: SalesforceDto): Tblmi_usrDto?
-    fun mappingLst(dto: SalesforceDto): List<SalesforceDto>
+    fun mappingLst(dto: SalesforceDto): MutableList<SalesforceDto>
     fun sel_tblmi_cont_mstOne(dto: Tblmi_cont_mstDto): Tblmi_cont_mstDto
-    fun sel_tblmi_cont_lst(dto: Tblmi_cont_lstDto): List<Tblmi_cont_lstDto>
+    fun sel_tblmi_cont_lst(dto: Tblmi_cont_lstDto): MutableList<Tblmi_cont_lstDto>
+    fun sel_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): MutableList<Tblmicp_cont_mstDto>
 
     //fun ins_tblmicp_cont(dto: Tblmicp_cont_mstDto): Boolean
     fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int

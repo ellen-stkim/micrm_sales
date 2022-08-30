@@ -2167,11 +2167,29 @@ class SalesforceServiceImpl : SalesforceService {
         return if(save == 1){
             if(dto.pub_yn == "Y"){
                 logger.error("{}", dto)
+                val mstContDto = Tblmicp_cont_mstDto()
+                mstContDto.inten_id = dto.inten_id
+                mstContDto.orig_id = dto.orig_id
+                mstContDto.inta_key = dto.inta_key
+                mstContDto.inta_ve = dto.inta_ve
+                val contLst = salesforceDao.sel_tblmicp_cont_mst(mstContDto)
+                val usrId = if (contLst[0].upd_id == null) contLst[0].reg_id else contLst[0].reg_id
+
                 val proDto = Tblmicp_programDto()
                 proDto.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
-                //proDto.cont_cnt = contLst.size
-                //proDto.camp_cnt = contLst.size
+                proDto.pro_tp = "SALES"
                 proDto.pro_st = "00"
+                proDto.cont_cnt = contLst.size
+                proDto.camp_cnt = contLst.size
+                proDto.pro_nm = contLst[0].sales_nm
+                proDto.usr_grp_cd = contLst[0].cont_grp_cd
+                proDto.reg_id = usrId
+                proDto.upd_id = usrId
+                proDto.inten_id = dto.inten_id
+                proDto.orig_id = dto.orig_id
+                proDto.inta_key = dto.inta_key
+                proDto.inta_ve = dto.inta_ve
+                campaignDao.ins_program(proDto)
             }else{
                 true
             }

@@ -530,12 +530,12 @@
 		insert into tblmicp_program
 		(
 			pro_id, pro_tp, pro_st, pro_nm, pro_tg_tp, pro_tg_id, grp_cnt, camp_cnt, cont_cnt, tar_cnt, resp_cnt, usr_grp_cd, reg_id, appr_id
-			, plan_cost, off_cost, dev_cost, des_cost
+			, plan_cost, off_cost, dev_cost, des_cost, inten_id, orig_id, inta_key, inta_ve
 		)
 		values
 		(
 			#{pro_id}, #{pro_tp}, #{pro_st}, #{pro_nm}, #{pro_tg_tp}, #{pro_tg_id}, #{grp_cnt}, #{camp_cnt}, #{cont_cnt}, #{tar_cnt}, #{resp_cnt}, #{usr_grp_cd}, #{reg_id}, #{appr_id}
-			, #{plan_cost}, #{off_cost}, #{dev_cost}, #{des_cost}
+			, #{plan_cost}, #{off_cost}, #{dev_cost}, #{des_cost}, #{inten_id}, #{orig_id}, #{inta_key}, #{inta_ve}
 		)
 		ON DUPLICATE KEY UPDATE
 			pro_id = #{pro_id}
