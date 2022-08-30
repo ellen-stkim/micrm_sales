@@ -2062,7 +2062,7 @@ class SalesforceServiceImpl : SalesforceService {
             val urlInfo = systemDao.getCommCDLst(commDto)
 
             val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
-            val authUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+            val authUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_AUTH_URL") }.findAny().orElse(null)
             val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
             val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
 
