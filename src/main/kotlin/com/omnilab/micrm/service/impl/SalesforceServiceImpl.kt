@@ -2088,8 +2088,7 @@ class SalesforceServiceImpl : SalesforceService {
             true
         }catch (e: Exception){
             logger.error("campaingContent", e)
-            throw Exception("강제 에러 발생~")
-            false
+            throw Exception("rollback")
         }
     }
 }

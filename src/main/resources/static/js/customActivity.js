@@ -99,6 +99,7 @@ define(["postmonger"], function (Postmonger) {
 
 	connection.on("requestedInteraction", function (interaction){
 		model = interaction;
+		console.log(model);
 	});
 
     // 사용자 조회
