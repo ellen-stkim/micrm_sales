@@ -2117,6 +2117,7 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.orig_id = dto.orig_id
                             cpMstDto.inta_key = dto.inta_key
                             cpMstDto.inta_ve = dto.inta_ve
+                            cpMstDto.pub_yn = dto.pub_yn
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
                             val contListDto = Tblmi_cont_lstDto()
