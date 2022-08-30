@@ -37,6 +37,10 @@ define(["postmonger"], function (Postmonger) {
 		 */
 	});
 
+	$(window).on('message', function (e) {
+		console.log(e);
+	});
+
 	connection.on("initActivity", function (data) {
 		if (data) {
 			payload = data;
@@ -166,7 +170,7 @@ define(["postmonger"], function (Postmonger) {
 		data.seq = $('#seq').val();
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
-		//payload["metaData"].isConfigured = true;
+		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
 		console.log(payload);
 	}
