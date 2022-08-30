@@ -572,8 +572,8 @@ class SalesforceController {
                 val inArguments = data["inArguments"]
                 logger.error("{}", inArguments)
             }
-            return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
-            //return ResponseEntity(null, HttpStatus.OK)
+            //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity(null, HttpStatus.OK)
         } catch (e: Exception) {
             logger.error("execute.service", e)
             return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
