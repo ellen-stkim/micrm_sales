@@ -2054,6 +2054,8 @@ class SalesforceServiceImpl : SalesforceService {
             cpMstDto.inta_ve = dto.inta_ve
             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
+            logger.error("{}", cpMstDto)
+
             val contListDto = Tblmi_cont_lstDto()
             contListDto.cont_cd = mstDto.seq
             contListDto.reg_id = usrId
