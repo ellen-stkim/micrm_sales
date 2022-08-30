@@ -2091,7 +2091,7 @@ class SalesforceServiceImpl : SalesforceService {
                     logger.error("{}", result["data"])
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
-                    
+
                     logger.error("{}", activities)
                 }else{
                     return false
