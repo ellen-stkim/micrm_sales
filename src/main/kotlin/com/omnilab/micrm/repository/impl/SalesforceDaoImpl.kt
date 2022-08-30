@@ -37,6 +37,7 @@ class SalesforceDaoImpl: SalesforceDao {
     }
      */
 
+
     override fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int {
         return sqlSession.insert("ins_tblmicp_cont_mst", dto)
     }
@@ -47,6 +48,10 @@ class SalesforceDaoImpl: SalesforceDao {
 
     override fun ins_tblmicp_cont_url_lst(dto: MutableMap<String, Any>): Int {
         return sqlSession.insert("ins_tblmicp_cont_url_lst", dto)
+    }
+
+    override fun upd_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int {
+        return sqlSession.update("upd_tblmicp_cont_mst", dto)
     }
 
     override fun upd_usrInfo(dto: Tblmi_usrDto): Int {

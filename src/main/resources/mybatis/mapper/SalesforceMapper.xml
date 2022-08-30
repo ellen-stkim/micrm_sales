@@ -243,7 +243,7 @@
             , map_id = values(map_id)
             , map_cords = values(map_cords)
             , upd_id = values(upd_id)
-            , upd_dt = current_timestamp 
+            , upd_dt = current_timestamp
     </insert>
 
     <!-- ===================================================== update ===================================================== -->
@@ -253,6 +253,18 @@
             usr_sales_id = #{usr_sales_id}
         <where>
             usr_id = #{usr_id}
+        </where>
+    </update>
+    
+    <update id="upd_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto">
+        update tblmicp_cont_mst set
+            pub_yn = #{pub_yn}
+        <where>
+            avo_id = #{avo_id}
+            and inten_id = #{inten_id}
+            and orig_id = #{orig_id}
+            and inta_key = #{inta_key}
+            and inta_ve = #{inta_ve}
         </where>
     </update>
 
