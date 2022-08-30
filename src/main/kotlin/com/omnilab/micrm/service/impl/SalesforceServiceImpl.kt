@@ -2091,7 +2091,7 @@ class SalesforceServiceImpl : SalesforceService {
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
                     for(activity in activities){
-                        val type = data["type"].toString()
+                        val type = activity["type"].toString()
                         if(type == "REST"){
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
