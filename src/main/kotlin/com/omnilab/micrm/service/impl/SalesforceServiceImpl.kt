@@ -2084,11 +2084,11 @@ class SalesforceServiceImpl : SalesforceService {
 
             val tokenResult = connection("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, g.toJson(postData), null)
             if(tokenResult["result"] as Boolean){
-                val tokenMap = g.fromJson(tokenResult["body"].toString(), MutableMap::class.java)
+                val tokenMap = g.fromJson(tokenResult["data"].toString(), MutableMap::class.java)
                 val token = tokenMap["access_token"].toString()
                 val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
                 if(result["result"] as Boolean){
-                    logger.error("{}", result["body"])
+                    logger.error("{}", result["data"])
                 }else{
                     return false
                 }
