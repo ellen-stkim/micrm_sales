@@ -14,7 +14,11 @@
   "arguments": {
     "execute": {
       "url": "https://sales.milvusapp.com/sf/execute.service",
-      "useJwt": true
+      "useJwt": true,
+      "timeout": 600000,
+      "retryCount": 5,
+      "retryDelay": 10000,
+      "concurrentRequests" : 1
     }
   },
   "configurationArguments": {
@@ -38,7 +42,10 @@
     }
   },
   "wizardSteps": [
-    { "label": "Step 1", "key": "step1" }
+    {
+      "label": "Step 1",
+      "key": "step1"
+    }
   ],
   "userInterfaces": {
     "configModal": {

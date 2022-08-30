@@ -2,7 +2,6 @@ define(["postmonger"], function (Postmonger) {
 	"use strict";
 
 	let connection = new Postmonger.Session();
-	
 	let payload = {};
 	let fuelapiRestHost = null;
 	let fuel2token = null;
@@ -13,6 +12,10 @@ define(["postmonger"], function (Postmonger) {
 	let eventDefinitionKey;
 	let bindList = [];
 
+	// Configuration variables
+	let eventSchema = ''; // variable is used in parseEventSchema()
+	let lastnameSchema = ''; // variable is used in parseEventSchema()
+
 	$(window).ready(function (){
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
@@ -21,7 +24,7 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestInteraction');
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
-		connection.trigger('updateActivity');
+		//connection.trigger('updateActivity');
 
 		// refresh
 		connection.trigger('ready');
@@ -33,6 +36,7 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
+		parseEventSchema();
 	});
 
 	connection.on("initActivity", function (data) {
@@ -89,7 +93,10 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
-		eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+		if(eventDefinitionModel){
+			console.log(eventDefinitionModel);
+			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+		}
 	});
 
 	connection.on('clickedNext', function (){
@@ -158,7 +165,7 @@ define(["postmonger"], function (Postmonger) {
 		let data = {};
 		for(let i=0; i< bindList.length; i++) {
 			let temp = bindList[i];
-			data[temp] = "{{Event." + model.eventDefinitionKey + "." + temp + "}}"
+			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 		}
 		data.seq = $('#seq').val();
 		dataList.push(data);
@@ -234,4 +241,32 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'inta_ve', value: model.version});
         com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, null, null);
     }
+
+	function parseEventSchema() {
+		// Pulling data from the schema
+		connection.trigger('requestSchema');
+		connection.on('requestedSchema', function (data) {
+			// save schema
+			let dataJson = data['schema'];
+
+			for (let i = 0; i < dataJson.length; i++) {
+
+				// Last name schema and creation of event schema
+				// Last name is a required field in SF so this is used to pull the event schema
+				if (dataJson[i].key.toLowerCase().replace(/ /g, '').indexOf("lastname") !== -1) {
+					let splitArr = dataJson[i].key.split(".");
+					lastnameSchema = splitArr[splitArr.length - 1];
+					console.log('Last Name Schema >>', lastnameSchema);
+
+					let splitName = lastnameSchema.split(":");
+					let reg = new RegExp(splitName[splitName.length - 1], "g");
+					let oldSchema = splitArr[splitArr.length - 1];
+
+					eventSchema = oldSchema.replace(reg, "");
+					console.log("Event Schema >>", eventSchema);
+				}
+			}
+
+		});
+	}
 });
