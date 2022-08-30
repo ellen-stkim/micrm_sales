@@ -19,6 +19,8 @@ interface CampaignDao {
     fun ins_program(dto: Tblmicp_programDto): Int
     fun ins_programSendHst(dto: Tblmicp_programDto): MutableList<Int>
 
+    fun ins_campaign(dto: Tblmicp_campaignDto): Int
+
     fun upd_tblmicp_program(dto: Tblmicp_programDto): Int
     fun upd_tblmicp_camapaign_cnt_hst(dto: Tblmicp_campaignDto): Int
     fun upd_tblmicp_program_cnt_hst(pro_id: String): Int

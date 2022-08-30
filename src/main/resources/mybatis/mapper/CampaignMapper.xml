@@ -568,6 +568,57 @@
 		</foreach>
 	</insert>
 
+	<insert id="ins_tblmicp_campaign" parameterType="Tblmicp_campaignDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into Tblmicp_campaign (
+			 pro_id, cont_id, send_tg_tp, send_tg_id, camp_st, camp_nm, camp_ch, test_tp, test_sampling, cont_cnt, test_cnt, real_cnt, usr_grp_cd, reg_id, sto, tar_cnt
+			, start_dt
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, send_st_tp</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, end_dt</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(suppressed)">, suppressed</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(duplicate)">, duplicate</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(test_dt)">, test_dt</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_gb)">, ab_gb</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_st)">, ab_st</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">, seq</if>
+		)
+		values (
+			#{pro_id}, #{cont_id}, #{send_tg_tp}, #{send_tg_id}, #{camp_st}, #{camp_nm}, #{camp_ch}, #{test_tp}, #{test_sampling}, #{cont_cnt}, #{test_cnt}, #{real_cnt}, #{usr_grp_cd}, #{reg_id}, #{sto}, #{tar_cnt}
+			, #{start_dt}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, #{send_st_tp}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, #{end_dt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(suppressed)">, #{suppressed}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(duplicate)">, #{duplicate}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(test_dt)">, #{test_dt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_gb)">, #{ab_gb}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_st)">, #{ab_st}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">, #{seq}</if>
+		)
+		ON DUPLICATE KEY UPDATE
+			pro_id = #{pro_id}
+			, cont_id = #{cont_id}
+			, send_tg_tp = #{send_tg_tp}
+			, send_tg_id = #{send_tg_id}
+			, camp_st = #{camp_st}
+			, camp_nm = #{camp_nm}
+			, camp_ch = #{camp_ch}
+			, test_tp = #{test_tp}
+			, test_sampling = #{test_sampling}
+			, cont_cnt = #{cont_cnt}
+			, test_cnt = #{test_cnt}
+			, real_cnt = #{real_cnt}
+			, usr_grp_cd = #{usr_grp_cd}
+			, upd_id = #{reg_id}
+			, sto = #{sto}
+			, start_dt = #{start_dt}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, send_st_tp = #{send_st_tp}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, end_dt = #{end_dt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(suppressed)">, suppressed = #{suppressed}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(duplicate)">, duplicate = #{duplicate}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(test_dt)">, test_dt = #{test_dt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_gb)">, ab_gb = #{ab_gb}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ab_st)">, ab_st = #{ab_st}</if>
+	</insert>
+
 
 	<!-- ================================================================= insert END ================================================================= -->
 

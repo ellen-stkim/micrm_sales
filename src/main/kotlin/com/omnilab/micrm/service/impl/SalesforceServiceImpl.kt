@@ -2166,7 +2166,6 @@ class SalesforceServiceImpl : SalesforceService {
         val save = salesforceDao.upd_tblmicp_cont_mst(dto)
         return if(save == 1){
             if(dto.pub_yn == "Y"){
-                logger.error("{}", dto)
                 val mstContDto = Tblmicp_cont_mstDto()
                 mstContDto.inten_id = dto.inten_id
                 mstContDto.orig_id = dto.orig_id
@@ -2178,7 +2177,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val proDto = Tblmicp_programDto()
                 proDto.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
                 proDto.pro_tp = "SALES"
-                proDto.pro_st = "00"
+                proDto.pro_st = "03" // 발송 진행 중
                 proDto.cont_cnt = contLst.size
                 proDto.camp_cnt = contLst.size
                 proDto.pro_nm = contLst[0].sales_nm
@@ -2190,7 +2189,26 @@ class SalesforceServiceImpl : SalesforceService {
                 proDto.inta_key = dto.inta_key
                 proDto.inta_ve = dto.inta_ve
                 val pro = campaignDao.ins_program(proDto)
-                pro == 1
+                if(pro == 1){
+                    for(i in contLst){
+                        val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
+                        campaignDto.cont_id = i.seq
+                        campaignDto.send_tg_tp = proDto.pro_tg_tp
+                        campaignDto.send_tg_id = "SALES"
+                        campaignDto.camp_st = "03"
+                        campaignDto.camp_nm = i.cont_nm
+                        campaignDto.camp_ch = i.ch_tp
+                        campaignDto.sto = "01"
+                        campaignDto.usr_grp_cd = proDto.usr_grp_cd
+                        campaignDto.reg_id = proDto.reg_id
+                        campaignDto.start_dt = CommonUtils.getDateTimeNow()
+                        campaignDto.send_st_tp = "1"
+                        campaignDao.ins_campaign(campaignDto)
+                    }
+                    true
+                }else{
+                    false
+                }
             }else{
                 true
             }
