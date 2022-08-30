@@ -1471,6 +1471,8 @@
     // 정보 조회
     function mobileInfo() {
         const res = function(response) {
+            mappingLst();
+
             let list = response.list;
             let filePath = response.filePath;
 
