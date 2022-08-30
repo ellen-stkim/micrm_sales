@@ -122,6 +122,14 @@
 
     <!-- ===================================================== insert ===================================================== -->
     <insert id="ins_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
+        <selectKey keyProperty="seq" resultType="Int" order="AFTER">
+            SELECT seq
+            FROM tblmicp_cont_mst
+            WHERE avo_id = #{avo_id}
+                and inten_id = #{inten_id}
+                and  orig_id = #{orig_id}
+                and  inta_key = #{inta_key}
+        </selectKey>
         insert into tblmicp_cont_mst (
            cont_seq
            , ch_tp
@@ -162,6 +170,12 @@
     </insert>
 
     <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
+        <selectKey keyProperty="seq" resultType="Int" order="AFTER">
+            SELECT seq
+            FROM tblmicp_cont_lst
+            WHERE cont_tp = #{cont_tp}
+                and cont_cd = #{cont_cd}
+        </selectKey>
         insert into tblmicp_cont_lst
             (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
         values
