@@ -24,7 +24,7 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestInteraction');
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
-		connection.trigger('updateEvent', payload);
+		//connection.trigger('updateEvent', payload);
 
 		// refresh
 		connection.trigger('ready');
