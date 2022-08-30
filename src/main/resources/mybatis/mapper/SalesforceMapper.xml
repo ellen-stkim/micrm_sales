@@ -48,9 +48,6 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
                 and ch_tp = #{ch_tp}
             </if>
-            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inten_id)">
-                and inten_id = #{inten_id}
-            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(orig_id)">
                 and orig_id = #{orig_id}
             </if>

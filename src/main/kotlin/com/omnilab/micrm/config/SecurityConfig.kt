@@ -59,7 +59,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .authorizeRequests()
                     .antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error"
                         ,"/mcr/check/id.ajax" ,"/mcr/find/pw.ajax", "/mcr/send/password.service", "/check.mi", "/error.mi"
-                        , "/sf/config.json", "/sf/index.mi", "/sf/getUser.ajax", "/sf/save.service", "/sf/publish.service", "/sf/validate.service", "/sf/stop.service", "/sf/execute.service").permitAll()
+                        , "/sf/config.json", "/sf/index.mi", "/sf/getUser.ajax", "/sf/save.service", "/sf/publish.service", "/sf/validate.service", "/sf/stop.service", "/sf/unpublish.service", "/sf/TestSave.service", "/sf/execute.service").permitAll()
                     .antMatchers("/sf/**").access("hasAnyRole('SALES')")
                     .anyRequest().access("hasAnyRole('WEB')")
                 // 로그인 설정
