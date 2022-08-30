@@ -2095,27 +2095,23 @@ class SalesforceServiceImpl : SalesforceService {
                         if(type == "REST"){
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
-                            val activityObjectID: String = activity["id"].toString()
+                            val avo_id: String = activity["id"].toString()
                             val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
 
-                            logger.error("sales_nm {}", sales_nm)
-                            logger.error("avo_nm {}", avo_nm)
-                            logger.error("activityObjectID {}", activityObjectID)
-                            logger.error("seq {}", seq)
-                            /*
-                            val temp = Tblmi_cont_mstDto()
-                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+                            val temp = Tblmi_cont_mstDto(seq.toInt())
+                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
 
                             val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
-                            val cpMstDto = Tblmicp_cont_mstDto(mstDto)
-                            cpMstDto.avo_id = dto.avo_id
+                            val cpMstDto = Tblmicp_cont_mstDto(contDto)
+                            cpMstDto.cont_seq = seq.toInt()
+                            cpMstDto.sales_nm = sales_nm
+                            cpMstDto.avo_nm = avo_nm
+                            cpMstDto.avo_id = avo_id
                             cpMstDto.inta_ve = dto.inta_ve
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
-                            logger.error("{}", cpMstDto)
-
                             val contListDto = Tblmi_cont_lstDto()
-                            contListDto.cont_cd = mstDto.seq
+                            contListDto.cont_cd = seq.toInt()
                             contListDto.reg_id = usrId
                             contListDto.upd_id = usrId
                             val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
@@ -2142,7 +2138,6 @@ class SalesforceServiceImpl : SalesforceService {
 
                                 salesforceDao.ins_tblmicp_cont_url_lst(map)
                             }
-                             */
                         }
                     }
                     return true
