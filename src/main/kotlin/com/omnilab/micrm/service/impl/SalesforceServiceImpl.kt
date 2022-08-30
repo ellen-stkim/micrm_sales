@@ -28,15 +28,21 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 
@@ -2048,6 +2054,37 @@ class SalesforceServiceImpl : SalesforceService {
     override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
         return try{
             val mstDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+
+            // Journey Builder 정보 조회
+            val commDto = Tblmi_comm_cdDto()
+            commDto.cd_id = mstDto.cont_grp_cd
+            commDto.par_id = "SALESFORCE"
+            val urlInfo = systemDao.getCommCDLst(commDto)
+
+            val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+            val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
+            val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
+
+            val postData: LinkedMultiValueMap<String, String> = LinkedMultiValueMap<String, String>()
+            postData["grant_type"] = "client_credentials"
+            postData["client_id"] =  cid.toString()
+            postData["client_secret"] = sec.toString()
+            val postDataBytes = postData.toString().toByteArray(charset(StandardCharsets.UTF_8.toString()))
+
+            val headers = HttpHeaders()
+            headers.contentType = MediaType.APPLICATION_JSON
+            val acceptableMediaType: MutableList<MediaType> = ArrayList()
+            acceptableMediaType.add(MediaType.APPLICATION_JSON)
+            headers.accept = acceptableMediaType
+            headers.contentLength = postDataBytes.size.toLong()
+
+            val tokenResult: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.POST, org.springframework.http.HttpEntity(postData, headers), String::class.java)
+
+            logger.error("tokenResult {}", tokenResult)
+            //headers.set("Authorization", "Bearer $token")
+            //val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+
+            /*
             val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
             val cpMstDto = Tblmicp_cont_mstDto(mstDto)
             cpMstDto.avo_id = dto.avo_id
@@ -2064,7 +2101,7 @@ class SalesforceServiceImpl : SalesforceService {
 
             for(i in contLst){
                 val oriSeq = i.seq.toString()
-                
+
                 // 리스트 삽입
                 val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
                 tblmicp_cont_lstDto.seq = null
@@ -2084,7 +2121,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                 salesforceDao.ins_tblmicp_cont_url_lst(map)
             }
-            throw Exception("강제 에러 발생~")
+             */
             true
         }catch (e: Exception){
             logger.error("campaingContent", e)

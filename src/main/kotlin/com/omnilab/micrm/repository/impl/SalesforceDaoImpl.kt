@@ -25,7 +25,7 @@ class SalesforceDaoImpl: SalesforceDao {
     }
 
     override fun sel_tblmi_cont_mstOne(dto: Tblmi_cont_mstDto): Tblmi_cont_mstDto {
-        return sqlSession.selectOne("sel_tblmi_cont_mst", dto)
+        return sqlSession.selectOne("sel_tblmi_cont_mstOne", dto)
     }
 
     override fun sel_tblmi_cont_lst(dto: Tblmi_cont_lstDto): List<Tblmi_cont_lstDto> {

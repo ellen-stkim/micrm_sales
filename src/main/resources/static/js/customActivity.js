@@ -221,7 +221,6 @@ define(["postmonger"], function (Postmonger) {
         }
         let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
-		data.push({name: 'avo_id', value: payload.id});
 		data.push({name: 'inten_id', value: model.definitionId});
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
@@ -240,7 +239,6 @@ define(["postmonger"], function (Postmonger) {
         }
 		let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
-		data.push({name: 'avo_id', value: payload.id});
 		data.push({name: 'inten_id', value: model.definitionId});
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});

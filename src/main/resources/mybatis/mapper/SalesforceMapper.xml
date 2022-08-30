@@ -38,7 +38,7 @@
         ORDER BY FIELD(DEF_YN, 'Y') DESC, REG_DT DESC
     </select>
 
-    <select id="sel_tblmi_cont_mst" parameterType="Tblmi_cont_mstDto" resultType="Tblmi_cont_mstDto">
+    <select id="sel_tblmi_cont_mstOne" parameterType="Tblmi_cont_mstDto" resultType="Tblmi_cont_mstDto">
         select *
         from Tblmi_cont_mst
         <where>
@@ -57,7 +57,11 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
                 and inta_key = #{inta_key}
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
+                and inta_ve = #{inta_ve}
+            </if>
         </where>
+        Limit 1
     </select>
 
     <select id="sel_tblmi_cont_lst" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
