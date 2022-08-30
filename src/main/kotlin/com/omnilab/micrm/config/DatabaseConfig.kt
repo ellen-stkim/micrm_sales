@@ -133,8 +133,8 @@ internal class DatabaseConfig {
     @Bean
     fun txAdviceAdvisor(): Advisor {
         val pointcut = AspectJExpressionPointcut()
-        //pointcut.expression = "execution(* com.omnilab.micrm.service..*.*(..))"
-        pointcut.expression = "execution(* com.omnilab.micrm.repository..*.*(..))"
+        pointcut.expression = "execution(* com.omnilab.micrm.service..*.*(..))"
+        //pointcut.expression = "execution(* com.omnilab.micrm.repository..*.*(..))"
         return DefaultPointcutAdvisor(pointcut, txAdvice())
     }
 
