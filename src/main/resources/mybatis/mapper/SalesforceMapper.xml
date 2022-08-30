@@ -279,7 +279,7 @@
     </update>
     
     <update id="upd_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto">
-        <selectKey keyProperty="seq,cont_grp_cd" resultType="Hashmap" order="AFTER">
+        <selectKey keyProperty="seq,cont_grp_cd" resultType="Map" order="AFTER">
             SELECT seq
                 , cont_grp_cd
             FROM tblmicp_cont_mst
