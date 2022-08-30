@@ -54,9 +54,6 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
                 and inta_key = #{inta_key}
             </if>
-            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
-                and inta_ve = #{inta_ve}
-            </if>
         </where>
         Limit 1
     </select>
