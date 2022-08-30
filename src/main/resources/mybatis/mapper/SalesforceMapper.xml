@@ -217,7 +217,7 @@
             , map_id
             , map_cords
         from tblmi_cont_url_lst
-        where cont_list_cd = #{list_seq}
+        where cont_lst_cd = #{list_seq}
     </insert>
 
     <!-- ===================================================== update ===================================================== -->
@@ -234,7 +234,7 @@
 
     <delete id="del_tblmicp_cont_url_lst" parameterType="Tblmicp_cont_url_lstDto">
         delete from tblmicp_cont_url_lst
-        where cont_list_cd = #{cont_list_cd}
+        where cont_lst_cd = #{cont_lst_cd}
     </delete>
 
 </mapper>
