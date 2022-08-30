@@ -484,6 +484,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/save.service")
     fun save(@RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
+        logger.info("/save.service data: $data")
         val dto = Tblmi_cont_mstDto()
         dto.avo_id = data["activityObjectID"].toString()
         dto.inten_id = data["interactionId"].toString()
@@ -501,6 +502,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/publish.service")
     fun publish(@RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
+        logger.info("/publish.service data: $data")
         val dto = Tblmicp_cont_mstDto()
         dto.avo_id = data["activityObjectID"].toString()
         dto.inten_id = data["interactionId"].toString()
