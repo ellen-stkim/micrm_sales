@@ -2072,8 +2072,8 @@ class SalesforceServiceImpl : SalesforceService {
             val g: Gson = GsonBuilder().create()
             val postData = HashMap<String, String>()
             postData["grant_type"] = "client_credentials"
-            postData["client_id"] =  cid.toString()
-            postData["client_secret"] = sec.toString()
+            postData["client_id"] =  cid.cd_val.toString()
+            postData["client_secret"] = sec.cd_val.toString()
 
             val headers = HttpHeaders()
             headers.contentType = MediaType.APPLICATION_JSON
@@ -2083,7 +2083,6 @@ class SalesforceServiceImpl : SalesforceService {
 
             val tokenResult: ResponseEntity<String> = restTemplate.exchange("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, org.springframework.http.HttpEntity(g.toJson(postData), headers), String::class.java)
 
-            logger.error("{}", g.toJson(postData))
             logger.error("tokenResult {}", tokenResult)
             //headers.set("Authorization", "Bearer $token")
             //val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
