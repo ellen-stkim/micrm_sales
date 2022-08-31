@@ -139,4 +139,7 @@ class CampaignDaoImpl : CampaignDao {
         return sqlSession.selectOne("getTitleProgramCnt",dto)
     }
 
+    override fun ins_programSendHst(dto: Tblmicp_send_hstDto): Int {
+        return sqlSession.insert("ins_programSendHst", dto)
+    }
 }

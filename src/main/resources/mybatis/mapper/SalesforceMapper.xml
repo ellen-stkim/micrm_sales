@@ -271,6 +271,29 @@
             , upd_dt = current_timestamp
     </insert>
 
+    <insert id="ins_tblmicp_sales_execute" parameterType="HashMap">
+        insert into tblmicp_sales_execute (
+            `inArguments`
+            , `activityObjectID`
+            , `journeyId`
+            , `activityId`
+            , `definitionInstanceId`
+            , `activityInstanceId`
+            , `keyValue`
+            , `mode`
+        )
+        values (
+            #{inArguments}
+            , #{activityObjectID}
+            , #{journeyId}
+            , #{activityId}
+            , #{definitionInstanceId}
+            , #{activityInstanceId}
+            , #{keyValue}
+            , #{mode}
+        )
+    </insert>
+    
     <!-- ===================================================== update ===================================================== -->
 
     <update id="upd_usrInfo" parameterType="SalesforceDto">

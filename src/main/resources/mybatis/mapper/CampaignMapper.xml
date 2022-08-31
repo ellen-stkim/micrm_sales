@@ -241,10 +241,16 @@
 		from Tblmicp_cont_mst
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-				and SEQ = #{seq}
+				and seq = #{seq}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
 				and ch_tp = #{ch_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+				and avo_id = #{avo_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inten_id)">
+				and inten_id = #{inten_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
 				and cont_grp_cd = #{cont_grp_cd}
@@ -559,7 +565,7 @@
 	</insert>
 
 
-	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto">
+	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto" useGeneratedKeys="true" keyProperty="seq">
 		insert into tblmicp_send_hst
 		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
 		values

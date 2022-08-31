@@ -4,18 +4,14 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.Content_list_CreateDto
-import com.omnilab.micrm.model.Image_searchDto
-import com.omnilab.micrm.model.SalesforceDto
-import com.omnilab.micrm.model.SetLst_searchDto
+import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.repository.CampaignDao
-import com.omnilab.micrm.repository.ContentDao
-import com.omnilab.micrm.repository.SalesforceDao
-import com.omnilab.micrm.repository.SysSettingDao
+import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
+import io.minio.MinioClient
+import io.minio.UploadObjectArgs
 import org.apache.http.HttpEntity
 import org.apache.http.HttpStatus
 import org.apache.http.StatusLine
@@ -31,6 +27,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -41,22 +38,31 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
-import java.math.BigDecimal
 import java.net.HttpURLConnection
-import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
-import kotlin.math.log
 
 
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
+
+    @Value("\${variable.minio-url}")
+    private lateinit var minio_url: String
+
+    @Value("\${variable.minio-username}")
+    private lateinit var minio_username: String
+
+    @Value("\${variable.minio-password}")
+    private lateinit var minio_password: String
+
+    @Value("\${variable.minio-bucket}")
+    private lateinit var minio_bucket: String
+
+    @Value("\${variable.static-path}")
+    private lateinit var static_path: String
 
     @Autowired
     private lateinit var salesforceDao: SalesforceDao
@@ -76,6 +82,19 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     @Qualifier("CampaignDaoImpl")
     private lateinit var campaignDao: CampaignDao
+
+    @Autowired
+    @Qualifier("CampaignMdmDaoImpl")
+    private lateinit var mdmSend: CampaignSendDao
+
+    @Autowired
+    @Qualifier("CampaignKakaoDaoImpl")
+    private lateinit var kkoSend: CampaignSendDao
+
+    @Autowired
+    @Qualifier("CampaignRcsDaoImpl")
+    private lateinit var rcsSend: CampaignSendDao
+
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -2223,7 +2242,111 @@ class SalesforceServiceImpl : SalesforceService {
 
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
         val inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
-        logger.error("{}", inArguments)
+        val avo_id = map["activityId"].toString()
+        val inten_id = map["journeyId"].toString()
+        val keyValue = map["keyValue"].toString()
+
+        //캠페인 정보
+        val campaignDto = Tblmicp_campaignDto()
+        campaignDto.cont_id = inArguments["seq"].toString().toInt()
+        val campLst = campaignDao.sel_tblmicp_campaign(campaignDto)
+
+        // 컨테츠 마스터 정보
+        val contMstDto = Tblmicp_cont_mstDto()
+        contMstDto.avo_id = avo_id
+        contMstDto.inten_id = inten_id
+        val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
+
+        if(campLst.isEmpty() || contMst == null){
+            salesforceDao.ins_tblmicp_sales_execute(map)
+            return false
+        }else {
+            // sendhst 삽입
+            val sendHstDto = Tblmicp_send_hstDto()
+            sendHstDto.pro_id = campaignDto.pro_id
+            sendHstDto.camp_id = campaignDto.seq
+            sendHstDto.tbl_id = "sales"
+            sendHstDto.tbl_lst_id = keyValue
+            sendHstDto.send_yn = "N"
+            sendHstDto.auto_tp = null
+            sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
+            sendHstDto.reg_id = campaignDto.reg_id
+            sendHstDto.camp_ch = campaignDto.camp_ch
+
+            //컨텐츠 리스트
+            val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
+            val contTpLst = HashMap<String, Contents_lstDto>()
+
+            // 이미지 업로드
+            val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
+            for (check in contLst) {
+                // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
+                contTpLst[check.cont_tp.toString()] = check
+                if (!check.img_lst.isNullOrEmpty()) {
+                    val url_list = check.img_lst!!.split(",")
+                    val nm_list = check.img_nm_lst!!.split(",")
+
+                    for (i in url_list.indices) {
+                        minioClient.uploadObject(
+                            UploadObjectArgs.builder()
+                                .bucket(minio_bucket)
+                                .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
+                                .filename(static_path + url_list[i])
+                                .build())
+                    }
+                }
+                if (!check.kko_image_url.isNullOrEmpty()) {
+                    minioClient.uploadObject(
+                        UploadObjectArgs.builder()
+                            .bucket(minio_bucket)
+                            .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
+                            .filename(static_path + check.kko_image_url)
+                            .build())
+                }
+            }
+            // 발송
+            when {
+                // 카카오
+                contTpLst["DMTP03"] != null -> {
+                    sendHstDto.send_to = map[contTpLst["DMTP03"]!!.from_to].toString()
+                    campaignDao.ins_programSendHst(sendHstDto)
+                    inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                    kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                    val map = HashMap<String, Any>()
+                    map["camp_id"] = campaignDto.seq.toString()
+                    map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
+                    map["gubun"] = "9"
+                    kkoSend.upd_send(map)
+                }
+                // RCS
+                contTpLst["DMTP04"] != null -> {
+                    sendHstDto.send_to = map[contTpLst["DMTP04"]!!.from_to].toString()
+                    campaignDao.ins_programSendHst(sendHstDto)
+                    inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                    rcsSend.ins_send(campaignDto, contTpLst, inArguments)
+                    val map = HashMap<String, Any>()
+                    map["camp_id"] = campaignDto.seq.toString()
+                    map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
+                    map["gubun"] = "9"
+                    rcsSend.upd_send(map)
+                }
+                // 문자
+                else -> {
+                    sendHstDto.send_to = map[contTpLst["DMTP02"]!!.from_to].toString()
+                    campaignDao.ins_programSendHst(sendHstDto)
+                    inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                    mdmSend.ins_send(campaignDto, contTpLst, inArguments)
+                    val map = HashMap<String, Any>()
+                    map["camp_id"] = campaignDto.seq.toString()
+                    map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
+                    map["msgTp"] = contTpLst["DMTP02"]!!.msg_tp.toString()
+                    map["gubun"] = "9"
+                    mdmSend.upd_send(map)
+                }
+            }
+
+
+        }
 
         return true
     }

@@ -15,6 +15,7 @@ interface SalesforceDao {
     fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int
     fun ins_tblmicp_cont_lst(dto: Tblmicp_cont_lstDto): Int
     fun ins_tblmicp_cont_url_lst(dto: MutableMap<String, Any>): Int
+    fun ins_tblmicp_sales_execute(dto: MutableMap<String, Any>): Int
 
     fun upd_usrInfo(dto: Tblmi_usrDto): Int
     fun upd_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int

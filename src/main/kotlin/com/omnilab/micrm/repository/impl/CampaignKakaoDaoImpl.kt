@@ -23,7 +23,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>): Int {
+    override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Int {
         var cnt = 0
 
         val mdmCont = contTpLst["DMTP02"]
@@ -95,325 +95,304 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val sendLst = ArrayList<Any>()
         // Callback 메세지 저장 리스트
         val callbackLst = ArrayList<Tblmicp_send_callback_msgDto>()
-        
-        val listTbl: String?
-        when (dto.send_tg_tp) {
-            "TEST" -> listTbl = "tblmite_target_lst"
-            "TG02" -> listTbl ="tblmi_target_lst"
-            else -> listTbl= null
-        }
 
-        sqlSession.select("sel_tblmicp_send_hst", Tblmicp_send_hstDto(dto.pro_id, dto.seq, listTbl, "Y"), object : ResultHandler<Any> {
-            override fun handleResult(resultContext: ResultContext<*>) {
-                try {
-                    var targetSubject = kakaoCont.cont_sub
-                    var targetBody = CommonUtils.EscapeTextToHtml(kakaoCont.cont_body)
-                    var mdmSubject: String? = null
-                    var mdmBody: String? = null
-                    if(mdmCont != null){
-                        mdmSubject = mdmCont.cont_sub
-                        mdmBody = CommonUtils.EscapeTextToHtml(mdmCont.cont_body)
+        try {
+            var targetSubject = kakaoCont.cont_sub
+            var targetBody = CommonUtils.EscapeTextToHtml(kakaoCont.cont_body)
+            var mdmSubject: String? = null
+            var mdmBody: String? = null
+            if(mdmCont != null){
+                mdmSubject = mdmCont.cont_sub
+                mdmBody = CommonUtils.EscapeTextToHtml(mdmCont.cont_body)
+            }
+            var rcsSubject: String? = null
+            var rcsBody: String? = null
+            var rcs_btn_obj: String? = null
+            var rcs_btn_cont_1: String? = null
+            var rcs_btn_cont_2: String? = null
+            var rcs_btn_cont_3: String? = null
+            if(rcsCont != null){
+                rcsSubject = rcsCont.cont_sub
+                rcsBody = CommonUtils.EscapeTextToHtml(rcsCont.cont_body)
+                rcs_btn_obj = rcsCont.rcs_btn_obj
+                rcs_btn_cont_1 = rcsCont.rcs_btn_cont_1
+                rcs_btn_cont_2 = rcsCont.rcs_btn_cont_2
+                rcs_btn_cont_3 = rcsCont.rcs_btn_cont_3
+            }
+
+            val HstSeq = map["SEND_HST_SEQ"].toString()
+
+            // 제목 , 내용 치환
+            for (key in map.keys) {
+                targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                mdmSubject = mdmSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                mdmBody = mdmBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                rcsSubject = rcsSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                rcsBody = rcsBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+            }
+
+            // KAKAO URL to TrackURL
+            if (!kakaoContUrlList.isNullOrEmpty()) {
+                for (urlLst in kakaoContUrlList) {
+                    val url = urlLst.url!!
+                    if ("a" == urlLst.url_tag) {
+                        targetBody = targetBody.replaceFirst(("\\{\\{"
+                                + url.replace("(", "\\(")
+                            .replace(")", "\\)")
+                            .replace("{", "\\{")
+                            .replace("}", "\\}")
+                            .replace("[", "\\[")
+                            .replace("]", "\\]")
+                            .replace("*", "[*]")
+                            .replace("+", "[+]")
+                            .replace("$", "[&]")
+                            .replace("|", "[|]")
+                            .replace("?", "[?]")
+                                + "\\}\\}")
+                            .toRegex()
+                            , "$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                     }
-                    var rcsSubject: String? = null
-                    var rcsBody: String? = null
-                    var rcs_btn_obj: String? = null
-                    var rcs_btn_cont_1: String? = null
-                    var rcs_btn_cont_2: String? = null
-                    var rcs_btn_cont_3: String? = null
-                    if(rcsCont != null){
-                        rcsSubject = rcsCont.cont_sub
-                        rcsBody = CommonUtils.EscapeTextToHtml(rcsCont.cont_body)
-                        rcs_btn_obj = rcsCont.rcs_btn_obj
-                        rcs_btn_cont_1 = rcsCont.rcs_btn_cont_1
-                        rcs_btn_cont_2 = rcsCont.rcs_btn_cont_2
-                        rcs_btn_cont_3 = rcsCont.rcs_btn_cont_3
-                    }
-
-                    val map = resultContext.resultObject as HashMap<String, Any>
-                    val HstSeq = map["SEND_HST_SEQ"].toString()
-
-
-                    // 제목 , 내용 치환
-                    for (key in map.keys) {
-                        targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        mdmSubject = mdmSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        mdmBody = mdmBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        rcsSubject = rcsSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        rcsBody = rcsBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                    }
-
-                    // KAKAO URL to TrackURL
-                    if (!kakaoContUrlList.isNullOrEmpty()) {
-                        for (urlLst in kakaoContUrlList) {
-                            val url = urlLst.url!!
-                            if ("a" == urlLst.url_tag) {
-                                targetBody = targetBody.replaceFirst(("\\{\\{"
-                                                + url.replace("(", "\\(")
-                                                    .replace(")", "\\)")
-                                                    .replace("{", "\\{")
-                                                    .replace("}", "\\}")
-                                                    .replace("[", "\\[")
-                                                    .replace("]", "\\]")
-                                                    .replace("*", "[*]")
-                                                    .replace("+", "[+]")
-                                                    .replace("$", "[&]")
-                                                    .replace("|", "[|]")
-                                                    .replace("?", "[?]")
-                                                    + "\\}\\}")
-                                                .toRegex()
-                                    , "$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                            }
-                        }
-                    }
-
-                    // MDM url to TrackURL
-                    if (!mdmContUrlList.isNullOrEmpty()) {
-                        for (urlLst in mdmContUrlList) {
-                            val url = urlLst.url!!
-                            mdmBody = mdmBody?.replaceFirst(("\\{\\{"
-                                            + url.replace("(", "\\(")
-                                                .replace(")", "\\)")
-                                                .replace("{", "\\{")
-                                                .replace("}", "\\}")
-                                                .replace("[", "\\[")
-                                                .replace("]", "\\]")
-                                                .replace("*", "[*]")
-                                                .replace("+", "[+]")
-                                                .replace("$", "[&]")
-                                                .replace("|", "[|]")
-                                                .replace("?", "[?]")
-                                                + "\\}\\}")
-                                            .toRegex()
-                                , "$trackURL/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        }
-                    }
-                    
-                    // Rcs url to TrackURL
-                    if (!rcsContUrlList.isNullOrEmpty()) {
-                        for (urlLst in rcsContUrlList) {
-                            val url = urlLst.url!!
-                            if ("a" == urlLst.url_tag) {
-                                rcsBody = rcsBody?.replaceFirst(("\\{\\{"
-                                                + url.replace("(", "\\(")
-                                                    .replace(")", "\\)")
-                                                    .replace("{", "\\{")
-                                                    .replace("}", "\\}")
-                                                    .replace("[", "\\[")
-                                                    .replace("]", "\\]")
-                                                    .replace("*", "[*]")
-                                                    .replace("+", "[+]")
-                                                    .replace("$", "[&]")
-                                                    .replace("|", "[|]")
-                                                    .replace("?", "[?]")
-                                                    + "\\}\\}")
-                                                .toRegex()
-                                    , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-
-                            }else{
-                                rcs_btn_obj = rcs_btn_obj?.replaceFirst(("\\{\\{"
-                                                        + url.replace("(", "\\(")
-                                                            .replace(")", "\\)")
-                                                            .replace("{", "\\{")
-                                                            .replace("}", "\\}")
-                                                            .replace("[", "\\[")
-                                                            .replace("]", "\\]")
-                                                            .replace("*", "[*]")
-                                                            .replace("+", "[+]")
-                                                            .replace("$", "[&]")
-                                                            .replace("|", "[|]")
-                                                            .replace("?", "[?]")
-                                                            + "\\}\\}")
-                                                        .toRegex()
-                                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                                rcs_btn_cont_1 = rcs_btn_cont_1?.replaceFirst(("\\{\\{"
-                                                            + url.replace("(", "\\(")
-                                                                .replace(")", "\\)")
-                                                                .replace("{", "\\{")
-                                                                .replace("}", "\\}")
-                                                                .replace("[", "\\[")
-                                                                .replace("]", "\\]")
-                                                                .replace("*", "[*]")
-                                                                .replace("+", "[+]")
-                                                                .replace("$", "[&]")
-                                                                .replace("|", "[|]")
-                                                                .replace("?", "[?]")
-                                                                + "\\}\\}")
-                                                            .toRegex()
-                                                , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                                rcs_btn_cont_2 = rcs_btn_cont_2?.replaceFirst(("\\{\\{"
-                                                            + url.replace("(", "\\(")
-                                                                .replace(")", "\\)")
-                                                                .replace("{", "\\{")
-                                                                .replace("}", "\\}")
-                                                                .replace("[", "\\[")
-                                                                .replace("]", "\\]")
-                                                                .replace("*", "[*]")
-                                                                .replace("+", "[+]")
-                                                                .replace("$", "[&]")
-                                                                .replace("|", "[|]")
-                                                                .replace("?", "[?]")
-                                                                + "\\}\\}")
-                                                            .toRegex()
-                                                , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                                rcs_btn_cont_3 = rcs_btn_cont_3?.replaceFirst(("\\{\\{"
-                                                            + url.replace("(", "\\(")
-                                                                .replace(")", "\\)")
-                                                                .replace("{", "\\{")
-                                                                .replace("}", "\\}")
-                                                                .replace("[", "\\[")
-                                                                .replace("]", "\\]")
-                                                                .replace("*", "[*]")
-                                                                .replace("+", "[+]")
-                                                                .replace("$", "[&]")
-                                                                .replace("|", "[|]")
-                                                                .replace("?", "[?]")
-                                                                + "\\}\\}")
-                                                            .toRegex()
-                                                , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                            }
-                        }
-                    }
-
-                    val kkoMsgdto = Kko_msgDto()
-                    kkoMsgdto.id = dto.usr_grp_cd
-                    kkoMsgdto.status = "9"
-                    kkoMsgdto.reqdate = dto.start_dt
-                    kkoMsgdto.phone = map["SEND_TO"].toString()
-                    kkoMsgdto.callback = kakaoCont.send_to
-                    kkoMsgdto.msg = targetBody
-                    kkoMsgdto.profile_key = kakaoKey
-
-                    if(kakaoBtnUrl != null){
-                        kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
-                    }
-                    if(kakaoCont.kko_image_file_nm != null){
-                        kkoMsgdto.img_path = imgPath + kakaoCont.kko_image_file_nm
-                    }
-                    if(kakaoImgUrl != null) {
-                        kkoMsgdto.img_url = "$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
-                    }
-                    if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.toLowerCase()){
-                        when(mdmCont.msg_tp){
-                            "DMCH201" ->  kkoMsgdto.failed_type = "SMS"
-                            "DMCH202" ->  {
-                                kkoMsgdto.failed_type = "LMS"
-                                kkoMsgdto.failed_subject = mdmSubject
-                            }
-                            "DMCH203" ->  {
-                                kkoMsgdto.failed_type = "MMS"
-                                kkoMsgdto.failed_subject = mdmSubject
-                            }
-                        }
-
-                        kkoMsgdto.failed_msg = mdmBody
-                        if (!mdmCont.img_nm_lst.isNullOrBlank()) {
-                            val list = mdmCont.img_nm_lst!!.split(",")
-                            kkoMsgdto.failed_img = imgPath + list[0]
-                        }
-                    }else{
-                        kkoMsgdto.failed_type = "NO"
-                        if(rcsCont != null || mdmCont != null){
-                            val callbackDto = Tblmicp_send_callback_msgDto()
-                            callbackDto.hst_seq = HstSeq.toInt()
-                            callbackDto.send_to = map["SEND_TO"].toString()
-                            if(rcsCont != null){
-                                callbackDto.rcs_tp = rcsCont.msg_tp_val
-                                callbackDto.rcs_from_to = rcsCont.send_to
-                                callbackDto.rcs_sub = rcsSubject
-                                callbackDto.rcs_body = rcsBody
-                                callbackDto.rcs_brn_id = rcsBrnID
-                                callbackDto.rcs_msg_id = rcsCont.key_id
-                                callbackDto.rcs_msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0"
-                                callbackDto.rcs_btn_ins_tp = rcsCont.rcs_btn_ins_tp
-                                callbackDto.rcs_btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrEmpty()) "0" else rcsCont.rcs_btn_cnt
-                                callbackDto.rcs_btn_obj = rcs_btn_obj
-                                callbackDto.rcs_btn_1 = rcsCont.rcs_btn_1
-                                callbackDto.rcs_btn_tp_1 = rcsCont.rcs_btn_tp_1
-                                callbackDto.rcs_btn_cont_1 = rcs_btn_cont_1
-                                callbackDto.rcs_btn_2 = rcsCont.rcs_btn_2
-                                callbackDto.rcs_btn_tp_2 = rcsCont.rcs_btn_tp_2
-                                callbackDto.rcs_btn_cont_2 = rcs_btn_cont_2
-                                callbackDto.rcs_btn_3 = rcsCont.rcs_btn_3
-                                callbackDto.rcs_btn_tp_3 = rcsCont.rcs_btn_tp_3
-                                callbackDto.rcs_btn_cont_3 = rcs_btn_cont_3
-                                callbackDto.rcs_footer = rcsCont.rcs_footer
-                                if (!rcsCont.img_nm_lst.isNullOrBlank()) {
-                                    val list = rcsCont.img_nm_lst!!.split(",")
-                                    callbackDto.rcs_img_cnt = list.size.toString()
-                                    for (i in list.indices) {
-                                        when (i) {
-                                            0 -> callbackDto.rcs_img_cd_1 = imgPath + list[i]
-                                            1 -> callbackDto.rcs_img_cd_2 = imgPath + list[i]
-                                            2 -> callbackDto.rcs_img_cd_3 = imgPath + list[i]
-                                            3 -> callbackDto.rcs_img_cd_4 = imgPath + list[i]
-                                            4 -> callbackDto.rcs_img_cd_5 = imgPath + list[i]
-                                            5 -> callbackDto.rcs_img_cd_6 = imgPath + list[i]
-                                        }
-                                    }
-                                }
-                                callbackDto.rcs_server =  rcsDb
-                            }
-
-                            if(mdmCont != null){
-                                callbackDto.mdm_tp = mdmCont.msg_tp_val
-                                callbackDto.mdm_from_to = mdmCont.send_to
-                                callbackDto.mdm_sub = mdmSubject
-                                callbackDto.mdm_body = mdmBody
-                                if (!mdmCont.img_nm_lst.isNullOrBlank()) {
-                                    val list = mdmCont.img_nm_lst!!.split(",")
-                                    callbackDto.mdm_img_cnt = list.size.toString()
-                                    for (i in list.indices) {
-                                        when (i) {
-                                            0 -> callbackDto.mdm_img_cd_1 = imgPath + list[i]
-                                            1 -> callbackDto.mdm_img_cd_2 = imgPath + list[i]
-                                            2 -> callbackDto.mdm_img_cd_3 = imgPath + list[i]
-                                            3 -> callbackDto.mdm_img_cd_4 = imgPath + list[i]
-                                            4 -> callbackDto.mdm_img_cd_5 = imgPath + list[i]
-                                            5 -> callbackDto.mdm_img_cd_6 = imgPath + list[i]
-                                        }
-                                    }
-                                }
-                                callbackDto.mdm_server = mdmDb
-                            }
-
-                            callbackDto.usr_grp_cd = dto.usr_grp_cd
-                            callbackDto.reg_id = dto.reg_id
-                            callbackLst.add(callbackDto)
-                            if (callbackLst.isNotEmpty() && (callbackLst.size % 1000) == 0) {
-                                sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
-                                callbackLst.clear()
-                            }
-                        }
-                    }
-                    kkoMsgdto.etc1 = dto.pro_id
-                    kkoMsgdto.etc2 = dto.seq.toString()
-                    kkoMsgdto.etc3 = map["SEND_HST_SEQ"].toString()
-                    kkoMsgdto.etc4 = mdmDb
-                    kkoMsgdto.etc5 = rcsDb
-                    kkoMsgdto.m_server = kakaoDb
-
-                    sendLst.add(kkoMsgdto)
-                    if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                        sqlSession.insert("ins_camp_send_kko_cj", sendLst)
-                        sendLst.clear()
-                    }
-                    cnt++
-                } catch (e: Exception) {
-                    logger.error("ins_sendEdm", e)
-                    sendLst.clear()
-                    callbackLst.clear()
-                    throw Exception()
                 }
             }
-        })
-        if (sendLst.isNotEmpty()) {
-            sqlSession.insert("ins_camp_send_kko_cj", sendLst)
+
+            // MDM url to TrackURL
+            if (!mdmContUrlList.isNullOrEmpty()) {
+                for (urlLst in mdmContUrlList) {
+                    val url = urlLst.url!!
+                    mdmBody = mdmBody?.replaceFirst(("\\{\\{"
+                            + url.replace("(", "\\(")
+                        .replace(")", "\\)")
+                        .replace("{", "\\{")
+                        .replace("}", "\\}")
+                        .replace("[", "\\[")
+                        .replace("]", "\\]")
+                        .replace("*", "[*]")
+                        .replace("+", "[+]")
+                        .replace("$", "[&]")
+                        .replace("|", "[|]")
+                        .replace("?", "[?]")
+                            + "\\}\\}")
+                        .toRegex()
+                        , "$trackURL/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                }
+            }
+
+            // Rcs url to TrackURL
+            if (!rcsContUrlList.isNullOrEmpty()) {
+                for (urlLst in rcsContUrlList) {
+                    val url = urlLst.url!!
+                    if ("a" == urlLst.url_tag) {
+                        rcsBody = rcsBody?.replaceFirst(("\\{\\{"
+                                + url.replace("(", "\\(")
+                            .replace(")", "\\)")
+                            .replace("{", "\\{")
+                            .replace("}", "\\}")
+                            .replace("[", "\\[")
+                            .replace("]", "\\]")
+                            .replace("*", "[*]")
+                            .replace("+", "[+]")
+                            .replace("$", "[&]")
+                            .replace("|", "[|]")
+                            .replace("?", "[?]")
+                                + "\\}\\}")
+                            .toRegex()
+                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+
+                    }else{
+                        rcs_btn_obj = rcs_btn_obj?.replaceFirst(("\\{\\{"
+                                + url.replace("(", "\\(")
+                            .replace(")", "\\)")
+                            .replace("{", "\\{")
+                            .replace("}", "\\}")
+                            .replace("[", "\\[")
+                            .replace("]", "\\]")
+                            .replace("*", "[*]")
+                            .replace("+", "[+]")
+                            .replace("$", "[&]")
+                            .replace("|", "[|]")
+                            .replace("?", "[?]")
+                                + "\\}\\}")
+                            .toRegex()
+                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        rcs_btn_cont_1 = rcs_btn_cont_1?.replaceFirst(("\\{\\{"
+                                + url.replace("(", "\\(")
+                            .replace(")", "\\)")
+                            .replace("{", "\\{")
+                            .replace("}", "\\}")
+                            .replace("[", "\\[")
+                            .replace("]", "\\]")
+                            .replace("*", "[*]")
+                            .replace("+", "[+]")
+                            .replace("$", "[&]")
+                            .replace("|", "[|]")
+                            .replace("?", "[?]")
+                                + "\\}\\}")
+                            .toRegex()
+                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        rcs_btn_cont_2 = rcs_btn_cont_2?.replaceFirst(("\\{\\{"
+                                + url.replace("(", "\\(")
+                            .replace(")", "\\)")
+                            .replace("{", "\\{")
+                            .replace("}", "\\}")
+                            .replace("[", "\\[")
+                            .replace("]", "\\]")
+                            .replace("*", "[*]")
+                            .replace("+", "[+]")
+                            .replace("$", "[&]")
+                            .replace("|", "[|]")
+                            .replace("?", "[?]")
+                                + "\\}\\}")
+                            .toRegex()
+                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        rcs_btn_cont_3 = rcs_btn_cont_3?.replaceFirst(("\\{\\{"
+                                + url.replace("(", "\\(")
+                            .replace(")", "\\)")
+                            .replace("{", "\\{")
+                            .replace("}", "\\}")
+                            .replace("[", "\\[")
+                            .replace("]", "\\]")
+                            .replace("*", "[*]")
+                            .replace("+", "[+]")
+                            .replace("$", "[&]")
+                            .replace("|", "[|]")
+                            .replace("?", "[?]")
+                                + "\\}\\}")
+                            .toRegex()
+                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                    }
+                }
+            }
+
+            val kkoMsgdto = Kko_msgDto()
+            kkoMsgdto.id = dto.usr_grp_cd
+            kkoMsgdto.status = "1"
+            kkoMsgdto.reqdate = dto.start_dt
+            kkoMsgdto.phone = map["SEND_TO"].toString()
+            kkoMsgdto.callback = kakaoCont.send_to
+            kkoMsgdto.msg = targetBody
+            kkoMsgdto.profile_key = kakaoKey
+
+            if(kakaoBtnUrl != null){
+                kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
+            }
+            if(kakaoCont.kko_image_file_nm != null){
+                kkoMsgdto.img_path = imgPath + kakaoCont.kko_image_file_nm
+            }
+            if(kakaoImgUrl != null) {
+                kkoMsgdto.img_url = "$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
+            }
+            if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.toLowerCase()){
+                when(mdmCont.msg_tp){
+                    "DMCH201" ->  kkoMsgdto.failed_type = "SMS"
+                    "DMCH202" ->  {
+                        kkoMsgdto.failed_type = "LMS"
+                        kkoMsgdto.failed_subject = mdmSubject
+                    }
+                    "DMCH203" ->  {
+                        kkoMsgdto.failed_type = "MMS"
+                        kkoMsgdto.failed_subject = mdmSubject
+                    }
+                }
+
+                kkoMsgdto.failed_msg = mdmBody
+                if (!mdmCont.img_nm_lst.isNullOrBlank()) {
+                    val list = mdmCont.img_nm_lst!!.split(",")
+                    kkoMsgdto.failed_img = imgPath + list[0]
+                }
+            }else{
+                kkoMsgdto.failed_type = "NO"
+                if(rcsCont != null || mdmCont != null){
+                    val callbackDto = Tblmicp_send_callback_msgDto()
+                    callbackDto.hst_seq = HstSeq.toInt()
+                    callbackDto.send_to = map["SEND_TO"].toString()
+                    if(rcsCont != null){
+                        callbackDto.rcs_tp = rcsCont.msg_tp_val
+                        callbackDto.rcs_from_to = rcsCont.send_to
+                        callbackDto.rcs_sub = rcsSubject
+                        callbackDto.rcs_body = rcsBody
+                        callbackDto.rcs_brn_id = rcsBrnID
+                        callbackDto.rcs_msg_id = rcsCont.key_id
+                        callbackDto.rcs_msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0"
+                        callbackDto.rcs_btn_ins_tp = rcsCont.rcs_btn_ins_tp
+                        callbackDto.rcs_btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrEmpty()) "0" else rcsCont.rcs_btn_cnt
+                        callbackDto.rcs_btn_obj = rcs_btn_obj
+                        callbackDto.rcs_btn_1 = rcsCont.rcs_btn_1
+                        callbackDto.rcs_btn_tp_1 = rcsCont.rcs_btn_tp_1
+                        callbackDto.rcs_btn_cont_1 = rcs_btn_cont_1
+                        callbackDto.rcs_btn_2 = rcsCont.rcs_btn_2
+                        callbackDto.rcs_btn_tp_2 = rcsCont.rcs_btn_tp_2
+                        callbackDto.rcs_btn_cont_2 = rcs_btn_cont_2
+                        callbackDto.rcs_btn_3 = rcsCont.rcs_btn_3
+                        callbackDto.rcs_btn_tp_3 = rcsCont.rcs_btn_tp_3
+                        callbackDto.rcs_btn_cont_3 = rcs_btn_cont_3
+                        callbackDto.rcs_footer = rcsCont.rcs_footer
+                        if (!rcsCont.img_nm_lst.isNullOrBlank()) {
+                            val list = rcsCont.img_nm_lst!!.split(",")
+                            callbackDto.rcs_img_cnt = list.size.toString()
+                            for (i in list.indices) {
+                                when (i) {
+                                    0 -> callbackDto.rcs_img_cd_1 = imgPath + list[i]
+                                    1 -> callbackDto.rcs_img_cd_2 = imgPath + list[i]
+                                    2 -> callbackDto.rcs_img_cd_3 = imgPath + list[i]
+                                    3 -> callbackDto.rcs_img_cd_4 = imgPath + list[i]
+                                    4 -> callbackDto.rcs_img_cd_5 = imgPath + list[i]
+                                    5 -> callbackDto.rcs_img_cd_6 = imgPath + list[i]
+                                }
+                            }
+                        }
+                        callbackDto.rcs_server =  rcsDb
+                    }
+
+                    if(mdmCont != null){
+                        callbackDto.mdm_tp = mdmCont.msg_tp_val
+                        callbackDto.mdm_from_to = mdmCont.send_to
+                        callbackDto.mdm_sub = mdmSubject
+                        callbackDto.mdm_body = mdmBody
+                        if (!mdmCont.img_nm_lst.isNullOrBlank()) {
+                            val list = mdmCont.img_nm_lst!!.split(",")
+                            callbackDto.mdm_img_cnt = list.size.toString()
+                            for (i in list.indices) {
+                                when (i) {
+                                    0 -> callbackDto.mdm_img_cd_1 = imgPath + list[i]
+                                    1 -> callbackDto.mdm_img_cd_2 = imgPath + list[i]
+                                    2 -> callbackDto.mdm_img_cd_3 = imgPath + list[i]
+                                    3 -> callbackDto.mdm_img_cd_4 = imgPath + list[i]
+                                    4 -> callbackDto.mdm_img_cd_5 = imgPath + list[i]
+                                    5 -> callbackDto.mdm_img_cd_6 = imgPath + list[i]
+                                }
+                            }
+                        }
+                        callbackDto.mdm_server = mdmDb
+                    }
+
+                    callbackDto.usr_grp_cd = dto.usr_grp_cd
+                    callbackDto.reg_id = dto.reg_id
+                    callbackLst.add(callbackDto)
+                    if (callbackLst.isNotEmpty() && (callbackLst.size % 1000) == 0) {
+                        sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
+                        callbackLst.clear()
+                    }
+                }
+            }
+            kkoMsgdto.etc1 = dto.pro_id
+            kkoMsgdto.etc2 = dto.seq.toString()
+            kkoMsgdto.etc3 = map["SEND_HST_SEQ"].toString()
+            kkoMsgdto.etc4 = mdmDb
+            kkoMsgdto.etc5 = rcsDb
+            kkoMsgdto.m_server = kakaoDb
+
+            sendLst.add(kkoMsgdto)
+            if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
+                sqlSession.insert("ins_camp_send_kko_cj", sendLst)
+                sendLst.clear()
+            }
+            cnt++
+        } catch (e: Exception) {
+            logger.error("ins_sendEdm", e)
             sendLst.clear()
-        }
-        if (callbackLst.isNotEmpty()) {
-            sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
             callbackLst.clear()
+            throw Exception()
         }
         return cnt
     }

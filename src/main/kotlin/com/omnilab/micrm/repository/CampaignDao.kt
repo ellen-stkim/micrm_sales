@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook
 interface CampaignDao {
 
     fun sel_ContentsList(dto: Tblmi_cont_mstDto): MutableList<Tblmi_cont_lstDto>
-    fun sel_camp_cont_mst(dto: Tblmicp_cont_mstDto): Tblmicp_cont_mstDto
+    fun sel_camp_cont_mst(dto: Tblmicp_cont_mstDto): Tblmicp_cont_mstDto?
     fun sel_tblmicp_campaign(dto: Tblmicp_campaignDto): MutableList<Tblmicp_campaignDto>
     fun sel_tblmicp_cont_lst(dto: Tblmicp_cont_lstDto): MutableList<Contents_lstDto>
     fun sel_tblmi_traget_grp(dto: Tblmi_target_grpDto): Tblmi_target_grpDto
@@ -18,6 +18,7 @@ interface CampaignDao {
 
     fun ins_program(dto: Tblmicp_programDto): Int
     fun ins_programSendHst(dto: Tblmicp_programDto): MutableList<Int>
+    fun ins_programSendHst(dto: Tblmicp_send_hstDto): Int
 
     fun ins_campaign(dto: Tblmicp_campaignDto): Int
 

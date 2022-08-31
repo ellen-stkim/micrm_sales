@@ -30,4 +30,11 @@ fun main(args: Array<String>) {
 
     log.error("=========================")
 
+    val str1 = "DMTP02"
+    val str2 = "DMTP03"
+    val str3 = "DMTP04"
+
+    log.error("{}", str1.compareTo(str2))
+    log.error("{}", str2.compareTo(str3))
+    log.error("{}", str3.compareTo(str1))
 }

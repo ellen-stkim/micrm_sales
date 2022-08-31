@@ -24,7 +24,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>): Int {
+    override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Int {
         var cnt = 0
 
         val contDto = contTpLst["DMTP02"]!!

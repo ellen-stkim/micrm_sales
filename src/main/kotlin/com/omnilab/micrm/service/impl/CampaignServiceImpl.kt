@@ -84,6 +84,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
 
     override fun programSend(pro_id: String, auto_tp: Boolean) {
+        /*
         //val programDto = campaignDao.sel_tblmicp_programOne(Tblmicp_programDto(pro_id, "01"))
         val campaignLst = campaignDao.sel_tblmicp_campaign(Tblmicp_campaignDto(pro_id))
 
@@ -157,6 +158,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
                 }
             }
         }
+         */
     }
 
 
@@ -248,7 +250,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         }*/
 
         val contMstDto = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(dto.cont_id, usr_grp_cd, null))
-        val list = campaignDao.sel_ContentsList(Contents_searchDto(contMstDto.cont_seq))
+        val list = campaignDao.sel_ContentsList(Contents_searchDto(contMstDto!!.cont_seq))
         if(!list.isNullOrEmpty()) {
             map["camp"] = list[0]
         }

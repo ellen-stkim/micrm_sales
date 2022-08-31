@@ -55,6 +55,11 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.insert("ins_tblmicp_cont_url_lst", dto)
     }
 
+    override fun ins_tblmicp_sales_execute(dto: MutableMap<String, Any>): Int {
+        return sqlSession.insert("ins_tblmicp_sales_execute", dto)
+    }
+
+
     override fun upd_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int {
         return sqlSession.update("upd_tblmicp_cont_mst", dto)
     }

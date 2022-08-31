@@ -8,7 +8,6 @@ import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmicp_cont_mstDto
-import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
@@ -17,8 +16,6 @@ import com.omnilab.micrm.service.SysSettingService
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
 import org.apache.commons.io.FilenameUtils
-import org.apache.http.client.methods.CloseableHttpResponse
-import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
@@ -562,7 +559,7 @@ class SalesforceController {
             val chunks: List<String> = data.split(".")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
             val payload = String(decoder.decode(chunks[1]))
-            logger.info("payload: $payload")
+            //logger.info("payload: $payload")
 
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
             val secretKeySpec = SecretKeySpec(secretKey?.toByteArray(), sa.jcaName)
