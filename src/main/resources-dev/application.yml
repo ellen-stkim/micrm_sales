@@ -40,7 +40,7 @@ variable:
   minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
 
   static-path : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
-  tableau-url: "http://t.tableau-report.com/trusted"
+  tableau-url: "https://t.tableau-report.com/trusted"
 
 upload:
   src : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
