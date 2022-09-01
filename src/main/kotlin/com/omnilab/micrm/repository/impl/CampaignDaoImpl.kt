@@ -140,6 +140,6 @@ class CampaignDaoImpl : CampaignDao {
     }
 
     override fun ins_programSendHst(dto: Tblmicp_send_hstDto): Int {
-        return sqlSession.insert("ins_programSendHst", dto)
+        return sqlSession.insert("ins_programSendHstOne", dto)
     }
 }

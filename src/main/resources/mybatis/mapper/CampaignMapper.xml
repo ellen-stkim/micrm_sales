@@ -564,8 +564,16 @@
 			, upd_id = #{reg_id}
 	</insert>
 
+	<insert id="ins_programSendHstOne" parameterType="Tblmicp_send_hstDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into tblmicp_send_hst
+		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
+		values
+		<foreach collection="list" item="list" separator=" , " >
+			(#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch})
+		</foreach>
+	</insert>
 
-	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto" useGeneratedKeys="true" keyProperty="seq">
+	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto" >
 		insert into tblmicp_send_hst
 		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
 		values
