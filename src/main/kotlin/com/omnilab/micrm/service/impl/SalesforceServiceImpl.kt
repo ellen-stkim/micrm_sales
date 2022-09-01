@@ -2254,7 +2254,9 @@ class SalesforceServiceImpl : SalesforceService {
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
 
         if(contMst == null){
-            salesforceDao.ins_tblmicp_sales_execute(map)
+            val exMap = HashMap<String, Any>(map)
+            exMap["inArguments"] = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+            salesforceDao.ins_tblmicp_sales_execute(exMap)
             return false
         }else {
             //캠페인 정보
