@@ -13,7 +13,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-		<kotlin.version>1.4.10</kotlin.version>
+		<kotlin.version>1.6.0</kotlin.version>
 		<spring.version>2.4.2</spring.version>
 		<tomcat.version>9.0.31</tomcat.version>
 		<spring.version>2.4.2</spring.version>
