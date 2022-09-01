@@ -16,6 +16,7 @@
 		<kotlin.version>1.4.10</kotlin.version>
 		<spring.version>2.4.2</spring.version>
 		<tomcat.version>9.0.31</tomcat.version>
+		<spring.version>2.4.2</spring.version>
 	</properties>
 
 	<parent>
@@ -266,7 +267,7 @@
 		<dependency>
 		    <groupId>io.minio</groupId>
 		    <artifactId>minio</artifactId>
-		    <version>8.4.3</version>
+			<version>8.1.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/atg.taglib.json/json-taglib -->
@@ -293,6 +294,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
@@ -346,6 +348,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
 				<executions>
 					<execution>
 						<id>compile</id>
