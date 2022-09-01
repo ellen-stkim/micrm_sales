@@ -64,6 +64,7 @@
             , a.CONT_SUB
             , a.CONT_TOP_BODY
             , a.CONT_BODY
+            , a.FROM_TO
             , a.SEND_TP
             , b.list_val as send_to
             , b.list_nm AS send_nm
