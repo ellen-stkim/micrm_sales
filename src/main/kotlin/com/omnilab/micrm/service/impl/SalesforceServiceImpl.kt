@@ -2314,6 +2314,8 @@ class SalesforceServiceImpl : SalesforceService {
                     when {
                         // 카카오
                         contTpLst["DMTP03"] != null -> {
+                            logger.error("{}", inArguments)
+                            logger.error("{}", inArguments[contTpLst["DMTP03"]!!.from_to].toString())
                             sendHstDto.send_to = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
                             campaignDao.ins_programSendHst(sendHstDto)
                             inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
@@ -2322,6 +2324,8 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                         // RCS
                         contTpLst["DMTP04"] != null -> {
+                            logger.error("{}", inArguments)
+                            logger.error("{}", inArguments[contTpLst["DMTP03"]!!.from_to].toString())
                             sendHstDto.send_to = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
                             campaignDao.ins_programSendHst(sendHstDto)
                             inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
@@ -2330,6 +2334,8 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                         // 문자
                         else -> {
+                            logger.error("{}", inArguments)
+                            logger.error("{}", inArguments[contTpLst["DMTP03"]!!.from_to].toString())
                             sendHstDto.send_to = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
                             campaignDao.ins_programSendHst(sendHstDto)
                             inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
