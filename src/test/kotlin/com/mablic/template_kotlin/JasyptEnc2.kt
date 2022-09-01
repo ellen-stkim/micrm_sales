@@ -23,8 +23,8 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error("{}", enc.decrypt("6qa4jW8TavX1b+I7GOHnd6XxTS+knHUjaxhzpzCJfe/PjwqeAkyvsONjE1GRn7/YAu3SmAz8dr0jnIsS+Dk32FCA4dVPixOFZKEthm4nTVWqorCMLVmwUf5vKtqS0L/COtTWWmgtxZ3mcxpFhCS3vMYOoDgKBhF4CS7/6WhL8kBgATwcPBuhasgPIlZ29X45Rl+Ny9syaHEYH2dlzC0bSmJLslxaqJN9pbYVLJzbQMk="))
-    log.error("{}", enc.encrypt("jdbc:mariadb://121.78.144.83:3306/db_reebok_raffle?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnection=true&allowMultiQueries=true"))
+    log.error("{}", enc.decrypt("U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE"))
+    log.error("{}", enc.decrypt("8vjGHD7gYVvqTkhnP6KRhGW877zCXe88Khq+RWmdRKJYO6S5cXMPb6xdZYrLykzc"))
     log.error("=========================")
 
 }
