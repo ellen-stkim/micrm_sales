@@ -2235,7 +2235,6 @@ class SalesforceServiceImpl : SalesforceService {
             }else{
                 true
             }
-            true
         }else{
             false
         }

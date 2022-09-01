@@ -526,9 +526,26 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/unpublish.service")
-    fun unpublish(@RequestBody data : Object): ResponseEntity<Any> {
+    fun unpublish(@RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/unpublish.service data: $data")
-        return ResponseEntity(null, HttpStatus.OK)
+        val dto = Tblmicp_cont_mstDto()
+        dto.avo_id = data["activityObjectID"].toString()
+        dto.inten_id = data["interactionId"].toString()
+        dto.orig_id = data["originalDefinitionId"].toString()
+        dto.inta_key = data["interactionKey"].toString()
+        dto.inta_ve = data["interactionVersion"].toString()
+        dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
+        val cont = salesforceService.campaingContent(dto)
+        return if(cont) {
+            val save = salesforceService.publish(dto)
+            if(save){
+                ResponseEntity(null, HttpStatus.OK)
+            }else{
+                ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+        }else{
+            ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 
     @ResponseBody
