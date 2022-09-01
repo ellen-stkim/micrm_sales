@@ -62,6 +62,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val kakaoContUrlList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", urlDto)
         var kakaoBtnUrl: Tblmicp_cont_url_lstDto? = null
         var kakaoImgUrl: Tblmicp_cont_url_lstDto? = null
+
         for (urlLst in kakaoContUrlList) {
             urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
             if("btn" == urlLst.url_tag?.toLowerCase()){
@@ -151,7 +152,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                     }
                 }
             }
@@ -174,7 +175,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                         .replace("?", "[?]")
                             + "\\}\\}")
                         .toRegex()
-                        , "$trackURL/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        , "$trackURL/s/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                 }
             }
 
@@ -197,7 +198,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
 
                     }else{
                         rcs_btn_obj = rcs_btn_obj?.replaceFirst(("\\{\\{"
@@ -214,7 +215,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                         rcs_btn_cont_1 = rcs_btn_cont_1?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
@@ -229,7 +230,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                         rcs_btn_cont_2 = rcs_btn_cont_2?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
@@ -244,7 +245,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                         rcs_btn_cont_3 = rcs_btn_cont_3?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
@@ -259,7 +260,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                     }
                 }
             }
@@ -274,13 +275,13 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.profile_key = kakaoKey
 
             if(kakaoBtnUrl != null){
-                kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
+                kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
             }
             if(kakaoCont.kko_image_file_nm != null){
                 kkoMsgdto.img_path = imgPath + kakaoCont.kko_image_file_nm
             }
             if(kakaoImgUrl != null) {
-                kkoMsgdto.img_url = "$trackURL/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
+                kkoMsgdto.img_url = "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
             }
             if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.toLowerCase()){
                 when(mdmCont.msg_tp){

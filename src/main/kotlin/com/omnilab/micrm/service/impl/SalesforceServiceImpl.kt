@@ -2308,21 +2308,18 @@ class SalesforceServiceImpl : SalesforceService {
             when {
                 // 카카오
                 contTpLst["DMTP03"] != null -> {
-                    sendHstDto.send_to = map[contTpLst["DMTP03"]!!.from_to].toString()
+                    sendHstDto.send_to = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
                     campaignDao.ins_programSendHst(sendHstDto)
                     inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                    inArguments["SEND_TO"] = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
                     kkoSend.ins_send(campaignDto, contTpLst, inArguments)
-                    val map = HashMap<String, Any>()
-                    map["camp_id"] = campaignDto.seq.toString()
-                    map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                    map["gubun"] = "9"
-                    kkoSend.upd_send(map)
                 }
                 // RCS
                 contTpLst["DMTP04"] != null -> {
-                    sendHstDto.send_to = map[contTpLst["DMTP04"]!!.from_to].toString()
+                    sendHstDto.send_to = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
                     campaignDao.ins_programSendHst(sendHstDto)
                     inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                    inArguments["SEND_TO"] = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
                     rcsSend.ins_send(campaignDto, contTpLst, inArguments)
                     val map = HashMap<String, Any>()
                     map["camp_id"] = campaignDto.seq.toString()
@@ -2332,9 +2329,10 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 // 문자
                 else -> {
-                    sendHstDto.send_to = map[contTpLst["DMTP02"]!!.from_to].toString()
+                    sendHstDto.send_to = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
                     campaignDao.ins_programSendHst(sendHstDto)
                     inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                    inArguments["SEND_TO"] = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
                     mdmSend.ins_send(campaignDto, contTpLst, inArguments)
                     val map = HashMap<String, Any>()
                     map["camp_id"] = campaignDto.seq.toString()
