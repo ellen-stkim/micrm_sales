@@ -2143,6 +2143,7 @@ class SalesforceServiceImpl : SalesforceService {
                             contListDto.cont_cd = seq.toInt()
                             contListDto.reg_id = usrId
                             contListDto.upd_id = usrId
+                            contListDto.use_yn = "Y"
                             val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
 
                             for(i in contLst){
@@ -2321,11 +2322,6 @@ class SalesforceServiceImpl : SalesforceService {
                     inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                     inArguments["SEND_TO"] = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
                     rcsSend.ins_send(campaignDto, contTpLst, inArguments)
-                    val map = HashMap<String, Any>()
-                    map["camp_id"] = campaignDto.seq.toString()
-                    map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                    map["gubun"] = "9"
-                    rcsSend.upd_send(map)
                 }
                 // 문자
                 else -> {
@@ -2334,18 +2330,9 @@ class SalesforceServiceImpl : SalesforceService {
                     inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                     inArguments["SEND_TO"] = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
                     mdmSend.ins_send(campaignDto, contTpLst, inArguments)
-                    val map = HashMap<String, Any>()
-                    map["camp_id"] = campaignDto.seq.toString()
-                    map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                    map["msgTp"] = contTpLst["DMTP02"]!!.msg_tp.toString()
-                    map["gubun"] = "9"
-                    mdmSend.upd_send(map)
                 }
             }
-
-
         }
-
         return true
     }
 
