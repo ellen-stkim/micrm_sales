@@ -2247,89 +2247,95 @@ class SalesforceServiceImpl : SalesforceService {
         val inten_id = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
 
-        //캠페인 정보
-        val campaignDto = Tblmicp_campaignDto()
-        campaignDto.cont_id = inArguments["seq"].toString().toInt()
-        val campLst = campaignDao.sel_tblmicp_campaign(campaignDto)
-
         // 컨테츠 마스터 정보
         val contMstDto = Tblmicp_cont_mstDto()
         contMstDto.avo_id = avo_id
         contMstDto.inten_id = inten_id
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
 
-        if(campLst.isEmpty() || contMst == null){
+        if(contMst == null){
             salesforceDao.ins_tblmicp_sales_execute(map)
             return false
         }else {
-            // sendhst 삽입
-            val sendHstDto = Tblmicp_send_hstDto()
-            sendHstDto.pro_id = campaignDto.pro_id
-            sendHstDto.camp_id = campaignDto.seq
-            sendHstDto.tbl_id = "sales"
-            sendHstDto.tbl_lst_id = keyValue
-            sendHstDto.send_yn = "N"
-            sendHstDto.auto_tp = null
-            sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
-            sendHstDto.reg_id = campaignDto.reg_id
-            sendHstDto.camp_ch = campaignDto.camp_ch
+            //캠페인 정보
+            val cDto = Tblmicp_campaignDto()
+            cDto.cont_id = contMst.seq
+            val campLst = campaignDao.sel_tblmicp_campaign(cDto)
 
-            //컨텐츠 리스트
-            val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
-            val contTpLst = HashMap<String, Contents_lstDto>()
+            if(campLst.isEmpty()){
+                return false
+            }else{
+                for(campaignDto in campLst){
+                    // sendhst 삽입
+                    val sendHstDto = Tblmicp_send_hstDto()
+                    sendHstDto.pro_id = campaignDto.pro_id
+                    sendHstDto.camp_id = campaignDto.seq
+                    sendHstDto.tbl_id = "sales"
+                    sendHstDto.tbl_lst_id = keyValue
+                    sendHstDto.send_yn = "N"
+                    sendHstDto.auto_tp = null
+                    sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
+                    sendHstDto.reg_id = campaignDto.reg_id
+                    sendHstDto.camp_ch = campaignDto.camp_ch
 
-            // 이미지 업로드
-            val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-            for (check in contLst) {
-                // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
-                contTpLst[check.cont_tp.toString()] = check
-                if (!check.img_lst.isNullOrEmpty()) {
-                    val url_list = check.img_lst!!.split(",")
-                    val nm_list = check.img_nm_lst!!.split(",")
+                    //컨텐츠 리스트
+                    val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
+                    val contTpLst = HashMap<String, Contents_lstDto>()
 
-                    for (i in url_list.indices) {
-                        minioClient.uploadObject(
-                            UploadObjectArgs.builder()
-                                .bucket(minio_bucket)
-                                .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
-                                .filename(static_path + url_list[i])
-                                .build())
+                    // 이미지 업로드
+                    val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
+                    for (check in contLst) {
+                        // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
+                        contTpLst[check.cont_tp.toString()] = check
+                        if (!check.img_lst.isNullOrEmpty()) {
+                            val url_list = check.img_lst!!.split(",")
+                            val nm_list = check.img_nm_lst!!.split(",")
+
+                            for (i in url_list.indices) {
+                                minioClient.uploadObject(
+                                    UploadObjectArgs.builder()
+                                        .bucket(minio_bucket)
+                                        .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
+                                        .filename(static_path + url_list[i])
+                                        .build())
+                            }
+                        }
+                        if (!check.kko_image_url.isNullOrEmpty()) {
+                            minioClient.uploadObject(
+                                UploadObjectArgs.builder()
+                                    .bucket(minio_bucket)
+                                    .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
+                                    .filename(static_path + check.kko_image_url)
+                                    .build())
+                        }
                     }
-                }
-                if (!check.kko_image_url.isNullOrEmpty()) {
-                    minioClient.uploadObject(
-                        UploadObjectArgs.builder()
-                            .bucket(minio_bucket)
-                            .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
-                            .filename(static_path + check.kko_image_url)
-                            .build())
-                }
-            }
-            // 발송
-            when {
-                // 카카오
-                contTpLst["DMTP03"] != null -> {
-                    sendHstDto.send_to = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
-                    campaignDao.ins_programSendHst(sendHstDto)
-                    inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                    inArguments["SEND_TO"] = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
-                    kkoSend.ins_send(campaignDto, contTpLst, inArguments)
-                }
-                // RCS
-                contTpLst["DMTP04"] != null -> {
-                    sendHstDto.send_to = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
-                    campaignDao.ins_programSendHst(sendHstDto)
-                    inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                    inArguments["SEND_TO"] = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
-                    rcsSend.ins_send(campaignDto, contTpLst, inArguments)
-                }
-                // 문자
-                else -> {
-                    sendHstDto.send_to = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
-                    campaignDao.ins_programSendHst(sendHstDto)
-                    inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                    inArguments["SEND_TO"] = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
-                    mdmSend.ins_send(campaignDto, contTpLst, inArguments)
+                    // 발송
+                    when {
+                        // 카카오
+                        contTpLst["DMTP03"] != null -> {
+                            sendHstDto.send_to = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
+                            campaignDao.ins_programSendHst(sendHstDto)
+                            inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                            inArguments["SEND_TO"] = inArguments[contTpLst["DMTP03"]!!.from_to].toString()
+                            kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                        }
+                        // RCS
+                        contTpLst["DMTP04"] != null -> {
+                            sendHstDto.send_to = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
+                            campaignDao.ins_programSendHst(sendHstDto)
+                            inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                            inArguments["SEND_TO"] = inArguments[contTpLst["DMTP04"]!!.from_to].toString()
+                            rcsSend.ins_send(campaignDto, contTpLst, inArguments)
+                        }
+                        // 문자
+                        else -> {
+                            sendHstDto.send_to = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
+                            campaignDao.ins_programSendHst(sendHstDto)
+                            inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                            inArguments["SEND_TO"] = inArguments[contTpLst["DMTP02"]!!.from_to].toString()
+                            mdmSend.ins_send(campaignDto, contTpLst, inArguments)
+                        }
+                    }
                 }
             }
         }
