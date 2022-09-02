@@ -282,7 +282,7 @@
                                                         <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                     </div>
                                                     <input type="text" class="txt_input" name="" id="smsImage" placeholder="이미지를 선택해 주세요." readonly/>
-                                                    <input type="hidden" name="mds_img_cd" value=""/>
+                                                    <input type="hidden" id="mds_img_cd" name="mds_img_cd" value=""/>
                                                     <span class="btn_sm_line" data="smsImage" onclick="imageListPopUp('1', 'smsImage');">선택</span>
                                                 </div>
                                             </div>
