@@ -1609,7 +1609,7 @@
                 if(list[2].msg_tp == 'DMCH205' || list[2].msg_tp == 'DMCH206') {
                     // RCS TEXT형 Layout
                     $('input[name="rcs_format_type"][value="text"]').prop('checked', true);
-                    rcsChangeFormat("text");
+                    rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
 
                     if(list[2].msg_tp == 'DMCH205') {
                         // 카드 양식
@@ -1685,7 +1685,7 @@
                     } else if(list[2].msg_tp == 'DMCH206') {
                         // 카드 양식
                         $('input[name="rcs_msg_tp"][value="lms"]').prop('checked', true);
-                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
+                        rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
 
                         // 문자 제목
                         $('.rcsTitle').val(list[2].cont_sub);
@@ -1780,8 +1780,7 @@
                 } else if(list[2].msg_tp == 'DMCH207' || list[2].msg_tp == 'DMCH208') {
                     // RCS 세로형 Layout
                     $('input[name="rcs_format_type"][value="vertical"]').prop('checked', true);
-                    rcsChangeFormat("vertical");
-
+                    rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
 
                     if(list[2].msg_tp == 'DMCH207') {
                         // 카드 양식
@@ -1928,7 +1927,7 @@
                         $('#send_slice_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
                         $('#slide_send_num').val(list[2].send_to);
                     }
-
+                    /*
                     // 카드 탭
                     for(var i=1; i<=list[2].cardSize; i++) {
                         if(i == 1) {
@@ -1937,6 +1936,7 @@
                             $('.slide_tab').append('<div id="cardOn" class="cardOn" data="' + i + '">카드' + i + '</div>');
                         }
                     }
+                    */
 
                     // 카드 그리기
                     var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
