@@ -371,35 +371,17 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 callbackDto.usr_grp_cd = dto.usr_grp_cd
                 callbackDto.reg_id = dto.reg_id
                 callbackLst.add(callbackDto)
-                if (callbackLst.isNotEmpty() && (callbackLst.size % 1000) == 0) {
-                    sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
-                    callbackLst.clear()
-                }
+                sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
             }
 
             sendLst.add(sendDto)
-            if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                sqlSession.insert("ins_camp_send_rcs_lg", sendLst)
-                sendLst.clear()
-            }
+            sqlSession.insert("ins_camp_send_rcs_lg", sendLst)
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendRcs", e)
             sendLst.clear()
             callbackLst.clear()
             throw Exception()
-        }
-        if (sendLst.isNotEmpty()) {
-            sqlSession.insert("ins_camp_send_rcs_lg", sendLst)
-            sendLst.clear()
-        }
-        if (callbackLst.isNotEmpty()) {
-            sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
-            callbackLst.clear()
-        }
-        if(rcsImgLst.isNotEmpty()){
-            sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
-            callbackLst.clear()
         }
         return cnt
     }

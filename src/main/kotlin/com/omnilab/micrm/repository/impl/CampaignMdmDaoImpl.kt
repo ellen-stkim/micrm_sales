@@ -96,16 +96,10 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
                     mdmDto.file_cnt = 1
                     sendLst.add(mdmDto)
-                    if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                        sqlSession.insert("ins_camp_send_mms_cj", sendLst)
-                        sendLst.clear()
-                    }
+                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
                 }else{
                     sendLst.add(LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd))
-                    if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                        sqlSession.insert("ins_camp_send_mms_lg", sendLst)
-                        sendLst.clear()
-                    }
+                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
                 }
             } else if ("DMCH203" == msgTp) { //mms
                 val contentsLstDto = contDto
@@ -142,10 +136,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                         }
                     }
                     sendLst.add(mdmDto)
-                    if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                        sqlSession.insert("ins_camp_send_mms_cj", sendLst)
-                        sendLst.clear()
-                    }
+                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
                 }else{
                     val mdmDto = LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd)
                     if (!contentsLstDto.img_nm_lst.isNullOrBlank()) {
@@ -162,37 +153,17 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                         }
                     }
                     sendLst.add(mdmDto)
-                    if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                        sqlSession.insert("ins_camp_send_mms_lg", sendLst)
-                        sendLst.clear()
-                    }
+                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
                 }
             } else {  // sms
                 sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
-
-                if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                    sqlSession.insert("ins_camp_send_sms_lg", sendLst)
-                    sendLst.clear()
-                }
+                sqlSession.insert("ins_camp_send_sms_lg", sendLst)
             }
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendMdm", e)
             sendLst.clear()
             throw Exception()
-        }
-
-        if (sendLst.isNotEmpty()) {
-            if ("DMCH202" == msgTp || "DMCH203" == msgTp) { // lms
-                if(mdmServerType == "CJ"){
-                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
-                }else{
-                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
-                }
-            } else {  // sms
-                sqlSession.insert("ins_camp_send_sms_lg", sendLst)
-            }
-            sendLst.clear()
         }
         return cnt
     }

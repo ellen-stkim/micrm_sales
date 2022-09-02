@@ -13,6 +13,8 @@ import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Repository("CampaignKakaoDaoImpl")
@@ -284,7 +286,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             if(kakaoImgUrl != null) {
                 kkoMsgdto.img_url = "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
             }
-            if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.toLowerCase()){
+            if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.lowercase(Locale.getDefault())){
                 when(mdmCont.msg_tp){
                     "DMCH201" ->  kkoMsgdto.failed_type = "SMS"
                     "DMCH202" ->  {
@@ -371,10 +373,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                     callbackDto.usr_grp_cd = dto.usr_grp_cd
                     callbackDto.reg_id = dto.reg_id
                     callbackLst.add(callbackDto)
-                    if (callbackLst.isNotEmpty() && (callbackLst.size % 1000) == 0) {
-                        sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
-                        callbackLst.clear()
-                    }
+                    sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
                 }
             }
             kkoMsgdto.etc1 = dto.pro_id
@@ -385,13 +384,10 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.m_server = kakaoDb
 
             sendLst.add(kkoMsgdto)
-            if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
-                sqlSession.insert("ins_camp_send_kko_cj", sendLst)
-                sendLst.clear()
-            }
+            sqlSession.insert("ins_camp_send_kko_cj", sendLst)
             cnt++
         } catch (e: Exception) {
-            logger.error("ins_sendEdm", e)
+            logger.error("ins_sendKKo", e)
             sendLst.clear()
             callbackLst.clear()
             throw Exception()
