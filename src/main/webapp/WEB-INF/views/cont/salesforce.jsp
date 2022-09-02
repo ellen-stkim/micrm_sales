@@ -1577,8 +1577,13 @@
                 }
 
                 // 문자 종류
-                $('input[name="sms_msg_tp"][value="' + list[1].msg_tp + '"]').prop('checked', true);
-
+                if(list[1].msg_tp == "DMCH202"){
+                    $('input[name="sms_msg_tp"][value="LMS"]').prop('checked', true);
+                }else if(list[1].msg_tp == "DMCH203"){
+                    $('input[name="sms_msg_tp"][value="MMS"]').prop('checked', true);
+                }else{
+                    $('input[name="sms_msg_tp"][value="SMS"]').prop('checked', true);
+                }
                 // 이미지 선택
                 if(list[1].msg_tp === 'DMCH203') {
                     let sms_img_nm_lst = list[1].img_nm_lst.split(',');
