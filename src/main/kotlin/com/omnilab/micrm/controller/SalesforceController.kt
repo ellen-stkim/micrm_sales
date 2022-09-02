@@ -155,13 +155,10 @@ class SalesforceController {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = dto.seq
 
-        val map = sysSettingService.getDBValue()
         val listMap: Map<String, Any> = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
 
         statusMap["list"] = listMap["list"] as List<Content_view_Dto>
-        statusMap["columnValue"] = map["columnValue"] as Any
-        statusMap["columnNm"] = map["columnNm"] as Any
         statusMap["kakaoCnt"] = cntMap["kakaoCnt"] as Any
         statusMap["smsCnt"] = cntMap["smsCnt"] as Any
         statusMap["rcsCnt"] = cntMap["rcsCnt"] as Any
@@ -559,20 +556,20 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/validate.service")
-    fun validate(@RequestBody data : Object): ResponseEntity<Any> {
+    fun validate(@RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/validate.service data: $data")
         return ResponseEntity(null, HttpStatus.OK)
     }
 
     @ResponseBody
     @PostMapping("/stop.service")
-    fun stop(@RequestBody data : Object) {
+    fun stop(@RequestBody data : MutableMap<String, Any>) {
         logger.info("/stop.service data: $data")
     }
 
     @ResponseBody
     @PostMapping("/TestSave.service")
-    fun TestSave(@RequestBody data : Object) {
+    fun TestSave(@RequestBody data : MutableMap<String, Any>) {
         logger.info("/TestSave.service data: $data");
     }
 

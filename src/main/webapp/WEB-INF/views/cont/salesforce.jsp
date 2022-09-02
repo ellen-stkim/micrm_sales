@@ -1580,18 +1580,19 @@
                 $('input[name="sms_msg_tp"][value="' + list[1].msg_tp + '"]').prop('checked', true);
 
                 // 이미지 선택
-                if(list[1].msg_tp == 'DMCH203') {
-                    var sms_img_nm_lst = list[1].img_nm_lst.split(',');
-                    var sms_img_lst = list[1].img_lst.split(',');
-                    $('#smsImage').val(sms_img_nm_lst[0]);
-                    $('#mds_img_cd').val(list[1].img_cd_1);
+                if(list[1].msg_tp === 'DMCH203') {
+                    let sms_img_nm_lst = list[1].img_nm_lst.split(',');
+                    let sms_img_lst = list[1].img_lst.split(',');
+                    if(sms_img_lst && sms_img_lst != ""){
+                        $('#smsImage').val(sms_img_nm_lst[0]);
+                        $('#mds_img_cd').val(list[1].img_cd_1);
 
-                    $('input[name="mms_imgurl"]').val(sms_img_lst[0]);
+                        $('input[name="mms_imgurl"]').val(sms_img_lst[0]);
 
-                    // 이미지 미리보기
-                    $('#js-sms-img').html('<a href="' + sms_img_lst[0] + '" target="_blank"><img src="' + filePath + sms_img_lst[0] + '"/></a>');
+                        // 이미지 미리보기
+                        $('#js-sms-img').html('<a href="' + sms_img_lst[0] + '" target="_blank"><img src="' + filePath + sms_img_lst[0] + '"/></a>');
+                    }
                 }
-
                 // 문자 본문 입력창
                 $('textarea[name="sms_body"]').text(list[1].cont_body);
             }
