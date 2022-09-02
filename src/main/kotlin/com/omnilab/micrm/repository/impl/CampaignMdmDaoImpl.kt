@@ -168,7 +168,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     }
                 }
             } else {  // sms
-                sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd))
+                sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
 
                 if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
                     sqlSession.insert("ins_camp_send_sms_lg", sendLst)

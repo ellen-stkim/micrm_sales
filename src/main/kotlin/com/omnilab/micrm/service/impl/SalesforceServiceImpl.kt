@@ -2159,7 +2159,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                                 //기존 url 리스트 삭제
                                 val tblmicp_cont_url_lstDto = Tblmicp_cont_url_lstDto()
-                                tblmicp_cont_url_lstDto.cont_lst_cd = oriSeq.toInt()
+                                tblmicp_cont_url_lstDto.cont_lst_cd = tblmicp_cont_lstDto.seq!!
                                 salesforceDao.del_tblmicp_cont_url_lst(tblmicp_cont_url_lstDto)
 
                                 //신규 url 리스트 삽입
