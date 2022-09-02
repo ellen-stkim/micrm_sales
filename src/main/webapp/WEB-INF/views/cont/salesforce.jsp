@@ -1487,6 +1487,18 @@
             $('#recv_phone_to .value').css('color', 'rgb(34, 34, 34)');
             $("#recv_phone").val(list[0].from_to)
 
+            // 컨텐츠 포맷
+            $('.formatType').each(function() {
+                if($(this).val() == 'kakao' && list[0].list_use_yn == 'Y') {
+                    $(this).trigger('click');
+                } else if($(this).val() == 'sms' && list[1].list_use_yn == 'Y') {
+                    $(this).trigger('click');
+                } else if($(this).val() == 'rcs' && list[2].list_use_yn == 'Y') {
+                    $(this).trigger('click');
+                }
+            });
+            $('#js-smsTab li').eq(0).click();
+
             // 유형선택
             if(list[0].send_tp == 'SENDTP01') {
                 $('input[name="commonType"][value=ad]').trigger('click');
