@@ -106,6 +106,34 @@ const com_ajax = {
             }
         });
     }
+    , ajaxSync: function (c_method, c_url, c_data, c_callback, header, token) {
+        $.ajax({
+            name: "form",
+            type: c_method,
+            url: c_url,
+            data: c_data,
+            async: false,
+            success: function (response, status, req) {
+                c_callback(response);
+            }, error: function(xhr, status, error){
+                if (xhr.status === 401) {
+                    alert("접속시간이 오래되어 세션이 만료되었습니다.");
+                    window.location.reload();
+                } else if (xhr.status === 403) {
+                    window.location.reload();
+                }
+
+            }
+            , beforeSend: function (e) {
+                $('#commonLoading').addClass('active');
+                if (header != null) {
+                    e.setRequestHeader(header, token);
+                }
+            }, complete: function () {
+                $('#commonLoading').removeClass('active');
+            }
+        });
+    }
     , ajax_file: function (c_url, c_data, c_callback, header, token) {
         $.ajax({
             name: "form",

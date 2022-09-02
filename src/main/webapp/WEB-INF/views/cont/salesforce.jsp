@@ -343,9 +343,7 @@
                                         <input type="radio" name="rcs_format_type" class="rcsType" value="text" checked />
                                         <span>텍스트형</span>
                                     </label>
-                                    <%--<label class="type_check"><input type="radio" name="rcs_format_type" class="rcsType"
-                                                                     value="horizontal"
-                                                                     /><span>가로형</span></label>--%>
+                                    <%--<label class="type_check"><input type="radio" name="rcs_format_type" class="rcsType" value="horizontal" /><span>가로형</span></label>--%>
                                     <label class="type_check">
                                         <input type="radio" name="rcs_format_type" class="rcsType" value="vertical" />
                                         <span>세로형</span>
@@ -1611,6 +1609,7 @@
                 if(list[2].msg_tp == 'DMCH205' || list[2].msg_tp == 'DMCH206') {
                     // RCS TEXT형 Layout
                     $('input[name="rcs_format_type"][value="text"]').prop('checked', true);
+                    rcsChangeFormat("text");
 
                     if(list[2].msg_tp == 'DMCH205') {
                         // 카드 양식
@@ -1781,6 +1780,8 @@
                 } else if(list[2].msg_tp == 'DMCH207' || list[2].msg_tp == 'DMCH208') {
                     // RCS 세로형 Layout
                     $('input[name="rcs_format_type"][value="vertical"]').prop('checked', true);
+                    rcsChangeFormat("vertical");
+
 
                     if(list[2].msg_tp == 'DMCH207') {
                         // 카드 양식
@@ -1893,6 +1894,7 @@
                     $('#textArea0').html(list[2].cont_body);
                 } else if(list[2].msg_tp == 'DMCH211' || list[2].msg_tp == 'DMCH212') {
                     $('input[name="rcs_format_type"][value="slide"]').prop('checked', true);
+                    rcsChangeFormat("silde");
 
                     // 카드 양식
                     if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 3) {
@@ -2935,7 +2937,7 @@
                 getDBValue();
                 adTypeCheck();
             }
-            com_ajax.ajax('get', '/sf/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajaxSync('get', '/sf/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
         if(checkType == 'vertical'){
             let res = function(response){
@@ -2945,7 +2947,7 @@
                 getDBValue();
                 adTypeCheck();
             }
-            com_ajax.ajax('get', '/sf/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajaxSync('get', '/sf/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
         if(checkType == 'slide'){
             let res = function(response){
@@ -2967,7 +2969,7 @@
                     },
                 });
             }
-            com_ajax.ajax('get', '/sf/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajaxSync('get', '/sf/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
     }
 
