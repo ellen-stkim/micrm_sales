@@ -1589,7 +1589,7 @@
                 if(list[1].msg_tp === 'DMCH203') {
                     let sms_img_nm_lst = list[1].img_nm_lst.split(',');
                     let sms_img_lst = list[1].img_lst.split(',');
-                    if(sms_img_lst[0] && sms_img_lst[0] != ""){
+                    if(sms_img_lst[0] && sms_img_lst[0].trim() != ""){
                         $('#smsImage').val(sms_img_nm_lst[0]);
                         $('#mds_img_cd').val(list[1].img_cd_1);
 
