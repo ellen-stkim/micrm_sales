@@ -146,7 +146,7 @@
                                                     </div>
                                                     <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly/>
                                                     <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
-                                                    <input type="hidden" id="kko_img_cd" name="kko_img_cd" value=""> <!--임시 히든값 -->
+                                                    <input type="hidden" id="kakao_img_cd" name="kko_img_cd" value=""> <!--임시 히든값 -->
                                                     <input type="hidden" id="kko_view_img_url" name="kko_view_img_url" value=""> <!-- 프리뷰를 위한 이미지 URL -->
                                                 </div>
                                             </div>
