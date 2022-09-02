@@ -5,6 +5,7 @@ import com.omnilab.micrm.config.handler.InterceptorHandler
 import com.omnilab.micrm.config.view.DownloadView
 import com.omnilab.micrm.config.view.ExcelDownloadView
 import com.omnilab.micrm.config.view.PrintView
+import com.omnilab.micrm.repository.impl.CampaignDaoImpl
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
