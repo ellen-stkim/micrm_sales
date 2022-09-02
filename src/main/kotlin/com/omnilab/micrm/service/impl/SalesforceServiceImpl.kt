@@ -135,7 +135,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val check: Authentication = SecurityContextHolder.getContext().authentication
                 if(check !is AnonymousAuthenticationToken){
                     val loginDto: Tblmi_usrDto = check.details as Tblmi_usrDto
-                    if(session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
+                    if(session.getAttribute("MID") != null && session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
                         if(loginDto.usr_sales_id.isNullOrEmpty()){
                             loginDto.usr_sales_id = userId.toString()
                             salesforceDao.upd_usrInfo(loginDto)
