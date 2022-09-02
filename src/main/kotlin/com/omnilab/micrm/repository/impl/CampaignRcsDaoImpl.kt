@@ -302,6 +302,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             sendDto.etc3 = map["SEND_HST_SEQ"].toString()
             sendDto.etc4 = mdmDb
             sendDto.etc5 = kakaoDb
+            sendDto.etc6 = "MICRM_SALES"
 
             if (!rcsCont.img_nm_lst.isNullOrBlank()) {
                 val list = rcsCont.img_nm_lst!!.split(",")

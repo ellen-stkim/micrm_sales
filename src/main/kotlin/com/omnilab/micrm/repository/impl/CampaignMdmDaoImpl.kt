@@ -101,7 +101,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                         sendLst.clear()
                     }
                 }else{
-                    sendLst.add(LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd))
+                    sendLst.add(LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd))
                     if (sendLst.isNotEmpty() && (sendLst.size % 1000) == 0) {
                         sqlSession.insert("ins_camp_send_mms_lg", sendLst)
                         sendLst.clear()
@@ -147,7 +147,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                         sendLst.clear()
                     }
                 }else{
-                    val mdmDto = LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
+                    val mdmDto = LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd)
                     if (!contentsLstDto.img_nm_lst.isNullOrBlank()) {
                         val list = contentsLstDto.img_nm_lst!!.split(",")
                         mdmDto.file_cnt = list.size

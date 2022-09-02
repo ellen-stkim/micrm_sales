@@ -266,7 +266,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             }
 
             val kkoMsgdto = Kko_msgDto()
-            kkoMsgdto.id = dto.usr_grp_cd
+            kkoMsgdto.id = "MICRM_SALES"
+            kkoMsgdto.serialnum = dto.usr_grp_cd!!.toInt()
             kkoMsgdto.status = "1"
             kkoMsgdto.reqdate = dto.start_dt
             kkoMsgdto.phone = map["SEND_TO"].toString()

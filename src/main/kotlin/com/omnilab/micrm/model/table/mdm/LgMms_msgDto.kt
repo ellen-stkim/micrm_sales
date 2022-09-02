@@ -48,7 +48,7 @@ class LgMms_msgDto {
     var m_server: String? = null
 
     constructor()
-    constructor(subject: String?, phone: String?, callback: String?, status: String?, reqdate: String?, msg: String?, type: String?, etc1: String?, etc2: String?, etc3: String?, m_server: String?, id: String?){
+    constructor(subject: String?, phone: String?, callback: String?, status: String?, reqdate: String?, msg: String?, type: String?, etc1: String?, etc2: String?, etc3: String?, m_server: String?, id: String?, post: String?){
         this.subject = subject
         this.phone = phone
         this.callback = callback
@@ -61,6 +61,7 @@ class LgMms_msgDto {
         this.etc3 = etc3
         this.m_server = m_server
         this.id = id
+        this.post = post
     }
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
