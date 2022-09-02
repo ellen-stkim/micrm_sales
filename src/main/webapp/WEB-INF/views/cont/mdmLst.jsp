@@ -48,10 +48,7 @@
         <div class="row bottom-border cf">
             <div class="left">
                 <a href="/cont/mdmCreate.mi" class="btn_basic smsCreate left right-border">모바일 컨텐츠 생성</a>
-                <%--<input type="button" class="btn_basic delete left right-border"
-                       onclick="popup.deleteClick('campaign', '');" value="삭제"/>--%>
-                <input type="button" class="btn_basic delete left right-border"
-                       onclick="deleteMobileList('campaign','');" value="삭제"/>
+                <input type="button" class="btn_basic delete left right-border" onclick="deleteMobileList('campaign','');" value="삭제"/>
             </div>
         </div>
         <!-- row 영역 끝 -->
