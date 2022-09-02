@@ -1581,7 +1581,7 @@
                     $('input[name="sms_msg_tp"][value="LMS"]').prop('checked', true);
                 }else if(list[1].msg_tp == "DMCH203"){
                     let a = $('input[name="sms_msg_tp"][value="MMS"]').prop('checked', true);
-                    a[0].parents('.row').siblings('.input-img').addClass('on');
+                    $(a[0]).parents('.row').siblings('.input-img').addClass('on');
                 }else{
                     $('input[name="sms_msg_tp"][value="SMS"]').prop('checked', true);
                 }
