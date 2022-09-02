@@ -1894,7 +1894,7 @@
                     $('#textArea0').html(list[2].cont_body);
                 } else if(list[2].msg_tp == 'DMCH211' || list[2].msg_tp == 'DMCH212') {
                     $('input[name="rcs_format_type"][value="slide"]').prop('checked', true);
-                    rcsChangeFormat([{value : "silde"}]);
+                    rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
 
                     // 카드 양식
                     if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 3) {
