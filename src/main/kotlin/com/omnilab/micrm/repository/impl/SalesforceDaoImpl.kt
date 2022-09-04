@@ -73,7 +73,11 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.update("upd_usrInfo", dto)
     }
 
-    override fun del_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): Int {
-        return sqlSession.delete("del_tblmicp_cont_url_lst", dto)
+    override fun del_tblmicp_cont_lst(cont_cd: String): Int {
+        return sqlSession.delete("del_tblmicp_cont_lst", cont_cd)
+    }
+
+    override fun del_tblmicp_cont_url_lst(cont_cd: String): Int {
+        return sqlSession.delete("del_tblmicp_cont_url_lst", cont_cd)
     }
 }

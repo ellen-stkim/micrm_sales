@@ -184,54 +184,10 @@
     </insert>
 
     <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
-        <selectKey keyProperty="seq" resultType="Int" order="AFTER">
-            SELECT seq
-            FROM tblmicp_cont_lst
-            WHERE cont_tp = #{cont_tp}
-                and cont_cd = #{cont_cd}
-        </selectKey>
         insert into tblmicp_cont_lst
             (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, FROM_TO, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
         values
             (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}, #{kko_btn_nm}, #{kko_btn_url}, #{img_cd_1}, #{img_cd_2}, #{img_cd_3}, #{img_cd_4}, #{img_cd_5}, #{img_cd_6}, #{rcs_btn_ins_tp}, #{rcs_btn_cnt}, #{rcs_btn_obj}, #{rcs_btn_1}, #{rcs_btn_tp_1}, #{rcs_btn_cont_1}, #{rcs_btn_2}, #{rcs_btn_tp_2}, #{rcs_btn_cont_2}, #{rcs_btn_3}, #{rcs_btn_tp_3}, #{rcs_btn_cont_3}, #{rcs_footer}, #{key_id}, #{cont_grp_cd}, #{reg_id})
-        ON DUPLICATE KEY UPDATE
-            cont_sub = values(cont_sub)
-            , cont_top_body = values(cont_top_body)
-            , cont_body = values(cont_body)
-            , from_to= values(from_to)
-            , send_tp = values(send_tp)
-            , send_to = values(send_to)
-            , send_nm = values(send_nm)
-            , thm_url = values(thm_url)
-            , br_yn = values(br_yn)
-            , sup_yn = values(sup_yn)
-            , msg_tp = values(msg_tp)
-            , kko_img_cd = values(kko_img_cd)
-            , kko_img_url = values(kko_img_url)
-            , kko_btn_nm = values(kko_btn_nm)
-            , kko_btn_url = values(kko_btn_url)
-            , img_cd_1 = values(img_cd_1)
-            , img_cd_2 = values(img_cd_2)
-            , img_cd_3 = values(img_cd_3)
-            , img_cd_4 = values(img_cd_4)
-            , img_cd_5 = values(img_cd_5)
-            , img_cd_6 = values(img_cd_6)
-            , rcs_btn_ins_tp = values(rcs_btn_ins_tp)
-            , rcs_btn_cnt = values(rcs_btn_cnt)
-            , rcs_btn_obj = values(rcs_btn_obj)
-            , rcs_btn_1 = values(rcs_btn_1)
-            , rcs_btn_tp_1 = values(rcs_btn_tp_1)
-            , rcs_btn_cont_1 = values(rcs_btn_cont_1)
-            , rcs_btn_2 = values(rcs_btn_2)
-            , rcs_btn_tp_2 = values(rcs_btn_tp_2)
-            , rcs_btn_cont_2 = values(rcs_btn_cont_2)
-            , rcs_btn_3 = values(rcs_btn_3)
-            , rcs_btn_tp_3 = values(rcs_btn_tp_3)
-            , rcs_btn_cont_3 = values(rcs_btn_cont_3)
-            , rcs_footer = values(rcs_footer)
-            , key_id = values(key_id)
-            , cont_grp_cd = values(cont_grp_cd)
-            , upd_id = values(upd_id)
     </insert>
 
     <insert id="ins_tblmicp_cont_url_lst" parameterType="HashMap">
@@ -246,15 +202,6 @@
             , map_id
             , map_cords
         from tblmi_cont_url_lst
-        where cont_lst_cd = #{list_seq}
-        ON DUPLICATE KEY UPDATE
-             url_tag = values(url_tag)
-            , url = values(url)
-            , url_type = values(url_type)
-            , map_id = values(map_id)
-            , map_cords = values(map_cords)
-            , upd_id = values(upd_id)
-            , upd_dt = current_timestamp
     </insert>
 
     <insert id="ins_tblmicp_sales_execute" parameterType="HashMap">
@@ -333,10 +280,19 @@
     </update>
 
     <!-- ===================================================== delete ===================================================== -->
+    <delete id="del_tblmicp_cont_lst" parameterType="String">
+        delete from tblmicp_cont_lst
+        where cont_cd = #{cont_cd}
+    </delete>
 
-    <delete id="del_tblmicp_cont_url_lst" parameterType="Tblmicp_cont_url_lstDto">
-        delete from tblmicp_cont_url_lst
-        where cont_lst_cd = #{cont_lst_cd}
+    <delete id="del_tblmicp_cont_url_lst" parameterType="String">
+        delete FROM tblmicp_cont_url_lst AS b
+        WHERE EXISTS (
+            SELECT 1
+            FROM tblmicp_cont_lst AS a
+            WHERE a.cont_cd = #{cont_cd}
+                AND a.seq = b.cont_lst_cd
+        )
     </delete>
 
 </mapper>

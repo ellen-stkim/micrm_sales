@@ -20,5 +20,6 @@ interface SalesforceDao {
     fun upd_usrInfo(dto: Tblmi_usrDto): Int
     fun upd_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int
 
-    fun del_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): Int
+    fun del_tblmicp_cont_lst(cont_cd: String): Int
+    fun del_tblmicp_cont_url_lst(cont_cd: String): Int
 }

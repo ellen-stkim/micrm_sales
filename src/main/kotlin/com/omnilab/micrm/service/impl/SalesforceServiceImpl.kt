@@ -2139,6 +2139,11 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.pub_yn = dto.pub_yn
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
+                            //기존 데이터가 있을 경우 삭제
+                            salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
+                            salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
+
+                            //신규 데이터 삽입
                             val contListDto = Tblmi_cont_lstDto()
                             contListDto.cont_cd = seq.toInt()
                             contListDto.reg_id = usrId
@@ -2157,16 +2162,10 @@ class SalesforceServiceImpl : SalesforceService {
                                 tblmicp_cont_lstDto.upd_id = usrId
                                 salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
 
-                                //기존 url 리스트 삭제
-                                val tblmicp_cont_url_lstDto = Tblmicp_cont_url_lstDto()
-                                tblmicp_cont_url_lstDto.cont_lst_cd = tblmicp_cont_lstDto.seq!!
-                                salesforceDao.del_tblmicp_cont_url_lst(tblmicp_cont_url_lstDto)
-
                                 //신규 url 리스트 삽입
                                 val map = HashMap<String, Any>()
                                 map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
                                 map["list_seq"] = oriSeq
-
                                 salesforceDao.ins_tblmicp_cont_url_lst(map)
                             }
                         }
