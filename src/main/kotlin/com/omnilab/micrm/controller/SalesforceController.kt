@@ -541,14 +541,9 @@ class SalesforceController {
         dto.inta_key = data["interactionKey"].toString()
         dto.inta_ve = data["interactionVersion"].toString()
         dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-        val cont = salesforceService.campaingContent(dto)
-        return if(cont) {
-            val save = salesforceService.publish(dto)
-            if(save){
-                ResponseEntity(null, HttpStatus.OK)
-            }else{
-                ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
-            }
+        val save = salesforceService.publish(dto)
+        return if(save){
+            ResponseEntity(null, HttpStatus.OK)
         }else{
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }

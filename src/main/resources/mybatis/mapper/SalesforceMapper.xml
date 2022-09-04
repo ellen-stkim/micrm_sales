@@ -202,6 +202,7 @@
             , map_id
             , map_cords
         from tblmi_cont_url_lst
+        where cont_lst_cd = #{list_seq}
     </insert>
 
     <insert id="ins_tblmicp_sales_execute" parameterType="HashMap">
