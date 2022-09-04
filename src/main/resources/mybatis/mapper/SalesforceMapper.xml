@@ -251,25 +251,25 @@
         update tblmicp_cont_mst set
             pub_yn = #{pub_yn}
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_seq)">
-                , cont_seq = values(cont_seq)
+                , cont_seq = #{cont_seq}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
-                , cont_nm = values(cont_nm)
+                , cont_nm = #{cont_nm}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
-                , sales_nm = values(sales_nm)
+                , sales_nm = #{sales_nm}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_nm)">
-                , avo_nm = values(avo_nm)
+                , avo_nm = #{avo_nm}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
-                , inta_ve = values(inta_ve)
+                , inta_ve = #{inta_ve}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pub_yn)">
-                , pub_yn = values(pub_yn)
+                , pub_yn = #{pub_yn}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_id)">
-                , upd_id = values(upd_id)
+                , upd_id = #{upd_id}
             </if>
         <where>
             avo_id = #{avo_id}
