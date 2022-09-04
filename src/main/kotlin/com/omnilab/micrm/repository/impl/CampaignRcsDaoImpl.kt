@@ -374,6 +374,11 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
             }
 
+            if(rcsImgLst.isNotEmpty()){
+                sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
+                callbackLst.clear()
+            }
+
             sendLst.add(sendDto)
             sqlSession.insert("ins_camp_send_rcs_lg", sendLst)
             cnt++
