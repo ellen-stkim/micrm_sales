@@ -149,14 +149,6 @@
 
     <!-- ===================================================== insert ===================================================== -->
     <insert id="ins_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
-        <selectKey keyProperty="seq" resultType="Int" order="AFTER">
-            SELECT seq
-            FROM tblmicp_cont_mst
-            WHERE avo_id = #{avo_id}
-                and inten_id = #{inten_id}
-                and  orig_id = #{orig_id}
-                and  inta_key = #{inta_key}
-        </selectKey>
         insert into tblmicp_cont_mst (
             cont_seq
             , ch_tp
@@ -189,14 +181,6 @@
             , #{reg_id}
             , #{upd_id}
         )
-        ON DUPLICATE KEY UPDATE
-            cont_seq = values(cont_seq)
-            , cont_nm = values(cont_nm)
-            , sales_nm = values(sales_nm)
-            , avo_nm = values(avo_nm)
-            , inta_ve = values(inta_ve)
-            , pub_yn = values(pub_yn)
-            , upd_id = values(upd_id)
     </insert>
 
     <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
@@ -318,6 +302,27 @@
         </selectKey>
         update tblmicp_cont_mst set
             pub_yn = #{pub_yn}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_seq)">
+                , cont_seq = values(cont_seq)
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+                , cont_nm = values(cont_nm)
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
+                , sales_nm = values(sales_nm)
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_nm)">
+                , avo_nm = values(avo_nm)
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
+                , inta_ve = values(inta_ve)
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pub_yn)">
+                , pub_yn = values(pub_yn)
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_id)">
+                , upd_id = values(upd_id)
+            </if>
         <where>
             avo_id = #{avo_id}
             and inten_id = #{inten_id}

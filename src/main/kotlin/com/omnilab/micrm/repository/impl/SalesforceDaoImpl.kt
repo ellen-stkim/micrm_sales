@@ -44,7 +44,12 @@ class SalesforceDaoImpl: SalesforceDao {
 
 
     override fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int {
-        return sqlSession.insert("ins_tblmicp_cont_mst", dto)
+        val check = sqlSession.selectOne<Tblmicp_cont_mstDto>("sel_tblmicp_cont_mst", dto)
+        return if(check == null){
+            sqlSession.insert("ins_tblmicp_cont_mst", dto)
+        }else{
+            sqlSession.update("upd_tblmicp_cont_mst", dto)
+        }
     }
 
     override fun ins_tblmicp_cont_lst(dto: Tblmicp_cont_lstDto): Int {
