@@ -286,12 +286,12 @@
     </delete>
 
     <delete id="del_tblmicp_cont_url_lst" parameterType="String">
-        delete FROM tblmicp_cont_url_lst AS b
+        delete FROM tblmicp_cont_url_lst
         WHERE EXISTS (
             SELECT 1
             FROM tblmicp_cont_lst AS a
             WHERE a.cont_cd = #{cont_cd}
-                AND a.seq = b.cont_lst_cd
+                AND a.seq = tblmicp_cont_url_lst.cont_lst_cd
         )
     </delete>
 
