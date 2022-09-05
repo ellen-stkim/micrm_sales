@@ -88,13 +88,18 @@ const com_ajax = {
             success: function (response, status, req) {
                 c_callback(response);
             }, error: function(xhr, status, error){
-                if (xhr.status === 401) {
-                    alert("접속시간이 오래되어 세션이 만료되었습니다.");
-                    window.location.reload();
-                } else if (xhr.status === 403) {
-                    window.location.reload();
+                if(c_url.includes("/sf/")){
+                    alert("Journey Builder 에 에러가 발생하였습니다.\nJourney Builder 를 새로고침 해주세요.");
+                }else{
+                    if (xhr.status === 401) {
+                        alert("접속시간이 오래되어 세션이 만료되었습니다.");
+                        window.location.reload();
+                    } else if (xhr.status === 403) {
+                        window.location.reload();
+                    } else{
+                        alert("에러가 발생하였습니다 화면을 새로 고쳐주세요");
+                    }
                 }
-
             }
             , beforeSend: function (e) {
                 $('#commonLoading').addClass('active');
