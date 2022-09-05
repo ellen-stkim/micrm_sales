@@ -133,7 +133,7 @@
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1">
-                                            <input type="text" class="sms_number smsNumber_kko" id="send_to" placeholder ="발신 번호를 선택 해주세요" />
+                                            <input type="text" class="sms_number smsNumber_kko" id="send_to" placeholder ="발신 번호를 선택 해주세요" readonly/>
                                             <input type="hidden" name="send_to_list" id="kakao_send_to_num" value=""/>
                                         </div>
                                     </div>
