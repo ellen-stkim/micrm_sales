@@ -288,14 +288,19 @@
           , inten_id = #{inten_id}
           , orig_id  = #{orig_id}
         where seq in (
-            select *
-            from tblmi_cont_mst
-            where INTEN_ID is null
-                and ORIG_ID is null
-                and inta_key = #{inta_key}
-                and inta_ve = #{inta_ve}
-            order by seq asc
-            limit 1
+            select seq
+            from (
+                (
+                    select *
+                    from tblmi_cont_mst
+                    where INTEN_ID is null
+                        and ORIG_ID is null
+                        and INTA_KEY = #{inta_key}
+                        and INTA_VE = #{inta_ve}
+                        order by seq asc
+                    limit 1
+                ) as tmp
+            )
         )
 
     </update>
