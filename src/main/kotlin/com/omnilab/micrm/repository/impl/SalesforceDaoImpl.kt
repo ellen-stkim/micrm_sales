@@ -73,6 +73,10 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.update("upd_usrInfo", dto)
     }
 
+    override fun upd_tblmi_cont_mst(dto: Tblmi_cont_mstDto): Int {
+        return sqlSession.update("upd_tblmi_cont_mst", dto)
+    }
+
     override fun del_tblmicp_cont_lst(cont_cd: String): Int {
         return sqlSession.delete("del_tblmicp_cont_lst", cont_cd)
     }
