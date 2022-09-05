@@ -282,7 +282,7 @@
         </where>
     </update>
 
-    <update id="upd_tblmicp_cont_mst" parameterType="Tblmi_cont_mstDto">
+    <update id="upd_tblmi_cont_mst" parameterType="Tblmi_cont_mstDto">
         update tblmi_cont_mst set
             avo_id = #{avo_nm}
             , inten_id = #{inten_id}
