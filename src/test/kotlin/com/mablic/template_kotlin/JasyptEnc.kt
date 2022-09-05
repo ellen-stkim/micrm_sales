@@ -24,8 +24,9 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error("{}", enc.decrypt("U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE"))
-    log.error("{}", enc.encrypt("img_milvus_1@3$"))
+    log.error("{}", enc.encrypt("jdbc:mariadb://121.78.144.225/db_micrm_sales"))
+    log.error("{}", enc.encrypt("db_micrm_sales"))
+    log.error("{}", enc.encrypt("db_micrm_sales_2020##"))
     log.error("=========================")
 
 }

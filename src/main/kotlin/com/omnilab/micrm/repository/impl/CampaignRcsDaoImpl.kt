@@ -275,6 +275,9 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 sendDto.rcs_object = targetBody
                 sendDto.sendable = "N" //  (이미지 등록 전 : N, 이미지 등록 완료: Y, 이미지 없을 경우: Y)
             }else{
+                if(sendDto.type == "11"){
+                    sendDto.msg_title = rcsCont.cont_sub
+                }
                 sendDto.msg = targetBody
                 sendDto.sendable = "Y"
             }
