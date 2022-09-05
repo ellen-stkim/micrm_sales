@@ -243,10 +243,12 @@
             SELECT seq
                 , cont_grp_cd
             FROM tblmicp_cont_mst
-            WHERE avo_id = #{avo_id}
-                and inten_id = #{inten_id}
-                and  orig_id = #{orig_id}
-                and  inta_key = #{inta_key}
+            WHERE inten_id = #{inten_id}
+                and orig_id = #{orig_id}
+                and inta_key = #{inta_key}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+                and avo_id = #{avo_id}
+            </if>
         </selectKey>
         update tblmicp_cont_mst set
             pub_yn = #{pub_yn}
