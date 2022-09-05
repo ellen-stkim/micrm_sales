@@ -260,19 +260,6 @@
 	</update>
 	<!-- ================================================================= delete ================================================================= -->
 
-	<insert id="">
-		INSERT INTO db_lgagent_micrm.RCS_MSG
-		( `status`, sendable, reqdate, phone, callback, `type`,msg_header, rcs_object, msg_footer, msg_copyallowed , brand_id, msgbase_id, fallback_yn
-		,btn_cnt, btn_insert_type, btn_object , btn_text_1, btn_type_1, btn_contents_1, btn_text_2, btn_type_2, btn_contents_2, btn_text_3, btn_type_3, btn_contents_3
-		, etc1, etc2, etc3, etc4, etc5, etc6, img_group_cnt, img_group_key)
-		SELECT '0', 'N', NOW(), NEW.PHONE, NEW.CALLBACK, RCS, RCS_MSG_HEADER, RCS_BODY, RCS_footer, 'Y', RCS_brn_id, RCS_MSG_ID, 'N'
-			RCS_btn_cnt, RCS_BTN_INS_TP, RCS_btn_obj , RCS_btn_1, RCS_btn_tp_1, RCS_btn_cont_1, RCS_btn_2, RCS_btn_tp_2, RCS_btn_cont_2, RCS_btn_3, RCS_btn_tp_3, RCS_btn_cont_3,
-			   NEW.etc1, NEW.etc2, NEW.etc3, NEW.etc4, NEW.etc5, 'MICRM_SALES', RCS_IMG_C, G_KEY
-		FROM db_micrm_sales.tblmicp_send_callback_msg
-		WHERE hst_seq = NEW.ETC3
-		;
-	</insert>
-
 </mapper>
 
 
