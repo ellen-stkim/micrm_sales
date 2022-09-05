@@ -23,7 +23,7 @@ class MicrmUserServiceImpl : MicrmUserService {
     private lateinit var micrmUserDao : MicrmUserDao
 
     @Autowired
-    private lateinit var commonService: CommonService
+    private lateinit var commonService: com.omnilab.micrm.service.CommonService
 
     override fun checkUserPassWord(password: String): Boolean {
 

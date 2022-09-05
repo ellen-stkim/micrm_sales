@@ -119,6 +119,10 @@ class CampaignDaoImpl : CampaignDao {
         return list
     }
 
+    override fun ins_campaign(dto: Tblmicp_campaignDto): Int {
+        return sqlSession.insert("ins_tblmicp_campaign", dto)
+    }
+
     override fun upd_tblmicp_program(dto: Tblmicp_programDto): Int {
         return sqlSession.update("upd_tblmicp_program", dto)
     }
@@ -135,4 +139,7 @@ class CampaignDaoImpl : CampaignDao {
         return sqlSession.selectOne("getTitleProgramCnt",dto)
     }
 
+    override fun ins_programSendHst(dto: Tblmicp_send_hstDto): Int {
+        return sqlSession.insert("ins_programSendHstOne", dto)
+    }
 }

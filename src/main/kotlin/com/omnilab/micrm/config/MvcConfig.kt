@@ -5,6 +5,7 @@ import com.omnilab.micrm.config.handler.InterceptorHandler
 import com.omnilab.micrm.config.view.DownloadView
 import com.omnilab.micrm.config.view.ExcelDownloadView
 import com.omnilab.micrm.config.view.PrintView
+import com.omnilab.micrm.repository.impl.CampaignDaoImpl
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
@@ -15,6 +16,7 @@ import org.springframework.core.io.FileSystemResource
 import org.springframework.http.MediaType
 import org.springframework.http.converter.ByteArrayHttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.ResourceHttpMessageConverter
 import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.mobile.device.DeviceResolverRequestFilter
@@ -71,22 +73,20 @@ class MvcConfig : WebMvcConfigurer {
         registry.addViewController("/").setViewName("forward:/index.mi")
     }
 
-    @Bean
-    fun interceptorhandler(): InterceptorHandler {
-        return InterceptorHandler()
-    }
-    /*override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(InterceptorHandler())
-    }*/
-
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(interceptorhandler())
     }
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
-        converters.add(JacksonConverter())
         converters.add(StringConverter())
+        converters.add(JacksonConverter())
         converters.add(byteArrayHttpMessageConverter())
+        converters.add(ResourceHttpMessageConverter())
+    }
+
+    @Bean
+    fun interceptorhandler(): InterceptorHandler {
+        return InterceptorHandler()
     }
 
     @Bean // naver-lucy-filter
@@ -194,6 +194,7 @@ class MvcConfig : WebMvcConfigurer {
         val mediatype = ArrayList<MediaType>()
         mediatype.add(MediaType.TEXT_HTML)
         mediatype.add(MediaType.APPLICATION_XML)
+        mediatype.add(MediaType.parseMediaType("application/jwt;charset=UTF-8"))
         converter.supportedMediaTypes = mediatype
         return converter
     }

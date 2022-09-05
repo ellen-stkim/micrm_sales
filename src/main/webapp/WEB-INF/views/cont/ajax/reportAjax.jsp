@@ -21,43 +21,45 @@
             <col width="100"/>
         </colgroup>
         <thead>
-        <tr>
-            <th><input type="checkbox" name="pro_nm_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
-            <th><span>캠페인명</span></th>
-            <th><input type="checkbox" name="target_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
-            <th><span>캠페인 타겟</span></th>
-            <th><span>타겟수</span></th>
-            <th><span>캠페인 채널</span></th>
-        </tr>
+            <tr>
+                <th><input type="checkbox" name="pro_nm_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
+                <th><span>캠페인명</span></th>
+                <th><input type="checkbox" name="target_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
+                <th><span>캠페인 타겟</span></th>
+                <th><span>타겟수</span></th>
+                <th><span>캠페인 채널</span></th>
+            </tr>
         </thead>
         <tbody id="report_tbody">
         <c:choose>
             <c:when test="${fn:length(programLst) == 0 }">
-                <tr>
-                </tr>
+                <tr></tr>
             </c:when>
             <c:otherwise>
                 <c:forEach var="item" items="${programLst}">
                     <tr>
-                    <td rowspan="${item.camp_cnt}">
-                        <input type="checkbox" name="pro_nm_check"  value="${item.pro_id}" onclick="addSelectList(this)">
-                    </td>
-
-                        <td rowspan="${item.camp_cnt}"><span class="ellipsis" name="pro_nm">${item.pro_nm}</span></td>
-
-                        <td><input type="checkbox" class="target_check" name="cont_seq" value="${item.seq}" onclick="addSelectList(this);"></td>
-                        <td><span name="target_nm">${item.target_nm}</span></td>
-                        <td><span class="sendStatus"><fmt:formatNumber value="${item.total_cnt}"
-                                                                       pattern="#,##0"/></span>
+                        <td rowspan="${item.camp_cnt}">
+                            <input type="checkbox" name="pro_nm_check"  value="${item.pro_id}" onclick="addSelectList(this)">
+                        </td>
+                        <td rowspan="${item.camp_cnt}">
+                            <span class="ellipsis" name="pro_nm">${item.pro_nm}</span>
                         </td>
                         <td>
-                                        <span>
-                                            <c:if test="${item.camp_ch eq 'CH01'}">이메일</c:if>
-                                            <c:if test="${item.camp_ch eq 'CH02'}">문자</c:if>
-                                        </span>
-                            </td>
-
-                        </tr>
+                            <input type="checkbox" class="target_check" name="cont_seq" value="${item.seq}" onclick="addSelectList(this);">
+                        </td>
+                        <td>
+                            <span name="target_nm">${item.target_nm}</span>
+                        </td>
+                        <td>
+                            <span class="sendStatus"><fmt:formatNumber value="${item.total_cnt}" pattern="#,##0"/></span>
+                        </td>
+                        <td>
+                            <span>
+                                <c:if test="${item.camp_ch eq 'CH01'}">이메일</c:if>
+                                <c:if test="${item.camp_ch eq 'CH02'}">문자</c:if>
+                            </span>
+                        </td>
+                    </tr>
                 </c:forEach>
             </c:otherwise>
         </c:choose>

@@ -19,7 +19,7 @@ class CheckController {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignServiceImpl: CampaignService
+    private lateinit var campaignServiceImpl: com.omnilab.micrm.service.CampaignService
 
     @Autowired
     private val threadPoolTaskExecutor: ThreadPoolTaskExecutor? = null

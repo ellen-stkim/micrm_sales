@@ -1,33 +1,36 @@
 package com.omnilab.micrm.config
 
+import com.google.common.collect.ImmutableSet
 import com.omnilab.micrm.config.handler.AuthenticationHandler
 import com.omnilab.micrm.config.handler.LoginFailHandler
 import com.omnilab.micrm.config.handler.LoginSuccessHandler
 import com.omnilab.micrm.service.CustomAuthenticationProvider
-
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.web.firewall.StrictHttpFirewall
-import org.springframework.security.web.firewall.HttpFirewall
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
-
-import java.util.EnumSet
-
-import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.web.csrf.CsrfFilter
-import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.csrf.CsrfFilter
+import org.springframework.security.web.firewall.HttpFirewall
+import org.springframework.security.web.firewall.StrictHttpFirewall
+import org.springframework.security.web.header.HeaderWriter
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode
+import org.springframework.web.filter.CharacterEncodingFilter
+import java.util.*
 import javax.servlet.DispatcherType
 import javax.servlet.Filter
-import kotlin.jvm.Throws
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 
 @EnableWebSecurity
 class SecurityConfig: WebSecurityConfigurerAdapter() {
@@ -51,12 +54,14 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         filter.encoding = "UTF-8"
         filter.setForceEncoding(true)
         httpSecurity.addFilterBefore(filter, CsrfFilter::class.java)
-                .csrf().ignoringAntMatchers("/rest/**", "/api/**")
+                .csrf().ignoringAntMatchers("/rest/**", "/api/**", "/sf/**")
             .and()
-                .authorizeRequests().antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error","/mcr/check/id.ajax" ,"/mcr/find/pw.ajax","/mcr/send/password.service", "/check.mi", "/error.mi")
-                .permitAll()
-            .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests()
+                    .antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error"
+                        ,"/mcr/check/id.ajax" ,"/mcr/find/pw.ajax", "/mcr/send/password.service", "/check.mi", "/error.mi"
+                        , "/sf/config.json", "/sf/index.mi", "/sf/getUser.ajax", "/sf/save.service", "/sf/publish.service", "/sf/validate.service", "/sf/stop.service", "/sf/unpublish.service", "/sf/TestSave.service", "/sf/execute.service").permitAll()
+                    .antMatchers("/sf/**").access("hasAnyRole('SALES')")
+                    .anyRequest().access("hasAnyRole('WEB')")
                 // 로그인 설정
             .and()
                 .formLogin()
@@ -89,9 +94,10 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             .and()
-                .headers().frameOptions().sameOrigin()
-           /*.and()
-                .authorizeRequests().antMatchers("/m05/security.mi").access("hasRole('USR') or hasRole('ADM') or hasRole('SYS')");*/
+                .headers()
+                    .xssProtection()
+                .and()
+                    .contentSecurityPolicy("frame-ancestors 'self' *.exacttarget.com *.marketingcloudapps.com;")
     }
 
     @Throws(Exception::class)

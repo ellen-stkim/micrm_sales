@@ -69,9 +69,10 @@ class MobileContentServiceImpl : ContentService {
 
         try {
 
-            tblmiContMstDto.ch_tp = "CH02"
+            tblmiContMstDto.ch_tp = "CH03"
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
+            tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);
@@ -688,7 +689,7 @@ class MobileContentServiceImpl : ContentService {
 
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
 
-        searchDto.ch_tp = "CH02"
+        searchDto.ch_tp = "CH03"
         searchDto.del_yn = "N"
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage

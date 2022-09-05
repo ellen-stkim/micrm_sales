@@ -35,11 +35,60 @@ class SysSettingController {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : CampaignService
+    private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
 
+    /**
+     * @Method Name  : mappingSetting
+     * @Since    : 2022. 07. 25
+     * @author   : Lisa
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑 정보 설정 페이지 조회
+     * @title : 매핑 정보 설정 페이지 조회
+     */
+    @GetMapping("/mappingSetting.mi")
+    fun mappingSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/mappingSetting")
+        val dto = SetLst_searchDto()
+        val map = sysSettingService.getMappingSettingList(dto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+
+        return view;
+    }
+
+    /**
+     * @Method Name  : getMappingSettingList
+     * @Since    : 2022. 07. 25
+     * @author   : Lisa
+     * @param    : lstStDto: SetLst_searchDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑 정보 설정 페이지 가져오기
+     * @title : 매핑 정보 설정 페이지 가져오기
+     */
+
+    @PostMapping("/getMappingSettingList.ajax")
+    fun getMappingSettingList(@ModelAttribute("form") lstStDto: SetLst_searchDto) : ModelAndView {
+        val view = ModelAndView("sys/setting/ajax/getMappingSettingList")
+        val map = sysSettingService.getMappingSettingList(lstStDto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+        return view;
+    }
+
+    /**
+     * 
+     */
     @GetMapping("/mailSetting.mi")
     fun mailSetting(): ModelAndView {
         val view = ModelAndView("sys/setting/mailSetting")
@@ -346,5 +395,80 @@ class SysSettingController {
         return sysSettingService.updateLst(lstDto)
     }
 
+    /**
+     * @Method Name  : insertMappingLst
+     * @Since    : 2022. 08. 02
+     * @author   : SSW
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑정보 INSERT 하기
+     * @title : 매핑정보 INSERT 하기
+     */
+
+    @ResponseBody
+    @PostMapping("/insertMapping.ajax")
+    fun insertMapping(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.insertMappingLst(lstDto)
+    }
+
+    /**
+     * @Method Name  : isExistMapping
+     * @Since    : 2022. 08. 02
+     * @author   : SSW
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑정보 중복 여부 확인하기
+     * @title : 매핑정보 중복 확인
+     */
+
+    @ResponseBody
+    @PostMapping("/isExistMapping.ajax")
+    fun isExistMappingAddress(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.isExistMapping(lstDto)
+    }
+
+    /**
+     * @Method Name  : isExistMappingModify
+     * @Since    : 2022. 08. 02
+     * @author   : SSW
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑정보 수정 중복 여부 확인하기
+     * @title : 매핑정보 수정 중복 여부 확인하기
+     */
+
+    @ResponseBody
+    @PostMapping("/isExistMappingModify.ajax")
+    fun isExistSmsModify(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.isExistMappingModify(lstDto)
+    }
+
+    /**
+     * @Method Name  : deleteMapping
+     * @Since    : 2022. 08. 02
+     * @author   : SSW
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑정보 삭제하기
+     * @title : 매핑정보 삭제하기
+     */
+
+    @ResponseBody
+    @PostMapping("/deleteMapping.ajax")
+    fun deleteMapping(lstDto: Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.deleteSetLst(lstDto)
+    }
 
 }

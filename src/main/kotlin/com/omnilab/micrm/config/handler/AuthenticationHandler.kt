@@ -45,6 +45,8 @@ class AuthenticationHandler: AuthenticationEntryPoint, AccessDeniedHandler {
                 rep.sendError(HttpServletResponse.SC_UNAUTHORIZED, "session was not found.")
             }
             else -> {
+                val session = req.session
+                session.invalidate()
                 out.print("<script>")
                 out.print("alert('로그인된 사용자만 이용할 수 있습니다.');")
                 out.print("location.href='${GlobalValues.indexpage}';")

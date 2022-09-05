@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.SalesforceMapper">
+    <cache />
+
+    <select id="sel_usrInfo" parameterType="SalesforceDto" resultType="Tblmi_usrDto">
+        select *
+        from Tblmi_usr
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(organizationId)">
+                and usr_sales_org_id = #{organizationId}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(userId)">
+                and usr_sales_id = #{userId}
+            </if>
+        </where>
+
+    </select>
+
+    <!-- 매핑정보 - 공통 세팅 테이블 Select-->
+    <select id ="selectMappingLst" parameterType="SalesforceDto" resultType="SalesforceDto">
+        SELECT *
+        FROM tblmi_set_lst
+        <where>
+            DEL_DT = 'N'
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+                and list_tp_id = #{list_tp_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+                and list_dt_id = #{list_dt_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and usr_grp_cd = #{usr_grp_cd}
+            </if>
+        </where>
+        ORDER BY FIELD(DEF_YN, 'Y') DESC, REG_DT DESC
+    </select>
+
+    <select id="sel_tblmi_cont_mstOne" parameterType="Tblmi_cont_mstDto" resultType="Tblmi_cont_mstDto">
+        select *
+        from Tblmi_cont_mst
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+                and ch_tp = #{ch_tp}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(orig_id)">
+                and orig_id = #{orig_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
+                and inta_key = #{inta_key}
+            </if>
+        </where>
+        Limit 1
+    </select>
+
+    <select id="sel_tblmi_cont_lst" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
+        select  a.seq
+            , a.CONT_TP
+            , a.CONT_SUB
+            , a.CONT_TOP_BODY
+            , a.CONT_BODY
+            , a.FROM_TO
+            , a.SEND_TP
+            , b.list_val as send_to
+            , b.list_nm AS send_nm
+            , a.THM_URL
+            , a.BR_YN
+            , a.SUP_YN
+            , a.MSG_TP
+            , a.KKO_IMG_CD
+            , a.KKO_IMG_URL
+            , a.KKO_BTN_NM
+            , a.KKO_BTN_URL
+            , a.IMG_CD_1
+            , a.IMG_CD_2
+            , a.IMG_CD_3
+            , a.IMG_CD_4
+            , a.IMG_CD_5
+            , a.IMG_CD_6
+            , a.RCS_BTN_INS_TP
+            , a.RCS_BTN_CNT
+            , a.RCS_BTN_OBJ
+            , a.RCS_BTN_1
+            , a.RCS_BTN_TP_1
+            , a.RCS_BTN_CONT_1
+            , a.RCS_BTN_2
+            , a.RCS_BTN_TP_2
+            , a.RCS_BTN_CONT_2
+            , a.RCS_BTN_3
+            , a.RCS_BTN_TP_3
+            , a.RCS_BTN_CONT_3
+            , a.RCS_FOOTER
+            , a.KEY_ID
+            , a.CONT_GRP_CD
+            , #{reg_id} as reg_id
+        from Tblmi_cont_lst as a
+            INNER JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and a.SEQ = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_cd)">
+                and a.CONT_CD = #{cont_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
+                and a.CONT_TP = #{cont_tp}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+                and a.CONT_GRP_CD = #{cont_grp_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and a.USE_YN = #{use_yn}
+            </if>
+        </where>
+    </select>
+
+    <select id="sel_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" resultType="Tblmicp_cont_mstDto">
+        select *
+        from tblmicp_cont_mst
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+                and ch_tp = #{ch_tp}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+                and avo_id = #{avo_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inten_id)">
+                and inten_id = #{inten_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(orig_id)">
+                and orig_id = #{orig_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
+                and inta_key = #{inta_key}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
+                and inta_ve = #{inta_ve}
+            </if>
+        </where>
+    </select>
+
+    <!-- ===================================================== insert ===================================================== -->
+    <insert id="ins_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
+        insert into tblmicp_cont_mst (
+            cont_seq
+            , ch_tp
+            , cont_nm
+            , sales_nm
+            , avo_nm
+            , avo_id
+            , inten_id
+            , orig_id
+            , inta_key
+            , inta_ve
+            , pub_yn
+            , cont_grp_cd
+            , reg_id
+            , upd_id
+        )
+        values (
+            #{cont_seq}
+            , #{ch_tp}
+            , #{cont_nm}
+            , #{sales_nm}
+            , #{avo_nm}
+            , #{avo_id}
+            , #{inten_id}
+            , #{orig_id}
+            , #{inta_key}
+            , #{inta_ve}
+            , #{pub_yn}
+            , #{cont_grp_cd}
+            , #{reg_id}
+            , #{upd_id}
+        )
+    </insert>
+
+    <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
+        insert into tblmicp_cont_lst
+            (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, FROM_TO, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
+        values
+            (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}, #{kko_btn_nm}, #{kko_btn_url}, #{img_cd_1}, #{img_cd_2}, #{img_cd_3}, #{img_cd_4}, #{img_cd_5}, #{img_cd_6}, #{rcs_btn_ins_tp}, #{rcs_btn_cnt}, #{rcs_btn_obj}, #{rcs_btn_1}, #{rcs_btn_tp_1}, #{rcs_btn_cont_1}, #{rcs_btn_2}, #{rcs_btn_tp_2}, #{rcs_btn_cont_2}, #{rcs_btn_3}, #{rcs_btn_tp_3}, #{rcs_btn_cont_3}, #{rcs_footer}, #{key_id}, #{cont_grp_cd}, #{reg_id})
+    </insert>
+
+    <insert id="ins_tblmicp_cont_url_lst" parameterType="HashMap">
+        insert into tblmicp_cont_url_lst
+        (CONT_LST_CD, URL_TAG, URL, URL_ID, URL_TYPE, MAP_ID, MAP_CORDS)
+        select
+            #{cont_lst_cd}
+            , url_tag
+            , url
+            , url_id
+            , url_type
+            , map_id
+            , map_cords
+        from tblmi_cont_url_lst
+        where cont_lst_cd = #{list_seq}
+    </insert>
+
+    <insert id="ins_tblmicp_sales_execute" parameterType="HashMap">
+        insert into tblmicp_sales_execute (
+            `inArguments`
+            , `activityObjectID`
+            , `journeyId`
+            , `activityId`
+            , `definitionInstanceId`
+            , `activityInstanceId`
+            , `keyValue`
+            , `mode`
+        )
+        values (
+            #{inArguments}
+            , #{activityObjectID}
+            , #{journeyId}
+            , #{activityId}
+            , #{definitionInstanceId}
+            , #{activityInstanceId}
+            , #{keyValue}
+            , #{mode}
+        )
+    </insert>
+    
+    <!-- ===================================================== update ===================================================== -->
+
+    <update id="upd_usrInfo" parameterType="SalesforceDto">
+        update Tblmi_usr set
+            usr_sales_id = #{usr_sales_id}
+        <where>
+            usr_id = #{usr_id}
+        </where>
+    </update>
+    
+    <update id="upd_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto">
+        <selectKey keyProperty="seq,cont_grp_cd" resultType="Tblmicp_cont_mstDto" order="AFTER">
+            SELECT seq
+                , cont_grp_cd
+            FROM tblmicp_cont_mst
+            WHERE avo_id = #{avo_id}
+                and inten_id = #{inten_id}
+                and  orig_id = #{orig_id}
+                and  inta_key = #{inta_key}
+        </selectKey>
+        update tblmicp_cont_mst set
+            pub_yn = #{pub_yn}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_seq)">
+                , cont_seq = #{cont_seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+                , cont_nm = #{cont_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
+                , sales_nm = #{sales_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_nm)">
+                , avo_nm = #{avo_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
+                , inta_ve = #{inta_ve}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pub_yn)">
+                , pub_yn = #{pub_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_id)">
+                , upd_id = #{upd_id}
+            </if>
+        <where>
+            inten_id = #{inten_id}
+            and orig_id = #{orig_id}
+            and inta_key = #{inta_key}
+            and inta_ve = #{inta_ve}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+                and avo_id = #{avo_id}
+            </if>
+        </where>
+    </update>
+
+    <!-- ===================================================== delete ===================================================== -->
+    <delete id="del_tblmicp_cont_lst" parameterType="String">
+        delete from tblmicp_cont_lst
+        where cont_cd = #{cont_cd}
+    </delete>
+
+    <delete id="del_tblmicp_cont_url_lst" parameterType="String">
+        delete FROM tblmicp_cont_url_lst
+        WHERE EXISTS (
+            SELECT 1
+            FROM tblmicp_cont_lst AS a
+            WHERE a.cont_cd = #{cont_cd}
+                AND a.seq = tblmicp_cont_url_lst.cont_lst_cd
+        )
+    </delete>
+
+</mapper>

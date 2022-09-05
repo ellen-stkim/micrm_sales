@@ -60,7 +60,7 @@ class MemberServiceImpl : MemberService {
     private lateinit var workService: WorkService
 
     @Autowired
-    private lateinit var commonService: CommonService
+    private lateinit var commonService: com.omnilab.micrm.service.CommonService
 
     override fun insertGroup(groupListDto: Tblmi_group_listDto): String {
 

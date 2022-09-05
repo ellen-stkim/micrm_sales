@@ -4,6 +4,7 @@ import org.jasypt.encryption.pbe.PooledPBEStringEncryptor
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType
 
 class JasyptEnc {
 
@@ -23,7 +24,9 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error(enc.encrypt("jdbc:mariadb://192.168.0.3/test_db_micrm_sales"))
+    log.error("{}", enc.encrypt("jdbc:mariadb://121.78.144.225/db_micrm_sales"))
+    log.error("{}", enc.encrypt("db_micrm_sales"))
+    log.error("{}", enc.encrypt("db_micrm_sales_2020##"))
     log.error("=========================")
 
 }

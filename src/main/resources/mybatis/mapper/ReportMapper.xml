@@ -468,69 +468,59 @@
 
     <select id="getContentsLst" resultType="Content_view_Dto">
         SELECT m.seq
-                ,m.ch_tp
-                ,m.cont_nm
-                ,l.seq            AS list_seq
-                ,l.cont_cd        AS cont_cd
-                ,l.cont_tp        AS cont_tp
-                ,l.cont_sub       AS cont_sub
-                ,l.cont_body      AS cont_body
-                ,l.send_to        AS send_to
-                ,l.send_tp        AS send_tp
-                ,sender.list_val  AS send_num
-                ,sender.list_nm   AS sender
-                ,l.msg_tp         AS msg_tp
-                ,l.kko_img_cd     AS kko_img_cd
-                ,l.kko_img_url    AS kko_img_url
-                ,kko_img.img_nm   AS kko_img_nm
-                ,kko_img.img_url  AS kko_img_lst
-                ,l.kko_btn_nm     AS kko_btn_nm
-                ,l.kko_btn_url    AS kko_btn_url
-                ,l.img_cd_1       AS img_cd_1
-                ,l.img_cd_2       AS img_cd_2
-                ,l.img_cd_3       AS img_cd_3
-                ,l.img_cd_4       AS img_cd_4
-                ,l.img_cd_5       AS img_cd_5
-                ,l.img_cd_6       AS img_cd_6
-                ,Concat(Ifnull(img_1.img_url, ' '), ',', Ifnull(img_2.img_url, ' '), ',', Ifnull(img_3.img_url, '  '), ',', Ifnull(img_4.img_url, ' '), ',', Ifnull(
-                    img_5.img_url, ' '), ',', Ifnull(img_6.img_url, '  '))               AS IMG_LST
-                ,Concat(Ifnull(img_1.img_nm, ' '), ',', Ifnull(img_2.img_nm, ' '), ',', Ifnull(
-                    img_3.img_nm, '  '), ',', Ifnull(img_4.img_nm, ' '), ',',
-                    Ifnull(img_5.img_nm, ' '), ',', Ifnull(img_6.img_nm, '  '))           AS IMG_NM_LST
-                ,l.rcs_btn_obj    AS rcs_btn_obj
-                ,l.rcs_btn_1      AS rcs_btn_1
-                ,l.rcs_btn_tp_1   AS rcs_btn_tp_1
-                ,l.rcs_btn_cont_1 AS rcs_btn_cont_1
-                ,l.rcs_btn_2      AS rcs_btn_2
-                ,l.rcs_btn_tp_2   AS rcs_btn_tp_2
-                ,l.rcs_btn_cont_2 AS rcs_btn_cont_2
-                ,l.rcs_btn_3      AS rcs_btn_3
-                ,l.rcs_btn_tp_3   AS rcs_btn_tp_3
-                ,l.rcs_btn_cont_3 AS rcs_btn_cont_3
-                ,l.rcs_footer     AS rcs_footer
+            ,m.ch_tp
+            ,m.cont_nm
+            ,l.seq            AS list_seq
+            ,l.cont_cd        AS cont_cd
+            ,l.cont_tp        AS cont_tp
+            ,l.cont_sub       AS cont_sub
+            ,l.cont_body      AS cont_body
+            ,l.send_to        AS send_to
+            ,l.send_tp        AS send_tp
+            ,sender.list_val  AS send_num
+            ,sender.list_nm   AS sender
+            ,l.msg_tp         AS msg_tp
+            ,l.kko_img_cd     AS kko_img_cd
+            ,l.kko_img_url    AS kko_img_url
+            ,kko_img.img_nm   AS kko_img_nm
+            ,kko_img.img_url  AS kko_img_lst
+            ,l.kko_btn_nm     AS kko_btn_nm
+            ,l.kko_btn_url    AS kko_btn_url
+            ,l.img_cd_1       AS img_cd_1
+            ,l.img_cd_2       AS img_cd_2
+            ,l.img_cd_3       AS img_cd_3
+            ,l.img_cd_4       AS img_cd_4
+            ,l.img_cd_5       AS img_cd_5
+            ,l.img_cd_6       AS img_cd_6
+            ,Concat(Ifnull(img_1.img_url, ' '), ',', Ifnull(img_2.img_url, ' '), ',', Ifnull(img_3.img_url, '  '), ',', Ifnull(img_4.img_url, ' '), ',', Ifnull(
+                img_5.img_url, ' '), ',', Ifnull(img_6.img_url, '  '))               AS IMG_LST
+            ,Concat(Ifnull(img_1.img_nm, ' '), ',', Ifnull(img_2.img_nm, ' '), ',', Ifnull(
+                img_3.img_nm, '  '), ',', Ifnull(img_4.img_nm, ' '), ',',
+                Ifnull(img_5.img_nm, ' '), ',', Ifnull(img_6.img_nm, '  '))           AS IMG_NM_LST
+            ,l.rcs_btn_obj    AS rcs_btn_obj
+            ,l.rcs_btn_1      AS rcs_btn_1
+            ,l.rcs_btn_tp_1   AS rcs_btn_tp_1
+            ,l.rcs_btn_cont_1 AS rcs_btn_cont_1
+            ,l.rcs_btn_2      AS rcs_btn_2
+            ,l.rcs_btn_tp_2   AS rcs_btn_tp_2
+            ,l.rcs_btn_cont_2 AS rcs_btn_cont_2
+            ,l.rcs_btn_3      AS rcs_btn_3
+            ,l.rcs_btn_tp_3   AS rcs_btn_tp_3
+            ,l.rcs_btn_cont_3 AS rcs_btn_cont_3
+            ,l.rcs_footer     AS rcs_footer
         FROM   tblmicp_cont_lst l
-               INNER JOIN tblmicp_cont_mst m
-                       ON l.cont_cd = m.seq
-               LEFT JOIN tblmi_cont_img AS kko_img
-                      ON l.kko_img_cd = kko_img.seq
-               LEFT JOIN tblmi_cont_img AS img_1
-                      ON l.img_cd_1 = img_1.seq
-               LEFT JOIN tblmi_cont_img AS img_2
-                      ON l.img_cd_2 = img_2.seq
-               LEFT JOIN tblmi_cont_img AS img_3
-                      ON l.img_cd_3 = img_3.seq
-               LEFT JOIN tblmi_cont_img AS img_4
-                      ON l.img_cd_4 = img_4.seq
-               LEFT JOIN tblmi_cont_img AS img_5
-                      ON l.img_cd_5 = img_5.seq
-               LEFT JOIN tblmi_cont_img AS img_6
-                      ON l.img_cd_6 = img_6.seq
-               LEFT JOIN tblmi_set_lst AS sender
-                      ON l.send_to = sender.seq
+               INNER JOIN tblmicp_cont_mst m ON l.cont_cd = m.seq
+               LEFT JOIN tblmi_cont_img AS kko_img ON l.kko_img_cd = kko_img.seq
+               LEFT JOIN tblmi_cont_img AS img_1 ON l.img_cd_1 = img_1.seq
+               LEFT JOIN tblmi_cont_img AS img_2 ON l.img_cd_2 = img_2.seq
+               LEFT JOIN tblmi_cont_img AS img_3 ON l.img_cd_3 = img_3.seq
+               LEFT JOIN tblmi_cont_img AS img_4 ON l.img_cd_4 = img_4.seq
+               LEFT JOIN tblmi_cont_img AS img_5 ON l.img_cd_5 = img_5.seq
+               LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
+               LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
         WHERE  l.seq = #{seq}
         ORDER  BY l.seq
     </select>
-
 </mapper>
 
 

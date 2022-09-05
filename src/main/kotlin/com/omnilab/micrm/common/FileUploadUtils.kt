@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest
 
 @Component("FileUploadUtils")
 class FileUploadUtils {
-
     val logger = LoggerFactory.getLogger(this::class.java)
+
     fun upload(filePath:String, file: MultipartFile, request: HttpServletRequest): MutableMap<String, Any> {
         val saveFile = File(filePath)
         if (!saveFile.exists()) {
@@ -27,7 +27,7 @@ class FileUploadUtils {
                 var fileName: String? = file.originalFilename
                 val fileExe = fileName?.substring(fileName.lastIndexOf(".") + 1)
                 val digits = CommonUtils.getRandString16()
-                fileName = digits + "." + fileExe
+                fileName = "$digits.$fileExe"
 
                 if (fileupload(filePath,file, fileName)) {
                     map["uploaded"] = 1
@@ -42,7 +42,7 @@ class FileUploadUtils {
                     map["message"] = "파일 업로드 실패, 다시 시도해주세요."
                 }
             } else {
-                logger.info("File image mime check :" + fileMime)
+                logger.info("File image mime check :$fileMime")
                 map["uploaded"] = 0
                 map["message"] = "업로드는 jpg, jpeg, gif, bmp, png 만 가능합니다."
             }

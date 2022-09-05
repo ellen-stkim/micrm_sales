@@ -43,7 +43,7 @@ class MemberDaoImpl : MemberDao {
     private lateinit var workDao: WorkDao
 
     @Autowired
-    private lateinit var commonService: CommonService
+    private lateinit var commonService: com.omnilab.micrm.service.CommonService
 
     @Autowired
     @Qualifier("MicrmUserDaoImpl")

@@ -31,7 +31,7 @@ class ReportServiceImpl : ReportService {
     private lateinit var campaignDao: CampaignDao
 
     @Autowired
-    private lateinit var commonService: CommonService
+    private lateinit var commonService: com.omnilab.micrm.service.CommonService
 
     @Autowired
     private lateinit var campaignReportDao: CampaignReportDao

@@ -2,6 +2,8 @@ package com.omnilab.micrm.model
 
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
 
 @Alias("Content_list_CreateDto")
@@ -117,9 +119,15 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var map_id:List<String>? = null
     var map_cords:List<String>? = null
 
+    var sales_nm: String? = null
+    var avo_id: String? = null
+    var inten_id: String? = null
+    var orig_id: String? = null
+    var inta_key: String? = null
+    var inta_ve: String? = null
 
     override fun toString(): String {
-        return "Content_list_CreateDto(formatType=$formatType, cont_nm=$cont_nm, cont_sub_list=$cont_sub_list, send_to_list=$send_to_list, sms_msg_tp=$sms_msg_tp, rcs_msg_tp=$rcs_msg_tp, kko_option=$kko_option, sms_option=$sms_option, rcs_option=$rcs_option, kakao_body=$kakao_body, sms_body=$sms_body, rcs_body=$rcs_body, rcs_format_type=$rcs_format_type, kko_trackinglink=$kko_trackinglink, sms_trackinglink=$sms_trackinglink, mms_imgurl=$mms_imgurl, verticalImg=$verticalImg, horizonImg=$horizonImg, mds_img_cd=$mds_img_cd, rcs_img_cd_1=$rcs_img_cd_1, rcs_img_cd_2=$rcs_img_cd_2, rcs_img_cd_3=$rcs_img_cd_3, rcs_img_cd_4=$rcs_img_cd_4, rcs_img_cd_5=$rcs_img_cd_5, rcs_img_cd_6=$rcs_img_cd_6, list_seq=$list_seq, copy_value=$copy_value, url_value=$url_value, phone_value_03=$phone_value_03, latitude_value=$latitude_value, longitude_value=$longitude_value, location_value_04=$location_value_04, fallback_url_04=$fallback_url_04, location_value_05=$location_value_05, fallback_url_05=$fallback_url_05, start_date=$start_date, end_date=$end_date, calendar_title=$calendar_title, calendar_body=$calendar_body, message_value=$message_value, phone_value_08=$phone_value_08, slide_cont_sub=$slide_cont_sub, slide_cont_body=$slide_cont_body, slide_rcs_btn_1=$slide_rcs_btn_1, slide_rcs_btn_2=$slide_rcs_btn_2, slide_rcs_btn_tp_1=$slide_rcs_btn_tp_1, slide_rcs_btn_tp_2=$slide_rcs_btn_tp_2)"
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }
 
 

@@ -208,7 +208,7 @@ class ContentController  {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         val view = ModelAndView("/cont/detailMdm")
-        val map = sysSettingService.getDBValue();
+        val map = sysSettingService.getDBValue()
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
 
@@ -337,18 +337,18 @@ class ContentController  {
     }
 
     /** @Method Name  : rcsVertical
-    * @Since    : 2021. 05. 11.
-    * @author   : Dana
-    * @param    : req: HttpServletRequest
-    * @param    : rep : HttpServletResponse
-    * @param    : session : HttpSession
-    * @return   : ModelAndView
-    * @excetion :
-    * @see      :
-    * @version  : 0.01
-    * @Method Decription : RCS 세로형 페이지
-    * @title : RCS 세로형 페이지
-    */
+     * @Since    : 2021. 05. 11.
+     * @author   : Dana
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : RCS 세로형 페이지
+     * @title : RCS 세로형 페이지
+     */
     @GetMapping("/rcsVertical.ajax")
     fun rcsVertical(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
@@ -538,7 +538,6 @@ class ContentController  {
     @GetMapping("/imgLst.mi")
     fun imgLst(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/imgLst")
-        //val dto : Tblmi_cont_imgDto = Tblmi_cont_imgDto()
         val dto = Image_searchDto()
 
         val map = imageService.getImgList(dto)

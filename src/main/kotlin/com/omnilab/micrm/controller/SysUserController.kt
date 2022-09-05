@@ -35,7 +35,7 @@ class SysUserController {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : CampaignService
+    private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
 
 
     @GetMapping("/userManagement.mi")

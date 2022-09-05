@@ -39,14 +39,14 @@ class ThreadPoolImpl : ThreadPool {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : CampaignService
+    private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
 
     @Autowired
     @Qualifier("MemberDaoImpl")
     private lateinit var memberDao: MemberDao
 
     @Autowired
-    private lateinit var commonService: CommonService
+    private lateinit var commonService: com.omnilab.micrm.service.CommonService
 
     @Autowired
     @Qualifier("CampaignDaoImpl")

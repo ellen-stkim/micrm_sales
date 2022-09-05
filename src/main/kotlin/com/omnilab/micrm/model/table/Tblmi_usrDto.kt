@@ -16,6 +16,8 @@ open class Tblmi_usrDto {
     var usr_nm: String? = null
     var usr_tel: String? = null
     var usr_mob: String? = null
+    var usr_sales_org_id: String? = null
+    var usr_sales_id: String? = null
     var usr_st: String? = null
     var appr_id: String? = null
     var access_yn: String? = null

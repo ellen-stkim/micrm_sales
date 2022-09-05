@@ -60,7 +60,7 @@ class ImageServiceImpl : ImageService {
         val searchDto = dto as Image_searchDto
 
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        var paginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
+        val paginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
 
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage

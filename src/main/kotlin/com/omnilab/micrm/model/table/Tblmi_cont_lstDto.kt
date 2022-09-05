@@ -11,6 +11,7 @@ open class Tblmi_cont_lstDto {
     var cont_sub : String?= null    // 제목
     var cont_top_body : String?= null    // 제목
     var cont_body : String ?= null  // 내용
+    var from_to: String? = null
     var send_tp : String ?= null  // 발신유형(광고/안내)
     var send_to : String?= null // 발신번호/주소 (이메일 : 이메일, 모바일 :핸드폰번호)
     var send_nm : String?= null //발신자 명

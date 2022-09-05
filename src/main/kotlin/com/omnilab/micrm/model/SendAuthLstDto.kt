@@ -1,8 +1,6 @@
 package com.omnilab.micrm.model
 
 import com.omnilab.micrm.model.table.Tblmi_usr_authDto
-import com.omnilab.micrm.model.table.Tblmicp_send_hstDto
-import org.apache.commons.lang3.builder.EqualsBuilder
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias

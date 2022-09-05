@@ -81,4 +81,20 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.update("updateSetLst",dto)
     }
 
+    override fun getMappingSettingListCnt(dto: Tblmi_set_lstDto): Int {
+        return sqlSession.selectOne("getMappingSettingListCnt", dto)
+    }
+
+    override fun getMappingSettingList(dto: Tblmi_set_lstDto): List<Tblmi_set_lstDto> {
+        return sqlSession.selectList("getMappingSettingList", dto);
+    }
+
+    override fun isExistMapping(dto: Tblmi_set_lstDto): Int {
+        return sqlSession.selectOne("isExistMapping", dto)
+    }
+
+    override fun isExistModifyMapping(dto: Tblmi_set_lstDto): Int {
+        return sqlSession.selectOne("isExistModifyMapping",dto)
+    }
+
 }

@@ -52,4 +52,16 @@ interface SysSettingService {
     // Lst 테이블 변경하기
     fun updateLst(dto : Tblmi_set_lstDto) : Map<String,Any>
 
+    // 매핑정보 리스트 가져오기
+    fun getMappingSettingList(dto: Tblmi_set_lstDto) : Map<String,Any>
+
+    // 매핑정보 저장하기
+    fun insertMappingLst(dto: Tblmi_set_lstDto) : Map<String,Any>
+
+    // 매핑정보 중복 검사하기
+    fun isExistMapping(dto : Tblmi_set_lstDto) : Map<String,Any>
+
+    // 매핑정보 중복 수정 검사하기
+    fun isExistMappingModify(dto : Tblmi_set_lstDto) : Map<String,Any>
+
 }

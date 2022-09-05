@@ -30,6 +30,7 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.cont_sub = tblmi_cont_lstDto.cont_sub
         this.cont_top_body = tblmi_cont_lstDto.cont_top_body
         this.cont_body = tblmi_cont_lstDto.cont_body
+        this.from_to = tblmi_cont_lstDto.from_to
         this.send_tp = tblmi_cont_lstDto.send_tp
         this.send_to = tblmi_cont_lstDto.send_to
         this.send_nm = tblmi_cont_lstDto.send_nm
