@@ -37,7 +37,7 @@ class SalesforceDaoImpl: SalesforceDao {
     }
 
     override fun sel_tblmicp_program(dto: Tblmicp_programDto): Tblmicp_programDto? {
-        return sqlSession.selectOne("sel_tblmicp_program", dto)
+        return sqlSession.selectOne("sel_tblmicp_program_sales", dto)
     }
 
     /*
