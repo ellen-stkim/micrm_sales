@@ -317,7 +317,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                         callbackDto.rcs_body = rcsBody
                         callbackDto.rcs_brn_id = rcsBrnID
                         callbackDto.rcs_msg_id = rcsCont.key_id
-                        callbackDto.rcs_msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0"
+                        callbackDto.rcs_msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0" // 안내 0, 광고 1
                         callbackDto.rcs_btn_ins_tp = rcsCont.rcs_btn_ins_tp
                         callbackDto.rcs_btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrEmpty()) "0" else rcsCont.rcs_btn_cnt
                         callbackDto.rcs_btn_obj = rcs_btn_obj

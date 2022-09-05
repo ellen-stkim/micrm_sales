@@ -272,11 +272,13 @@
                 , upd_id = #{upd_id}
             </if>
         <where>
-            avo_id = #{avo_id}
-            and inten_id = #{inten_id}
+            inten_id = #{inten_id}
             and orig_id = #{orig_id}
             and inta_key = #{inta_key}
             and inta_ve = #{inta_ve}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
+                and avo_id = #{avo_id}
+            </if>
         </where>
     </update>
 
