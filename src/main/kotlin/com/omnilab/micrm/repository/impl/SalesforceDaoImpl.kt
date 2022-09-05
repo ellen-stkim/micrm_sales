@@ -69,6 +69,10 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.update("upd_tblmicp_cont_mst", dto)
     }
 
+    override fun upd_tblmicp_cont_mst_pub(dto: Tblmicp_cont_mstDto): Int {
+        return sqlSession.update("upd_tblmicp_cont_mst_pub", dto)
+    }
+
     override fun upd_usrInfo(dto: Tblmi_usrDto): Int {
         return sqlSession.update("upd_usrInfo", dto)
     }
