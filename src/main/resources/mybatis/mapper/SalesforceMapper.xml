@@ -282,6 +282,15 @@
         </where>
     </update>
 
+    <update id="upd_tblmicp_cont_mst" parameterType="Tblmi_cont_mstDto">
+        update tblmi_cont_mst set
+            avo_id = #{avo_nm}
+            , inten_id = #{inten_id}
+            , orig_id = #{orig_id}
+        where inta_key = #{inta_key}
+            and inta_ve = #{inta_ve}
+    </update>
+
     <!-- ===================================================== delete ===================================================== -->
     <delete id="del_tblmicp_cont_lst" parameterType="String">
         delete from tblmicp_cont_lst
