@@ -2212,6 +2212,7 @@ class SalesforceServiceImpl : SalesforceService {
                 proDto.inta_key = dto.inta_key
                 proDto.inta_ve = dto.inta_ve
                 val pro = campaignDao.ins_program(proDto)
+                logger.error("{}", pro)
                 if(pro == 1){
                     for(i in contLst){
                         val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
