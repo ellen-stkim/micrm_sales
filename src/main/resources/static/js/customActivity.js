@@ -36,6 +36,7 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
+		connection.trigger('updateEvent', payload);
 	});
 
 	connection.on("initActivity", function (data) {
