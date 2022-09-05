@@ -2195,44 +2195,44 @@ class SalesforceServiceImpl : SalesforceService {
                 val contLst = salesforceDao.sel_tblmicp_cont_mst(mstContDto)
                 val usrId = if (contLst[0].upd_id == null) contLst[0].reg_id else contLst[0].reg_id
 
-                val proDto = Tblmicp_programDto()
-                proDto.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
-                proDto.pro_tp = "SALES"
-                proDto.pro_st = "03" // 발송 진행 중
-                proDto.pro_tg_tp = "TG01"
-                proDto.pro_tg_id = "SALES"
-                proDto.cont_cnt = contLst.size
-                proDto.camp_cnt = contLst.size
-                proDto.pro_nm = contLst[0].sales_nm
-                proDto.usr_grp_cd = contLst[0].cont_grp_cd
-                proDto.reg_id = usrId
-                proDto.upd_id = usrId
-                proDto.inten_id = dto.inten_id
-                proDto.orig_id = dto.orig_id
-                proDto.inta_key = dto.inta_key
-                proDto.inta_ve = dto.inta_ve
-                val pro = campaignDao.ins_program(proDto)
-                logger.error("{}", pro)
-                if(pro == 1){
-                    for(i in contLst){
-                        val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
-                        campaignDto.cont_id = i.seq
-                        campaignDto.send_tg_tp = "TG01"
-                        campaignDto.send_tg_id = "SALES"
-                        campaignDto.camp_st = "03"
-                        campaignDto.camp_nm = i.cont_nm
-                        campaignDto.camp_ch = i.ch_tp
-                        campaignDto.sto = "01"
-                        campaignDto.usr_grp_cd = proDto.usr_grp_cd
-                        campaignDto.reg_id = proDto.reg_id
-                        campaignDto.start_dt = CommonUtils.getDateTimeNow()
-                        campaignDto.send_st_tp = "1"
-                        campaignDao.ins_campaign(campaignDto)
-                    }
-                    true
-                }else{
-                    false
+                val temp = Tblmicp_programDto()
+                temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
+                temp.pro_tp = "SALES"
+                temp.pro_st = "03" // 발송 진행 중
+                temp.pro_tg_tp = "TG01"
+                temp.pro_tg_id = "SALES"
+                temp.cont_cnt = contLst.size
+                temp.camp_cnt = contLst.size
+                temp.pro_nm = contLst[0].sales_nm
+                temp.usr_grp_cd = contLst[0].cont_grp_cd
+                temp.reg_id = usrId
+                temp.upd_id = usrId
+                temp.inten_id = dto.inten_id
+                temp.orig_id = dto.orig_id
+                temp.inta_key = dto.inta_key
+                temp.inta_ve = dto.inta_ve
+
+                var proDto = salesforceDao.sel_tblmicp_program(temp)
+                if(proDto == null){
+                    campaignDao.ins_program(temp)
+                    proDto = temp
                 }
+                for(i in contLst){
+                    val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
+                    campaignDto.cont_id = i.seq
+                    campaignDto.send_tg_tp = "TG01"
+                    campaignDto.send_tg_id = "SALES"
+                    campaignDto.camp_st = "03"
+                    campaignDto.camp_nm = i.cont_nm
+                    campaignDto.camp_ch = i.ch_tp
+                    campaignDto.sto = "01"
+                    campaignDto.usr_grp_cd = proDto.usr_grp_cd
+                    campaignDto.reg_id = proDto.reg_id
+                    campaignDto.start_dt = CommonUtils.getDateTimeNow()
+                    campaignDto.send_st_tp = "1"
+                    campaignDao.ins_campaign(campaignDto)
+                }
+                true
             }else{
                 true
             }

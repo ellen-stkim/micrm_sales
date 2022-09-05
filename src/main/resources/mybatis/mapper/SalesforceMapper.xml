@@ -147,6 +147,15 @@
         </where>
     </select>
 
+    <select id="sel_tblmicp_program" parameterType="Tblmicp_programDto" resultType="Tblmicp_programDto">
+        select *
+        from tblmicp_program
+        where inten_id = #{inten_id}
+            and orig_id = #{orig_id}
+            and inta_key = #{inta_key}
+            and inta_ve = #{inta_ve}
+    </select>
+    
     <!-- ===================================================== insert ===================================================== -->
     <insert id="ins_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" useGeneratedKeys="true" keyProperty="seq">
         insert into tblmicp_cont_mst (
