@@ -1,0 +1,55 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "icon.png",
+    "category": "message"
+  },
+  "type": "Rest",
+  "lang": {
+    "en-US": {
+      "name": "miCRM",
+      "description": "miCRM"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "url": "https://sales.micrm.co.kr/sf/execute.service",
+      "useJwt": true,
+      "timeout": 600000
+    }
+  },
+  "configurationArguments": {
+    "save": {
+      "url": "https://sales.micrm.co.kr/sf/save.service"
+    },
+    "publish": {
+      "url": "https://sales.micrm.co.kr/sf/publish.service"
+    },
+    "unpublish": {
+      "url": "https://sales.micrm.co.kr/sf/unpublish.service"
+    },
+    "validate": {
+      "url": "https://sales.micrm.co.kr/sf/validate.service"
+    },
+    "stop": {
+      "url": "https://sales.micrm.co.kr/sf/stop.service"
+    },
+    "TestSave": {
+      "url": "https://sales.micrm.co.kr/sf/TestSave.service"
+    }
+  },
+  "wizardSteps": [
+    {
+      "label": "Step 1",
+      "key": "step1"
+    }
+  ],
+  "userInterfaces": {
+    "configModal": {
+      "url": "index.mi",
+      "height": 600,
+      "width": 800,
+      "fullscreen": true
+    }
+  }
+}
