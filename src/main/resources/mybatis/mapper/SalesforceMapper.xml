@@ -283,12 +283,21 @@
     </update>
 
     <update id="upd_tblmi_cont_mst" parameterType="Tblmi_cont_mstDto">
-        update tblmi_cont_mst set
-            avo_id = #{avo_id}
-            , inten_id = #{inten_id}
-            , orig_id = #{orig_id}
-        where inta_key = #{inta_key}
-            and inta_ve = #{inta_ve}
+        update tblmi_cont_mst
+        set avo_id   = #{avo_id}
+          , inten_id = #{inten_id}
+          , orig_id  = #{orig_id}
+        where seq in (
+            select *
+            from tblmi_cont_mst
+            where INTEN_ID is null
+                and ORIG_ID is null
+                and inta_key = #{inta_key}
+                and inta_ve = #{inta_ve}
+            order by seq asc
+            limit 1
+        )
+
     </update>
 
     <!-- ===================================================== delete ===================================================== -->

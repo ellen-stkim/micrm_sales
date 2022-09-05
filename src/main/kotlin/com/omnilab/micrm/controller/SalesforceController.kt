@@ -496,11 +496,14 @@ class SalesforceController {
         dto.inta_key = data["interactionKey"].toString()
         dto.inta_ve = data["interactionVersion"].toString()
         val save = salesforceDao.upd_tblmi_cont_mst(dto)
+        ResponseEntity(null, HttpStatus.OK)
+        /*
         return if(save == 1){
             ResponseEntity(null, HttpStatus.OK)
         }else{
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
+         */
     }
 
     @ResponseBody
