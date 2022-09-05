@@ -32,7 +32,7 @@ variable:
   db-password: ENC(yzlonTKhrEatOL4zfyEK+6mf4tG9HQTU+fYLhSd1uiZguDR6qUcJi7TouYExrcqLIUSS62fxilITTqqXPkAqdA==)
 
   mail-username:
-  mail-password: 
+  mail-password:
 
   minio-url: http://125.131.213.7:9001
   minio-bucket: img
