@@ -141,7 +141,7 @@
 		<foreach collection="list" item="list" separator="," >
 		(
 			#{list.hst_seq}, #{list.send_to}, #{list.kko_tp}, #{list.kko_body}, #{list.kko_key}, #{list.kko_btn}, #{list.kko_img_path}, #{list.kko_img_url}
-			, #{list.rcs_tp}, #{list.rcs_sub}, #{rcs_from_to}, #{list.rcs_body}, #{list.rcs_brn_id}, #{list.rcs_msg_id}, #{list.rcs_msg_header}, #{list.rcs_btn_ins_tp}, #{list.rcs_btn_cnt}, #{list.rcs_btn_obj}, #{list.rcs_btn_1}, #{list.rcs_btn_tp_1}, #{list.rcs_btn_cont_1}, #{list.rcs_btn_2}, #{list.rcs_btn_tp_2}, #{list.rcs_btn_cont_2}, #{list.rcs_btn_3}, #{list.rcs_btn_tp_3}, #{list.rcs_btn_cont_3}, #{list.rcs_footer}, #{list.rcs_img_cnt}, #{list.rcs_img_cd_1}, #{list.rcs_img_cd_2}, #{list.rcs_img_cd_3}, #{list.rcs_img_cd_4}, #{list.rcs_img_cd_5}, #{list.rcs_img_cd_6}
+			, #{list.rcs_tp}, #{list.rcs_sub}, #{list.rcs_from_to}, #{list.rcs_body}, #{list.rcs_brn_id}, #{list.rcs_msg_id}, #{list.rcs_msg_header}, #{list.rcs_btn_ins_tp}, #{list.rcs_btn_cnt}, #{list.rcs_btn_obj}, #{list.rcs_btn_1}, #{list.rcs_btn_tp_1}, #{list.rcs_btn_cont_1}, #{list.rcs_btn_2}, #{list.rcs_btn_tp_2}, #{list.rcs_btn_cont_2}, #{list.rcs_btn_3}, #{list.rcs_btn_tp_3}, #{list.rcs_btn_cont_3}, #{list.rcs_footer}, #{list.rcs_img_cnt}, #{list.rcs_img_cd_1}, #{list.rcs_img_cd_2}, #{list.rcs_img_cd_3}, #{list.rcs_img_cd_4}, #{list.rcs_img_cd_5}, #{list.rcs_img_cd_6}
 			, #{list.mdm_tp}, #{list.mdm_from_to}, #{list.mdm_sub}, #{list.mdm_body}, #{list.mdm_img_cnt}, #{list.mdm_img_cd_1}, #{list.mdm_img_cd_2}, #{list.mdm_img_cd_3}, #{list.mdm_img_cd_4}, #{list.mdm_img_cd_5}, #{list.mdm_img_cd_6}, #{list.usr_grp_cd}, #{list.reg_id}
 			, #{list.kko_server}, #{list.mdm_server}, #{list.rcs_server}
 		)

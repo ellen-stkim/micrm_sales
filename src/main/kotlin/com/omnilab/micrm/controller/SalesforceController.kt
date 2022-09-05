@@ -572,6 +572,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/execute.service")
     fun execute(req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String): ResponseEntity<Any> {
+        logger.info("/execute.service data: $data");
         try {
             // jwt
             val chunks: List<String> = data.split(".")
