@@ -13,10 +13,6 @@ define(["postmonger"], function (Postmonger) {
 	let bindList = [];
 	let eventModel = null;
 
-	// Configuration variables
-	let eventSchema = ''; // variable is used in parseEventSchema()
-	let lastnameSchema = ''; // variable is used in parseEventSchema()
-
 	$(window).ready(function (){
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
@@ -36,7 +32,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-		connection.trigger('updateEvent', payload);
 	});
 
 	connection.on("initActivity", function (data) {
