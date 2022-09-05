@@ -36,6 +36,10 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.selectList("sel_tblmicp_cont_mst", dto)
     }
 
+    override fun sel_tblmicp_program(dto: Tblmicp_programDto): Tblmicp_programDto? {
+        return sqlSession.selectOne("sel_tblmicp_program", dto)
+    }
+
     /*
     override fun ins_tblmicp_cont(dto: Tblmicp_cont_mstDto): Boolean {
         return true
