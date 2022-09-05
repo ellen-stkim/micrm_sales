@@ -2273,6 +2273,7 @@ class SalesforceServiceImpl : SalesforceService {
                     val sendHstDto = Tblmicp_send_hstDto()
                     sendHstDto.pro_id = campaignDto.pro_id
                     sendHstDto.camp_id = campaignDto.seq
+                    sendHstDto.cont_id = campaignDto.cont_id
                     sendHstDto.tbl_id = "sales"
                     sendHstDto.tbl_lst_id = keyValue
                     sendHstDto.send_yn = "N"
