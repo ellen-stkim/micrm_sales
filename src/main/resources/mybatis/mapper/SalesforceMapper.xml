@@ -293,8 +293,8 @@
                 (
                     select *
                     from tblmi_cont_mst
-                    where INTEN_ID is null
-                        and ORIG_ID is null
+                    where (INTEN_ID is null or INTEN_ID is = '')
+                        and (ORIG_ID is null or ORIG_ID = '')
                         and INTA_KEY = #{inta_key}
                         and INTA_VE = #{inta_ve}
                         order by seq asc
