@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 class CheckController {
@@ -25,7 +26,8 @@ class CheckController {
     private val threadPoolTaskExecutor: ThreadPoolTaskExecutor? = null
 
     @RequestMapping(value = ["/check.mi"], method = [RequestMethod.GET, RequestMethod.HEAD])
-    fun check(): ResponseEntity<String?>? {
+    fun check(req: HttpServletRequest): ResponseEntity<String?>? {
+        req.setAttribute("DoNotLog", "");
         return ResponseEntity(HttpStatus.OK)
     }
 
