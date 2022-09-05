@@ -27,7 +27,7 @@ class CheckController {
 
     @RequestMapping(value = ["/check.mi"], method = [RequestMethod.GET, RequestMethod.HEAD])
     fun check(req: HttpServletRequest): ResponseEntity<String?>? {
-        req.setAttribute("DoNotLog", "");
+        req.setAttribute("DoNotLog", "")
         return ResponseEntity(HttpStatus.OK)
     }
 
