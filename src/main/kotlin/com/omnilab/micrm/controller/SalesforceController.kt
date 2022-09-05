@@ -523,9 +523,11 @@ class SalesforceController {
             if(save){
                 ResponseEntity(null, HttpStatus.OK)
             }else{
+                logger.error("{}", "publish save ERROR")
                 ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
             }
         }else{
+            logger.error("{}", "publish cont ERROR")
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -544,6 +546,7 @@ class SalesforceController {
         return if(save > 0){
             ResponseEntity(null, HttpStatus.OK)
         }else{
+            logger.error("{}", "unpublish ERROR")
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
