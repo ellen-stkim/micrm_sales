@@ -34,7 +34,7 @@
 	</logger>
 
 	<logger name="jdbc.sqltiming" additivity="false">
-    	<level value="WARN"/>
+    	<level value="INFO"/>
     	<appender-ref ref="CONSOLE"/>
 	</logger>
 
