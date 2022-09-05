@@ -147,7 +147,7 @@
         </where>
     </select>
 
-    <select id="sel_tblmicp_program" parameterType="Tblmicp_programDto" resultType="Tblmicp_programDto">
+    <select id="sel_tblmicp_program_sales" parameterType="Tblmicp_programDto" resultType="Tblmicp_programDto">
         select *
         from tblmicp_program
         where inten_id = #{inten_id}
