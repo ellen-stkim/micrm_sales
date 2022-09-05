@@ -7,8 +7,8 @@
   "type": "Rest",
   "lang": {
     "en-US": {
-      "name": "miCRM",
-      "description": "miCRM"
+      "name": "miCRM_Test",
+      "description": "miCRM_Test"
     }
   },
   "arguments": {

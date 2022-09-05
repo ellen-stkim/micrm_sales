@@ -36,7 +36,7 @@ variable:
 
   minio-url: http://125.131.213.7:9001
   minio-bucket: img
-  minio-username: ENC(9kPvjAUhn9XTjvGT83+XAulkvl1HBpVvJtFGEw74XyELXLANL5MsSbnl2se11tEu)
+  minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
   static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
