@@ -14,6 +14,7 @@ define(["postmonger"], function (Postmonger) {
 	let eventModel = null;
 
 	$(window).ready(function (){
+		console.log(usr_cd);
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
 		connection.trigger('requestTokens');

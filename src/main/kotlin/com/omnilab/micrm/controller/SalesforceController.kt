@@ -82,6 +82,16 @@ class SalesforceController {
     fun configJson(@PathVariable(value = "usr_cd") usr_cd: String): JSONObject {
         val resource: Resource = ClassPathResource("static/sf/config.json")
         val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
+        val arguments: JSONObject = json["arguments"] as JSONObject
+        val execute: JSONObject = arguments["execute"] as JSONObject
+        execute.replace("url", execute["url"].toString().replace("/sf", "/sf/$usr_cd"))
+
+        val configurationArguments: JSONObject = json["configurationArguments"] as JSONObject
+        val keys = configurationArguments.keys
+        for(i in keys){
+            val temp = configurationArguments[i] as JSONObject
+            temp.replace("url", temp["url"].toString().replace("/sf", "/sf/$usr_cd"))
+        }
         return json
     }
 
