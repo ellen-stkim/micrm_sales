@@ -543,6 +543,7 @@
     <span id="preview"></span>
 </form:form>
 <script>
+    let usr_cd = '${usr_cd}';
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
@@ -572,7 +573,7 @@
             $('.mappingLst').html(html);
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
+        com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
     }
 
     $(function () {
@@ -2064,7 +2065,7 @@
             // RCS 끝
         }
         let param = {seq: $('#seq').val()}
-        com_ajax.ajax('post', '${baseURL}/sf/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 카카오, SMS 유효성 검사
@@ -2590,7 +2591,7 @@
             previewSlideLoad();
         }
         let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/sf/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
 
@@ -2615,7 +2616,7 @@
             }
         }
         let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: $('#seq').val()}
-        com_ajax.ajax('post', '${baseURL}/sf/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 버튼 타입 Hidden 값 추가
@@ -2725,7 +2726,7 @@
 
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()})
 
-        com_ajax.ajax('post', '${baseURL}/sf/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 발신자 번호 input 저장하기
@@ -2805,7 +2806,7 @@
             }
         }
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
-        com_ajax.ajax('post', '${baseURL}/sf/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 이미지 리스트 Input 저장하기
@@ -2937,7 +2938,7 @@
                 getDBValue();
                 adTypeCheck();
             }
-            com_ajax.ajaxSync('get', '/sf/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
         if(checkType == 'vertical'){
             let res = function(response){
@@ -2947,7 +2948,7 @@
                 getDBValue();
                 adTypeCheck();
             }
-            com_ajax.ajaxSync('get', '/sf/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
         if(checkType == 'slide'){
             let res = function(response){
@@ -2969,7 +2970,7 @@
                     },
                 });
             }
-            com_ajax.ajaxSync('get', '/sf/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
         }
     }
 
@@ -3276,7 +3277,7 @@
         data.append("img_nm", imgNm);
         data.append("usr_grp_cd", $('#usr-grp_cd').val());
 
-        com_ajax.ajax_file('${baseURL}/sf/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax_file('${baseURL}/sf/${usr_cd}/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     function phoneFormatter(num){

@@ -46,7 +46,3 @@ upload:
   src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
   content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
   temp : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
-
-journey-builder:
-  jwt: "5e0Qg4pgK_RS158jNkqFkArDwjTVe3bQq424tCY_jOi96C8PFGK6BoNG-jGCD63-SMVJjMZZyYzt2RTZrpAmgPBwTghkrzh0VG2jFYypXPaQI_k7zkrOcZDICb7qkIED-hMFzi_qeUzV-vh7Rp12g17mN5xOziy8PKK5IssxxOCQXj-DrLrupGYCaV21nNJgJUA2jlBZ2mP9XJYRjBBtoP7aJYU8AmrUfwicBSv3ADeRb0t0a5mDO6anN7Stpg2"
-  #jwt: "uZ_VDsQyHZW7MycWlXRBu3dXus2Iuh8ZrGnZjikqroJ8DJ7rKcTjVXXW0y4ktndjok8b0qtH5efqiEfrQVe5o-jIo3-ba_zqmerqK6T4VgF5XpWbg1xvKPwhUwYoPq1t9coWMg4Rr4SscSEr0QuJMxSpBj53TIa4JltmiKIGEKYlYUNO7FT-dxdMccEf1pun0fL-YyvRpD9_hFeayq-oFjF2rnepz7rywJYbb3kH0SP1DJIQU7eVBsRQXSSEHA2"
