@@ -47,10 +47,7 @@ import javax.servlet.http.HttpSession
 class SalesforceController {
 
     val logger = LoggerFactory.getLogger(this::class.java)
-    /*
-    @Value("\${journey-builder.jwt}")
-    private val secretKey: String? = null
-    */
+
     @Autowired
     lateinit var salesforceService: SalesforceService;
 
@@ -564,7 +561,6 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/validate.service")
     fun validate(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
-        logger.info("/validate.service data: $data")
         logger.error("{}", req.requestURL)
         return ResponseEntity(null, HttpStatus.OK)
     }
