@@ -14,7 +14,6 @@ define(["postmonger"], function (Postmonger) {
 	let eventModel = null;
 
 	$(window).ready(function (){
-		console.log(usr_cd);
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
 		connection.trigger('requestTokens');
@@ -144,7 +143,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
-        com_ajax.ajax('post', '/sf/getUser.ajax', param, res, null, null)
+        com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null)
 	}
 
 	// 개인화 변수 조회
@@ -161,7 +160,7 @@ define(["postmonger"], function (Postmonger) {
 	        $('.mappingLst').html(html);
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/mappingLst.ajax', param, res, null, null)
+        com_ajax.ajax('post', '/sf/'+ usr_cd +'/mappingLst.ajax', param, res, null, null)
 	}
 
 	function save() {
@@ -226,7 +225,7 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
-		com_ajax.ajax('post', '/sf/mobileInsert.service', data, res, null, null);
+		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
     }
 
     // 수정
@@ -244,7 +243,7 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
-        com_ajax.ajax('post', '/sf/mobileUpdate.service', data, res, null, null);
+        com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
     }
 
 });
