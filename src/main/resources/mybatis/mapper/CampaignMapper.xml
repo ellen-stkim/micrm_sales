@@ -484,6 +484,35 @@
 	</select>
 
 
+	<select id="sel_send_program_rstLst" parameterType="Tblmicp_send_hstDto" resultType="SendResult_lstDto">
+		SELECT b.camp_nm
+		, a.send_to
+		, a.send_nm
+		, a.send_rep_time
+		, a.send_log_time
+		, case
+		WHEN a.send_rst IS NULL THEN if(b.START_DT > NOW(), '발송대기', '결과대기')
+		when a.send_rst = '0' then '발송성공'
+		ELSE '발송실패'
+		END AS send_rst
+		, a.send_rst_det
+		, c.cd_desc
+		, a.send_mdm
+		FROM tblmicp_send_hst AS a
+		INNER JOIN tblmicp_campaign AS b ON a.camp_id = b.seq
+		LEFT JOIN tblmi_comm_cd AS c ON c.grp_id = 'SENDRESULT' AND a.send_rst_det = c.CD_ID and a.M_SERVER = c.cd_nm AND a.send_rst_tp = c.par_id
+		<where>
+			a.pro_id = #{pro_id}
+			and a.usr_grp_cd = #{usr_grp_cd}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_rst)">
+				and a.send_rst = #{send_rst}
+			</if>
+		</where>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
 	<select id="sel_programSendHst" parameterType="Tblmicp_send_hstDto" resultType="Tblmicp_send_hstDto">
 		SELECT #{pro_id}	 			AS pro_id
 			, a.seq 					AS camp_id
@@ -685,6 +714,156 @@
 			pro_id = #{pro_id}
 		</where>
 	</update>
+
+	<select id="getProgramList" parameterType="Program_SearchDto" resultType="Program_SearchDto">
+		SELECT  a.pro_id
+		, b.cd_nm as pro_st_nm
+		, a.pro_st
+		, a.pro_tp as pro_tp
+		,a.pro_tg_tp
+		, a.PRO_nm
+		, a.min_start_dt as start_dt
+		, a.tar_cnt
+		, a.reg_id
+		, a.pro_tg_tp
+		, e.cd_nm AS pro_tg_tp_nm
+		, a.pro_tg_id
+		FROM tblmicp_program AS a
+		INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
+		INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
+		<where>
+			a.usr_grp_cd = #{usr_grp_cd}
+			and a.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+				and a.pro_tg_tp = #{pro_tg_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+				and a.pro_tp = #{pro_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+				and a.pro_st = #{pro_st}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+				and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+			</if>
+		</where>
+		group by pro_id
+		order by  FIELD(a.pro_st, '98') DESC
+		, a.min_start_dt desc
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="getProgramSearchCnt" parameterType="Program_SearchDto" resultType="int">
+		select count(*)
+		from (
+		SELECT  a.pro_id
+		FROM tblmicp_program AS a
+		INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
+		INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
+		<where>
+			a.usr_grp_cd = #{usr_grp_cd}
+			and a.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+				and a.pro_tg_tp = #{pro_tg_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+				and a.pro_tp = #{pro_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+				and a.pro_st = #{pro_st}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+				and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+			</if>
+
+		</where>
+		group by pro_id
+		) as z
+	</select>
+
+
+	<select id="getProgramCnt" resultType="Map" parameterType="Program_SearchDto">
+		SELECT COUNT(*)	 AS cnt 			-- 토탈
+		, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
+		, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
+		, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
+		, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
+		, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
+		, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
+		, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
+		FROM tblmicp_program as prg
+		LEFT JOIN tblmi_comm_cd AS proStCd ON (proStCd.cd_id = prg.pro_st and proStCd.grp_id = 'COMST')
+		LEFT JOIN tblmi_comm_cd AS proTpCd ON (proTpCd.cd_id = prg.pro_tp and proTpCd.grp_id = 'PROTP')
+		LEFT JOIN tblmi_comm_cd AS tpTpCd ON (tpTpCd.cd_id = prg.pro_tg_tp and tpTpCd.grp_id = 'TGTP')
+		LEFT JOIN tblmi_usr AS usr ON usr.usr_id = prg.reg_id
+		LEFT JOIN tblmicp_campaign AS camp ON camp.pro_id = prg.pro_id
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+			<choose>
+				<when test="pro_tg_tp == 'TG01'">
+					/*INNER JOIN tblmi_tbl_mst as mst ON mst.seq = camp.send_tg_id*/
+				</when>
+				<when test="pro_tg_tp == 'TG02'">
+					LEFT JOIN tblmi_target_grp as tar ON tar.seq = prg.pro_tg_id
+				</when>
+				<when test="pro_tg_tp == 'TG99'">
+					/*INNER JOIN tblmite_target_grp as tar ON tar.seq = prg.pro_tg_id*/
+				</when>
+				<when test="pro_tg_tp == 'TEST'">
+				</when>
+			</choose>
+		</if>
+		where
+		prg.USR_GRP_CD = #{usr_grp_cd}
+		and prg.del_yn = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+			and prg.pro_id like CONCAT('%',  #{pro_id},'%')
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+			and prg.pro_nm like CONCAT('%',  #{pro_nm},'%')
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+			and prg.pro_tp =  #{pro_tp}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+			and camp.start_dt <![CDATA[ >= #{st_dt} ]]>
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+			and camp.start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
+			and (usr.usr_nm like CONCAT('%', #{usr_nm},'%') or usr.usr_log_id like CONCAT('%', #{usr_nm},'%'))
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+			and prg.pro_tg_tp = #{pro_tg_tp}
+			<choose>
+				<when test="pro_tg_tp == 'TG01'">
+				</when>
+				<when test="pro_tg_tp == 'TG02'">
+					<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(target_nm)">
+						and tar.grp_nm like CONCAT('%', #{target_nm},'%')
+					</if>
+				</when>
+				<when test="pro_tg_tp == 'TG99'">
+				</when>
+				<when test="pro_tg_tp == 'TEST'">
+				</when>
+			</choose>
+		</if>
+	</select>
 
 	<!-- ================================================================= update ================================================================= -->
 

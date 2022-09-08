@@ -69,6 +69,15 @@ class CampaignDaoImpl : CampaignDao {
         return re_map
     }
 
+    override fun sel_tblmicp_programOne(dto: Tblmicp_programDto): Tblmicp_programDto {
+        return sqlSession.selectOne("sel_tblmicp_program", dto)
+    }
+
+
+    override fun sel_camp_ContentsList(dto: Tblmi_cont_mstDto): MutableList<Tblmi_cont_lstDto> {
+        return sqlSession.selectList("sel_camp_ContentsList", dto)
+    }
+
 
     override fun ins_program(dto: Tblmicp_programDto): Int {
         return sqlSession.insert("ins_tblmicp_program", dto)
@@ -142,4 +151,35 @@ class CampaignDaoImpl : CampaignDao {
     override fun ins_programSendHst(dto: Tblmicp_send_hstDto): Int {
         return sqlSession.insert("ins_programSendHstOne", dto)
     }
+
+    override fun getProgramSearchCnt(dto:Tblmicp_programDto): Int{
+        return sqlSession.selectOne("getProgramSearchCnt", dto)
+    }
+    override fun getProgramList(dto: Tblmicp_programDto):List<Tblmicp_programDto>{
+        return sqlSession.selectList("getProgramList", dto)
+    }
+
+    override fun getProgramCnt(dto: Tblmicp_programDto): MutableMap<String, Any>{
+        return sqlSession.selectOne("getProgramCnt", dto)
+    }
+
+    override fun sel_send_program_rstLstExcel(book: Workbook, dto: Tblmicp_send_hstDto) {
+        sqlSession.select("sel_send_program_rstLst", dto, object : ResultHandler<Any> {
+            val sheet = book.getSheet("sheet1")
+            var i = sheet.lastRowNum + 1
+
+            override fun handleResult(resultContext: ResultContext<*>) {
+                val row = sheet.createRow(i)
+                val dd: SendResult_lstDto = resultContext.resultObject as SendResult_lstDto
+                row.createCell(0).setCellValue(dd.camp_nm)
+                row.createCell(1).setCellValue(dd.send_rst)
+                row.createCell(2).setCellValue(dd.send_to)
+                row.createCell(3).setCellValue(dd.cd_desc)
+                row.createCell(4).setCellValue(dd.send_rep_time)
+                row.createCell(5).setCellValue(dd.send_mdm)
+                i++
+            }
+        })
+    }
+
 }

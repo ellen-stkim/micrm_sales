@@ -487,7 +487,7 @@
                                     <li data="camp_dt">캠페인기간</li>
                                 </ul>
                             </div>
-                            <div class="input_txt left-border-none">
+                            <div class="input_txt left-border-none" style="width: 325px;">
                                 <span id="target_area" class="left"></span>
                                 <span id="ch_area" class="left"></span>
                                 <input type="text" class="full" id="searchValue" name="searchValue"
