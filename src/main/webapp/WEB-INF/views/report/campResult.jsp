@@ -32,7 +32,6 @@
                         <div class="value searchSelect" id="searchStandard" data="${searchType}">
                             <c:choose>
                                 <c:when test="${searchType == 'pro_nm'}">캠페인명</c:when>
-                                <c:when test="${searchType == 'target_nm'}">캠페인타겟</c:when>
                                 <c:when test="${searchType == 'camp_ch'}">캠페인채널</c:when>
                                 <c:when test="${searchType == 'camp_dt'}">캠페인기간</c:when>
                                 <c:otherwise>기준선택</c:otherwise>
@@ -42,31 +41,10 @@
                         <ul class="option">
                             <li data="">기준선택</li>
                             <li data="pro_nm">캠페인명</li>
-                            <li data="target_nm">캠페인타겟</li>
                             <li data="camp_ch">캠페인채널</li>
                             <li data="camp_dt">캠페인기간</li>
                         </ul>
                     </div>
-                    <!-- select 영역 끝 -->
-                    <span id="target_area" class="left">
-                        <c:if test="${searchType == 'target_nm'}">
-                        <div class="select style1 left-border right-border" id="memberOption"
-                             style="${param.pro_tg_tp == 'TG01' ? 'width: 326px;':  'width: 101px;'} ">
-                            <div class="value searchSelect searchTarget" data="${param.pro_tg_tp}">
-                                <c:choose>
-                                    <c:when test="${param.pro_tg_tp == 'TG02'}">업로드 회원</c:when>
-                                    <c:when test="${param.pro_tg_tp == 'TG99'}">테스트 그룹</c:when>
-                                    <c:otherwise>DB 회원</c:otherwise>
-                                </c:choose></div>
-                            <ul class="option">
-                                <li data="TG01">DB 회원</li>
-                                <li data="TG02">업로드 회원</li>
-                                <li data="TG99">테스트 그룹</li>
-                                <input type="hidden" name="pro_tg_tp" value="">
-                            </ul>
-                        </div>
-                        </c:if>
-                    </span>
                     <span id="ch_area" class="left">
                         <c:if test="${searchType == 'camp_ch'}">
                             <div class="select style1 left-border right-border" id="chOption" style="width: 326px;"><div
@@ -80,7 +58,8 @@
                     </span>
                     <input type="text" class="searchInp left-border " id="searchValue" name="searchValue"
                            style="${searchType != 'camp_ch' && param.pro_tg_tp != 'TG01' ? '' :'display:none'}"
-                           placeholder="검색어입력" value="${searchValue}" onkeypress="if(event.keyCode==13) {searchCampList(); return false; }" />
+                           placeholder="검색어입력" value="${searchValue}"
+                           onkeypress="if(event.keyCode==13) {searchCampList(); return false; }"/>
                     <input type="hidden" name="searchType" id="searchType" value="${searchType}"/>
                     <input type="hidden" name="pageNo" value="${pageNo}"/>
                     <input type="text" class="searchBtn" value="검색" onclick="searchCampList();"/>
@@ -125,7 +104,7 @@
                    placeholder="검색어입력" value="${searchValue}"/>
             <input type="hidden" name="searchType" value="${searchType}"/>
             <input type="hidden" name="pageNo" value="${pageNo}"/>
-            <input type="text" class="date"name="st_dt" placeholder="시작날짜" autocomplete="off"
+            <input type="text" class="date" name="st_dt" placeholder="시작날짜" autocomplete="off"
                    value="${stdt}"/>
             <input type="text" class="date" name="end_dt" placeholder="종료날짜" autocomplete="off"
                    value="${enddt}"/>
@@ -137,21 +116,19 @@
             <div class="scroll_tbl">
                 <table class="table target_tbl">
                     <colgroup>
-                        <col width="60"/>
+                        <col width="130"/>
+                        <col width="140"/>
+                        <col width="120"/>
                         <col width="100"/>
                         <col width="100"/>
-                        <col width="80"/>
-                        <col width="80"/>
-                        <col width="80"/>
-                        <col width="80"/>
-                        <col width="80"/>
+                        <col width="100"/>
+                        <col width="100"/>
                         <col width="80"/>
                     </colgroup>
                     <thead>
                     <tr>
                         <th><span>상태</span></th>
                         <th><span>캠페인명</span></th>
-                        <th><span>캠페인 타겟</span></th>
                         <th><span>캠페인 채널</span></th>
                         <th><span>발송 타겟수</span></th>
                         <th><span>성공</span></th>
@@ -167,63 +144,37 @@
                             </tr>
                         </c:when>
                         <c:otherwise>
-                            <c:forEach var="programMap" items="${programLst}">
+                            <c:forEach var="camp" items="${programLst}">
                                 <tr>
-                                    <c:set var="total" value="${programMap.total}"/>
-                                    <td rowspan="${total.rowCnt}">
-                                        <span>${total.pro_st_nm}</span><br><span>(${fn:split(total.start_dt,' ')[0]})</span>
+                                    <td rowspan="${camp.rowCnt}">
+                                        <span>${camp.pro_st_nm}</span><br><span>(${fn:split(camp.start_dt,' ')[0]})</span>
                                     </td>
-                                    <td rowspan="${total.rowCnt}"><span class="ellipsis">${total.pro_nm}</span></td>
-                                    <td class="total"><span>total</span></td>
-                                    <td class="total">
-                                        <c:if test="${total.ch_total eq 'CH00'}">이메일 / 문자</c:if>
-                                        <c:if test="${total.ch_total eq 'CH01'}">이메일</c:if>
-                                        <c:if test="${total.ch_total eq 'CH02'}">문자</c:if>
+                                    <td rowspan="${camp.rowCnt}"><span class="ellipsis">${camp.pro_nm}</span></td>
+                                    <td>
+                                        <span>
+                                            <c:if test="${camp.camp_ch eq 'CH01'}">이메일</c:if>
+                                            <c:if test="${camp.camp_ch eq 'CH02'}">문자</c:if>
+                                            <c:if test="${camp.camp_ch eq 'CH03'}">세일즈포스</c:if>
+                                        </span>
                                     </td>
-                                    <td class="total"><span>${total.t_cnt}</span></td>
-                                    <td class="total"><span>${total.s_cnt}</span></td>
-                                    <td class="total"><span>${total.o_cnt}</span></td>
-                                    <td class="total"><span>${total.c_cnt}</span></td>
-                                    <td class="total"><a href="./proDt.mi?pro_id=${total.pro_id}"
-                                                         class="btn_sm_line size">
+                                    <td><span class="sendStatus"><fmt:formatNumber value="${camp.total_cnt}" pattern="#,##0"/></span>
+                                    </td>
+                                    <td><span class="sendStatus"><fmt:formatNumber value="${camp.suc_cnt}" pattern="#,##0"/></span><br>
+                                        <fmt:formatNumber value="${camp.suc_cnt / camp.total_cnt}" pattern="(###%)"/>
+                                    </td>
+                                    <td> <span><fmt:formatNumber value="${camp.open_cnt}" pattern="#,##0"></fmt:formatNumber></span><br>
+                                        <fmt:formatNumber value="${camp.open_cnt / camp.total_cnt}" pattern="(###%)"/>
+                                    </td>
+                                    <td>
+                                        <span><fmt:formatNumber value="${camp.click_cnt}" pattern="#,##0"></fmt:formatNumber></span><br>
+                                        <fmt:formatNumber value="${camp.click_cnt / camp.total_cnt}" pattern="(###%)"/>
+                                    </td>
+                                    <td><a class="btn_sm_line size" href="./singleDt.mi?cont_seq=${camp.seq}">
                                         <spna>상세</spna>
                                     </a></td>
                                 </tr>
-                                <c:forEach var="cont" items="${programMap.program}">
-                                    <tr>
-                                        <td><span class="ellipsis">${cont.target_nm}</span></td>
-                                        <td>
-                                        <span>
-                                            <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
-                                            <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
-                                        </span>
-                                        </td>
-                                        <td><span class="sendStatus"><fmt:formatNumber value="${cont.total_cnt}"
-                                                                                       pattern="#,##0"/></span>
-                                        </td>
-                                        <td><span class="sendStatus"><fmt:formatNumber value="${cont.suc_cnt}"
-                                                                                       pattern="#,##0"/></span><br>
-                                            <fmt:formatNumber value="${cont.suc_cnt / cont.total_cnt}"
-                                                              pattern="(###%)"/>
-                                        </td>
-                                        <td> <span><fmt:formatNumber value="${cont.open_cnt}"
-                                                                     pattern="#,##0"></fmt:formatNumber></span><br>
-                                            <fmt:formatNumber value="${cont.open_cnt / cont.total_cnt}"
-                                                              pattern="(###%)"/>
-                                        </td>
-                                        <td>
-                                            <span><fmt:formatNumber value="${cont.click_cnt}"
-                                                                    pattern="#,##0"></fmt:formatNumber></span><br>
-                                            <fmt:formatNumber value="${cont.click_cnt / cont.total_cnt}"
-                                                              pattern="(###%)"/>
-                                        </td>
-                                        <td><a class="btn_sm_line size" href="./singleDt.mi?cont_seq=${cont.seq}">
-                                            <spna>상세</spna>
-                                        </a></td>
-                                    </tr>
-                                </c:forEach>
-                            </c:forEach>
-                        </c:otherwise>
+                        </c:forEach>
+                    </c:otherwise>
                     </c:choose>
                     </tbody>
                 </table>
@@ -257,16 +208,15 @@
                                 <ul class="option">
                                     <li data="">기준선택</li>
                                     <li data="pro_nm">캠페인명</li>
-                                    <li data="target_nm">캠페인타겟</li>
                                     <li data="camp_ch">캠페인채널</li>
                                     <li data="camp_dt">캠페인기간</li>
                                 </ul>
                             </div>
-                            <div class="input_txt left-border-none">
-                                <span id="target_area" class="left"></span>
+                            <div class="input_txt left-border-none" style="width: 325px;">
                                 <span id="ch_area" class="left"></span>
                                 <input type="text" class="full" id="searchValue" name="searchValue"
-                                       placeholder="검색어 입력" onkeypress="if(event.keyCode==13) {popupSearch(); return false; }"/>
+                                       placeholder="검색어 입력"
+                                       onkeypress="if(event.keyCode==13) {popupSearch(); return false; }"/>
                             </div>
                         </div>
                         <!-- 검색 영역 시작 -->
@@ -295,21 +245,16 @@
                 <div id="list_table_box" style="width: 588px; height:210px;">
                     <table class="pop_table table_fixed" id="pop_list_table">
                         <colgroup>
-                            <col width="30"/>
-                            <col width="180"/>
-                            <col width="30"/>
+                            <col width="60"/>
                             <col width="150"/>
-                            <col width="90"/>
                             <col width="100"/>
+                            <col width="150"/>
                         </colgroup>
                         <thead>
                         <tr>
                             <th><input type="checkbox" name="pro_nm_allcheck"
                                        onclick="allCheckBtn(this); checkEvent(this);"></th>
                             <th><span>캠페인명</span></th>
-                            <th><input type="checkbox" name="target_allcheck"
-                                       onclick="allCheckBtn(this); checkEvent(this);"></th>
-                            <th><span>캠페인 타겟</span></th>
                             <th><span>타겟수</span></th>
                             <th><span>캠페인 채널</span></th>
                         </tr>
@@ -327,13 +272,10 @@
             </div>
             <div class="pop_inner">
                 <div class="select_lst_box">
-                    <div><h1 class="info">선택된 캠페인 리스트 ( 캠페인 <span id="info_camp">0</span>건 | 타겟 <span
-                            id="info_target">0</span>건 )</h1></div>
+                    <div><h1 class="info">선택된 캠페인 리스트 ( 캠페인 <span id="info_camp">0</span>건 )</h1></div>
                     <form:form id="select_form" action="./dt.mi">
                         <table class="pop_table table_fixed" id="select_lst">
                             <colgroup>
-                                <col width="20"/>
-                                <col width="100"/>
                                 <col width="20"/>
                                 <col width="100"/>
                             </colgroup>
@@ -342,9 +284,6 @@
                                 <th><input type="checkbox" name="pro_nm_allcheck"
                                            onclick="allCheckBtn(this); checkEvent(this);"></th>
                                 <th><span>캠페인명</span></th>
-                                <th><input type="checkbox" name="target_allcheck"
-                                           onclick="allCheckBtn(this); checkEvent(this);"></th>
-                                <th><span>캠페인 타겟</span></th>
                             </tr>
                             </thead>
                             <tbody id="select_lst_tbody">
@@ -401,20 +340,8 @@
         if (thisData === "target_nm") {
             $(div).find('#searchValue').hide();
             $(div).find('#ch_area').empty();
-            $(div).find('#target_area').html(
-                '<div class="select style1 left-border right-border" id="memberOption" style="width: 326px;">' +
-                '<div class="value searchSelect searchTarget" data="TG01">DB 회원</div>' +
-                '<ul class="option">' +
-                '<li data="TG01">DB 회원</li>' +
-                '<li data="TG02">업로드 회원</li>' +
-                '<li data="TG99">테스트 그룹</li>' +
-                '<input type="hidden" name="pro_tg_tp" value=""/>' +
-                '</ul>' +
-                '</div>'
-            );
         } else if (thisData === "camp_ch") {
             $(div).find('#searchValue').hide();
-            $(div).find('#target_area').empty();
             $(div).find('.target_select').removeClass("target_select")
             $(div).find('#ch_area').html(
                 '<div class="select style1 left-border right-border" id="chOption" style="width: 326px;">' +
@@ -427,7 +354,6 @@
             );
         } else {
             $(div).find('#searchValue').show();
-            $(div).find('#target_area').find('#memberOption').remove();
             $(div).find('#chOption').remove();
             $(div).find('.target_select').removeClass("target_select")
         }
@@ -559,9 +485,7 @@
         }
         let standard = $('#popUp-searchStandard').attr('data');
 
-        if (standard === "target_nm") {
-            $('#camp-report-form #memberOption input[name="pro_tg_tp"]').val($('#camp-report-form .searchTarget').attr('data'));
-        } else if (standard === "camp_ch") {
+        if (standard === "camp_ch") {
             $('#camp-report-form #searchValue').val($('#camp-report-form .searchTarget').attr('data'));
         }
 
@@ -600,8 +524,6 @@
     function addSelectList(item) {
         // 선택 리스트 추가
         let tr = $(item).parents("tr");
-        let campSeq = $(tr).find(".target_check").val();
-        duplDocument(campSeq).remove();
         if ($(item).is(':checked')) {
             addHtml(tr);
         }
@@ -615,7 +537,10 @@
         let type = $(item).attr("name");
 
         if (type.indexOf("pro_nm") != -1) {
-            $(tr).find("input[type=checkbox]").prop('checked', check); // 캠페인타겟 전체 체크
+            $(tr).find("input[type=checkbox]").prop('checked', check); // 캠페인
+
+
+            // 타겟 전체 체크
             return;
         }
 
@@ -625,6 +550,7 @@
         let proList = $(tbody).find(`input[value='` + proId + `']`);
 
         $.each(proList, function (index, pro) {
+            console.log(pro)
             let tr = $(pro).parents('tr');
             if (check != $(tr).find(".target_check").is(':checked')) {
                 return;
@@ -658,8 +584,6 @@
         let newHtml = `<tr>
                                 <td><input type="checkbox" name="pro_nm_check"  value="` + proId + `" onclick="checkEvent(this)"></td>
                                 <td><span class="ellipsis">` + proNm + `</span></td>
-                                <td><input type="checkbox" class="target_check" name="cont_seq" cont_id" value="` + campSeq + `" onclick="checkEvent(this);"></td>
-                                <td><span class="ellipsis">` + targetNm + `</span></td>
                             </tr>`;
         $("#select_lst_tbody").append(newHtml);
     }

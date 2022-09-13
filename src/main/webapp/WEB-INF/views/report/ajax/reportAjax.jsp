@@ -7,25 +7,21 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
-<%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
+<%@ taglib uri="tld/Commonutils.tld" prefix="cutil" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <!-- container 영역 시작 -->
-<div  id="list_table_box">
+<div id="list_table_box">
     <table class="pop_table table_fixed" id="" style="width: 588px; height:210px;">
         <colgroup>
-            <col width="30"/>
-            <col width="180"/>
-            <col width="30"/>
+            <col width="60"/>
+            <col width="150"/>
             <col width="100"/>
-            <col width="100"/>
-            <col width="100"/>
+            <col width="150"/>
         </colgroup>
         <thead>
         <tr>
             <th><input type="checkbox" name="pro_nm_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
             <th><span>캠페인명</span></th>
-            <th><input type="checkbox" name="target_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
-            <th><span>캠페인 타겟</span></th>
             <th><span>타겟수</span></th>
             <th><span>캠페인 채널</span></th>
         </tr>
@@ -39,14 +35,13 @@
             <c:otherwise>
                 <c:forEach var="item" items="${programLst}">
                     <tr>
-                    <td rowspan="${item.camp_cnt}">
-                        <input type="checkbox" name="pro_nm_check"  value="${item.pro_id}" onclick="addSelectList(this)">
-                    </td>
+                        <td rowspan="${item.camp_cnt}">
+                            <input type="checkbox" name="pro_nm_check" value="${item.pro_id}"
+                                   onclick="addSelectList(this)">
+                        </td>
 
                         <td rowspan="${item.camp_cnt}"><span class="ellipsis" name="pro_nm">${item.pro_nm}</span></td>
 
-                        <td><input type="checkbox" class="target_check" name="cont_seq" value="${item.seq}" onclick="addSelectList(this);"></td>
-                        <td><span class="ellipsis" name="target_nm">${item.target_nm}</span></td>
                         <td><span class="sendStatus"><fmt:formatNumber value="${item.total_cnt}"
                                                                        pattern="#,##0"/></span>
                         </td>
@@ -54,9 +49,10 @@
                                         <span>
                                             <c:if test="${item.camp_ch eq 'CH01'}">이메일</c:if>
                                             <c:if test="${item.camp_ch eq 'CH02'}">문자</c:if>
+                                             <c:if test="${item.camp_ch eq 'CH03'}">세일즈포스</c:if>
                                         </span>
-                            </td>
-                        </tr>
+                        </td>
+                    </tr>
                 </c:forEach>
             </c:otherwise>
         </c:choose>
@@ -67,9 +63,9 @@
             <ui:pagination paginationInfo="${page}" type="image" jsFunction="popPage"/>
             <form:form class="disnone" id="current-form">
                 <input type="text" name="pro_tg_tp" value="${pro_tg_tp}"/>
-                <input type="text" class="searchInp left-border "  name="searchValue" value="${searchValue}"/>
+                <input type="text" class="searchInp left-border " name="searchValue" value="${searchValue}"/>
                 <input type="text" name="searchType" value="${searchType}"/>
-                <input type="text" class="date"name="st_dt" placeholder="시작날짜" autocomplete="off"
+                <input type="text" class="date" name="st_dt" placeholder="시작날짜" autocomplete="off"
                        value="${stdt}"/>
                 <input type="text" class="date" name="end_dt" placeholder="종료날짜" autocomplete="off"
                        value="${enddt}"/>

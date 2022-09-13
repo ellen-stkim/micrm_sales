@@ -1028,19 +1028,6 @@ class ContentController  {
     }
 
 
-    /**
-     * @Method Name  : checkContNm
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : dto : Tblmi_cont_mstDto
-     * @return   : Int
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 컨텐츠 캠페인 이름 조회
-     * @title : 이메일 컨텐츠 캠페인 이름 조회
-     */
-
     @ResponseBody
     @RequestMapping("/checkContNm.ajax")
     fun checkContNm(@ModelAttribute dto : Tblmi_cont_mstDto): Int {
@@ -1055,5 +1042,26 @@ class ContentController  {
     fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
         return sysSettingService.getDBValue();
     }
+
+
+    //  ============================ atTemplate =============================//
+
+    /**
+     * @Method Name  : atTemplate
+     * @Since    : 2022. 09. 13.
+     * @author   : Belisa
+     * @param    : dto :
+     * @return   : Int
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 알림톡 템플릿 조회
+     * @title : 카카오 알림톡 템플릿 조회
+     */
+    @GetMapping("/atTemplate.mi")
+    fun atTemplate(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
+        return sysSettingService.getDBValue();
+    }
+
 
 }
