@@ -561,7 +561,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/validate.service")
     fun validate(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
-        logger.error("{}", req.requestURL)
+        logger.info("/validate.service data: $data")
         return ResponseEntity(null, HttpStatus.OK)
     }
 
