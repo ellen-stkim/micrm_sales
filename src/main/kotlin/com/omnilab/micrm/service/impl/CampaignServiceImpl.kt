@@ -273,11 +273,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         when (dto.searchType) {
             "pro_nm" -> dto.pro_nm = dto.searchValue
             "usr_nm" -> dto.usr_nm = dto.searchValue
-            "target_nm" -> {
-                if (dto.pro_tg_tp == "TG02" || dto.pro_tg_tp == "TG99") {
-                    dto.target_nm = dto.searchValue
-                }
-            }
+            "cd_nm" -> dto.cd_nm = dto.searchValue
         }
         val paginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 10)
         dto.firstIndex = paginationInfo.firstRecordIndex
@@ -293,23 +289,6 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     }
 
 
-    override fun getAllStatusCnt(pdto: Tblmicp_programDto): Map<String, Any> {
-        var paramMap: MutableMap<String, Any> = HashMap()
-        val dto = pdto as Program_SearchDto
-        if (dto.searchType == "pro_nm") {
-            dto.pro_nm = dto.searchValue
-        } else if (dto.searchType == "usr_nm") {
-            dto.usr_nm = dto.searchValue
-        } else if (dto.searchType == "target_nm") {
-            if (dto.pro_tg_tp == "TG02" || dto.pro_tg_tp == "TG99") {
-                dto.target_nm = dto.searchValue
-            }
-        }
-        var statusCntList: MutableList<Int> = ArrayList<Int>()
-        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        paramMap = campaignDao.getProgramCnt(dto)
-        return paramMap
-    }
 
     override fun getProgramInfo(pro_id: String, usr_grp_cd: String, check: Boolean): MutableMap<String, Any> {
         val map = HashMap<String, Any>()

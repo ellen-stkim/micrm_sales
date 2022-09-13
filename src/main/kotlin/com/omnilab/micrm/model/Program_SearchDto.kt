@@ -21,6 +21,7 @@ class Program_SearchDto: Tblmicp_programDto() {
 
     var st_dt : String? = null
     var end_dt : String? = null
+    var cd_nm : String? = null
 
 
 }

@@ -20,8 +20,6 @@ interface CampaignService {
 
     fun getProgramSearch(pdto:Tblmicp_programDto) : Map<String, Any>
 
-    fun getAllStatusCnt(pdto : Tblmicp_programDto) : Map<String, Any>
-
     fun getProgramInfo(pro_id: String, usr_grp_cd:String, check: Boolean): MutableMap<String, Any>
 
     fun getCampContentPreview(dto: Tblmi_cont_mstDto): Tblmi_cont_lstDto

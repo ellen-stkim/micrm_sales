@@ -74,14 +74,6 @@ class CampaignController {
         view.addObject("searchValue",dto.searchValue)
         view.addObject("stdt",dto.st_dt)
         view.addObject("enddt",dto.end_dt)
-        val paramMap = campaignServiceImpl.getAllStatusCnt(dto)
-        view.addObject("tempSave",paramMap["temp_cnt"])
-        view.addObject("waitAppo",paramMap["aw_cnt"])
-        view.addObject("waitSend",paramMap["wait_cnt"])
-        view.addObject("targeting",paramMap["tar_cnt"])
-        view.addObject("sending",paramMap["send_cnt"])
-        view.addObject("success",paramMap["suc_cnt"])
-        view.addObject("error",paramMap["err_cnt"])
         return view
     }
 

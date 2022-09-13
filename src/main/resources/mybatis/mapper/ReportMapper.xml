@@ -134,13 +134,6 @@
                         ELSE lst.cont_sub
                     END  AS cont_sub
                 , lst.cont_top_body  AS cont_top_body
-                , case
-                        when b.PRO_TG_TP = 'TEST' then '개별입력'
-                        when b.PRO_TG_TP = 'TG01' then ta2.GRP_NM
-                        when b.PRO_TG_TP = 'TG02' then ta3.GRP_NM
-                        when b.PRO_TG_TP = 'TG99' then ta4.GRP_NM
-                        ELSE NULL
-                    END AS target_nm
                 , c.cd_nm as pro_st_nm
                 , a.CAMP_CH AS camp_ch -- 채널
                 , a.TOTAL_CNT AS total_cnt
@@ -151,18 +144,8 @@
                 INNER JOIN tblmicp_program b ON a.PRO_ID = b.PRO_ID
                 INNER JOIN tblmi_comm_cd AS c
                     ON c.grp_id = 'COMST' and b.PRO_ST = c.CD_ID
-                INNER JOIN tblmi_usr AS d
-                    ON a.REG_ID = d.USR_ID
                 LEFT JOIN tblmicp_cont_lst AS lst
                     ON a.cont_id = lst.cont_cd
-                LEFT JOIN tblmite_target_grp AS ta1
-                    ON if(b.PRO_TG_TP = 'TEST', b.pro_tg_id, NULL) = ta1.seq -- 개별입력
-                LEFT JOIN tblmi_target_grp AS ta2
-                    ON if(b.PRO_TG_TP = 'TG01', b.pro_tg_id, NULL) = ta2.seq -- 타겟팅 그룹
-                LEFT JOIN tblmi_target_grp AS ta3
-                    ON if(b.PRO_TG_TP = 'TG02', b.pro_tg_id, NULL) = ta3.seq -- 업로드 그룹
-                LEFT JOIN tblmite_target_grp AS ta4
-                    ON if(b.PRO_TG_TP = 'TG99', b.pro_tg_id, NULL) = ta4.seq -- 테스트 그룹
             WHERE b.pro_st = '04'
                 AND a.usr_grp_cd =#{usr_grp_cd}
                 AND a.seq IN

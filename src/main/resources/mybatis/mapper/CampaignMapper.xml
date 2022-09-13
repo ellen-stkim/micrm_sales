@@ -737,6 +737,9 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
 				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_nm)">
+				and b.cd_nm like CONCAT('%',  #{cd_nm},'%')
+			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
 				and a.pro_tg_tp = #{pro_tg_tp}
 			</if>
@@ -773,6 +776,9 @@
 			and a.del_yn = 'N'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
 				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_nm)">
+				and b.cd_nm like CONCAT('%',  #{cd_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
 				and a.pro_tg_tp = #{pro_tg_tp}

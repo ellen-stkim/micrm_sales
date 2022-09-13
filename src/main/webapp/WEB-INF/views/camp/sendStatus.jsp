@@ -65,8 +65,8 @@
                         <div class="value searchSelect" id="searchStandard" data="${searchType}">
                             <c:choose>
                                 <c:when test="${searchType == 'pro_nm'}">캠페인명</c:when>
-                                <c:when test="${searchType == 'target_nm'}">발송타겟</c:when>
                                 <c:when test="${searchType == 'usr_nm'}">발송담당자</c:when>
+                                <c:when test="${searchType == 'cd_nm'}">진행상태</c:when>
                                 <c:otherwise>기준선택</c:otherwise>
                             </c:choose>
                         </div>
@@ -74,8 +74,8 @@
                         <ul class="option">
                             <li data="">기준선택</li>
                             <li data="pro_nm">캠페인명</li>
-                            <li data="target_nm">발송타겟</li>
                             <li data="usr_nm">발송담당자</li>
+                            <li data="cd_nm">진행상태</li>
                         </ul>
                     </div>
                     <!-- select 영역 끝 -->
@@ -109,52 +109,7 @@
         <!-- section 영역 시작 -->
         <div class="section">
             <div class="status_area cf">
-                <ol class="left cf" id="olDom">
-                    <li class="step_box">
-                        <div class="top">
-                            <span class="status_mark"></span>임시저장
-                        </div>
-                        <div class="en_font number">${tempSave}</div>
-                    </li>
-                    <li class="step_box">
-                        <div class="top">
-                            <span class="status_mark orange"></span>승인대기
-                        </div>
-                        <div class="en_font number">${waitAppo}</div>
-                    </li>
-                    <li class="step_box">
-                        <div class="top">
-                            <span class="status_mark blue"></span>발송대기
-                        </div>
-                        <div class="en_font number">${waitSend}</div>
-                    </li>
-                    <li class="step_box">
-                        <div class="top">
-                            <span class="status_mark green"></span>타겟추출
-                        </div>
-                        <div class="en_font number">${targeting}</div>
-                    </li>
-                    <li class="step_box">
-                        <div class="top">
-                            <span class="status_mark purple"></span>발송중
-                        </div>
-                        <div class="en_font number">${sending}</div>
-                    </li>
-                    <li class="step_box">
-                        <div class="top">
-                            <span class="status_mark indigo"></span>발송완료
-                        </div>
-                        <div class="en_font number">${success}</div>
-                    </li>
-                </ol>
-                <div class="fail step_box right">
-                    <div class="top">
-                        <span class="status_mark red"></span>발송실패
-                    </div>
-                    <div class="en_font number">${error}</div>
-                </div>
             </div>
-
 
                 <c:choose>
                     <c:when test="${!cutil:isEmptyObject(list)}">
@@ -167,7 +122,6 @@
                                     <th>구분</th>
                                     <th>캠페인 명</th>
                                     <th>발송일시</th>
-                                    <th>발송 타겟</th>
                                     <th>타겟 수</th>
                                     <th>발송 담당자</th>
                                     <th>보기</th>
@@ -189,7 +143,6 @@
                                             <td>${item.pro_tg_tp_nm}</td>
                                             <td><span class="ellipsis">${item.pro_nm}</span></td>
                                             <td class="en_font">${item.start_dt}</td>
-                                            <td>${item.target_nm}</td>
                                             <td><span class="en_font"><fmt:formatNumber value="${item.tar_cnt}" pattern="#,###" /></span>명</td>
                                             <td><span class="en_font">${item.usr_nm} (${item.usr_email})</span></td>
                                             <td>
