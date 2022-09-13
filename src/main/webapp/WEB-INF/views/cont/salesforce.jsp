@@ -2044,9 +2044,9 @@
                         }
 
                         if(imgNm != null) {
-                            let url = list[2].img_lst
-                            $('.slide' + i + ' .img_area').html('<img src="' + url[i] + '" onerror="this.src = \"/image/bg_none.png\""/>');
-                            $('input[name="rcs_img_url_' + (i+1) + '"]').val(url[i]);
+                            let rcs_img_lst = list[2].img_lst.split(',');
+                            $('.slide' + i + ' .img_area').html('<img src="' + rcs_img_lst[i] + '" onerror="this.src = \"/image/bg_none.png\""/>');
+                            $('input[name="rcs_img_url_' + (i+1) + '"]').val(rcs_img_lst[i]);
                         }
 
                         $('#titleArea' + i).text(list[2].slideTitle[i]);
