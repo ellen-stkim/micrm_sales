@@ -95,8 +95,6 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("requestedInteraction", function (interaction){
-		console.log("interaction");
-		console.log(interaction);
 		model = interaction;
 	});
 
@@ -105,12 +103,6 @@ define(["postmonger"], function (Postmonger) {
 		$('#previewBtn').trigger('click');
 	});
 
-	/*
-	connection.on('requestedInteractionDefaults', function(settings) {
-		console.log("requestedInteractionDefaults");
-		console.log(settings);
-	});
-	*/
 
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
