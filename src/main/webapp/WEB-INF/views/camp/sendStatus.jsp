@@ -41,25 +41,6 @@
                 </div>
                 <div class="right">
                     <!-- select 영역 시작 -->
-                    <div class="select style1 left-border" id="">
-                        <!-- selected value -->
-                        <div class="value searchSelect" id="searchProSt" data="${protp}">
-                            <c:choose>
-                                <c:when test="${protp == 'CAMP'}">실발송</c:when>
-                                <c:when test="${protp == 'TEST'}">테스트 발송</c:when>
-                                <c:otherwise>전체</c:otherwise>
-                            </c:choose>
-                        </div>
-                        <!-- option -->
-                        <ul class="option">
-                            <li data="">전체</li>
-                            <li data="CAMP">실발송</li>
-                            <li data="TEST">테스트 발송</li>
-                        </ul>
-                        <input type="hidden" id="pro_tp" name="pro_tp" value="${protp}"/>
-                    </div>
-                    <!-- select 영역 끝 -->
-                    <!-- select 영역 시작 -->
                     <div class="select style1 left-border" id="searchOption">
                         <!-- selected value -->
                         <div class="value searchSelect" id="searchStandard" data="${searchType}">
@@ -79,7 +60,7 @@
                         </ul>
                     </div>
                     <!-- select 영역 끝 -->
-                    <span id="target_area" class="left">
+                    <span id="cd_area" class="left">
                     </span>
                     <input type="text" class="searchInp left-border" id="searchValue" name="searchValue" placeholder="검색어입력" onkeyup="enterSubmit();" value="${searchValue}"/>
                     <input type="hidden" name="searchType" id="searchType" value="${searchType}"/>
@@ -110,7 +91,6 @@
         <div class="section">
             <div class="status_area cf">
             </div>
-
                 <c:choose>
                     <c:when test="${!cutil:isEmptyObject(list)}">
                         <div class="scroll_tbl" id="bodyDom">
@@ -123,7 +103,6 @@
                                     <th>캠페인 명</th>
                                     <th>발송일시</th>
                                     <th>타겟 수</th>
-                                    <th>발송 담당자</th>
                                     <th>보기</th>
                                 </tr>
                                 </thead>
@@ -144,7 +123,6 @@
                                             <td><span class="ellipsis">${item.pro_nm}</span></td>
                                             <td class="en_font">${item.start_dt}</td>
                                             <td><span class="en_font"><fmt:formatNumber value="${item.tar_cnt}" pattern="#,###" /></span>명</td>
-                                            <td><span class="en_font">${item.usr_nm} (${item.usr_email})</span></td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${item.pro_tg_tp eq 'TEST'}">
@@ -180,7 +158,6 @@
                                 <th>발송일시</th>
                                 <th>발송 타겟</th>
                                 <th>타겟 수</th>
-                                <th>발송 담당자</th>
                                 <th>보기</th>
                             </tr>
                             </thead>
@@ -307,38 +284,35 @@
         // 검색 기준 선택 값이 발송타겟인 경우 상세 옵션 Select 영역 생성, 삭제 동작
         $("#searchOption ul li").on('click',function(){
             let thisData = $(this).attr('data');
-           if(thisData === "target_nm"){
+           if(thisData === "cd_nm"){
                $('#searchValue').hide();
-               $('#target_area').html(
-                  '<div class="select style1 left-border right-border" id="memberOption">' +
-                       '<div class="value searchSelect searchTarget" data="TG01">DB 회원</div>' +
+               $('#cd_area').html(
+                  '<div class="select style1 left-border right-border" id="stOption">' +
+                       '<div class="value searchSelect searchTarget">승인대기</div>' +
                         '<ul class="option">' +
-                           '<li data="TG01">DB 회원</li>' +
-                           '<li data="TG02">업로드 회원</li>' +
-                           '<li data="TEST">테스트 입력</li>' +
-                           '<li data="TG99">테스트 그룹</li>' +
-                            '<input type="hidden" name="pro_tg_tp" value=""/>'+
+                           '<li>승인대기</li>' +
+                           '<li>발송대기</li>' +
+                           '<li>타겟추출중</li>' +
+                           '<li>발송중</li>' +
+                           '<li>에러</li>' +
+                           '<li>완료</li>' +
+                           '<li>임시저장</li>' +
                        '</ul>' +
                    '</div>'
                );
            }else{
+               $('#searchValue').val("");
                $('#searchValue').show();
-               $('#target_area').find('#memberOption').remove();
-               //$("#pro_tg_tp").val("");
+               $('#cd_area').find('#stOption').remove();
+               $('#cd_area').hide();
            }
         });
         
         //발송타겟 검색 상세 옵션 select 체크 값 구분
-        $(document).on('click','#memberOption ul li',function(){
-            let memData = $(this).attr('data');
-            if(memData === 'TG01' || memData === 'TEST'){
-                $('#memberOption').addClass('right-border');
-                $('#searchValue').val("");
-                $('#searchValue').hide();
-            }else{
-                $('#memberOption').removeClass('right-border');
-                $('#searchValue').show();
-            }
+        $(document).on('click','#stOption ul li',function(){
+            let data = $(this).html();
+            console.log(data)
+            $('#searchValue').val(data);
         });
 
         //발송 상태 Click
@@ -349,7 +323,6 @@
                 return false;
             }
         });
-
 
     });
     //테스트 발송 상세 팝업 open event
@@ -386,11 +359,6 @@
         let standard = $('#searchStandard').attr('data');
         let searchValue = $("#searchValue").val().trim();
 
-        if(standard === "target_nm"){
-            $('input[name="pro_tg_tp"]').val($('.searchTarget').attr('data'));
-        }
-        var st_dt = $("input[name='st_dt']").val();
-        var end_dt = $("input[name='end_dt']").val();
         if((standard == null ||standard == "") && searchValue != ''){
             popup.popAlert("기준을 선택해주세요.");
             return false;
@@ -430,41 +398,24 @@
     }
     function init(){
         var searchType = '${searchType}';
-        var proNm;
-        var protgtp = '${protgtp}';
-        if(protgtp == 'TG01'){
-            proNm = 'DB 회원';
-        }else if(protgtp == 'TG02'){
-            proNm = '업로드 회원';
-        }else if(protgtp == 'TEST'){
-            proNm = '개별입력';
-        }else if(protgtp == 'TG99'){
-            proNm = '테스트 그룹';
-        }else{
-            proNm = 'DB회원';
-        }
-        if(searchType === "target_nm"){
+        var searchValue = '${searchValue}';
+
+        if(searchType === "cd_nm"){
             $('#searchValue').hide();
-            $('#target_area').html(
-                '<div class="select style1 left-border right-border" id="memberOption">' +
-                '<div class="value searchSelect searchTarget" data="'+protgtp+'">'+proNm+'</div>' +
+            $('#cd_area').html(
+                '<div class="select style1 left-border right-border" id="stOption">' +
+                '<div class="value searchSelect searchTarget">'+searchValue+'</div>' +
                 '<ul class="option">' +
-                '<li data="TG01">DB 회원</li>' +
-                '<li data="TG02">업로드 회원</li>' +
-                '<li data="TEST">개별입력</li>' +
-                '<li data="TG99">테스트 그룹</li>' +
-                '<input type="hidden" name="pro_tg_tp" value="'+protgtp+'"/>'+
+                '<li>승인대기</li>' +
+                '<li>발송대기</li>' +
+                '<li>타겟추출중</li>' +
+                '<li>발송중</li>' +
+                '<li>에러</li>' +
+                '<li>완료</li>' +
+                '<li>임시저장</li>' +
                 '</ul>' +
                 '</div>'
             );
-            if(protgtp === 'TG01' || protgtp === 'TEST'){
-                $('#memberOption').addClass('right-border');
-                $('#searchValue').val("");
-                $('#searchValue').hide();
-            }else{
-                $('#memberOption').removeClass('right-border');
-                $('#searchValue').show();
-            }
         }
         var searchBox = $('.searchSelect');
         for(var i=0; i<searchBox.length; i++){
