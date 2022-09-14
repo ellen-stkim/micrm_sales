@@ -1990,7 +1990,7 @@
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('URL연결');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="url_value"]:nth-child(' + (j+1) + ')').val(btn['action']['urlAction']['openUrl']['url']);
                                     }
-                                    if(btnAction.hasOwnProperty('dialerAction') != null) {
+                                    if(btnAction.hasOwnProperty('dialerAction')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN03');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN03');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('전화걸기');
@@ -2017,7 +2017,7 @@
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN06');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('현재위치공유');
                                     }
-                                    if(btnAction.hasOwnProperty('calendarAction') != null) {
+                                    if(btnAction.hasOwnProperty('calendarAction')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN07');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN07');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('캘린더등록');
@@ -2028,7 +2028,7 @@
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_title"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['title']);
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_body"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['description']);
                                     }
-                                    if(btnAction.hasOwnProperty('composeAction') != null) {
+                                    if(btnAction.hasOwnProperty('composeAction')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN08');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN08');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('메세지전송');
