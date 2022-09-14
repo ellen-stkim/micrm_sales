@@ -1884,7 +1884,7 @@
                     // 발신
                     $('.rcs_head').text('[WEB발신]');
 
-                    var rcs_img_lst = list[2].img_lst.split(',');
+                    let rcs_img_lst = list[2].img_lst.split(',');
                     if(rcs_img_lst[0] != null) {
                         $('.img_area').html('<img src="' + filePath + rcs_img_lst[0] + '" onerror="this.src=\"/image/bg_none.png\""/>');
                         $('input[name="rcs_img_url_1"]').val(rcs_img_lst[0]);
@@ -1940,10 +1940,10 @@
                     */
 
                     // 카드 그리기
-                    var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
-                    for(var i=0; i<list[2].cardSize; i++) {
+                    let rcs_img_nm_lst = list[2].img_nm_lst.split(',');
+                    for(let i=0; i<list[2].cardSize; i++) {
                         // 이미지 선택
-                        var imgNm = rcs_img_nm_lst[i];
+                        let imgNm = rcs_img_nm_lst[i];
                         $('#slide' + i).val(imgNm);
 
                         if(list[2].img_cd_1 != null && i == 0) {
@@ -2044,19 +2044,22 @@
                         }
 
                         if(imgNm != null) {
-                            $('.slide' + i + ' .img_area').html('<img src="' + filePath + imgNm + '" onerror="this.src = \"/image/bg_none.png\""/>');
-                            $('input[name="rcs_img_url_' + (i+1) + '"]').val(filePath + imgNm);
+                            let rcs_img_lst = list[2].img_lst.split(',');
+                            $('.slide' + i + ' .img_area').html('<img src="' + rcs_img_lst[i] + '" onerror="this.src = \"/image/bg_none.png\""/>');
+                            $('input[name="rcs_img_url_' + (i+1) + '"]').val(rcs_img_lst[i]);
                         }
 
                         $('#titleArea' + i).text(list[2].slideTitle[i]);
                         $('#textArea' + i).text(list[2].slideBody[i]);
 
-                        if(list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
-                            $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
-                        }
+                        if(list[2].cont_btn_json[i]['suggestions']){
+                            if(list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
+                                $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
+                            }
 
-                        if(list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
-                            $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                            if(list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
+                                $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                            }
                         }
                     }
 
