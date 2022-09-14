@@ -4,10 +4,7 @@ import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
-import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
-import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
-import com.omnilab.micrm.model.table.Tblmicp_cont_mstDto
+import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
@@ -569,12 +566,25 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/stop.service")
     fun stop(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
         logger.info("/stop.service data: $data")
+        val dto = Tblmicp_programDto()
+        dto.inten_id = data["interactionId"].toString()
+        dto.orig_id = data["originalDefinitionId"].toString()
+        dto.inta_key = data["interactionKey"].toString()
+        dto.inta_ve = data["interactionVersion"].toString()
+        dto.pro_st = "04"
+        salesforceDao.upd_tblmicp_program_sales(dto)
+        if(dto.pro_id != null){
+            val campDto = Tblmicp_campaignDto()
+            campDto.pro_id = dto.pro_id
+            campDto.camp_st = "04"
+            salesforceDao.upd_tblmicp_campaign(campDto)
+        }
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/TestSave.service")
     fun TestSave(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
-        logger.info("/TestSave.service data: $data");
+        logger.info("/TestSave.service data: $data")
     }
 
     // done 동작
