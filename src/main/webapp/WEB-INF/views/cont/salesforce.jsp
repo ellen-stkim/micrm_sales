@@ -1911,16 +1911,16 @@
                        $('.slide_type .value').text('Small / 6장');
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 3) {
                        $('.slide_type .value').data('4');
-                       $('.slide_type .value').text('Small / 3장');
+                       $('.slide_type .value').text('Medium / 3장');
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 4) {
                        $('.slide_type .value').data('5');
-                       $('.slide_type .value').text('Small / 4장');
+                       $('.slide_type .value').text('Medium / 4장');
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 5) {
                        $('.slide_type .value').data('6');
-                       $('.slide_type .value').text('Small / 5장');
+                       $('.slide_type .value').text('Medium / 5장');
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 6) {
                        $('.slide_type .value').data('7');
-                       $('.slide_type .value').text('Small / 6장');
+                       $('.slide_type .value').text('Medium / 6장');
                     }
 
                     // 발신 번호
@@ -1928,16 +1928,6 @@
                         $('#send_slice_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
                         $('#slide_send_num').val(list[2].send_to);
                     }
-                    /*
-                    // 카드 탭
-                    for(var i=1; i<=list[2].cardSize; i++) {
-                        if(i == 1) {
-                            $('.slide_tab').append('<div id="cardOn" class="cardOn on" data="' + i + '">카드' + i + '</div>');
-                        } else {
-                            $('.slide_tab').append('<div id="cardOn" class="cardOn" data="' + i + '">카드' + i + '</div>');
-                        }
-                    }
-                    */
 
                     // 카드 그리기
                     let rcs_img_nm_lst = list[2].img_nm_lst.split(',');
@@ -1978,13 +1968,13 @@
                                 if (btn && btn.hasOwnProperty('action')){
                                     let btnAction = btn['action'];
 
-                                    if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction']['copyToClipboard'] != null) {
+                                    if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN01');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN01');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('복사하기');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="copy_value"]:nth-child(' + (j+1) + ')').val(btn['action']['clipboardAction']['copyToClipboard']['text']);
                                     }
-                                    if(btnAction.hasOwnProperty('urlAction') && btnAction['urlAction']['openUrl'] != null) {
+                                    if(btnAction.hasOwnProperty('urlAction') && btnAction['urlAction'].hasOwnProperty('openUrl')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN02');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN02');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('URL연결');
@@ -1996,7 +1986,10 @@
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('전화걸기');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_03"]:nth-child(' + (j+1) + ')').val(btn['action']['dialerAction']['dialPhoneNumber']['phoneNumber']);
                                     }
-                                    if(btnAction.hasOwnProperty('mapAction') && btnAction['mapAction']['showLocation']['location']['latitude'] != null) {
+                                    if(btnAction.hasOwnProperty('mapAction')
+                                        && btnAction['mapAction'].hasOwnProperty('showLocation')
+                                        && btnAction['mapAction']['showLocation'].hasOwnProperty('location')
+                                        && btnAction['mapAction']['showLocation']['location'].hasOwnProperty('latitude')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN04');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN04');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('지도보여주기(좌표)');
@@ -2005,14 +1998,17 @@
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['label']);
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
                                     }
-                                    if(btnAction.hasOwnProperty('mapAction') && btnAction['mapAction']['showLocation']['location']['query'] != null) {
+                                    if(btnAction.hasOwnProperty('mapAction')
+                                        && btnAction['mapAction'].hasOwnProperty('showLocation')
+                                        && btnAction['mapAction']['showLocation'].hasOwnProperty('location')
+                                        && btnAction['mapAction']['showLocation']['location'].hasOwnProperty('query')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN05');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN05');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('지도보여주기(쿼리)');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['query']);
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
                                     }
-                                    if(btnAction.hasOwnProperty('mapAction') && btnAction['mapAction']['showLocation'] != null) {
+                                    if(btnAction.hasOwnProperty('mapAction') && btnAction['mapAction'].hasOwnProperty('showLocation')) {
                                         $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN06');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN06');
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('현재위치공유');
@@ -2038,7 +2034,7 @@
 
                                     // 버튼 명
                                     $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="slide_rcs_btn_1"]:nth-child(' + (j+1) + ')').val(btn['action']['displayText']);
-                                    if(btn['action']['displayText'] != null) {
+                                    if(btn['action'].hasOwnProperty('displayText')) {
                                         $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .button-name:nth-child(' + (j+1) + ') span span').text(btn['action']['displayText'].length);
                                     }
                                 }
