@@ -636,7 +636,6 @@
                 <thead>
                 <tr>
                     <th><span>캠페인명</span></th>
-                    <th><span>캠페인 타겟</span></th>
                     <th><span>캠페인 채널</span></th>
                     <th><span>발송 타겟수</span></th>
                     <th><span>성공</span></th>
@@ -656,6 +655,10 @@
                     <c:otherwise>
                         <c:set var="programMap" value="${programLst[0]}"/>
                         <tr>
+                        ${programLst}
+                        ${programMap}
+                        </tr>
+                        <%--<tr>
                             <c:set var="total" value="${programMap.total}"/>
                             <td rowspan="2"><span class="ellipsis">${total.pro_nm}</span></td>
                             <td class="total"><span>total</span></td>
@@ -709,7 +712,7 @@
                             <td>
                                 <span>-</span>
                             </td>
-                        </tr>
+                        </tr>--%>
                     </c:otherwise>
                 </c:choose>
                 </tbody>
@@ -738,12 +741,12 @@
 
     $("#openLstTap").click(function () {
         if ($('#campLstBox').hasClass("disnone")) {
-            $('#openLst').html(`리스트 열기<span>▼</span>`);
+            $('#openLst').html(`리스트 닫기<span>▼</span>`);
             $("#campLstBox").removeClass("disnone");
             return;
         }
         $("#campLstBox").addClass("disnone");
-        $('#openLst').html(`리스트 닫기<span>▲</span>`);
+        $('#openLst').html(`리스트 열기<span>▲</span>`);
     })
 
     function reportTabControl(me, id) {

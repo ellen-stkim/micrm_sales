@@ -578,8 +578,6 @@
     function addHtml(tr) {
         let proId = $(tr).find("input[name='pro_nm_check']").val();
         let proNm = $(tr).find("span[name='pro_nm']").html();
-        let targetNm = $(tr).find("span[name='target_nm']").html();
-        let campSeq = $(tr).find(".target_check").val();
 
         let newHtml = `<tr>
                                 <td><input type="checkbox" name="pro_nm_check"  value="` + proId + `" onclick="checkEvent(this)"></td>
