@@ -1969,30 +1969,30 @@
                                     let btnAction = btn['action'];
 
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN01');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN01');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('복사하기');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN01');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN01');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('복사하기');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="copy_value"]:eq(' + j + ')').val(btnAction['clipboardAction']['copyToClipboard']['text']);
                                     }
                                     if(btnAction.hasOwnProperty('urlAction') && btnAction['urlAction'].hasOwnProperty('openUrl')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN02');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN02');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('URL연결');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN02');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN02');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('URL연결');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="url_value"]:eq(' + j + ')').val(btnAction['urlAction']['openUrl']['url']);
                                     }
                                     if(btnAction.hasOwnProperty('dialerAction')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN03');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN03');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('전화걸기');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN03');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN03');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('전화걸기');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="phone_value_03"]:eq(' + j + ')').val(btnAction['dialerAction']['dialPhoneNumber']['phoneNumber']);
                                     }
                                     if(btnAction.hasOwnProperty('mapAction')
                                         && btnAction['mapAction'].hasOwnProperty('showLocation')
                                         && btnAction['mapAction']['showLocation'].hasOwnProperty('location')
                                         && btnAction['mapAction']['showLocation']['location'].hasOwnProperty('latitude')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN04');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN04');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('지도보여주기(좌표)');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN04');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN04');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('지도보여주기(좌표)');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="latitude_value"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['latitude']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="longitude_value"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['longitude']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="location_value_04"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['label']);
@@ -2002,21 +2002,21 @@
                                         && btnAction['mapAction'].hasOwnProperty('showLocation')
                                         && btnAction['mapAction']['showLocation'].hasOwnProperty('location')
                                         && btnAction['mapAction']['showLocation']['location'].hasOwnProperty('query')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN05');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN05');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('지도보여주기(쿼리)');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN05');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN05');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('지도보여주기(쿼리)');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="location_value_05"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['query']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="fallback_url_05"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['fallbackUrl']);
                                     }
                                     if(btnAction.hasOwnProperty('mapAction') && btnAction['mapAction'].hasOwnProperty('showLocation')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN06');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN06');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('현재위치공유');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN06');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN06');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('현재위치공유');
                                     }
                                     if(btnAction.hasOwnProperty('calendarAction')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN07');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN07');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('캘린더등록');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN07');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN07');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('캘린더등록');
                                         let startTime = btnAction['calendarAction']['createCalendarEvent']['startTime'].split('T');
                                         let endTime = btnAction['calendarAction']['createCalendarEvent']['endTime'].split('T');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="start_date"]:eq(' + j + ')').val(startTime[0]);
@@ -2025,9 +2025,9 @@
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="calendar_body"]:eq(' + j + ')').val(btnAction['calendarAction']['createCalendarEvent']['description']);
                                     }
                                     if(btnAction.hasOwnProperty('composeAction')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') .slide_rcs_btn_tp_'+ j +'').val('RBTN08');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').data('RBTN08');
-                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ')').text('메세지전송');
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN08');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN08');
+                                        $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('메세지전송');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="phone_value_08"]:eq(' + j + ')').val(btnAction['composeAction']['composeTextMessage']['phoneNumber']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="message_value"]:eq(' + j + ')').val(btnAction['composeAction']['composeTextMessage']['text']);
                                     }
@@ -2049,7 +2049,7 @@
 
                         $('#titleArea' + i).text(list[2].slideTitle[i]);
                         $('#textArea' + i).text(list[2].slideBody[i]);
-
+                        /*
                         if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
                             if(list[2].cont_btn_json[i]['suggestions'][0]
                                 && list[2].cont_btn_json[i]['suggestions'][0].hasOwnProperty("action")
@@ -2063,6 +2063,7 @@
                                 $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
                             }
                         }
+                        */
                     }
 
                     // 무료수신거부
