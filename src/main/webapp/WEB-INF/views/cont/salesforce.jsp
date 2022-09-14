@@ -2055,6 +2055,7 @@
                         $('#textArea' + i).text(list[2].slideBody[i]);
 
                         if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
+                            console.log(list[2].cont_btn_json[i]);
                             if(list[2].cont_btn_json[i]['suggestions'][0] && list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
                                 $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
                             }
