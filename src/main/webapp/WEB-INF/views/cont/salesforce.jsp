@@ -1975,8 +1975,7 @@
                         for(let j=0; j<2; j++) {
                             if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
                                 let btn = list[2].cont_btn_json[i]['suggestions'][j];
-                                console.log(btn);
-                                if (btn.hasOwnProperty('action')){
+                                if (btn && btn.hasOwnProperty('action')){
                                     let btnAction = btn['action'];
 
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction']['copyToClipboard'] != null) {
