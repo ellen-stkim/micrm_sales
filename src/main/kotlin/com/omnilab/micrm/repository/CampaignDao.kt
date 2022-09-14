@@ -15,6 +15,9 @@ interface CampaignDao {
     fun sel_send_status_cnt(pro_id: String): MutableMap<String, Any>
     fun sel_tarck_open_cnt(pro_id: String): MutableMap<String, Any>
     fun sel_tarck_url_cnt(pro_id: String): MutableMap<String, Any>
+    fun sel_tblmicp_programOne(dto: Tblmicp_programDto): Tblmicp_programDto
+
+    fun sel_camp_ContentsList(dto: Tblmi_cont_mstDto): MutableList<Tblmi_cont_lstDto>
 
     fun ins_program(dto: Tblmicp_programDto): Int
     fun ins_programSendHst(dto: Tblmicp_programDto): MutableList<Int>
@@ -28,5 +31,10 @@ interface CampaignDao {
 
     fun getTitleProgramCnt(dto : Tblmicp_programDto) : MutableMap<String,Any>
 
+    fun getProgramSearchCnt(dto:Tblmicp_programDto): Int
+    fun getProgramList(dto: Tblmicp_programDto):List<Tblmicp_programDto>
+    fun getProgramCnt(dto: Tblmicp_programDto): MutableMap<String, Any>
+
+    fun sel_send_program_rstLstExcel(book : Workbook, dto : Tblmicp_send_hstDto)
 
 }

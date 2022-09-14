@@ -18,4 +18,11 @@ interface CampaignService {
     //메인 페이지 camp 미리보기 가져오기
     fun getMainCampView(dto: Tblmicp_campaignDto) : Map<String, Any>
 
+    fun getProgramSearch(pdto:Tblmicp_programDto) : Map<String, Any>
+
+    fun getProgramInfo(pro_id: String, usr_grp_cd:String, check: Boolean): MutableMap<String, Any>
+
+    fun getCampContentPreview(dto: Tblmi_cont_mstDto): Tblmi_cont_lstDto
+
+    fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any>
 }

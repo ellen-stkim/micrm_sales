@@ -279,7 +279,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 .dynamic_tbl thead tr th:first-child,
 .dynamic_tbl tbody tr td:first-child {min-width:55px;}
 .dynamic_tbl thead tr th,
-.dynamic_tbl tbody tr td {min-width: 200px; max-width:200px; white-space: nowrap;
+.dynamic_tbl tbody tr td {/*min-width: 200px; */max-width:200px; white-space: nowrap;
     text-overflow: ellipsis; overflow: hidden;}
 .dynamic_tbl tbody tr td:hover {max-width:none; text-overflow:inherit;}
 

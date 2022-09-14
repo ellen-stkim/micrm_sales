@@ -266,4 +266,103 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         return map
     }
 
+    override fun getProgramSearch(pdto: Tblmicp_programDto): Map<String, Any> {
+        pdto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val dto = pdto as Program_SearchDto
+
+        when (dto.searchType) {
+            "pro_nm" -> dto.pro_nm = dto.searchValue
+            "usr_nm" -> dto.usr_nm = dto.searchValue
+            "cd_nm" -> dto.cd_nm = dto.searchValue
+        }
+        val paginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 10)
+        dto.firstIndex = paginationInfo.firstRecordIndex
+        dto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = campaignDao.getProgramSearchCnt(dto)
+
+        val paramMap: MutableMap<String, Any> = HashMap()
+        paramMap["page"] = paginationInfo
+        paramMap["pageNo"] = paginationInfo.currentPageNo
+        paramMap["list"] = campaignDao.getProgramList(dto)
+        paramMap["listCnt"] = paginationInfo.totalRecordCount
+        return paramMap
+    }
+
+
+
+    override fun getProgramInfo(pro_id: String, usr_grp_cd: String, check: Boolean): MutableMap<String, Any> {
+        val map = HashMap<String, Any>()
+        val searchDto = Tblmicp_programDto(pro_id)
+        searchDto.usr_grp_cd = usr_grp_cd
+
+        val programDto = campaignDao.sel_tblmicp_programOne(searchDto)
+        map["programDto"] = programDto
+
+        if (check && programDto.pro_st != "98") {
+            map["status"] = false
+        } else {
+            map["status"] = true
+            if (programDto.pro_tg_tp == "TG02") {
+                map["targetDto"] = campaignDao.sel_tblmi_traget_grp(Tblmi_target_grpDto(programDto.pro_tg_id?.toInt(), usr_grp_cd, null))
+            }
+
+            val campLSt = campaignDao.sel_tblmicp_campaign(Tblmicp_campaignDto(pro_id))
+            map["campaignLst"] = campLSt
+
+            val contMap = HashMap<String, Any>()
+            for (camp in campLSt) {
+                val tempDt = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(camp.cont_id!!, usr_grp_cd, null))
+                val tempTblDto = campaignDao.sel_ContentsList(Contents_searchDto(tempDt?.cont_seq))
+                if (!tempTblDto.isNullOrEmpty()) {
+                    contMap[camp.cont_id.toString()] = tempTblDto[0]
+                }
+            }
+            map["contDto"] = contMap
+
+            if (programDto.pro_st == "03") {
+                map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+            }
+            if (programDto.pro_st == "04") {
+                map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+                map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
+                map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)
+            }
+        }
+        return map
+    }
+
+    override fun getCampContentPreview(dto: Tblmi_cont_mstDto): Tblmi_cont_lstDto {
+        val contentLst = campaignDao.sel_camp_ContentsList(dto)
+        return if (contentLst.isNullOrEmpty()) {
+            Tblmi_cont_lstDto()
+        } else {
+            contentLst[0]
+        }
+    }
+
+    override fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any> {
+        val re_map = HashMap<String, Any>()
+        val labelList = mutableListOf<String>();
+        labelList.add("캠페인명")
+        labelList.add("발송상세")
+        labelList.add("이메일/모바일")
+        labelList.add("원인")
+        labelList.add("발송시간")
+        labelList.add("발송기준정보")
+
+        val book = commonService.createExcel(labelList)
+        labelList.clear()
+
+        val proDto = Tblmicp_programDto(pro_id)
+        proDto.usr_grp_cd = usr_grp_cd
+        val pro = campaignDao.sel_tblmicp_programOne(proDto)
+        re_map["name"] = "${pro.pro_nm}"
+        re_map["book"] = book
+
+        val lstDto = SendResult_lstDto(pro_id, usr_grp_cd)
+        lstDto.send_rst = type
+
+        campaignDao.sel_send_program_rstLstExcel(book, lstDto)
+        return re_map
+    }
 }
