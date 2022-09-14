@@ -2055,12 +2055,15 @@
                         $('#textArea' + i).text(list[2].slideBody[i]);
 
                         if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
-                            console.log(list[2].cont_btn_json[i]);
-                            if(list[2].cont_btn_json[i]['suggestions'][0] && list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
+                            if(list[2].cont_btn_json[i]['suggestions'][0]
+                                && list[2].cont_btn_json[i]['suggestions'][0].hasOwnProperty("action")
+                                && list[2].cont_btn_json[i]['suggestions'][0]['action'].hasOwnProperty('displayText')) {
                                 $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
                             }
 
-                            if(list[2].cont_btn_json[i]['suggestions'][1] && list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
+                            if(list[2].cont_btn_json[i]['suggestions'][1]
+                                && list[2].cont_btn_json[i]['suggestions'][1].hasOwnProperty("action")
+                                && list[2].cont_btn_json[i]['suggestions'][1]['action'].hasOwnProperty('displayText')) {
                                 $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
                             }
                         }
