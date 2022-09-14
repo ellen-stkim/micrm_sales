@@ -969,318 +969,8 @@
         });
 
         // 버튼 셀렉트박스
-        $(document).on('click', '.action_select ul li', function () {
-            let actionVal = $(this).attr('data');
-            let area = $(this).parents('.row').siblings('.custom_box');
-            let layout = '';
-            let parentValue = $(this).parents('.action_select').attr('data');
-
-            $(area).children().remove();
-
-            let num = 0;
-            let rcsType = $("input[name='rcs_format_type']:checked").val().trim();
-
-            if (rcsType === "slide") {
-                let dataValue = "slide_rcs_btn_" + parentValue;
-                let index = $('.cardOn.on').index() + 1;
-
-                if (parentValue == 1) {
-                    // 첫번째 버튼 항목 클릭
-                    if (index == 1) {
-                        $("#slide_rcs_btn_tp_1").val(actionVal);
-                    } else if (index == 2) {
-                        $("#slide_rcs_btn_tp_3").val(actionVal);
-                    } else if (index == 3) {
-                        $("#slide_rcs_btn_tp_5").val(actionVal);
-                    } else if (index == 4) {
-                        $("#slide_rcs_btn_tp_7").val(actionVal);
-                    } else if (index == 5) {
-                        $("#slide_rcs_btn_tp_9").val(actionVal);
-                    } else if (index == 6) {
-                        $("#slide_rcs_btn_tp_11").val(actionVal)
-                    }
-                } else if (parentValue == 2) {
-                    // 두번째 버튼 항목 클릭
-                    if (index == 1) {
-                        $("#slide_rcs_btn_tp_2").val(actionVal);
-                    } else if (index == 2) {
-                        $("#slide_rcs_btn_tp_4").val(actionVal);
-                    } else if (index == 3) {
-                        $("#slide_rcs_btn_tp_6").val(actionVal);
-                    } else if (index == 4) {
-                        $("#slide_rcs_btn_tp_8").val(actionVal);
-                    } else if (index == 5) {
-                        $("#slide_rcs_btn_tp_10").val(actionVal);
-                    } else if (index == 6) {
-                        $("#slide_rcs_btn_tp_12").val(actionVal)
-                    }
-                }
-            } else {
-                let dataValue = "rcs_btn_tp_" + parentValue;
-                if (parentValue == 1) {
-                    $("input[name='rcs_btn_tp_1']").val(actionVal);
-                } else if (parentValue == 2) {
-                    $("input[name='rcs_btn_tp_2']").val(actionVal);
-                } else if (parentValue == 3) {
-                    $("input[name='rcs_btn_tp_3']").val(actionVal);
-                }
-            }
-            $(this).parents('.row').siblings('.row').find('.action_name').val('');
-            $(this).parents('.row').siblings('.row').find('.text-count span').html('0');
-
-            if (actionVal == "RBTN01") {
-
-                layout += '<div class="row">' +
-                    '<div class="th top-border">복사할 값</div>' +
-                    '<div class="td top-border">' +
-                    '<input type="text" name="copy_value" class="txt_input width" placeholder="복사할 값을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name ="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN02") {
-                layout += '<div class="row">' +
-                    '<div class="th top-border">URL</div>' +
-                    '<div class="td top-border">' +
-                    '<input type="text" name="url_value" class="txt_input width en_font url_link" data="url" placeholder="URL 입력 (http:// 또는 https://필수입력)" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN03") {
-
-                layout += '<div class="row">' +
-                    '<div class="th top-border">전화번호</div>' +
-                    '<div class="td top-border">' +
-                    '<input type="text" name="phone_value_03" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN04") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">위도/경도</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="latitude_value" class="txt_input en_font half right-border" placeholder="위도를 입력해주세요." />' +
-                    '<input type="text" name="longitude_value" class="txt_input en_font half" placeholder="경도를 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th bottom-border">위치 이름</div>' +
-                    '<div class="td bottom-border">' +
-                    '<input type="text" name="location_value_04" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">Fallback URL</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="fallback_url_04" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN05") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">위치 이름</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="location_value_05" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">Fallback URL</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="fallback_url_05" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN06") {
-                layout +=
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name= "fallback_url_05" value =" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value =" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN07") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">시작일 / 종료일</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" placeholder="시작일" />' +
-                    '<input type="text" name="end_date" class="end_date txt_input en_font calendar" placeholder="종료일" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th bottom-border">제목</div>' +
-                    '<div class="td bottom-border">' +
-                    '<input type="text" name="calendar_title" class="txt_input width" placeholder="제목을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">내용</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="calendar_body" class="txt_input width" placeholder="내용을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-                $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
-                    onSelect: function (selected) {
-                        $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
-                    }
-                });
-                $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
-                    onSelect: function (selected) {
-                        $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
-                    }
-                });
-            }
-            if (actionVal == "RBTN08") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">전화번호</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="phone_value_08" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">문자메시지 내용</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="message_value" class="txt_input width" placeholder="문자메시지 내용을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>';
-                $(area).html(layout);
-            }
-            let actionButton = $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').length;
-            let typeSlide = $(this).parents('.rcs_slide_conts').length;
-
-            if (typeSlide == 0) {
-                if (actionVal != 0 && actionButton == 0) {
-                    $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
-                }
-                if (actionVal != 0 && actionButton >= 1) {
-                    $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').html('버튼' + parentValue);
-                }
-                if (actionVal == 0) {
-                    $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').remove();
-                }
-            } else {
-                let sectionInx = $(this).parents('.rcs_slide_conts.on').index() - 1;
-                let buttonLength = $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').length;
-
-                if (actionVal != 0 && buttonLength == 0) {
-                    $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
-                }
-                if (actionVal != 0 && buttonLength >= 1) {
-                    $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').html('버튼' + parentValue);
-                }
-                if (actionVal == 0) {
-                    $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').remove();
-                }
-            }
+        $(document).on('click', '.action_select ul li', function (e) {
+            rcsBtnType(this);
         });
 
         // RCS 슬라이드형 카드 Tab click event
@@ -1967,6 +1657,9 @@
                                 let btn = list[2].cont_btn_json[i]['suggestions'][j];
                                 if (btn && btn.hasOwnProperty('action')){
                                     let btnAction = btn['action'];
+
+                                    //셀렉트 호출;
+                                    //rcsBtnType()
 
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN01');
@@ -3324,6 +3017,319 @@
         }
     }
 
+    function rcsBtnType(e){
+        let actionVal = $(e).attr('data');
+        let area = $(e).parents('.row').siblings('.custom_box');
+        let layout = '';
+        let parentValue = $(e).parents('.action_select').attr('data');
+
+        $(area).children().remove();
+
+        let num = 0;
+        let rcsType = $("input[name='rcs_format_type']:checked").val().trim();
+
+        if (rcsType === "slide") {
+            let dataValue = "slide_rcs_btn_" + parentValue;
+            let index = $('.cardOn.on').index() + 1;
+
+            if (parentValue == 1) {
+                // 첫번째 버튼 항목 클릭
+                if (index == 1) {
+                    $("#slide_rcs_btn_tp_1").val(actionVal);
+                } else if (index == 2) {
+                    $("#slide_rcs_btn_tp_3").val(actionVal);
+                } else if (index == 3) {
+                    $("#slide_rcs_btn_tp_5").val(actionVal);
+                } else if (index == 4) {
+                    $("#slide_rcs_btn_tp_7").val(actionVal);
+                } else if (index == 5) {
+                    $("#slide_rcs_btn_tp_9").val(actionVal);
+                } else if (index == 6) {
+                    $("#slide_rcs_btn_tp_11").val(actionVal)
+                }
+            } else if (parentValue == 2) {
+                // 두번째 버튼 항목 클릭
+                if (index == 1) {
+                    $("#slide_rcs_btn_tp_2").val(actionVal);
+                } else if (index == 2) {
+                    $("#slide_rcs_btn_tp_4").val(actionVal);
+                } else if (index == 3) {
+                    $("#slide_rcs_btn_tp_6").val(actionVal);
+                } else if (index == 4) {
+                    $("#slide_rcs_btn_tp_8").val(actionVal);
+                } else if (index == 5) {
+                    $("#slide_rcs_btn_tp_10").val(actionVal);
+                } else if (index == 6) {
+                    $("#slide_rcs_btn_tp_12").val(actionVal)
+                }
+            }
+        } else {
+            let dataValue = "rcs_btn_tp_" + parentValue;
+            if (parentValue == 1) {
+                $("input[name='rcs_btn_tp_1']").val(actionVal);
+            } else if (parentValue == 2) {
+                $("input[name='rcs_btn_tp_2']").val(actionVal);
+            } else if (parentValue == 3) {
+                $("input[name='rcs_btn_tp_3']").val(actionVal);
+            }
+        }
+        $(e).parents('.row').siblings('.row').find('.action_name').val('');
+        $(e).parents('.row').siblings('.row').find('.text-count span').html('0');
+
+        if (actionVal == "RBTN01") {
+
+            layout += '<div class="row">' +
+                '<div class="th top-border">복사할 값</div>' +
+                '<div class="td top-border">' +
+                '<input type="text" name="copy_value" class="txt_input width" placeholder="복사할 값을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name ="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN02") {
+            layout += '<div class="row">' +
+                '<div class="th top-border">URL</div>' +
+                '<div class="td top-border">' +
+                '<input type="text" name="url_value" class="txt_input width en_font url_link" data="url" placeholder="URL 입력 (http:// 또는 https://필수입력)" />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN03") {
+
+            layout += '<div class="row">' +
+                '<div class="th top-border">전화번호</div>' +
+                '<div class="td top-border">' +
+                '<input type="text" name="phone_value_03" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN04") {
+
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">위도/경도</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="latitude_value" class="txt_input en_font half right-border" placeholder="위도를 입력해주세요." />' +
+                '<input type="text" name="longitude_value" class="txt_input en_font half" placeholder="경도를 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th bottom-border">위치 이름</div>' +
+                '<div class="td bottom-border">' +
+                '<input type="text" name="location_value_04" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">Fallback URL</div>' +
+                '<div class="td">' +
+                '<input type="text" name="fallback_url_04" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN05") {
+
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">위치 이름</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="location_value_05" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">Fallback URL</div>' +
+                '<div class="td">' +
+                '<input type="text" name="fallback_url_05" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN06") {
+            layout +=
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name= "fallback_url_05" value =" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value =" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN07") {
+
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">시작일 / 종료일</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" placeholder="시작일" />' +
+                '<input type="text" name="end_date" class="end_date txt_input en_font calendar" placeholder="종료일" />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th bottom-border">제목</div>' +
+                '<div class="td bottom-border">' +
+                '<input type="text" name="calendar_title" class="txt_input width" placeholder="제목을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">내용</div>' +
+                '<div class="td">' +
+                '<input type="text" name="calendar_body" class="txt_input width" placeholder="내용을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+            $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
+                }
+            });
+            $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
+                }
+            });
+        }
+        if (actionVal == "RBTN08") {
+
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">전화번호</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="phone_value_08" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">문자메시지 내용</div>' +
+                '<div class="td">' +
+                '<input type="text" name="message_value" class="txt_input width" placeholder="문자메시지 내용을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>';
+            $(area).html(layout);
+        }
+        let actionButton = $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').length;
+        let typeSlide = $(e).parents('.rcs_slide_conts').length;
+
+        if (typeSlide == 0) {
+            if (actionVal != 0 && actionButton == 0) {
+                $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
+            }
+            if (actionVal != 0 && actionButton >= 1) {
+                $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').html('버튼' + parentValue);
+            }
+            if (actionVal == 0) {
+                $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').remove();
+            }
+        } else {
+            let sectionInx = $(e).parents('.rcs_slide_conts.on').index() - 1;
+            let buttonLength = $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').length;
+
+            if (actionVal != 0 && buttonLength == 0) {
+                $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
+            }
+            if (actionVal != 0 && buttonLength >= 1) {
+                $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').html('버튼' + parentValue);
+            }
+            if (actionVal == 0) {
+                $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').remove();
+            }
+        }
+    }
 </script>
 
 
