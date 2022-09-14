@@ -355,7 +355,7 @@
         </selectKey>
         update Tblmicp_program set
             PRO_ST = #{pro_st}
-            , MAX_START_DT = #{max_start_dt}
+            , MAX_START_DT = current_timestamp
         <where>
             inten_id = #{inten_id}
                 and orig_id = #{orig_id}

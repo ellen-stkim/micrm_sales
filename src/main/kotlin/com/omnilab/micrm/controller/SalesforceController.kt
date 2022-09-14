@@ -631,7 +631,6 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/error")
     fun error(@PathVariable(value = "usr_cd") usr_cd: String): String {
         logger.error("error")
-
         return "index"
     }
 
