@@ -124,8 +124,7 @@
                                     <div class="row body">
                                         <div class="th">문자 제목</div>
                                         <div class="column_1">
-                                            <input type="text" class="title kakaoTitle" name="cont_sub_list"
-                                                   placeholder="문자 제목을 입력하세요."/>
+                                            <input type="text" class="title kakaoTitle" name="cont_sub_list" placeholder="문자 제목을 입력하세요."/>
                                             <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                         </div>
                                     </div>
@@ -319,8 +318,6 @@
                                 <div class="viewer_area">
                                     <div class="top">문자 본문 입력창</div>
                                     <div class="inner">
-<%--                                        <div class="sms_title" id="sms_title"></div>--%>
-<%--                                        <div class="sms_img"></div>--%>
                                         <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'sms');"></textarea>
                                     </div>
                                     <div class="byte">
@@ -1157,9 +1154,12 @@
     function mobileInfo() {
         const res = function(response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
+            $(".container").html($(".container", $doc).html());
+            /*
             $(".tab_contents:eq(0)").html($(".tab_contents:eq(0)", $doc).html());
             $(".tab_contents:eq(1)").html($(".tab_contents:eq(1)", $doc).html());
             $(".tab_contents:eq(2)").html($(".tab_contents:eq(2)", $doc).html());
+            */
             /*
             let list = response.list;
             let filePath = response.filePath;
