@@ -1756,8 +1756,8 @@
 
                                     // 버튼 명
                                     if(btnAction.hasOwnProperty('displayText')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') input[name="slide_rcs_btn_'+ (j + 1) +'"]:eq(' + j + ')').val(btnAction['displayText']);
-                                        $('.rcs_slide_conts:eq(' + i + ') .button-name:eq(' + j + ') span span').text(btnAction['displayText'].length);
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name="slide_rcs_btn_'+ (j + 1) +'"]').val(btnAction['displayText']);
+                                        $('.rcs_slide_conts:eq(' + i + ') .button-name:eq('+ j +') span span').text(btnAction['displayText'].length);
                                     }
                                 }
                             }
