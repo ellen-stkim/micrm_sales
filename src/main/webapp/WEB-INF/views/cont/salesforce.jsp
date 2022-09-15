@@ -3047,6 +3047,7 @@
     }
 
     function rcsBtnType(e){
+        console.log(e);
         let actionVal = $(e).attr('data');
         let area = $(e).parents('.row').siblings('.custom_box');
         let layout = '';
