@@ -151,9 +151,32 @@ class SalesforceController {
         return statusMap;
     }
 
-    @ResponseBody
+    //@ResponseBody
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
-    fun selectMobileContent(@ModelAttribute dto: SalesforceDto, @PathVariable(value = "usr_cd") usr_cd: String): Map<String, Any> {
+    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
+        val tblmiContMstdto = Tblmi_cont_mstDto()
+        tblmiContMstdto.seq = seq
+        tblmiContMstdto.reg_dt = usr_cd
+        val view = ModelAndView("/cont/detailMdm")
+        val map = sysSettingService.getDBValue()
+        val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+        val cntMap = mobileContentService.isCheckSender()
+
+        view.addObject("list" , listMap["list"])
+        view.addObject("columnValue",map["columnValue"]);
+        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+        /*
         val statusMap: MutableMap<String, Any> = hashMapOf()
 
         val tblmiContMstdto = Tblmi_cont_mstDto()
@@ -173,6 +196,7 @@ class SalesforceController {
         val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
         statusMap["filePath"] = uploadPrefix?.cd_val as String
         return statusMap
+         */
     }
 
     /** @Method Name  : previewService

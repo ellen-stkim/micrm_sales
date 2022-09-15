@@ -8,7 +8,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
-
 <!-- smsCreste.js -->
 <script src="/js/smsCreate.js"></script>
 <!-- image upload js -->
@@ -1157,6 +1156,9 @@
     // 정보 조회
     function mobileInfo() {
         const res = function(response) {
+            const $doc = new DOMParser().parseFromString(response, "text/html");
+            $(".container").html($(".container", $doc).html());
+            /*
             let list = response.list;
             let filePath = response.filePath;
 
@@ -1250,7 +1252,7 @@
                 if(list[0].kko_btn_nm == null) {
                     $('.kakao_link').remove();
                 } else {
-                     $('textarea[name="kakao_body"]').after('<a href="' + list[0].kko_btn_url + '" class="kakao_link" target="_blank">' + list[0].kko_btn_nm + '</a>');
+                    $('textarea[name="kakao_body"]').after('<a href="' + list[0].kko_btn_url + '" class="kakao_link" target="_blank">' + list[0].kko_btn_nm + '</a>');
                 }
             }
             // 카카오톡 끝
@@ -1785,8 +1787,9 @@
                     $('input[name="rcs_footer"]').val(list[2].rcs_footer);
                 }
             }
-            // RCS 끝
+            // RCS 끝*/
         }
+
         let param = { seq: $('#seq').val() }
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
