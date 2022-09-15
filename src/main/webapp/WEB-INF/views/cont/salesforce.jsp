@@ -1658,6 +1658,7 @@
                                 if (btn && btn.hasOwnProperty('action')){
                                     let btnAction = btn['action'];
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
+                                        console.log($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN01"]'));
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN01"]'))
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN01');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN01');
@@ -1777,7 +1778,7 @@
             }
             // RCS 끝
         }
-        let param = {seq: $('#seq').val()}
+        let param = { seq: $('#seq').val() }
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
