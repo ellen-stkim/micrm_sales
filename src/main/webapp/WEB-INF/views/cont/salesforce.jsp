@@ -1666,7 +1666,7 @@
 
                         // 내용
                         $('.rcsContents:nth-child(' + (i+1) + ')').val(textAreaParsing(list[2].slideBody[i]));
-                        rcsCreate.rcsContents(textAreaParsing(list[2].slideBody[i]), i);
+                        rcsCreate.rcsContents(list[2].slideBody[i], i);
 
                         // 버튼 액션 선택
                         for(let j=0; j<2; j++) {
@@ -1675,7 +1675,6 @@
                                 if (btn && btn.hasOwnProperty('action')){
                                     let btnAction = btn['action'];
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
-                                        console.log($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN01"]'));
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN01"]'))
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN01');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN01');
