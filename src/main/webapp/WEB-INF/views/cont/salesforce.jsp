@@ -1673,6 +1673,7 @@
                             if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
                                 let btn = list[2].cont_btn_json[i]['suggestions'][j];
                                 if (btn && btn.hasOwnProperty('action')){
+                                    console.log($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option'));
                                     let btnAction = btn['action'];
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN01"]')[0])
