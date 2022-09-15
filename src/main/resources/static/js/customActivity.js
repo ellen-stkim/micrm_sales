@@ -167,7 +167,6 @@ define(["postmonger"], function (Postmonger) {
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
-		console.log(payload);
 	}
 
     // 프리뷰에서 저장 버튼 누르기
@@ -230,7 +229,6 @@ define(["postmonger"], function (Postmonger) {
             }
         }
 		let data = $("#form").serializeArray();
-		console.log(data);
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
 		data.push({name: 'orig_id', value: model.id});

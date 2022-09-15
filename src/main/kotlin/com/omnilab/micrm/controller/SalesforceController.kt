@@ -158,13 +158,10 @@ class SalesforceController {
         tblmiContMstdto.seq = seq
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
-        val map = sysSettingService.getDBValue()
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
 
         view.addObject("list" , listMap["list"])
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
@@ -176,27 +173,6 @@ class SalesforceController {
         view.addObject("filePath", uploadPrefix?.cd_val)
 
         return view
-        /*
-        val statusMap: MutableMap<String, Any> = hashMapOf()
-
-        val tblmiContMstdto = Tblmi_cont_mstDto()
-        tblmiContMstdto.seq = dto.seq
-
-        val listMap: Map<String, Any> = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = mobileContentService.isCheckSender()
-
-        statusMap["list"] = listMap["list"] as List<Content_view_Dto>
-        statusMap["kakaoCnt"] = cntMap["kakaoCnt"] as Any
-        statusMap["smsCnt"] = cntMap["smsCnt"] as Any
-        statusMap["rcsCnt"] = cntMap["rcsCnt"] as Any
-
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        statusMap["filePath"] = uploadPrefix?.cd_val as String
-        return statusMap
-         */
     }
 
     /** @Method Name  : previewService

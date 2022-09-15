@@ -101,7 +101,7 @@
                                     <div class="value" data="0">개인화 변수</div>
                                     <ul class="option mappingLst"></ul>
                                 </div>
-                                <input type="hidden" id="recv_phone" name="from_to"/>
+                                <input type="hidden" id="recv_phone" name="from_to" value="${list[0].from_to}"/>
                             </div>
                         </div>
                     </div>
@@ -3684,35 +3684,13 @@
 
 
 <script>
-
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
-
-    mdmLoad();
 
     function getDBValue() {
         let dbValue = $('input[name="dbInfo"]:checked').val();
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
         let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
-
-        // console.log("dbValue : " + dbValue);
-
-        /*if (dbValue == '0') {
-            $('div[name="edmDB"]').not('.rcsTitleVal, .rcsContsVal').show();
-            $('div[name="defaultDB"]').not('.rcsTitleVal, .rcsContsVal').hide();
-            $('.rcsTitleVal').attr('name', 'edmDB');
-            $('.rcsTitleVal .option').html(edmDB);
-            $('.rcsContsVal').attr('name', 'edmDB');
-            $('.rcsContsVal .option').html(edmDB);
-        }
-        if (dbValue == '1') {
-            $('div[name="edmDB"]').not('.rcsTitleVal, .rcsContsVal').hide();
-            $('div[name="defaultDB"]').not('.rcsTitleVal, .rcsContsVal').show();
-            $('.rcsTitleVal').attr('name', 'defaultDB');
-            $('.rcsTitleVal .option').html(defaultDB);
-            $('.rcsContsVal').attr('name', 'defaultDB');
-            $('.rcsContsVal .option').html(defaultDB);
-        }*/
 
         $('.rcsTitleVal[name="edmDB"] .option').html(edmDB);
         $('.rcsContsVal[name="edmDB"] .option').html(edmDB);
@@ -3737,7 +3715,6 @@
     });
 
     function mdmLoad() {
-
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');
