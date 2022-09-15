@@ -28,6 +28,9 @@
                     <li>메세지</li>
                     <li>모바일</li>
                     <li>모바일 컨텐츠 생성</li>
+                    <div class="right">
+                        <span class="btn_sm_line" style="width: 75px; margin: 7px 7px 0 0;" id="contLoad">불러오기</span>
+                    </div>
                 </ul>
                 <!-- tooltip box 영역 끝 -->
             </div>
@@ -1142,7 +1145,6 @@
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
 
-            let minInx;
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
             let smsTxt = $('#sms .textarea');
@@ -1153,8 +1155,7 @@
             const mailUseYn = $("input[name='formatType'][value='sms']").is(":checked");
             const rcsUseYn = $("input[name='formatType'][value='rcs']").is(":checked");
 
-            let minIx = "";
-
+            let minInx;
             // 컨텐츠 USE_YN 값에 따른 minInx 변경
             if (kakaoUseYn) {
                 minInx = 0;
@@ -1206,7 +1207,7 @@
                     $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
                     $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
                 }
-
+                /*
                 let swiperEl = $('.slideSwiper').length;
                 if (swiperEl > 0) {
                     new Swiper('.slideSwiper', {
@@ -1221,8 +1222,9 @@
                         },
                     });
                 }
+                 */
             }
-            let param = {usr_grp_cd: $('#usr_grp_cd').val()}
+            let param = { usr_grp_cd : $('#usr_grp_cd').val() }
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
         }
 
@@ -1973,27 +1975,13 @@
 
     // 이미지 리스트 Input 저장하기
     function imgSendSave(seq) {
-
         let imgType = $("#imgType").val();  // 이미지 파일 타입
         let imgLength = $('input[name="contentsImg"]:checked').length;
         let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
         let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
         let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
 
-       /* console.log("imgType : " + imgType);
-        console.log("imgCheck : " + imgCheck);
-        console.log("imgLength : " + imgLength);
-        console.log("ImgNm : " + ImgNm);
-        console.log("imgUrl : " + imgUrl);*/
-
         if (imgLength > 0) {
-            //console.log("test length");
-            /*if(imgType === 'kakaoImage'){
-                console.log("카카오 : " + seq )
-                imageCreate(imgType,imgUrl,orgNm,imgCheck);
-            } else if(imgType === 'smsImage'){
-                imageCreate(imgType,imgUrl,orgNm,imgCheck);
-            }*/
             let popParents = $(form).parents('.layer_pop').attr('data');
             $('#' + popParents).val(imgUrl);
             $(form).parents('.layer_pop').removeClass('active');

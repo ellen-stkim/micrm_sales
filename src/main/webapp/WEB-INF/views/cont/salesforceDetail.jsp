@@ -25,6 +25,9 @@
                     <li>메세지</li>
                     <li>모바일</li>
                     <li>모바일 컨텐츠 수정</li>
+                    <div class="right">
+                        <span class="btn_sm_line" style="width: 75px; margin: 7px 7px 0 0;" id="contLoad">불러오기</span>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -2751,31 +2754,21 @@
                                                     <div class="row">
                                                         <div class="th bottom-border">위치 이름</div>
                                                         <div class="td bottom-border">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="location_value_04"
-                                                                   class="txt_input width"
-                                                                   value="${btn['action']['mapAction']['showLocation']['location']['label']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="location_value_04" class="txt_input width" value="${btn['action']['mapAction']['showLocation']['location']['label']}"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="th">Fallback URL</div>
                                                         <div class="td">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="fallback_url_04"
-                                                                   class="txt_input width en_font url_link"
-                                                                   data="url"
-                                                                   value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="fallback_url_04" class="txt_input width en_font url_link" data="url" value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"/>
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="copy_value" value=" "/>
                                                     <input type="hidden" name="url_value" value=" "/>
                                                     <input type="hidden" name="phone_value_03" value=" "/>
-                                                    <input type="hidden" name="location_value_05"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_05" value=" "/>
                                                     <input type="hidden" name="fallback_url_05" value=" "/>
                                                     <input type="hidden" name="start_date" value=" "/>
                                                     <input type="hidden" name="end_date" value=" "/>
@@ -2788,22 +2781,14 @@
                                                     <div class="row">
                                                         <div class="th bottom-border top-border">위치 이름</div>
                                                         <div class="td bottom-border top-border">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="location_value_05"
-                                                                   class="txt_input width"
-                                                                   value="${btn['action']['mapAction']['showLocation']['location']['query']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="location_value_05" class="txt_input width" value="${btn['action']['mapAction']['showLocation']['location']['query']}"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="th">Fallback URL</div>
                                                         <div class="td">
-                                                            <input type="text" name="fallback_url_05"
-                                                                   class="txt_input width en_font url_link"
-                                                                   data="url"
-                                                                   value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"
-                                                            />
+                                                            <input type="text" name="fallback_url_05" class="txt_input width en_font url_link" data="url" value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"/>
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="copy_value" value=" "/>
@@ -2811,8 +2796,7 @@
                                                     <input type="hidden" name="phone_value_03" value=" "/>
                                                     <input type="hidden" name="latitude_value" value=" "/>
                                                     <input type="hidden" name="longitude_value" value=" "/>
-                                                    <input type="hidden" name="location_value_04"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_04" value=" "/>
                                                     <input type="hidden" name="fallback_url_04" value=" "/>
                                                     <input type="hidden" name="start_date" value=" "/>
                                                     <input type="hidden" name="end_date" value=" "/>
@@ -2825,30 +2809,19 @@
                                                     <c:if test="${!cutil:isEmptyObject(btn['action']['mapAction'])}">
                                                         <input type="hidden" name="copy_value" value=" "/>
                                                         <input type="hidden" name="url_value" value=" "/>
-                                                        <input type="hidden" name="phone_value_03"
-                                                               value=" "/>
-                                                        <input type="hidden" name="latitude_value"
-                                                               value=" "/>
-                                                        <input type="hidden" name="longitude_value"
-                                                               value=" "/>
-                                                        <input type="hidden" name="location_value_04"
-                                                               value=" "/>
-                                                        <input type="hidden" name="location_value_05"
-                                                               value=" "/>
-                                                        <input type="hidden" name="fallback_url_04"
-                                                               value=" "/>
-                                                        <input type="hidden" name="fallback_url_05"
-                                                               value=" "/>
+                                                        <input type="hidden" name="phone_value_03" value=" "/>
+                                                        <input type="hidden" name="latitude_value" value=" "/>
+                                                        <input type="hidden" name="longitude_value" value=" "/>
+                                                        <input type="hidden" name="location_value_04" value=" "/>
+                                                        <input type="hidden" name="location_value_05" value=" "/>
+                                                        <input type="hidden" name="fallback_url_04" value=" "/>
+                                                        <input type="hidden" name="fallback_url_05" value=" "/>
                                                         <input type="hidden" name="start_date" value=" "/>
                                                         <input type="hidden" name="end_date" value=" "/>
-                                                        <input type="hidden" name="calendar_title"
-                                                               value=" "/>
-                                                        <input type="hidden" name="calendar_body"
-                                                               value=" "/>
-                                                        <input type="hidden" name="phone_value_08"
-                                                               value=" "/>
-                                                        <input type="hidden" name="message_value"
-                                                               value=" "/>
+                                                        <input type="hidden" name="calendar_title" value=" "/>
+                                                        <input type="hidden" name="calendar_body" value=" "/>
+                                                        <input type="hidden" name="phone_value_08" value=" "/>
+                                                        <input type="hidden" name="message_value" value=" "/>
                                                     </c:if>
                                                 </c:if>
                                                 <c:if test="${!cutil:isEmptyObject(btn['action']['calendarAction'])}">
@@ -2856,38 +2829,23 @@
                                                         <div class="th bottom-border top-border">시작일 / 종료일
                                                         </div>
                                                         <div class="td bottom-border top-border">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="start_date"
-                                                                   class="start_date txt_input en_font calendar right-border"
-                                                                   value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['startTime'],'T')[0]}"
-                                                            />
-                                                            <input type="text" name="end_date"
-                                                                   class="end_date txt_input en_font calendar"
-                                                                   value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['endTime'],'T')[0]}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['startTime'],'T')[0]}"/>
+                                                            <input type="text" name="end_date" class="end_date txt_input en_font calendar" value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['endTime'],'T')[0]}"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="th bottom-border">제목</div>
                                                         <div class="td bottom-border">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="calendar_title"
-                                                                   class="txt_input width"
-                                                                   value="${btn['action']['calendarAction']['createCalendarEvent']['title']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="calendar_title" class="txt_input width" value="${btn['action']['calendarAction']['createCalendarEvent']['title']}"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="th">내용</div>
                                                         <div class="td">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="calendar_body"
-                                                                   class="txt_input width"
-                                                                   value="${btn['action']['calendarAction']['createCalendarEvent']['description']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="calendar_body" class="txt_input width" value="${btn['action']['calendarAction']['createCalendarEvent']['description']}"/>
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="copy_value" value=" "/>
@@ -2895,11 +2853,9 @@
                                                     <input type="hidden" name="phone_value_03" value=" "/>
                                                     <input type="hidden" name="latitude_value" value=" "/>
                                                     <input type="hidden" name="longitude_value" value=" "/>
-                                                    <input type="hidden" name="location_value_04"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_04" value=" "/>
                                                     <input type="hidden" name="fallback_url_04" value=" "/>
-                                                    <input type="hidden" name="location_value_05"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_05" value=" "/>
                                                     <input type="hidden" name="fallback_url_05" value=" "/>
                                                     <input type="hidden" name="phone_value_08" value=" "/>
                                                     <input type="hidden" name="message_value" value=" "/>
@@ -2908,23 +2864,15 @@
                                                     <div class="row">
                                                         <div class="th bottom-border top-border">전화번호</div>
                                                         <div class="td bottom-border top-border">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="phone_value_08"
-                                                                   class="txt_input width en_font"
-                                                                   value="${btn['action']['composeAction']['composeTextMessage']['phoneNumber']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="phone_value_08" class="txt_input width en_font" value="${btn['action']['composeAction']['composeTextMessage']['phoneNumber']}"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="th">문자메시지 내용</div>
                                                         <div class="td">
-                                                            <c:set var="btn"
-                                                                   value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                            <input type="text" name="message_value"
-                                                                   class="txt_input width"
-                                                                   value="${btn['action']['composeAction']['composeTextMessage']['text']}"
-                                                            />
+                                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                            <input type="text" name="message_value" class="txt_input width" value="${btn['action']['composeAction']['composeTextMessage']['text']}"/>
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="copy_value" value=" "/>
@@ -2932,11 +2880,9 @@
                                                     <input type="hidden" name="phone_value_03" value=" "/>
                                                     <input type="hidden" name="latitude_value" value=" "/>
                                                     <input type="hidden" name="longitude_value" value=" "/>
-                                                    <input type="hidden" name="location_value_04"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_04" value=" "/>
                                                     <input type="hidden" name="fallback_url_04" value=" "/>
-                                                    <input type="hidden" name="location_value_05"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_05" value=" "/>
                                                     <input type="hidden" name="fallback_url_05" value=" "/>
                                                     <input type="hidden" name="start_date" value=" "/>
                                                     <input type="hidden" name="end_date" value=" "/>
@@ -2952,44 +2898,37 @@
                                                     <div class="select action_select" data="2">
                                                         <span id="btnHidden${btnCnt2}"></span>
                                                         <c:set var="btnCnt2" value="${btnCnt2+2}"></c:set>
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
                                                         <c:choose>
                                                             <c:when test="${!cutil:isEmptyObject(btn['action']['clipboardAction']['copyToClipboard'])}">
-                                                                <div class="value" data="RBTN01"
-                                                                     style="color: rgb(34, 34, 34);">
+                                                                <div class="value" data="RBTN01" style="color: rgb(34, 34, 34);">
                                                                     복사하기
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${!cutil:isEmptyObject(btn['action']['urlAction']['openUrl'])}">
-                                                                <div class="value" data="RBTN02"
-                                                                     style="color: rgb(34, 34, 34);">
+                                                                <div class="value" data="RBTN02" style="color: rgb(34, 34, 34);">
                                                                     URL연결
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${!cutil:isEmptyObject(btn['action']['dialerAction'])}">
-                                                                <div class="value" data="RBTN03"
-                                                                     style="color: rgb(34, 34, 34);">
+                                                                <div class="value" data="RBTN03" style="color: rgb(34, 34, 34);">
                                                                     전화걸기
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction']['showLocation']['location']['latitude'])}">
                                                                 <div class="value" data="RBTN04"
-                                                                     style="color: rgb(34, 34, 34);">
-                                                                    지도보여주기(좌표)
+                                                                     style="color: rgb(34, 34, 34);">지도보여주기(좌표)
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction']['showLocation']['location']['query'])}">
-                                                                <div class="value" data="RBTN05"
-                                                                     style="color: rgb(34, 34, 34);">
+                                                                <div class="value" data="RBTN05" style="color: rgb(34, 34, 34);">
                                                                     지도보여주기(쿼리)
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction'])}">
                                                                 <c:choose>
                                                                     <c:when test="${cutil:isEmptyObject(btn['action']['mapAction']['showLocation'])}">
-                                                                        <div class="value" data="RBTN06"
-                                                                             style="color: rgb(34, 34, 34);">
+                                                                        <div class="value" data="RBTN06" style="color: rgb(34, 34, 34);">
                                                                             현재위치공유
                                                                         </div>
                                                                     </c:when>
@@ -3033,70 +2972,54 @@
                                                 <div class="th">버튼 명</div>
                                                 <div class="td button-name">
                                                     <c:if test="${list[2].msg_tp eq 'DMCH211'}">
-                                                    <c:set var="btn"
-                                                           value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                    <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
                                                     <c:if test="${fn:trim(btn['action']['displayText']) != ''}">
-                                                        <input type="text" name="slide_rcs_btn_2"
-                                                               class="txt_input action_name" data="2"
-                                                               onkeyup="rcsCreate.buttonCount(this, 'slideSmall');"
-                                                               value="${btn['action']['displayText']}"/>
+                                                        <input type="text" name="slide_rcs_btn_2" class="txt_input action_name" data="2" onkeyup="rcsCreate.buttonCount(this, 'slideSmall');" value="${btn['action']['displayText']}"/>
                                                     </c:if>
                                                     <c:if test="${fn:trim(btn['action']['displayText']) == ''}">
-                                                        <input type="text" name="slide_rcs_btn_2"
-                                                               class="txt_input action_name" data="2"
-                                                               placeholder="버튼 명을 입력해주세요."
-                                                               onkeyup="rcsCreate.buttonCount(this,'slideSmall');">
+                                                        <input type="text" name="slide_rcs_btn_2" class="txt_input action_name" data="2" placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,'slideSmall');">
                                                     </c:if>
                                                     <span class="text-count en_font">
-                                                                            <span>
-                                                                                <c:if test="${fn:trim(btn['action']['displayText']) != ''}">
-                                                                                    ${fn:length(btn['action']['displayText'])}
-                                                                                </c:if>
-                                                                                <c:if test="${fn:trim(btn['action']['displayText']) == ''}">
-                                                                                    0
-                                                                                </c:if>
-                                                                            </span>/5</span>
+                                                        <span>
+                                                            <c:if test="${fn:trim(btn['action']['displayText']) != ''}">
+                                                                ${fn:length(btn['action']['displayText'])}
+                                                            </c:if>
+                                                            <c:if test="${fn:trim(btn['action']['displayText']) == ''}">
+                                                                0
+                                                            </c:if>
+                                                        </span>/5
+                                                    </span>
                                                 </div>
                                                 </c:if>
                                                 <c:if test="${list[2].msg_tp eq 'DMCH212'}">
-                                                <c:set var="btn"
-                                                       value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
                                                 <c:if test="${fn:trim(btn['action']['displayText']) != ''}">
-                                                    <input type="text" name="slide_rcs_btn_2"
-                                                           class="txt_input action_name" data="2"
-                                                           onkeyup="rcsCreate.buttonCount(this, 'slideMedium');"
-                                                           value="${btn['action']['displayText']}"/>
+                                                    <input type="text" name="slide_rcs_btn_2" class="txt_input action_name" data="2" onkeyup="rcsCreate.buttonCount(this, 'slideMedium');" value="${btn['action']['displayText']}"/>
                                                 </c:if>
                                                 <c:if test="${fn:trim(btn['action']['displayText']) == ''}">
-                                                    <input type="text" name="slide_rcs_btn_2"
-                                                           class="txt_input action_name" data="2"
-                                                           placeholder="버튼 명을 입력해주세요."
-                                                           onkeyup="rcsCreate.buttonCount(this,'slideMedium');">
+                                                    <input type="text" name="slide_rcs_btn_2" class="txt_input action_name" data="2" placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,'slideMedium');">
                                                 </c:if>
                                                 <span class="text-count en_font">
-                                                                            <span>
-                                                                                <c:if test="${fn:trim(btn['action']['displayText']) != ''}">
-                                                                                    ${fn:length(btn['action']['displayText'])}
-                                                                                </c:if>
-                                                                                <c:if test="${fn:trim(btn['action']['displayText']) == ''}">
-                                                                                    0
-                                                                                </c:if>
-                                                                            </span>/17</span>
+                                                    <span>
+                                                        <c:if test="${fn:trim(btn['action']['displayText']) != ''}">
+                                                            ${fn:length(btn['action']['displayText'])}
+                                                        </c:if>
+                                                        <c:if test="${fn:trim(btn['action']['displayText']) == ''}">
+                                                            0
+                                                        </c:if>
+                                                    </span>/17
+                                                </span>
                                             </div>
                                             </c:if>
                                         </div>
                                         <div class="custom_box">
-                                            <c:set var="btn"
-                                                   value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                            <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
                                             <c:if test="${!cutil:isEmptyObject(btn['action']['clipboardAction']['copyToClipboard'])}">
                                                 <div class="row">
                                                     <div class="th top-border">복사할 값</div>
                                                     <div class="td top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="copy_value"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['clipboardAction']['copyToClipboard']['text']}"/>
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="copy_value" class="txt_input width" value="${btn['action']['clipboardAction']['copyToClipboard']['text']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="url_value" value=" "/>
@@ -3118,11 +3041,8 @@
                                                 <div class="row">
                                                     <div class="th top-border">URL</div>
                                                     <div class="td top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="url_value"
-                                                               class="txt_input width" data="url"
-                                                               value="${btn['action']['urlAction']['openUrl']['url']}"/>
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="url_value" class="txt_input width" data="url" value="${btn['action']['urlAction']['openUrl']['url']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="copy_value" value=" "/>
@@ -3144,12 +3064,8 @@
                                                 <div class="row">
                                                     <div class="th top-border">전화번호</div>
                                                     <div class="td top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="phone_value_03"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['dialerAction']['dialPhoneNumber']['phoneNumber']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="phone_value_03" class="txt_input width" value="${btn['action']['dialerAction']['dialPhoneNumber']['phoneNumber']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="copy_value" value=" "/>
@@ -3171,39 +3087,23 @@
                                                 <div class="row">
                                                     <div class="th bottom-border top-border">위도/경도</div>
                                                     <div class="td bottom-border top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="latitude_value"
-                                                               class="txt_input en_font half right-border"
-                                                               value="${btn['action']['mapAction']['showLocation']['location']['latitude']}"
-                                                        />
-                                                        <input type="text" name="longitude_value"
-                                                               class="txt_input en_font half"
-                                                               value="${btn['action']['mapAction']['showLocation']['location']['longitude']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="latitude_value" class="txt_input en_font half right-border" value="${btn['action']['mapAction']['showLocation']['location']['latitude']}"/>
+                                                        <input type="text" name="longitude_value" class="txt_input en_font half" value="${btn['action']['mapAction']['showLocation']['location']['longitude']}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th bottom-border">위치 이름</div>
                                                     <div class="td bottom-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="location_value_04"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['mapAction']['showLocation']['location']['label']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="location_value_04" class="txt_input width" value="${btn['action']['mapAction']['showLocation']['location']['label']}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th">Fallback URL</div>
                                                     <div class="td">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="fallback_url_04"
-                                                               class="txt_input width en_font url_link"
-                                                               data="url"
-                                                               value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="fallback_url_04" class="txt_input width en_font url_link" data="url" value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="copy_value" value=" "/>
@@ -3222,24 +3122,15 @@
                                                 <div class="row">
                                                     <div class="th bottom-border top-border">위치 이름</div>
                                                     <div class="td bottom-border top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="location_value_05"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['mapAction']['showLocation']['location']['query']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="location_value_05" class="txt_input width" value="${btn['action']['mapAction']['showLocation']['location']['query']}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th">Fallback URL</div>
                                                     <div class="td">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="fallback_url_05"
-                                                               class="txt_input width en_font url_link"
-                                                               data="url"
-                                                               value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="fallback_url_05" class="txt_input width en_font url_link" data="url" value="${btn['action']['mapAction']['showLocation']['fallbackUrl']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="copy_value" value=" "/>
@@ -3263,10 +3154,8 @@
                                                     <input type="hidden" name="phone_value_03" value=" "/>
                                                     <input type="hidden" name="latitude_value" value=" "/>
                                                     <input type="hidden" name="longitude_value" value=" "/>
-                                                    <input type="hidden" name="location_value_04"
-                                                           value=" "/>
-                                                    <input type="hidden" name="location_value_05"
-                                                           value=" "/>
+                                                    <input type="hidden" name="location_value_04" value=" "/>
+                                                    <input type="hidden" name="location_value_05" value=" "/>
                                                     <input type="hidden" name="fallback_url_04" value=" "/>
                                                     <input type="hidden" name="fallback_url_05" value=" "/>
                                                     <input type="hidden" name="start_date" value=" "/>
@@ -3281,38 +3170,23 @@
                                                 <div class="row">
                                                     <div class="th bottom-border top-border">시작일 / 종료일</div>
                                                     <div class="td bottom-border top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="start_date"
-                                                               class="start_date txt_input en_font calendar right-border"
-                                                               value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['startTime'],'T')[0]}"
-                                                        />
-                                                        <input type="text" name="end_date"
-                                                               class="end_date txt_input en_font calendar"
-                                                               value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['endTime'],'T')[0]}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['startTime'],'T')[0]}"/>
+                                                        <input type="text" name="end_date" class="end_date txt_input en_font calendar" value="${fn:split(btn['action']['calendarAction']['createCalendarEvent']['endTime'],'T')[0]}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th bottom-border">제목</div>
                                                     <div class="td bottom-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="calendar_title"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['calendarAction']['createCalendarEvent']['title']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="calendar_title" class="txt_input width" value="${btn['action']['calendarAction']['createCalendarEvent']['title']}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th">내용</div>
                                                     <div class="td">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="calendar_body"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['calendarAction']['createCalendarEvent']['description']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="calendar_body" class="txt_input width" value="${btn['action']['calendarAction']['createCalendarEvent']['description']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="copy_value" value=" "/>
@@ -3331,23 +3205,15 @@
                                                 <div class="row">
                                                     <div class="th bottom-border top-border">전화번호</div>
                                                     <div class="td bottom-border top-border">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="phone_value_08"
-                                                               class="txt_input width en_font"
-                                                               value="${btn['action']['composeAction']['composeTextMessage']['phoneNumber']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="phone_value_08" class="txt_input width en_font" value="${btn['action']['composeAction']['composeTextMessage']['phoneNumber']}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th">문자메시지 내용</div>
                                                     <div class="td">
-                                                        <c:set var="btn"
-                                                               value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                        <input type="text" name="message_value"
-                                                               class="txt_input width"
-                                                               value="${btn['action']['composeAction']['composeTextMessage']['text']}"
-                                                        />
+                                                        <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                        <input type="text" name="message_value" class="txt_input width" value="${btn['action']['composeAction']['composeTextMessage']['text']}"/>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="copy_value" value=" "/>
@@ -3366,107 +3232,81 @@
                                             </c:if>
                                         </div>
                                     </div>
-
                                     <c:set var="cnt1" value="${cnt+1}"></c:set>
                                     <c:set var="cnt2" value="${cnt+2}"></c:set>
-
                                     <!-- 초기 값 랜딩 -->
                                     <c:set var="btn"
                                            value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
                                     <c:choose>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['clipboardAction']['copyToClipboard'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN01"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN01" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['urlAction']['openUrl'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN02"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN02" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['dialerAction'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN03"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN03" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction']['showLocation']['location']['latitude'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN04"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN04" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction']['showLocation']['location']['query'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN05"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN05" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction'])}">
                                             <c:choose>
                                                 <c:when test="${cutil:isEmptyObject(btn['action']['mapAction']['showLocation'])}">
-                                                    <input type="hidden" name="slide_rcs_btn_tp_1"
-                                                           value="RBTN06"
-                                                           id="slide_rcs_btn_tp_${cnt1}"/>
+                                                    <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN06" id="slide_rcs_btn_tp_${cnt1}"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:when>
-                                        <%--<c:when test ="${!cutil:isEmptyObject(btn['action']['mapAction']['requestLocationPush'])}">
-                                                <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN06"
-                                                       id="slide_rcs_btn_tp_${cnt1}"/>
-                                            </c:when>--%>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['calendarAction'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN07"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN07" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['composeAction'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN08"
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="RBTN08" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="hidden" name="slide_rcs_btn_tp_1" value=""
-                                                   id="slide_rcs_btn_tp_${cnt1}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_1" value="" id="slide_rcs_btn_tp_${cnt1}"/>
                                         </c:otherwise>
                                     </c:choose>
                                     <c:set var="btn"
                                            value="${list[2].cont_btn_json[idx]['suggestions'][1]}"></c:set>
                                     <c:choose>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['clipboardAction']['copyToClipboard'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN01"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN01" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['urlAction']['openUrl'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN02"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN02" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['dialerAction'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN03"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN03" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction']['showLocation']['location']['latitude'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN04"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN04" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction']['showLocation']['location']['query'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN05"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN05" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['mapAction'])}">
                                             <c:choose>
                                                 <c:when test="${cutil:isEmptyObject(btn['action']['mapAction']['showLocation'])}">
-                                                    <input type="hidden" name="slide_rcs_btn_tp_2"
-                                                           value="RBTN06"
-                                                           id="slide_rcs_btn_tp_${cnt2}"/>
+                                                    <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN06" id="slide_rcs_btn_tp_${cnt2}"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['calendarAction'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN07"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN07" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:when test="${!cutil:isEmptyObject(btn['action']['composeAction'])}">
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN08"
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="RBTN08" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="hidden" name="slide_rcs_btn_tp_2" value=""
-                                                   id="slide_rcs_btn_tp_${cnt2}"/>
+                                            <input type="hidden" name="slide_rcs_btn_tp_2" value="" id="slide_rcs_btn_tp_${cnt2}"/>
                                         </c:otherwise>
                                     </c:choose>
                                     <c:set var="cnt" value="${cnt2}"></c:set>
@@ -3489,12 +3329,10 @@
                             <div class="rcs_inner rcs_slide">
                                 <div class="slide_area">
                                     <div class="rcs_prev">
-                                        <img
-                                                src="${baseURL}/image/ico_rcs_prev.png" alt="">
+                                        <img src="${baseURL}/image/ico_rcs_prev.png" alt="">
                                     </div>
                                     <div class="rcs_next">
-                                        <img
-                                                src="${baseURL}/image/ico_rcs_next.png" alt="">
+                                        <img src="${baseURL}/image/ico_rcs_next.png" alt="">
                                     </div>
                                     <c:if test="${list[2].msg_tp eq 'DMCH211'}">
                                     <div class="swiper-container slideSwiper small">
@@ -3508,12 +3346,10 @@
                                                     <div class="swiper-slide slide${idx}">
                                                         <div class="rcs_head">[WEB발신]광고</div>
                                                         <section>
-                                                            <c:set var="imgNm"
-                                                                   value="${fn:split(list[2].img_lst,',')[idx]}"/>
+                                                            <c:set var="imgNm" value="${fn:split(list[2].img_lst,',')[idx]}"/>
                                                             <div class="img_area">
                                                                 <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                    <img src="${filePath}${imgNm}"
-                                                                         onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${imgNm}" onerror="this.src = '/image/bg_none.png'"/>
                                                                 </c:if>
                                                             </div>
                                                             <c:set var="imgIdx" value="${idx+1}"/>
@@ -3534,25 +3370,23 @@
                                                                     </c:if>
                                                                 </p>
                                                                 <div class="rcs_btn_wrap">
-                                                                    <c:set var="btn"
-                                                                           value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
-                                                                    <div class="rcs_btn"
-                                                                         data="1">${btn['action']['displayText']}</div>
-                                                                    <c:set var="btn"
-                                                                           value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
-                                                                    <div class="rcs_btn"
-                                                                         data="2">${btn['action']['displayText']}</div>
+                                                                    <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][0]}"/>
+                                                                    <div class="rcs_btn" data="1">${btn['action']['displayText']}</div>
+                                                                    <c:set var="btn" value="${list[2].cont_btn_json[idx]['suggestions'][1]}"/>
+                                                                    <div class="rcs_btn" data="2">${btn['action']['displayText']}</div>
                                                                 </div>
                                                             </div>
                                                         </section>
                                                         <div class="text_count">
                                                             <c:if test="${list[2].msg_tp eq 'DMCH211'}">
-                                                                            <span class="num en_font"><span
-                                                                                    id="textByte${idx}">0</span>/30</span>
+                                                                <span class="num en_font">
+                                                                    <span id="textByte${idx}">0</span>/30
+                                                                </span>
                                                             </c:if>
                                                             <c:if test="${list[2].msg_tp eq 'DMCH212'}">
-                                                                            <span class="num en_font"><span
-                                                                                    id="textByte${idx}">0</span>/60</span>
+                                                                <span class="num en_font">
+                                                                    <span id="textByte${idx}">0</span>/60
+                                                                </span>
                                                             </c:if>
                                                         </div>
                                                     </div>
@@ -3560,18 +3394,15 @@
                                             </div>
                                             <div class="rcs_paging en_font">1/3</div>
                                             <div class="rcs_register">무료 수신거부 :
-                                                <span
-                                                        id="rejectionArea"></span>
+                                                <span id="rejectionArea"></span>
                                             </div>
                                             <div class="text_count">
                                                 <c:if test="${list[2].msg_tp eq 'DMCH211'}">
                                                     <p>※ 본문내용 : 카드 당
                                                         <span class="en_font">30</span>
-                                                        글자
-                                                        이내
+                                                        글자 이내
                                                         <br>
-                                                        본문길이 : 최대
-                                                        4줄
+                                                        본문길이 : 최대 4줄
                                                         <br>
                                                         모든 카드내용의 총합 : 1300글자
                                                     </p>
@@ -3579,11 +3410,9 @@
                                                 <c:if test="${list[2].msg_tp eq 'DMCH212'}">
                                                     <p>※ 본문내용 : 카드 당
                                                         <span class="en_font">60</span>
-                                                        글자
-                                                        이내
+                                                        글자 이내
                                                         <br>
-                                                        본문길이 : 최대
-                                                        4줄
+                                                        본문길이 : 최대 4줄
                                                         <br>
                                                         모든 카드내용의 총합 : 1300글자
                                                     </p>
