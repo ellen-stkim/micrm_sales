@@ -157,7 +157,7 @@ class SalesforceController {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         tblmiContMstdto.reg_dt = usr_cd
-        val view = ModelAndView("/cont/detailMdm")
+        val view = ModelAndView("/cont/salesforceDetail")
         val map = sysSettingService.getDBValue()
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
