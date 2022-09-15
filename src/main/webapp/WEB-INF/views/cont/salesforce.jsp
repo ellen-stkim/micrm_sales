@@ -1155,6 +1155,71 @@
         const res = function(response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
+
+            //load 시 byte 계산
+            let kakaoTxt = $('#kakao .textarea');
+            let smsTxt = $('#sms .textarea');
+            smsCreate.byteCount(kakaoTxt, 'kakao');
+            smsCreate.byteCount(smsTxt, 'sms');
+
+            const kakaoUseYn = $("input[name='formatType'][value='kakao']").is(":checked");
+            const mailUseYn = $("input[name='formatType'][value='sms']").is(":checked");
+            const rcsUseYn = $("input[name='formatType'][value='rcs']").is(":checked");
+
+            let minIx = "";
+
+            // 컨텐츠 USE_YN 값에 따른 minInx 변경
+            if (kakaoUseYn) {
+                minInx = 0;
+            } else if (!kakaoUseYn && mailUseYn) {
+                minInx = 1;
+            } else if (!kakaoUseYn && !mailUseYn && rcsUseYn) {
+                minInx = 2;
+            }
+
+            // load 시 컨텐츠 포맷 체크 후 주요 옵션 표시
+            // 초기 랜딩시 on,off 여부
+            $('.formatType').each(function () {
+                let checkLength = $('.formatType').filter(':checked').length;
+                let state = $(this).is(':checked');
+
+                if (state == true) {
+                    let tabInx = $('.formatType').index(this);
+                    $('#js-smsTab li').eq(tabInx).show();
+                    $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
+                    $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
+                }
+                if (checkLength > 0) {
+                    $('.no_data').hide();
+                    $('#js-btn-area').show();
+                } else {
+                    $('.no_data').show();
+                    $('#js-btn-area').hide();
+                }
+            });
+
+            let rcsLength = $('.rcsContents').length;
+
+            for (let c = 0; c < rcsLength; c++) {
+                rcsObject = $('.rcsContents').eq(c)[0];
+                rcsCreate.rcsContents(rcsObject, c);
+            }
+
+            let swiperEl = $('.slideSwiper').length;
+            if (swiperEl > 0) {
+                new Swiper('.slideSwiper', {
+                    direction: 'horizontal',
+                    pagination: {
+                        el: '.rcs_paging',
+                        type: 'fraction',
+                    },
+                    navigation: {
+                        nextEl: '.rcs_next',
+                        prevEl: '.rcs_prev',
+                    },
+                });
+            }
+
             /*
             $(".tab_contents:eq(0)").html($(".tab_contents:eq(0)", $doc).html());
             $(".tab_contents:eq(1)").html($(".tab_contents:eq(1)", $doc).html());
