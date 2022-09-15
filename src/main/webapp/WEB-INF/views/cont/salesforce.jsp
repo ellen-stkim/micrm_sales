@@ -1682,24 +1682,21 @@
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').css('color', 'rgb(34, 34, 34)');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('복사하기');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="copy_value"]:eq(' + j + ')').val(btnAction['clipboardAction']['copyToClipboard']['text']);
-                                    }
-                                    if(btnAction.hasOwnProperty('urlAction') && btnAction['urlAction'].hasOwnProperty('openUrl')) {
+                                    }else if(btnAction.hasOwnProperty('urlAction') && btnAction['urlAction'].hasOwnProperty('openUrl')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN02"]')[0])
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN02');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN02');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').css('color', 'rgb(34, 34, 34)');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('URL연결');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="url_value"]:eq(' + j + ')').val(btnAction['urlAction']['openUrl']['url']);
-                                    }
-                                    if(btnAction.hasOwnProperty('dialerAction')) {
+                                    }else if(btnAction.hasOwnProperty('dialerAction')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN03"]')[0])
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN03');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN03');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').css('color', 'rgb(34, 34, 34)');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('전화걸기');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="phone_value_03"]:eq(' + j + ')').val(btnAction['dialerAction']['dialPhoneNumber']['phoneNumber']);
-                                    }
-                                    if(btnAction.hasOwnProperty('mapAction')
+                                    }else if(btnAction.hasOwnProperty('mapAction')
                                         && btnAction['mapAction'].hasOwnProperty('showLocation')
                                         && btnAction['mapAction']['showLocation'].hasOwnProperty('location')
                                         && btnAction['mapAction']['showLocation']['location'].hasOwnProperty('latitude')) {
@@ -1712,8 +1709,7 @@
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="longitude_value"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['longitude']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="location_value_04"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['label']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="fallback_url_04"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['fallbackUrl']);
-                                    }
-                                    if(btnAction.hasOwnProperty('mapAction')
+                                    }else if(btnAction.hasOwnProperty('mapAction')
                                         && btnAction['mapAction'].hasOwnProperty('showLocation')
                                         && btnAction['mapAction']['showLocation'].hasOwnProperty('location')
                                         && btnAction['mapAction']['showLocation']['location'].hasOwnProperty('query')) {
@@ -1724,15 +1720,13 @@
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('지도보여주기(쿼리)');
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="location_value_05"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['query']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="fallback_url_05"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['fallbackUrl']);
-                                    }
-                                    if(btnAction.hasOwnProperty('mapAction')) {
+                                    }else if(btnAction.hasOwnProperty('mapAction')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN06"]')[0])
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN06');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN06');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').css('color', 'rgb(34, 34, 34)');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').text('현재위치공유');
-                                    }
-                                    if(btnAction.hasOwnProperty('calendarAction')) {
+                                    }else if(btnAction.hasOwnProperty('calendarAction')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN07"]')[0])
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN07');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN07');
@@ -1744,8 +1738,7 @@
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="end_date"]:eq(' + j + ')').val(endTime[0]);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="calendar_title"]:eq(' + j + ')').val(btnAction['calendarAction']['createCalendarEvent']['title']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="calendar_body"]:eq(' + j + ')').val(btnAction['calendarAction']['createCalendarEvent']['description']);
-                                    }
-                                    if(btnAction.hasOwnProperty('composeAction')) {
+                                    }else if(btnAction.hasOwnProperty('composeAction')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN08"]')[0])
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN08');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN08');
