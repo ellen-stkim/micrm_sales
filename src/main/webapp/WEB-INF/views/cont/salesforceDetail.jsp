@@ -25,10 +25,10 @@
                     <li>메세지</li>
                     <li>모바일</li>
                     <li>모바일 컨텐츠 수정</li>
-                    <div class="right">
-                        <span class="btn_sm_line" style="width: 75px; margin: 7px 7px 0 0;" id="contLoad">불러오기</span>
-                    </div>
                 </ul>
+            </div>
+            <div class="right">
+                <span class="btn_sm_line" style="width: 75px; margin: 7px 7px 0 0;" id="contLoad">불러오기</span>
             </div>
         </div>
         <!-- row 영역 끝 -->
