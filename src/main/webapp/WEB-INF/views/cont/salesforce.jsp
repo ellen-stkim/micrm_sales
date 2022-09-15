@@ -614,7 +614,8 @@
         });
 
         //컨텐츠 포맷 click event
-        $('.formatType').on('click', function () {
+
+        $(document).on('click', '.formatType', function() {
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
             let tabInx = $('.formatType').index(this);
@@ -648,7 +649,7 @@
         });
 
         //카카오 링크 버튼 생성 event
-        $('.kakaoLinkBtn').on('click', function () {
+        $(document).on('click', '.kakaoLinkBtn', function() {
             let btnState = $(this).val();
             let link = $('.kakao_btn_link');
             let name = $('.kakao_btn_name');
@@ -689,7 +690,7 @@
             }
         });
 
-        $('.smsType').on('change', function () {
+        $(document).on('change', '.smsType', function() {
             let smsType = $(this).val();
             if (smsType != 'MMS') {
                 $(this).parents('.row').siblings('.input-img').removeClass('on');
@@ -699,7 +700,7 @@
         });
 
         // MMS, 카카오 이미지 삭제
-        $('.delete_img').on('click', function () {
+        $(document).on('click', '.delete_img', function() {
             let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
             let imgcount = imgElement.length;
             let imgUrl = $(this).next('.txt_input').val();
@@ -729,7 +730,7 @@
         });
 
         // 추적 링크 생성 동작
-        $('.trackingLinkBtn').on('click', function () {
+        $(document).on('click', '.trackingLinkBtn', function() {
             let link = $(this).prev('input').val();
             let text = $(this).parents('.sms_form').find('.textarea').val();
             let type = $(this).parent().find('.txt_input').attr('id');
@@ -907,7 +908,8 @@
         });
 
         //이미지 선택 팝업 저장 event
-        $('.imageSave').on('click', function () {
+
+        $(document).on('click', '.imageSave', function() {
             $('#imagePop').submit();
         });
 
@@ -947,7 +949,7 @@
         });
 
         //발신 번호 선택 팝업 event
-        $('.numberSave').on('click', function () {
+        $(document).on('click', '.numberSave', function() {
             let callCheck = $('.call:checked').length;
             let callNumber = $('.call:checked').val();
             if (callCheck > 0) {
@@ -960,7 +962,7 @@
             }
         });
 
-        $('.js-ad').on('click',function(){
+        $(document).on('click', '.js-ad', function() {
             adTypeCheck();
         });
 
@@ -976,7 +978,7 @@
             $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
         });
 
-        $('#previewBtn').on('click', function () {
+        $(document).on('click', '#previewBtn', function() {
             let tamplate = $('.template_name');
             let smsFormat = $('.formatType:checked').val();
             let smsFormatLength = $('.formatType:checked').length;
@@ -1052,7 +1054,7 @@
         let beforeType = $('input[name="rcs_format_type"]:checked').val();
 
         // RCS 포맷카드 변경시 초기화 알림
-        $('input[name="rcs_format_type"]').on('click', function (event) {
+        $(document).on('click', 'input[name="rcs_format_type"]', function(event) {
             event.preventDefault();
             check = $('input[name="rcs_format_type"]:checked');
             let nowVal = $('input[name="rcs_format_type"]:checked').val();
@@ -1081,7 +1083,7 @@
         });
 
         // RCS 카드양식 변경시 초기화 알림
-        $(document).on('click','input[name="rcs_msg_tp"]', function (event) {
+        $(document).on('click', 'input[name="rcs_msg_tp"]', function(event) {
             event.preventDefault();
             check = $('input[name="rcs_msg_tp"]:checked');
             let nowSub = $('input[name="rcs_msg_tp"]:checked').val();
@@ -1143,7 +1145,7 @@
         });
 
         // 포맷 Tab
-        $('#js-smsTab > li').on('click',function(){
+        $(document).on('click', '#js-smsTab > li', function(event) {
             let tab = $('#js-smsTab > li').index(this);
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
@@ -1156,6 +1158,7 @@
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
 
+            let minInx;
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
             let smsTxt = $('#sms .textarea');
@@ -1219,6 +1222,9 @@
                     },
                 });
             }
+
+            mappingLst();
+            getDBValue();
 
             /*
             $(".tab_contents:eq(0)").html($(".tab_contents:eq(0)", $doc).html());
