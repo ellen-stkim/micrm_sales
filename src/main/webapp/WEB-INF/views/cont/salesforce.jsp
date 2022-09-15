@@ -1157,7 +1157,9 @@
     function mobileInfo() {
         const res = function(response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
-            $(".container").html($(".container", $doc).html());
+            $(".tab_contents:eq(0)").html($(".tab_contents:eq(0)", $doc).html());
+            $(".tab_contents:eq(1)").html($(".tab_contents:eq(1)", $doc).html());
+            $(".tab_contents:eq(2)").html($(".tab_contents:eq(2)", $doc).html());
             /*
             let list = response.list;
             let filePath = response.filePath;
@@ -1675,7 +1677,6 @@
                             if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
                                 let btn = list[2].cont_btn_json[i]['suggestions'][j];
                                 if (btn && btn.hasOwnProperty('action')){
-                                    console.log($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option'));
                                     let btnAction = btn['action'];
                                     if(btnAction.hasOwnProperty('clipboardAction') && btnAction['clipboardAction'].hasOwnProperty('copyToClipboard')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN01"]')[0])
