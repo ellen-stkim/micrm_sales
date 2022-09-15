@@ -1207,12 +1207,6 @@
                 });
             }
 
-            if($("#recv_phone").val() && $("#recv_phone").val() != "") {
-                $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone").val() +"']").html());
-                $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
-                $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
-            }
-
             const res = function(response) {
                 let list = response.mappingLst;
                 let html = '';
@@ -1223,6 +1217,11 @@
                 }
                 $('.mappingLst').html(html);
                 getDBValue();
+                if($("#recv_phone").val() && $("#recv_phone").val() != "") {
+                    $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone").val() +"']").html());
+                    $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
+                    $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
+                }
             }
             let param = {usr_grp_cd: $('#usr_grp_cd').val()}
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
