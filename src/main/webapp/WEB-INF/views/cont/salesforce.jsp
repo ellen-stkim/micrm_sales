@@ -1207,7 +1207,6 @@
                     $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
                     $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
                 }
-                /*
                 let swiperEl = $('.slideSwiper').length;
                 if (swiperEl > 0) {
                     new Swiper('.slideSwiper', {
@@ -1221,8 +1220,20 @@
                             prevEl: '.rcs_prev',
                         },
                     });
+
+
+                    new Swiper('.slideSwiper', {
+                        direction: 'horizontal',
+                        pagination: {
+                            el: '.rcs_paging',
+                            type: 'fraction',
+                        },
+                        navigation: {
+                            nextEl: '.rcs_next',
+                            prevEl: '.rcs_prev',
+                        },
+                    });
                 }
-                 */
             }
             let param = { usr_grp_cd : $('#usr_grp_cd').val() }
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
