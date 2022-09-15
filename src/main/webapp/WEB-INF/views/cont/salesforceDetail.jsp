@@ -98,7 +98,7 @@
                             <div class="td cf" style="width: 100%;">
                                 <div class="select" id="recv_phone_to" name="edmDB">
                                     <!-- selected value -->
-                                    <div class="value" data="0">개인화 변수</div>
+                                    <div class="value" data="${list[0].from_to}" data="">개인화 변수</div>
                                     <ul class="option mappingLst"></ul>
                                 </div>
                                 <input type="hidden" id="recv_phone" name="from_to" value="${list[0].from_to}"/>

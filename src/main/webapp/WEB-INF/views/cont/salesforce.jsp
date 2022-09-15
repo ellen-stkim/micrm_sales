@@ -556,22 +556,6 @@
         $('div[name="defaultDB"]').hide();
     }
 
-    // 개인화 변수 조회 - 로컬 테스트용
-    function mappingLst() {
-        const res = function(response) {
-            let list = response.mappingLst;
-            let html = '';
-
-            for(let i=0; i<list.length; i++) {
-                let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-            }
-            $('.mappingLst').html(html);
-        }
-        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
-    }
-
     $(function () {
         $('input[name="dbInfo"]').on('change', function () { getDBValue(); });//end
         getDBValue();
@@ -1222,13 +1206,26 @@
                     },
                 });
             }
-            mappingLst();
-            getDBValue();
 
-            if($("#recv_phone_to").val() && $("#recv_phone_to").val() != "") {
-                $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone_to").val() +"']").html());
+            if($("#recv_phone").val() && $("#recv_phone").val() != "") {
+                $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone").val() +"']").html());
+                $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
                 $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
             }
+
+            const res = function(response) {
+                let list = response.mappingLst;
+                let html = '';
+
+                for(let i=0; i<list.length; i++) {
+                    let item = list[i];
+                    html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+                }
+                $('.mappingLst').html(html);
+                getDBValue();
+            }
+            let param = {usr_grp_cd: $('#usr_grp_cd').val()}
+            com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
         }
 
         let param = { seq: $('#seq').val() }
