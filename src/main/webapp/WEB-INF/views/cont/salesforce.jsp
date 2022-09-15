@@ -1771,21 +1771,20 @@
 
                         $('#titleArea' + i).text(list[2].slideTitle[i]);
                         $('#textArea' + i).text(list[2].slideBody[i]);
-                        /*
+
                         if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
                             if(list[2].cont_btn_json[i]['suggestions'][0]
                                 && list[2].cont_btn_json[i]['suggestions'][0].hasOwnProperty("action")
                                 && list[2].cont_btn_json[i]['suggestions'][0]['action'].hasOwnProperty('displayText')) {
-                                $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
+                                $('.rcs_slide_conts:eq(' + i + ') .rcs_btn_wrap:eq(0)').html('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
                             }
 
                             if(list[2].cont_btn_json[i]['suggestions'][1]
                                 && list[2].cont_btn_json[i]['suggestions'][1].hasOwnProperty("action")
                                 && list[2].cont_btn_json[i]['suggestions'][1]['action'].hasOwnProperty('displayText')) {
-                                $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                                $('.rcs_slide_conts:eq(' + i + ') .rcs_btn_wrap:eq(1)').html('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
                             }
                         }
-                        */
                     }
 
                     // 무료수신거부
@@ -3047,7 +3046,6 @@
     }
 
     function rcsBtnType(e){
-        console.log(e);
         let actionVal = $(e).attr('data');
         let area = $(e).parents('.row').siblings('.custom_box');
         let layout = '';
