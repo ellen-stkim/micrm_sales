@@ -24,8 +24,8 @@
             <c:set var="cont_tp" value="${dto.cont_tp}"/>
             <div class="prev_box ${status.count == 1 ? "" : "disnone"}" id="prev_${cont_tp}">
                 <div class="row bottom-border ">
-                    <div class="th right-border link_list"><span>캠페인 타겟</span></div>
-                    <div class="td"><span>${cutil:escapeTextToHtml(target_nm)}</span></div>
+                    <div class="th right-border link_list"><span>캠페인명</span></div>
+                    <div class="td"><span>${camp_nm}</span></div>
                 </div>
                 <div class="row bottom-border ">
                     <div class="th right-border link_list"><span>제목</span></div>

@@ -128,7 +128,7 @@
                                                         pattern="#,##0"/></span>
                             </div>
                         </li>
-                        <li class="step_box" onclick="reportTabControl(this,'saleTab')">
+                       <%-- <li class="step_box" onclick="reportTabControl(this,'saleTab')">
                             <div class="top">
                                 <span class="status_mark purple"></span>구매
                             </div>
@@ -145,7 +145,7 @@
                                 <span class="status_mark indigo"></span>ROI%
                             </div>
                             <div class="en_font number">${total.roi}%</div>
-                        </li>
+                        </li>--%>
                     </ol>
                 </div>
             </div>
@@ -164,29 +164,25 @@
                 <div class="border-bottom cf contentBox">
                     <table class="table target_tbl border">
                         <colgroup>
-                            <col width="150"/>
-                            <col width="150"/>
-                            <col width="100"/>
-                            <col width="80"/>
-                            <col width="80"/>
-                            <col width="80"/>
-                            <col width="80"/>
-                            <col width="80"/>
-                            <col width="80"/>
-                            <col width="80"/>
+                            <col width="200"/>
+                            <col width="220"/>
+                            <col width="220"/>
+                            <col width="220"/>
+                            <col width="120"/>
+                            <col width="120"/>
+                            <col width="120"/>
+                            <col width="120"/>
                         </colgroup>
                         <thead>
                         <tr>
+                            <th><span>상태</span></th>
+                            <th><span>프로그램명</span></th>
                             <th><span>캠페인명</span></th>
-                            <th><span>캠페인 타겟</span></th>
                             <th><span>캠페인 채널</span></th>
                             <th><span>발송 타겟수</span></th>
                             <th><span>성공</span></th>
                             <th name="open"><span>오픈</span></th>
                             <th name="click"><span>클릭</span></th>
-                            <th><span>구매</span></th>
-                            <th><span>매출</span></th>
-                            <th><span>ROI%</span></th>
                         </tr>
                         </thead>
                         <tbody id="body">
@@ -199,46 +195,27 @@
                                 <c:forEach var="programMap" items="${programLst}">
                                     <tr>
                                         <c:set var="total" value="${programMap.total}"/>
-                                        <td rowspan="${total.rowCnt}"><span class="ellipsis">${cutil:escapeTextToHtml(total.pro_nm)}</span></td>
-
+                                        <td rowspan="${total.rowCnt}">
+                                            <span>${total.pro_st_nm}</span><br><span>(${fn:split(total.start_dt,' ')[0]})</span>
+                                        </td>
+                                        <td rowspan="${total.rowCnt}"><span class="ellipsis">${total.pro_nm}</span></td>
                                         <td class="total"><span>total</span></td>
                                         <td class="total">
-                                            <c:if test="${total.ch_total eq 'CH00'}">이메일 / 문자</c:if>
-                                            <c:if test="${total.ch_total eq 'CH01'}">이메일</c:if>
-                                            <c:if test="${total.ch_total eq 'CH02'}">문자</c:if>
+                                                ${total.ch_total}
                                         </td>
                                         <td class="total"><span>${total.t_cnt}</span></td>
                                         <td class="total"><span>${total.s_cnt}</span></td>
-                                        <td class="total" name="open"><span>${total.o_cnt}</span></td>
+                                        <td class="total"><span>${total.o_cnt}</span></td>
                                         <td class="total" name="click"><span>${total.c_cnt}</span></td>
-                                        <td class="total"><span>-</span></td>
-                                        <td class="total"><span>-</span></td>
-                                        <td class="total"><span>-</span></td>
                                     </tr>
                                     <c:forEach var="cont" items="${programMap.program}">
                                         <tr name="list_tr" onclick="showContDet(this , ${cont.cont_id})">
-                                            <td><span class="ellipsis" name="target_nm">${cutil:escapeTextToHtml(cont.target_nm)}</span>
-                                                <div class="cont_title_box disnone">
-                                                    <table>
-                                                        <colgroup>
-                                                            <col width="30"/>
-                                                            <col width="180"/>
-                                                        </colgroup>
-                                                        <tr>
-                                                            <th class="right-border">Main</th>
-                                                            <td>${cutil:escapeTextToHtml(cont.cont_sub)}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="right-border">sub</th>
-                                                            <td>${cutil:escapeTextToHtml(cont.cont_top_body)}</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </td>
+                                            <td><span class="ellipsis" name="camp_nm">${cont.camp_nm}</span></td>
                                             <td>
                                         <span>
                                             <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
                                             <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
+                                            <c:if test="${cont.camp_ch eq 'CH03'}">세일즈포스</c:if>
                                         </span>
                                             </td>
                                             <td><span class="sendStatus"><fmt:formatNumber value="${cont.total_cnt}"
@@ -247,27 +224,18 @@
                                             <td><span class="sendStatus"><fmt:formatNumber value="${cont.suc_cnt}"
                                                                                            pattern="#,##0"/></span><br>
                                                 <fmt:formatNumber value="${cont.suc_cnt / cont.total_cnt}"
-                                                                  pattern="(###.##%)"/>
+                                                                  pattern="(###%)"/>
                                             </td>
-                                            <td name="open"> <span><fmt:formatNumber value="${cont.open_cnt}"
-                                                                                     pattern="#,##0"></fmt:formatNumber></span><br>
+                                            <td> <span><fmt:formatNumber value="${cont.open_cnt}"
+                                                                         pattern="#,##0"></fmt:formatNumber></span><br>
                                                 <fmt:formatNumber value="${cont.open_cnt / cont.total_cnt}"
-                                                                  pattern="(###.##%)"/>
+                                                                  pattern="(###%)"/>
                                             </td>
                                             <td name="click">
                                             <span><fmt:formatNumber value="${cont.click_cnt}"
                                                                     pattern="#,##0"></fmt:formatNumber></span><br>
                                                 <fmt:formatNumber value="${cont.click_cnt / cont.total_cnt}"
-                                                                  pattern="(###.##%)"/>
-                                            </td>
-                                            <td>
-                                                <span>-</span>
-                                            </td>
-                                            <td>
-                                                <span>-</span>
-                                            </td>
-                                            <td>
-                                                <span>-</span>
+                                                                  pattern="(###%)"/>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -466,7 +434,7 @@
 </div>
 <!-- 타겟 선택 팝업 영역 시작 -->
 <div class="layer_pop" id="campReportPopup">
-    <div class="pop_container popup_size2 active">
+    <div class="pop_container popup_size6 active">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">캠페인 통합 분석</div>
         <div class="dis_flex">
@@ -481,8 +449,8 @@
                                 <!-- option -->
                                 <ul class="option">
                                     <li data="">기준선택</li>
-                                    <li data="pro_nm">캠페인명</li>
-                                    <li data="target_nm">캠페인타겟</li>
+                                    <li data="pro_nm">프로그램명</li>
+                                    <li data="camp_nm">캠페인명</li>
                                     <li data="camp_ch">캠페인채널</li>
                                     <li data="camp_dt">캠페인기간</li>
                                 </ul>
@@ -520,21 +488,21 @@
                 <div id="list_table_box" style="width: 588px; height:210px;">
                     <table class="pop_table table_fixed" id="pop_list_table">
                         <colgroup>
-                            <col width="30"/>
-                            <col width="180"/>
-                            <col width="30"/>
-                            <col width="150"/>
-                            <col width="90"/>
+                            <col width="40"/>
+                            <col width="130"/>
+                            <col width="40"/>
+                            <col width="130"/>
                             <col width="100"/>
+                            <col width="130"/>
                         </colgroup>
                         <thead>
                         <tr>
                             <th><input type="checkbox" name="pro_nm_allcheck"
                                        onclick="allCheckBtn(this); checkEvent(this);"></th>
-                            <th><span>캠페인명</span></th>
-                            <th><input type="checkbox" name="target_allcheck"
+                            <th><span>프로그램명</span></th>
+                            <th><input type="checkbox" name="pro_nm_allcheck"
                                        onclick="allCheckBtn(this); checkEvent(this);"></th>
-                            <th><span>캠페인 타겟</span></th>
+                            <th><span>캠페인명</span></th>
                             <th><span>타겟수</span></th>
                             <th><span>캠페인 채널</span></th>
                         </tr>
@@ -552,8 +520,8 @@
             </div>
             <div class="pop_inner">
                 <div class="select_lst_box">
-                    <div><h1 class="info">선택된 캠페인 리스트 ( 캠페인 <span id="info_camp">0</span>건 | 타겟 <span
-                            id="info_target">0</span>건 )</h1></div>
+                    <div><h1 class="info">선택된 캠페인 리스트 ( 프로그램 <span id="info_prg">0</span>건 | 캠페인 <span
+                            id="info_camp">0</span>건 )</h1></div>
                     <form:form id="select_form" action="./dt.mi">
                         <table class="pop_table table_fixed" id="select_lst">
                             <colgroup>
@@ -566,10 +534,10 @@
                             <tr>
                                 <th><input type="checkbox" name="pro_nm_allcheck"
                                            onclick="allCheckBtn(this); checkEvent(this);"></th>
-                                <th><span>캠페인명</span></th>
-                                <th><input type="checkbox" name="target_allcheck"
+                                <th><span>프로그램명</span></th>
+                                <th><input type="checkbox" name="camp_nm_allcheck"
                                            onclick="allCheckBtn(this); checkEvent(this);"></th>
-                                <th><span>캠페인 타겟</span></th>
+                                <th><span>캠페인명</span></th>
                             </tr>
                             </thead>
                             <tbody id="select_lst_tbody"></tbody>
@@ -593,9 +561,9 @@
                                                        onclick="checkEvent(this)">
                                             </td>
                                             <td><span class="ellipsis" name="pro_nm">${total.pro_nm}</span></td>
-                                            <td><input type="checkbox" class="target_check" name="cont_seq"
+                                            <td><input type="checkbox" class="camp_nm_check" name="cont_seq"
                                                        value="${cont.seq}" onclick="checkEvent(this);"></td>
-                                            <td><span class="ellipsis" >${cont.target_nm}</span></td>
+                                            <td><span class="ellipsis" >${cont.camp_nm}</span></td>
                                         </tr>
                                     </c:forEach>
                                 </c:forEach>
@@ -633,17 +601,26 @@
     <div class="border-bottom cf contentBox camp_lst">
         <div class="border-bottom cf contentBox">
             <table class="table target_tbl border">
+                <colgroup>
+                    <col width="180"/>
+                    <col width="180"/>
+                    <col width="180"/>
+                    <col width="180"/>
+                    <col width="130"/>
+                    <col width="130"/>
+                    <col width="130"/>
+                    <col width="130"/>
+                </colgroup>
                 <thead>
                 <tr>
+                    <th><span>상태</span></th>
+                    <th><span>프로그램명</span></th>
                     <th><span>캠페인명</span></th>
                     <th><span>캠페인 채널</span></th>
                     <th><span>발송 타겟수</span></th>
                     <th><span>성공</span></th>
                     <th><span>오픈</span></th>
                     <th><span>클릭</span></th>
-                    <th><span>구매</span></th>
-                    <th><span>매출</span></th>
-                    <th><span>ROI%</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -655,33 +632,24 @@
                     <c:otherwise>
                         <c:set var="programMap" value="${programLst[0]}"/>
                         <tr>
-                        ${programLst}
-                        ${programMap}
-                        </tr>
-                        <%--<tr>
                             <c:set var="total" value="${programMap.total}"/>
+                            <td rowspan="2"><span>${total.pro_st_nm}</span><br><span>(${fn:split(total.start_dt,' ')[0]})</span></td>
                             <td rowspan="2"><span class="ellipsis">${total.pro_nm}</span></td>
                             <td class="total"><span>total</span></td>
-                            <td class="total">
-                                <c:if test="${total.ch_total eq 'CH00'}">이메일 / 문자</c:if>
-                                <c:if test="${total.ch_total eq 'CH01'}">이메일</c:if>
-                                <c:if test="${total.ch_total eq 'CH02'}">문자</c:if>
-                            </td>
+                            <td class="total">${total.ch_total}</td>
                             <td class="total"><span>${total.t_cnt}</span></td>
                             <td class="total"><span>${total.s_cnt}</span></td>
                             <td class="total orange_bg"><span>${total.o_cnt}</span></td>
                             <td class="total"><span>${total.c_cnt}</span></td>
-                            <td class="total"><span>-</span></td>
-                            <td class="total"><span>-</span></td>
-                            <td class="total"><span>-</span></td>
                         </tr>
                         <c:set var="cont" value="${programMap.program[0]}"/>
                         <tr>
-                            <td><span>${cont.target_nm}</span></td>
+                            <td><span>${cont.camp_nm}</span></td>
                             <td>
                                         <span>
                                             <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
                                             <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
+                                                  <c:if test="${cont.camp_ch eq 'CH03'}">세일즈포스</c:if>
                                         </span>
                             </td>
                             <td><span class="sendStatus"><fmt:formatNumber value="${cont.total_cnt}"
@@ -703,16 +671,7 @@
                                 <fmt:formatNumber value="${cont.click_cnt / cont.total_cnt}"
                                                   pattern="(###%)"/>
                             </td>
-                            <td>
-                                <span>-</span>
-                            </td>
-                            <td>
-                                <span>-</span>
-                            </td>
-                            <td>
-                                <span>-</span>
-                            </td>
-                        </tr>--%>
+                        </tr>
                     </c:otherwise>
                 </c:choose>
                 </tbody>
@@ -734,9 +693,11 @@
 <script src="/js/drawChart.js"></script>
 <script>
 
+    let selectedCampSet = new Set();
     let cont_seq = [];
     <c:forEach items="${cont_seq}" var="item">
     cont_seq.push(${item});
+    selectedCampSet.add('${item}')
     </c:forEach>
 
     $("#openLstTap").click(function () {
@@ -803,20 +764,11 @@
             case 'clickTab':
                 $(".orange_bg").removeClass("orange_bg");
                 $("[name=click]").addClass("orange_bg");
-                $("tbody [name=click]")[1].click();
+                $("tbody [name='click']").click();
                 $("#help_btn").removeClass("disnone");
                 $('.open-time-box').addClass("disnone");
                 break;
-            case 'saleTab':
-                /*$("#help_btn").addClass("disnone");
-                break;*/
-                popup.popAlert("아직 준비중인 페이지입니다.");
-                return;
-            case 'roiTab':
-                /*$("#help_btn").addClass("disnone");
-                break;*/
-                popup.popAlert("아직 준비중인 페이지입니다.");
-                return;
+
         }
         $(me).siblings().removeClass('active');
         $(me).addClass('active');
@@ -1023,7 +975,7 @@
         }
         var param = {
             cont_id: cont_id
-            , target_nm: $(e).find("span[name=target_nm]").html()     // 타겟명 조회 테이블 변경 예정(?)
+            , camp_nm: $(e).find("span[name='camp_nm']").html()
         };
         com_ajax.ajax('post', 'getClickTabAjax.ajax', param, rep);
 
@@ -1268,21 +1220,7 @@
         let thisData = $(this).attr('data');
         let div = $(this).parents('form[name="searchForm"]');
         $(div).find('#searchValue').val("")
-        if (thisData === "target_nm") {
-            $(div).find('#searchValue').hide();
-            $(div).find('#ch_area').empty();
-            $(div).find('#target_area').html(
-                '<div class="select style1 left-border right-border" id="memberOption" style="width: 326px;">' +
-                '<div class="value searchSelect searchTarget" data="TG01">DB 회원</div>' +
-                '<ul class="option">' +
-                '<li data="TG01">DB 회원</li>' +
-                '<li data="TG02">업로드 회원</li>' +
-                '<li data="TG99">테스트 그룹</li>' +
-                '<input type="hidden" name="pro_tg_tp" value=""/>' +
-                '</ul>' +
-                '</div>'
-            );
-        } else if (thisData === "camp_ch") {
+        if (thisData === "camp_ch") {
             $(div).find('#searchValue').hide();
             $(div).find('#target_area').empty();
             $(div).find('.target_select').removeClass("target_select")
@@ -1292,35 +1230,17 @@
                 '<ul class="option">' +
                 '<li data="CH01">이메일</li>' +
                 '<li data="CH02">문자</li>' +
+                '<li data="CH03">세일즈포스</li>' +
                 '</ul>' +
                 '</div>'
             );
         } else {
             $(div).find('#searchValue').show();
-            $(div).find('#target_area').find('#memberOption').remove();
             $(div).find('#chOption').remove();
             $(div).find('.target_select').removeClass("target_select")
         }
     }
 
-    //발송타겟 검색 상세 옵션 select 체크 값 구분
-    $(document).on('click', '#memberOption ul li', function () {
-        let div = $(this).parents('form[name="searchForm"]');
-        let memData = $(this).attr('data');
-        if (memData === 'TG01') {
-            $(div).find('#searchValue').val("");
-            $(div).find('#searchValue').hide();
-            $(div).find('#searchValue').removeClass('target_select');
-            $(div).find("#memberOption").width('332px');
-            return;
-        }
-        $(div).find('#memberOption').removeClass('right-border');
-        $(div).find('#searchValue').show();
-
-        $(div).find("#memberOption").width('100px');
-        $(div).find('#searchValue').addClass('target_select');
-
-    });
 
     function popupClose(close) {
         $(close).parents('.layer_pop').css("display", "none");
@@ -1328,7 +1248,6 @@
 
     function popPage(pageNo) {
         let form = $('#report_pager #current-form')
-        $('#camp-report-form #memberOption input[name="pro_tg_tp"]').val($(form).find('input[name="pro_tg_tp"]').val())
         $('#popup-searchType').val($(form).find('input[name="searchType"]').val())
         $('#campReportPopup input[name="searchValue"]').val($(form).find('input[name="searchValue"]').val())
         $('#popup-st-dt').val($(form).find('input[name="st_dt"]').val())
@@ -1386,9 +1305,7 @@
             return
         }
         let standard = $('#popUp-searchStandard').attr('data');
-        if (standard === "target_nm") {
-            $('#memberOption input[name="pro_tg_tp"]').val($('.searchTarget').attr('data'));
-        } else if (standard === "camp_ch") {
+        if (standard === "camp_ch") {
             $('#camp-report-form #searchValue').val($('.searchTarget').attr('data'));
         }
 
@@ -1402,49 +1319,49 @@
         reportList();
     }
 
-
     function allCheckBtn(item) {
         let check = true;
-
         if (!$(item).is(':checked')) {
             check = false;
         }
 
-        let name = $(item).attr("name");
-        let target = name.indexOf("pro_nm") != -1 ? "pro_nm_check" : "cont_seq";
         let table = $(item).parents("table");
         let addlist = $(table).attr("id") == "pop_list_table" ? true : false;
 
-        $(table).find(`input[name="` + target + `"]`).each(function (index, item) {
+        $(table).find(`tbody input[type="checkbox"]`).each(function (index, item) {
             $(item).prop('checked', check);
-            if (addlist)
+            if (addlist) {
                 addSelectList(item);
-            else
+            } else
                 checkEvent(item);
         });
     }
 
     function addSelectList(item) {
-
-        // 선택 리스트 추가
         let tr = $(item).parents("tr");
-        let campSeq = $(tr).find(".target_check").val();
-        duplDocument(campSeq).remove();
+        let campSeq = $(tr).find(".camp_nm_check").val();
+
         if ($(item).is(':checked')) {
-            addHtml(tr);
+            let tableId = $(item).parents("table").attr("id");
+            if (!selectedCampSet.has(campSeq) && tableId != "#select_lst") {  //이미 등록된 캠페인은 등록하지 않음
+                // 선택 리스트 추가
+                selectedCampSet.add(campSeq);
+                addHtml(tr);
+            }
         }
         checkEvent(item);
     }
 
     function checkEvent(item) {
-        changeTitle();
+
         let tr = $(item).parents("tr");
         let check = $(item).is(':checked');
         let type = $(item).attr("name");
 
-        if (type.indexOf("pro_nm") != -1) {
+
+        if (type =="pro_nm_allcheck"|| type =="camp_nm_allcheck") {
             $(tr).find("input[type=checkbox]").prop('checked', check); // 캠페인타겟 전체 체크
-            return
+            return;
         }
 
         // 캠페인명 체크
@@ -1453,12 +1370,14 @@
         let proList = $(tbody).find(`input[value='` + proId + `']`);
 
         $.each(proList, function (index, pro) {
+
             let tr = $(pro).parents('tr');
-            if (check != $(tr).find(".target_check").is(':checked')) {
+            if (check != $(tr).find(".camp_nm_check").is(':checked')) {
                 return;
             }
         })
         $(proList).prop('checked', check);
+        changeTitle();
     }
 
     // tbody 체크박스 클릭 시 전체 선택 버튼 선택/해제
@@ -1479,23 +1398,27 @@
     function addHtml(tr) {
         let proId = $(tr).find("input[name='pro_nm_check']").val();
         let proNm = $(tr).find("span[name='pro_nm']").html();
-        let targetNm = $(tr).find("span[name='target_nm']").html();
-        let campSeq = $(tr).find(".target_check").val();
+        let seq = $(tr).find(".camp_nm_check").val();
+        let campNm = $(tr).find("span[name='camp_nm']").html();
 
         let newHtml = `<tr>
                                 <td><input type="checkbox" name="pro_nm_check"  value="` + proId + `" onclick="checkEvent(this)"></td>
                                 <td><span class="ellipsis">` + proNm + `</span></td>
-                                <td><input type="checkbox" class="target_check" name="cont_seq" cont_id" value="` + campSeq + `" onclick="checkEvent(this);"></td>
-                                <td><span class="ellipsis">` + targetNm + `</span></td>
+                                <td><input type="checkbox" class="camp_nm_check" name="seq" value="` + seq + `" onclick="checkEvent(this)"></td>
+                                <td><span class="ellipsis">` + campNm + `</span></td>
                             </tr>`;
         $("#select_lst_tbody").append(newHtml);
     }
 
     function delList() {
-
         let ckList = $("#select_lst_tbody input[type='checkbox']:checked");
         for (let i = 0; i < ckList.length; i++) {
+            let tr = $(ckList[i]).parents("tr");
+            let seq = $(tr).find('.camp_nm_check').val();
+            selectedCampSet.delete(seq);
+
             $(ckList[i]).parents("tr").remove();
+
         }
         changeTitle();
     }
@@ -1504,6 +1427,7 @@
         $("#select_lst_tbody").empty();
         $("input[type='checkbox']").prop("checked", false);
         changeTitle();
+        selectedCampSet.clear();
     }
 
     function checkLst() {
@@ -1522,11 +1446,11 @@
     }
 
     function changeTitle() {
-        let campCnt = $("#select_lst_tbody input[name='pro_nm_check']").length;
-        $("#info_camp").html(campCnt);
+        let prgCnt = $("#select_lst_tbody input[name='pro_nm_check']").length;
+        $("#info_prg").html(prgCnt);
 
-        let targetCnt = $("#select_lst_tbody .target_check").length;
-        $("#info_target").html(targetCnt);
+        let campCnt = $("#select_lst_tbody .camp_nm_check").length;
+        $("#info_camp").html(campCnt);
     }
 
     $("#ok_btn").click(() => {
