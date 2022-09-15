@@ -1776,13 +1776,13 @@
                             if(list[2].cont_btn_json[i]['suggestions'][0]
                                 && list[2].cont_btn_json[i]['suggestions'][0].hasOwnProperty("action")
                                 && list[2].cont_btn_json[i]['suggestions'][0]['action'].hasOwnProperty('displayText')) {
-                                $('.rcs_slide_conts:eq(' + i + ') .rcs_btn_wrap:eq(0)').html('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
+                                $('.swiper-slide.slide'+ i +' .rcs_btn_wrap:eq(0)').html('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
                             }
 
                             if(list[2].cont_btn_json[i]['suggestions'][1]
                                 && list[2].cont_btn_json[i]['suggestions'][1].hasOwnProperty("action")
                                 && list[2].cont_btn_json[i]['suggestions'][1]['action'].hasOwnProperty('displayText')) {
-                                $('.rcs_slide_conts:eq(' + i + ') .rcs_btn_wrap:eq(1)').html('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
+                                $('.swiper-slide.slide'+ i +' .rcs_btn_wrap:eq(1)').html('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
                             }
                         }
                     }
