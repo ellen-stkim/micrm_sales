@@ -1588,37 +1588,45 @@
 
                     // 카드 양식
                     if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 3) {
-                       $('.slide_type .value').data('0');
-                       $('.slide_type .value').text('Small / 3장');
-                       rcsSlideChange('0')
+                        typeValue = 0;
+                        $('.slide_type .value').data('0');
+                        $('.slide_type .value').text('Small / 3장');
+                        rcsSlideChange('0')
                     } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 4) {
-                       $('.slide_type .value').data('1');
-                       $('.slide_type .value').text('Small / 4장');
-                       rcsSlideChange('1')
+                        typeValue = 1;
+                        $('.slide_type .value').data('1');
+                        $('.slide_type .value').text('Small / 4장');
+                        rcsSlideChange('1')
                     } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 5) {
-                       $('.slide_type .value').data('2');
-                       $('.slide_type .value').text('Small / 5장');
-                       rcsSlideChange('2')
+                        typeValue = 2;
+                        $('.slide_type .value').data('2');
+                        $('.slide_type .value').text('Small / 5장');
+                        rcsSlideChange('2')
                     } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 6) {
-                       $('.slide_type .value').data('3');
-                       $('.slide_type .value').text('Small / 6장');
-                       rcsSlideChange('3')
+                        typeValue = 3;
+                        $('.slide_type .value').data('3');
+                        $('.slide_type .value').text('Small / 6장');
+                        rcsSlideChange('3')
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 3) {
-                       $('.slide_type .value').data('4');
-                       $('.slide_type .value').text('Medium / 3장');
-                       rcsSlideChange('4')
+                        typeValue = 4;
+                        $('.slide_type .value').data('4');
+                        $('.slide_type .value').text('Medium / 3장');
+                        rcsSlideChange('4')
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 4) {
-                       $('.slide_type .value').data('5');
-                       $('.slide_type .value').text('Medium / 4장');
-                       rcsSlideChange('5')
+                        typeValue = 5;
+                        $('.slide_type .value').data('5');
+                        $('.slide_type .value').text('Medium / 4장');
+                        rcsSlideChange('5')
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 5) {
-                       $('.slide_type .value').data('6');
-                       $('.slide_type .value').text('Medium / 5장');
-                       rcsSlideChange('6')
+                        typeValue = 6;
+                        $('.slide_type .value').data('6');
+                        $('.slide_type .value').text('Medium / 5장');
+                        rcsSlideChange('6')
                     } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 6) {
-                       $('.slide_type .value').data('7');
-                       $('.slide_type .value').text('Medium / 6장');
-                       rcsSlideChange('7')
+                        typeValue = 7;
+                        $('.slide_type .value').data('7');
+                        $('.slide_type .value').text('Medium / 6장');
+                        rcsSlideChange('7')
                     }
 
                     // 발신 번호
