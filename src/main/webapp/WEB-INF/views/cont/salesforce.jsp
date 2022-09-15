@@ -3346,7 +3346,7 @@
                 $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').remove();
             }
         } else {
-            let sectionInx = $(e).parents('.rcs_slide_conts.on').index() - 1;
+            let sectionInx = $(e).parents('.rcs_slide_conts').index() - 1;
             let buttonLength = $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').length;
 
             if (actionVal != 0 && buttonLength == 0) {
