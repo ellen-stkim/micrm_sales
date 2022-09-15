@@ -1186,25 +1186,9 @@
             });
 
             let rcsLength = $('.rcsContents').length;
-
             for (let c = 0; c < rcsLength; c++) {
                 rcsObject = $('.rcsContents').eq(c)[0];
                 rcsCreate.rcsContents(rcsObject, c);
-            }
-
-            let swiperEl = $('.slideSwiper').length;
-            if (swiperEl > 0) {
-                new Swiper('.slideSwiper', {
-                    direction: 'horizontal',
-                    pagination: {
-                        el: '.rcs_paging',
-                        type: 'fraction',
-                    },
-                    navigation: {
-                        nextEl: '.rcs_next',
-                        prevEl: '.rcs_prev',
-                    },
-                });
             }
 
             const res = function(response) {
@@ -1221,6 +1205,21 @@
                     $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone").val() +"']").html());
                     $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
                     $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
+                }
+
+                let swiperEl = $('.slideSwiper').length;
+                if (swiperEl > 0) {
+                    new Swiper('.slideSwiper', {
+                        direction: 'horizontal',
+                        pagination: {
+                            el: '.rcs_paging',
+                            type: 'fraction',
+                        },
+                        navigation: {
+                            nextEl: '.rcs_next',
+                            prevEl: '.rcs_prev',
+                        },
+                    });
                 }
             }
             let param = {usr_grp_cd: $('#usr_grp_cd').val()}

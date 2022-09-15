@@ -5944,7 +5944,7 @@
         getDBValue();
         adTypeCheck();
 
-        var mySwiper = new Swiper('.slideSwiper', {
+        new Swiper('.slideSwiper', {
             direction: 'horizontal',
             pagination: {
                 el: '.rcs_paging',
