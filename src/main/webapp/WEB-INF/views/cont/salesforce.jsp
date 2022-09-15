@@ -1669,7 +1669,7 @@
                         rcsCreate.rcsContents($('.rcsContents:eq(' + i + ')')[0], i);
 
                         // 버튼 액션 선택
-                        for(let j=0; j<2; j++) {
+                        for(let j=0; j < 2; j++) {
                             if(list[2].cont_btn_json[i].hasOwnProperty('suggestions')){
                                 let btn = list[2].cont_btn_json[i]['suggestions'][j];
                                 if (btn && btn.hasOwnProperty('action')){
@@ -1756,7 +1756,7 @@
 
                                     // 버튼 명
                                     if(btnAction.hasOwnProperty('displayText')) {
-                                        $('.rcs_slide_conts:eq(' + i + ') input[name="slide_rcs_btn_1"]:eq(' + j + ')').val(btnAction['displayText']);
+                                        $('.rcs_slide_conts:eq(' + i + ') input[name="slide_rcs_btn_'+ (j + 1) +'"]:eq(' + j + ')').val(btnAction['displayText']);
                                         $('.rcs_slide_conts:eq(' + i + ') .button-name:eq(' + j + ') span span').text(btnAction['displayText'].length);
                                     }
                                 }
