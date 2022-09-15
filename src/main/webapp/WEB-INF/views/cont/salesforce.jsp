@@ -1192,6 +1192,17 @@
                 rcsCreate.rcsContents(rcsObject, c);
             }
 
+            $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
+                }
+            });
+            $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
+                }
+            });
+
             const res = function(response) {
                 let list = response.mappingLst;
                 let html = '';
@@ -1220,20 +1231,8 @@
                             prevEl: '.rcs_prev',
                         },
                     });
-
-
-                    new Swiper('.slideSwiper', {
-                        direction: 'horizontal',
-                        pagination: {
-                            el: '.rcs_paging',
-                            type: 'fraction',
-                        },
-                        navigation: {
-                            nextEl: '.rcs_next',
-                            prevEl: '.rcs_prev',
-                        },
-                    });
                 }
+
             }
             let param = { usr_grp_cd : $('#usr_grp_cd').val() }
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)

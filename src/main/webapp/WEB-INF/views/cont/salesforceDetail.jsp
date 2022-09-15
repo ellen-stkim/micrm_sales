@@ -1185,52 +1185,36 @@
                                                                         <c:if test="${list[2].btnType[idx] eq 'calendarAction'}">
                                                                             <div class="row">
                                                                                 <div class="th bottom-border top-border">
-                                                                                    시작일 /
-                                                                                    종료일
+                                                                                    시작일 / 종료일
                                                                                 </div>
                                                                                 <div class="td bottom-border top-border">
-                                                                                    <input type="text" name="start_date"
-                                                                                           class="start_date txt_input en_font calendar right-border"
-                                                                                           value="${list[2].btnData[idx][0]}"/>
-                                                                                    <input type="text" name="end_date"
-                                                                                           class="end_date txt_input en_font calendar"
-                                                                                           value="${list[2].btnData[idx][1]}"/>
+                                                                                    <input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" value="${list[2].btnData[idx][0]}"/>
+                                                                                    <input type="text" name="end_date" class="end_date txt_input en_font calendar" value="${list[2].btnData[idx][1]}"/>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row">
                                                                                 <div class="th bottom-border">제목</div>
                                                                                 <div class="td bottom-border">
-                                                                                    <input type="text" name="calendar_title"
-                                                                                           class="txt_input width"
-                                                                                           value="${list[2].btnData[idx][2]}"/>
+                                                                                    <input type="text" name="calendar_title" class="txt_input width" value="${list[2].btnData[idx][2]}"/>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row">
                                                                                 <div class="th">내용</div>
                                                                                 <div class="td">
-                                                                                    <input type="text" name="calendar_body"
-                                                                                           class="txt_input width"
-                                                                                           value="${list[2].btnData[idx][3]}"/>
+                                                                                    <input type="text" name="calendar_body" class="txt_input width" value="${list[2].btnData[idx][3]}"/>
                                                                                 </div>
                                                                             </div>
                                                                             <input type="hidden" name="copy_value" value=" "/>
                                                                             <input type="hidden" name="url_value" value=" "/>
                                                                             <input type="hidden" name="phone_value_03" value=" "/>
                                                                             <input type="hidden" name="latitude_value" value=" "/>
-                                                                            <input type="hidden" name="longitude_value"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="location_value_04"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="fallback_url_04"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="location_value_05"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="fallback_url_05"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="phone_value_08"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="message_value"
-                                                                                   value=" "/>
+                                                                            <input type="hidden" name="longitude_value" value=" "/>
+                                                                            <input type="hidden" name="location_value_04" value=" "/>
+                                                                            <input type="hidden" name="fallback_url_04" value=" "/>
+                                                                            <input type="hidden" name="location_value_05" value=" "/>
+                                                                            <input type="hidden" name="fallback_url_05" value=" "/>
+                                                                            <input type="hidden" name="phone_value_08" value=" "/>
+                                                                            <input type="hidden" name="message_value" value=" "/>
                                                                         </c:if>
                                                                         <c:if test="${list[2].btnType[idx] eq 'composeAction'}">
                                                                             <div class="row">
@@ -1238,41 +1222,28 @@
                                                                                     전화번호
                                                                                 </div>
                                                                                 <div class="td bottom-border top-border">
-                                                                                    <input type="text" name="phone_value_08"
-                                                                                           class="txt_input width en_font"
-                                                                                           value="${list[2].btnData[idx][0]}"/>
+                                                                                    <input type="text" name="phone_value_08" class="txt_input width en_font" value="${list[2].btnData[idx][0]}"/>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row">
                                                                                 <div class="th">문자메시지 내용</div>
                                                                                 <div class="td">
-                                                                                    <input type="text" name="message_value"
-                                                                                           class="txt_input width"
-                                                                                           value="${list[2].btnData[idx][1]}"/>
+                                                                                    <input type="text" name="message_value" class="txt_input width" value="${list[2].btnData[idx][1]}"/>
                                                                                 </div>
                                                                             </div>
                                                                             <input type="hidden" name="copy_value" value=" "/>
                                                                             <input type="hidden" name="url_value" value=" "/>
-                                                                            <input type="hidden" name="phone_value_03"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="latitude_value"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="longitude_value"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="location_value_04"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="fallback_url_04"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="location_value_05"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="fallback_url_05"
-                                                                                   value=" "/>
+                                                                            <input type="hidden" name="phone_value_03" value=" "/>
+                                                                            <input type="hidden" name="latitude_value" value=" "/>
+                                                                            <input type="hidden" name="longitude_value" value=" "/>
+                                                                            <input type="hidden" name="location_value_04" value=" "/>
+                                                                            <input type="hidden" name="fallback_url_04" value=" "/>
+                                                                            <input type="hidden" name="location_value_05" value=" "/>
+                                                                            <input type="hidden" name="fallback_url_05" value=" "/>
                                                                             <input type="hidden" name="start_date" value=" "/>
                                                                             <input type="hidden" name="end_date" value=" "/>
-                                                                            <input type="hidden" name="calendar_title"
-                                                                                   value=" "/>
-                                                                            <input type="hidden" name="calendar_body"
-                                                                                   value=" "/>
+                                                                            <input type="hidden" name="calendar_title" value=" "/>
+                                                                            <input type="hidden" name="calendar_body" value=" "/>
                                                                         </c:if>
                                                                     </div>
                                                                 </div>
@@ -1283,10 +1254,7 @@
                                                         <div class="row">
                                                             <div class="th">무료수신거부</div>
                                                             <div class="td">
-                                                                <input type="text" name="rcs_footer"
-                                                                       class="txt_input rejection_num width"
-                                                                       oninput="rcsCreate.rejection(this);"
-                                                                       value="${list[2].rcs_footer}"/>
+                                                                <input type="text" name="rcs_footer" class="txt_input rejection_num width" oninput="rcsCreate.rejection(this);" value="${list[2].rcs_footer}"/>
                                                             </div>
                                                         </div>
                                                     </div>
