@@ -1666,7 +1666,7 @@
 
                         // 내용
                         $('.rcsContents:nth-child(' + (i+1) + ')').val(textAreaParsing(list[2].slideBody[i]));
-                        rcsCreate.rcsContents(list[2].slideBody[i], i);
+                        rcsCreate.rcsContents($('.rcsContents:nth-child(' + (i+1) + ')'), i);
 
                         // 버튼 액션 선택
                         for(let j=0; j<2; j++) {
