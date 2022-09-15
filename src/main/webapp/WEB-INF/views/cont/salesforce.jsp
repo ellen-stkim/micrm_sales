@@ -1725,7 +1725,7 @@
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="location_value_05"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['location']['query']);
                                         $('.rcs_slide_conts:eq(' + i + ') input[name="fallback_url_05"]:eq(' + j + ')').val(btnAction['mapAction']['showLocation']['fallbackUrl']);
                                     }
-                                    if(btnAction.hasOwnProperty('mapAction') && btnAction['mapAction'].hasOwnProperty('showLocation')) {
+                                    if(btnAction.hasOwnProperty('mapAction')) {
                                         rcsBtnType($('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .option > li[data="RBTN06"]')[0])
                                         $('.rcs_slide_conts:eq(' + i + ') input[name=".slide_rcs_btn_tp_'+ (j + 1)+'"]').val('RBTN06');
                                         $('.rcs_slide_conts:eq(' + i + ') .action_select:eq(' + j + ') .value').data('RBTN06');
@@ -3106,7 +3106,6 @@
         $(e).parents('.row').siblings('.row').find('.text-count span').html('0');
 
         if (actionVal == "RBTN01") {
-
             layout += '<div class="row">' +
                 '<div class="th top-border">복사할 값</div>' +
                 '<div class="td top-border">' +
@@ -3153,7 +3152,6 @@
             $(area).html(layout);
         }
         if (actionVal == "RBTN03") {
-
             layout += '<div class="row">' +
                 '<div class="th top-border">전화번호</div>' +
                 '<div class="td top-border">' +
@@ -3177,7 +3175,6 @@
             $(area).html(layout);
         }
         if (actionVal == "RBTN04") {
-
             layout += '<div class="row">' +
                 '<div class="th bottom-border top-border">위도/경도</div>' +
                 '<div class="td bottom-border top-border">' +
@@ -3211,7 +3208,6 @@
             $(area).html(layout);
         }
         if (actionVal == "RBTN05") {
-
             layout += '<div class="row">' +
                 '<div class="th bottom-border top-border">위치 이름</div>' +
                 '<div class="td bottom-border top-border">' +
@@ -3259,7 +3255,6 @@
             $(area).html(layout);
         }
         if (actionVal == "RBTN07") {
-
             layout += '<div class="row">' +
                 '<div class="th bottom-border top-border">시작일 / 종료일</div>' +
                 '<div class="td bottom-border top-border">' +
