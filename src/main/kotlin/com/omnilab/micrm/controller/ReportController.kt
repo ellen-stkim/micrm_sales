@@ -71,7 +71,7 @@ class ReportController {
     fun reportAjax(@ModelAttribute dto: Program_SearchDto): ModelAndView {
 
         val view = ModelAndView("report/ajax/reportAjax")
-        val map : MutableMap<String, Any> =  reportService.getCampMstList(dto)
+        val map : MutableMap<String, Any> =  reportService.getTotalCampMstList(dto)
         view.addObject("pro_tg_tp", dto.pro_tg_tp)
         view.addObject("searchType", dto.searchType)
         view.addObject("searchValue", dto.searchValue)
@@ -102,9 +102,9 @@ class ReportController {
     fun proDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam pro_id : String): ModelAndView {
         val view = ModelAndView("report/campDt")
 
-        val cont_seq  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()
-        val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(cont_seq)
-        view.addObject("cont_seq", cont_seq)
+        val campIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()
+        val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(campIds)
+        view.addObject("cont_seq", campIds)
         view.addObject("totalResult", map["totalResult"])
         view.addObject("programLst", map["programLst"])
 
@@ -112,12 +112,12 @@ class ReportController {
     }
 
     @GetMapping("/report/singleDt.mi")
-    fun singleDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam cont_seq : String): ModelAndView {
+    fun singleDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam seq : String): ModelAndView {
         val view = ModelAndView("report/campDt")
-        var cont_seq: Array<String> = arrayOf(cont_seq)
+        var seqs: Array<String> = arrayOf(seq)
 
-        val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(cont_seq)
-        view.addObject("cont_seq", cont_seq)
+        val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(seqs)
+        view.addObject("cont_seq", seqs)
         view.addObject("totalResult", map["totalResult"])
         view.addObject("programLst", map["programLst"])
         return view
@@ -137,13 +137,15 @@ class ReportController {
     }
     @ResponseBody
     @PostMapping("/report/getClickTabAjax.ajax")
-    fun ClickTab(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_id") cont_id : Int , @RequestParam( required = false,   value="target_nm") target_nm : String ): ModelAndView {
+    fun ClickTab(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_id") cont_id : Int
+                 , @RequestParam( required = false,   value="camp_nm") camp_nm : String ): ModelAndView {
 
         val view= ModelAndView("report/ajax/reportSendPreview")
+        logger.error("sdldogksdfgksdflijdilfjli")
         val mapLst  =reportService.getClickList(cont_id)
         val filePath= sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val
         view.addObject("cont_seq", cont_id)
-        view.addObject("target_nm", target_nm)
+        view.addObject("camp_nm", camp_nm)
         view.addObject("list", mapLst)
         view.addObject("filePath", filePath)
 

@@ -1107,7 +1107,7 @@ span.ellipsis {display:block; line-height:1.5;}
     text-align:center; color:#cccccc; font-size:11px; cursor:pointer;}
 .status_area {padding:20px;}
 .status_area .left {width:calc(85.2% - 10px); margin-right:10px;}
-.status_area .left li {float:left; width:16.6%; border-right:none; position:relative; cursor:pointer; position:relative;}
+.status_area .left li {float:left; width:25%; border-right:none; position:relative; cursor:pointer; position:relative;}
 .status_area .left li:last-child {border-right:1px solid #dddddd;}
 .status_area .left li:last-child::before {display:none;}
 .status_area .left li::before {content:''; display:block; width:19px; height:19px;
