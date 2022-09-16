@@ -1273,7 +1273,8 @@
                         },
                     });
                 }
-
+                
+                $('.mobileLstPopup').removeClass('active');
             }
             let param = { usr_grp_cd : $('#usr_grp_cd').val() }
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
