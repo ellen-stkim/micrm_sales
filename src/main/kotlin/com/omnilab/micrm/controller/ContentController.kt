@@ -5,14 +5,9 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
-import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
-import com.omnilab.micrm.service.CampaignService
-import com.omnilab.micrm.service.ContentService
-import com.omnilab.micrm.service.ImageService
-import com.omnilab.micrm.service.SysSettingService
+import com.omnilab.micrm.service.*
 import org.apache.commons.io.FilenameUtils
-import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -55,6 +50,10 @@ class ContentController  {
     @Autowired
     @Qualifier("CampaignServiceImpl")
     private lateinit var campaignService : CampaignService
+
+    @Autowired
+    @Qualifier("KkoMsgServiceImpl")
+    private lateinit var kkoMsgService: KkoMsgService
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
@@ -1051,7 +1050,7 @@ class ContentController  {
      * @Since    : 2022. 09. 13.
      * @author   : Belisa
      * @param    : dto :
-     * @return   : Int
+     * @return   : ModelAndView
      * @excetion :
      * @see      :
      * @version  : 0.01
@@ -1059,9 +1058,47 @@ class ContentController  {
      * @title : 카카오 알림톡 템플릿 조회
      */
     @GetMapping("/atTemplate.mi")
-    fun atTemplate(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
-        return sysSettingService.getDBValue();
+    fun atTemplate(@ModelAttribute  dto : Tblmi_cont_imgDto): ModelAndView {
+        val view = ModelAndView("cont/kko/atTemplateLst")
+        val map = kkoMsgService.getTmplSearchLst()
+
+        view.addObject("tmplSt",map.get("tmplSt"))
+        view.addObject("kepSt",map.get("kepSt"))
+        return view
     }
 
+    /**
+     * @Method Name  : selectKkoAtTmplLst
+     * @Since    : 2022. 09. 15.
+     * @author   : Belisa
+     * @param    : dto:
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 리스트 가져오기
+     * @title : 알림톡 템플릿 리스트
+     */
+    @ResponseBody
+    @PostMapping("/kko/atTmplLst.ajax")
+    fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
+//        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
+        val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
+
+        view.addObject("list" , paramMap["list"])
+        view.addObject("page", paramMap["page"])
+        view.addObject("pageNo", paramMap["pageNo"])
+        view.addObject("nextCk", paramMap["nextCk"])
+        view.addObject("titleList",paramMap["titleList"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
 
 }
