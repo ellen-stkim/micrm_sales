@@ -24,7 +24,7 @@
                 <div class="sms_head bg_color cf">
                     <!-- 체크박스 -->
                     <label class="custom_check1">
-                        <input type="checkbox" name="list" value="${content.seq}"/><span></span></label>
+                        <input type="radio" name="list" value="${content.seq}"/><span></span></label>
                     <ul class="sms_type cf">
                         <c:forEach items="${fn:split(content.msg_tp_lst,',')}" var="title">
                             <c:if test="${title eq 'DMCH205' || title eq 'DMCH206'}">
