@@ -1181,7 +1181,7 @@
     });
 
     // 정보 조회
-    function mobileInfo() {
+    function mobileInfo(seq) {
         const res = function(response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
@@ -1279,7 +1279,7 @@
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
         }
 
-        let param = { seq: $('#seq').val() }
+        let param = { seq: seq }
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -2123,7 +2123,6 @@
 
     // RCS 포맷 카드 변경
     function rcsChangeFormat(type) {
-
         let checkType = $(type)[0].value;
         $(type).prop('checked', true);
         $('.layer_pop').removeClass('active');
@@ -2825,7 +2824,7 @@
         }
     }
 
-    // 이미지 리스트 팝업
+    // 모바일 리스트 팝업
     function mobileListPaging(nowPage) {
         const res = function (response) {
             $('.mobileLstPopup').addClass('active');
@@ -2836,6 +2835,17 @@
         let param = $("#mobileLst").serializeArray();
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    // 모바일 리스트 선택
+    function mobileListSave(){
+        let len = $('input[name="list"]:checked').length;
+        let check = $('input[name="list"]:checked').val();
+        if (len > 0) {
+            mobileInfo(check);
+        }else{
+            return false;
+        }
     }
 </script>
 

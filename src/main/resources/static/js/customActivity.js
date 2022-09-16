@@ -109,7 +109,7 @@ define(["postmonger"], function (Postmonger) {
 	    const res = function(response) {
             if (response.status === "true") {
 				if($('#seq').val() != '' && $('#seq').val() != null) {
-					mobileInfo();
+					mobileInfo($('#seq').val());
 				}else{
 					$('#usr_grp_cd').val(response.usr_grp_cd);
 					$('#cont_grp_cd').val(response.usr_grp_cd);
