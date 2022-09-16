@@ -576,6 +576,7 @@
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
     let firstLoad = true;
+    let seq = null;
 
     function getDBValue() {
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
@@ -1273,7 +1274,7 @@
                         },
                     });
                 }
-                
+
                 $('.mobileLstPopup').removeClass('active');
             }
             let param = { usr_grp_cd : $('#usr_grp_cd').val() }
@@ -1825,7 +1826,6 @@
                 }
                 preview();
                 //$("#form").submit();
-
             } else {
                 // 중복된 명칭 존재
                 popup.popAlert(response.message)
@@ -1837,14 +1837,12 @@
 
     // 버튼 타입 Hidden 값 추가
     function buttonHiddenAdd() {
-
         var rcsType = $("input[name='rcs_format_type']:checked").val();
         var checkType = $("input[name='rcs_msg_tp']:checked").val();
 
         var valueCheck1 = $("input[name='rcs_btn_tp_1']").val();
         var valueCheck2 = $("input[name='rcs_btn_tp_2']").val();
         var valueCheck3 = $("input[name='rcs_btn_tp_3']").val();
-
 
         var layout = '<input type="hidden" name="phone_value_03"  value=" "/>' +
             '<input type ="hidden" name="copy_value" value=" "/>' +

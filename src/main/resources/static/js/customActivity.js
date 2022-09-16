@@ -40,11 +40,11 @@ define(["postmonger"], function (Postmonger) {
 			flag = false;
 		}
 		let hasInArguments = Boolean(payload["arguments"] && payload["arguments"].execute && payload["arguments"].execute.inArguments && payload["arguments"].execute.inArguments.length > 0 );
-
 		let inArguments = hasInArguments ? payload["arguments"].execute.inArguments : {};
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
 				if(key === 'seq') {
+					seq = val;
 					$('#seq').val(val);
 				}
 			});
