@@ -545,18 +545,17 @@
     <div class="layer_pop mobileLstPopup">
         <div class="pop_container popup_size2">
             <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
-            <div class="pop_title">이미지 선택</div>
+            <div class="pop_title">리스트 선택</div>
             <div class="pop_inner">
                 <div class="form_search">
                     <!-- 검색 영역 시작 -->
-                    <div class="input_txt left-border-none">
+                    <div class="input_txt-">
                         <input type="text"  name='cont_nm' placeholder="검색어 입력"/>
                         <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
                     </div>
                     <!-- 검색 영역 끝 -->
                 </div>
-                <div class="image_container" id="mobileLstDom">
-                </div>
+                <div class="image_container" id="mobileLstDom"></div>
                 <div class="btn_row bottom-border left-border right-border">
                     <ul class="pager" id="mobileLstpagingDom"></ul>
                 </div>
@@ -573,6 +572,7 @@
     let usr_cd = '${usr_cd}';
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
+    let firstLoad = true;
 
     function getDBValue() {
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
@@ -1165,6 +1165,16 @@
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
         });
+
+        $(document).on("click", "#contLoad", function(){
+            if(firstLoad){
+                firstLoad = false;
+            }else{
+                $('.mobileLstPopup').addClass('active');
+                mobileListPaging("1");
+            }
+        });
+
     });
 
     // 정보 조회
@@ -2756,7 +2766,6 @@
             });
         }
         if (actionVal == "RBTN08") {
-
             layout += '<div class="row">' +
                 '<div class="th bottom-border top-border">전화번호</div>' +
                 '<div class="td bottom-border top-border">' +
@@ -2815,50 +2824,15 @@
 
     // 이미지 리스트 팝업
     function mobileListPaging(nowPage) {
-        /*
-        let type = $('#imgType').val();
-
         const res = function (response) {
-            $('.imagePopup').addClass('active');
+            $('.mobileLstPopup').addClass('active');
             let $doc = new DOMParser().parseFromString(response, "text/html");
-            $("#bodyDom").html($("#bodyDom", $doc).html());
-            $("#pagingDom").html($("#pagingDom", $doc).html());
-            $('#imgType').val(type);
+            $("#mobileLstDom").html($("#mobileLstDom", $doc).html());
+            $("#mobileLstpagingDom").html($("#mobileLstpagingDom", $doc).html());
         };
-
-        let param = $("#imgSetForm").serializeArray();
-
-        if (type === 'kakaoImage') {
-            // 이미지 타입 : Kakao Image
-            param.push({name: 'ch_tp', value: 'IMGTP03'});
-        } else if (type === 'smsImage') {
-            // 이미지 타입 : 문자(MMS)
-            param.push({name: 'ch_tp', value: 'IMGTP02'});
-        } else if (type === 'horizontalImage') {
-            // 이미지 타입 : RCS 가로형
-            param.push({name: 'ch_tp', value: 'IMGTP04'});
-        } else if (type === 'verticalImage') {
-            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
-            if (rcs_msg_tp === 'tall') {
-                // 이미지 타입 : RCS 세로형 Tall
-                param.push({name: 'ch_tp', value: 'IMGTP05'});
-            } else if (rcs_msg_tp === 'medium') {
-                // 이미지 타입 : RCS 세로형 Medium
-                param.push({name: 'ch_tp', value: 'IMGTP06'});
-            }
-        } else if (type === 'slideRcsImage') {
-            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
-            if (rcs_msg_tp === 'small') {
-                // 이미지 타입 : RCS 슬라이드 small
-                param.push({name: 'ch_tp', value: 'IMGTP07'})
-            } else if (rcs_msg_tp === 'medium') {
-                // 이미지 타입 : RCS 슬라이드 medium
-                param.push({name: 'ch_tp', value: 'IMGTP08'});
-            }
-        }
+        let param = $("#mobileLst").serializeArray();
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
-        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
-        */
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 </script>
 

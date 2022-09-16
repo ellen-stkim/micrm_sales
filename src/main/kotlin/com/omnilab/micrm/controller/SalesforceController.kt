@@ -452,6 +452,29 @@ class SalesforceController {
         return map
     }
 
+    @ResponseBody
+    @PostMapping("/{usr_cd}/mobileList.ajax")
+    fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
+        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
+        val paramMap = mobileContentService.selectContentView(dto)
+
+        view.addObject("list" , paramMap["list"])
+        view.addObject("page", paramMap["page"])
+        view.addObject("pageNo", paramMap["pageNo"])
+        view.addObject("nextCk", paramMap["nextCk"])
+        view.addObject("titleList",paramMap["titleList"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
+
     // =================================================== Salesforce ===================================================== //
 
     /**
