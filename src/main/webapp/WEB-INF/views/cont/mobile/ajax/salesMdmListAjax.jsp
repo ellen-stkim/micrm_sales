@@ -8,6 +8,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib prefix="cutil" uri="tld/Commonutils.tld" %>
+<%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <span id="mobileLstDom">
 <c:choose>
     <c:when test="${not empty list}">
@@ -298,26 +299,15 @@
         <input type="hidden" id="nowPageNo" name="nowPageNo" value="${pageNo}"/>
     </c:when>
     <c:otherwise>
-                <div class="none list_ht bottom-border">
-    조회된 결과가 없습니다.
-</div>
+        <div class="none list_ht bottom-border">
+            조회된 결과가 없습니다.
+        </div>
     </c:otherwise>
 </c:choose>
 </span>
 
 <span id="mobileLstpagingDom">
-    <c:choose>
-        <c:when test="${nextCk eq true}">
-        <div class="btn_more" onclick="getMobileListAdd('${pageNo}');">
-            <img src="/image/bullet_arrw1.png" alt=""/>더보기
-        </div>
-        </c:when>
-        <c:otherwise>
-            <c:if test="${empty list}">
-                <div class="none list_ht bottom-border">
-                    조회된 결과가 없습니다.
-                </div>
-            </c:if>
-        </c:otherwise>
-    </c:choose>
+     <ui:pagination paginationInfo="${page}" type="image" jsFunction="mobileListPaging"/>
+    <input type="hidden" id="nowPageNo" name="nowPageNo" value="${pageNo}"/>
+    <input type="hidden" id="totCnt" name="totCnt" value="${listCnt}"/>
 </span>

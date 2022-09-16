@@ -1172,9 +1172,9 @@
         $(document).on("click", "#contLoad", function(){
             if(firstLoad){
                 firstLoad = false;
+                mobileListPaging("1");
             }else{
                 $('.mobileLstPopup').addClass('active');
-                mobileListPaging("1");
             }
         });
 
