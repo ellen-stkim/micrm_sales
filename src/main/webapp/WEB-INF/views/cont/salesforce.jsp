@@ -1831,7 +1831,7 @@
                 popup.popAlert(response.message)
             }
         }
-        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: seq}
+        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: mstSeq}
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 

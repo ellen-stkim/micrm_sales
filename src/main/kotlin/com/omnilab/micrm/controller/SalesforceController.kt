@@ -162,7 +162,6 @@ class SalesforceController {
         val cntMap = mobileContentService.isCheckSender()
 
         view.addObject("list" , listMap["list"])
-        logger.error("{}", (listMap["list"] as MutableList<Map<String, Any>>)[0])
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
