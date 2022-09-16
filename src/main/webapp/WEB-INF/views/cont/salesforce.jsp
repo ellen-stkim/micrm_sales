@@ -576,7 +576,7 @@
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
     let firstLoad = true;
-    let seq = null;
+    let mstSeq = null;
 
     function getDBValue() {
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
@@ -1831,7 +1831,7 @@
                 popup.popAlert(response.message)
             }
         }
-        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: $('#seq').val()}
+        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: seq}
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
