@@ -205,11 +205,11 @@
                                         </td>
                                         <td class="total"><span>${total.t_cnt}</span></td>
                                         <td class="total"><span>${total.s_cnt}</span></td>
-                                        <td class="total"><span>${total.o_cnt}</span></td>
+                                        <td class="total" name="open"><span>${total.o_cnt}</span></td>
                                         <td class="total" name="click"><span>${total.c_cnt}</span></td>
                                     </tr>
                                     <c:forEach var="cont" items="${programMap.program}">
-                                        <tr name="list_tr" onclick="showContDet(this , ${cont.cont_id})">
+                                        <tr class="cus_pointer" name="list_tr" onclick="showContDet(this , ${cont.cont_id})">
                                             <td><span class="ellipsis" name="camp_nm">${cont.camp_nm}</span></td>
                                             <td>
                                         <span>
@@ -226,7 +226,7 @@
                                                 <fmt:formatNumber value="${cont.suc_cnt / cont.total_cnt}"
                                                                   pattern="(###%)"/>
                                             </td>
-                                            <td> <span><fmt:formatNumber value="${cont.open_cnt}"
+                                            <td name="open"> <span><fmt:formatNumber value="${cont.open_cnt}"
                                                                          pattern="#,##0"></fmt:formatNumber></span><br>
                                                 <fmt:formatNumber value="${cont.open_cnt / cont.total_cnt}"
                                                                   pattern="(###%)"/>
@@ -764,11 +764,10 @@
             case 'clickTab':
                 $(".orange_bg").removeClass("orange_bg");
                 $("[name=click]").addClass("orange_bg");
-                $("tbody [name='click']").click();
+                $("tbody [name='click']")[1].click();
                 $("#help_btn").removeClass("disnone");
                 $('.open-time-box').addClass("disnone");
                 break;
-
         }
         $(me).siblings().removeClass('active');
         $(me).addClass('active');
@@ -1275,6 +1274,7 @@
         }.bind({}))[0]
 
         var res = function (response) {
+            console.log("-----------------------------reportList-------------------------------")
             var $doc = new DOMParser().parseFromString(response, "text/html");
             $('#report_tbody').append($("#report_tbody", $doc).html());
             $('#report_pager').append($("#report_pager", $doc).html());
@@ -1430,8 +1430,11 @@
         selectedCampSet.clear();
     }
 
+    // for문이 돌지않음
     function checkLst() {
+        console.log('checkLst')
         $('#report_tbody input[name="cont_seq"]').each(function (idx, contSeq) {
+            console.log(contSeq)
             let seq = $(contSeq).val();
             if (duplDocument(seq).length > 0) {
                 let checkBox = $("#report_tbody input[value=" + seq + "]");
