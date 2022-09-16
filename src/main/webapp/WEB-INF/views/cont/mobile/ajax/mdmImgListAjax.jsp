@@ -69,11 +69,9 @@
                 <input type="hidden" id="imgType" name="imgType" value=""/>
             </ul>
         </div>
-
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장"
-                   onclick="imgSendSave();"/>
+            <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장" onclick="imgSendSave();"/>
         </div>
     </div>
 </div>

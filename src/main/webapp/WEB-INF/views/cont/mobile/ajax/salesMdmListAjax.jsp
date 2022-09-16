@@ -13,7 +13,7 @@
     <c:when test="${not empty list}">
         <c:forEach var="content" items="${list}">
             <c:if test="${content.use_yn eq 'Y'}">
-                <div class="column">
+                <div class="column" style="border-bottom: none;">
             </c:if>
             <c:if test="${content.use_yn eq 'N'}">
                 <div class="column off">
@@ -298,7 +298,9 @@
         <input type="hidden" id="nowPageNo" name="nowPageNo" value="${pageNo}"/>
     </c:when>
     <c:otherwise>
-
+                <div class="none list_ht bottom-border">
+    조회된 결과가 없습니다.
+</div>
     </c:otherwise>
 </c:choose>
 </span>

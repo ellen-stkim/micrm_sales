@@ -311,8 +311,8 @@
 <span id="pageHtml">
     <c:choose>
         <c:when test="${nextCk eq true}">
-        <div class="btn_more" onclick="getMobileListAdd('${pageNo}');"><img src="/image/bullet_arrw1.png"
-                                                                            alt=""/>더보기</div>
+        <div class="btn_more" onclick="getMobileListAdd('${pageNo}');">
+            <img src="/image/bullet_arrw1.png" alt=""/>더보기</div>
         </c:when>
         <c:otherwise>
             <c:if test="${empty list}">
