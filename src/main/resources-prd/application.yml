@@ -42,6 +42,10 @@ variable:
   static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "http://t.tableau-report.com/trusted"
 
+  biz-url: https://stg-web.bizmsg.kakaoenterprise.com/mng
+  biz-version: v1
+  biz-Auth: ENC(GDaXkEIOePI8UF3TWrvkF6M1h89wUxi4KjedlrIsrmq4CYSG64Z5iW8P3Ov+rw4sHufwDXtS2Njccl6Uj+g2pcyoyYxFMxM0CJ9bbsO8bIWFsBq+sXdY77spuAE4R0wV)
+
 upload:
   src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
   content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
