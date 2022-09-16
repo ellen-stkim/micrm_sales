@@ -543,7 +543,7 @@
 
 <form:form id="mobileLst" name="mobileLst" onsubmit="return false">
     <div class="layer_pop mobileLstPopup">
-        <div class="pop_container popup_size2">
+        <div class="pop_container popup_size8">
             <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
             <div class="pop_title">리스트 선택</div>
             <div class="pop_inner">
@@ -560,6 +560,9 @@
                     <ul class="pager" id="mobileLstpagingDom"></ul>
                 </div>
                 <div class="pop_error_txt blue_point_color"></div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장" onclick="mobileListSave();"/>
+                </div>
             </div>
         </div>
     </div>
