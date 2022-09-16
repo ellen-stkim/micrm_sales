@@ -501,6 +501,7 @@
     <span id="callPopUp"></span>
 </form:form>
 
+<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
 <form:form id="imgSetForm" name="imgSetForm" onsubmit="return false">
 <span id="imgPopUp">
     <div class="layer_pop imagePopup">
@@ -538,6 +539,33 @@
     </div>
 </span>
 </form:form>
+<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
+
+<form:form id="mobileLst" name="mobileLst" onsubmit="return false">
+    <div class="layer_pop mobileLstPopup">
+        <div class="pop_container popup_size2">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title">이미지 선택</div>
+            <div class="pop_inner">
+                <div class="form_search">
+                    <!-- 검색 영역 시작 -->
+                    <div class="input_txt left-border-none">
+                        <input type="text"  name='cont_nm' placeholder="검색어 입력"/>
+                        <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
+                    </div>
+                    <!-- 검색 영역 끝 -->
+                </div>
+                <div class="image_container" id="mobileLstDom">
+                </div>
+                <div class="btn_row bottom-border left-border right-border">
+                    <ul class="pager" id="mobileLstpagingDom"></ul>
+                </div>
+                <div class="pop_error_txt blue_point_color"></div>
+            </div>
+        </div>
+    </div>
+</form:form>
+
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
@@ -1961,7 +1989,7 @@
             // 이미지 타입 : RCS 가로형
             param.push({name: 'ch_tp', value: 'IMGTP04'});
         } else if (type === 'verticalImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
             if (rcs_msg_tp === 'tall') {
                 // 이미지 타입 : RCS 세로형 Tall
                 param.push({name: 'ch_tp', value: 'IMGTP05'});
@@ -1970,7 +1998,7 @@
                 param.push({name: 'ch_tp', value: 'IMGTP06'});
             }
         } else if (type === 'slideRcsImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
             if (rcs_msg_tp === 'small') {
                 // 이미지 타입 : RCS 슬라이드 small
                 param.push({name: 'ch_tp', value: 'IMGTP07'})
@@ -2783,6 +2811,54 @@
                 $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').remove();
             }
         }
+    }
+
+    // 이미지 리스트 팝업
+    function mobileListPaging(nowPage) {
+        /*
+        let type = $('#imgType').val();
+
+        const res = function (response) {
+            $('.imagePopup').addClass('active');
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            $("#bodyDom").html($("#bodyDom", $doc).html());
+            $("#pagingDom").html($("#pagingDom", $doc).html());
+            $('#imgType').val(type);
+        };
+
+        let param = $("#imgSetForm").serializeArray();
+
+        if (type === 'kakaoImage') {
+            // 이미지 타입 : Kakao Image
+            param.push({name: 'ch_tp', value: 'IMGTP03'});
+        } else if (type === 'smsImage') {
+            // 이미지 타입 : 문자(MMS)
+            param.push({name: 'ch_tp', value: 'IMGTP02'});
+        } else if (type === 'horizontalImage') {
+            // 이미지 타입 : RCS 가로형
+            param.push({name: 'ch_tp', value: 'IMGTP04'});
+        } else if (type === 'verticalImage') {
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
+            if (rcs_msg_tp === 'tall') {
+                // 이미지 타입 : RCS 세로형 Tall
+                param.push({name: 'ch_tp', value: 'IMGTP05'});
+            } else if (rcs_msg_tp === 'medium') {
+                // 이미지 타입 : RCS 세로형 Medium
+                param.push({name: 'ch_tp', value: 'IMGTP06'});
+            }
+        } else if (type === 'slideRcsImage') {
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
+            if (rcs_msg_tp === 'small') {
+                // 이미지 타입 : RCS 슬라이드 small
+                param.push({name: 'ch_tp', value: 'IMGTP07'})
+            } else if (rcs_msg_tp === 'medium') {
+                // 이미지 타입 : RCS 슬라이드 medium
+                param.push({name: 'ch_tp', value: 'IMGTP08'});
+            }
+        }
+        param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        */
     }
 </script>
 
