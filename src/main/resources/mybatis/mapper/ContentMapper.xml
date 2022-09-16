@@ -1117,12 +1117,8 @@
 			, l.img_cd_4                                                                                           AS img_cd_4
 			, l.img_cd_5                                                                                           AS img_cd_5
 			, l.img_cd_6                                                                                           AS img_cd_6
-			, CONCAT(IFNULL(img_1.img_url, ' '), ',', IFNULL(img_2.img_url, ' '), ',', IFNULL(img_3.img_url, ' '), ',',
-				  IFNULL(img_4.img_url, ' '), ',', IFNULL(img_5.img_url, ' '), ',',
-				  IFNULL(img_6.img_url, ' '))                                                                   AS IMG_LST
-			, CONCAT(IFNULL(img_1.img_nm, ' '), ',', IFNULL(img_2.img_nm, ' '), ',', IFNULL(img_3.img_nm, ' '), ',',
-				  IFNULL(img_4.img_nm, ' '), ',', IFNULL(img_5.img_nm, ' '), ',',
-				  IFNULL(img_6.img_nm, ' '))                                                                    AS IMG_NM_LST
+			, CONCAT(IFNULL(img_1.img_url, ' '), ',', IFNULL(img_2.img_url, ' '), ',', IFNULL(img_3.img_url, ' '), ',', IFNULL(img_4.img_url, ' '), ',', IFNULL(img_5.img_url, ' '), ',', IFNULL(img_6.img_url, ' '))                                                                   AS IMG_LST
+			, CONCAT(IFNULL(img_1.img_nm, ' '), ',', IFNULL(img_2.img_nm, ' '), ',', IFNULL(img_3.img_nm, ' '), ',', IFNULL(img_4.img_nm, ' '), ',', IFNULL(img_5.img_nm, ' '), ',', IFNULL(img_6.img_nm, ' '))                                                                    AS IMG_NM_LST
 			, l.rcs_btn_obj                                                                                        AS rcs_btn_obj
 			, l.rcs_btn_1                                                                                          AS rcs_btn_1
 			, l.rcs_btn_tp_1                                                                                       AS rcs_btn_tp_1

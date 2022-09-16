@@ -8,7 +8,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
-
 <!-- smsCreste.js -->
 <script src="/js/smsCreate.js"></script>
 <!-- image upload js -->
@@ -31,6 +30,9 @@
                     <li>모바일 컨텐츠 생성</li>
                 </ul>
                 <!-- tooltip box 영역 끝 -->
+            </div>
+            <div class="right">
+                <span class="btn_sm_line" style="width: 75px; margin: 7px 7px 0 0;" id="contLoad">불러오기</span>
             </div>
         </div>
         <!-- row 영역 끝 -->
@@ -125,8 +127,7 @@
                                     <div class="row body">
                                         <div class="th">문자 제목</div>
                                         <div class="column_1">
-                                            <input type="text" class="title kakaoTitle" name="cont_sub_list"
-                                                   placeholder="문자 제목을 입력하세요."/>
+                                            <input type="text" class="title kakaoTitle" name="cont_sub_list" placeholder="문자 제목을 입력하세요."/>
                                             <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                         </div>
                                     </div>
@@ -320,8 +321,6 @@
                                 <div class="viewer_area">
                                     <div class="top">문자 본문 입력창</div>
                                     <div class="inner">
-<%--                                        <div class="sms_title" id="sms_title"></div>--%>
-<%--                                        <div class="sms_img"></div>--%>
                                         <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'sms');"></textarea>
                                     </div>
                                     <div class="byte">
@@ -560,22 +559,6 @@
         $('div[name="defaultDB"]').hide();
     }
 
-    // 개인화 변수 조회 - 로컬 테스트용
-    function mappingLst() {
-        const res = function(response) {
-            let list = response.mappingLst;
-            let html = '';
-
-            for(let i=0; i<list.length; i++) {
-                let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-            }
-            $('.mappingLst').html(html);
-        }
-        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
-    }
-
     $(function () {
         $('input[name="dbInfo"]').on('change', function () { getDBValue(); });//end
         getDBValue();
@@ -618,7 +601,8 @@
         });
 
         //컨텐츠 포맷 click event
-        $('.formatType').on('click', function () {
+
+        $(document).on('click', '.formatType', function() {
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
             let tabInx = $('.formatType').index(this);
@@ -652,7 +636,7 @@
         });
 
         //카카오 링크 버튼 생성 event
-        $('.kakaoLinkBtn').on('click', function () {
+        $(document).on('click', '.kakaoLinkBtn', function() {
             let btnState = $(this).val();
             let link = $('.kakao_btn_link');
             let name = $('.kakao_btn_name');
@@ -693,7 +677,7 @@
             }
         });
 
-        $('.smsType').on('change', function () {
+        $(document).on('change', '.smsType', function() {
             let smsType = $(this).val();
             if (smsType != 'MMS') {
                 $(this).parents('.row').siblings('.input-img').removeClass('on');
@@ -703,7 +687,7 @@
         });
 
         // MMS, 카카오 이미지 삭제
-        $('.delete_img').on('click', function () {
+        $(document).on('click', '.delete_img', function() {
             let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
             let imgcount = imgElement.length;
             let imgUrl = $(this).next('.txt_input').val();
@@ -733,7 +717,7 @@
         });
 
         // 추적 링크 생성 동작
-        $('.trackingLinkBtn').on('click', function () {
+        $(document).on('click', '.trackingLinkBtn', function() {
             let link = $(this).prev('input').val();
             let text = $(this).parents('.sms_form').find('.textarea').val();
             let type = $(this).parent().find('.txt_input').attr('id');
@@ -911,7 +895,8 @@
         });
 
         //이미지 선택 팝업 저장 event
-        $('.imageSave').on('click', function () {
+
+        $(document).on('click', '.imageSave', function() {
             $('#imagePop').submit();
         });
 
@@ -951,7 +936,7 @@
         });
 
         //발신 번호 선택 팝업 event
-        $('.numberSave').on('click', function () {
+        $(document).on('click', '.numberSave', function() {
             let callCheck = $('.call:checked').length;
             let callNumber = $('.call:checked').val();
             if (callCheck > 0) {
@@ -964,323 +949,13 @@
             }
         });
 
-        $('.js-ad').on('click',function(){
+        $(document).on('click', '.js-ad', function() {
             adTypeCheck();
         });
 
         // 버튼 셀렉트박스
-        $(document).on('click', '.action_select ul li', function () {
-            let actionVal = $(this).attr('data');
-            let area = $(this).parents('.row').siblings('.custom_box');
-            let layout = '';
-            let parentValue = $(this).parents('.action_select').attr('data');
-
-            $(area).children().remove();
-
-            let num = 0;
-            let rcsType = $("input[name='rcs_format_type']:checked").val().trim();
-
-            if (rcsType === "slide") {
-                let dataValue = "slide_rcs_btn_" + parentValue;
-                let index = $('.cardOn.on').index() + 1;
-
-                if (parentValue == 1) {
-                    // 첫번째 버튼 항목 클릭
-                    if (index == 1) {
-                        $("#slide_rcs_btn_tp_1").val(actionVal);
-                    } else if (index == 2) {
-                        $("#slide_rcs_btn_tp_3").val(actionVal);
-                    } else if (index == 3) {
-                        $("#slide_rcs_btn_tp_5").val(actionVal);
-                    } else if (index == 4) {
-                        $("#slide_rcs_btn_tp_7").val(actionVal);
-                    } else if (index == 5) {
-                        $("#slide_rcs_btn_tp_9").val(actionVal);
-                    } else if (index == 6) {
-                        $("#slide_rcs_btn_tp_11").val(actionVal)
-                    }
-                } else if (parentValue == 2) {
-                    // 두번째 버튼 항목 클릭
-                    if (index == 1) {
-                        $("#slide_rcs_btn_tp_2").val(actionVal);
-                    } else if (index == 2) {
-                        $("#slide_rcs_btn_tp_4").val(actionVal);
-                    } else if (index == 3) {
-                        $("#slide_rcs_btn_tp_6").val(actionVal);
-                    } else if (index == 4) {
-                        $("#slide_rcs_btn_tp_8").val(actionVal);
-                    } else if (index == 5) {
-                        $("#slide_rcs_btn_tp_10").val(actionVal);
-                    } else if (index == 6) {
-                        $("#slide_rcs_btn_tp_12").val(actionVal)
-                    }
-                }
-            } else {
-                let dataValue = "rcs_btn_tp_" + parentValue;
-                if (parentValue == 1) {
-                    $("input[name='rcs_btn_tp_1']").val(actionVal);
-                } else if (parentValue == 2) {
-                    $("input[name='rcs_btn_tp_2']").val(actionVal);
-                } else if (parentValue == 3) {
-                    $("input[name='rcs_btn_tp_3']").val(actionVal);
-                }
-            }
-            $(this).parents('.row').siblings('.row').find('.action_name').val('');
-            $(this).parents('.row').siblings('.row').find('.text-count span').html('0');
-
-            if (actionVal == "RBTN01") {
-
-                layout += '<div class="row">' +
-                    '<div class="th top-border">복사할 값</div>' +
-                    '<div class="td top-border">' +
-                    '<input type="text" name="copy_value" class="txt_input width" placeholder="복사할 값을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name ="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN02") {
-                layout += '<div class="row">' +
-                    '<div class="th top-border">URL</div>' +
-                    '<div class="td top-border">' +
-                    '<input type="text" name="url_value" class="txt_input width en_font url_link" data="url" placeholder="URL 입력 (http:// 또는 https://필수입력)" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN03") {
-
-                layout += '<div class="row">' +
-                    '<div class="th top-border">전화번호</div>' +
-                    '<div class="td top-border">' +
-                    '<input type="text" name="phone_value_03" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN04") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">위도/경도</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="latitude_value" class="txt_input en_font half right-border" placeholder="위도를 입력해주세요." />' +
-                    '<input type="text" name="longitude_value" class="txt_input en_font half" placeholder="경도를 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th bottom-border">위치 이름</div>' +
-                    '<div class="td bottom-border">' +
-                    '<input type="text" name="location_value_04" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">Fallback URL</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="fallback_url_04" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN05") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">위치 이름</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="location_value_05" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">Fallback URL</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="fallback_url_05" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN06") {
-                layout +=
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name= "fallback_url_05" value =" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value =" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-            }
-            if (actionVal == "RBTN07") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">시작일 / 종료일</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" placeholder="시작일" />' +
-                    '<input type="text" name="end_date" class="end_date txt_input en_font calendar" placeholder="종료일" />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th bottom-border">제목</div>' +
-                    '<div class="td bottom-border">' +
-                    '<input type="text" name="calendar_title" class="txt_input width" placeholder="제목을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">내용</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="calendar_body" class="txt_input width" placeholder="내용을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-                    '<input type ="hidden" name ="message_value" value=" "/>';
-                $(area).html(layout);
-                $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
-                    onSelect: function (selected) {
-                        $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
-                    }
-                });
-                $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
-                    onSelect: function (selected) {
-                        $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
-                    }
-                });
-            }
-            if (actionVal == "RBTN08") {
-
-                layout += '<div class="row">' +
-                    '<div class="th bottom-border top-border">전화번호</div>' +
-                    '<div class="td bottom-border top-border">' +
-                    '<input type="text" name="phone_value_08" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="th">문자메시지 내용</div>' +
-                    '<div class="td">' +
-                    '<input type="text" name="message_value" class="txt_input width" placeholder="문자메시지 내용을 입력해주세요." />' +
-                    '</div>' +
-                    '</div>' +
-                    '<input type ="hidden" name="copy_value" value=" "/>' +
-                    '<input type="hidden" name="url_value" value=" "/>' +
-                    '<input type ="hidden" name ="phone_value_03" value=" "/>' +
-                    '<input type ="hidden" name ="latitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="longitude_value" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_04" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-                    '<input type ="hidden" name ="location_value_05" value=" "/>' +
-                    '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-                    '<input type ="hidden" name ="start_date" value=" "/>' +
-                    '<input type ="hidden" name ="end_date" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_title" value=" "/>' +
-                    '<input type ="hidden" name ="calendar_body" value=" "/>';
-                $(area).html(layout);
-            }
-            let actionButton = $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').length;
-            let typeSlide = $(this).parents('.rcs_slide_conts').length;
-
-            if (typeSlide == 0) {
-                if (actionVal != 0 && actionButton == 0) {
-                    $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
-                }
-                if (actionVal != 0 && actionButton >= 1) {
-                    $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').html('버튼' + parentValue);
-                }
-                if (actionVal == 0) {
-                    $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').remove();
-                }
-            } else {
-                let sectionInx = $(this).parents('.rcs_slide_conts.on').index() - 1;
-                let buttonLength = $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').length;
-
-                if (actionVal != 0 && buttonLength == 0) {
-                    $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
-                }
-                if (actionVal != 0 && buttonLength >= 1) {
-                    $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').html('버튼' + parentValue);
-                }
-                if (actionVal == 0) {
-                    $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').remove();
-                }
-            }
+        $(document).on('click', '.action_select ul li', function (e) {
+            rcsBtnType(this);
         });
 
         // RCS 슬라이드형 카드 Tab click event
@@ -1290,7 +965,7 @@
             $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
         });
 
-        $('#previewBtn').on('click', function () {
+        $(document).on('click', '#previewBtn', function() {
             let tamplate = $('.template_name');
             let smsFormat = $('.formatType:checked').val();
             let smsFormatLength = $('.formatType:checked').length;
@@ -1366,7 +1041,7 @@
         let beforeType = $('input[name="rcs_format_type"]:checked').val();
 
         // RCS 포맷카드 변경시 초기화 알림
-        $('input[name="rcs_format_type"]').on('click', function (event) {
+        $(document).on('click', 'input[name="rcs_format_type"]', function(event) {
             event.preventDefault();
             check = $('input[name="rcs_format_type"]:checked');
             let nowVal = $('input[name="rcs_format_type"]:checked').val();
@@ -1395,7 +1070,7 @@
         });
 
         // RCS 카드양식 변경시 초기화 알림
-        $(document).on('click','input[name="rcs_msg_tp"]', function (event) {
+        $(document).on('click', 'input[name="rcs_msg_tp"]', function(event) {
             event.preventDefault();
             check = $('input[name="rcs_msg_tp"]:checked');
             let nowSub = $('input[name="rcs_msg_tp"]:checked').val();
@@ -1457,7 +1132,7 @@
         });
 
         // 포맷 Tab
-        $('#js-smsTab > li').on('click',function(){
+        $(document).on('click', '#js-smsTab > li', function(event) {
             let tab = $('#js-smsTab > li').index(this);
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
@@ -1467,609 +1142,103 @@
     // 정보 조회
     function mobileInfo() {
         const res = function(response) {
-            let list = response.list;
-            let filePath = response.filePath;
+            const $doc = new DOMParser().parseFromString(response, "text/html");
+            $(".container").html($(".container", $doc).html());
 
-            if(list == null) {
-                $('#seq').val('');
-                return false;
+            //load 시 byte 계산
+            let kakaoTxt = $('#kakao .textarea');
+            let smsTxt = $('#sms .textarea');
+            smsCreate.byteCount(kakaoTxt, 'kakao');
+            smsCreate.byteCount(smsTxt, 'sms');
+
+            const kakaoUseYn = $("input[name='formatType'][value='kakao']").is(":checked");
+            const mailUseYn = $("input[name='formatType'][value='sms']").is(":checked");
+            const rcsUseYn = $("input[name='formatType'][value='rcs']").is(":checked");
+
+            let minInx;
+            // 컨텐츠 USE_YN 값에 따른 minInx 변경
+            if (kakaoUseYn) {
+                minInx = 0;
+            } else if (!kakaoUseYn && mailUseYn) {
+                minInx = 1;
+            } else if (!kakaoUseYn && !mailUseYn && rcsUseYn) {
+                minInx = 2;
             }
 
-            // 템플릿 명
-            $('.template_name').val(list[0].cont_nm);
+            // load 시 컨텐츠 포맷 체크 후 주요 옵션 표시
+            // 초기 랜딩시 on,off 여부
+            $('.formatType').each(function () {
+                let checkLength = $('.formatType').filter(':checked').length;
+                let state = $(this).is(':checked');
 
-            // 수신 번호
-            $('#recv_phone_to .value').data(list[0].from_to);
-            $('#recv_phone_to .value').text($('#recv_phone_to li[data="' + list[0].from_to + '"]').text());
-            $('#recv_phone_to .value').css('color', 'rgb(34, 34, 34)');
-            $("#recv_phone").val(list[0].from_to)
-
-            let a = [];
-            // 컨텐츠 포맷
-            $('.formatType').each(function() {
-                if($(this).val() === 'kakao' && list[0].list_use_yn === 'Y') {
-                    $(this).trigger('click');
-                } else if($(this).val() === 'sms' && list[1].list_use_yn === 'Y') {
-                    $(this).trigger('click');
-                } else if($(this).val() === 'rcs' && list[2].list_use_yn === 'Y') {
-                    $(this).trigger('click');
+                if (state == true) {
+                    let tabInx = $('.formatType').index(this);
+                    $('#js-smsTab li').eq(tabInx).show();
+                    $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
+                    $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
+                }
+                if (checkLength > 0) {
+                    $('.no_data').hide();
+                    $('#js-btn-area').show();
+                } else {
+                    $('.no_data').show();
+                    $('#js-btn-area').hide();
                 }
             });
 
-            $('#js-smsTab li:visible:first').click();
-
-            // 유형선택
-            if(list[0].send_tp == 'SENDTP01') {
-                $('input[name="commonType"][value=ad]').trigger('click');
-                $('input[name="kko_option"]').val('ad');
-                $('input[name="sms_option"]').val('ad');
-                $('input[name="rcs_option"]').val('ad');
-            } else if(list[0].send_tp == 'SENDTP02') {
-                $('input[name="commonType"][value=guide]').trigger('click');
-                $('input[name="kko_option"]').val('guide');
-                $('input[name="sms_option"]').val('guide');
-                $('input[name="rcs_option"]').val('guide');
+            let rcsLength = $('.rcsContents').length;
+            for (let c = 0; c < rcsLength; c++) {
+                rcsObject = $('.rcsContents').eq(c)[0];
+                rcsCreate.rcsContents(rcsObject, c);
             }
 
-            // seq
-            $('#kakao input[name="list_seq"]').val(list[0].list_seq);
-            $('#sms input[name="list_seq"]').val(list[1].list_seq);
-            $('#rcs input[name="list_seq"]').val(list[2].list_seq);
+            $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
+                }
+            });
+            $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
+                }
+            });
 
-            // 카카오톡 시작
-            if(list[0].list_use_yn == 'Y') {
-                // 문자 제목
-                $('.kakaoTitle').val(list[0].cont_sub);
+            const res = function(response) {
+                let list = response.mappingLst;
+                let html = '';
 
-                // 발신 번호
-                if(list[0].send_to != null) {
-                    $('#send_to').val(list[0].sender + '(' + phoneFormatter(list[0].send_num) + ')');
-                    $('#kakao_send_to_num').val(list[0].send_to);
+                for(let i=0; i<list.length; i++) {
+                    let item = list[i];
+                    html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+                }
+                $('.mappingLst').html(html);
+                getDBValue();
+                if($("#recv_phone").val() && $("#recv_phone").val() != "") {
+                    $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone").val() +"']").html());
+                    $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
+                    $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
+                }
+                let swiperEl = $('.slideSwiper').length;
+                if (swiperEl > 0) {
+                    new Swiper('.slideSwiper', {
+                        direction: 'horizontal',
+                        pagination: {
+                            el: '.rcs_paging',
+                            type: 'fraction',
+                        },
+                        navigation: {
+                            nextEl: '.rcs_next',
+                            prevEl: '.rcs_prev',
+                        },
+                    });
                 }
 
-                // 이미지 선택
-                $('#kakaoImage').val(list[0].kko_img_nm);
-                $('#kakao_img_cd').val(list[0].kko_img_cd);
-                if(list[0].kko_img_lst != null) {
-                    $('input[name="kko_view_img_url"]').val(filePath + list[0].kko_img_lst);
-                }
-
-                // 이미지 링크 주소
-                $('input[name="kko_img_url"]').val(list[0].kko_img_url);
-
-                // 이미지 미리보기
-                if(list[0].kko_img_lst != null && list[0].kko_img_url == null) {
-                    $('#js-kakao-img').html('<a href="' + list[0].kko_img_lst + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
-                } else if(list[0].kko_img_lst != null && list[0].kko_img_url != null) {
-                    $('#js-kakao-img').html('<a href="' + list[0].kko_img_url + '" target="_blank"><img src="' + filePath + list[0].kko_img_lst + '"/></a>');
-                }
-
-                // 버튼 링크 제목
-                $('input[name="kko_btn_nm"]').val(list[0].kko_btn_nm);
-
-                // 버튼 링크 주소
-                $('input[name="kko_btn_url"]').val(list[0].kko_btn_url);
-                if(list[0].kko_btn_url == null) {
-                    $('.kakaoLinkBtn').val('생성');
-                } else {
-                    $('.kakaoLinkBtn').val('삭제');
-                }
-
-                // 카카오톡 본문 입력창
-                $('textarea[name="kakao_body"]').text(list[0].cont_body);
-                if(list[0].kko_btn_nm == null) {
-                    $('.kakao_link').remove();
-                } else {
-                     $('textarea[name="kakao_body"]').after('<a href="' + list[0].kko_btn_url + '" class="kakao_link" target="_blank">' + list[0].kko_btn_nm + '</a>');
-                }
             }
-            // 카카오톡 끝
-
-            // 문자 시작
-            if(list[1].list_use_yn == 'Y') {
-                // 문자 제목
-                $('.smsTitle').val(list[1].cont_sub);
-
-                // 발신 번호
-                if(list[1].send_to != null) {
-                    $('#sms_send_to').val(list[1].sender + '(' + phoneFormatter(list[1].send_num) + ')');
-                    $('#sms_send_to_num').val(list[1].send_to);
-                }
-
-                // 문자 종류
-                if(list[1].msg_tp == "DMCH202"){
-                    $('input[name="sms_msg_tp"][value="LMS"]').prop('checked', true);
-                }else if(list[1].msg_tp == "DMCH203"){
-                    let a = $('input[name="sms_msg_tp"][value="MMS"]').prop('checked', true);
-                    $(a[0]).parents('.row').siblings('.input-img').addClass('on');
-                }else{
-                    $('input[name="sms_msg_tp"][value="SMS"]').prop('checked', true);
-                }
-                // 이미지 선택
-                if(list[1].msg_tp === 'DMCH203') {
-                    let sms_img_nm_lst = list[1].img_nm_lst.split(',');
-                    let sms_img_lst = list[1].img_lst.split(',');
-                    if(sms_img_lst[0] && sms_img_lst[0].trim() != ""){
-                        $('#smsImage').val(sms_img_nm_lst[0]);
-                        $('#mds_img_cd').val(list[1].img_cd_1);
-
-                        $('input[name="mms_imgurl"]').val(sms_img_lst[0]);
-
-                        // 이미지 미리보기
-                        $('#js-sms-img').html('<a href="' + sms_img_lst[0] + '" target="_blank"><img src="' + filePath + sms_img_lst[0] + '"/></a>');
-                    }
-                }
-                // 문자 본문 입력창
-                $('textarea[name="sms_body"]').text(list[1].cont_body);
-            }
-            // 문자 끝
-
-            // RCS 시작
-            if(list[2].list_use_yn == 'Y') {
-                // 포맷카드
-                if(list[2].msg_tp == 'DMCH205' || list[2].msg_tp == 'DMCH206') {
-                    // RCS TEXT형 Layout
-                    $('input[name="rcs_format_type"][value="text"]').prop('checked', true);
-                    rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
-
-                    if(list[2].msg_tp == 'DMCH205') {
-                        // 카드 양식
-                        $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
-                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
-
-                        // 버튼 액션
-                        if(list[2].btnType[0] == 'clipboardAction') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN01');
-                            $('.action_select .value').data('RBTN01');
-                            $('.action_select .value').text('복사하기');
-
-                            $('input[name="copy_value"]').val(list[2].btnData[0][0]);
-                        } else if(list[2].btnType[0] == 'urlAction') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN02');
-                            $('.action_select .value').data('RBTN02');
-                            $('.action_select .value').text('URL연결');
-
-                            $('input[name="url_value"]').val(list[2].btnData[0][0]);
-                        } else if(list[2].btnType[0] == 'dialerAction') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN03');
-                            $('.action_select .value').data('RBTN03');
-                            $('.action_select .value').text('전화걸기');
-
-                            $('input[name="phone_value_03"]').val(list[2].btnData[0][0]);
-                        } else if(list[2].btnType[0] == 'latitude') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN04');
-                            $('.action_select .value').data('RBTN04');
-                            $('.action_select .value').text('지도보여주기(좌표)');
-
-                            $('input[name="latitude_value"]').val(list[2].btnData[0][0]);
-                            $('input[name="longitude_value"]').val(list[2].btnData[0][1]);
-                            $('input[name="location_value_04"]').val(list[2].btnData[0][2]);
-                            $('input[name="fallback_url_04"]').val(list[2].btnData[0][3]);
-                        } else if(list[2].btnType[0] == 'query') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN05');
-                            $('.action_select .value').data('RBTN05');
-                            $('.action_select .value').text('지도보여주기(쿼리)');
-
-                            $('input[name="location_value_05"]').val(list[2].btnData[0][0]);
-                            $('input[name="fallback_url_05"]').val(list[2].btnData[0][1]);
-                        } else if(list[2].btnType[0] == 'requestLocationPush') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN06');
-                            $('.action_select .value').data('RBTN06');
-                            $('.action_select .value').text('현재위치공유');
-                        } else if(list[2].btnType[0] == 'calendarAction') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN07');
-                            $('.action_select .value').data('RBTN07');
-                            $('.action_select .value').text('캘린더등록');
-
-                            $('input[name="start_date"]').val(list[2].btnData[0][0]);
-                            $('input[name="end_date"]').val(list[2].btnData[0][1]);
-                            $('input[name="calendar_title"]').val(list[2].btnData[0][2]);
-                            $('input[name="calendar_body"]').val(list[2].btnData[0][3]);
-                        } else if(list[2].btnType[0] == 'composeAction') {
-                            $('input[name="rcs_btn_tp_1"]').val('RBTN08');
-                            $('.action_select .value').data('RBTN08');
-                            $('.action_select .value').text('메세지전송');
-
-                            $('input[name="phone_value_08"]').val(list[2].btnData[0][0]);
-                            $('input[name="message_value"]').val(list[2].btnData[0][1]);
-                        }
-
-                        // 버튼 명
-                        $('input[name="rcs_btn_1"]').val(list[2].btnText[0]);
-                        if(list[2].btnText[0] != null) {
-                            $('.rcs_layout .button-name span span').text(list[2].btnText[0].length);
-                        }
-
-                        if(list[2].btnText[0] != null) {
-                            $('.rcs_btn_wrap').append('<div class="rcs_btn" data="1">' + list[2].btnText[0] + '</div>');
-                        }
-                    } else if(list[2].msg_tp == 'DMCH206') {
-                        // 카드 양식
-                        $('input[name="rcs_msg_tp"][value="lms"]').prop('checked', true);
-                        rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
-
-                        // 문자 제목
-                        $('.rcsTitle').val(list[2].cont_sub);
-
-                        // 버튼 액션
-                        for(var i=0; i<3; i++) {
-                            if(list[2].btnType[i] == 'clipboardAction') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN01');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN01');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('복사하기');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="copy_value"]').val(list[2].btnData[i][0]);
-                            } else if(list[2].btnType[i] == 'urlAction') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN02');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN02');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('URL연결');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="url_value"]').val(list[2].btnData[i][0]);
-                            } else if(list[2].btnType[i] == 'dialerAction') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN03');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN03');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('전화걸기');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_03"]').val(list[2].btnData[i][0]);
-                            } else if(list[2].btnType[i] == 'latitude') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN04');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN04');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('지도보여주기(좌표)');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="latitude_value"]').val(list[2].btnData[i][0]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="longitude_value"]').val(list[2].btnData[i][1]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_04"]').val(list[2].btnData[i][2]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_04"]').val(list[2].btnData[i][3]);
-                            } else if(list[2].btnType[i] == 'query') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN05');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN05');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('지도보여주기(쿼리)');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_05"]').val(list[2].btnData[i][0]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_05"]').val(list[2].btnData[i][1]);
-                            } else if(list[2].btnType[i] == 'requestLocationPush') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN06');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN06');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('현재위치공유');
-                            } else if(list[2].btnType[i] == 'calendarAction') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN07');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN07');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('캘린더등록');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="start_date"]').val(list[2].btnData[i][0]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="end_date"]').val(list[2].btnData[i][1]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_title"]').val(list[2].btnData[i][2]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_body"]').val(list[2].btnData[i][3]);
-                            } else if(list[2].btnType[i] == 'composeAction') {
-                                $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN08');
-                                $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN08');
-                                $('.action_select[data="' + (idx+1) + '"] .value').text('메세지전송');
-
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_08"]').val(list[2].btnData[i][0]);
-                                $('.custom_box:nth-child(' + (idx+1) + ') input[name="message_value"]').val(list[2].btnData[i][1]);
-                            }
-
-                            // 버튼 명
-                            $('input[name="rcs_btn_' + (i + 1) + '"]').val(list[2].btnText[i]);
-                            if(list[2].btnText[i] != null) {
-                                $('.rcs_layout .button-name:nth-child(' + (idx+1) + ') span span').text(list[2].btnText[i].length);
-                                $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + (i+1) + '">' + list[2].btnText[i] + '</div>');
-                            }
-                        }
-                    }
-
-                    // 발신 번호
-                    if(list[2].send_to != null) {
-                        $('#send_text_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
-                        $('#text_send_num').val(list[2].send_to);
-                    }
-
-                    // 내용
-                    $('textarea[name="rcs_body"]').val(list[2].cont_body);
-
-                    // 무료수신거부
-                    $('input[name="rcs_footer"]').val(list[2].rcs_footer);
-
-                    // 발신
-                    if(list[2].send_tp == 'SENDTP01') {
-                        $('.rcs_head').text('[WEB발신]광고');
-                    } else if(list[2].send_tp == 'SENDTP02') {
-                        $('.rcs_head').text('[WEB발신]');
-                    }
-
-                    $('#textArea0').html(replaceBr(list[2].cont_body));
-                } else if(list[2].msg_tp == 'DMCH207' || list[2].msg_tp == 'DMCH208') {
-                    // RCS 세로형 Layout
-                    $('input[name="rcs_format_type"][value="vertical"]').prop('checked', true);
-                    rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
-
-                    if(list[2].msg_tp == 'DMCH207') {
-                        // 카드 양식
-                        $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
-                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
-                    } else if(list[2].msg_tp == 'DMCH208') {
-                        // 카드 양식
-                        $('input[name="rcs_msg_tp"][value="sms"]').prop('checked', true);
-                        rcsLowTypeChange($('input[name="rcs_msg_tp"]:checked'));
-                    }
-
-                    // 발신 번호
-                    if(list[2].send_to != null) {
-                        $('#send_vertical_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
-                        $('#vertical_send_num').val(list[2].send_to);
-                    }
-
-                    // 이미지 선택
-                    var rcs_img_nm_lst = list[2].img_nm_lst.split(',');
-                    if(rcs_img_nm_lst[0] != null) {
-                        $('#verticalImage').val(rcs_img_nm_lst[0]);
-                    }
-                    $('#verticalImg').val(list[2].img_cd_1);
-
-                    // 내용
-                    $('textarea[name="rcs_body"]').val(textAreaParsing(list[2].cont_body));
-
-                    // 버튼 액션
-                    for(var i=0; i<2; i++) {
-                        if(list[2].btnType[i] == 'clipboardAction') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN01');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN01');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('복사하기');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="copy_value"]').val(list[2].btnData[i][0]);
-                        } else if(list[2].btnType[i] == 'urlAction') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN02');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN02');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('URL연결');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="url_value"]').val(list[2].btnData[i][0]);
-                        } else if(list[2].btnType[i] == 'dialerAction') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN03');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN03');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('전화걸기');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_03"]').val(list[2].btnData[i][0]);
-                        } else if(list[2].btnType[i] == 'latitude') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN04');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN04');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('지도보여주기(좌표)');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="latitude_value"]').val(list[2].btnData[i][0]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="longitude_value"]').val(list[2].btnData[i][1]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_04"]').val(list[2].btnData[i][2]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_04"]').val(list[2].btnData[i][3]);
-                        } else if(list[2].btnType[i] == 'query') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN05');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN05');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('지도보여주기(쿼리)');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="location_value_05"]').val(list[2].btnData[i][0]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="fallback_url_05"]').val(list[2].btnData[i][1]);
-                        } else if(list[2].btnType[i] == 'requestLocationPush') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN06');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN06');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('현재위치공유');
-                        } else if(list[2].btnType[i] == 'calendarAction') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN07');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN07');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('캘린더등록');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="start_date"]').val(list[2].btnData[i][0]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="end_date"]').val(list[2].btnData[i][1]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_title"]').val(list[2].btnData[i][2]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="calendar_body"]').val(list[2].btnData[i][3]);
-                        } else if(list[2].btnType[i] == 'composeAction') {
-                            $('input[name="rcs_btn_tp_' + (idx+1) + '"]').val('RBTN08');
-                            $('.action_select[data="' + (idx+1) + '"] .value').data('RBTN08');
-                            $('.action_select[data="' + (idx+1) + '"] .value').text('메세지전송');
-
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="phone_value_08"]').val(list[2].btnData[i][0]);
-                            $('.custom_box:nth-child(' + (idx+1) + ') input[name="message_value"]').val(list[2].btnData[i][1]);
-                        }
-
-                        // 버튼 명
-                        $('input[name="rcs_btn_' + (i + 1) + '"]').val(list[2].btnText[i]);
-                        if(list[2].btnText[i] != null) {
-                            $('.rcs_layout .button-name:nth-child(' + (idx+1) + ') span span').text(list[2].btnText[i].length);
-                            $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + (i+1) + '">' + list[2].btnText[i] + '</div>');
-                        }
-                    }
-
-                    // 내용
-                    $('textarea[name="rcs_body"]').val(list[2].cont_body);
-
-                    // 무료수신거부
-                    $('input[name="rcs_footer"]').val(list[2].rcs_footer);
-
-                    // 발신
-                    $('.rcs_head').text('[WEB발신]');
-
-                    let rcs_img_lst = list[2].img_lst.split(',');
-                    if(rcs_img_lst[0] != null) {
-                        $('.img_area').html('<img src="' + filePath + rcs_img_lst[0] + '" onerror="this.src=\"/image/bg_none.png\""/>');
-                        $('input[name="rcs_img_url_1"]').val(rcs_img_lst[0]);
-                    }
-
-                    $('#titleArea0').html(list[2].cont_sub);
-                    $('#textArea0').html(list[2].cont_body);
-                } else if(list[2].msg_tp == 'DMCH211' || list[2].msg_tp == 'DMCH212') {
-                    $('input[name="rcs_format_type"][value="slide"]').prop('checked', true);
-                    rcsChangeFormat($('input[name="rcs_format_type"]:checked'));
-
-                    // 카드 양식
-                    if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 3) {
-                       $('.slide_type .value').data('0');
-                       $('.slide_type .value').text('Small / 3장');
-                    } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 4) {
-                       $('.slide_type .value').data('1');
-                       $('.slide_type .value').text('Small / 4장');
-                    } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 5) {
-                       $('.slide_type .value').data('2');
-                       $('.slide_type .value').text('Small / 5장');
-                    } else if(list[2].msg_tp == 'DMCH211' && list[2].cardSize == 6) {
-                       $('.slide_type .value').data('3');
-                       $('.slide_type .value').text('Small / 6장');
-                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 3) {
-                       $('.slide_type .value').data('4');
-                       $('.slide_type .value').text('Small / 3장');
-                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 4) {
-                       $('.slide_type .value').data('5');
-                       $('.slide_type .value').text('Small / 4장');
-                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 5) {
-                       $('.slide_type .value').data('6');
-                       $('.slide_type .value').text('Small / 5장');
-                    } else if(list[2].msg_tp == 'DMCH212' && list[2].cardSize == 6) {
-                       $('.slide_type .value').data('7');
-                       $('.slide_type .value').text('Small / 6장');
-                    }
-
-                    // 발신 번호
-                    if(list[2].send_to != null) {
-                        $('#send_slice_rcs').val(list[2].sender + '(' + phoneFormatter(list[2].send_num) + ')');
-                        $('#slide_send_num').val(list[2].send_to);
-                    }
-                    /*
-                    // 카드 탭
-                    for(var i=1; i<=list[2].cardSize; i++) {
-                        if(i == 1) {
-                            $('.slide_tab').append('<div id="cardOn" class="cardOn on" data="' + i + '">카드' + i + '</div>');
-                        } else {
-                            $('.slide_tab').append('<div id="cardOn" class="cardOn" data="' + i + '">카드' + i + '</div>');
-                        }
-                    }
-                    */
-
-                    // 카드 그리기
-                    let rcs_img_nm_lst = list[2].img_nm_lst.split(',');
-                    for(let i=0; i<list[2].cardSize; i++) {
-                        // 이미지 선택
-                        let imgNm = rcs_img_nm_lst[i];
-                        $('#slide' + i).val(imgNm);
-
-                        if(list[2].img_cd_1 != null && i == 0) {
-                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_1);
-                        }
-                        if(list[2].img_cd_2 != null && i == 1) {
-                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_2);
-                        }
-                        if(list[2].img_cd_3 != null && i == 2) {
-                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_3);
-                        }
-                        if(list[2].img_cd_4 != null && i == 3) {
-                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_4);
-                        }
-                        if(list[2].img_cd_5 != null && i == 4) {
-                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_5);
-                        }
-                        if(list[2].img_cd_6 != null && i == 5) {
-                            $('input[name="rcs_img_cd_' + (i+1) + '"]').val(list[2].img_cd_6);
-                        }
-
-                        // 문자 제목
-                        $('.rcsTitle:nth-child(' + (i+1) + ')').val(list[2].slideTitle[i]);
-
-                        // 내용
-                        $('.rcsContents:nth-child(' + (i+1) + ')').val(textAreaParsing(list[2].slideBody[i]));
-
-                        let btn = null;
-                        // 버튼 액션 선택
-                        for(let j=0; j<2; j++) {
-                            if(list[2].cont_btn_json[i]['suggestions']){
-                                btn = list[2].cont_btn_json[i]['suggestions'][j];
-
-                                if(btn['action']['clipboardAction']['copyToClipboard'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN01');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN01');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('복사하기');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="copy_value"]:nth-child(' + (j+1) + ')').val(btn['action']['clipboardAction']['copyToClipboard']['text']);
-                                }
-                                if(btn['action']['urlAction']['openUrl'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN02');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN02');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('URL연결');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="url_value"]:nth-child(' + (j+1) + ')').val(btn['action']['urlAction']['openUrl']['url']);
-                                }
-                                if(btn['action']['dialerAction'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN03');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN03');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('전화걸기');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_03"]:nth-child(' + (j+1) + ')').val(btn['action']['dialerAction']['dialPhoneNumber']['phoneNumber']);
-                                }
-                                if(btn['action']['mapAction']['showLocation']['location']['latitude'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN04');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN04');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('지도보여주기(좌표)');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="latitude_value"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['latitude']);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="longitude_value"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['longitude']);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['label']);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_04"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
-                                }
-                                if(btn['action']['mapAction']['showLocation']['location']['query'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN05');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN05');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('지도보여주기(쿼리)');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="location_value_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['location']['query']);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="fallback_url_05"]:nth-child(' + (j+1) + ')').val(btn['action']['mapAction']['showLocation']['fallbackUrl']);
-                                }
-                                if(btn['action']['mapAction']['showLocation'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN06');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN06');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('현재위치공유');
-                                }
-                                if(btn['action']['calendarAction'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN07');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN07');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('캘린더등록');
-                                    var startTime = btn['action']['calendarAction']['createCalendarEvent']['startTime'].split('T');
-                                    var endTime = btn['action']['calendarAction']['createCalendarEvent']['endTime'].split('T');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="start_date"]:nth-child(' + (j+1) + ')').val(startTime[0]);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="end_date"]:nth-child(' + (j+1) + ')').val(endTime[0]);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_title"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['title']);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="calendar_body"]:nth-child(' + (j+1) + ')').val(btn['action']['calendarAction']['createCalendarEvent']['description']);
-                                }
-                                if(btn['action']['composeAction'] != null) {
-                                    $('#slide_rcs_btn_tp_' + (i+1)).val('RBTN08');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').data('RBTN08');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .value:nth-child(' + (j+1) + ')').text('메세지전송');
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="phone_value_08"]:nth-child(' + (j+1) + ')').val(btn['action']['composeAction']['composeTextMessage']['phoneNumber']);
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="message_value"]:nth-child(' + (j+1) + ')').val(btn['action']['composeAction']['composeTextMessage']['text']);
-                                }
-
-                                // 버튼 명
-                                $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] input[name="slide_rcs_btn_1"]:nth-child(' + (j+1) + ')').val(btn['action']['displayText']);
-                                if(btn['action']['displayText'] != null) {
-                                    $('.action_select:nth-child(' + (i+1) + ')[data="' + (j+1) + '"] .button-name:nth-child(' + (j+1) + ') span span').text(btn['action']['displayText'].length);
-                                }
-                            }
-                        }
-
-                        if(imgNm != null) {
-                            let rcs_img_lst = list[2].img_lst.split(',');
-                            $('.slide' + i + ' .img_area').html('<img src="' + rcs_img_lst[i] + '" onerror="this.src = \"/image/bg_none.png\""/>');
-                            $('input[name="rcs_img_url_' + (i+1) + '"]').val(rcs_img_lst[i]);
-                        }
-
-                        $('#titleArea' + i).text(list[2].slideTitle[i]);
-                        $('#textArea' + i).text(list[2].slideBody[i]);
-
-                        if(list[2].cont_btn_json[i]['suggestions']){
-                            if(list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] != null) {
-                                $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="1">' + list[2].cont_btn_json[i]['suggestions'][0]['action']['displayText'] + '</div>');
-                            }
-
-                            if(list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] != null) {
-                                $('.rcs_btn_wrap:nth-child(' + (i+1) + ')').append('<div class="rcs_btn" data="2">' + list[2].cont_btn_json[i]['suggestions'][1]['action']['displayText'] + '</div>');
-                            }
-                        }
-                    }
-
-                    // 무료수신거부
-                    $('input[name="rcs_footer"]').val(list[2].rcs_footer);
-                }
-            }
-            // RCS 끝
+            let param = { usr_grp_cd : $('#usr_grp_cd').val() }
+            com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
         }
-        let param = {seq: $('#seq').val()}
+
+        let param = { seq: $('#seq').val() }
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -2816,27 +1985,13 @@
 
     // 이미지 리스트 Input 저장하기
     function imgSendSave(seq) {
-
         let imgType = $("#imgType").val();  // 이미지 파일 타입
         let imgLength = $('input[name="contentsImg"]:checked').length;
         let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
         let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
         let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
 
-       /* console.log("imgType : " + imgType);
-        console.log("imgCheck : " + imgCheck);
-        console.log("imgLength : " + imgLength);
-        console.log("ImgNm : " + ImgNm);
-        console.log("imgUrl : " + imgUrl);*/
-
         if (imgLength > 0) {
-            //console.log("test length");
-            /*if(imgType === 'kakaoImage'){
-                console.log("카카오 : " + seq )
-                imageCreate(imgType,imgUrl,orgNm,imgCheck);
-            } else if(imgType === 'smsImage'){
-                imageCreate(imgType,imgUrl,orgNm,imgCheck);
-            }*/
             let popParents = $(form).parents('.layer_pop').attr('data');
             $('#' + popParents).val(imgUrl);
             $(form).parents('.layer_pop').removeClass('active');
@@ -3142,7 +2297,7 @@
         getDBValue();
         adTypeCheck();
 
-        var mySwiper = new Swiper('.slideSwiper', {
+        new Swiper('.slideSwiper', {
             direction: 'horizontal',
             pagination: {
                 el: '.rcs_paging',
@@ -3321,6 +2476,314 @@
         }
     }
 
+    function rcsBtnType(e){
+        let actionVal = $(e).attr('data');
+        let area = $(e).parents('.row').siblings('.custom_box');
+        let layout = '';
+        let parentValue = $(e).parents('.action_select').attr('data');
+
+        $(area).children().remove();
+
+        let num = 0;
+        let rcsType = $("input[name='rcs_format_type']:checked").val().trim();
+
+        if (rcsType === "slide") {
+            let dataValue = "slide_rcs_btn_" + parentValue;
+            let index = $('.cardOn.on').index() + 1;
+
+            if (parentValue == 1) {
+                // 첫번째 버튼 항목 클릭
+                if (index == 1) {
+                    $("#slide_rcs_btn_tp_1").val(actionVal);
+                } else if (index == 2) {
+                    $("#slide_rcs_btn_tp_3").val(actionVal);
+                } else if (index == 3) {
+                    $("#slide_rcs_btn_tp_5").val(actionVal);
+                } else if (index == 4) {
+                    $("#slide_rcs_btn_tp_7").val(actionVal);
+                } else if (index == 5) {
+                    $("#slide_rcs_btn_tp_9").val(actionVal);
+                } else if (index == 6) {
+                    $("#slide_rcs_btn_tp_11").val(actionVal);
+                }
+            } else if (parentValue == 2) {
+                // 두번째 버튼 항목 클릭
+                if (index == 1) {
+                    $("#slide_rcs_btn_tp_2").val(actionVal);
+                } else if (index == 2) {
+                    $("#slide_rcs_btn_tp_4").val(actionVal);
+                } else if (index == 3) {
+                    $("#slide_rcs_btn_tp_6").val(actionVal);
+                } else if (index == 4) {
+                    $("#slide_rcs_btn_tp_8").val(actionVal);
+                } else if (index == 5) {
+                    $("#slide_rcs_btn_tp_10").val(actionVal);
+                } else if (index == 6) {
+                    $("#slide_rcs_btn_tp_12").val(actionVal);
+                }
+            }
+        } else {
+            let dataValue = "rcs_btn_tp_" + parentValue;
+            if (parentValue == 1) {
+                $("input[name='rcs_btn_tp_1']").val(actionVal);
+            } else if (parentValue == 2) {
+                $("input[name='rcs_btn_tp_2']").val(actionVal);
+            } else if (parentValue == 3) {
+                $("input[name='rcs_btn_tp_3']").val(actionVal);
+            }
+        }
+        $(e).parents('.row').siblings('.row').find('.action_name').val('');
+        $(e).parents('.row').siblings('.row').find('.text-count span').html('0');
+
+        if (actionVal == "RBTN01") {
+            layout += '<div class="row">' +
+                '<div class="th top-border">복사할 값</div>' +
+                '<div class="td top-border">' +
+                '<input type="text" name="copy_value" class="txt_input width" placeholder="복사할 값을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name ="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN02") {
+            layout += '<div class="row">' +
+                '<div class="th top-border">URL</div>' +
+                '<div class="td top-border">' +
+                '<input type="text" name="url_value" class="txt_input width en_font url_link" data="url" placeholder="URL 입력 (http:// 또는 https://필수입력)" />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN03") {
+            layout += '<div class="row">' +
+                '<div class="th top-border">전화번호</div>' +
+                '<div class="td top-border">' +
+                '<input type="text" name="phone_value_03" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN04") {
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">위도/경도</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="latitude_value" class="txt_input en_font half right-border" placeholder="위도를 입력해주세요." />' +
+                '<input type="text" name="longitude_value" class="txt_input en_font half" placeholder="경도를 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th bottom-border">위치 이름</div>' +
+                '<div class="td bottom-border">' +
+                '<input type="text" name="location_value_04" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">Fallback URL</div>' +
+                '<div class="td">' +
+                '<input type="text" name="fallback_url_04" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN05") {
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">위치 이름</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="location_value_05" class="txt_input width" placeholder="위치 이름을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">Fallback URL</div>' +
+                '<div class="td">' +
+                '<input type="text" name="fallback_url_05" class="txt_input width en_font url_link" data="url" placeholder="Fallback URL 입력 (http:// 또는 https://필수입력)" />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN06") {
+            layout +=
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name= "fallback_url_05" value =" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value =" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+        }
+        if (actionVal == "RBTN07") {
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">시작일 / 종료일</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="start_date" class="start_date txt_input en_font calendar right-border" placeholder="시작일" />' +
+                '<input type="text" name="end_date" class="end_date txt_input en_font calendar" placeholder="종료일" />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th bottom-border">제목</div>' +
+                '<div class="td bottom-border">' +
+                '<input type="text" name="calendar_title" class="txt_input width" placeholder="제목을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">내용</div>' +
+                '<div class="td">' +
+                '<input type="text" name="calendar_body" class="txt_input width" placeholder="내용을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_08" value=" "/>' +
+                '<input type ="hidden" name ="message_value" value=" "/>';
+            $(area).html(layout);
+            $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
+                }
+            });
+            $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
+                onSelect: function (selected) {
+                    $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
+                }
+            });
+        }
+        if (actionVal == "RBTN08") {
+
+            layout += '<div class="row">' +
+                '<div class="th bottom-border top-border">전화번호</div>' +
+                '<div class="td bottom-border top-border">' +
+                '<input type="text" name="phone_value_08" class="txt_input width en_font" placeholder="전화번호를 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div class="th">문자메시지 내용</div>' +
+                '<div class="td">' +
+                '<input type="text" name="message_value" class="txt_input width" placeholder="문자메시지 내용을 입력해주세요." />' +
+                '</div>' +
+                '</div>' +
+                '<input type ="hidden" name="copy_value" value=" "/>' +
+                '<input type="hidden" name="url_value" value=" "/>' +
+                '<input type ="hidden" name ="phone_value_03" value=" "/>' +
+                '<input type ="hidden" name ="latitude_value" value=" "/>' +
+                '<input type ="hidden" name ="longitude_value" value=" "/>' +
+                '<input type ="hidden" name ="location_value_04" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
+                '<input type ="hidden" name ="location_value_05" value=" "/>' +
+                '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
+                '<input type ="hidden" name ="start_date" value=" "/>' +
+                '<input type ="hidden" name ="end_date" value=" "/>' +
+                '<input type ="hidden" name ="calendar_title" value=" "/>' +
+                '<input type ="hidden" name ="calendar_body" value=" "/>';
+            $(area).html(layout);
+        }
+        let actionButton = $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').length;
+        let typeSlide = $(e).parents('.rcs_slide_conts').length;
+
+        if (typeSlide == 0) {
+            if (actionVal != 0 && actionButton == 0) {
+                $('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
+            }
+            if (actionVal != 0 && actionButton >= 1) {
+                $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').html('버튼' + parentValue);
+            }
+            if (actionVal == 0) {
+                $('.rcs_btn_wrap').find('div[data="' + parentValue + '"]').remove();
+            }
+        } else {
+            let sectionInx = $(e).parents('.rcs_slide_conts').index() - 1;
+            let buttonLength = $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').length;
+
+            if (actionVal != 0 && buttonLength == 0) {
+                $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap').append('<div class="rcs_btn" data="' + parentValue + '">버튼' + parentValue + '</div>');
+            }
+            if (actionVal != 0 && buttonLength >= 1) {
+                $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').html('버튼' + parentValue);
+            }
+            if (actionVal == 0) {
+                $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').remove();
+            }
+        }
+    }
 </script>
 
 
