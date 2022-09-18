@@ -340,7 +340,7 @@ class ReportServiceImpl : ReportService {
 
             tempProgram = mutableListOf<Any>()
         }
-        return programLst.reversed().toMutableList()
+        return programLst
     }
 
     override fun getCampMstList(pdto: Tblmicp_programDto): kotlin.collections.MutableMap<String, Any> {
