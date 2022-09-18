@@ -270,7 +270,7 @@ class ReportServiceImpl : ReportService {
 
     fun campListToTotal(programDtoList: List<kotlin.collections.Map<String, Any>>): MutableList<Any> {
 
-        val programLst = mutableListOf<Any>()
+        var programLst = mutableListOf<Any>()
         var tempProgram = mutableListOf<Any>()
         var ch_total = ""
         var t_total = 0
@@ -328,7 +328,7 @@ class ReportServiceImpl : ReportService {
 
             var tempRowMap = HashMap<String, Any>()
             tempRowMap["total"] = tempTotal
-            tempRowMap["program"] = tempProgram
+            tempRowMap["program"] =  tempProgram
             programLst.add(tempRowMap)
 
             ch_total = ""
@@ -340,7 +340,7 @@ class ReportServiceImpl : ReportService {
 
             tempProgram = mutableListOf<Any>()
         }
-        return programLst
+        return programLst.reversed().toMutableList()
     }
 
     override fun getCampMstList(pdto: Tblmicp_programDto): kotlin.collections.MutableMap<String, Any> {
