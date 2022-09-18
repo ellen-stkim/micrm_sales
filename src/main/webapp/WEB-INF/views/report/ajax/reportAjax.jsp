@@ -43,28 +43,27 @@
                     <tr>
                         <c:set var="total" value="${programMap.total}"/>
                         <td rowspan="${total.rowCnt-1}">
-                            <input type="checkbox" name="pro_nm_check" value="${total.pro_id}"
+                            <input type="checkbox" name="pro_nm_check" value="${total.pro_id}" data="${total.pro_id}"
                                    onclick="addSelectList(this)">
                         </td>
                         <td rowspan="${total.rowCnt-1}"><span class="ellipsis" name="pro_nm">${total.pro_nm}</span></td>
                         <c:forEach var="cont" items="${programMap.program}" begin="">
                             <td>
-                                <input type="checkbox" class="camp_nm_check" value="${cont.seq}"
+                                <input type="checkbox" class="camp_nm_check" value="${cont.seq}" data_pro_id="${cont.pro_id}" data_pro_nm ="${cont.pro_nm}"
                                        onclick="addSelectList(this)">
                             </td>
-
                             <td rowspan="${item.camp_cnt}"><span class="ellipsis" name="camp_nm">${cont.camp_nm}</span></td>
-
                             <td><span class="sendStatus"><fmt:formatNumber value="${cont.total_cnt}"
                                                                            pattern="#,##0"/></span>
                             </td>
                             <td>
-                                            <span>
-                                                <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
-                                                <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
-                                                 <c:if test="${cont.camp_ch eq 'CH03'}">세일즈포스</c:if>
-                                            </span>
+                                <span>
+                                <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
+                                <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
+                                <c:if test="${cont.camp_ch eq 'CH03'}">세일즈포스</c:if>
+                                </span>
                             </td>
+                            </tr>
                         </c:forEach>
                     </tr>
                 </c:forEach>

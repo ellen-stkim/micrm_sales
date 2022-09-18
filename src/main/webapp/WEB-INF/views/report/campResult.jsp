@@ -356,7 +356,6 @@
 </div>
 <!-- 타겟 선택 팝업 영역 끝 -->
 <script>
-
     let selectedCampSet = new Set();
 
     //기간 검색 시작일
@@ -384,7 +383,6 @@
     function searchTarget() {
 
         let thisData = $(this).attr('data');
-        console.log(thisData)
         let div = $(this).parents('form[name="searchForm"]');
         $(div).find('#searchValue').val("")
         if (thisData === "camp_ch") {
@@ -407,24 +405,6 @@
         }
     }
 
-    //발송타겟 검색 상세 옵션 select 체크 값 구분
-    $(document).on('click', '#memberOption ul li', function () {
-        let div = $(this).parents('form[name="searchForm"]');
-        let memData = $(this).attr('data');
-        if (memData === 'TG01') {
-            $(div).find('#searchValue').val("");
-            $(div).find('#searchValue').hide();
-            $(div).find('#searchValue').removeClass('target_select');
-            $(div).find("#memberOption").width('332px');
-            return
-        }
-        $(div).find('#memberOption').removeClass('right-border');
-        $(div).find('#searchValue').show();
-
-        $(div).find("#memberOption").width('100px');
-        $(div).find('#searchValue').addClass('target_select');
-
-    });
 
     function popupClose(close) {
         $(close).parents('.layer_pop').css("display", "none");
@@ -488,7 +468,6 @@
 
     function popPage(pageNo) {
         let form = $('#report_pager #current-form')
-        $('#camp-report-form #memberOption input[name="pro_tg_tp"]').val($(form).find('input[name="pro_tg_tp"]').val())
         $('#popup-searchType').val($(form).find('input[name="searchType"]').val())
         $('#campReportPopup input[name="searchValue"]').val($(form).find('input[name="searchValue"]').val())
         $('#popup-st-dt').val($(form).find('input[name="st_dt"]').val())
@@ -585,30 +564,35 @@
 
     function checkEvent(item) {
 
+        let table = $(item).parents("table");
         let tr = $(item).parents("tr");
         let check = $(item).is(':checked');
         let type = $(item).attr("name");
 
-
         if (type =="pro_nm_allcheck"|| type =="camp_nm_allcheck") {
             $(tr).find("input[type=checkbox]").prop('checked', check); // 캠페인타겟 전체 체크
             return;
-        }
+        }else if (type =='pro_nm_check') {   // 프로그램 선택
+            let proId =  $(item).attr("data")
+            $(table).find(`input[data_pro_id="`+proId+`"]`).prop('checked', check);
+            return;
+        }else{    // 캠페인명 체크
+            let tbody = $(item).parents("tbody");
+            let proId = $(item).attr("data_pro_id");
+            let campList = $(tbody).find(`input[data_pro_id='` + proId + `']`);
+            let isCampAllCk=true;
 
-        // 캠페인명 체크
-        let tbody = $(item).parents("tbody");
-        let proId = $(item).parents("tr").find("input[name='pro_nm_check']").val();
-        let proList = $(tbody).find(`input[value='` + proId + `']`);
-
-        $.each(proList, function (index, pro) {
-
-            let tr = $(pro).parents('tr');
-            if (check != $(tr).find(".camp_nm_check").is(':checked')) {
-                return;
+            $.each(campList, function (index, camp) {
+                if (check != $(camp).is(':checked')) {
+                    isCampAllCk =false;
+                    return;
+                }
+            })
+            if(isCampAllCk){
+                $(tbody).find(`input[data='` + proId + `']`).prop('checked', check);
             }
-        })
-        $(proList).prop('checked', check);
-        changeTitle();
+            changeTitle();
+        }
     }
 
     // tbody 체크박스 클릭 시 전체 선택 버튼 선택/해제
@@ -616,9 +600,8 @@
 
     function listAll(e) {
         let tbody = $(e.target).parents("tbody");
-        let target = $(e.target).prop("name")
         let check = $(e.target).is(':checked');
-        let list = $(tbody).find(`input[name="` + target + `"]:not(:checked)`);
+        let list = $(tbody).find(`input[type="checkbox"]:not(:checked)`);
 
         if ((list.length <= 0 && check) || (list.length > 0 && !check)) {
             let thead = $(tbody).siblings("thead");
@@ -627,18 +610,46 @@
     }
 
     function addHtml(tr) {
-        let proId = $(tr).find("input[name='pro_nm_check']").val();
-        let proNm = $(tr).find("span[name='pro_nm']").html();
+        let proId = $(tr).find(".camp_nm_check").attr("data_pro_id");
+        let proNm = $(tr).find(".camp_nm_check").attr("data_pro_nm");
         let contSeq = $(tr).find(".camp_nm_check").val();
         let campNm = $(tr).find("span[name='camp_nm']").html();
 
         let newHtml = `<tr>
-                                <td><input type="checkbox" name="pro_nm_check"  value="` + proId + `" onclick="checkEvent(this)"></td>
+                                <td><input type="checkbox" name="pro_nm_check" data="`+proId+`" value="` + proId + `" onclick="checkEvent(this)"></td>
                                 <td><span class="ellipsis">` + proNm + `</span></td>
-                                <td><input type="checkbox" class="camp_nm_check" name="cont_seq" value="` + contSeq + `" onclick="checkEvent(this)"></td>
+                                <td><input type="checkbox" class="camp_nm_check" name="cont_seq" value="` + contSeq + `" data_pro_id ="`+proId+`" onclick="checkEvent(this)"></td>
                                 <td><span class="ellipsis">` + campNm + `</span></td>
                             </tr>`;
-        $("#select_lst_tbody").append(newHtml);
+
+        if($(`#select_lst_tbody input[data="`+proId+`"]`).length > 0){   // 기존에 선택된 프로그램이 있을 경우 바로 밑에 추가
+            $(`#select_lst_tbody input[data="`+proId+`"]`).parents('tr').after(newHtml);
+        }else {
+            $("#select_lst_tbody").append(newHtml);
+        }
+
+        genRowspan(); // 중복 프로그램 합치기
+    }
+
+    function genRowspan() {
+        $(`#select_lst_tbody input[name="pro_nm_check"]`).each(function () {
+            var curr = $(this).attr("data");
+            var rows = $(`#select_lst_tbody input[name="pro_nm_check"]`).filter(function () {
+                return $(this).attr("data") == curr;
+            });
+
+            if (rows.length > 1) {
+
+                let firstRowTdLst = $(rows).eq(0).parents("tr").find('td');
+                firstRowTdLst.eq(0).attr("rowspan", rows.length);
+                firstRowTdLst.eq(1).attr("rowspan", rows.length);
+
+                let td = rows.not(":eq(0)").parents("tr").find('td');
+
+                td.eq(0).remove();
+                td.eq(1).remove();
+            }
+        });
     }
 
     function delList() {
@@ -649,7 +660,6 @@
             selectedCampSet.delete(contSeq);
 
             $(ckList[i]).parents("tr").remove();
-
         }
         changeTitle();
     }
@@ -662,12 +672,10 @@
     }
 
     function checkLst() {
-        $('#report_tbody input[name="cont_seq"]').each(function (idx, contSeq) {
+        $('#report_tbody .camp_nm_check').each(function (idx, contSeq) {
             let seq = $(contSeq).val();
-            if (duplDocument(seq).length > 0) {
-                let checkBox = $("#report_tbody input[value=" + seq + "]");
-                $(checkBox).prop("checked", true);
-                addSelectList(checkBox);
+            if(selectedCampSet.has(seq)){
+                $(contSeq).trigger("click")
             }
         })
     }

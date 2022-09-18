@@ -80,7 +80,6 @@
 
             <div class="count border-bottom cf">
                 <div class="total left">캠페인 전환별 결과</div>
-                <img class="help_btn right disnone" id="help_btn" src="/image/help_question_icon.svg" alt="help_btn">
             </div>
 
             <!-- 캠페인 리포트 캠페인 전체 성과 요약 테이블 -->
@@ -154,13 +153,13 @@
 
                     <div class="row border list_open_btn perp" id="openLstTap">
                         <span>캠페인 리스트</span>
-                        <span class="right" id="openLst">리스트 열기
-                    <span>▼</span></span>
+                        <span class="right" id="openLst">리스트 닫기
+                    <span>▲</span></span>
                     </div>
 
                 </div>
             </div>
-            <div class="border-bottom cf disnone " id="campLstBox">
+            <div class="border-bottom cf" id="campLstBox">
                 <div class="border-bottom cf contentBox">
                     <table class="table target_tbl border">
                         <colgroup>
@@ -348,32 +347,6 @@
 
                     <!-- 오픈 리포트 --------------->
                     <div id="openTab" class="report-tab-contents disnone">
-
-                        <div>
-                            <h3 class="title">타겟 조건별 성과비교 – 오픈 (%)</h3>
-                            <div class="chart-box">
-                                <div class="chart-cover">
-                                    <div class="full"><h3>성별</h3>
-                                        <canvas class="chart-canvas-s" id="openChartGen"></canvas>
-                                    </div>
-                                </div>
-                                <div class="chart-cover">
-                                    <div class="full"><h3>연령대</h3>
-                                        <canvas class="chart-canvas-s" id="openChartAge"></canvas>
-                                    </div>
-                                </div>
-                                <div class="chart-cover">
-                                    <div class="full"><h3>등급별</h3>
-                                        <canvas class="chart-canvas-s" id="openChartRank"></canvas>
-                                    </div>
-                                </div>
-                                <div class="chart-cover">
-                                    <div class="full"><h3>New/Existing</h3>
-                                        <canvas class="chart-canvas-s" id="openChartExi"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div>
                             <h3 class="title">오픈 시점 분석</h3>
                             <div id="openTimeResult" class="open-time-anal-cover"></div>
@@ -383,36 +356,10 @@
                     <!-- 클릭 리포트  -->
                     <div id="clickTab" class="report-tab-contents disnone">
                         <div>
-                            <h3 class="title">타겟 조건별 클릭율</h3>
-                            <div class="chart-box">
-                                <div class="chart-cover">
-                                    <div class="full"><h3>성별</h3>
-                                        <canvas class="chart-canvas-s" id="clickChartGen"></canvas>
-                                    </div>
-                                </div>
-                                <div class="chart-cover">
-                                    <div class="full"><h3>연령대</h3>
-                                        <canvas class="chart-canvas-s" id="clickChartAge"></canvas>
-                                    </div>
-                                </div>
-                                <div class="chart-cover">
-                                    <div class="full"><h3>등급별</h3>
-                                        <canvas class="chart-canvas-s" id="clickChartRank"></canvas>
-                                    </div>
-                                </div>
-                                <div class="chart-cover">
-                                    <div class="full"><h3>New/Existing</h3>
-                                        <canvas class="chart-canvas-s" id="clickChartExi"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
                             <h3 class="title">컨텐츠 분석</h3>
                             <div class="click-chart-cover row-flex" id="content-analysis"></div>
                         </div>
                     </div>
-
                     <!-- 구매 리포트  -->
                     <div id="saleTab" class="report-tab-contents disnone">
                     </div>
@@ -554,14 +501,15 @@
                             <c:otherwise>
                                 <c:forEach var="programMap" items="${programLst}">
                                     <c:set var="total" value="${programMap.total}"/>
+                                    <tr>
+                                    <td rowspan="${total.rowCnt}">
+                                        <input type="checkbox" name="pro_nm_check" value="${total.pro_id}" data="${total.pro_id}"
+                                               onclick="checkEvent(this)">
+                                    </td>
+                                    <td rowspan="${total.rowCnt}"><span class="ellipsis" name="pro_nm">${total.pro_nm}</span></td>
                                     <c:forEach var="cont" items="${programMap.program}">
                                         <tr>
-                                            <td>
-                                                <input type="checkbox" name="pro_nm_check" value="${total.pro_id}"
-                                                       onclick="checkEvent(this)">
-                                            </td>
-                                            <td><span class="ellipsis" name="pro_nm">${total.pro_nm}</span></td>
-                                            <td><input type="checkbox" class="camp_nm_check" name="cont_seq"
+                                            <td><input type="checkbox" class="camp_nm_check" name="cont_seq" data_pro_id="${cont.pro_id}"
                                                        value="${cont.seq}" onclick="checkEvent(this);"></td>
                                             <td><span class="ellipsis" >${cont.camp_nm}</span></td>
                                         </tr>
@@ -585,106 +533,6 @@
         <div class="dis_flex">
             <input type="button" class="btn_bg btn_size2 btn_row" id="ok_btn" value="확인"/>
             <input type="button" class="btn_bg4 btn_size2 btn_row" onclick="popupClose(this);" value="취소"/>
-        </div>
-    </div>
-</div>
-<!-- 타겟 선택 팝업 영역 끝 -->
-<div id="tool-tip" style="">
-    <div class="tip-title">
-        <h1>Tip: <span class="title">캠페인 상세 분석</span></h1>
-    </div>
-    <span class="tool_tip_close" id="tip_close_btn"></span>
-    <div class="help"><span>도움말을 다시 보고 싶다면 버튼을 눌러주세요!</span>
-        <div class="arrow_img"></div>
-        <img class="help_btn" src="/image/help_question_icon.svg" alt="help_btn">
-    </div>
-    <div class="border-bottom cf contentBox camp_lst">
-        <div class="border-bottom cf contentBox">
-            <table class="table target_tbl border">
-                <colgroup>
-                    <col width="180"/>
-                    <col width="180"/>
-                    <col width="180"/>
-                    <col width="180"/>
-                    <col width="130"/>
-                    <col width="130"/>
-                    <col width="130"/>
-                    <col width="130"/>
-                </colgroup>
-                <thead>
-                <tr>
-                    <th><span>상태</span></th>
-                    <th><span>프로그램명</span></th>
-                    <th><span>캠페인명</span></th>
-                    <th><span>캠페인 채널</span></th>
-                    <th><span>발송 타겟수</span></th>
-                    <th><span>성공</span></th>
-                    <th><span>오픈</span></th>
-                    <th><span>클릭</span></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:choose>
-                    <c:when test="${fn:length(programLst) == 0 }">
-                        <tr>
-                        </tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="programMap" value="${programLst[0]}"/>
-                        <tr>
-                            <c:set var="total" value="${programMap.total}"/>
-                            <td rowspan="2"><span>${total.pro_st_nm}</span><br><span>(${fn:split(total.start_dt,' ')[0]})</span></td>
-                            <td rowspan="2"><span class="ellipsis">${total.pro_nm}</span></td>
-                            <td class="total"><span>total</span></td>
-                            <td class="total">${total.ch_total}</td>
-                            <td class="total"><span>${total.t_cnt}</span></td>
-                            <td class="total"><span>${total.s_cnt}</span></td>
-                            <td class="total orange_bg"><span>${total.o_cnt}</span></td>
-                            <td class="total"><span>${total.c_cnt}</span></td>
-                        </tr>
-                        <c:set var="cont" value="${programMap.program[0]}"/>
-                        <tr>
-                            <td><span>${cont.camp_nm}</span></td>
-                            <td>
-                                        <span>
-                                            <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
-                                            <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
-                                                  <c:if test="${cont.camp_ch eq 'CH03'}">세일즈포스</c:if>
-                                        </span>
-                            </td>
-                            <td><span class="sendStatus"><fmt:formatNumber value="${cont.total_cnt}"
-                                                                           pattern="#,##0"/></span>
-                            </td>
-                            <td><span class="sendStatus"><fmt:formatNumber value="${cont.suc_cnt}"
-                                                                           pattern="#,##0"/></span><br>
-                                <fmt:formatNumber value="${cont.suc_cnt / cont.total_cnt}"
-                                                  pattern="(###%)"/>
-                            </td>
-                            <td class="orange_bg"> <span><fmt:formatNumber value="${cont.open_cnt}"
-                                                                           pattern="#,##0"></fmt:formatNumber></span><br>
-                                <fmt:formatNumber value="${cont.open_cnt / cont.total_cnt}"
-                                                  pattern="(###%)"/>
-                            </td>
-                            <td>
-                                            <span><fmt:formatNumber value="${cont.click_cnt}"
-                                                                    pattern="#,##0"></fmt:formatNumber></span><br>
-                                <fmt:formatNumber value="${cont.click_cnt / cont.total_cnt}"
-                                                  pattern="(###%)"/>
-                            </td>
-                        </tr>
-                    </c:otherwise>
-                </c:choose>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="open-target-help"></div>
-    <div class="border-bottom cf contentBox open-time-box disnone">
-        <div id="tooltip-open-time" class="open-time-anal-cover">
-        </div>
-    </div>
-    <div class="border-bottom cf contentBox click-box">
-        <div id="tooltip-click" class="disnone">
         </div>
     </div>
 </div>
@@ -725,7 +573,6 @@
                 com_ajax.ajax('post', 'getSucTabAjax.ajax', param, rep);
                 $(".orange_bg").removeClass("orange_bg");
                 $(".blue_bg").removeClass("blue_bg");
-                $("#help_btn").addClass("disnone");
                 break;
             case 'openTab':
                 var rep = function (response) {
@@ -758,14 +605,12 @@
                 $(".blue_bg").removeClass("blue_bg");
                 $("[name=open]").addClass("orange_bg");
                 $(".open-time-box").removeClass("disnone");
-                $("#help_btn").removeClass("disnone");
                 $("#tooltip-click").addClass("disnone");
                 break;
             case 'clickTab':
                 $(".orange_bg").removeClass("orange_bg");
                 $("[name=click]").addClass("orange_bg");
                 $("tbody [name='click']")[1].click();
-                $("#help_btn").removeClass("disnone");
                 $('.open-time-box').addClass("disnone");
                 break;
         }
@@ -1172,13 +1017,6 @@
         $(e.target).siblings('.info-box').hide();
     })
 
-    $('#help_btn').click(() => {
-        $('#tool-tip').css("display", "flex");
-    });
-    $('#tip_close_btn').click(() => {
-        $('#tool-tip').css("display", "none");
-    });
-
     //click  컨텐츠 분석 테이블 도움말
     $(document).on("mouseenter", "span[name=click-help]", (e) => {
         $(e.target).siblings('label').removeClass("disnone");
@@ -1274,11 +1112,11 @@
         }.bind({}))[0]
 
         var res = function (response) {
-            console.log("-----------------------------reportList-------------------------------")
             var $doc = new DOMParser().parseFromString(response, "text/html");
             $('#report_tbody').append($("#report_tbody", $doc).html());
             $('#report_pager').append($("#report_pager", $doc).html());
             checkLst();
+            genRowspan();
         };
         com_ajax.ajax('post', 'reportAjax.ajax', formData, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -1354,30 +1192,35 @@
 
     function checkEvent(item) {
 
+        let table = $(item).parents("table");
         let tr = $(item).parents("tr");
         let check = $(item).is(':checked');
         let type = $(item).attr("name");
 
-
         if (type =="pro_nm_allcheck"|| type =="camp_nm_allcheck") {
             $(tr).find("input[type=checkbox]").prop('checked', check); // 캠페인타겟 전체 체크
             return;
-        }
+        }else if (type =='pro_nm_check') {   // 프로그램 선택
+            let proId =  $(item).attr("data")
+            $(table).find(`input[data_pro_id="`+proId+`"]`).prop('checked', check);
+            return;
+        }else{    // 캠페인명 체크
+            let tbody = $(item).parents("tbody");
+            let proId = $(item).attr("data_pro_id");
+            let campList = $(tbody).find(`input[data_pro_id='` + proId + `']`);
+            let isCampAllCk=true;
 
-        // 캠페인명 체크
-        let tbody = $(item).parents("tbody");
-        let proId = $(item).parents("tr").find("input[name='pro_nm_check']").val();
-        let proList = $(tbody).find(`input[value='` + proId + `']`);
-
-        $.each(proList, function (index, pro) {
-
-            let tr = $(pro).parents('tr');
-            if (check != $(tr).find(".camp_nm_check").is(':checked')) {
-                return;
+            $.each(campList, function (index, camp) {
+                if (check != $(camp).is(':checked')) {
+                    isCampAllCk =false;
+                    return;
+                }
+            })
+            if(isCampAllCk){
+                $(tbody).find(`input[data='` + proId + `']`).prop('checked', check);
             }
-        })
-        $(proList).prop('checked', check);
-        changeTitle();
+            changeTitle();
+        }
     }
 
     // tbody 체크박스 클릭 시 전체 선택 버튼 선택/해제
@@ -1385,9 +1228,8 @@
 
     function listAll(e) {
         let tbody = $(e.target).parents("tbody");
-        let target = $(e.target).prop("name")
         let check = $(e.target).is(':checked');
-        let list = $(tbody).find(`input[name="` + target + `"]:not(:checked)`);
+        let list = $(tbody).find(`input[type="checkbox"]:not(:checked)`);
 
         if ((list.length <= 0 && check) || (list.length > 0 && !check)) {
             let thead = $(tbody).siblings("thead");
@@ -1396,18 +1238,46 @@
     }
 
     function addHtml(tr) {
-        let proId = $(tr).find("input[name='pro_nm_check']").val();
-        let proNm = $(tr).find("span[name='pro_nm']").html();
-        let seq = $(tr).find(".camp_nm_check").val();
+        let proId = $(tr).find(".camp_nm_check").attr("data_pro_id");
+        let proNm = $(tr).find(".camp_nm_check").attr("data_pro_nm");
+        let contSeq = $(tr).find(".camp_nm_check").val();
         let campNm = $(tr).find("span[name='camp_nm']").html();
 
         let newHtml = `<tr>
-                                <td><input type="checkbox" name="pro_nm_check"  value="` + proId + `" onclick="checkEvent(this)"></td>
+                                <td><input type="checkbox" name="pro_nm_check" data="`+proId+`" value="` + proId + `" onclick="checkEvent(this)"></td>
                                 <td><span class="ellipsis">` + proNm + `</span></td>
-                                <td><input type="checkbox" class="camp_nm_check" name="seq" value="` + seq + `" onclick="checkEvent(this)"></td>
+                                <td><input type="checkbox" class="camp_nm_check" name="cont_seq" value="` + contSeq + `" data_pro_id ="`+proId+`" onclick="checkEvent(this)"></td>
                                 <td><span class="ellipsis">` + campNm + `</span></td>
                             </tr>`;
-        $("#select_lst_tbody").append(newHtml);
+
+        if($(`#select_lst_tbody input[data="`+proId+`"]`).length > 0){   // 기존에 선택된 프로그램이 있을 경우 바로 밑에 추가
+            $(`#select_lst_tbody input[data="`+proId+`"]`).parents('tr').after(newHtml);
+        }else {
+            $("#select_lst_tbody").append(newHtml);
+        }
+
+        genRowspan(); // 중복 프로그램 합치기
+    }
+
+    function genRowspan() {
+        $(`#select_lst_tbody input[name="pro_nm_check"]`).each(function () {
+            var curr = $(this).attr("data");
+            var rows = $(`#select_lst_tbody input[name="pro_nm_check"]`).filter(function () {
+                return $(this).attr("data") == curr;
+            });
+
+            if (rows.length > 1) {
+
+                let firstRowTdLst = $(rows).eq(0).parents("tr").find('td');
+                firstRowTdLst.eq(0).attr("rowspan", rows.length);
+                firstRowTdLst.eq(1).attr("rowspan", rows.length);
+
+                let td = rows.not(":eq(0)").parents("tr").find('td');
+
+                td.eq(0).remove();
+                td.eq(1).remove();
+            }
+        });
     }
 
     function delList() {
@@ -1430,16 +1300,11 @@
         selectedCampSet.clear();
     }
 
-    // for문이 돌지않음
     function checkLst() {
-        console.log('checkLst')
-        $('#report_tbody input[name="cont_seq"]').each(function (idx, contSeq) {
-            console.log(contSeq)
+        $('#report_tbody .camp_nm_check').each(function (idx, contSeq) {
             let seq = $(contSeq).val();
-            if (duplDocument(seq).length > 0) {
-                let checkBox = $("#report_tbody input[value=" + seq + "]");
-                $(checkBox).prop("checked", true);
-                addSelectList(checkBox);
+            if(selectedCampSet.has(seq)){
+                $(contSeq).trigger("click")
             }
         })
     }
