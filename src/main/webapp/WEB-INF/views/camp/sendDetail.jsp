@@ -162,14 +162,14 @@
                                                 <div class="td cf">
                                                 <c:choose>
                                                     <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" id="progress1" data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                        <div class="chart" name="progress1" data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                         <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].w_cnt}" pattern="#,###" /></span>
                                                             <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}" />)</span>
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <div class="chart" id="progress1" data="1"></div>
+                                                        <div class="chart" name="progress1" data="1"></div>
                                                         <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].w_cnt}" pattern="#,###" /></span>
                                                             <span class="percents en_font">(100%)</span>
@@ -185,14 +185,14 @@
                                                 <div class="td cf">
                                                 <c:choose>
                                                     <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" id="progress2" data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                        <div class="chart" name="progress2" data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                         <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].s_cnt}" pattern="#,###" /></span>
                                                             <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}" />)</span>
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <div class="chart" id="progress2" data="0"></div>
+                                                        <div class="chart" name="progress2" data="0"></div>
                                                         <div class="detail">
                                                             <span class="number en_font">0</span>
                                                             <span class="percents en_font">(0.00%)</span>
@@ -206,7 +206,7 @@
                                                 <div class="td cf">
                                                 <c:choose>
                                                     <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" id="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                        <div class="chart" name="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                         <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].f_cnt}" pattern="#,###" /></span>
                                                             <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}" />)</span>
@@ -280,7 +280,7 @@
                                         <div class="row_graph cf">
                                             <div class="th">성공</div>
                                             <div class="td cf">
-                                                <div class="chart" id="progress2" data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                <div class="chart" name="progress2" data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                 <div class="detail">
                                                     <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].s_cnt}" pattern="#,###" /></span>
                                                     <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}" />)</span>
@@ -290,7 +290,7 @@
                                         <div class="row_graph cf">
                                             <div class="th">실패</div>
                                             <div class="td cf">
-                                                <div class="chart" id="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                <div class="chart" name="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                 <div class="detail">
                                                     <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].f_cnt}" pattern="#,###" /></span>
                                                     <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}" />)</span>
@@ -303,7 +303,7 @@
                                            <div class="th">오픈</div>
                                            <div class="td cf">
                                                <!-- progress 영역 -->
-                                               <div class="chart" id="progress4" data="${openCnt[camp_id].cnt/g.tar_cnt}"></div>
+                                               <div class="chart" name="progress4" data="${openCnt[camp_id].cnt/g.tar_cnt}"></div>
                                                <div class="detail">
                                                    <span class="number en_font">
                                                    <c:choose>
@@ -318,7 +318,7 @@
                                         <div class="row_graph cf">
                                              <div class="th">클릭</div>
                                              <div class="td cf">
-                                                 <div class="chart" id="progress5" data="${trackCnt[camp_id].cnt/g.tar_cnt}"></div>
+                                                 <div class="chart" name="progress5" data="${trackCnt[camp_id].cnt/g.tar_cnt}"></div>
                                                  <div class="detail">
                                                      <span class="number en_font">
                                                      <c:choose>
@@ -631,9 +631,18 @@
     let check = false;
     let isProcess = true;
     let isDelProcess = true;
+    let barArr = new Array();
+    let curArr;
+    let index,prg1,prg2,prg3,prg4,prg5;
+    <c:forEach var="cammp" items="${campLst}" varStatus="st">
+    index = ${st.index}
+    barArr[index] = new Array();
+    curArr = barArr[index];
+
     <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '02' or dto.pro_st eq '03'}">
     // 대기 progress.js
-    let bar1 = new ProgressBar.Line(progress1, {
+    prg1 = $(`[name="progress1"]`)[index]
+    curArr[0] = new ProgressBar.Line(prg1, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -644,7 +653,8 @@
     });
 
     // 성공 progress.js
-    let bar2 = new ProgressBar.Line(progress2, {
+    prg2 = $(`[name="progress2"]`)[index]
+    curArr[1] = new ProgressBar.Line(prg2, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -655,7 +665,8 @@
     });
 
     // 실패 progress.js
-    let bar3 = new ProgressBar.Line(progress3, {
+    prg3 = $(`[name="progress3"]`)[index]
+    curArr[2]  = new ProgressBar.Line(prg3, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -664,10 +675,13 @@
         trailWidth: 4,
         svgStyle: { width: '100%', height: '7px' }
     });
+
     </c:if>
+
     <c:if test="${dto.pro_st eq '04' or dto.pro_st eq '99'}">
     // 성공 progress.js
-    let bar2 = new ProgressBar.Line(progress2, {
+    prg2 = $(`[name="progress2"]`)[index]
+    curArr[1] = new ProgressBar.Line(prg2, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -678,7 +692,8 @@
     });
 
     // 실패 progress.js
-    let bar3 = new ProgressBar.Line(progress3, {
+    prg3 = $(`[name="progress3"]`)[index]
+    curArr[2]  = new ProgressBar.Line(prg3, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -688,7 +703,8 @@
         svgStyle: { width: '100%', height: '7px' }
     });
     // 오픈 progress.js
-    let bar4 = new ProgressBar.Line(progress4, {
+    prg4 = $(`[name="progress4"]`)[index]
+    curArr[3]  = new ProgressBar.Line(prg4, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -698,7 +714,8 @@
         svgStyle: { width: '100%', height: '7px' }
     });
     // 클릭 progress.js
-    let bar5 = new ProgressBar.Line(progress5, {
+    prg5 = $(`[name="progress5"]`)[index]
+    curArr[4] = new ProgressBar.Line(prg5, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
@@ -708,6 +725,7 @@
         svgStyle: { width: '100%', height: '7px' }
     });
     </c:if>
+    </c:forEach>
 
     <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '03'}">
     <c:set var="tt" value="${cutil:stringDatetimeMap(startDt)}" />
@@ -772,15 +790,27 @@
 
 
         <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '02' or dto.pro_st eq '03'}">
-        bar1.animate(Number($("#progress1").attr('data')));
-        bar2.animate(Number($("#progress2").attr('data')));
-        bar3.animate(Number($("#progress3").attr('data')));
+        for(tempIdx in barArr){
+            campBarArr = barArr[tempIdx];
+            for(idx in campBarArr){
+                idx =parseInt(idx);
+                let bar = $(`[name='progress`+(idx+1)+`']`)[tempIdx]
+                campBarArr[idx].animate(Number($(bar).attr('data')));
+            }
+        }
         </c:if>
+
         <c:if test="${dto.pro_st eq '04' or dto.pro_st eq '99'}">
-        bar2.animate(Number($("#progress2").attr('data')));
-        bar3.animate(Number($("#progress3").attr('data')));
-        bar4.animate(Number($("#progress4").attr('data')));
-        bar5.animate(Number($("#progress5").attr('data')));
+
+        for(tempIdx in barArr){
+            campBarArr = barArr[tempIdx];
+            for(idx in campBarArr){
+                idx =parseInt(idx);
+                let bar = $(`[name='progress`+(idx+1)+`']`)[tempIdx]
+                campBarArr[idx].animate(Number($(bar).attr('data')));
+            }
+        }
+
         </c:if>
     });
 

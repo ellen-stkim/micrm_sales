@@ -41,6 +41,26 @@
 #calendar .state04CH02::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
     background:#dde6f5 url('../image/ico_mobile.png') no-repeat center;}
 
+#calendar .state99CH03 {background-color:#fcd9df !important;}
+#calendar .state99CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#fcd9df url('../image/ico_mobile.png') no-repeat center;}
+#calendar .state00CH03 {background-color:#fce7c6 !important;}
+#calendar .state00CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#fce7c6 url('../image/ico_mobile.png') no-repeat center;}
+#calendar .state01CH03 {background-color:#cdf1ed !important;}
+#calendar .state01CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#cdf1ed url('../image/ico_mobile.png') no-repeat center;}
+#calendar .state02CH03 {background-color:#add7b9 !important;}
+#calendar .state02CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#add7b9 url('../image/ico_mobile.png') no-repeat center;}
+#calendar .state03CH03 {background-color:#c5b0dd !important;}
+#calendar .state03CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#c5b0dd url('../image/ico_mobile.png') no-repeat center;}
+#calendar .state04CH03 {background-color:#dde6f5 !important;}
+#calendar .state04CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#dde6f5 url('../image/ico_mobile.png') no-repeat center;}
+
+
 /* Home */
 .main_calendar {float:left; width:calc(100% - 398px); padding-top:46px; position:relative; }
 .main_calendar > h2 {position:absolute; left:19px; top:48px;}
@@ -1125,7 +1145,7 @@ span.ellipsis {display:block; line-height:1.5;}
     text-align:center; color:#cccccc; font-size:11px; cursor:pointer;}
 .status_area {padding:20px;}
 .status_area .left {width:calc(85.2% - 10px); margin-right:10px;}
-.status_area .left li {float:left; width:16.6%; border-right:none; position:relative; cursor:pointer; position:relative;}
+.status_area .left li {float:left; width:25%; border-right:none; position:relative; cursor:pointer; position:relative;}
 .status_area .left li:last-child {border-right:1px solid #dddddd;}
 .status_area .left li:last-child::before {display:none;}
 .status_area .left li::before {content:''; display:block; width:19px; height:19px;

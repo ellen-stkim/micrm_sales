@@ -13,14 +13,20 @@
 <div id="list_table_box">
     <table class="pop_table table_fixed" id="" style="width: 588px; height:210px;">
         <colgroup>
-            <col width="60"/>
-            <col width="150"/>
+            <col width="40"/>
+            <col width="130"/>
+            <col width="40"/>
+            <col width="130"/>
             <col width="100"/>
-            <col width="150"/>
+            <col width="130"/>
         </colgroup>
         <thead>
         <tr>
-            <th><input type="checkbox" name="pro_nm_allcheck" onclick="allCheckBtn(this); checkEvent(this);"></th>
+            <th><input type="checkbox" name="pro_nm_allcheck"
+                       onclick="allCheckBtn(this); checkEvent(this);"></th>
+            <th><span>프로그램명</span></th>
+            <th><input type="checkbox" name="camp_nm_allcheck"
+                       onclick="allCheckBtn(this); checkEvent(this);"></th>
             <th><span>캠페인명</span></th>
             <th><span>타겟수</span></th>
             <th><span>캠페인 채널</span></th>
@@ -33,25 +39,32 @@
                 </tr>
             </c:when>
             <c:otherwise>
-                <c:forEach var="item" items="${programLst}">
+                <c:forEach var="programMap" items="${programLst}">
                     <tr>
-                        <td rowspan="${item.camp_cnt}">
-                            <input type="checkbox" name="pro_nm_check" value="${item.pro_id}"
+                        <c:set var="total" value="${programMap.total}"/>
+                        <td rowspan="${total.rowCnt-1}">
+                            <input type="checkbox" name="pro_nm_check" value="${total.pro_id}" data="${total.pro_id}"
                                    onclick="addSelectList(this)">
                         </td>
-
-                        <td rowspan="${item.camp_cnt}"><span class="ellipsis" name="pro_nm">${item.pro_nm}</span></td>
-
-                        <td><span class="sendStatus"><fmt:formatNumber value="${item.total_cnt}"
-                                                                       pattern="#,##0"/></span>
-                        </td>
-                        <td>
-                                        <span>
-                                            <c:if test="${item.camp_ch eq 'CH01'}">이메일</c:if>
-                                            <c:if test="${item.camp_ch eq 'CH02'}">문자</c:if>
-                                             <c:if test="${item.camp_ch eq 'CH03'}">세일즈포스</c:if>
-                                        </span>
-                        </td>
+                        <td rowspan="${total.rowCnt-1}"><span class="ellipsis" name="pro_nm">${total.pro_nm}</span></td>
+                        <c:forEach var="cont" items="${programMap.program}" begin="">
+                            <td>
+                                <input type="checkbox" class="camp_nm_check" value="${cont.seq}" data_pro_id="${cont.pro_id}" data_pro_nm ="${cont.pro_nm}"
+                                       onclick="addSelectList(this)">
+                            </td>
+                            <td rowspan="${item.camp_cnt}"><span class="ellipsis" name="camp_nm">${cont.camp_nm}</span></td>
+                            <td><span class="sendStatus"><fmt:formatNumber value="${cont.total_cnt}"
+                                                                           pattern="#,##0"/></span>
+                            </td>
+                            <td>
+                                <span>
+                                <c:if test="${cont.camp_ch eq 'CH01'}">이메일</c:if>
+                                <c:if test="${cont.camp_ch eq 'CH02'}">문자</c:if>
+                                <c:if test="${cont.camp_ch eq 'CH03'}">세일즈포스</c:if>
+                                </span>
+                            </td>
+                            </tr>
+                        </c:forEach>
                     </tr>
                 </c:forEach>
             </c:otherwise>

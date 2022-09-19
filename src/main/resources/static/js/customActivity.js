@@ -40,12 +40,11 @@ define(["postmonger"], function (Postmonger) {
 			flag = false;
 		}
 		let hasInArguments = Boolean(payload["arguments"] && payload["arguments"].execute && payload["arguments"].execute.inArguments && payload["arguments"].execute.inArguments.length > 0 );
-
 		let inArguments = hasInArguments ? payload["arguments"].execute.inArguments : {};
 		$.each(inArguments, function (index, inArgument) {
 			$.each(inArgument, function (key, val) {
 				if(key === 'seq') {
-					$('#seq').val(val);
+					mstSeq = val;
 				}
 			});
 		});
@@ -108,25 +107,26 @@ define(["postmonger"], function (Postmonger) {
 	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
             if (response.status === "true") {
-                $('#usr_grp_cd').val(response.usr_grp_cd);
-                $('#cont_grp_cd').val(response.usr_grp_cd);
-                mappingLst();
+				if(mstSeq) {
+					mobileInfo(mstSeq);
+				}else{
+					$('#usr_grp_cd').val(response.usr_grp_cd);
+					$('#cont_grp_cd').val(response.usr_grp_cd);
+					mappingLst();
 
-                if($('#seq').val() != '' && $('#seq').val() != null) {
-                    mobileInfo();
-                }
-
-				if(response.kko.list){
-					$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
-					$("#kakao_send_to_num").val(response.kko.list[0].seq);
-				}
-				if(response.mdm.list){
-					$("#sms_send_to").val(response.mdm.list[0].list_nm + "(" + numberToPhone(response.mdm.list[0].list_val) + ")");
-					$("#sms_send_to_num").val(response.mdm.list[0].seq);
-				}
-				if(response.rcs.list){
-					$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
-					$("#text_send_num").val(response.rcs.list[0].seq);
+					if(response.kko.list){
+						$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
+						$("#kakao_send_to_num").val(response.kko.list[0].seq);
+					}
+					if(response.mdm.list){
+						$("#sms_send_to").val(response.mdm.list[0].list_nm + "(" + numberToPhone(response.mdm.list[0].list_val) + ")");
+						$("#sms_send_to_num").val(response.mdm.list[0].seq);
+					}
+					if(response.rcs.list){
+						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
+						$("#text_send_num").val(response.rcs.list[0].seq);
+					}
+					$("#contLoad").click();
 				}
 			}else {
                 // 조회실패
@@ -162,17 +162,16 @@ define(["postmonger"], function (Postmonger) {
 			let temp = bindList[i];
 			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 		}
-		data.seq = $('#seq').val();
+		data.seq = mstSeq;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
-		console.log(payload);
 	}
 
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {
-        if($('#seq').val() == '' || $('#seq').val() == null) {
+        if(!mstSeq) {
             mobileSave();
         } else {
             let html = '';
@@ -205,7 +204,7 @@ define(["postmonger"], function (Postmonger) {
     function mobileSave() {
         const res = function(response) {
             if(response.status) {
-                $('#seq').val(response.seq);
+				mstSeq = response.seq
                 save();
 			} else {
                 popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");

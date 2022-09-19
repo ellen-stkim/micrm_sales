@@ -44,6 +44,8 @@
         SELECT a.seq As seq
                 ,b.PRO_ID AS pro_id
                 , b.PRO_NM AS pro_nm
+                , a.camp_id as camp_id
+                , a.camp_nm as camp_nm
                 , b.PRO_ST AS pro_st
                 , b.min_start_dt AS start_dt
                 ,a.cont_id AS cont_id
@@ -67,6 +69,9 @@
                 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
                     and b.pro_nm like CONCAT('%', #{pro_nm},'%')
                 </if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_nm)">
+                    and a.camp_nm like CONCAT('%', #{camp_nm},'%')
+                </if>
                 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
                     and b.pro_tg_tp = #{pro_tg_tp}
                 </if>
@@ -86,7 +91,7 @@
                     and b.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
                 </if>
             </where>
-            ORDER BY a.REG_DT DESC
+            ORDER BY a.REG_DT DESC,a.PRO_ID DESC
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
                 LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
             </if>
@@ -111,8 +116,8 @@
             ,Sum(roi) AS roi
             ,Min(start_dt) AS start_dt
             ,Max(start_dt) AS end_dt
-            ,REPLACE(REPLACE(GROUP_CONCAT(
-                DISTINCT camp_ch  SEPARATOR  ' / '),'CH01','이메일'),'CH02','문자') AS camp_ch
+            ,REPLACE(REPLACE(REPLACE(GROUP_CONCAT(
+                DISTINCT camp_ch  SEPARATOR  ' / '),'CH01','이메일'),'CH02','문자'),'CH03','세일즈포스') AS camp_ch
         FROM tblmire_camp_mst
         <where> seq IN
                     <foreach item="item" index="index" collection="list"
@@ -126,6 +131,8 @@
         SELECT a.seq As seq
                 ,b.PRO_ID AS pro_id
                 , b.PRO_NM AS pro_nm
+                , a.CAMP_ID AS camp_id
+                , a.CAMP_NM AS camp_nm
                 , b.PRO_ST AS pro_st
                 , b.min_start_dt as start_dt
                 , a.cont_id AS cont_id

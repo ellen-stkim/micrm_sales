@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.KkoAtTmplMapper">
+    <cache/>
+
+    <select id="getTmplSearchLst" resultType="Tblmi_comm_cdDto" parameterType="Tblmi_comm_cdDto">
+        SELECT * FROM tblmi_comm_cd
+        WHERE GRP_ID = #{grp_id}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_id)">
+                and cd_id = #{cd_id}
+            </if>
+            AND USE_YN = 'Y'
+    </select>
+
+    <select id="selAtTmplLst" resultType="Tmpl_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
+        SELECT * FROM tblmi_kko_at_tmpl
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
+                and chan_id = #{chan_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
+                and kep_status = #{kep_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
+                and tmpl_status = #{tmpl_status}
+            </if>
+        </where>
+        order by REG_DT DESC
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+            LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+        </if>
+    </select>
+
+</mapper>
+
+
+
+

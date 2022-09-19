@@ -56,14 +56,23 @@
                         <div class="th">컨텐츠 포맷</div>
                         <div class="td flex_row">
                             <div class="sms_option cf">
-                                <label class="custom_check2 kakao">
+                                <label class="custom_check2 kakao_at">
                                     <c:if test="${kakaoCnt ne 0}">
-                                        <input name="formatType" type="checkbox" value="kakao" class="formatType"/>
+                                        <input name="formatType" type="checkbox" value="kakao_at" class="formatType"/>
                                     </c:if>
                                     <c:if test="${kakaoCnt eq 0}">
-                                        <input name="formatType" type="checkbox" value="kakao" class="formatType" disabled/>
+                                        <input name="formatType" type="checkbox" value="kakao_at" class="formatType" disabled/>
                                     </c:if>
-                                    <span>카카오톡</span>
+                                    <span>카카오 알림톡</span>
+                                </label>
+                                <label class="custom_check2 kakao_ft">
+                                    <c:if test="${kakaoCnt ne 0}">
+                                        <input name="formatType" type="checkbox" value="kakao_ft" class="formatType"/>
+                                    </c:if>
+                                    <c:if test="${kakaoCnt eq 0}">
+                                        <input name="formatType" type="checkbox" value="kakao_ft" class="formatType" disabled/>
+                                    </c:if>
+                                    <span>카카오 친구톡</span>
                                 </label>
                                 <label class="custom_check2 sms">
                                     <c:if test = "${smsCnt ne 0}">
@@ -121,12 +130,158 @@
                     </div>
                     <!-- Tab menu -->
                     <ul class="tab_row" id="js-smsTab">
-                        <li><span>카카오톡</span></li>
+                        <li><span>카카오 알림톡</span></li>
+                        <li><span>카카오 친구톡</span></li>
                         <li><span>문자</span></li>
                         <li><span>RCS</span></li>
                     </ul>
                     <div class="tab_contents">
-                        <div class="sms_form right-border cover cf" id="kakao">
+                        <div class="sms_form right-border cover cf" id="kakao_at">
+                            <h2>카카오톡</h2>
+                            <div class="flex_box">
+                                <div class="left_area">
+                                    <div class="row body">
+                                        <div class="th">문자 제목</div>
+                                        <div class="column_1">
+                                                <%--<input type="text" class="title kakaoTitle" name="cont_sub" placeholder="문자 제목을 입력하세요." />--%>
+                                            <input type="text" class="title kakaoTitle" name="cont_sub_list" placeholder="문자 제목을 입력하세요."/>
+                                            <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
+                                        </div>
+                                    </div>
+                                    <div class="row body">
+                                        <div class="th">발신 번호</div>
+                                        <div class="column_1">
+                                            <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
+                                                <%--<input type="text" class="sms_number smsNumber" name="send_to" id="send_to"
+                                                       value ="${list[0].list_val}"
+                                                       readonly/>--%>
+                                                <%--<input type="text" class="sms_number smsNumber_kko" id="send_to"
+                                                       value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly/>--%>
+                                            <input type="text" class="sms_number smsNumber_kko" id="send_to"
+                                                    <c:if test = "${fn:trim(list[0].list_nm) != ''}">
+                                                        value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly
+                                                    </c:if>
+                                                    <c:if test = "${fn:trim(list[0].list_nm) == ''}">
+                                                        placeholder ="발신 번호를 입력해주세요"
+                                                    </c:if>
+                                            />
+                                            <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
+                                        </div>
+                                    </div>
+                                    <div class="input_area">
+                                        <div class="block">
+                                            <div class="row">
+                                                <div class="th">이미지 선택</div>
+                                                <div class="td">
+                                                    <div class="delete_img" data="kakao"><img src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                    </div>
+                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage"
+                                                           placeholder="이미지를 선택해 주세요." readonly/>
+                                                    <span class="btn_sm_line" data="kakaoImage"
+                                                          onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                    <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
+                                                    <input type="hidden" name="kko_view_img_url" value=""> <!-- 프리뷰를 위한 이미지 URL -->
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="th top-border">이미지 링크 주소</div>
+                                                <div class="td top-border">
+                                                    <input type="text" class="txt_input en_font width kakaoImgLink"
+                                                           name="kko_img_url"
+                                                           onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                </div>
+                                            </div>
+                                            <div class="row flex_row">
+                                                <div class="th top-border">이미지 미리보기</div>
+                                                <div class="td top-border">
+                                                    <div class="col_img" id="js-kakao-img"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="row">
+                                                <div class="th">개인화 변수</div>
+                                                <div class="td">
+                                                    <!-- select 영역 시작 -->
+                                                    <div class="select" id="" name="edmDB">
+                                                        <!-- selected value -->
+                                                        <div class="value" data="0">개인화 변수</div>
+                                                        <ul class="option">
+                                                            <c:forEach var="item" items="${columnNm}" varStatus="status">
+                                                                <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                                            </c:forEach>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="select" id="kakaoValue" name="defaultDB">
+                                                        <!-- selected value -->
+                                                        <div class="value" data="0">개인화 변수</div>
+                                                        <ul class="option">
+                                                            <li data="{{USR_ID}}">회원번호</li>
+                                                            <li data="{{USR_NM}}">이름</li>
+                                                            <li data="{{USR_MOB}}">모바일</li>
+                                                            <li data="{{USR_EDM}}">이메일</li>
+                                                            <li data="{{USR_GDR}}">성별</li>
+                                                            <li data="{{USR_ADDR}}">주소</li>
+                                                            <li data="{{USR_ETC1}}">ETC1</li>
+                                                            <li data="{{USR_ETC2}}">ETC2</li>
+                                                            <li data="{{USR_ETC3}}">ETC3</li>
+                                                            <li data="{{USR_ETC4}}">ETC4</li>
+                                                            <li data="{{USR_ETC5}}">ETC5</li>
+                                                            <li data="{{USR_ETC6}}">ETC6</li>
+                                                            <li data="{{USR_ETC7}}">ETC7</li>
+                                                            <li data="{{USR_ETC8}}">ETC8</li>
+                                                            <li data="{{USR_ETC9}}">ETC9</li>
+                                                            <li data="{{USR_ETC10}}">ETC10</li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- select 영역 끝 -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="row">
+                                                <div class="th bottom-border">버튼 링크 제목</div>
+                                                <div class="td bottom-border">
+                                                    <input type="text" name="kko_btn_nm" class="txt_input width kakao_btn_name"
+                                                           placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="th bottom-border">버튼 링크 주소</div>
+                                                <div class="td bottom-border">
+                                                    <input type="text" name="kko_btn_url"
+                                                           class="txt_input en_font kakao_btn_link"
+                                                           placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="th">추적 링크 생성</div>
+                                                <div class="td">
+                                                    <input type="text" class="txt_input en_font" id="kakaoTracking"
+                                                           placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <span class="btn_sm_line trackingLinkBtn">생성</span>
+                                                    <input type="hidden" name="kko_trackinglink"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="viewer_area">
+                                    <div class="top">카카오톡 본문 입력창</div>
+                                    <div class="inner">
+                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
+                                                  onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                    </div>
+                                    <div class="byte">
+                                        <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- kakao end-->
+                    <div class="tab_contents">
+                        <div class="sms_form right-border cover cf" id="kakao_ft">
                             <h2>카카오톡</h2>
                             <div class="flex_box">
                                 <div class="left_area">
@@ -728,7 +883,7 @@
         });//end
         getDBValue();
         //load 시 byte 계산
-        let kakaoTxt = $('#kakao .textarea');
+        let kakaoTxt = $('#kakao_ft .textarea');
         let smsTxt = $('#sms .textarea');
         smsCreate.byteCount(kakaoTxt, 'kakao');
         smsCreate.byteCount(smsTxt, 'sms');
@@ -747,6 +902,8 @@
                 if(minInx === '' && minInx > tabInx){
                     minInx = tabInx;
                 }
+
+                console.log(minInx)
                 $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
                 $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
             }
@@ -765,6 +922,8 @@
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
             let tabInx = $('.formatType').index(this);
+
+            console.log(tabInx)
 
             if(state == true){
                 $('#js-smsTab li').eq(tabInx).show().addClass('on').siblings().removeClass('on');
@@ -806,7 +965,7 @@
                 if (btnName != '') {
                     if (btnLink != '') {
                         if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
+                            $(this).parents('#kakao_ft').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
                             //name.attr('disabled', true);
                             //link.attr('disabled', true);
                             name.attr('readonly', true);
@@ -826,7 +985,7 @@
                 }
             } else {
                 $(this).val('생성');
-                $(this).parents('#kakao').find('.kakao_link').remove();
+                $(this).parents('#kakao_ft').find('.kakao_link').remove();
                 link.val('');
                 name.val('');
                 //name.attr('disabled', false);
@@ -2447,7 +2606,7 @@
             }
         } else {
             if (type == 'kakaoImage') {
-                $('#kakao').find('.sms_img').children().remove();
+                $('#kakao_ft').find('.sms_img').children().remove();
             } else if (type == 'smsImage') {
                 $('#sms').find('.sms_img').children().remove();
             }

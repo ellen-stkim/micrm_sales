@@ -473,7 +473,6 @@ class SalesforceServiceImpl : SalesforceService {
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_SMS_MSG_ID"
                             cdDto.cd_id = userInfo.usr_grp_cd
-                            cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                             if (codeDto != null) {
@@ -488,7 +487,6 @@ class SalesforceServiceImpl : SalesforceService {
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_LMS_MSG_ID"
                             cdDto.cd_id = userInfo.usr_grp_cd
-                            cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                             if (codeDto != null) {
@@ -544,7 +542,6 @@ class SalesforceServiceImpl : SalesforceService {
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_L_TALL_MSG_ID"
                             cdDto.cd_id = userInfo.usr_grp_cd
-                            cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                             if (codeDto != null) {
@@ -559,7 +556,6 @@ class SalesforceServiceImpl : SalesforceService {
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_L_MD_MSG_ID"
                             cdDto.cd_id = userInfo.usr_grp_cd
-                            cdDto.cd_id = cont_grp_cd
 
                             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                             if (codeDto != null) {
@@ -568,10 +564,8 @@ class SalesforceServiceImpl : SalesforceService {
                         }
 
                         val jsonBody = JSONObject()
-
                         jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
                         jsonBody["description"] = contentListCreatedto.rcs_body
-
                         // 공백 파싱 처리
                         //tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
                         tblmiContLstdto.cont_body = jsonBody.toString();
@@ -658,7 +652,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 if (url.contains("http") || url.contains("https")) {
                                     // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
                                     idx++
-                                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                                    val contUrlDto = Tblmi_cont_url_lstDto()
                                     contUrlDto.url_tag = "a"
                                     contUrlDto.url = url
                                     if (idx >= 10) {
@@ -680,7 +674,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 모바일 이미지 a 링크 저장 (이미지 경로)
                     if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
-                        val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                        val contUrlDto = Tblmi_cont_url_lstDto()
                         contUrlDto.url_tag = "a"
                         contUrlDto.url = contentListCreatedto.mms_imgurl
                         contUrlDto.url_id = "mmsImg001"
@@ -772,9 +766,9 @@ class SalesforceServiceImpl : SalesforceService {
                 }
 
             }
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
+            logger.error("insert content", e)
             logger.error("마스터 코드 " + tblmiContMstDto.seq);
-            e.printStackTrace()
             // url 삭제하기
             val lstSeqDto = Tblmi_cont_lstDto()
             lstSeqDto.cont_cd = tblmiContMstDto.seq
@@ -823,7 +817,7 @@ class SalesforceServiceImpl : SalesforceService {
         }
 
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
-        tblmiContMstDto.ch_tp = "CH02"
+        tblmiContMstDto.ch_tp = "CH03"
         tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
         tblmiContMstDto.reg_id = usr_id
         tblmiContMstDto.upd_id = usr_id
@@ -1137,7 +1131,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 idx++
                                 // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
                                 //logger.error("parsing url : " + url)
-                                val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                                val contUrlDto = Tblmi_cont_url_lstDto()
                                 contUrlDto.url_tag = "a"
                                 contUrlDto.url = url
                                 if (idx >= 10) {
@@ -1158,7 +1152,7 @@ class SalesforceServiceImpl : SalesforceService {
             if (i == 1) {
                 // 모바일 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
-                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                    val contUrlDto = Tblmi_cont_url_lstDto()
                     contUrlDto.url_tag = "a"
                     contUrlDto.url = contentListCreatedto.mms_imgurl
                     contUrlDto.url_id = "mmsImg001"
@@ -1166,17 +1160,7 @@ class SalesforceServiceImpl : SalesforceService {
                     contentDao.insertContentUrl(contUrlDto)
                 }
 
-                /*if (!CommonUtils.isEmptyObject(contentListCreatedto.sms_trackinglink)) {
-                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
-                    contUrlDto.url_tag = "a"
-                    contUrlDto.url = contentListCreatedto.sms_trackinglink
-                    contUrlDto.url_id = "smsTrk001"
-                    contUrlDto.cont_lst_cd = lastSeq
-                    contentDao.insertContentUrl(contUrlDto)
-                }
-*/
                 val url_sms_body = contentListCreatedto.sms_body
-
                 if (url_sms_body?.contains("{{") == true) {
 
                     val regex = "\\{\\{[^{]+}}"
@@ -1218,7 +1202,6 @@ class SalesforceServiceImpl : SalesforceService {
             }
 
             if (i == 2) {
-                //logger.error("rcs 버튼 url");
                 val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
 
                 if (urlLen != null) {

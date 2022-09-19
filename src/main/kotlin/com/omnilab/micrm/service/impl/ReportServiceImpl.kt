@@ -50,7 +50,8 @@ class ReportServiceImpl : ReportService {
             if (response.body.isNullOrEmpty()) {
                 re_map
             } else {
-                re_map["tableauUrl"] = sysSettingDao.getCommCD(Tblmi_comm_cdDto("TABLEAU_REP_PAGE", usr_grp_cd))?.cd_val?.replace("{ticket}", response.body!!)
+                re_map["tableauUrl"] = sysSettingDao.getCommCD(Tblmi_comm_cdDto("TABLEAU_REP_PAGE",
+                    usr_grp_cd))?.cd_val?.replace("{ticket}", response.body!!)
                 re_map
             }
         }
@@ -71,13 +72,13 @@ class ReportServiceImpl : ReportService {
         val programLst = campaignReportDao.getCampMstTotalList(temp)
 
         map["totalResult"] = totalResult
-        map["programLst"] = programLst
+        map["programLst"] = campListToTotal(programLst)
 
         return map;
     }
 
 
-    override fun getTotalCampMstList(pdto: Tblmicp_programDto): kotlin.collections.MutableMap<String, Any> {
+    override fun getTotalCampMstList(pdto: Tblmicp_programDto): MutableMap<String, Any> {
 
         val map = HashMap<String, Any>()
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
@@ -86,6 +87,7 @@ class ReportServiceImpl : ReportService {
         val dto = pdto as Program_SearchDto
         when (dto.searchType) {
             "pro_nm" -> dto.pro_nm = dto.searchValue
+            "camp_nm" -> dto.camp_nm = dto.searchValue
             "camp_ch" -> dto.camp_ch = dto.searchValue
         }
 
@@ -103,7 +105,8 @@ class ReportServiceImpl : ReportService {
             return map
         }
 
-        map["programLst"] = list
+        val programLst = campListToTotal(list)
+        map["programLst"] = programLst
         return map
 
     }
@@ -155,7 +158,9 @@ class ReportServiceImpl : ReportService {
                         result["OPEN_CNT"] = open_time[key]
                         val tempOpen = open_result.get(key)?.get("OPEN_CNT")
                         if (tempOpen != null && tempOpen.toString() != "0") {
-                            result["OPEN_CNT"] = open_time[key].toString().toInt() + open_result.get(key)?.get("OPEN_CNT").toString().toInt()
+                            result["OPEN_CNT"] =
+                                open_time[key].toString().toInt() + open_result.get(key)?.get("OPEN_CNT").toString()
+                                    .toInt()
                         }
 
                         // 오픈 데이터가 있는 캠페인명 리스트
@@ -164,11 +169,11 @@ class ReportServiceImpl : ReportService {
                             if (open_title_lst == null) {
                                 open_title_lst = ArrayList()
                             }
-                            val titleMap =  mutableMapOf<String, String>()
-                            titleMap.put("camp_nm",open_time.get("CAMP_NM").toString())
-                            titleMap.put("open_cnt",open_time[key].toString())
+                            val titleMap = mutableMapOf<String, String>()
+                            titleMap.put("camp_nm", open_time.get("CAMP_NM").toString())
+                            titleMap.put("open_cnt", open_time[key].toString())
                             open_title_lst?.add(titleMap)
-                            open_title_map.put(key,open_title_lst)
+                            open_title_map.put(key, open_title_lst)
                         }
                         open_result.put(key, result)
                         total += open_time[key].toString().toInt()
@@ -188,7 +193,7 @@ class ReportServiceImpl : ReportService {
     }
 
     override fun getClickList(cont_id: Int): MutableList<HashMap<String, Any?>> {
-        var mapLst =  mutableListOf<HashMap<String, Any?>>()
+        var mapLst = mutableListOf<HashMap<String, Any?>>()
 
         if (cont_id == null) {
             return mapLst
@@ -202,7 +207,7 @@ class ReportServiceImpl : ReportService {
 
             var map = HashMap<String, Any?>()
             val dto = campaignReportDao.getContentsLst(contentDto.seq)
-            dto.cardSize ='1'.toString();
+            dto.cardSize = '1'.toString();
             if (dto.cont_tp.equals("DMTP04")) {
                 jsonOneContentsParsing(dto)
             }
@@ -225,9 +230,9 @@ class ReportServiceImpl : ReportService {
             if (dto.cont_body != null) {
                 val jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
                 dto.cont_body = jsonObject.get("description").toString()
-                        .replace("\\\\r\\\\n", "<br/>")
-                        .replace("\\r\\n", "<br/>")
-                        .replace("\"", "")
+                    .replace("\\\\r\\\\n", "<br/>")
+                    .replace("\\r\\n", "<br/>")
+                    .replace("\"", "")
             }
         }
         if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
@@ -244,19 +249,18 @@ class ReportServiceImpl : ReportService {
                 val description = "description" + idx
 
                 dto.slideTitle.add(slideJsonObject.get(title).toString()
-                        .replace("\\\\r\\\\n", "<br/>")
-                        .replace("\\r\\n", "<br/>")
-                        .replace("\"", ""))
+                    .replace("\\\\r\\\\n", "<br/>")
+                    .replace("\\r\\n", "<br/>")
+                    .replace("\"", ""))
 
                 dto.slideBody.add(slideJsonObject.get(description).toString()
-                        .replace("\\\\r\\\\n", "<br/>")
-                        .replace("\\r\\n", "<br/>")
-                        .replace("\"", ""))
+                    .replace("\\\\r\\\\n", "<br/>")
+                    .replace("\\r\\n", "<br/>")
+                    .replace("\"", ""))
 
             }
         }
     }
-
 
 
     override fun getCampMstContIdByProId(proId: String): MutableList<String>? {
@@ -264,6 +268,80 @@ class ReportServiceImpl : ReportService {
         return campaignReportDao.getCampMstContIdByProId(proId)
     }
 
+    fun campListToTotal(programDtoList: List<kotlin.collections.Map<String, Any>>): MutableList<Any> {
+
+        var programLst = mutableListOf<Any>()
+        var tempProgram = mutableListOf<Any>()
+        var ch_total = ""
+        var t_total = 0
+        var s_total = 0
+        var o_total = 0
+        var cli_total = 0
+        var rowCnt = 1
+        var pro_id = ""
+        var ch_nm = ""
+        val listSize = programDtoList.size
+
+        for ((i, program) in programDtoList.withIndex()) {
+            rowCnt++
+            t_total += program.get("total_cnt").toString().toInt()
+            s_total += program.get("suc_cnt").toString().toInt()
+            o_total += program.get("open_cnt").toString().toInt()
+            cli_total += program.get("click_cnt").toString().toInt()
+            pro_id = program.get("pro_id") as String
+
+            ch_nm = program.get("camp_ch").toString()
+            if ("CH01".equals(ch_nm)) {
+                ch_nm = "이메일"
+            } else if ("CH02".equals(ch_nm)) {
+                ch_nm = "문자"
+            } else {
+                ch_nm = "세일즈포스"
+            }
+
+            if (ch_total.indexOf(ch_nm) == -1) {
+                if (!"".equals(ch_total)) {
+                    ch_total += "/"
+                }
+                ch_total += ch_nm   //  CH00  => 이메일/문자
+            }
+            tempProgram.add(program)
+
+            if (i < listSize-1) {
+                if (pro_id.contentEquals(programDtoList[i+1].get("pro_id").toString())) {
+                    continue
+                }
+            }
+
+            val tempTotal = HashMap<String, Any>()
+            tempTotal["ch_total"] = ch_total
+            tempTotal["t_cnt"] = t_total
+            tempTotal["s_cnt"] = s_total
+            tempTotal["o_cnt"] = o_total
+            tempTotal["c_cnt"] = cli_total
+            tempTotal["rowCnt"] = rowCnt
+            tempTotal["pro_id"] = pro_id
+
+            tempTotal["pro_nm"] = program.get("pro_nm").toString()
+            tempTotal["pro_st_nm"] = program.get("pro_st_nm").toString()
+            tempTotal["start_dt"] = program.get("start_dt").toString()
+
+            var tempRowMap = HashMap<String, Any>()
+            tempRowMap["total"] = tempTotal
+            tempRowMap["program"] =  tempProgram
+            programLst.add(tempRowMap)
+
+            ch_total = ""
+            t_total = 0;
+            s_total = 0;
+            o_total = 0;
+            cli_total = 0;
+            rowCnt = 1;
+
+            tempProgram = mutableListOf<Any>()
+        }
+        return programLst
+    }
 
     override fun getCampMstList(pdto: Tblmicp_programDto): kotlin.collections.MutableMap<String, Any> {
 

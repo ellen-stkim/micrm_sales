@@ -151,28 +151,28 @@ class SalesforceController {
         return statusMap;
     }
 
-    @ResponseBody
+    //@ResponseBody
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
-    fun selectMobileContent(@ModelAttribute dto: SalesforceDto, @PathVariable(value = "usr_cd") usr_cd: String): Map<String, Any> {
-        val statusMap: MutableMap<String, Any> = hashMapOf()
-
+    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
-        tblmiContMstdto.seq = dto.seq
-
-        val listMap: Map<String, Any> = mobileContentService.selectOneContentView(tblmiContMstdto)
+        tblmiContMstdto.seq = seq
+        tblmiContMstdto.reg_dt = usr_cd
+        val view = ModelAndView("/cont/salesforceDetail")
+        val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
 
-        statusMap["list"] = listMap["list"] as List<Content_view_Dto>
-        statusMap["kakaoCnt"] = cntMap["kakaoCnt"] as Any
-        statusMap["smsCnt"] = cntMap["smsCnt"] as Any
-        statusMap["rcsCnt"] = cntMap["rcsCnt"] as Any
+        view.addObject("list" , listMap["list"])
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        statusMap["filePath"] = uploadPrefix?.cd_val as String
-        return statusMap
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
     }
 
     /** @Method Name  : previewService
@@ -450,6 +450,29 @@ class SalesforceController {
         }
         return map
     }
+
+    @ResponseBody
+    @PostMapping("/{usr_cd}/mobileList.ajax")
+    fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
+        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
+        val paramMap = mobileContentService.selectContentView(dto)
+
+        view.addObject("list" , paramMap["list"])
+        view.addObject("page", paramMap["page"])
+        view.addObject("pageNo", paramMap["pageNo"])
+        view.addObject("nextCk", paramMap["nextCk"])
+        view.addObject("titleList",paramMap["titleList"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
 
     // =================================================== Salesforce ===================================================== //
 
