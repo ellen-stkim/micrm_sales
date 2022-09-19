@@ -501,6 +501,7 @@
     <span id="callPopUp"></span>
 </form:form>
 
+<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
 <form:form id="imgSetForm" name="imgSetForm" onsubmit="return false">
 <span id="imgPopUp">
     <div class="layer_pop imagePopup">
@@ -538,6 +539,35 @@
     </div>
 </span>
 </form:form>
+<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
+
+<form:form id="mobileLst" name="mobileLst" onsubmit="return false">
+    <div class="layer_pop mobileLstPopup">
+        <div class="pop_container popup_size8">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title">리스트 선택</div>
+            <div class="pop_inner">
+                <div class="form_search">
+                    <!-- 검색 영역 시작 -->
+                    <div class="input_txt">
+                        <input type="text" name='cont_nm' placeholder="검색어 입력"/>
+                        <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
+                    </div>
+                    <!-- 검색 영역 끝 -->
+                </div>
+                <div class="image_container" id="mobileLstDom"></div>
+                <div class="btn_row bottom-border left-border right-border">
+                    <ul class="pager" id="mobileLstpagingDom"></ul>
+                </div>
+                <div class="pop_error_txt blue_point_color"></div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장" onclick="mobileListSave();"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form:form>
+
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
@@ -545,6 +575,8 @@
     let usr_cd = '${usr_cd}';
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
+    let firstLoad = true;
+    let mstSeq = null;
 
     function getDBValue() {
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
@@ -1137,10 +1169,20 @@
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
         });
+
+        $(document).on("click", "#contLoad", function(){
+            if(firstLoad){
+                firstLoad = false;
+                mobileListPaging("1");
+            }else{
+                $('.mobileLstPopup').addClass('active');
+            }
+        });
+
     });
 
     // 정보 조회
-    function mobileInfo() {
+    function mobileInfo(seq) {
         const res = function(response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
@@ -1233,12 +1275,13 @@
                     });
                 }
 
+                $('.mobileLstPopup').removeClass('active');
             }
             let param = { usr_grp_cd : $('#usr_grp_cd').val() }
             com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
         }
 
-        let param = { seq: $('#seq').val() }
+        let param = { seq: seq }
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -1783,26 +1826,23 @@
                 }
                 preview();
                 //$("#form").submit();
-
             } else {
                 // 중복된 명칭 존재
                 popup.popAlert(response.message)
             }
         }
-        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: $('#seq').val()}
+        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: mstSeq}
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 버튼 타입 Hidden 값 추가
     function buttonHiddenAdd() {
-
         var rcsType = $("input[name='rcs_format_type']:checked").val();
         var checkType = $("input[name='rcs_msg_tp']:checked").val();
 
         var valueCheck1 = $("input[name='rcs_btn_tp_1']").val();
         var valueCheck2 = $("input[name='rcs_btn_tp_2']").val();
         var valueCheck3 = $("input[name='rcs_btn_tp_3']").val();
-
 
         var layout = '<input type="hidden" name="phone_value_03"  value=" "/>' +
             '<input type ="hidden" name="copy_value" value=" "/>' +
@@ -1961,7 +2001,7 @@
             // 이미지 타입 : RCS 가로형
             param.push({name: 'ch_tp', value: 'IMGTP04'});
         } else if (type === 'verticalImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
             if (rcs_msg_tp === 'tall') {
                 // 이미지 타입 : RCS 세로형 Tall
                 param.push({name: 'ch_tp', value: 'IMGTP05'});
@@ -1970,7 +2010,7 @@
                 param.push({name: 'ch_tp', value: 'IMGTP06'});
             }
         } else if (type === 'slideRcsImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
             if (rcs_msg_tp === 'small') {
                 // 이미지 타입 : RCS 슬라이드 small
                 param.push({name: 'ch_tp', value: 'IMGTP07'})
@@ -2082,7 +2122,6 @@
 
     // RCS 포맷 카드 변경
     function rcsChangeFormat(type) {
-
         let checkType = $(type)[0].value;
         $(type).prop('checked', true);
         $('.layer_pop').removeClass('active');
@@ -2728,7 +2767,6 @@
             });
         }
         if (actionVal == "RBTN08") {
-
             layout += '<div class="row">' +
                 '<div class="th bottom-border top-border">전화번호</div>' +
                 '<div class="td bottom-border top-border">' +
@@ -2782,6 +2820,30 @@
             if (actionVal == 0) {
                 $('.swiper-slide').eq(sectionInx).find('.rcs_btn_wrap div[data="' + parentValue + '"]').remove();
             }
+        }
+    }
+
+    // 모바일 리스트 팝업
+    function mobileListPaging(nowPage) {
+        const res = function (response) {
+            $('.mobileLstPopup').addClass('active');
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            $("#mobileLstDom").html($("#mobileLstDom", $doc).html());
+            $("#mobileLstpagingDom").html($("#mobileLstpagingDom", $doc).html());
+        };
+        let param = $("#mobileLst").serializeArray();
+        param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    // 모바일 리스트 선택
+    function mobileListSave(){
+        let len = $('input[name="list"]:checked').length;
+        let check = $('input[name="list"]:checked').val();
+        if (len > 0) {
+            mobileInfo(check);
+        }else{
+            return false;
         }
     }
 </script>
