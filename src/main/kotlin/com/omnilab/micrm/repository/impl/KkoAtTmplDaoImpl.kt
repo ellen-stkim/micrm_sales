@@ -24,5 +24,9 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
         return sqlSession.selectList("getTmplSearchLst",searchDto)
     }
 
+    override fun selectTotalAtTmplCnt(dto: AtTmpl_searchDto): Int {
+        return sqlSession.selectOne("selTotalAtTmplCnt",dto)
+    }
+
 
 }

@@ -8,15 +8,17 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib prefix="cutil" uri="tld/Commonutils.tld" %>
+<%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
+
 <span id="body">
 <c:choose>
     <c:when test="${not empty list}">
         <c:forEach var="tmpl" items="${list}">
             <c:if test="${tmpl.use_yn eq 'Y'}">
-                <div class="column">
+                <div class="column size2">
             </c:if>
             <c:if test="${tmpl.use_yn eq 'N'}">
-                <div class="column off">
+                <div class="column off size2">
             </c:if>
                     <!-- 비활성화 cover -->
                 <div class="hidden_cover"></div>
@@ -48,7 +50,8 @@
                         <div class="row_body">
                             <div class="round_box">
                                 <div class="sms">
-                                    <img src="${filePath}${tmpl.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                    <img src="${filePath}${tmpl.kko_image_url}"
+                                         onerror="this.src = '/image/bg_none.png'" alt="">
                                 </div>
                                 <p class="sms_txt">${tmpl.tmpl_cont}</p>
                                 <a href="https://milvus.co.kr" target="_blank" class="sms_btn">milvus</a>
@@ -87,6 +90,13 @@
 
     </c:otherwise>
 </c:choose>
+</span>
+<span id="pager">
+<div class="btn_row bottom-border">
+                            <ul class="pager" id="pagingDom">
+                                <ui:pagination paginationInfo="${page}" type="image" jsFunction="linkPage"/>
+                            </ul>
+                        </div>
 </span>
 
 <span id="pageHtml">

@@ -131,7 +131,7 @@
                         <div class="flex_box">
                             <div class="left_area">
                                 <div class="row body">
-                                    <div class="th">포맷</div>
+                                    <div class="th">타입</div>
                                     <div class="column_2">
                                         <label class="type_check"><input type="radio" name="kko_format_type"
                                                                          class="kkoType"
@@ -206,35 +206,13 @@
                                             <div class="th">개인화 변수</div>
                                             <div class="td">
                                                 <!-- select 영역 시작 -->
-                                                <div class="select" id="" name="edmDB">
+                                                <div class="select" id="kakaoValue" name="kkoDB">
                                                     <!-- selected value -->
                                                     <div class="value" data="0">개인화 변수</div>
                                                     <ul class="option">
-                                                        <c:forEach var="item" items="${columnNm}" varStatus="status">
-                                                            <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                                        <c:forEach var="item" items="${column}" varStatus="status">
+                                                            <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                                         </c:forEach>
-                                                    </ul>
-                                                </div>
-                                                <div class="select" id="kakaoValue" name="defaultDB">
-                                                    <!-- selected value -->
-                                                    <div class="value" data="0">개인화 변수</div>
-                                                    <ul class="option">
-                                                        <li data="{{USR_ID}}">회원번호</li>
-                                                        <li data="{{USR_NM}}">이름</li>
-                                                        <li data="{{USR_MOB}}">모바일</li>
-                                                        <li data="{{USR_EDM}}">이메일</li>
-                                                        <li data="{{USR_GDR}}">성별</li>
-                                                        <li data="{{USR_ADDR}}">주소</li>
-                                                        <li data="{{USR_ETC1}}">ETC1</li>
-                                                        <li data="{{USR_ETC2}}">ETC2</li>
-                                                        <li data="{{USR_ETC3}}">ETC3</li>
-                                                        <li data="{{USR_ETC4}}">ETC4</li>
-                                                        <li data="{{USR_ETC5}}">ETC5</li>
-                                                        <li data="{{USR_ETC6}}">ETC6</li>
-                                                        <li data="{{USR_ETC7}}">ETC7</li>
-                                                        <li data="{{USR_ETC8}}">ETC8</li>
-                                                        <li data="{{USR_ETC9}}">ETC9</li>
-                                                        <li data="{{USR_ETC10}}">ETC10</li>
                                                     </ul>
                                                 </div>
                                                 <!-- select 영역 끝 -->
@@ -306,31 +284,9 @@
                                             <!-- selected value -->
                                             <div class="value" data="0">제목 개인화 변수</div>
                                             <ul class="option">
-                                                <c:forEach var="item" items="${columnNm}" varStatus="status">
-                                                    <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                                <c:forEach var="item" items="${column}" varStatus="status">
+                                                    <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                                 </c:forEach>
-                                            </ul>
-                                        </div>
-                                        <div class="select column_4 left-border" id="smsTitleVal" name="defaultDB">
-                                            <!-- selected value -->
-                                            <div class="value" data="0">제목 개인화 변수</div>
-                                            <ul class="option">
-                                                <li data="{{USR_ID}}">회원번호</li>
-                                                <li data="{{USR_NM}}">이름</li>
-                                                <li data="{{USR_MOB}}">모바일</li>
-                                                <li data="{{USR_EDM}}">이메일</li>
-                                                <li data="{{USR_GDR}}">성별</li>
-                                                <li data="{{USR_ADDR}}">주소</li>
-                                                <li data="{{USR_ETC1}}">ETC1</li>
-                                                <li data="{{USR_ETC2}}">ETC2</li>
-                                                <li data="{{USR_ETC3}}">ETC3</li>
-                                                <li data="{{USR_ETC4}}">ETC4</li>
-                                                <li data="{{USR_ETC5}}">ETC5</li>
-                                                <li data="{{USR_ETC6}}">ETC6</li>
-                                                <li data="{{USR_ETC7}}">ETC7</li>
-                                                <li data="{{USR_ETC8}}">ETC8</li>
-                                                <li data="{{USR_ETC9}}">ETC9</li>
-                                                <li data="{{USR_ETC10}}">ETC10</li>
                                             </ul>
                                         </div>
                                         <!-- select 영역 끝 -->
@@ -400,12 +356,12 @@
                                                     <!-- selected value -->
                                                     <div class="value" data="0">개인화 변수</div>
                                                     <ul class="option">
-                                                        <c:forEach var="item" items="${columnNm}" varStatus="status">
-                                                            <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                                        <c:forEach var="item" items="${column}" varStatus="status">
+                                                            <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                                         </c:forEach>
                                                     </ul>
                                                 </div>
-                                                <div class="select" id="smsContsVal" name="defaultDB">
+                                                <%--<div class="select" id="smsContsVal" name="defaultDB">
                                                     <!-- selected value -->
                                                     <div class="value" data="0">개인화 변수</div>
                                                     <ul class="option">
@@ -426,7 +382,7 @@
                                                         <li data="{{USR_ETC9}}">ETC9</li>
                                                         <li data="{{USR_ETC10}}">ETC10</li>
                                                     </ul>
-                                                </div>
+                                                </div>--%>
                                                 <!-- select 영역 끝 -->
                                             </div>
                                         </div>
@@ -527,9 +483,9 @@
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
                                                         <ul class="option">
-                                                            <c:forEach var="item" items="${columnNm}"
+                                                            <c:forEach var="item" items="${column}"
                                                                        varStatus="status">
-                                                                <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                                                <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                                             </c:forEach>
                                                         </ul>
                                                     </div>
@@ -731,98 +687,20 @@
                 <span class="hyphen"></span>
                 <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
                 <div class="input_txt left-border-none">
-                    <input type="text" name='img_nm' placeholder="템플릿명 입력"/>
-                    <input type="button" class="btn_search" onclick="imageListPaging('1')" value="검색"/>
+                    <input type="text" name='tmpl_nm' placeholder="템플릿명 입력"/>
+                    <input type="button" class="btn_search" onclick="tmplListPaging('1')" value="검색"/>
                 </div>
                 <!-- 검색 영역 끝 -->
             </div>
             <form:form action="" id="imagePop">
+                <%--    템플릿 미리보기            --%>
                 <div class="list_container sms cf">
-                <div class="row_grid">
-<div class="column">
-            <!-- 비활성화 cover -->
-                <div class="hidden_cover"></div>
-                <div class="sms_head bg_color cf">
-                    <!-- 체크박스 -->
-                    <label class="custom_check1">
-                        <input type="checkbox" name="list" value="1"><span></span></label>
-                    <ul class="sms_type cf">
-                        <li>검수 승인</li>
-                    </ul>
-                </div>
-                <div class="row_top cf">
-                    <!-- 컨텐츠 type -->
-                    <div class="contents_type">광고</div>
-                    <!-- 제목 -->
-                    <h4>테스트템플릿</h4>
-                   </div>
-    <!-- 카카오톡  -->
-                    <div class="row_body">
-                        <div class="round_box">
-                            <div class="sms_txt">
-                                    테스트(test)</div>
-                            <a href="https://milvus.co.kr" target="_blank" class="sms_btn">milvus</a>
-                        </div>
-                      </div>
-                    <div class="row_footer">
-                    <!-- 수정일 -->
-                    <div class="date">수정일&nbsp;&nbsp;
-                        <span>
-                                2022-09-15</span>
-                    </div>
-                        <!-- 등록일 -->
-                    <div class="date">등록일&nbsp;&nbsp;
-                        <span>
-                                2022-09-15</span>
+                    <div class="row_grid">
+                        <input type="hidden" id="nowPageNo" name="nowPageNo" value="1">
                     </div>
                 </div>
-            </div>
-        <div class="column">
-            <!-- 비활성화 cover -->
-                <div class="hidden_cover"></div>
-                <div class="sms_head bg_color cf">
-                    <!-- 체크박스 -->
-                    <label class="custom_check1">
-                        <input type="checkbox" name="list" value="2"><span></span></label>
-                    <ul class="sms_type cf">
-                        <li>검수 승인</li>
-                    </ul>
-                </div>
-                <div class="row_top cf">
-                    <!-- 컨텐츠 type -->
-                    <div class="contents_type">광고</div>
-                    <!-- 제목 -->
-                    <h4>테스트템플릿</h4>
-                   </div>
-            <!-- 카카오톡  -->
-                    <div class="row_body">
-                        <div class="round_box">
-                            <div class="sms_txt">
-                                    테스트(test)</div>
-                            <a href="https://milvus.co.kr" target="_blank" class="sms_btn">milvus</a>
-                        </div>
-                      </div>
-                    <div class="row_footer">
-                    <!-- 수정일 -->
-                    <div class="date">수정일&nbsp;&nbsp;
-                        <span>
-                                2022-09-15</span>
-                    </div>
-                        <!-- 등록일 -->
-                    <div class="date">등록일&nbsp;&nbsp;
-                        <span>
-                                2022-09-15</span>
-                    </div>
-                </div>
-            </div>
-        <input type="hidden" id="nowPageNo" name="nowPageNo" value="1">
-    </div>
+                <span id="tmplPager"></span>
             </form:form>
-        <div class="btn_row bottom-border left-border right-border">
-            <ul class="pager" id="pagingDom">
-            </ul>
-            <input type="hidden" id="imgType" name="imgType" value=""/>
-        </div>
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
             <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장"
@@ -844,6 +722,7 @@
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
     function getDBValue() {
+        console.log("getDBValue")
         let dbValue = $('input[name="dbInfo"]:checked').val();
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
         let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
@@ -2965,9 +2844,21 @@
     }
 
     function tmplListPopUp(pageNo) {
-        console.log("템플릿 선택");
-        console.log("page : " + pageNo);
         $('.tmplPopUp').addClass('active');
+
+        let res = function (response) {
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            $('.row_grid').html($("#body", $doc).html());
+            $("#tmplPager").html($("#pager", $doc).html());
+        };
+
+        let param = $("#searchForm").serializeArray();
+        param.push({name: 'pageNo', value: pageNo});
+        com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    function tmplListPaging(pageNo){
+        console.log($('#tmplSetForm').formData())
     }
 
     // 카카오 타입 변경
@@ -2979,7 +2870,7 @@
         let nowVal = $('input[name="kko_format_type"]:checked').val();
 
         if (beforeKkoType != nowVal) {
-            let message = "포맷카드를 변경 할 경우 입력한 내용이 초기화됩니다.<br/>변경 하시겠습니까?";
+            let message = "메시지 타입을 변경 할 경우 입력한 내용이 초기화됩니다.<br/>변경 하시겠습니까?";
             let html = '';
             html +=
                 '<div class="layer_pop alert active">' +

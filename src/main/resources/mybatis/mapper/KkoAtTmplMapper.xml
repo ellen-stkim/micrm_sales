@@ -14,6 +14,27 @@
             AND USE_YN = 'Y'
     </select>
 
+    <select id="selTotalAtTmplCnt" resultType="Integer" parameterType="AtTmpl_searchDto">
+        SELECT COUNT(*) FROM tblmi_comm_cd
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
+                and chan_id = #{chan_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
+                and kep_status = #{kep_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
+                and tmpl_status = #{tmpl_status}
+            </if>
+        </where>
+    </select>
+
     <select id="selAtTmplLst" resultType="Tmpl_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
         SELECT * FROM tblmi_kko_at_tmpl
         <where>

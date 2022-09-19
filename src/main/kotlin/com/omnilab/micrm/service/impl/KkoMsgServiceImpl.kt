@@ -31,8 +31,10 @@ class KkoMsgServiceImpl : KkoMsgService {
 
     override fun selectAtTemplViewLst(dto: AtTmpl_searchDto): Map<String, Any> {
         val paramMap: MutableMap<String, Any> = HashMap()
-        val paginationInfo: PaginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 10)
-        paginationInfo.totalRecordCount = 1
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 4)
+        paginationInfo.totalRecordCount =  kkoAtTmplDao.selectTotalAtTmplCnt(dto)
+        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        dto.firstIndex = paginationInfo.firstRecordIndex
 
         when (dto.searchType) {
             "tmpl_nm" -> dto.tmpl_nm = dto.searchValue

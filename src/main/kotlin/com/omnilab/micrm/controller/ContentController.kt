@@ -148,8 +148,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         // 개인화 변수 추가하기
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map);
         view.addObject("list",kkoSenderMap["list"])
         view.addObject("smsSender",smsSenderMap["list"])
         view.addObject("rcsSender",rcsSenderMap["list"])
@@ -212,8 +211,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         view.addObject("list" , listMap["list"])
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map);
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
@@ -489,36 +487,6 @@ class ContentController  {
     }
 
 
-    /**
-     * @Method Name  : edmCreate
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : req: : HttpServletRequest
-     * @param    : rep: : HttpServletResponse
-     * @param    : session : HttpSession
-     * @return   : ModelAndView
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 리스트 생성 뷰 페이지
-     * @title : 이메일 리스트 조회 하기
-     */
-    @GetMapping("/edmCreate.mi")
-    fun edmCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val view = ModelAndView("cont/edmCreate")
-        val map = sysSettingService.getDBValue();
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-
-        val dto = SetLst_searchDto()
-        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        dto.list_tp_id = "CH01"
-        dto.list_dt_id = "DMTP01"
-        dto.def_yn = "Y"
-        val sendList = mobileContentService.selectSenderList(dto)
-        view.addObject("slist", sendList["list"])
-        return view
-    }
 
     /**
      * @Method Name  : imgLst
@@ -919,32 +887,6 @@ class ContentController  {
         return map
     }
 
-    /**
-     * @Method Name  : updateImgYn
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : dto : Tblmi_cont_mstDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 컨텐츠 상세 페이지
-     * @title : 이메일 컨텐츠 상세 페이지
-     */
-    @PostMapping("/edmDetail.mi")
-    fun detailEdm(@ModelAttribute dto : Tblmi_cont_mstDto): ModelAndView {
-        val view = ModelAndView("cont/detailEdm")
-        val tempDto : Contents_searchDto = Contents_searchDto()
-        tempDto.seq = dto.seq
-        val resuleMap =  emailContentService.selectOneContentView(tempDto)
-        view.addObject("list",resuleMap["list"])
-
-        val map = sysSettingService.getDBValue();
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-        return view
-    }
-
     /*
      * @Method Name  : saveContForm
      * @Since    : 2021. 03. 07.
@@ -1038,7 +980,7 @@ class ContentController  {
     //DB 개인화변수.
     @ResponseBody
     @PostMapping("/getDBValue.ajax")
-    fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
+    fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): MutableList<SalesforceDto> {
         return sysSettingService.getDBValue();
     }
 
@@ -1147,8 +1089,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         // 개인화 변수 추가하기
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map);
         view.addObject("list",kkoSenderMap["list"])
         view.addObject("smsSender",smsSenderMap["list"])
         view.addObject("rcsSender",rcsSenderMap["list"])
