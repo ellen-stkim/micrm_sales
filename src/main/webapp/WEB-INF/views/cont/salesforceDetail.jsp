@@ -343,7 +343,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row input-img">
-                                                    <div class="th top-border">이미지 선택</div>
+                                                    <div class="th top-border <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">이미지 선택</div>
                                                     <div class="td top-border">
                                                         <div class="sms_delete_img">
                                                             <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/bg_none.png'">
@@ -354,7 +354,7 @@
                                                     </div>
                                                     <input type="hidden" name="mms_imgurl" value="${fn:split(list[1].img_lst,",")[0]}"/>
                                                 </div>
-                                                <div class="row flex_row input-img on">
+                                                <div class="row flex_row input-img <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">
                                                     <div class="th top-border">이미지 미리보기</div>
                                                     <div class="td top-border">
                                                         <div class="col_img" id="js-sms-img">
