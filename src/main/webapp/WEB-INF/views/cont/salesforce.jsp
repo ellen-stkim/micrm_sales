@@ -550,7 +550,7 @@
                 <div class="form_search">
                     <!-- 검색 영역 시작 -->
                     <div class="input_txt">
-                        <input type="text" name='cont_nm' placeholder="검색어 입력"/>
+                        <input type="text" name='cont_nm' id="moblieLstSearch" placeholder="검색어 입력"/>
                         <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
                     </div>
                     <!-- 검색 영역 끝 -->
