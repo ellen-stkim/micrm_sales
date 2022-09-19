@@ -859,6 +859,7 @@
 
         $(document).on('click', '#smsContsVal input', function() {
             let data = $(this).attr('data');
+            let txt = $('.sms_txt').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('.sms_txt').val(txt + '{{' + data + '}}');
