@@ -2083,7 +2083,7 @@ select option[value=""][disabled] {
     border-radius: 3px;
     cursor: pointer;
     transition: all ease 0.5s;
-    box-shadow: 3px 3px 8px #999;
+    box-shadow: 1px 1px 0px #C8C8C8;
     vertical-align: middle;
 }
 
