@@ -82,7 +82,7 @@
         <!-- row 영역 시작 -->
         <div class="row bottom-border cf">
             <div class="left">
-                <a href="/cont/mdmCreate.mi" class="btn_basic smsCreate left right-border">알림톡 템플릿 생성</a>
+                <a href="/cont/kko/tmplCreate.mi" class="btn_basic smsCreate left right-border">알림톡 템플릿 생성</a>
                 <input type="button" class="btn_basic delete left right-border"
                        onclick="deleteMobileList('campaign','');" value="삭제"/>
             </div>

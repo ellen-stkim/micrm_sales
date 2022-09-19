@@ -161,7 +161,7 @@
                                                 </c:if>
                                         />
                                         <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
-                                        <span class="btn_sm_line" onclick="mobileSenderPopup('1','sms')">변경</span>
+                                        <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
                                 </div>
                                 <div class="input_area kko_area" id="kko_at">
@@ -2394,13 +2394,13 @@
         };
 
         var param = $("#tblmisetForm").serializeArray();
-console.log(type)
         if (type === 'sms') {
             // 타입이 SMS 라면 (모바일)
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP02'});
         } else if(type == 'kko'){
-
+            param.push({name: 'list_tp_id', value: 'CH02'});
+            param.push({name: 'list_dt_id', value: 'DMTP03'});
         } else {
             // 타입이 RCS 라면
             param.push({name: 'list_tp_id', value: 'CH02'});

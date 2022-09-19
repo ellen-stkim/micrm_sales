@@ -1101,4 +1101,64 @@ class ContentController  {
         return view
     }
 
+
+    /**
+     * @Method Name  : atTmplCreate
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성 뷰 페이지 조회
+     * @title : 알림톡 탬플릿 생성 뷰 페이지
+     */
+    @GetMapping("/kko/tmplCreate.mi")
+    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val view = ModelAndView("cont/kko/tmplCreate")
+        val map = sysSettingService.getDBValue();
+
+        val kkoDto = SetLst_searchDto()
+        kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        kkoDto.list_tp_id = "CH02"
+        kkoDto.list_dt_id = "DMTP03"
+        kkoDto.def_yn = "Y"
+        val kkoSenderMap = mobileContentService.selectSenderList(kkoDto)
+
+        val smsDto = SetLst_searchDto()
+        smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        smsDto.list_tp_id = "CH02"
+        smsDto.list_dt_id = "DMTP02"
+        smsDto.def_yn = "Y"
+        val smsSenderMap = mobileContentService.selectSenderList(smsDto)
+
+
+        val rcsDto = SetLst_searchDto()
+        rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        rcsDto.list_tp_id = "CH02"
+        rcsDto.list_dt_id = "DMTP04"
+        rcsDto.def_yn = "Y"
+        val rcsSenderMap = mobileContentService.selectSenderList(rcsDto)
+
+
+        val cntMap = mobileContentService.isCheckSender()
+
+        // 개인화 변수 추가하기
+        view.addObject("columnValue",map["columnValue"]);
+        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("list",kkoSenderMap["list"])
+        view.addObject("smsSender",smsSenderMap["list"])
+        view.addObject("rcsSender",rcsSenderMap["list"])
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
+
+        return view
+    }
+
+
+
 }
