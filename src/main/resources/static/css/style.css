@@ -232,8 +232,9 @@
     width:1px; height:14px; background:#e6e6e6; margin:0 10px; vertical-align: middle;}
 .column .row_footer .date span {font-family:"Gotham"; font-size:11px;}
 
-.pop_inner .list_container { border: solid 1px #efefef; border-bottom: none;}
+.pop_inner .list_container .row_grid{ border: solid 1px #efefef; border-bottom: none;}
 .pop_inner .list_container.sms .column { height: 490px; }
+.pop_inner .list_container.sms .column .row_body{ height: 380px; }
 
 /* 이메일 컨텐츠 생성 */
 .create_edm .th {float:left; width:154px; height:35px; line-height:35px; padding:0 20px;
@@ -335,6 +336,7 @@
 
 /* 모바일 컨텐츠 */
 .list_container.sms .column {height:667px;}
+.list_container.sms .column.size2 {height:630px;}
 .create_sms {min-width:1600px; width:100%;}
 .column .sms_head {width:100%; height:36px; line-height:35px; background:#FFFFFF;
     border-bottom:1px solid #f4f4f4; position:relative; padding:0 0 0 26px;}
@@ -416,8 +418,8 @@
 .create_sms .head .th {float:left; width:154px; height:35px; line-height:35px;
     padding:0 20px; border-right:1px solid #dddddd; background:#fafafa;}
 /*.create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}*/
-.create_sms .head .td {float:left; width:calc(43% - 154px); height:100%;}
-.create_sms .head .td:last-child {float:left; width:calc(57% - 154px); height:100%;}
+.create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}
+.create_sms .head .td:last-child {float:left; width:calc(50% - 154px); height:100%;}
 .create_sms .head .td .txt_input {width:100%; padding:0 20px; font-size:11px;
     line-height:35px; height:35px;}
 .flex_row {display:flex; flex-direction:row;}

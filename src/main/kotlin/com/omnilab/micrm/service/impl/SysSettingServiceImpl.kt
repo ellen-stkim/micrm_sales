@@ -2,9 +2,11 @@ package com.omnilab.micrm.service.impl
 
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
+import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.MemberDao
+import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.SysSettingService
 import com.omnilab.micrm.service.WorkService
@@ -37,6 +39,9 @@ class SysSettingServiceImpl : SysSettingService {
     @Autowired
     @Qualifier("MemberDaoImpl")
     private lateinit var memberDao: MemberDao
+
+    @Autowired
+    private lateinit var salesforceDao: SalesforceDao
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
@@ -113,32 +118,14 @@ class SysSettingServiceImpl : SysSettingService {
      * @title : 테이블 id 가져오기
      */
 
-    override fun getDBValue(): Map<String, Any> {
-        //그룹 코드에 맞는 table ID 가져오기 (tblmi_tbl_mst)
+    override fun getDBValue(): MutableList<SalesforceDto> {
+        /*//그룹 코드에 맞는 table ID 가져오기 (tblmi_tbl_mst)
         val tblmstDto: Tblmi_tbl_mstDto = Tblmi_tbl_mstDto()
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         tblmstDto.tbl_grp = UsefulUtils.sessionUser().usr_grp_cd
         val resultTblmst = memberDao.getTblmimst(tblmstDto)
         //사용자 화면에서 보여지는 column 명칭 가져오기
         val columnNm: MutableList<String> = java.util.ArrayList<String>()
-        columnNm.add("회원번호")
-        columnNm.add("이름")
-        columnNm.add("핸드폰번호")
-        columnNm.add("모바일 수신여부")
-        columnNm.add("이메일")
-        columnNm.add("이메일 동의여부")
-        columnNm.add("성별")
-        columnNm.add("주소")
-        columnNm.add("USR_ETC1")
-        columnNm.add("USR_ETC2")
-        columnNm.add("USR_ETC3")
-        columnNm.add("USR_ETC4")
-        columnNm.add("USR_ETC5")
-        columnNm.add("USR_ETC6")
-        columnNm.add("USR_ETC7")
-        columnNm.add("USR_ETC8")
-        columnNm.add("USR_ETC9")
-        columnNm.add("USR_ETC10")
         map["tbl_id"] = false
         //table ID로 table column 정보 가져오기 (tblmi_tbl_info)
         if (resultTblmst != null) {
@@ -159,31 +146,16 @@ class SysSettingServiceImpl : SysSettingService {
 
         //테이블에서 쓰이는 column명 가져오기(tblmi_tbl_info)
         val columnValue: MutableList<String> = java.util.ArrayList<String>()
-        columnValue.add("SEQ")
-        columnValue.add("USR_ID")
-        columnValue.add("USR_NM")
-        columnValue.add("USR_MOB")
-        columnValue.add("USR_MYN")
-        columnValue.add("USR_EDM")
-        columnValue.add("USR_EYN")
-        columnValue.add("USR_GDR")
-        columnValue.add("USR_ADDR")
-        columnValue.add("USR_ETC1")
-        columnValue.add("USR_ETC2")
-        columnValue.add("USR_ETC3")
-        columnValue.add("USR_ETC4")
-        columnValue.add("USR_ETC5")
-        columnValue.add("USR_ETC6")
-        columnValue.add("USR_ETC7")
-        columnValue.add("USR_ETC8")
-        columnValue.add("USR_ETC9")
-        columnValue.add("USR_ETC10")
 
         map["columnNm"] = columnNm
-        map["columnValue"] = columnValue
+        map["columnValue"] = columnValue*/
+        val userInfo = UsefulUtils.sessionUser()
+        var dto : SalesforceDto = SalesforceDto()
+        dto.list_tp_id = "CH03"
+        dto.list_dt_id = "SPTP01"
+        dto.usr_grp_cd = userInfo.usr_grp_cd!!
 
-
-        return map
+        return salesforceDao.mappingLst(dto)
     }
 
 
