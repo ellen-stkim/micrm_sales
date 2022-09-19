@@ -91,7 +91,7 @@
                     and b.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
                 </if>
             </where>
-            ORDER BY a.REG_DT,a.PRO_ID DESC
+            ORDER BY a.REG_DT DESC,a.PRO_ID DESC
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
                 LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
             </if>

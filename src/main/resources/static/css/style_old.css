@@ -38,6 +38,9 @@
 #calendar .state04CH02 {background-color:#dde6f5 !important;}
 #calendar .state04CH02::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
     background:#dde6f5 url('../image/ico_mobile.png') no-repeat center;}
+#calendar .state03CH03 {background-color:#fce7c6 !important;}
+#calendar .state03CH03::after {content:''; display:block; width:13px; height:100%; position:absolute; left:10px; top:0;
+    background:#fce7c6 url('../image/ico_mobile.png') no-repeat center;}
 
 /* Home */
 .main_calendar {float:left; width:calc(100% - 398px); padding-top:46px; position:relative; }
