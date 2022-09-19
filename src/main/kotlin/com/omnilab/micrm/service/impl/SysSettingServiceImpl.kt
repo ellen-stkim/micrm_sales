@@ -120,7 +120,7 @@ class SysSettingServiceImpl : SysSettingService {
         tblmstDto.tbl_grp = UsefulUtils.sessionUser().usr_grp_cd
         val resultTblmst = memberDao.getTblmimst(tblmstDto)
         //사용자 화면에서 보여지는 column 명칭 가져오기
-        val columnNm: MutableList<String> = java.util.ArrayList<String>()
+        val columnNm: MutableList<String> = ArrayList<String>()
         columnNm.add("회원번호")
         columnNm.add("이름")
         columnNm.add("핸드폰번호")
@@ -142,7 +142,7 @@ class SysSettingServiceImpl : SysSettingService {
         map["tbl_id"] = false
         //table ID로 table column 정보 가져오기 (tblmi_tbl_info)
         if (resultTblmst != null) {
-            val tblInfo: Tblmi_tbl_infoDto = Tblmi_tbl_infoDto()
+            val tblInfo = Tblmi_tbl_infoDto()
             tblInfo.tbl_id = resultTblmst.tbl_id
             val tblInfoList = memberDao.getTblInfoList(tblInfo)
 

@@ -293,16 +293,10 @@
                                             </div>
                                         </div>
                                         <div class="block">
-                                            <div class="row">
+                                            <div class="row flex_row input-img on">
                                                 <div class="th">개인화 변수</div>
                                                 <div class="td">
-                                                    <!-- select 영역 시작 -->
-                                                    <div class="select" id="smsContsVal" name="edmDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingLst">
-                                                        </ul>
-                                                    </div>
+                                                    <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -577,23 +571,34 @@
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
     let firstLoad = true;
     let mstSeq = null;
+    let dropTarget = null;
 
     function getDBValue() {
-        let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
-        let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
+        const res = function(response) {
+            let list = response.mappingLst;
+            let html = '';
 
-        $('.rcsTitleVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsContsVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsTitleVal[name="defaultDB"] .option').html(defaultDB);
-        $('.rcsContsVal[name="defaultDB"] .option').html(defaultDB);
+            for(let i=0; i<list.length; i++) {
+                let item = list[i];
+                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+            }
+            $('.mappingLst').html(html);
 
-        $('div[name="edmDB"]').show();
-        $('div[name="defaultDB"]').hide();
+            html = '';
+            for(let i=0; i<list.length; i++) {
+                let item = list[i];
+                html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
+            }
+            $("#smsContsVal").html(html);
+
+        }
+        let param = { usr_grp_cd : $('#usr_grp_cd').val() }
+        com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
     }
 
     $(function () {
         $('input[name="dbInfo"]').on('change', function () { getDBValue(); });//end
-        getDBValue();
+
 
         let config = {baseUrl: "/js/"};
         let dependencies = ["customActivity"];
@@ -852,6 +857,15 @@
             }
         });
 
+        $(document).on('click', '#smsContsVal input', function() {
+            let data = $(this).attr('data');
+            if (data != 0) {
+                popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
+                $('.sms_txt').val(txt + '{{' + data + '}}');
+            }
+        });
+
+        /*
         // SMS 개인화 변수 option click event
         $(document).on('click', '#smsContsVal .option li', function() {
             let data = $(this).attr('data');
@@ -861,6 +875,7 @@
                 $('.sms_txt').val(txt + '{{' + data + '}}');
             }
         });
+        */
 
         //RCS 제목 개인화 변수 option click event
         $(document).on('click', '.rcsTitleVal ul li', function () {
@@ -1179,8 +1194,21 @@
             }
         });
 
-    });
+        $(document).on('dragstart', function(ev){
+            ev.originalEvent.dataTransfer.setData("text", $(ev.target).attr("data"));
+        });
 
+        $(document).on('drop', function(ev){
+            dropTarget = $(ev.target);
+        });
+
+        $(document).on('dragend', function(ev){
+            let value = dropTarget.val();
+            dropTarget.val("");
+            dropTarget.val(value);
+        });
+
+    });
     // 정보 조회
     function mobileInfo(seq) {
         const res = function(response) {
@@ -1245,7 +1273,7 @@
                 }
             });
 
-            const res = function(response) {
+            const res2 = function(response) {
                 let list = response.mappingLst;
                 let html = '';
 
@@ -1254,6 +1282,7 @@
                     html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
                 }
                 $('.mappingLst').html(html);
+
                 getDBValue();
                 if($("#recv_phone").val() && $("#recv_phone").val() != "") {
                     $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='"+ $("#recv_phone").val() +"']").html());
@@ -1278,7 +1307,7 @@
                 $('.mobileLstPopup').removeClass('active');
             }
             let param = { usr_grp_cd : $('#usr_grp_cd').val() }
-            com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
+            com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res2, null, null)
         }
 
         let param = { seq: seq }
@@ -2846,6 +2875,7 @@
             return false;
         }
     }
+
 </script>
 
 

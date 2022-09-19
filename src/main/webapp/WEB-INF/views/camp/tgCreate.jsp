@@ -265,7 +265,7 @@
     </div>
 </div>
 <%-- 타겟조건 팝업 영역 끝 --%>
-<script type="text/javascript" src="/js/tableau.js?v=0.08"></script>
+<script type="text/javascript" src="/js/tableau.js?v=0.09"></script>
 <script type="text/javascript" src="https://tableau-report.com/javascripts/api/tableau-2.min.js"></script>
 <script>
     let tab = [];
