@@ -540,12 +540,13 @@
 <script src="/js/Chart.min.js"></script>
 <script src="/js/drawChart.js"></script>
 <script>
-
+    let currentCampSet = new Set();
     let selectedCampSet = new Set();
     let cont_seq = [];
     <c:forEach items="${cont_seq}" var="item">
     cont_seq.push(${item});
     selectedCampSet.add('${item}')
+    currentCampSet.add('${item}')
     </c:forEach>
 
     $("#openLstTap").click(function () {
@@ -1026,6 +1027,11 @@
     })
 
     function addressAddPopup() {
+        // 기존 선택된 캠페인
+        selectedCampSet.clear()
+        for(let contSeq of currentCampSet){
+            selectedCampSet.add(contSeq);
+        }
 
         $('#popUp-searchStandard').html("기준선택");
         $('#popUp-searchStandard').prop("data", " ");

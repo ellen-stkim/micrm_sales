@@ -1,5 +1,6 @@
 package com.omnilab.micrm.service
 
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -63,5 +64,7 @@ interface SysSettingService {
 
     // 매핑정보 중복 수정 검사하기
     fun isExistMappingModify(dto : Tblmi_set_lstDto) : Map<String,Any>
+
+    fun getKkoSettingList(dto: SetLst_searchDto): Map<String,Any>
 
 }

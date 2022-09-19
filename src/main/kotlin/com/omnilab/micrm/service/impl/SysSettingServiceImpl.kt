@@ -484,4 +484,40 @@ class SysSettingServiceImpl : SysSettingService {
         return statusMap
     }
 
+    override fun getKkoSettingList(dto: SetLst_searchDto): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        val searchDto = dto as SetLst_searchDto
+
+        val pageNo = if (searchDto.pageNo == null) {
+            1
+        } else {
+            searchDto.pageNo!!
+        }
+
+        if (searchDto.searchType == "list_nm") {
+            searchDto.list_nm = searchDto.searchValue
+        } else if (searchDto.searchType == "list_val") {
+            searchDto.list_val = searchDto.searchValue
+        } else if (searchDto.searchType == "use_yn") {
+            searchDto.use_yn = searchDto.searchValue
+        }
+
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.list_tp_id = "CH02"
+        searchDto.list_dt_id = "DMTP03"
+
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getSmsSettingListCnt(searchDto)
+
+        map["page"] = paginationInfo
+        map["pageNo"] = paginationInfo.currentPageNo
+        map["cnt"] = paginationInfo.totalRecordCount
+        map["list"] = sysSettingDao.getSmsSettingList(searchDto);
+
+        return map;
+    }
+
 }

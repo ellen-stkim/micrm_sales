@@ -459,9 +459,9 @@
         $('input[name="target_allcheck"]').prop('checked', false);
         $(".btn_basic3").removeClass("clickBtn");
         $(".calendar").val("");
-        $("#campReportPopup #searchValue").val("")
+        $("#campReportPopup #searchValue").val("");
 
-        changeTitle()
+        changeTitle();
 
         $('#campReportPopup').css("display", "flex");
     }
