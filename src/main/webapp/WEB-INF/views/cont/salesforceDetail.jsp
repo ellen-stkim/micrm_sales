@@ -368,17 +368,10 @@
                                                 </div>
                                             </div>
                                             <div class="block">
-                                                <div class="row">
+                                                <div class="row flex_row input-img on">
                                                     <div class="th">개인화 변수</div>
                                                     <div class="td">
-                                                        <!-- select 영역 시작 -->
-                                                        <div class="select" id="smsContsVal" name="edmDB">
-                                                            <!-- selected value -->
-                                                            <div class="value" data="0">개인화 변수</div>
-                                                            <ul class="option mappingLst">
-                                                            </ul>
-                                                        </div>
-                                                        <!-- select 영역 끝 -->
+                                                        <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto;"></div>
                                                     </div>
                                                 </div>
                                             </div>
