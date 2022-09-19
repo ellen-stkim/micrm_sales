@@ -2056,13 +2056,13 @@ input[type=checkbox], label {
 }
 .template_table .table_btn .up,
 .template_table .table_btn .down {
-    color: #129312;
+    color: #618cd3;
 }
 .template_table .table_btn .down {
     margin: 0 6px;
 }
 .template_table .table_btn .del {
-    color: #db094d;
+    color: #d92660;
 }
 
 .color_red {

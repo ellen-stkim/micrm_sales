@@ -338,7 +338,7 @@
                                             <div class="row">
                                                 <div class="th">템플릿코드 <span class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input txt_input2" id="smsTracking"
+                                                    <input type="text" class="txt_input txt_input2" name="tmplCode" id="tmplTracking"
                                                            placeholder=""/>
                                                     <span class="btn_sm_line btn_sm_line2 trackingLinkBtn">코드 자동 생성</span>
                                                     <input type="hidden" name="sms_trackinglink"/>
@@ -436,7 +436,7 @@
                                             <div class="row">
                                                 <div class="th">템플릿명 <span class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input"
+                                                    <input type="text" class="txt_input" name="tmplName"
                                                            placeholder="템플릿명 입력 (최대 200자)"/>
                                                 </div>
                                             </div>
@@ -447,14 +447,6 @@
                                                     <div class="th">메시지유형 <span class="color_red">*</span></div>
                                                     <div class="td">
                                                         <!-- select 영역 시작 -->
-<%--                                                        <select class="bizMsgVal" id="bizMsgVal" name="edmDB">--%>
-<%--                                                            <!-- selected value -->--%>
-<%--                                                            <option value="" selected disabled>채널 추가형</option>--%>
-<%--                                                            <option value="0">기본</option>--%>
-<%--                                                            <option value="1">부가 정보형</option>--%>
-<%--                                                            <option value="2">채널 추가형</option>--%>
-<%--                                                            <option value="3">복합형</option>--%>
-<%--                                                        </select>--%>
                                                         <div class="select bizMsgVal" name="edmDB">
                                                             <!-- selected value -->
                                                             <div class="value" data="0">채널 추가형</div>
@@ -494,15 +486,15 @@
                                                 <div class="row">
                                                     <div class="th">강조 표기 타이틀 <span class="color_red">*</span></div>
                                                     <div class="td">
-                                                        <input type="text" class="txt_input3" placeholder="강조 표기 타이틀 입력 (최대 50자)">
+                                                        <input type="text" class="txt_input3" name="tmplEmphTitle" placeholder="강조 표기 타이틀 입력 (최대 50자)">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="block block4">
+                                            <div class="block block4 emphtxt_block2">
                                                 <div class="row">
                                                     <div class="th" style="line-height: 18px;">강조 표기<br>보조 문구 <span class="color_red">*</span></div>
                                                     <div class="td">
-                                                        <input type="text" class="txt_input3" placeholder="강조 표기 보조 문구 입력 (최대 50자)">
+                                                        <input type="text" class="txt_input3" name="tmplEmphTxt" placeholder="강조 표기 보조 문구 입력 (최대 50자)">
                                                     </div>
                                                 </div>
                                             </div>
@@ -589,7 +581,7 @@
                                             <div class="row template_textarea">
                                                 <div class="th">템플릿내용 <span class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <textarea rows="8" placeholder="텍스트 입력 (최대 1000자)"></textarea>
+                                                    <textarea rows="8" name="tmplTxt" placeholder="텍스트 입력 (최대 1000자)"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -597,7 +589,7 @@
                                             <div class="row template_textarea">
                                                 <div class="th">부가 정보 <span class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <textarea rows="8" placeholder="텍스트 입력 (최대 500자)"></textarea>
+                                                    <textarea rows="8" name="tmplAddInfo" placeholder="텍스트 입력 (최대 500자)"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -1059,7 +1051,14 @@
                     '<div class="del" onclick="deleteRow(this)"><i class="fa-solid fa-square-xmark"></i></div>'+
                     '</div>';
 
-        newCell1.innerText = table.tBodies[0].rows.length -2;
+        let dis = $('.channel_add_table').hasClass('display-none');
+
+        if(dis == false){
+            newCell1.innerText = table.tBodies[0].rows.length -1;
+        } else if (dis == true) {
+            newCell1.innerText = table.tBodies[0].rows.length -2;
+        }
+
         newCell2.innerHTML = addCell1;
         newCell3.innerHTML = addCell2;
         newCell4.innerHTML = addCell3;
@@ -1221,20 +1220,20 @@
         let row = "";
 
         let dis = $('.channel_add_table').hasClass('display-none');
-
+        console.log(table.tBodies[0].rows)
         // 채널추가 열이 display block인 경우
         if(dis == false){
-            for(let i = 1; i < cnt+1; i++){
+            for(let i = 0; i < cnt; i++){
                 row = table.tBodies[0].rows[i];
-                let cell = row.getElementsByTagName("td")[0];
-                cell.innerText = i;
+                let cell = row.getElementsByTagName('td')[0];
+                cell.innerText = String(i);
             }
         // 채널추가 열이 display none인 경우
         } else if(dis == true){
-            for(let i = 1; i < cnt+1; i++){
+            for(let i = 0; i < cnt; i++){
                 row = table.tBodies[0].rows[i];
-                let cell = row.getElementsByTagName("td")[0];
-                cell.innerText = i-1;
+                let cell = row.getElementsByTagName('td')[0];
+                cell.innerText = String(i-1);
             }
         }
     }
@@ -1243,10 +1242,10 @@
         let cnt = table.tBodies[0].rows.length;
 
         let row = "";
-        for(let i = 1; i < cnt+1; i++){
+        for(let i = 0; i < cnt; i++){
             row = table.tBodies[0].rows[i];
-            let cell = row.getElementsByTagName("td")[0];
-            cell.innerText = i;
+            let cell = row.getElementsByTagName('td')[0];
+            cell.innerText = String(i);
         }
     }
 
@@ -1391,10 +1390,10 @@
             typeAllNone(i);
         }
     }
-
+    /*-------  알림톡 템플릿 테이블 끝  ------*/
 
     $(function () {
-        /*-------  알림톡 템플릿 시작  ------*/
+        /*-------  알림톡 템플릿  ------*/
 
         // 카테고리 선택
         $('.bizContsVal_group .option li').on('click', function(){
@@ -1535,10 +1534,35 @@
                 BlockNone();
             } else if (val == 2){
                 NoneBlock();
+
+                let msg = '메시지 유형이 "채널 추가형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
+                alert(msg)
             } else if (val == 3){
                 allBlock();
+
+                let msg = '메시지 유형이 "복합형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
+                alert(msg)
             }
         })
+
+        function alert(msg) {
+            let html = '';
+            html +=
+                '<div class="layer_pop alert active">' +
+                '<div class="pop_container popup_size3">' +
+                '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+                '<div class="pop_title">알림</div>' +
+                '<div class="pop_inner">' +
+                '<div class="alert_txt">' + msg + '</div>' +
+                '<div class="btn_row">' +
+                '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="확인" />' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $('body .layer_pop.alert').remove();
+            $('body').append(html);
+        }
 
         function allBlock() {
             $('.addinfo_block').css('display', 'block');
@@ -1640,9 +1664,31 @@
             $('.highlight_img_on').toggleClass('display-none');
         })
 
+        // textarea 글자수 제한
+        $('.template_textarea textarea').on('keyup', function() {
+            if($(this).val().length > 1000) {
+                $(this).val($(this).val().substring(0, 1000));
+            }
+        });
 
+        $('.addinfo_block textarea').on('keyup', function() {
+            if($(this).val().length > 500) {
+                $(this).val($(this).val().substring(0, 500));
+            }
+        });
+
+        $('.emphtxt_block textarea').on('keyup', function() {
+            if($(this).val().length > 50) {
+                $(this).val($(this).val().substring(0, 50));
+            }
+        });
+
+        $('.emphtxt_block2 textarea').on('keyup', function() {
+            if($(this).val().length > 50) {
+                $(this).val($(this).val().substring(0, 50));
+            }
+        });
        /*-------  알림톡 템플릿 끝  ------*/
-
 
         $('input[name="dbInfo"]').on('change', function () {
             getDBValue();
@@ -2372,7 +2418,8 @@
                         }
                     } //kakao end
                     if (smsFormat == 'sms') {
-                        let smsSubmit = smsValidate();
+                        // let smsSubmit = smsValidate();
+                        let smsSubmit = tmplValidate();
                         if (smsSubmit == true) {
                             isCheckTemplateName();
                         } else {
@@ -2398,7 +2445,8 @@
                             }
                         }
                         if (checkVal == 'sms') {
-                            let smsSubmit = smsValidate();
+                            // let smsSubmit = smsValidate();
+                            let smsSubmit = tmplValidate();
                             if (smsSubmit == false) {
                                 return false;
                             }
@@ -2716,6 +2764,76 @@
         }
         return true;
     }
+
+    // 알림톡 템플릿 유효성 검사
+    function tmplValidate() {
+        let tmplCode = $('input[name="tmplCode"]');  //템플릿 코드
+        let tmplCate1 = $('.bizContsVal_group .value');  //카테고리그룹
+        let tmplCate2 = $('.bizContsVal .value');  //카테고리
+        let tmplName = $('input[name="tmplName"]');  //템플릿명
+        let tmplMsg = $('.bizMsgVal .value'); //메시지 유형
+        let tmplEmph = $('.bizEmphVal .value');  //강조유형
+        let tmplTxt = $('textarea[name="tmplTxt"]');  //템플릿내용
+
+        if(tmplCode.val() == '' || tmplCode.val() == null) {
+            tmplCode.focus().addClass('outline');
+            popup.popAlert("템플릿코드를 입력해주세요.");
+            return false;
+        }
+
+        if(tmplCate1.text() == "카테고리 그룹") {
+            tmplCate1.focus().addClass('outline');
+            popup.popAlert("카테고리 그룹을 선택해주세요.");
+            return false;
+        } else if (tmplCate1.text() != "카테고리 그룹" && tmplCate2.text() == "카테고리") {
+            tmplCate2.focus().addClass('outline');
+            popup.popAlert("카테고리를 선택해주세요.");
+            return false;
+        }
+
+        if(tmplName.val() == '' || tmplName.val() == null) {
+            tmplName.focus().addClass('outline');
+            popup.popAlert("템플릿명을 입력해주세요.");
+            return false;
+        }
+
+        if(tmplTxt.val() == '' || tmplTxt.val() == null) {
+            tmplTxt.focus().addClass('outline');
+            popup.popAlert("템플릿내용을 입력해주세요.");
+            return false;
+        }
+
+        //부가정보형, 복합형인 경우 부가정보
+        let tmplAddInfo = $('textarea[name="tmplAddInfo"]');
+
+        if(tmplMsg.text() == "부가 정보형" || tmplMsg.text() == "복합형"){
+            if(tmplAddInfo.val() == '' || tmplAddInfo.val() == null) {
+                tmplAddInfo.focus().addClass('outline');
+                popup.popAlert("부가 정보를 입력해주세요.");
+                return false;
+            }
+        }
+
+        //강조표기형
+        let tmplEmphTitle = $('input[name="tmplEmphTitle"]');
+        let tmplEmphTxt = $('input[name="tmplEmphTxt"]');
+
+        if(tmplEmph.text() == "강조표기형"){
+            if(tmplEmphTitle.val() == '' || tmplEmphTitle.val() == null) {
+                tmplEmphTitle.focus().addClass('outline');
+                popup.popAlert("강조 표기 타이틀을 입력해주세요.");
+                return false;
+            }
+
+            if(tmplEmphTxt.val() == '' || tmplEmphTxt.val() == null) {
+                tmplEmphTxt.focus().addClass('outline');
+                popup.popAlert("강조 표기 보조 문구를 입력해주세요.");
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     // blur 유효성 체크
     $(function () {
