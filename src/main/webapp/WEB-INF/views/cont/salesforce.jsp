@@ -165,16 +165,13 @@
                                             </div>
                                         </div>
                                         <div class="block">
-                                            <div class="row">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
-                                                    <!-- select 영역 시작 -->
-                                                    <div class="select" id="kakaoValue" name="edmDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingLst"></ul>
+                                            <div class="row flex_row">
+                                                <div class="row flex_row input-img on">
+                                                    <div class="th">개인화 변수</div>
+                                                    <div class="td">
+                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                        <div id="kakaoValue" class="col_img" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
-                                                    <!-- select 영역 끝 -->
                                                 </div>
                                             </div>
                                         </div>
@@ -297,7 +294,7 @@
                                                 <div class="th">개인화 변수</div>
                                                 <div class="td">
                                                     <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                    <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
+                                                    <div id="smsContsVal" class="col_img" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -591,7 +588,7 @@
                 html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
             }
             $("#smsContsVal").html(html);
-
+            $("#kakaoValue").html(html);
         }
         let param = { usr_grp_cd : $('#usr_grp_cd').val() }
         com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
@@ -839,7 +836,7 @@
         });
 
         // 카카오 개인 변수 option click event
-        $(document).on('click', '#kakaoValue .option li', function() {
+        $(document).on('click', '#kakaoValue input', function() {
             let data = $(this).attr('data');
             let txt = $('.kakao_txt').val();
             if (data != 0) {
@@ -866,18 +863,6 @@
                 $('.sms_txt').val(txt + '{{' + data + '}}');
             }
         });
-
-        /*
-        // SMS 개인화 변수 option click event
-        $(document).on('click', '#smsContsVal .option li', function() {
-            let data = $(this).attr('data');
-            let txt = $('.sms_txt').val();
-            if (data != 0) {
-                popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                $('.sms_txt').val(txt + '{{' + data + '}}');
-            }
-        });
-        */
 
         //RCS 제목 개인화 변수 option click event
         $(document).on('click', '.rcsTitleVal ul li', function () {
@@ -2470,7 +2455,7 @@
     }
 
     function saveContentImg() {
-        var imgNm = $("#img_nmCk").val();
+        let imgNm = $("#img_nmCk").val();
         if(imgNm == "" || imgNm == null){
             popup.popAlert("이미지명을 입력해주세요.");
             return false;
@@ -2480,7 +2465,7 @@
             return false;
         }
 
-        var res = function(response){
+        let res = function(response){
             //TO-DO
             //리스트 새로 불러오기
             if(response.imgCheck == 0){
@@ -2496,9 +2481,9 @@
             imageListPaging('1');
         };
 
-        var data = new FormData();
+        let data = new FormData();
         data.append("file", $("#file")[0].files[0]);
-        var ch_tp = $("input[name=ch_tp]:checked").val();
+        let ch_tp = $("input[name=ch_tp]:checked").val();
         if(ch_tp == 'RCS') {
             data.append("ch_tp", $('.rcs_select .value').attr('data'));
         }else{
@@ -2511,8 +2496,7 @@
     }
 
     function phoneFormatter(num){
-        var formatNum;
-
+        let formatNum;
         if(num != null) {
             if(num.length==11){
                 formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -2526,7 +2510,6 @@
                 }
             }
         }
-
         return formatNum;
     }
 
