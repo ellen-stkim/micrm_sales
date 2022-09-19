@@ -550,7 +550,7 @@
                 <div class="form_search">
                     <!-- 검색 영역 시작 -->
                     <div class="input_txt">
-                        <input type="text" name='cont_nm' placeholder="검색어 입력"/>
+                        <input type="text" name='cont_nm' id="moblieLstSearch" placeholder="검색어 입력"/>
                         <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
                     </div>
                     <!-- 검색 영역 끝 -->
@@ -1282,7 +1282,7 @@
         }
 
         let param = { seq: seq }
-        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 카카오, SMS 유효성 검사

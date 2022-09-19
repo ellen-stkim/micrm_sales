@@ -49,8 +49,7 @@
                         <div class="sms_option cf">
                             <label class="custom_check2 kakao">
                                 <c:if test="${kakaoCnt ne 0}">
-                                    <input name="formatType" type="checkbox" value="kakao" class="formatType"
-                                           <c:if test="${list[0].list_use_yn eq 'Y'}">checked</c:if>/>
+                                    <input name="formatType" type="checkbox" value="kakao" class="formatType" <c:if test="${list[0].list_use_yn eq 'Y'}">checked</c:if>/>
                                 </c:if>
                                 <c:if test="${kakaoCnt eq 0}">
                                     <input name="formatType" type="checkbox" value="kakao" class="formatType" disabled/>
@@ -59,8 +58,7 @@
                             </label>
                             <label class="custom_check2 sms">
                                 <c:if test="${smsCnt ne 0}">
-                                    <input name="formatType" type="checkbox" value="sms" class="formatType"
-                                           <c:if test="${list[1].list_use_yn eq 'Y'}">checked</c:if>/>
+                                    <input name="formatType" type="checkbox" value="sms" class="formatType" <c:if test="${list[1].list_use_yn eq 'Y'}">checked</c:if>/>
                                 </c:if>
                                 <c:if test="${smsCnt eq 0}">
                                     <input name="formatType" type="checkbox" value="sms" class="formatType" disabled/>
@@ -69,8 +67,7 @@
                             </label>
                             <label class="custom_check2 rcs">
                                 <c:if test="${rcsCnt ne 0}">
-                                    <input name="formatType" type="checkbox" value="rcs" class="formatType"
-                                           <c:if test="${list[2].list_use_yn eq 'Y'}">checked</c:if>/>
+                                    <input name="formatType" type="checkbox" value="rcs" class="formatType" <c:if test="${list[2].list_use_yn eq 'Y'}">checked</c:if>/>
                                 </c:if>
                                 <c:if test="${rcsCnt eq 0}">
                                     <input name="formatType" type="checkbox" value="rcs" class="formatType" disabled/>
@@ -82,13 +79,11 @@
                             <div class="th left-border">유형선택</div>
                             <div class="td cf">
                                 <label class="block_radio on">
-                                    <input type="radio" name="commonType" class="js-ad" value="ad"
-                                           <c:if test="${list[0].send_tp eq 'SENDTP01' }">checked</c:if>/>
+                                    <input type="radio" name="commonType" class="js-ad" value="ad" <c:if test="${list[0].send_tp eq 'SENDTP01' }">checked</c:if>/>
                                     <span>광고</span>
                                 </label>
                                 <label class="block_radio">
-                                    <input type="radio" name="commonType" class="js-ad" value="guide"
-                                           <c:if test="${list[0].send_tp eq 'SENDTP02'}">checked</c:if>/>
+                                    <input type="radio" name="commonType" class="js-ad" value="guide" <c:if test="${list[0].send_tp eq 'SENDTP02'}">checked</c:if>/>
                                     <span>안내</span>
                                 </label>
                                 <input type="hidden" name="kko_option" class="kakaoOption" value="${list[0].send_tp eq 'SENDTP01' ? 'ad' : 'guide'}"/>
@@ -272,12 +267,9 @@
                                 <div class="viewer_area">
                                     <div class="top">카카오톡 본문 입력창</div>
                                     <div class="inner">
-                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30"
-                                                      rows="10"
-                                                      onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
+                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
                                         <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                            <a href="${list[0].kko_btn_url}" class="kakao_link"
-                                               target="_blank">${list[0].kko_btn_nm}</a>
+                                            <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank">${list[0].kko_btn_nm}</a>
                                         </c:if>
                                     </div>
                                     <div class="byte">
@@ -304,9 +296,7 @@
                                             <div class="th">문자 제목</div>
                                             <div class="column_1">
                                                 <div class="column_5">
-                                                    <input type="text" class="title type1 smsTitle" name="cont_sub_list"
-                                                           onkeyup="smsCreate.titleCount(this,'sms');"
-                                                           value="${list[1].cont_sub}"/>
+                                                    <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="smsCreate.titleCount(this,'sms');" value="${list[1].cont_sub}"/>
                                                     <span class="title_byte en_font">(40byte)</span>
                                                 </div>
                                                 <!-- select 영역 시작 -->
@@ -321,8 +311,7 @@
                                         <div class="row body">
                                             <div class="th">발신 번호</div>
                                             <div class="column_1">
-                                                <input type="text" class="sms_number smsNumber"
-                                                       id="sms_send_to"
+                                                <input type="text" class="sms_number smsNumber" id="sms_send_to"
                                                         <c:if test="${fn:trim(list[1].send_to) != ''}">
                                                             value="${list[1].sender}(${cutil:numberToPhone(list[1].send_num)})"
                                                         </c:if>
@@ -340,70 +329,43 @@
                                                     <div class="th">문자 종류</div>
                                                     <div class="td">
                                                         <label class="custom_radio">LMS
-                                                            <input class="smsType"
-                                                                   name="sms_msg_tp"
-                                                                   type="radio"
-                                                                   value="LMS"
-                                                                    <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH202'}">
-                                                                        checked
-                                                                    </c:if>
-                                                            />
+                                                            <input class="smsType" name="sms_msg_tp" type="radio" value="LMS" <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH202'}">checked</c:if>/>
                                                             <span></span>
                                                         </label>
                                                         <label class="custom_radio">MMS
-                                                            <input class="smsType"
-                                                                   name="sms_msg_tp"
-                                                                   type="radio"
-                                                                   value="MMS"
-                                                                    <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
-                                                                        checked
-                                                                    </c:if>
-                                                            />
+                                                            <input class="smsType" name="sms_msg_tp" type="radio" value="MMS" <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">checked</c:if>/>
                                                             <span></span>
                                                         </label>
                                                         <label class="custom_radio">SMS
-                                                            <input class="smsType"
-                                                                   name="sms_msg_tp"
-                                                                   type="radio"
-                                                                   value="SMS"
-                                                                    <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH201'}">
-                                                                        checked
-                                                                    </c:if>
-                                                            />
+                                                            <input class="smsType" name="sms_msg_tp" type="radio" value="SMS" <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH201'}">checked</c:if>/>
                                                             <span></span>
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <c:choose>
-                                                    <c:when test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
-                                                        <div class="row input-img on">
-                                                            <div class="th top-border">이미지 선택</div>
-                                                            <div class="td top-border">
-                                                                <div class="sms_delete_img">
-                                                                    <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/bg_none.png'">
-                                                                </div>
-                                                                <input type="text" class="txt_input" name="" id="smsImage" value="${fn:split(list[1].img_nm_lst,",")[0]}" readonly/>
-                                                                <input type="hidden" id="mds_img_cd" name="mds_img_cd" value="${list[1].img_cd_1}"/>
-                                                                <span class="btn_sm_line" data="smsImage" onclick="imageListPopUp('1','smsImage');">선택</span>
-                                                            </div>
-                                                            <input type="hidden" name="mms_imgurl"
-                                                                   value="${fn:split(list[1].img_lst,",")[0]}"/>
+                                                <div class="row input-img">
+                                                    <div class="th top-border <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">이미지 선택</div>
+                                                    <div class="td top-border">
+                                                        <div class="sms_delete_img">
+                                                            <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/bg_none.png'">
                                                         </div>
-                                                        <div class="row flex_row input-img on">
-                                                            <div class="th top-border">이미지 미리보기</div>
-                                                            <div class="td top-border">
-                                                                <div class="col_img" id="js-sms-img">
-                                                                    <!-- SMS 이미지 미리보기 -->
-                                                                    <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
-                                                                        <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
+                                                        <input type="text" class="txt_input" name="" id="smsImage" value="${fn:split(list[1].img_nm_lst,",")[0]}" readonly/>
+                                                        <input type="hidden" id="mds_img_cd" name="mds_img_cd" value="${list[1].img_cd_1}"/>
+                                                        <span class="btn_sm_line" data="smsImage" onclick="imageListPopUp('1','smsImage');">선택</span>
+                                                    </div>
+                                                    <input type="hidden" name="mms_imgurl" value="${fn:split(list[1].img_lst,",")[0]}"/>
+                                                </div>
+                                                <div class="row flex_row input-img <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">
+                                                    <div class="th top-border">이미지 미리보기</div>
+                                                    <div class="td top-border">
+                                                        <div class="col_img" id="js-sms-img">
+                                                            <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
+                                                            <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
+                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
+                                                            </a>
+                                                            </c:if>
                                                         </div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="block">
                                                 <div class="row">
@@ -435,7 +397,7 @@
                                     <div class="viewer_area">
                                         <div class="top">문자 본문 입력창</div>
                                         <div class="inner">
-                                            <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'sms');">${list[1].cont_body}</textarea>
+                                            <textarea name="sms_body" class="sms_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'sms');">${list[1].cont_body}</textarea>
                                             <div class="byte">
                                                 <span class="en_font sms_byte">0</span>
                                                 <span class="en_font">byte</span>
@@ -460,31 +422,15 @@
                                         <div class="column_2 right-border">
                                             <!-- 텍스트형 check -->
                                             <label class="type_check">
-                                                <input type="radio" name="rcs_format_type"
-                                                       class="rcsType"
-                                                       value="text"
-                                                        <c:if test="${list[2].msg_tp eq 'DMCH205' || list[2].msg_tp eq 'DMCH206' }">
-                                                            checked
-                                                        </c:if>/>
+                                                <input type="radio" name="rcs_format_type" class="rcsType" value="text" <c:if test="${list[2].msg_tp eq 'DMCH205' || list[2].msg_tp eq 'DMCH206' }">checked</c:if>/>
                                                 <span>텍스트형</span>
                                             </label>
                                             <label class="type_check">
-                                                <input type="radio" name="rcs_format_type"
-                                                       class="rcsType"
-                                                       value="vertical"
-                                                        <c:if test="${list[2].msg_tp eq 'DMCH207' || list[2].msg_tp eq 'DMCH208'}">
-                                                            checked
-                                                        </c:if>/>
+                                                <input type="radio" name="rcs_format_type" class="rcsType" value="vertical" <c:if test="${list[2].msg_tp eq 'DMCH207' || list[2].msg_tp eq 'DMCH208'}">checked</c:if>/>
                                                 <span>세로형</span>
                                             </label>
                                             <label class="type_check">
-                                                <input type="radio" name="rcs_format_type"
-                                                       class="rcsType"
-                                                       value="slide"
-                                                        <c:if test="${list[2].msg_tp eq 'DMCH211' || list[2].msg_tp eq 'DMCH212'}">
-                                                            checked
-                                                        </c:if>
-                                                />
+                                                <input type="radio" name="rcs_format_type" class="rcsType" value="slide" <c:if test="${list[2].msg_tp eq 'DMCH211' || list[2].msg_tp eq 'DMCH212'}">checked</c:if>/>
                                                 <span>슬라이드형</span>
                                             </label>
                                         </div>
@@ -496,10 +442,7 @@
                                         <input type="hidden" name="cont_sub_list" value="" id="rcs_cont_sub">
                                     </c:if>
                                     <div class="rcs_layout" id="js-replace">
-                                        <div class="flex_box"
-                                                <c:if test="${list[2].msg_tp eq 'DMCH211' || list[2].msg_tp eq 'DMCH212'}">
-                                                    id="js-rcs-area"
-                                                </c:if>>
+                                        <div class="flex_box" <c:if test="${list[2].msg_tp eq 'DMCH211' || list[2].msg_tp eq 'DMCH212'}">id="js-rcs-area"</c:if>>
                                             <div class="left_area">
                                                 <!-- RCS TEXT형 Layout -->
                                                 <c:if test="${list[2].msg_tp eq 'DMCH205' || list[2].msg_tp eq 'DMCH206'}">
@@ -5612,7 +5555,6 @@
             );
         }
         if (radioVal == 'lms') {
-
             buttonReplace('text', 3, 17);
             $('#js-title-area').html(
                 '<div class="row body">'

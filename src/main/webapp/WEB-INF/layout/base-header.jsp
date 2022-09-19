@@ -30,3 +30,4 @@
 <script src="/js/ckeditor/ckeditor.js?v=0.08"></script>
 <script src="/js/swiper.min.js?v=0.08"></script>
 <script src="/js/timepicki.js?v=0.08"></script>
+<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
