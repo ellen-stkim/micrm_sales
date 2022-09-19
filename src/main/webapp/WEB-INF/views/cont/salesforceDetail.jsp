@@ -358,10 +358,11 @@
                                                     <div class="th top-border">이미지 미리보기</div>
                                                     <div class="td top-border">
                                                         <div class="col_img" id="js-sms-img">
-                                                            <!-- SMS 이미지 미리보기 -->
+                                                            <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                             <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
                                                                 <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
                                                             </a>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                 </div>
