@@ -1368,16 +1368,14 @@ class MobileContentServiceImpl : ContentService {
 
     private fun jsonOneContentsParsing(dto: Tblmi_cont_mstDto) {
         // 수정 페이지 json 파싱하기
-
-        var jsonParser = JsonParser()
+        val jsonParser = JsonParser()
         val dto = dto as Content_view_Dto
         val rcsMsgTp = dto.msg_tp
 
-        if (rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH207")
-                || rcsMsgTp.equals("DMCH210")) {
+        if (rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH210")) {
             // 가로, 세로형 이라면 cont_body Json 형태 파싱
             if (dto.cont_body != null) {
-                var jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
+                val jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
                 dto.cont_body = jsonObject.get("description").toString()
                         .replace("\\\\r\\\\n", "<br/>")
                         .replace("\\r\\n", "<br/>")
@@ -1385,7 +1383,6 @@ class MobileContentServiceImpl : ContentService {
             }
         }
         if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
-
             val slideJsonObject = jsonParser.parse(dto.cont_body).asJsonObject
             val len = slideJsonObject.size() / 2  // title과 description이 하나의 쌍이 되기에 나눠준다
             dto.cardSize = len.toString()
@@ -1394,19 +1391,22 @@ class MobileContentServiceImpl : ContentService {
             for (i in 0 until len) {
                 idx++
 
-                var title = "title" + idx
-                var description = "description" + idx
+                val title = "title" + idx
+                val description = "description" + idx
 
-                dto.slideTitle?.add(slideJsonObject.get(title).toString()
-                        ?.replace("\\\\r\\\\n", "<br/>")
-                        ?.replace("\\r\\n", "<br/>")
-                        ?.replace("\"", ""))
+                dto.slideTitle.add(
+                    slideJsonObject.get(title).toString()
+                        .replace("\\\\r\\\\n", "<br/>")
+                        .replace("\\r\\n", "<br/>")
+                        .replace("\"", "")
+                )
 
-                dto.slideBody?.add(slideJsonObject.get(description).toString()
-                        ?.replace("\\\\r\\\\n", "<br/>")
-                        ?.replace("\\r\\n", "<br/>")
-                        ?.replace("\"", ""))
-
+                dto.slideBody.add(
+                    slideJsonObject.get(description).toString()
+                        .replace("\\\\r\\\\n", "<br/>")
+                        .replace("\\r\\n", "<br/>")
+                        .replace("\"", "")
+                )
             }
         }
     }

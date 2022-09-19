@@ -85,6 +85,14 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.update("upd_tblmi_cont_mst", dto)
     }
 
+    override fun upd_tblmicp_program_sales(dto: Tblmicp_programDto): Int {
+        return sqlSession.update("upd_tblmicp_program_sales", dto)
+    }
+
+    override fun upd_tblmicp_campaign(dto: Tblmicp_campaignDto): Int {
+        return sqlSession.update("upd_tblmicp_campaign", dto)
+    }
+
     override fun del_tblmicp_cont_lst(cont_cd: String): Int {
         return sqlSession.delete("del_tblmicp_cont_lst", cont_cd)
     }

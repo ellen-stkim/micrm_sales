@@ -4,10 +4,7 @@ import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
-import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
-import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
-import com.omnilab.micrm.model.table.Tblmicp_cont_mstDto
+import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImageService
@@ -154,28 +151,28 @@ class SalesforceController {
         return statusMap;
     }
 
-    @ResponseBody
+    //@ResponseBody
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
-    fun selectMobileContent(@ModelAttribute dto: SalesforceDto, @PathVariable(value = "usr_cd") usr_cd: String): Map<String, Any> {
-        val statusMap: MutableMap<String, Any> = hashMapOf()
-
+    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
-        tblmiContMstdto.seq = dto.seq
-
-        val listMap: Map<String, Any> = mobileContentService.selectOneContentView(tblmiContMstdto)
+        tblmiContMstdto.seq = seq
+        tblmiContMstdto.reg_dt = usr_cd
+        val view = ModelAndView("/cont/salesforceDetail")
+        val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = mobileContentService.isCheckSender()
 
-        statusMap["list"] = listMap["list"] as List<Content_view_Dto>
-        statusMap["kakaoCnt"] = cntMap["kakaoCnt"] as Any
-        statusMap["smsCnt"] = cntMap["smsCnt"] as Any
-        statusMap["rcsCnt"] = cntMap["rcsCnt"] as Any
+        view.addObject("list" , listMap["list"])
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        statusMap["filePath"] = uploadPrefix?.cd_val as String
-        return statusMap
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
     }
 
     /** @Method Name  : previewService
@@ -454,6 +451,29 @@ class SalesforceController {
         return map
     }
 
+    @ResponseBody
+    @PostMapping("/{usr_cd}/mobileList.ajax")
+    fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
+        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
+        val paramMap = mobileContentService.selectContentView(dto)
+
+        view.addObject("list" , paramMap["list"])
+        view.addObject("page", paramMap["page"])
+        view.addObject("pageNo", paramMap["pageNo"])
+        view.addObject("nextCk", paramMap["nextCk"])
+        view.addObject("titleList",paramMap["titleList"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
+
     // =================================================== Salesforce ===================================================== //
 
     /**
@@ -561,7 +581,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/validate.service")
     fun validate(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
-        logger.error("{}", req.requestURL)
+        logger.info("/validate.service data: $data")
         return ResponseEntity(null, HttpStatus.OK)
     }
 
@@ -569,12 +589,25 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/stop.service")
     fun stop(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
         logger.info("/stop.service data: $data")
+        val dto = Tblmicp_programDto()
+        dto.inten_id = data["interactionId"].toString()
+        dto.orig_id = data["originalDefinitionId"].toString()
+        dto.inta_key = data["interactionKey"].toString()
+        dto.inta_ve = data["interactionVersion"].toString()
+        dto.pro_st = "04"
+        salesforceDao.upd_tblmicp_program_sales(dto)
+        if(dto.pro_id != null){
+            val campDto = Tblmicp_campaignDto()
+            campDto.pro_id = dto.pro_id
+            campDto.camp_st = "04"
+            salesforceDao.upd_tblmicp_campaign(campDto)
+        }
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/TestSave.service")
     fun TestSave(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
-        logger.info("/TestSave.service data: $data");
+        logger.info("/TestSave.service data: $data")
     }
 
     // done 동작
@@ -621,7 +654,6 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/error")
     fun error(@PathVariable(value = "usr_cd") usr_cd: String): String {
         logger.error("error")
-
         return "index"
     }
 

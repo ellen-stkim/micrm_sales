@@ -312,6 +312,7 @@
     </update>
 
     <update id="upd_tblmicp_cont_mst_pub" parameterType="Tblmicp_cont_mstDto">
+
         update tblmicp_cont_mst set
             pub_yn = #{pub_yn}
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_seq)">
@@ -341,6 +342,34 @@
                 and inta_key = #{inta_key}
                 and inta_ve = #{inta_ve}
             </where>
+    </update>
+
+    <update id="upd_tblmicp_program_sales" parameterType="Tblmicp_programDto">
+        <selectKey keyProperty="pro_id" resultType="String" order="AFTER">
+            SELECT pro_id
+            FROM tblmicp_cont_mst
+            WHERE inten_id = #{inten_id}
+                and orig_id = #{orig_id}
+                and inta_key = #{inta_key}
+                and inta_ve = #{inta_ve}
+        </selectKey>
+        update Tblmicp_program set
+            PRO_ST = #{pro_st}
+            , MAX_START_DT = current_timestamp
+        <where>
+            inten_id = #{inten_id}
+                and orig_id = #{orig_id}
+                and inta_key = #{inta_key}
+                and inta_ve = #{inta_ve}
+        </where>
+    </update>
+
+    <update id="upd_tblmicp_campaign" parameterType="Tblmicp_campaignDto">
+        update tblmicp_campaign set
+            camp_st = #{camp_st}
+        <where>
+            pro_id = #{pro_id}
+        </where>
     </update>
 
     <!-- ===================================================== delete ===================================================== -->
