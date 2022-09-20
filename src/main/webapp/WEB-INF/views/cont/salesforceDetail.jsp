@@ -205,7 +205,7 @@
                                                     <div class="th">개인화 변수</div>
                                                     <div class="td">
                                                         <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                        <div id="kakaoValue" class="col_img" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
+                                                        <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -369,7 +369,7 @@
                                                     <div class="th">개인화 변수</div>
                                                     <div class="td">
                                                         <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                        <div id="smsContsVal" class="col_img" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
+                                                        <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
                                                 </div>
                                             </div>
