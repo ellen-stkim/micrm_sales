@@ -11,11 +11,15 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_id)">
                 and cd_id = #{cd_id}
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_val)">
+                and cd_val = #{cd_val}
+            </if>
             AND USE_YN = 'Y'
+        ORDER BY CD_SN
     </select>
 
     <select id="selTotalAtTmplCnt" resultType="Integer" parameterType="AtTmpl_searchDto">
-        SELECT COUNT(*) FROM tblmi_comm_cd
+        SELECT COUNT(*) FROM tblmi_kko_at_tmpl
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
                 and tmpl_nm = #{tmpl_nm}

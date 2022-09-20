@@ -1936,10 +1936,7 @@ input[type=checkbox], label {
 .template_textarea2 textarea::placeholder {
     color: #a1a1a1;
 }
-.addinfo_block {
-    display: none;
-}
-.addchannel_block {
+.addinfo_block ,.addchannel_block , .adver_msg_block{
     display: none;
 }
 .emphImg_block .row {

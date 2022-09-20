@@ -1061,44 +1061,78 @@ class ContentController  {
     @GetMapping("/kko/tmplCreate.mi")
     fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
-        val map = sysSettingService.getDBValue();
+        val map = kkoMsgService.createTmplLst();
 
-        val kkoDto = SetLst_searchDto()
-        kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        kkoDto.list_tp_id = "CH02"
-        kkoDto.list_dt_id = "DMTP03"
-        kkoDto.def_yn = "Y"
-        val kkoSenderMap = mobileContentService.selectSenderList(kkoDto)
+        view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
 
-        val smsDto = SetLst_searchDto()
-        smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        smsDto.list_tp_id = "CH02"
-        smsDto.list_dt_id = "DMTP02"
-        smsDto.def_yn = "Y"
-        val smsSenderMap = mobileContentService.selectSenderList(smsDto)
-
-
-        val rcsDto = SetLst_searchDto()
-        rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        rcsDto.list_tp_id = "CH02"
-        rcsDto.list_dt_id = "DMTP04"
-        rcsDto.def_yn = "Y"
-        val rcsSenderMap = mobileContentService.selectSenderList(rcsDto)
-
-
-        val cntMap = mobileContentService.isCheckSender()
-
-        // 개인화 변수 추가하기
-        view.addObject("column",map);
-        view.addObject("list",kkoSenderMap["list"])
-        view.addObject("smsSender",smsSenderMap["list"])
-        view.addObject("rcsSender",rcsSenderMap["list"])
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
+        view.addObject("column",sysSettingService.getDBValue())
 
         return view
     }
+
+    /**
+     * @Method Name  : tmplCreateService
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성
+     * @title : 알림톡 탬플릿 생성
+     */
+    @PostMapping("/kko/tmplCreate.service")
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): ModelAndView {
+        val view = ModelAndView("cont/kko/tmplCreate")
+        val map = kkoMsgService.createTmplLst();
+
+        logger.error("gfdgfdgfgfdgtmplCreateServicetmplCreateService")
+        /*view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+
+        view.addObject("column",sysSettingService.getDBValue())*/
+
+        return view
+    }
+
+    /**
+     * @Method Name  : isCheckTmplNm
+     * @Since    : 2022. 09. 20.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 체크
+     * @title : 알림톡 탬플릿명 체크
+     */
+    @ResponseBody
+    @PostMapping("/kko/isCheckTmplNm.ajax")
+    fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): MutableMap<String, Any> {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+
+//        rep.status = HttpServletResponse.SC_OK
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("msg" , "사용가능한 템플릿명 입니다.")
+
+        return map
+    }
+
+
 
 
 
