@@ -250,6 +250,84 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="block template_table emphItemList_list">
+                                                <div class="row" style="height: auto;">
+                                                    <div class="th" style="line-height: 17px;">
+                                                        아이템<br/>리스트
+                                                        <div class="button" onclick="addRowItemList()">추가</div>
+                                                    </div>
+                                                    <div class="td">
+                                                        <table id="emphItemList_list_table">
+                                                            <colgroup>
+                                                                <col width="8%">
+                                                                <col width="35%">
+                                                                <col width="45%">
+                                                                <col width="12%">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <th>순서</th>
+                                                                <th>아이템명</th>
+                                                                <th>아이템내용</th>
+                                                                <th>삭제</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr class="itemList_add_table1" id="itemList_add_table1">
+                                                                    <td>1</td>
+                                                                    <td>
+                                                                        <input class="border" type="text" placeholder="아이템 명 (6자 이내)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="border" type="text" placeholder="아이템 내용 (23자 이내)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="table_btn">
+                                                                            <div class="up" onclick="upRow3(this)"><i class="fa-solid fa-square-caret-up"></i></div>
+                                                                            <div class="down" onclick="downRow3(this)"><i class="fa-solid fa-square-caret-down"></i></div>
+                                                                            <div class="del" onclick="deleteRow3(this)"><i class="fa-solid fa-square-xmark"></i></div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="itemList_add_table2" id="itemList_add_table2">
+                                                                    <td>2</td>
+                                                                    <td>
+                                                                        <input class="border" type="text" placeholder="아이템 명 (6자 이내)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="border" type="text" placeholder="아이템 내용 (23자 이내)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="table_btn">
+                                                                            <div class="up" onclick="upRow3(this)"><i class="fa-solid fa-square-caret-up"></i></div>
+                                                                            <div class="down" onclick="downRow3(this)"><i class="fa-solid fa-square-caret-down"></i></div>
+                                                                            <div class="del" onclick="deleteRow3(this)"><i class="fa-solid fa-square-xmark"></i></div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="block emphItemList_itemInfo">
+                                                <div class="row" style="height: auto;">
+                                                    <div class="th" style="line-height: 17px;">아이템<br>요약정보</div>
+                                                    <div class="td">
+                                                        <div class="itemInfo_div">
+                                                            <input type="checkbox" id="itemInfo_check">
+                                                            <label for="itemInfo_check">설정 (요약정보의 아이템내용은 변수 및 화폐 단위, 숫자, 쉼표, 마침표만 사용 가능합니다.)</label>
+                                                        </div>
+
+                                                        <div class="itemInfo_div itemInfo_check_on display-none">
+                                                            <input type="text" class="txt_input4 first border" placeholder="아이템 명 (최대 6자)">
+                                                            <input type="text" class="txt_input4 border" placeholder="아이템 내용 입력 (최대 14자, 화폐단위 및 숫자(쉼표 마침표 혀용) , 변수만 사용가능)">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <div class="block">
                                             <div class="row template_textarea">
@@ -624,6 +702,35 @@
         newCell5.innerHTML = addCell4;
     }
 
+    // 아이템리스트 열 추가
+    function addRowItemList() {
+        let table = document.getElementById('emphItemList_list_table');
+
+        let newRow = table.insertRow();
+        let newCell1 = newRow.insertCell(0);
+        let newCell2 = newRow.insertCell(1);
+        let newCell3 = newRow.insertCell(2);
+        let newCell4 = newRow.insertCell(3);
+
+        let addCell2 = '';
+        let addCell3 = '';
+        let addCell4 = '';
+
+        addCell2 += '<input class="border" type="text" placeholder="아이템 명 (6자 이내)">';
+        addCell3 += '<input class="border" type="text" placeholder="아이템 내용 (23자 이내)">';
+
+        addCell4 += '<div class="table_btn">'+
+                    '<div class="up" onclick="upRow3(this)"><i class="fa-solid fa-square-caret-up"></i></div>'+
+                    '<div class="down" onclick="downRow3(this)"><i class="fa-solid fa-square-caret-down"></i></div>'+
+                    '<div class="del" onclick="deleteRow3(this)"><i class="fa-solid fa-square-xmark"></i></div>'+
+                    '</div>';
+
+        newCell1.innerText = table.tBodies[0].rows.length;
+        newCell2.innerHTML = addCell2;
+        newCell3.innerHTML = addCell3;
+        newCell4.innerHTML = addCell4;
+    }
+
     // 열 위로 이동
     function upRow(n){
         let i = n.parentNode.parentNode.parentNode;
@@ -633,8 +740,6 @@
         } else {
             i.previousElementSibling.before(i);
         }
-
-
         cellNum();
     }
     function upRow2(n){
@@ -645,8 +750,17 @@
         } else {
             i.previousElementSibling.before(i);
         }
-
         cellNum2();
+    }
+    function upRow3(n){
+        let i = n.parentNode.parentNode.parentNode;
+
+        if(i.rowIndex <= 1) {
+            return false;
+        } else {
+            i.previousElementSibling.before(i);
+        }
+        cellNum3();
     }
 
     // 열 아래로 이동
@@ -673,8 +787,19 @@
         } else {
             i.nextElementSibling.after(i);
         }
-
         cellNum2();
+    }
+    function downRow3(n){
+        let table = document.getElementById('emphItemList_list_table');
+        let i = n.parentNode.parentNode.parentNode;
+        let max = table.tBodies[0].rows.length;
+
+        if(i.rowIndex >= max) {
+            return false;
+        } else {
+            i.nextElementSibling.after(i);
+        }
+        cellNum3();
     }
 
     // 열 삭제
@@ -713,6 +838,40 @@
         cellNum2();
     }
 
+    function deleteRow3(n){
+        let table = document.getElementById('emphItemList_list_table');
+        let i = n.parentNode.parentNode.parentNode.rowIndex;
+
+        let cnt = table.tBodies[0].rows.length;
+        if(cnt <= 2) {
+            let msg = '아이템 리스트는 최소 2개이상 설정 가능합니다.';
+            alertMsg2(msg)
+            return false;
+        } else {
+            table.deleteRow(i);
+        }
+        cellNum3();
+    }
+
+    function alertMsg2(msg) {
+        let html = '';
+        html +=
+            '<div class="layer_pop alert active">' +
+            '<div class="pop_container popup_size3">' +
+            '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+            '<div class="pop_title">아이템 리스트</div>' +
+            '<div class="pop_inner">' +
+            '<div class="alert_txt">' + msg + '</div>' +
+            '<div class="btn_row">' +
+            '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="확인" />' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $('body .layer_pop.alert').remove();
+        $('body').append(html);
+    }
+
     // 행 번호 리셋
     function cellNum() {
         let table = document.getElementById('template_btn_table');
@@ -746,6 +905,17 @@
             row = table.tBodies[0].rows[i];
             let cell = row.getElementsByTagName('td')[0];
             cell.innerText = String(i);
+        }
+    }
+    function cellNum3() {
+        let table = document.getElementById('emphItemList_list_table');
+        let cnt = table.tBodies[0].rows.length;
+
+        let row = "";
+        for(let i = 0; i < cnt; i++){
+            row = table.tBodies[0].rows[i];
+            let cell = row.getElementsByTagName('td')[0];
+            cell.innerText = String(i+1);
         }
     }
 
@@ -956,21 +1126,21 @@
             } else if (val == 3){  // 광고추가형
                 NoneBlock();
                 let msg = '메시지 유형이 "채널 추가형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
-                alert(msg)
+                alertMsg(msg)
             } else if (val == 4){  // 복합형
                 allBlock();
                 let msg = '메시지 유형이 "복합형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
-                alert(msg)
+                alertMsg(msg)
             }
         })
 
-        function alert(msg) {
+        function alertMsg(msg) {
             let html = '';
             html +=
                 '<div class="layer_pop alert active">' +
                 '<div class="pop_container popup_size3">' +
                 '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
-                '<div class="pop_title">알림</div>' +
+                '<div class="pop_title">경고</div>' +
                 '<div class="pop_inner">' +
                 '<div class="alert_txt">' + msg + '</div>' +
                 '<div class="btn_row">' +
@@ -1085,6 +1255,11 @@
 
         $('#highlight_img_check').on('click', function() {
             $('.highlight_img_on').toggleClass('display-none');
+        })
+
+        //강조유형 - 아이템리스트 - 아이템 요약정보
+        $('#itemInfo_check').on('click', function() {
+            $('.itemInfo_check_on').toggleClass('display-none');
         })
 
         // textarea 글자수 제한

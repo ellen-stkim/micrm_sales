@@ -1948,7 +1948,8 @@ input[type=checkbox], label {
 }
 .emphItemList_img .row .td,
 .emphItemList_header .row .td,
-.emphItemList_highlight .row .td {
+.emphItemList_highlight .row .td,
+.emphItemList_itemInfo .row .td {
     padding: 9px;
 }
 .emphItemList_header .header-check-on{
@@ -1957,7 +1958,8 @@ input[type=checkbox], label {
     margin-top: 9px;
     padding: 0 10px;
 }
-.emphItemList_highlight .highlight_div:nth-child(2) {
+.emphItemList_highlight .highlight_div:nth-child(2),
+.emphItemList_itemInfo .itemInfo_div:nth-child(2) {
     height: 36px;
     margin: 10px 0;
 }
