@@ -814,16 +814,20 @@
         if(dis == false){
             let cnt = table.tBodies[0].rows.length;
             if(cnt <= 1) {
+                $('.type_table_no_info').children('td').text('버튼 정보가 없습니다.');
                 $('.type_table_no_info').removeClass('display-none');
+            } else {
+                cellNum();
             }
         } else if (dis == true){
             let cnt = table.tBodies[0].rows.length;
             if(cnt <= 2) {
+                $('.type_table_no_info').children('td').text('버튼 정보가 없습니다.');
                 $('.type_table_no_info').removeClass('display-none');
+            } else {
+                cellNum();
             }
         }
-
-        cellNum();
     }
     function deleteRow2(n){
         let table = document.getElementById('template_link_table');
@@ -833,9 +837,11 @@
 
         let cnt = table.tBodies[0].rows.length;
         if(cnt <= 1) {
+            $('.link_table_no_info').children('td').text('바로연결 정보가 없습니다.');
             $('.link_table_no_info').removeClass('display-none');
+        } else {
+            cellNum2();
         }
-        cellNum2();
     }
 
     function deleteRow3(n){
@@ -879,7 +885,7 @@
         let row = "";
 
         let dis = $('.channel_add_table').hasClass('display-none');
-        console.log(table.tBodies[0].rows)
+
         // 채널추가 열이 display block인 경우
         if(dis == false){
             for(let i = 0; i < cnt; i++){
