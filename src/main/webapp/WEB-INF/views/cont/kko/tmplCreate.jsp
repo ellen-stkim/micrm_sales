@@ -1755,8 +1755,7 @@
     // 알림톡 템플릿 유효성 검사
     function tmplValidate() {
 
-        return true;
-        /*let senderKey = $('#kko_send_to');  //발신 프로필
+        let senderKey = $('#kko_send_to');  //발신 프로필
         let tmplCode = $('input[name="templateCode"]');  //템플릿 코드
         let tmplCate1 = $('.bizContsVal_group .value');  //카테고리그룹
         let tmplCate2 = $('.bizContsVal .value');  //카테고리
@@ -1839,7 +1838,7 @@
         } else if (tmplEmph.text() == "이미지형") {
             console.log("이미지형")
         }
-        return true;*/
+        return true;
     }
 
 
