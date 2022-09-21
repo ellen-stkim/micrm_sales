@@ -7,6 +7,7 @@ import org.apache.ibatis.type.Alias
 @Alias("Kko_at_msgDto")
 open class Kko_at_tmplDto {
 
+    var send_key:String? = null
     var templateCode: String? = null
     var templateName: String? = null
     var templateContent: String? = null
@@ -22,8 +23,8 @@ open class Kko_at_tmplDto {
     var templateTitle: String? = null
     var templateSubtitle: String? = null
     var templateEmphasizeType: String? = null
-
     var categoryCode: String? = null
+
     var newTemplateCode: String? = null
     var newTemplateName: String? = null
     var newTemplateContent: String? = null
@@ -39,6 +40,15 @@ open class Kko_at_tmplDto {
     var newCategoryCode: String? = null
     var templateHeader: String? = null
     var newTemplateHeader: String? = null
+
+    var buttons: MutableList<AtButtonDto>? = null
+    var quickReplies: MutableList<QuickReplyDto>? = null
+
+    var templateItemHighlight: MutableMap<String,String>? = null
+    var templateItem: MutableMap<String,Any>? = null
+
+    var newTemplateItemHighlight: MutableMap<String,String>? = null
+    var newTemplateItem: MutableMap<String,Any>? = null
 
     constructor()
 

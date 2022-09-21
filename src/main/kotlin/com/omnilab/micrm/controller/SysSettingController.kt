@@ -471,4 +471,17 @@ class SysSettingController {
         return sysSettingService.deleteSetLst(lstDto)
     }
 
+
+    @GetMapping("/kkoSetting.mi")
+    fun kkoSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/kkoSetting")
+        val dto = SetLst_searchDto()
+        val map = sysSettingService.getKkoSettingList(dto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+
+        return view;
+    }
+
 }

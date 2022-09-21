@@ -2,13 +2,10 @@ package com.omnilab.micrm.service.impl
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.AtTmpl_searchDto
+import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
-import com.omnilab.micrm.service.KkoMsgService
 import com.omnilab.micrm.service.KkoRestApiService
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
+import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -17,7 +14,6 @@ import org.springframework.http.*
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
-import java.time.LocalTime
 import kotlin.collections.HashMap
 
 
@@ -85,7 +81,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return re_map
     }
 
-    override fun createAtTmpl() {
+    override fun createAtTmpl(dto: Kko_at_tmplDto) {
         val token = getToken();
 
         //        header 설정
@@ -96,6 +92,41 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("accept", MediaType.ALL_VALUE)
 
         //  dto로 받아와서 확인
+
+        var urlString = "$url/$version/resell/template/create/${dto.send_key}"
+        val gson = GsonBuilder().create()
+
+
+        val re_map: MutableMap<String, Any> =
+            restExchange(urlString!!, HttpMethod.POST, HttpEntity(gson.toJson(dto), headers))
+
+
+        logger.error("{}",re_map);
+
+    }
+
+    private fun getTmplObjByDto(dto: Kko_at_tmplDto): Any {
+        val jsonObj = JSONObject()
+       /* jsonObj.put("client_id", dto.client_id)
+        jsonObj.put("message_type", dto.message_type)
+        jsonObj.put("sender_key", dto.sender_key)
+        jsonObj.put("phone_number", dto.phone_number)
+        jsonObj.put("message", dto.message)
+        jsonObj.put("sms_message", dto.sms_message)
+        jsonObj.put("sms_type", dto.sms_type)
+
+        jsonObj.put("etc1", dto.etc1)
+        jsonObj.put("sender_no", dto.sender_no)
+
+        if (!CommonUtils.isEmptyObject(dto!!.button_json)) {
+            var button = JSONObject(dto!!.button_json).get("button")
+            jsonObj.put("button", button)
+        }
+        if (!CommonUtils.isEmptyObject(dto!!.image_json)) {
+            var image = JSONObject(dto!!.image_json).get("image_json")
+            jsonObj.put("image", image)
+        }*/
+        return jsonObj
     }
 
 

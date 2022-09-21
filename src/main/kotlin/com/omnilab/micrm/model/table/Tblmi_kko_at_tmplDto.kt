@@ -4,9 +4,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
 
-@Alias("Tmpl_kko_at_tmplDto")
+@Alias("Tblmi_kko_at_tmplDto")
 open class Tblmi_kko_at_tmplDto {
     var seq: Int? = null
+    var send_key: String? = null
     var tmpl_cd: String? = null
     var tmpl_nm: String? = null
     var tmpl_cont: String? = null

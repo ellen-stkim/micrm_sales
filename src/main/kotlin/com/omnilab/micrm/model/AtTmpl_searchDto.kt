@@ -4,6 +4,7 @@ import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 
 class AtTmpl_searchDto : Tblmi_kko_at_tmplDto {
 
+    var usr_grp_cd: String? = null
     var pageNo : Int = 1
     var searchType : String? = null
     var searchValue : String? = null

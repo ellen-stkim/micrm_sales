@@ -1,11 +1,14 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
+import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.service.*
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
@@ -148,8 +151,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         // 개인화 변수 추가하기
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map);
         view.addObject("list",kkoSenderMap["list"])
         view.addObject("smsSender",smsSenderMap["list"])
         view.addObject("rcsSender",rcsSenderMap["list"])
@@ -212,8 +214,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         view.addObject("list" , listMap["list"])
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map);
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
@@ -489,36 +490,6 @@ class ContentController  {
     }
 
 
-    /**
-     * @Method Name  : edmCreate
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : req: : HttpServletRequest
-     * @param    : rep: : HttpServletResponse
-     * @param    : session : HttpSession
-     * @return   : ModelAndView
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 리스트 생성 뷰 페이지
-     * @title : 이메일 리스트 조회 하기
-     */
-    @GetMapping("/edmCreate.mi")
-    fun edmCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val view = ModelAndView("cont/edmCreate")
-        val map = sysSettingService.getDBValue();
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-
-        val dto = SetLst_searchDto()
-        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        dto.list_tp_id = "CH01"
-        dto.list_dt_id = "DMTP01"
-        dto.def_yn = "Y"
-        val sendList = mobileContentService.selectSenderList(dto)
-        view.addObject("slist", sendList["list"])
-        return view
-    }
 
     /**
      * @Method Name  : imgLst
@@ -919,32 +890,6 @@ class ContentController  {
         return map
     }
 
-    /**
-     * @Method Name  : updateImgYn
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : dto : Tblmi_cont_mstDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 컨텐츠 상세 페이지
-     * @title : 이메일 컨텐츠 상세 페이지
-     */
-    @PostMapping("/edmDetail.mi")
-    fun detailEdm(@ModelAttribute dto : Tblmi_cont_mstDto): ModelAndView {
-        val view = ModelAndView("cont/detailEdm")
-        val tempDto : Contents_searchDto = Contents_searchDto()
-        tempDto.seq = dto.seq
-        val resuleMap =  emailContentService.selectOneContentView(tempDto)
-        view.addObject("list",resuleMap["list"])
-
-        val map = sysSettingService.getDBValue();
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-        return view
-    }
-
     /*
      * @Method Name  : saveContForm
      * @Since    : 2021. 03. 07.
@@ -1038,7 +983,7 @@ class ContentController  {
     //DB 개인화변수.
     @ResponseBody
     @PostMapping("/getDBValue.ajax")
-    fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
+    fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): MutableList<SalesforceDto> {
         return sysSettingService.getDBValue();
     }
 
@@ -1099,6 +1044,110 @@ class ContentController  {
         view.addObject("filePath", uploadPrefix?.cd_val)
 
         return view
+    }
+
+
+    /**
+     * @Method Name  : atTmplCreate
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성 뷰 페이지 조회
+     * @title : 알림톡 탬플릿 생성 뷰 페이지
+     */
+    @GetMapping("/kko/tmplCreate.mi")
+    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val view = ModelAndView("cont/kko/tmplCreate")
+        val map = kkoMsgService.tmplCreateLst();
+
+        view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+        view.addObject("btnLinkLst", map["btnLinkLst"])
+        view.addObject("btnLst", map["btnLst"])
+
+        view.addObject("column",sysSettingService.getDBValue())
+
+        return view
+    }
+
+    /**
+     * @Method Name  : tmplCreateService
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성
+     * @title : 알림톡 탬플릿 생성
+     */
+    @PostMapping("/kko/tmplCreate.service")
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestBody dto : Kko_at_tmplDto ): ModelAndView {
+        val view = ModelAndView("cont/kko/tmplCreate")
+
+        val map = kkoMsgService.createTmpl(dto)
+        /*, @ModelAttribute dto: Kko_at_tmplDto*/
+
+
+        logger.error("{}",dto)
+
+
+        /*view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+
+        view.addObject("column",sysSettingService.getDBValue())*/
+
+        return view
+    }
+
+    /**
+     * @Method Name  : isCheckTmplNm
+     * @Since    : 2022. 09. 20.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 체크
+     * @title : 알림톡 탬플릿명 체크
+     */
+    @ResponseBody
+    @PostMapping("/kko/isCheckTmplNm.ajax")
+    fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any> {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+        dto.use_yn = "Y"
+
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+
+        if(!CommonUtils.isEmptyObject(dto)){   //
+            map.put("status" , HttpServletResponse.SC_BAD_REQUEST)
+            map.put("msg" , "이미 사용중인 템플릿명 입니다.")
+            return map
+        }
+
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("msg" , "사용가능한 템플릿명 입니다.")
+
+        return map
     }
 
 }

@@ -1,5 +1,7 @@
 package com.omnilab.micrm.service
 
+import com.omnilab.micrm.model.SalesforceDto
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -14,7 +16,7 @@ interface SysSettingService {
 
     fun getCommCDLst(dto: Tblmi_comm_cdDto) : List<Tblmi_comm_cdDto>
 
-    fun getDBValue() : Map<String,Any>
+    fun getDBValue() : MutableList<SalesforceDto>
 
     // 발신자 리스트 Y,N 값 변경하기
     fun updateSetLstYn(dto : Tblmi_set_lstDto) : Map<String,Any>
@@ -63,5 +65,7 @@ interface SysSettingService {
 
     // 매핑정보 중복 수정 검사하기
     fun isExistMappingModify(dto : Tblmi_set_lstDto) : Map<String,Any>
+
+    fun getKkoSettingList(dto: SetLst_searchDto): Map<String,Any>
 
 }
