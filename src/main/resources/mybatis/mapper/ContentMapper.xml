@@ -427,6 +427,7 @@
                         img_org_nm,
                         img_file_nm,
                         img_url,
+						kko_img_url,
                         use_yn,
                         del_yn,
                         usr_grp_cd,
@@ -440,6 +441,7 @@
 						#{img_org_nm},
 						#{img_file_nm},
 						#{img_url},
+						#{kko_img_url},
 						#{use_yn},
 						#{del_yn},
 						#{usr_grp_cd},
@@ -464,7 +466,17 @@
 				and img.img_nm like concat ('%',#{img_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
-				and img.ch_tp = #{ch_tp}
+				<choose>
+					<when test="'IMGTP_AT'.equals(ch_tp)">
+						and img.ch_tp in ('IMGTP09','IMGTP10')
+					</when>
+					<when test="'IMGTP_FT'.equals(ch_tp)">
+						and img.ch_tp in ('IMGTP11','IMGTP12')
+					</when>
+					<otherwise>
+						and img.ch_tp = #{ch_tp}
+					</otherwise>
+				</choose>
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
 				<choose>
@@ -502,7 +514,17 @@
 				and img.SEQ = #{seq}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
-				and img.ch_tp = #{ch_tp}
+				<choose>
+					<when test="'IMGTP_AT'.equals(ch_tp)">
+						and img.ch_tp in ('IMGTP09','IMGTP10')
+					</when>
+					<when test="'IMGTP_FT'.equals(ch_tp)">
+						and img.ch_tp in ('IMGTP11','IMGTP12')
+					</when>
+					<otherwise>
+						and img.ch_tp = #{ch_tp}
+					</otherwise>
+				</choose>
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_nm)">
 				and img.img_nm like concat ('%',#{img_nm},'%')

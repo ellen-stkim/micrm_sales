@@ -11,6 +11,7 @@ open class Tblmi_cont_imgDto() {
     var img_org_nm: String? = null
     var img_file_nm: String? = null
     var img_url: String? = null
+    var kko_img_url: String? = null
     var use_yn: String? = null
     var del_yn: String? = null
     var usr_grp_cd: String? = null

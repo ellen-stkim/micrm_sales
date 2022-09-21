@@ -39,16 +39,17 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
 
-  static-path : "D:/work/micrm_sales/src/main/webapp/WEB-INF/classes/static"
+  static-path : "C:/belisa/workspace/workspace5/micrm_sales/src/main/webapp/WEB-INF/classes/static"
   tableau-url: "http://t.tableau-report.com/trusted"
 
 
   biz-url: https://stg-web.bizmsg.kakaoenterprise.com/mng
+  biz-msg-url: https://stg-web.bizmsg.kakaoenterprise.com
   biz-version: v1
   biz-Auth: ENC(GDaXkEIOePI8UF3TWrvkF6M1h89wUxi4KjedlrIsrmq4CYSG64Z5iW8P3Ov+rw4sHufwDXtS2Njccl6Uj+g2pcyoyYxFMxM0CJ9bbsO8bIWFsBq+sXdY77spuAE4R0wV)
 
 upload:
-  src : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
-  temp : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+  src : "C:/belisa/workspace/workspace5/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "C:/belisa/workspace/workspace5/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
+  temp : "C:/belisa/workspace/workspace5/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
 

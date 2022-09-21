@@ -43,6 +43,7 @@ variable:
   tableau-url: "https://t.tableau-report.com/trusted"
 
   biz-url: https://stg-web.bizmsg.kakaoenterprise.com/mng
+  biz-msg-url: https://stg-web.bizmsg.kakaoenterprise.com
   biz-version: v1
   biz-Auth: ENC(GDaXkEIOePI8UF3TWrvkF6M1h89wUxi4KjedlrIsrmq4CYSG64Z5iW8P3Ov+rw4sHufwDXtS2Njccl6Uj+g2pcyoyYxFMxM0CJ9bbsO8bIWFsBq+sXdY77spuAE4R0wV)
 
