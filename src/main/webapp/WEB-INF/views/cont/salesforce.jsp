@@ -1181,6 +1181,44 @@
             }
         });
 
+        // sms_delete_img
+        $(document).on("click", ".sms_delete_img", function(){
+            //console.log("delete sms image")
+            let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
+            let imgcount = imgElement.length;
+            let imgUrl = $(this).next('.txt_input').val();
+            if (imgcount > 0 || imgUrl != '') {
+                $(this).next('.txt_input').val('');
+                $("#mds_img_cd").val('');
+                if ($("input[name='mms_imgurl']") != '') {
+                    // mms_imgurl 초기화
+                    $("input[name='mms_imgurl']").val('');
+                    $("input[name='mds_img_cd']").val('');
+                    $("#js-sms-img").empty();
+                }
+                imgElement.remove();
+            } else {
+                return false;
+            }
+        });
+
+        // 카카오 이미지 삭제
+        $(document).on("click", ".kko_delete_img", function(){
+            let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
+            let imgcount = imgElement.length;
+            let imgUrl = $(this).next('.txt_input').val();
+
+            if (imgcount > 0 || imgUrl != '') {
+                $("#kakaoImage").val('');
+                $("#kko_img_cd").val('');
+                $("input[name='kko_view_img_url']").val('');
+                // $("input[name='kko_img_url']").val(''); // 이미지 삭제시 링크 주소 삭제
+                $("#js-kakao-img").empty();
+            } else {
+                return false;
+            }
+        });
+
         $(document).on('dragstart', function(ev){
             ev.originalEvent.dataTransfer.setData("text", $(ev.target).attr("data"));
         });
