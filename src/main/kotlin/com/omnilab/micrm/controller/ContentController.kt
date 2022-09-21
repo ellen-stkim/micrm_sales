@@ -26,6 +26,7 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
+import kotlin.math.log
 
 
 @Controller
@@ -60,6 +61,10 @@ class ContentController  {
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
+
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -644,17 +649,18 @@ class ContentController  {
         if (file != null) {
             map["imgCheck"] = 1
             val userInfo = UsefulUtils.sessionUser()
-            var contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
+            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
             map = fileUpload.upload(contentFilePath, file, request);
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
             }else{
+
                 if(dto.ch_tp != "IMGTP01"){
                     val fileName = map["file_nm"]
-                    var image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.getWidth()
-                    val imageHeight: Int = image.getWidth()
-                    if(image.getWidth() < 500 || image.getHeight() < 250) {
+                    val image : BufferedImage = ImageIO.read(file.inputStream)
+                    val imageWidth: Int = image.width
+                    val imageHeight: Int = image.width
+                    if(image.width < 500 || image.height < 250) {
 
                         val newWidth = 500
                         val newHeight = 500
@@ -683,12 +689,32 @@ class ContentController  {
                         g.drawImage(resizeImage, 0, 0, null)
                         g.dispose()
 
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath(contentFilePath + "/" + fileName), FilenameUtils.getName(contentFilePath + "/" + fileName)))
+                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
 
                         resizeImage.flush()
                         image.flush()
                     }
                 }
+                var resultMap: MutableMap<String, Any>? = null
+                if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                    resultMap = kkoRestApiService.uploadTmplImg(file)
+                }
+                if(dto.ch_tp == "IMGTP11" || dto.ch_tp == "IMGTP12"){    // 카카오 친구톡 이미지
+                    resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                }
+                logger.error("{}",resultMap)
+                if(!CommonUtils.isEmptyObject(resultMap)){
+                    if(resultMap!!["result"] as Boolean){
+                        val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                        dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                    }else{
+                        map["uploaded"] = 0
+                        map["message"] = "파일 저장에 실패하였습니다."
+                        logger.info("File DB insert fail")
+                        return map
+                    }
+                }
+
             }
 
             dto.reg_id = userInfo.usr_id

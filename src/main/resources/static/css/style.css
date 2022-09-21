@@ -688,7 +688,7 @@
 .rcsImgForm td .select .option li {padding:12px 15px;}
 .rcs_option,
 .guide_txt {display:none;}
-.guide_txt {color:#cccccc; padding:10px 0 0; line-height:1.4;}
+.guide_txt,.guide_lst {color:#cccccc; padding:10px 0 0; line-height:1.4;}
 .guide_txt li.on {color:#666666;}
 
 /* 이미지 파일 */
@@ -709,7 +709,7 @@
     font-size:11px; line-height:1; background:#FFFFFF; color:#888888; cursor:pointer;}
 .column .img_head .remove_info .useState {border-right:none;}
 .img_viewer {clear:both; position:relative; width:538px; height:245px; border:1px solid #dddddd;
-    margin:50px 0 30px; text-align:center; overflow-y:auto; padding:35px 0;}
+    margin:50px auto 30px; text-align:center; overflow-y:auto; padding:35px 0;}
 .img_viewer.noImg::before {content:'업로드한 이미지가 없습니다.'; display:block; position:absolute; left:0; top:50%;
     transform:translateY(-50%); text-align:center; width:100%;}
 .pop_table_type1 td .input_type1 {display:block; width:100%; height:100%; padding:0 15px;}

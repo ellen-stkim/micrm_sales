@@ -201,7 +201,7 @@
                                                 <div class="template_add_img" name="addImgBtn">
                                                     click here to upload
                                                 </div>
-                                                <input type="file"  hidden>
+                                                <input type="file" name="templateImageUrl" hidden>
                                                 <p class="color_red">
                                                     - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                     - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</p>
@@ -220,7 +220,7 @@
                                                         <div class="template_add_img" name="addImgBtn">
                                                             click here to upload
                                                         </div>
-                                                        <input type="file" hidden>
+                                                        <input type="file" name="templateImageUrl" hidden>
                                                         <p class="color_red">
                                                             - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                             - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.
@@ -238,6 +238,7 @@
                                                     <label for="header_check">설정</label>
 
                                                     <input type="text" class="header-check-on border display-none"
+                                                           name="templateHeader"
                                                            placeholder="헤더 내용 입력 (최대 16자)">
                                                 </div>
                                             </div>
@@ -254,9 +255,9 @@
                                                     </div>
 
                                                     <div class="highlight_div highlight_check_on display-none">
-                                                        <input type="text" class="txt_input4 first border"
+                                                        <input type="text" class="txt_input4 first border" name="title"
                                                                placeholder="타이틀 입력 (최대 30자)">
-                                                        <input type="text" class="txt_input4 border"
+                                                        <input type="text" class="txt_input4 border" name="description"
                                                                placeholder="디스크립션 입력 (최대 19자)">
                                                     </div>
 
@@ -270,7 +271,7 @@
                                                         <div class="template_add_img" name="addImgBtn">
                                                             click here to upload
                                                         </div>
-                                                        <input type="file" hidden>
+                                                        <input type="file" name="imageUrl" hidden>
                                                         <p class="color_red">
                                                             - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                             - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.
@@ -304,11 +305,11 @@
                                                         <tr class="itemList_add_table1" id="itemList_add_table1">
                                                             <td>1</td>
                                                             <td>
-                                                                <input class="border" type="text"
+                                                                <input class="border" type="text" data_name="title"
                                                                        placeholder="아이템 명 (6자 이내)">
                                                             </td>
                                                             <td>
-                                                                <input class="border" type="text"
+                                                                <input class="border" type="text" data_name="description"
                                                                        placeholder="아이템 내용 (23자 이내)">
                                                             </td>
                                                             <td>
@@ -327,11 +328,11 @@
                                                         <tr class="itemList_add_table2" id="itemList_add_table2">
                                                             <td>2</td>
                                                             <td>
-                                                                <input class="border" type="text"
+                                                                <input class="border" type="text" data_name="title"
                                                                        placeholder="아이템 명 (6자 이내)">
                                                             </td>
                                                             <td>
-                                                                <input class="border" type="text"
+                                                                <input class="border" type="text" data_name="description"
                                                                        placeholder="아이템 내용 (23자 이내)">
                                                             </td>
                                                             <td>
@@ -364,9 +365,9 @@
                                                     </div>
 
                                                     <div class="itemInfo_div itemInfo_check_on display-none">
-                                                        <input type="text" class="txt_input4 first border"
+                                                        <input type="text" class="txt_input4 first border" data_name="title"
                                                                placeholder="아이템 명 (최대 6자)">
-                                                        <input type="text" class="txt_input4 border"
+                                                        <input type="text" class="txt_input4 border" data_name="description"
                                                                placeholder="아이템 내용 입력 (최대 14자, 화폐단위 및 숫자(쉼표 마침표 혀용) , 변수만 사용가능)">
                                                     </div>
 
@@ -393,17 +394,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="block adver_msg_block">
-                                        <div class="row template_textarea">
-                                            <div class="th">광고성 메시지 <span class="color_red">*</span><br>(수신 동의 요청 또는 간단
-                                                광고 문구)
+                                        <%--<div class="block adver_msg_block">
+                                            <div class="row template_textarea">
+                                                <div class="th">광고성 메시지 <span class="color_red">*</span><br>(수신 동의 요청 또는 간단
+                                                    광고 문구)
+                                                </div>
+                                                <div class="td">
+                                                    <textarea rows="8" name="tmpl_ad"
+                                                              placeholder="텍스트 입력 (최대 500자)"></textarea>
+                                                </div>
                                             </div>
-                                            <div class="td">
-                                                <textarea rows="8" name="tmpl_ad"
-                                                          placeholder="텍스트 입력 (최대 500자)"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>--%>
+                                        </div>--%>
                                     <div class="block block2 addchannel_block">
                                         <div class="row template_textarea2">
                                             <div class="th">채널 추가<br>안내 메시지</div>
@@ -762,8 +763,8 @@
         let addCell3 = '';
         let addCell4 = '';
 
-        addCell2 += '<input class="border" type="text" placeholder="아이템 명 (6자 이내)">';
-        addCell3 += '<input class="border" type="text" placeholder="아이템 내용 (23자 이내)">';
+        addCell2 += '<input class="border" type="text" data_name="title" placeholder="아이템 명 (6자 이내)">';
+        addCell3 += '<input class="border" type="text" data_name="description" placeholder="아이템 내용 (23자 이내)">';
 
         addCell4 += '<div class="table_btn">' +
             '<div class="up" onclick="upRow3(this)"><i class="fa-solid fa-square-caret-up"></i></div>' +
@@ -1755,7 +1756,8 @@
     // 알림톡 템플릿 유효성 검사
     function tmplValidate() {
 
-        let senderKey = $('#kko_send_to');  //발신 프로필
+        return true;
+        /*let senderKey = $('#kko_send_to');  //발신 프로필
         let tmplCode = $('input[name="templateCode"]');  //템플릿 코드
         let tmplCate1 = $('.bizContsVal_group .value');  //카테고리그룹
         let tmplCate2 = $('.bizContsVal .value');  //카테고리
@@ -1838,7 +1840,7 @@
         } else if (tmplEmph.text() == "이미지형") {
             console.log("이미지형")
         }
-        return true;
+        return true;*/
     }
 
 
@@ -1901,12 +1903,13 @@
 
     // 템플릿 등록
     function createTmpl() {
-        let selLst = $('.select')
+        /*let selLst = $('.select')
         for (select of selLst) {
             let value = $(select).find('.value').attr("data");
             $(select).find("input.selValue").val(value);
         }
-
+        console.log(selLst)*/
+        //templateEmphasizeType
         const res = function (response) {
             // console.log(response)
             /*let $doc = new DOMParser().parseFromString(response, 'text/html');
@@ -1959,7 +1962,7 @@
 
             const linkLst1 = $(quick).find(".appLink-on:visible");
             const linkLst2 = $(quick).find(".webLink-on:visible");
-            let linkLst = linkLst1.length > 0?  linkLst1 : linkLst2;
+            let linkLst = linkLst1.length > 0 ? linkLst1 : linkLst2;
 
             const inpLst = $(linkLst).find('input')
             for (link of inpLst) {
@@ -1971,9 +1974,49 @@
         //  ------ 바로 연결  end---------
 
 
+        // 이미지
+
+        //  ------ 아이템 하이라이트  ---------
+        //  imageUrl => 이미지 추가
+        let itemHigh = new Object();
+        const highLst = $('.highlight_div input[type="text"]:visible');
+        for (high of highLst) {
+            itemHigh[$(high).attr("name")] = $(high).val();  // 이미지 추가
+        }
+        data.templateItemHighlight = itemHigh;
+        //  ------ 아이템 하이라이트 end ---------
+
+
+        //  ------ 아이템 리스트  ---------
+        let tmplItem =new Object();
+        let itemList = [];
+        const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
+        for(selItemTr of selItemTrLst){
+            const selItemLst = $(selItemTr).find('input[type="text"]:visible');
+            let item = new Object();
+            for (selItem of selItemLst) {
+                item[$(selItem).attr("data_name")] = $(selItem).val();  // 이미지 추가
+            }
+            itemList.push(item);
+        }
+            tmplItem.list = itemList;
+        //  ------ 아이템 리스트 end ---------
+
+        //  ------ 아이템 요약정보  ---------
+        let itemInfo = new Object();
+        const itemInfoLst = $('.itemInfo_div input[type="text"]:visible');
+        for (info of itemInfoLst) {
+            console.log(info)
+            itemInfo[$(info).attr("data_name")] = $(info).val();  // 이미지 추가
+        }
+        tmplItem.summary = itemInfo;
+
+        data.templateItem =tmplItem;
+        //  ------ 아이템 요약정보 end ---------
+
         console.log(data)
 
-        <%--com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')--%>
+        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
 
     }
 
@@ -2066,8 +2109,24 @@
     }
 
     // 이미지 파일 등록 버튼
-    $(document).on('click','div[name="addImgBtn"]',(e)=>{
+    $(document).on('click', 'div[name="addImgBtn"]', (e) => {
         $(e.target).siblings('input[type="file"]').trigger('click')
+    })
+
+    // 셀렉트 값 변경
+    $(document).on('click', '.select .option li', (e) => {
+        const val = $(e.target).val();
+        const nm = $(e.target).html();
+        const select = $(e.target).parents(".select");
+
+        console.log($(e.target))
+        console.log($(e.target).val())
+        console.log(val)
+
+        $(select).find('.value').attr('data', val);
+        $(select).find('.value').html(nm);
+        $(select).find('input.selValue').val(val);
+
     })
 
 </script>

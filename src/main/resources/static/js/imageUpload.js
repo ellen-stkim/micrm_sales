@@ -34,6 +34,30 @@ $(function () {
                 // 모바일 이미지 유효성 검사
                 imageUpload(this);
             }
+        } else if (type == 'IMGTP09' || type =='IMGTP10') {  // 알림톡
+            if (!(ex == "jpg" || ex == "png")) {
+                popup.popAlert('알림톡의 경우 jpg, png 파일만 업로드 가능 합니다.');
+                $(this).val('');
+                $("#file").val();
+                $(".img_viewer").children().remove();
+                $(".img_view").addClass('noImg');
+                return false;
+            } else {
+                // 이미지 유효성 검사
+                atImageUpload(this,type)
+            }
+        } else if (type == 'IMGTP11' || type =='IMGTP12') {  // 친구톡
+            if (!(ex == "jpg" || ex == "png")) {
+                popup.popAlert('친구톡의 경우 jpg, png 파일만 업로드 가능 합니다.');
+                $(this).val('');
+                $("#file").val();
+                $(".img_viewer").children().remove();
+                $(".img_view").addClass('noImg');
+                return false;
+            } else {
+                // 이미지 유효성 검사
+                ftImageUpload(this,type)
+            }
         } else if(type == 'IMGTP01') {
             if (!(ex == "jpg" || ex == "png" || ex == "gif")) {
                 popup.popAlert('이메일에 경우 jpg, png, gif 파일만 업로드 가능 합니다.');
@@ -91,12 +115,29 @@ $(function () {
         $('.img_viewer').find('img').remove();
 
         if(channel == 'RCS'){
+            $('.guide_lst').css('display','none');
             $('tr.rcs_option').css('display','table-row');
             $('.guide_txt').css('display','block');
-            $('.other_guide').css('display','none');
-        }else{
+
+        } else if(channel == 'IMGTP09'){   //알림톡 아이템리스트 이미지
+            $('.guide_lst').css('display','none');
+            $('.at_guide1').css('display','block');
             $('tr.rcs_option').css('display','none');
-            $('.guide_txt').css('display','none');
+        } else if(channel == 'IMGTP10'){  // 알림톡 아이템리스트 이미지
+            $('.guide_lst').css('display','none');
+            $('.at_guide2').css('display','block');
+            $('tr.rcs_option').css('display','none');
+        } else if(channel == 'IMGTP11'){   // 친구톡 이미지
+            $('.guide_lst').css('display','none');
+            $('.ft_guide1').css('display','block');
+            $('tr.rcs_option').css('display','none');
+        } else if(channel == 'IMGTP12'){   // 친구톡 와이드 이미지
+            $('.guide_lst').css('display','none');
+            $('.ft_guide2').css('display','block');
+            $('tr.rcs_option').css('display','none');
+        } else{
+            $('.guide_lst').css('display','none');
+            $('tr.rcs_option').css('display','none');
             $('.other_guide').css('display','block');
         }
     });
@@ -127,7 +168,7 @@ $(function () {
             num = 2;
         }*/
 
-        $('.guide_txt li').eq(num).addClass('on').siblings().removeClass('on');            
+        $('.guide_txt li').eq(num).addClass('on').siblings().removeClass('on');
     });
 
     // 이미지 form 유효성 검사
@@ -265,6 +306,227 @@ function imageUpload(addImage) {
     }
 }
 
+// 알림톡 이미지 유효성 체크
+function atImageUpload(addImage,type) {
+
+    let file = $(addImage)[0].files[0];
+    img = new Image();
+    let imgWidth = 0;
+    let imgHeight = 0;
+    let minWidth;
+    let minHeight;
+    let ratio;
+
+    if(type == 'IMGTP09'){
+        minWidth = 500;
+        minHeight = 250;
+        ratio= "2:1";
+    }else {
+        minWidth =108;
+        minHeight = 108;
+        ratio= "1:1";
+    }
+
+    img.src = URL.createObjectURL(file);
+    img.onload = function () {
+        imgWidth = this.width;
+        imgHeight = this.height;
+
+        let temp_gcd = gcdlcm(imgWidth, imgHeight);
+        let a = temp_gcd[0];
+        let r_width = 0;
+        let r_height = 0;
+        if (a == 1) {
+            if (imgWidth > imgHeight) {
+                r_width = imgWidth / imgHeight;
+                r_height = 1;
+            } else {
+                r_width = 1;
+                r_height = imgWidth / imgHeight;
+            }
+        } else {
+            r_width = imgWidth / a;
+            r_height = imgHeight / a;
+        }
+        if(((r_width == 2 && r_height == 1) && type == 'IMGTP09') ||(r_width == 1 && r_height == 1) && type == 'IMGTP10'){  //알림톡
+            if (minWidth > imgWidth || minHeight > imgHeight) {
+                popup.popAlert("이미지 해상도가 가로 최소 "+ minWidth +" 세로 최소 "+ minHeight +" 입니다.\n현재 이미지 해상도\n가로 : " + imgWidth + ", 세로 : " + imgHeight);
+                $("#fileName").val('');
+                $('.img_viewer').addClass('noImg');
+                $('.img_viewer').find('img').remove();
+                $("#form")[0].reset();
+                return false;
+            }else{
+                let maxSize = 500 * 1024;
+                let fileSize = 0;
+                let browser = navigator.appName;
+                let sVal = $('.file')[0];
+                if (browser == "Microsoft Internet Explorer") {
+                    let oas = new ActiveXObject("Scripting.FileSystemObject");
+                    fileSize = oas.getFilr(sVal.value.value).size;
+                } else {
+                    fileSize = sVal.files[0].size;
+                }
+                if (fileSize > maxSize) {
+                    $('.file').val('');
+                    popup.popAlert("첨부파일 사이즈는 500KB 이내로 등록 가능 합니다.");
+                    $("#form")[0].reset();
+                    $("#file").val();
+                    $(".img_viewer").children().remove();
+                    $(".img_view").addClass('noImg');
+                    return false;
+                } else {
+                    $('#fileName').val(file.name);
+                    $('.img_viewer').removeClass('noImg');
+                    $('.img_viewer').html('<img src="' + img.src + '"/>');
+                    return false;
+                }
+                return;
+            }
+
+            $('#fileName').val(file.name);
+            $('.img_viewer').removeClass('noImg');
+            $('.img_viewer').html('<img src="' + img.src + '"/>');
+            return;
+        } else{    //비율이 안맞을 경우
+            $('.file').val('');
+            popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
+            $("#fileName").val('');
+            $('.img_viewer').addClass('noImg');
+            $('.img_viewer').find('img').remove();
+            $("#form")[0].reset();
+            return;
+        }
+    }
+}
+// 친구톡 이미지 유효성 체크
+function ftImageUpload(addImage,type) {
+
+    let file = $(addImage)[0].files[0];
+    img = new Image();
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    img.src = URL.createObjectURL(file);
+    img.onload = function () {
+        imgWidth = this.width;
+        imgHeight = this.height;
+
+
+        if(type == 'IMGTP11'){
+            let minWidth = 500;
+            let ratio = "2:1 또는 3:4";
+
+            let temp_gcd = gcdlcm(imgWidth, imgHeight);
+            let a = temp_gcd[0];
+            let r_width = 0;
+            let r_height = 0;
+            if (a == 1) {
+                if (imgWidth > imgHeight) {
+                    r_width = imgWidth / imgHeight;
+                    r_height = 1;
+                } else {
+                    r_width = 1;
+                    r_height = imgWidth / imgHeight;
+                }
+            } else {
+                r_width = imgWidth / a;
+                r_height = imgHeight / a;
+            }
+
+            if((r_width == 2 && r_height == 1) ||(r_width == 3 && r_height == 4)){
+                if (minWidth > imgWidth) {
+                    popup.popAlert("이미지 해상도가 가로 최소 "+ minWidth +" 입니다.\n현재 이미지 해상도\n가로 : " + imgWidth + ", 세로 : " + imgHeight);
+                    $("#fileName").val('');
+                    $('.img_viewer').addClass('noImg');
+                    $('.img_viewer').find('img').remove();
+                    $("#form")[0].reset();
+                    return false;
+                }else {
+                    let maxSize = 500 * 1024;
+                    let fileSize = 0;
+                    let browser = navigator.appName;
+                    let sVal = $('.file')[0];
+                    if (browser == "Microsoft Internet Explorer") {
+                        let oas = new ActiveXObject("Scripting.FileSystemObject");
+                        fileSize = oas.getFilr(sVal.value.value).size;
+                    } else {
+                        fileSize = sVal.files[0].size;
+                    }
+                    if (fileSize > maxSize) {
+                        $('.file').val('');
+                        popup.popAlert("첨부파일 사이즈는 500KB 이내로 등록 가능 합니다.");
+                        $("#form")[0].reset();
+                        $("#file").val();
+                        $(".img_viewer").children().remove();
+                        $(".img_view").addClass('noImg');
+                        return false;
+                    } else {
+                        $('#fileName').val(file.name);
+                        $('.img_viewer').removeClass('noImg');
+                        $('.img_viewer').html('<img src="' + img.src + '"/>');
+                        return false;
+                    }
+                    return;
+                }
+                $('#fileName').val(file.name);
+                $('.img_viewer').removeClass('noImg');
+                $('.img_viewer').html('<img src="' + img.src + '"/>');
+                return;
+            } else{    //비율이 안맞을 경우
+                $('.file').val('');
+                popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
+                $("#fileName").val('');
+                $('.img_viewer').addClass('noImg');
+                $('.img_viewer').find('img').remove();
+                $("#form")[0].reset();
+                return;
+            }
+        }else {    // 친구톡 와이드 이미지
+            const width = 800
+            const height =600
+            if (width != imgWidth || height != imgHeight) {
+                popup.popAlert("이미지 해상도가 가로 "+ width +" 세로 "+height+" 파일만 등록 가능합니다.\n현재 이미지 해상도\n가로 : " + imgWidth + ", 세로 : " + imgHeight);
+                $("#fileName").val('');
+                $('.img_viewer').addClass('noImg');
+                $('.img_viewer').find('img').remove();
+                $("#form")[0].reset();
+                return false;
+            }else {
+                let maxSize = 2 * 1024 * 1024;
+                let fileSize = 0;
+                let browser = navigator.appName;
+                let sVal = $('.file')[0];
+                if (browser == "Microsoft Internet Explorer") {
+                    let oas = new ActiveXObject("Scripting.FileSystemObject");
+                    fileSize = oas.getFilr(sVal.value.value).size;
+                } else {
+                    fileSize = sVal.files[0].size;
+                }
+                if (fileSize > maxSize) {
+                    $('.file').val('');
+                    popup.popAlert("첨부파일 사이즈는 2MB 이내로 등록 가능 합니다.");
+                    $("#form")[0].reset();
+                    $("#file").val();
+                    $(".img_viewer").children().remove();
+                    $(".img_view").addClass('noImg');
+                    return false;
+                } else {
+                    $('#fileName').val(file.name);
+                    $('.img_viewer').removeClass('noImg');
+                    $('.img_viewer').html('<img src="' + img.src + '"/>');
+                    return false;
+                }
+                return;
+            }
+            $('#fileName').val(file.name);
+            $('.img_viewer').removeClass('noImg');
+            $('.img_viewer').html('<img src="' + img.src + '"/>');
+            return;
+        }
+    }
+}
+
 function gcdlcm(a, b) {
     var answer = [];
     var minNum = Math.min(a, b);
@@ -322,7 +584,7 @@ function verticalTall(image){
     let maxHeight = 528;
 
     let fileSize = $(image)[0].files[0].size;
-    let maxSize = 1 * 1024 * 1024; //1MB 
+    let maxSize = 1 * 1024 * 1024; //1MB
 
     if(fileSize > maxSize){
         popup.popAlert("RCS 세로형 Tall 이미지는 1MB 이하 이미지만 등록이 가능합니다.");
@@ -369,7 +631,7 @@ function verticalMedium(image){
     let maxHeight = 336;
 
     let fileSize = $(image)[0].files[0].size;
-    let maxSize = 1 * 1024 * 1024; //1MB 
+    let maxSize = 1 * 1024 * 1024; //1MB
 
     if(fileSize > maxSize){
         popup.popAlert("RCS 세로형 Medium 이미지는 1MB 이하 이미지만 등록이 가능합니다.");
@@ -417,7 +679,7 @@ function slideSmall(image){
     let minHeight = 336;
 
     let fileSize = $(image)[0].files[0].size;
-    let maxSize = 1 * 1024 * 1024; //1MB 
+    let maxSize = 1 * 1024 * 1024; //1MB
 
     if(fileSize > maxSize){
         popup.popAlert("RCS 슬라이드형 Small 이미지는 1MB 이하 이미지만 등록이 가능합니다.");
@@ -466,7 +728,7 @@ function slideMedium(image){
     let minHeight = 504;
 
     let fileSize = $(image)[0].files[0].size;
-    let maxSize = 1 * 1024 * 1024; //1MB 
+    let maxSize = 1 * 1024 * 1024; //1MB
 
     if(fileSize > maxSize){
         popup.popAlert("RCS 슬라이드형 Medium 이미지는 1MB 이하 이미지만 등록이 가능합니다.");
