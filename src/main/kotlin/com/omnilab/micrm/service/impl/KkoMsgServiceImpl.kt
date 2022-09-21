@@ -3,6 +3,8 @@ package com.omnilab.micrm.service.impl
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
+import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.service.KkoMsgService
 import com.omnilab.micrm.service.KkoRestApiService
@@ -55,13 +57,6 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         paramMap["nextCk"] = paginationInfo.currentPageNo != paginationInfo.lastPageNo
 
-        // 리스트 조회
-
-        // 이미지??
-
-        kkoRestApiService.createAtTmpl()
-
-//        kkoAtTmplDao.selectAtTmplLst(dto)
         return paramMap
     }
 
@@ -78,7 +73,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         return map
     }
 
-    override fun createTmplLst(): Map<String, Any> {
+    override fun tmplCreateLst(): Map<String, Any> {
         val map : MutableMap<String,Any> = mutableMapOf()
         var searchDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
         searchDto.grp_id= "KAKAO_TMPL"
@@ -98,6 +93,28 @@ class KkoMsgServiceImpl : KkoMsgService {
         searchDto.cd_id ="CATE_SUB_GID"
         map.put("cateSubGidLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
 
+        searchDto.cd_id ="TMPL_BTN_LINK_TP"
+        map.put("btnLinkLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+
+        searchDto.cd_id ="TMPL_BTN_TP"
+        map.put("btnLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+
         return map
+    }
+
+    override fun getKkoAtTmplDto(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto? {
+        return kkoAtTmplDao.selKkoAtTmpl(dto)
+    }
+
+    override fun createTmpl(dto: Kko_at_tmplDto): Any? {
+
+        // 카카오 api 호풀
+        kkoRestApiService.createAtTmpl(dto)
+
+        // tmplDto 저장
+        //
+
+
+        return null
     }
 }

@@ -6,20 +6,14 @@ import org.apache.ibatis.type.Alias
 
 @Alias("AtButtonDto")
 class AtButtonDto  {
+    var ordering: Int? = null
     var name: String? = null
-    var type: String? = null
-    var scheme_android: String? = null
-    var scheme_ios: String? = null
-    var url_mobile: String? = null
-    var url_pc:String? = null
-
-    var chat_extra: String? = null
-    var chat_event: String? = null
-    var plugin_id: String? = null
-    var relay_id: String? = null
-    var oneclick_id: String? = null
-    var product_id:String? = null
-    var target:String? = null
+    var linkType: String? = null
+    var linkTypeName: String? = null
+    var linkMo: String? = null
+    var linkPc:String? = null
+    var linkAnd: String? = null
+    var linkIos: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

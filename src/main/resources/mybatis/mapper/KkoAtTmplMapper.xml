@@ -39,7 +39,7 @@
         </where>
     </select>
 
-    <select id="selAtTmplLst" resultType="Tmpl_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
+    <select id="selAtTmplLst" resultType="Tblmi_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
         SELECT * FROM tblmi_kko_at_tmpl
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
@@ -64,6 +64,29 @@
         </if>
     </select>
 
+    <select id="selKkoAtTmpl" resultType="Tblmi_kko_at_tmplDto"  parameterType="AtTmpl_searchDto">
+        SELECT * FROM tblmi_kko_at_tmpl
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
+                and send_key = #{send_key}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
+                and chan_id = #{chan_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
+                and kep_status = #{kep_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
+                and tmpl_status = #{tmpl_status}
+            </if>
+        </where>
+    </select>
 </mapper>
 
 

@@ -1,11 +1,14 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
+import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.service.*
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
@@ -1061,13 +1064,15 @@ class ContentController  {
     @GetMapping("/kko/tmplCreate.mi")
     fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
-        val map = kkoMsgService.createTmplLst();
+        val map = kkoMsgService.tmplCreateLst();
 
         view.addObject("cateLst",map["cateLst"]);
         view.addObject("cateSubLst",map["cateSubLst"])
         view.addObject("msgTpLst", map["msgTpLst"])
         view.addObject("empTpLst", map["empTpLst"])
         view.addObject("cateSubGidLst", map["cateSubGidLst"])
+        view.addObject("btnLinkLst", map["btnLinkLst"])
+        view.addObject("btnLst", map["btnLst"])
 
         view.addObject("column",sysSettingService.getDBValue())
 
@@ -1089,11 +1094,16 @@ class ContentController  {
      * @title : 알림톡 탬플릿 생성
      */
     @PostMapping("/kko/tmplCreate.service")
-    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): ModelAndView {
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestBody dto : Kko_at_tmplDto ): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
-        val map = kkoMsgService.createTmplLst();
 
-        logger.error("gfdgfdgfgfdgtmplCreateServicetmplCreateService")
+        val map = kkoMsgService.createTmpl(dto)
+        /*, @ModelAttribute dto: Kko_at_tmplDto*/
+
+
+        logger.error("{}",dto)
+
+
         /*view.addObject("cateLst",map["cateLst"]);
         view.addObject("cateSubLst",map["cateSubLst"])
         view.addObject("msgTpLst", map["msgTpLst"])
@@ -1121,19 +1131,23 @@ class ContentController  {
      */
     @ResponseBody
     @PostMapping("/kko/isCheckTmplNm.ajax")
-    fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): MutableMap<String, Any> {
+    fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any> {
 
         val map :MutableMap<String,Any> = mutableMapOf()
+        dto.use_yn = "Y"
 
-//        rep.status = HttpServletResponse.SC_OK
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+
+        if(!CommonUtils.isEmptyObject(dto)){   //
+            map.put("status" , HttpServletResponse.SC_BAD_REQUEST)
+            map.put("msg" , "이미 사용중인 템플릿명 입니다.")
+            return map
+        }
+
         map.put("status" , HttpServletResponse.SC_OK)
         map.put("msg" , "사용가능한 템플릿명 입니다.")
 
         return map
     }
-
-
-
-
 
 }
