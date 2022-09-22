@@ -2074,3 +2074,33 @@ input[type=checkbox], label {
 select option[value=""][disabled] {
     display: none;
 }
+
+.drag-button{
+    background: #fff;
+    border: 1px #aaa solid;
+    color: #333;
+    padding: 5px 12px 8px 12px;
+    margin: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all ease 0.5s;
+    box-shadow: 1px 1px 0px #C8C8C8;
+    vertical-align: middle;
+}
+
+.drag-button[draggable=true]{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+.drag-button:hover{
+    transition: all ease 0.5s;
+    boxshadow: 3px 3px 8px #333;
+    border-color: #ea3333;
+    color: #ea3333;
+}
