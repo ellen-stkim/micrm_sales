@@ -367,7 +367,7 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
+                    if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
 
                         // key_id (템플릿 코드) 로 템플릿 유효한지 확인
                         /* var dto =  Tblmi_kko_at_tmplDto(contentListCreatedto.key_id,tblmiContLstdto.cont_sub)
@@ -622,6 +622,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                 }
+                logger.error("{}",tblmiContLstdto)
                 contentDao.insertContent(tblmiContLstdto)
 
                 // Url 처리
