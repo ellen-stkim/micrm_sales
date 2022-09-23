@@ -6,7 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
 
 @Alias("SetLst_searchDto")
-class SetLst_searchDto : Tblmi_set_lstDto() {
+class SetLst_searchDto: Tblmi_set_lstDto {
+
 
     var pageNo: Int = 1
     var firstIndex: Int = 0
