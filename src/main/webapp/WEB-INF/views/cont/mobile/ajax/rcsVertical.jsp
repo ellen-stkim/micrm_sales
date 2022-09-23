@@ -35,7 +35,7 @@
                   <div class="value" data="0">개인화 변수</div>
                   <ul class="option">
                      <c:forEach var="item" items="${column}" varStatus="status">
-                        <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                        <li data="${item.list_val}">${item.list_nm}</li>
                      </c:forEach>
                   </ul>
                </div>
@@ -79,7 +79,7 @@
                         <div class="value" data="0">개인화 변수</div>
                         <ul class="option">
                            <c:forEach var="item" items="${column}" varStatus="status">
-                              <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                              <li data="${item.list_val}">${item.list_nm}</li>
                            </c:forEach>
                         </ul>
                      </div>

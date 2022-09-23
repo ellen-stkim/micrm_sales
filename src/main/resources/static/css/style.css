@@ -370,7 +370,7 @@
 .column .row_body .sms_btn ,.scroll-box .sms_btn {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
     line-height:37px; text-align:center; font-size:13px; background:#f2f2f2;}
 
-.column .round_box.head{ padding: 12px; background: #ffcd00; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
+.round_box .round_box.head{ padding: 12px; background: #ffcd00; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
 
 .rcs_action {width:100%; padding:15px 0; text-align:center;}
 

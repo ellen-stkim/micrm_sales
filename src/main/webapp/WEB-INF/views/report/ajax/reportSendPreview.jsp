@@ -14,8 +14,8 @@
         <c:set var="list" value="${list}"/>
         <c:set var="cont_tp" value="${list[0].dto.cont_tp}"/>
         <ul class="tab_row ${cont_tp eq 'DMTP01'? "disnone" : ""} " id="smsTab">
-            <li class="${cont_tp eq 'DMTP03' ? "on" : ""}" style="display: list-item;" id="DMTP03"><span>카카오톡</span>
-            </li>
+            <li class="${cont_tp eq 'DMTP03' ? "on" : ""}" style="display: list-item;" id="DMTP03"><span>친구톡톡</span> </li>
+            <li class="${cont_tp eq 'DMTP05' ? "on" : ""}" style="display: list-item;" id="DMTP05"><span>알림톡</span> </li>
             <li class="${cont_tp eq 'DMTP02' ? "on" : ""}" style="display: list-item;" id="DMTP02"><span>문자</span></li>
             <li class="${cont_tp eq 'DMTP04' ? "on" : ""}" style="display: list-item;" id="DMTP04"><span>RCS</span></li>
         </ul>
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
                         </c:if>
-                        <!-- 카카오톡 -->
+                        <!-- 친구톡 -->
                         <c:if test="${cont_tp eq 'DMTP03'}">
                             <div class="scroll-box">
                                 <div class="round_box">
@@ -97,6 +97,31 @@
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
                                         <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn">${dto.kko_btn_nm}</a>
                                     </c:if>
+                                </div>
+                            </div>
+                        </c:if>
+                        <!-- 알림톡 -->
+                        <c:if test="${cont_tp eq 'DMTP05'}">
+                            <div class="scroll-box">
+                                <div class="row_body">
+                                    <div class="round_box ">
+                                        <div class="round_box head">
+                                            <p>알림톡 도착</p>
+                                        </div>
+                                        <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
+                                            <div class="sms">
+                                                <img src="${filePath}${dto.kko_img_url}"
+                                                     onerror="this.src = '/image/bg_none.png'">
+                                            </div>
+                                        </c:if>
+                                        <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
+                                        <c:forEach var="btn" items="${dto.at_btn_json}">
+                                            <div>
+                                                <a href="${btn.get('linkPc')}" target="_blank"
+                                                   class="sms_btn">${btn.get('name')}</a>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
                                 </div>
                             </div>
                         </c:if>

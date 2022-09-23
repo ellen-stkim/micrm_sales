@@ -162,7 +162,7 @@
                                                     value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly
                                                 </c:if>
                                                 <c:if test="${fn:trim(list[0].list_nm) == ''}">
-                                                    placeholder ="발신 번호를 입력해주세요"
+                                                    placeholder ="발신 프로필을 선택해주세요"
                                                 </c:if>
                                         />
                                         <input type="hidden" name="send_key" id="send_key" value="${list[0].list_val}"/>
@@ -175,8 +175,7 @@
                                         <div class="row">
                                             <div class="th">이미지 선택</div>
                                             <div class="td">
-                                                <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png"
-                                                                                          alt="삭제">
+                                                <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png" alt="삭제">
                                                 </div>
                                                 <input type="text" class="txt_input en_font" name="" id="kakaoImage"
                                                        placeholder="이미지를 선택해 주세요." readonly="">
@@ -477,23 +476,22 @@
                                     </div>
                                     <div class="input_area left">
                                         <div class="block">
-                                            <%--<div class="row flex_row">
-                                                <div class="row flex_row input-img on">
-                                                    <div class="th">개인화 변수</div>
-                                                    <div class="td">
-                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                        <div id="kakaoValue"
-                                                             style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                            <div class="row">
+                                                <div class="th">개인화 변수</div>
+                                                <div class="td">
+                                                    <!-- select 영역 시작 -->
+                                                    <div class="select rcsContsVal" name="edmDB">
+                                                        <!-- selected value -->
+                                                        <div class="value" data="0">개인화 변수</div>
+                                                        <ul class="option">
                                                             <c:forEach var="item" items="${column}"
                                                                        varStatus="status">
-                                                                <input type="button" data="{{${item.list_val}}}"
-                                                                       value="${item.list_nm}" class="drag-button"
-                                                                       draggable="true">
+                                                                <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                                             </c:forEach>
-                                                        </div>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                            </div>--%>
+                                            </div>
                                             <div class="row rcs_textarea">
                                                 <div class="th top-border">내용</div>
                                                 <div class="td top-border">
@@ -1619,7 +1617,7 @@
         let kakaoSenderNo = $('.smsNumber_kko');
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
-            popup.popAlert("카카오톡 발신 번호를 입력해주세요");
+            popup.popAlert("카카오톡 발신 프로필을 선택해주세요");
             //kakaoSenderNo.parent('.column_2').addClass('outline');
             return false;
         }
@@ -2121,14 +2119,12 @@
     function preview() {
         const res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
-            // let html = $("#js-area-popup", $doc).html();
-
-            let dynamic = $("#preview").html($("#js-area-popup", $doc).html());
+            let html = $("#js-area-popup",$doc).html();
+            let dynamic = $("#preview").html(html);
             $("#smsContentsPopup").addClass("active");
             previewSlideLoad();
         }
         let data = $("#form").serializeArray();
-        data.p
         com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -2137,7 +2133,6 @@
     function isCheckTemplateName() {
         let cont_nm = $("input[name='cont_nm']").val();
         let rcsType = $("input[name='rcs_format_type']:checked").val();
-
         const res = function (response) {
             if (response.status == "true") {
                 // buttonHiddenAdd()
@@ -2148,7 +2143,6 @@
                 }
                 preview();
                 //$("#form").submit();
-
             } else {
                 // 중복된 명칭 존재
                 popup.popAlert(response.message)
@@ -2278,7 +2272,6 @@
         let send_number = $('input[name="callNumber"]:checked').val();
         let send_to_type = $('#mSendType').val();
         let sender = send_nm + "(" + send_to + ")";
-        console.log(send_to_type)
 
         if (send_to_type === 'sms') {
             $("#sms_send_to").val(sender);
@@ -2308,7 +2301,6 @@
         $('#imgType').val(type);
         imageListPaging(nowPage);
     }
-
     // 이미지 리스트 팝업
     function imageListPaging(nowPage) {
 
@@ -2334,7 +2326,7 @@
             // 이미지 타입 : RCS 가로형
             param.push({name: 'ch_tp', value: 'IMGTP04'});
         } else if (type === 'verticalImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
             if (rcs_msg_tp === 'tall') {
                 // 이미지 타입 : RCS 세로형 Tall
                 param.push({name: 'ch_tp', value: 'IMGTP05'});
@@ -2343,7 +2335,7 @@
                 param.push({name: 'ch_tp', value: 'IMGTP06'});
             }
         } else if (type === 'slideRcsImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
             if (rcs_msg_tp === 'small') {
                 // 이미지 타입 : RCS 슬라이드 small
                 param.push({name: 'ch_tp', value: 'IMGTP07'})
@@ -2359,27 +2351,13 @@
 
     // 이미지 리스트 Input 저장하기
     function imgSendSave(seq) {
-
         let imgType = $("#imgType").val();  // 이미지 파일 타입
         let imgLength = $('input[name="contentsImg"]:checked').length;
         let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
         let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
         let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
 
-        /* console.log("imgType : " + imgType);
-         console.log("imgCheck : " + imgCheck);
-         console.log("imgLength : " + imgLength);
-         console.log("ImgNm : " + ImgNm);
-         console.log("imgUrl : " + imgUrl);*/
-
         if (imgLength > 0) {
-            //console.log("test length");
-            /*if(imgType === 'kakaoImage'){
-                console.log("카카오 : " + seq )
-                imageCreate(imgType,imgUrl,orgNm,imgCheck);
-            } else if(imgType === 'smsImage'){
-                imageCreate(imgType,imgUrl,orgNm,imgCheck);
-            }*/
             let popParents = $(form).parents('.layer_pop').attr('data');
             $('#' + popParents).val(imgUrl);
             $(form).parents('.layer_pop').removeClass('active');
@@ -2470,7 +2448,6 @@
 
     // RCS 포맷 카드 변경
     function rcsChangeFormat(type) {
-
         let checkType = $(type)[0].value;
         $(type).prop('checked', true);
         $('.layer_pop').removeClass('active');
@@ -2849,18 +2826,7 @@
 
     function tmplListPopUp(pageNo) {
         $('.tmplPopUp').addClass('active');
-
-        let res = function (response) {
-            let $doc = new DOMParser().parseFromString(response, "text/html");
-            $('.row_grid').html($("#body", $doc).html());
-            $("#tmplPager").html($("#pager", $doc).html());
-        };
-
-        let param = $("#searchForm").serializeArray();
-        param.push({name: 'pageNo', value: pageNo});
-        param.push({name: 'send_key', value: $('#send_key').val()});
-
-        com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        tmplListPaging(1)
     }
 
     function tmplListPaging(pageNo) {
@@ -2906,7 +2872,6 @@
     }
 
     // 카카오 타입 변경
-    // RCS 포맷카드 변경시 초기화 알림
     let beforeKkoType = "ft";
     $('input[name="kko_format_type"]').on('click', function (event) {
         event.preventDefault();
@@ -2951,6 +2916,21 @@
             $('.kakao_txt').attr('readonly', false).val("");
         }
     }
+
+    //개인화 변수 드래그
+    $(document).on('dragstart', function(ev){
+        ev.originalEvent.dataTransfer.setData("text", $(ev.target).attr("data"));
+    });
+
+    $(document).on('drop', function(ev){
+        dropTarget = $(ev.target);
+    });
+
+    $(document).on('dragend', function(ev){
+        let value = dropTarget.val();
+        dropTarget.val("");
+        dropTarget.val(value);
+    });
 
 </script>
 

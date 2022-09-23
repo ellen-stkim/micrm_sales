@@ -715,7 +715,7 @@ class ContentController  {
                     if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
                         resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
                     }
-                    logger.error("{}",resultMap)
+
                     if(!CommonUtils.isEmptyObject(resultMap)){
                         if(resultMap!!["result"] as Boolean){
                             val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
