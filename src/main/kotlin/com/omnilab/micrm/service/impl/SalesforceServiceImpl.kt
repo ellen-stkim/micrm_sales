@@ -374,7 +374,7 @@ class SalesforceServiceImpl : SalesforceService {
                          dto = kkoAtTmplDao.selKkoAtTmpl(dto as AtTmpl_searchDto)!!*/
 
                         val atDto =  AtTmpl_searchDto()
-                        atDto.send_key = contentListCreatedto.key_id
+                        atDto.tmpl_cd = contentListCreatedto.key_id
                         atDto.tmpl_nm = contentListCreatedto.tmpl_nm
                         val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
@@ -622,7 +622,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                 }
-                logger.error("{}",tblmiContLstdto)
+
                 contentDao.insertContent(tblmiContLstdto)
 
                 // Url 처리
