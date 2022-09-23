@@ -39,28 +39,6 @@
                      </c:forEach>
                   </ul>
                </div>
-               <div class="select column_4 left-border rcsTitleVal" name="defaultDB">
-                  <!-- selected value -->
-                  <div class="value" data="0">개인화 변수</div>
-                  <ul class="option">
-                     <li data="{{USR_ID}}">회원번호</li>
-                     <li data="{{USR_NM}}">이름</li>
-                     <li data="{{USR_MOB}}">모바일</li>
-                     <li data="{{USR_EDM}}">이메일</li>
-                     <li data="{{USR_GDR}}">성별</li>
-                     <li data="{{USR_ADDR}}">주소</li>
-                     <li data="{{USR_ETC1}}">ETC1</li>
-                     <li data="{{USR_ETC2}}">ETC2</li>
-                     <li data="{{USR_ETC3}}">ETC3</li>
-                     <li data="{{USR_ETC4}}">ETC4</li>
-                     <li data="{{USR_ETC5}}">ETC5</li>
-                     <li data="{{USR_ETC6}}">ETC6</li>
-                     <li data="{{USR_ETC7}}">ETC7</li>
-                     <li data="{{USR_ETC8}}">ETC8</li>
-                     <li data="{{USR_ETC9}}">ETC9</li>
-                     <li data="{{USR_ETC10}}">ETC10</li>
-                  </ul>
-               </div>
             </div>
          </div>
          <div class="row body">

@@ -79,27 +79,6 @@
                                  </c:forEach>
                               </ul>
                            </div>
-                           <div class="select rcsTitleVal" name="defaultDB">
-                              <div class="value" data="0">개인화 변수</div>
-                              <ul class="option" id="">
-                                 <li data="{{USR_ID}}">회원번호</li>
-                                 <li data="{{USR_NM}}">이름</li>
-                                 <li data="{{USR_MOB}}">모바일</li>
-                                 <li data="{{USR_EDM}}">이메일</li>
-                                 <li data="{{USR_GDR}}">성별</li>
-                                 <li data="{{USR_ADDR}}">주소</li>
-                                 <li data="{{USR_ETC1}}">ETC1</li>
-                                 <li data="{{USR_ETC2}}">ETC2</li>
-                                 <li data="{{USR_ETC3}}">ETC3</li>
-                                 <li data="{{USR_ETC4}}">ETC4</li>
-                                 <li data="{{USR_ETC5}}">ETC5</li>
-                                 <li data="{{USR_ETC6}}">ETC6</li>
-                                 <li data="{{USR_ETC7}}">ETC7</li>
-                                 <li data="{{USR_ETC8}}">ETC8</li>
-                                 <li data="{{USR_ETC9}}">ETC9</li>
-                                 <li data="{{USR_ETC10}}">ETC10</li>
-                              </ul>
-                           </div>
                         </div>
                      </div>
                      <div class="row">
@@ -119,27 +98,6 @@
                                             varStatus="status">
                                     <li data="{{${columnValue[status.count]}}}">${item}</li>
                                  </c:forEach>
-                              </ul>
-                           </div>
-                           <div class="select column_4 rcsContsVal" name="defaultDB">
-                              <div class="value" data="0">개인화 변수</div>
-                              <ul class="option" id="">
-                                 <li data="{{USR_ID}}">회원번호</li>
-                                 <li data="{{USR_NM}}">이름</li>
-                                 <li data="{{USR_MOB}}">모바일</li>
-                                 <li data="{{USR_EDM}}">이메일</li>
-                                 <li data="{{USR_GDR}}">성별</li>
-                                 <li data="{{USR_ADDR}}">주소</li>
-                                 <li data="{{USR_ETC1}}">ETC1</li>
-                                 <li data="{{USR_ETC2}}">ETC2</li>
-                                 <li data="{{USR_ETC3}}">ETC3</li>
-                                 <li data="{{USR_ETC4}}">ETC4</li>
-                                 <li data="{{USR_ETC5}}">ETC5</li>
-                                 <li data="{{USR_ETC6}}">ETC6</li>
-                                 <li data="{{USR_ETC7}}">ETC7</li>
-                                 <li data="{{USR_ETC8}}">ETC8</li>
-                                 <li data="{{USR_ETC9}}">ETC9</li>
-                                 <li data="{{USR_ETC10}}">ETC10</li>
                               </ul>
                            </div>
                         </div>
@@ -234,27 +192,6 @@
                               </c:forEach>
                            </ul>
                         </div>
-                        <div class="select rcsTitleVal" name="defaultDB">
-                           <div class="value" data="0">개인화 변수</div>
-                           <ul class="option" id="">
-                              <li data="{{USR_ID}}">회원번호</li>
-                              <li data="{{USR_NM}}">이름</li>
-                              <li data="{{USR_MOB}}">모바일</li>
-                              <li data="{{USR_EDM}}">이메일</li>
-                              <li data="{{USR_GDR}}">성별</li>
-                              <li data="{{USR_ADDR}}">주소</li>
-                              <li data="{{USR_ETC1}}">ETC1</li>
-                              <li data="{{USR_ETC2}}">ETC2</li>
-                              <li data="{{USR_ETC3}}">ETC3</li>
-                              <li data="{{USR_ETC4}}">ETC4</li>
-                              <li data="{{USR_ETC5}}">ETC5</li>
-                              <li data="{{USR_ETC6}}">ETC6</li>
-                              <li data="{{USR_ETC7}}">ETC7</li>
-                              <li data="{{USR_ETC8}}">ETC8</li>
-                              <li data="{{USR_ETC9}}">ETC9</li>
-                              <li data="{{USR_ETC10}}">ETC10</li>
-                           </ul>
-                        </div>
                      </div>
                   </div>
                   <div class="row">
@@ -274,27 +211,6 @@
                                          varStatus="status">
                                  <li data="{{${columnValue[status.count]}}}">${item}</li>
                               </c:forEach>
-                           </ul>
-                        </div>
-                        <div class="select column_4 rcsContsVal" name="defaultDB">
-                           <div class="value" data="0">개인화 변수</div>
-                           <ul class="option" id="">
-                              <li data="{{USR_ID}}">회원번호</li>
-                              <li data="{{USR_NM}}">이름</li>
-                              <li data="{{USR_MOB}}">모바일</li>
-                              <li data="{{USR_EDM}}">이메일</li>
-                              <li data="{{USR_GDR}}">성별</li>
-                              <li data="{{USR_ADDR}}">주소</li>
-                              <li data="{{USR_ETC1}}">ETC1</li>
-                              <li data="{{USR_ETC2}}">ETC2</li>
-                              <li data="{{USR_ETC3}}">ETC3</li>
-                              <li data="{{USR_ETC4}}">ETC4</li>
-                              <li data="{{USR_ETC5}}">ETC5</li>
-                              <li data="{{USR_ETC6}}">ETC6</li>
-                              <li data="{{USR_ETC7}}">ETC7</li>
-                              <li data="{{USR_ETC8}}">ETC8</li>
-                              <li data="{{USR_ETC9}}">ETC9</li>
-                              <li data="{{USR_ETC10}}">ETC10</li>
                            </ul>
                         </div>
                      </div>
@@ -355,23 +271,24 @@
                   </div>
                   <div class="row">
                      <div class="th">버튼 명</div>
-                     <div class="td button-name"><input type="text" name="slide_rcs_btn_2" class="txt_input action_name" data="2"
-                                                        placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,'slideSmall');"><span
-                             class="text-count en_font"><span>0</span>/5</span></div>
+                     <div class="td button-name">
+                        <input type="text" name="slide_rcs_btn_2" class="txt_input action_name" data="2" placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,'slideSmall');">
+                        <span class="text-count en_font"><span>0</span>/5</span></div>
                   </div>
                   <div class="custom_box"></div>
-               </div><input type="hidden" name="slide_rcs_btn_tp_1" value="" id="slide_rcs_btn_tp_3"><input type="hidden"
-                                                                                                            name="slide_rcs_btn_tp_2" value="" id="slide_rcs_btn_tp_4">
+               </div>
+                  <input type="hidden" name="slide_rcs_btn_tp_1" value="" id="slide_rcs_btn_tp_3">
+                  <input type="hidden" name="slide_rcs_btn_tp_2" value="" id="slide_rcs_btn_tp_4">
             </div>
             <div class="rcs_slide_conts">
                <div class="block">
                   <div class="row">
                      <div class="th">이미지 선택</div>
                      <div class="td">
-                        <div class="delete_img"><img src="/image/btn_delete1.png" alt="삭제"></div><input type="text" name=""
-                                                                                                             class="txt_input en_font rcsImage" id="slide2" placeholder="이미지를 선택해 주세요." readonly=""><input
-                             type="hidden" name="rcs_img_cd_3" class="txt_input en_font rcsImage"><span class="btn_sm_line"
-                                                                                                        data="slide2" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
+                        <div class="delete_img"><img src="/image/btn_delete1.png" alt="삭제"></div>
+                           <input type="text" name="" lass="txt_input en_font rcsImage" id="slide2" placeholder="이미지를 선택해 주세요." readonly="">
+                           <input type="hidden" name="rcs_img_cd_3" class="txt_input en_font rcsImage">
+                           <span class="btn_sm_line" data="slide2" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
                      </div>
                   </div>
                </div>
@@ -382,39 +299,17 @@
                         <div class="select rcsTitleVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
-                              <c:forEach var="item" items="${columnNm}"
-                                         varStatus="status">
+                              <c:forEach var="item" items="${columnNm}" varStatus="status">
                                  <li data="{{${columnValue[status.count]}}}">${item}</li>
                               </c:forEach>
-                           </ul>
-                        </div>
-                        <div class="select rcsTitleVal" name="defaultDB">
-                           <div class="value" data="0">개인화 변수</div>
-                           <ul class="option" id="">
-                              <li data="{{USR_ID}}">회원번호</li>
-                              <li data="{{USR_NM}}">이름</li>
-                              <li data="{{USR_MOB}}">모바일</li>
-                              <li data="{{USR_EDM}}">이메일</li>
-                              <li data="{{USR_GDR}}">성별</li>
-                              <li data="{{USR_ADDR}}">주소</li>
-                              <li data="{{USR_ETC1}}">ETC1</li>
-                              <li data="{{USR_ETC2}}">ETC2</li>
-                              <li data="{{USR_ETC3}}">ETC3</li>
-                              <li data="{{USR_ETC4}}">ETC4</li>
-                              <li data="{{USR_ETC5}}">ETC5</li>
-                              <li data="{{USR_ETC6}}">ETC6</li>
-                              <li data="{{USR_ETC7}}">ETC7</li>
-                              <li data="{{USR_ETC8}}">ETC8</li>
-                              <li data="{{USR_ETC9}}">ETC9</li>
-                              <li data="{{USR_ETC10}}">ETC10</li>
                            </ul>
                         </div>
                      </div>
                   </div>
                   <div class="row">
                      <div class="th top-border">문자 제목</div>
-                     <div class="td top-border"><input type="text" name="slide_cont_sub" class="txt_input width rcsTitle"
-                                                       placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,2);"></div>
+                     <div class="td top-border">
+                        <input type="text" name="slide_cont_sub" class="txt_input width rcsTitle" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,2);"></div>
                   </div>
                </div>
                <div class="block">
@@ -424,39 +319,18 @@
                         <div class="select column_4 rcsContsVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
-                              <c:forEach var="item" items="${columnNm}"
-                                         varStatus="status">
+                              <c:forEach var="item" items="${columnNm}" varStatus="status">
                                  <li data="{{${columnValue[status.count]}}}">${item}</li>
                               </c:forEach>
-                           </ul>
-                        </div>
-                        <div class="select column_4 rcsContsVal" name="defaultDB">
-                           <div class="value" data="0">개인화 변수</div>
-                           <ul class="option" id="">
-                              <li data="{{USR_ID}}">회원번호</li>
-                              <li data="{{USR_NM}}">이름</li>
-                              <li data="{{USR_MOB}}">모바일</li>
-                              <li data="{{USR_EDM}}">이메일</li>
-                              <li data="{{USR_GDR}}">성별</li>
-                              <li data="{{USR_ADDR}}">주소</li>
-                              <li data="{{USR_ETC1}}">ETC1</li>
-                              <li data="{{USR_ETC2}}">ETC2</li>
-                              <li data="{{USR_ETC3}}">ETC3</li>
-                              <li data="{{USR_ETC4}}">ETC4</li>
-                              <li data="{{USR_ETC5}}">ETC5</li>
-                              <li data="{{USR_ETC6}}">ETC6</li>
-                              <li data="{{USR_ETC7}}">ETC7</li>
-                              <li data="{{USR_ETC8}}">ETC8</li>
-                              <li data="{{USR_ETC9}}">ETC9</li>
-                              <li data="{{USR_ETC10}}">ETC10</li>
                            </ul>
                         </div>
                      </div>
                   </div>
                   <div class="row rcs_textarea">
                      <div class="th top-border">내용</div>
-                     <div class="td top-border"><textarea class="rcsContents" name="slide_cont_body" id="" cols="30" rows="10"
-                                                          placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this,2);"></textarea></div>
+                     <div class="td top-border">
+                        <textarea class="rcsContents" name="slide_cont_body" cols="30" rows="10" placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this,2);"></textarea>
+                     </div>
                   </div>
                </div>
                <div class="block">

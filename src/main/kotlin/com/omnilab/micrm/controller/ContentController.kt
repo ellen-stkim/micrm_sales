@@ -330,6 +330,7 @@ class ContentController  {
     @GetMapping("/rcsText.ajax")
     fun rcsText(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
+        //columnNm
         return view
     }
 
@@ -349,6 +350,7 @@ class ContentController  {
     @GetMapping("/rcsVertical.ajax")
     fun rcsVertical(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
+        //columnNm
         return view
     }
 
@@ -368,6 +370,7 @@ class ContentController  {
     @GetMapping("/rcsSlide.ajax")
     fun rcsSlide(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
+        //columnNm
         return view
     }
 
