@@ -147,8 +147,7 @@
                                 <div class="row body">
                                     <div class="th">발신 프로필</div>
                                     <div class="column_1">
-                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to"
-                                               placeholder="발신 프로필을 선택 해주세요"  readonly/>
+                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder="발신 프로필을 선택 해주세요" readonly/>
                                         <input type="hidden" name="send_to_list" id="kakao_send_to_num" />
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>

@@ -164,7 +164,7 @@
                                                     </c:if>
                                             />
                                             <input type="hidden" name="send_key" id="send_key" value="${list[0].send_num}"/>
-                                            <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
+                                            <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].send_to}"/>
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
 
                                         </div>
