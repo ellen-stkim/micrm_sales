@@ -2143,6 +2143,7 @@
             $("#send_slice_rcs").val(sender);
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
+            $('.smsNumber_kko').val(sender);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
@@ -2711,10 +2712,9 @@
             $("#tmplPager").html($("#pager", $doc).html());
         };
         let param = $("#tmplSetForm").serializeArray();
-        param.push({name: 'pageNo', value: pageNo});
-        data.append("usr_grp_cd", $('#usr-grp_cd').val());
+        param.push({name: 'pageNo', value: pageNo},{name : 'usr_grp_cd',value : $('#usr-grp_cd').val()});
 
-        com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     $(document).on('click', '.delete_tmpl', (e) => {
@@ -2743,7 +2743,7 @@
 
         const tmpl = $('#tmplPopUp input[name="tmpl_cd"]:checked');
         let param = {tmpl_cd: $(tmpl).attr("data")}
-        com_ajax.ajax('post', '${baseURL}/cont/kko/getAtTmpl.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/kko/getAtTmpl.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
 
     }
 

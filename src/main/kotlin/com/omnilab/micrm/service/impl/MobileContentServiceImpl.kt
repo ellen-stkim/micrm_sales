@@ -58,7 +58,6 @@ class MobileContentServiceImpl : ContentService {
         val statusMap: MutableMap<String, Any> = HashMap()
         val contentListCreatedto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
-        val cont_grp_cd = contentListCreatedto.cont_grp_cd
 
         val isByte = isCheckByte(contentListCreatedto);
 
@@ -75,7 +74,6 @@ class MobileContentServiceImpl : ContentService {
             tblmiContMstDto.ch_tp = "CH03"
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
-            tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);

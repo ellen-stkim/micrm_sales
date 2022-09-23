@@ -2273,6 +2273,12 @@
         let send_to_type = $('#mSendType').val();
         let sender = send_nm + "(" + send_to + ")";
 
+        console.log(send_to)
+        console.log(send_nm)
+        console.log(send_number)
+        console.log(send_to_type)
+        console.log(sender)
+
         if (send_to_type === 'sms') {
             $("#sms_send_to").val(sender);
             $("#sms_send_to_num").val(send_number);
@@ -2289,6 +2295,7 @@
             $("#send_slice_rcs").val(sender);
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
+            $('.smsNumber_kko').val(sender);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
