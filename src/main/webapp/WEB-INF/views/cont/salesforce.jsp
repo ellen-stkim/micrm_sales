@@ -3091,7 +3091,7 @@
 
     // 카카오 타입 변경
     let beforeKkoType = "ft";
-    $('input[name="kko_format_type"]').on('click', function (event) {
+    $(document).on('click','input[name="kko_format_type"]', function (event) {
         event.preventDefault();
         check = $('input[name="kko_format_type"]:checked');
         let nowVal = $('input[name="kko_format_type"]:checked').val();
@@ -3128,8 +3128,19 @@
             $('.kakao_txt').attr('readonly', true).val("");
         } else {
             $('.kakao_txt').attr('readonly', false).val("");
+            $('.at_tmpl_data').val('');
         }
     }
+
+    console.log("ajax")
+    const res = function (response) {
+
+        const $doc = new DOMParser().parseFromString(response, "text/html");
+        $(".container").html($(".container", $doc).html());
+        console.log($(".container", $doc).html())
+    };
+    let param = { seq: 67};
+    com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
 
 
 </script>
