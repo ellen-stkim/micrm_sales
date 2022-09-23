@@ -50,8 +50,8 @@
                      <!-- selected value -->
                      <div class="value" data="0">개인화 변수</div>
                      <ul class="option">
-                        <c:forEach var="item" items="${columnNm}" varStatus="status">
-                           <li data="{{${columnValue[status.count]}}}">${item}</li>
+                        <c:forEach var="item" items="${column}" varStatus="status">
+                           <li data="{{${item.list_val}}}">${item.list_nm}</li>
                         </c:forEach>
                      </ul>
                   </div>
@@ -61,9 +61,7 @@
             <div class="row rcs_textarea">
                <div class="th top-border">내용</div>
                <div class="td top-border">
-                        <textarea class="rcsContents" name="rcs_body" id="" cols="30"
-                                  rows="10" placeholder="내용을 입력해주세요."
-                                  onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
+                        <textarea class="rcsContents" name="rcs_body" id="" cols="30" rows="10" placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
                </div>
             </div>
          </div>

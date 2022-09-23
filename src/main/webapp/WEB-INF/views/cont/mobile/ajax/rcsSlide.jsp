@@ -73,9 +73,8 @@
                            <div class="select rcsTitleVal" name="edmDB">
                               <div class="value" data="0">개인화 변수</div>
                               <ul class="option">
-                                 <c:forEach var="item" items="${columnNm}"
-                                            varStatus="status">smsNumber
-                                    <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                 <c:forEach var="item" items="${column}" varStatus="status">
+                                    <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                  </c:forEach>
                               </ul>
                            </div>
@@ -94,9 +93,8 @@
                            <div class="select column_4 rcsContsVal" name="edmDB">
                               <div class="value" data="0">개인화 변수</div>
                               <ul class="option">
-                                 <c:forEach var="item" items="${columnNm}"
-                                            varStatus="status">
-                                    <li data="{{${columnValue[status.count]}}}">${item}</li>
+                                 <c:forEach var="item" items="${column}" varStatus="status">
+                                    <li data="{{${item.list_val}}}">${item.list_nm}</li>
                                  </c:forEach>
                               </ul>
                            </div>
@@ -186,9 +184,8 @@
                         <div class="select rcsTitleVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
-                              <c:forEach var="item" items="${columnNm}"
-                                         varStatus="status">
-                                 <li data="{{${columnValue[status.count]}}}">${item}</li>
+                              <c:forEach var="item" items="${column}" varStatus="status">
+                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
@@ -207,9 +204,8 @@
                         <div class="select column_4 rcsContsVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
-                              <c:forEach var="item" items="${columnNm}"
-                                         varStatus="status">
-                                 <li data="{{${columnValue[status.count]}}}">${item}</li>
+                              <c:forEach var="item" items="${column}" varStatus="status">
+                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
@@ -299,8 +295,8 @@
                         <div class="select rcsTitleVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
-                              <c:forEach var="item" items="${columnNm}" varStatus="status">
-                                 <li data="{{${columnValue[status.count]}}}">${item}</li>
+                              <c:forEach var="item" items="${column}" varStatus="status">
+                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
@@ -319,8 +315,8 @@
                         <div class="select column_4 rcsContsVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
-                              <c:forEach var="item" items="${columnNm}" varStatus="status">
-                                 <li data="{{${columnValue[status.count]}}}">${item}</li>
+                              <c:forEach var="item" items="${column}" varStatus="status">
+                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>

@@ -128,7 +128,7 @@ class ContentController  {
     @GetMapping("/mdmCreate.mi")
     fun mdmCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mdmCreate")
-        val map = sysSettingService.getDBValue();
+        val map = sysSettingService.getDBValue()
 
         val kkoDto = SetLst_searchDto()
         kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -156,7 +156,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         // 개인화 변수 추가하기
-        view.addObject("column",map);
+        view.addObject("column",map)
         view.addObject("list",kkoSenderMap["list"])
         view.addObject("smsSender",smsSenderMap["list"])
         view.addObject("rcsSender",rcsSenderMap["list"])
@@ -338,7 +338,7 @@ class ContentController  {
     @GetMapping("/rcsText.ajax")
     fun rcsText(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
-        //columnNm
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -358,7 +358,7 @@ class ContentController  {
     @GetMapping("/rcsVertical.ajax")
     fun rcsVertical(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
-        //columnNm
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -378,7 +378,7 @@ class ContentController  {
     @GetMapping("/rcsSlide.ajax")
     fun rcsSlide(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
-        //columnNm
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
