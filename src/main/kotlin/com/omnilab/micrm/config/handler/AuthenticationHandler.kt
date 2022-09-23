@@ -23,13 +23,21 @@ class AuthenticationHandler: AuthenticationEntryPoint, AccessDeniedHandler {
         logger.error("commence {}, {} | {}", CommonUtils.clientip(req), req.requestURI, authException.message)
         req.characterEncoding = "UTF-8"
         rep.contentType = "text/html; charset=UTF-8"
-        val out = rep.writer
-        out.print("<script>")
-        out.print("alert('로그인된 사용자만 이용할 수 있습니다.');")
-        out.print("location.href='/${GlobalValues.indexpage}';")
-        out.print("</script>")
-        out.flush()
-        out.close()
+
+        when {
+            req.requestURI.contains(".ajax") -> {
+                rep.sendError(HttpServletResponse.SC_UNAUTHORIZED, "session was not found.")
+            }
+            else -> {
+                val out = rep.writer
+                out.print("<script>")
+                out.print("alert('로그인된 사용자만 이용할 수 있습니다.');")
+                out.print("location.href='/${GlobalValues.indexpage}';")
+                out.print("</script>")
+                out.flush()
+                out.close()
+            }
+        }
     }
 
     override fun handle(req: HttpServletRequest, rep: HttpServletResponse, accessDeniedException: AccessDeniedException) {
