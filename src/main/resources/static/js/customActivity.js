@@ -126,7 +126,11 @@ define(["postmonger"], function (Postmonger) {
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}
-					$("#contLoad").click();
+					console.log(response)
+					if(response.rcs.list){
+						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
+						$("#text_send_num").val(response.rcs.list[0].seq);
+					}
 				}
 			}else {
                 // 조회실패
