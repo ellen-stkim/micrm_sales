@@ -900,7 +900,7 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
 
-                if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
+                if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
 
                     val atDto =  AtTmpl_searchDto()
                     atDto.tmpl_cd = contentListCreatedto.key_id
