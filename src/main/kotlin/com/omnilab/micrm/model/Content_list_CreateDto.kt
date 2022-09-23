@@ -129,6 +129,9 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var inta_key: String? = null
     var inta_ve: String? = null
 
+    // 알림톡 템플릿
+    var tmpl_nm: String? = null
+
 
 
     override fun toString(): String {

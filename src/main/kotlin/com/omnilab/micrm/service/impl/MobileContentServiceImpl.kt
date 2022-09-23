@@ -123,14 +123,11 @@ class MobileContentServiceImpl : ContentService {
 
                     if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
 
-                        // key_id (템플릿 코드) 로 템플릿 유효한지 확인
-                       /* var dto =  Tblmi_kko_at_tmplDto(contentListCreatedto.key_id,tblmiContLstdto.cont_sub)
-                        dto = kkoAtTmplDao.selKkoAtTmpl(dto as AtTmpl_searchDto)!!*/
-
-                        var dto :AtTmpl_searchDto=  AtTmpl_searchDto()
-                        dto.send_key = contentListCreatedto.key_id
-                        dto.tmpl_nm = tblmiContLstdto.cont_sub
-                        val resultDto = kkoAtTmplDao.selKkoAtTmpl(dto)
+                        var atDto =  AtTmpl_searchDto()
+                        atDto.tmpl_cd = contentListCreatedto.key_id
+                        atDto.tmpl_nm = contentListCreatedto.tmpl_nm
+                        val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
+                        logger.error("{}",resultDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
                             tblmiContLstdto.kko_btn_obj = resultDto!!.button_json
@@ -840,6 +837,11 @@ class MobileContentServiceImpl : ContentService {
         for (i in 0 until len) {
             //logger.error("one content: " + contentOne[i])
             val dto = contentOne[i]
+
+            if (dto.cont_tp.equals("DMTP05")) {
+                // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
+//                jsonOneContentsParsing(dto)
+            }
 
             if (dto.cont_tp.equals("DMTP04")) {
                 // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
@@ -2442,9 +2444,7 @@ class MobileContentServiceImpl : ContentService {
 
     override fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String, Any> {
         val dataMap = HashMap<String, Any>();
-//        val dataMap = HashMap<String,Any>();
 
-        val jsonString = dto.button_json
         val g = GsonBuilder().create()
         val buttons = g.fromJson(dto.button_json, JSONArray::class.java)
 
