@@ -119,38 +119,8 @@ class SysSettingServiceImpl : SysSettingService {
      */
 
     override fun getDBValue(): MutableList<SalesforceDto> {
-        /*//그룹 코드에 맞는 table ID 가져오기 (tblmi_tbl_mst)
-        val tblmstDto: Tblmi_tbl_mstDto = Tblmi_tbl_mstDto()
-        val map: MutableMap<String, Any> = HashMap<String, Any>()
-        tblmstDto.tbl_grp = UsefulUtils.sessionUser().usr_grp_cd
-        val resultTblmst = memberDao.getTblmimst(tblmstDto)
-        //사용자 화면에서 보여지는 column 명칭 가져오기
-        val columnNm: MutableList<String> = java.util.ArrayList<String>()
-        map["tbl_id"] = false
-        //table ID로 table column 정보 가져오기 (tblmi_tbl_info)
-        if (resultTblmst != null) {
-            val tblInfo: Tblmi_tbl_infoDto = Tblmi_tbl_infoDto()
-            tblInfo.tbl_id = resultTblmst.tbl_id
-            val tblInfoList = memberDao.getTblInfoList(tblInfo)
-
-
-            for (i in tblInfoList) {
-                for (j: Int in 0 until columnNm.size) {
-                    if (columnNm[j] == i.col_id) {
-                        columnNm[j] = i.col_nm.toString()
-                    }
-                }
-            }
-            map["tbl_id"] = tblInfo.tbl_id.toString()
-        }
-
-        //테이블에서 쓰이는 column명 가져오기(tblmi_tbl_info)
-        val columnValue: MutableList<String> = java.util.ArrayList<String>()
-
-        map["columnNm"] = columnNm
-        map["columnValue"] = columnValue*/
         val userInfo = UsefulUtils.sessionUser()
-        var dto : SalesforceDto = SalesforceDto()
+        val dto  = SalesforceDto()
         dto.list_tp_id = "CH03"
         dto.list_dt_id = "SPTP01"
         dto.usr_grp_cd = userInfo.usr_grp_cd!!
