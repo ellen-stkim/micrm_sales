@@ -374,10 +374,10 @@ class SalesforceServiceImpl : SalesforceService {
                         /* var dto =  Tblmi_kko_at_tmplDto(contentListCreatedto.key_id,tblmiContLstdto.cont_sub)
                          dto = kkoAtTmplDao.selKkoAtTmpl(dto as AtTmpl_searchDto)!!*/
 
-                        var dto :AtTmpl_searchDto=  AtTmpl_searchDto()
-                        dto.send_key = contentListCreatedto.key_id
-                        dto.tmpl_nm = tblmiContLstdto.cont_sub
-                        val resultDto = kkoAtTmplDao.selKkoAtTmpl(dto)
+                        var atDto =  AtTmpl_searchDto()
+                        atDto.send_key = contentListCreatedto.key_id
+                        atDto.tmpl_nm = contentListCreatedto.tmpl_nm
+                        val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
                             tblmiContLstdto.kko_btn_obj = resultDto!!.button_json
