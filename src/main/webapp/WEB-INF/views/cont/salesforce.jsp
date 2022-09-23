@@ -229,8 +229,7 @@
                                             <div class="column_5">
                                                     <%--<input type="text" class="title type1 smsTitle" name="cont_sub"
                                                            onkeyup="smsCreate.titleCount(this);" placeholder="문자 제목을 입력하세요." />--%>
-                                                <input type="text" class="title type1 smsTitle" name="cont_sub_list"
-                                                       onkeyup="smsCreate.titleCount(this,'sms');" placeholder="문자 제목을 입력하세요."/>
+                                                <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="smsCreate.titleCount(this,'sms');" placeholder="문자 제목을 입력하세요."/>
                                                 <span class="title_byte en_font">(40byte)</span>
                                             </div>
                                             <!-- select 영역 시작 -->
@@ -589,6 +588,7 @@
             }
             $("#smsContsVal").html(html);
             $("#kakaoValue").html(html);
+            $("#rcsTitleVal").html(html);
         }
         let param = { usr_grp_cd : $('#usr_grp_cd').val() }
         com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
@@ -2268,7 +2268,8 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option"></ul>'
+                + '<ul class="option" id="rcsTitleVal">'
+                + '</ul>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
