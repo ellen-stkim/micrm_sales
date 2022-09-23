@@ -374,13 +374,13 @@ class SalesforceServiceImpl : SalesforceService {
                         /* var dto =  Tblmi_kko_at_tmplDto(contentListCreatedto.key_id,tblmiContLstdto.cont_sub)
                          dto = kkoAtTmplDao.selKkoAtTmpl(dto as AtTmpl_searchDto)!!*/
 
-                        var atDto =  AtTmpl_searchDto()
+                        val atDto =  AtTmpl_searchDto()
                         atDto.send_key = contentListCreatedto.key_id
                         atDto.tmpl_nm = contentListCreatedto.tmpl_nm
                         val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
-                            tblmiContLstdto.kko_btn_obj = resultDto!!.button_json
+                            tblmiContLstdto.kko_btn_obj = resultDto.button_json
                         }
 
                         tblmiContLstdto.cont_tp = "DMTP05"
@@ -858,7 +858,8 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.inta_key = contentListCreatedto.inta_key
         tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
 
-        contentDao.updateMobileMst(tblmiContMstDto);
+        logger.error("{}",contentListCreatedto)
+        /*contentDao.updateMobileMst(tblmiContMstDto);
 
         val len = contentListCreatedto.send_to_list!!.size - 1;
 
@@ -903,13 +904,13 @@ class SalesforceServiceImpl : SalesforceService {
 
                 if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
 
-                    var atDto =  AtTmpl_searchDto()
+                    val atDto =  AtTmpl_searchDto()
                     atDto.tmpl_cd = contentListCreatedto.key_id
                     atDto.tmpl_nm = contentListCreatedto.tmpl_nm
                     val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
                     if(!CommonUtils.isEmptyObject(resultDto)){
                         tblmiContLstdto.key_id = resultDto!!.tmpl_cd
-                        tblmiContLstdto.kko_btn_obj = resultDto!!.button_json
+                        tblmiContLstdto.kko_btn_obj = resultDto.button_json
 //                        개인화 변수 등 추가
                     }
 
@@ -1043,7 +1044,7 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
                 }
                 // RCS 가로형 서비스 중단으로 인한 삭제 처리
-                /*else if (rcsFormatType.equals("horizontal")) {
+                *//*else if (rcsFormatType.equals("horizontal")) {
                     if (rcsMsgType.equals("left")) {
 
                         tblmiContLstdto.msg_tp = "DMCH209"
@@ -1057,7 +1058,7 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
                     tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
 
-                }*/
+                }*//*
                 else if (rcsFormatType.equals("vertical")) {
                     // RCS 세로형의 경우
                     if (rcsMsgType.equals("tall")) {
@@ -1127,14 +1128,14 @@ class SalesforceServiceImpl : SalesforceService {
 
             val lastSeq = tblmiContLstdto.seq
 
-            /**
+            *//**
              *  URL 저장하기 로직
              *  카카오, 모바일 같은 경우 알맞게 저장된다
              *  RCS의 경우
              *      1) slide가 아닐때 버튼 순서대로 들어간다
              *      2) slide형태는 최대 버튼 개수가 2개 이므로 2개씩 끊어서 판단한다
              *      (ex : urlBtn3, urlBtn5 로 저장 되었다면 카드 2의 1번 버튼 ,카드 3의 1번 버튼에 저장됨 )
-             */
+             *//*
 
             if (i == 0) {
                 // 카카오 url 링크 저장
@@ -1291,7 +1292,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
             }
-        }
+        }*/
         statusMap["status"] = true
         return statusMap
     }

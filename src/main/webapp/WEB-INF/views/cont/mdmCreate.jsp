@@ -2273,12 +2273,6 @@
         let send_to_type = $('#mSendType').val();
         let sender = send_nm + "(" + send_to + ")";
 
-        console.log(send_to)
-        console.log(send_nm)
-        console.log(send_number)
-        console.log(send_to_type)
-        console.log(sender)
-
         if (send_to_type === 'sms') {
             $("#sms_send_to").val(sender);
             $("#sms_send_to_num").val(send_number);
