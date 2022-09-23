@@ -3132,17 +3132,6 @@
         }
     }
 
-    console.log("ajax")
-    const res = function (response) {
-
-        const $doc = new DOMParser().parseFromString(response, "text/html");
-        $(".container").html($(".container", $doc).html());
-        console.log($(".container", $doc).html())
-    };
-    let param = { seq: 67};
-    com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
-
-
 </script>
 
 
