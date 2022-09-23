@@ -49,7 +49,10 @@
                                 <li>RCS 슬라이드 Medium</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH204'}">
-                                <li>카카오</li>
+                                <li>친구톡</li>
+                            </c:if>
+                            <c:if test="${title eq 'DMCH216'}">
+                                <li>알림톡</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH201' || title eq 'DMCH202' || title eq 'DMCH203'}">
                                 <li>모바일</li>
@@ -86,34 +89,52 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                    <!-- 카카오톡  -->
+                <!-- 카카오톡 친구톡 -->
                 <c:if test="${content.cont_tp eq 'DMTP03'}">
-                    <c:if test="${not empty content.kko_image_url}">
                         <div class="row_body">
                             <div class="round_box">
+                                <c:if test="${not empty content.kko_image_url}">
                                 <div class="sms">
                                     <img src="${filePath}${content.kko_image_url}"
                                          onerror="this.src = '/image/bg_none.png'" alt="">
                                 </div>
+                                </c:if>
                                 <p class="sms_txt">
                                     ${content.cont_sub}<br/><br>
                                     ${cutil:replaceBr(content.cont_body)}
                                 </p>
+                                <c:if test="${not empty content.kko_btn_url}">
                                 <a href="${content.kko_btn_url}" target="_blank"
                                    class="sms_btn">${content.kko_btn_nm}</a>
+                                </c:if>
                             </div>
                     </div>
-                    </c:if>
-                    <c:if test="${empty content.kko_image_url}">
-                      <div class="row_body">
-                        <div class="round_box">
-                            <div class="sms_txt">
-                                ${content.cont_sub}<br/><br/>
-                                ${cutil:replaceBr(content.cont_body)}
+                </c:if>
+                <!-- 카카오톡 알림톡 -->
+                <c:if test="${content.cont_tp eq 'DMTP05'}">
+                        <div class="row_body">
+                            <div class="round_box">
+                                <div class="round_box head">
+                                       <p>알림톡 도착</p>
+                                </div>
+                                <c:if test="${not empty content.kko_image_url}">
+                                <div class="sms">
+                                    <img src="${filePath}${content.kko_image_url}"
+                                         onerror="this.src = '/image/bg_none.png'" alt="">
+                                </div>
+                                </c:if>
+                                <p class="sms_txt">
+                                    ${content.cont_sub}<br/><br>
+                                    ${cutil:replaceBr(content.cont_body)}
+                                </p>
+                                    <c:forEach var="btn" items="${content.at_btn_json}">
+                                        <div>
+                                        <a href="${btn.get('linkPc')}" target="_blank"
+                                           class="sms_btn">${btn.get('name')}</a>
+                                        </div>
+                                    </c:forEach>
                             </div>
-                        </div>
-                      </div>
-                    </c:if>
+                    </div>
                 </c:if>
                     <!-- 모바일 (문자) 이면서 MMS 형태 -->
                 <c:if test="${content.cont_tp eq 'DMTP02' && content.msg_tp eq 'DMCH203'}">

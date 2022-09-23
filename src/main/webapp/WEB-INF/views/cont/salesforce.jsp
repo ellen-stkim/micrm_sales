@@ -3091,7 +3091,7 @@
 
     // 카카오 타입 변경
     let beforeKkoType = "ft";
-    $('input[name="kko_format_type"]').on('click', function (event) {
+    $(document).on('click','input[name="kko_format_type"]', function (event) {
         event.preventDefault();
         check = $('input[name="kko_format_type"]:checked');
         let nowVal = $('input[name="kko_format_type"]:checked').val();
@@ -3128,9 +3128,9 @@
             $('.kakao_txt').attr('readonly', true).val("");
         } else {
             $('.kakao_txt').attr('readonly', false).val("");
+            $('.at_tmpl_data').val('');
         }
     }
-
 
 </script>
 
