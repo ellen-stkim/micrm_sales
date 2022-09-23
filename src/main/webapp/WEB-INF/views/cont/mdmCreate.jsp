@@ -84,19 +84,6 @@
                                 <span class="en_font">RCS</span>
                             </label>
                         </div>
-                        <div class="inner_option">
-                            <div class="th left-border">개인화 구분</div>
-                            <div class="td">
-                                <label class="custom_radio en_font db_radio">DB
-                                    <input name="dbInfo" type="radio" value="0" checked/>
-                                    <span></span>
-                                </label>
-                                <label class="custom_radio db_radio">업로드
-                                    <input name="dbInfo" type="radio" value="1"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
                         <div class="inner_option area2">
                             <div class="th left-border">유형선택</div>
                             <div class="td cf">
@@ -111,6 +98,22 @@
                                 <input type="hidden" name="kko_option" class="kakaoOption" value="ad"/>
                                 <input type="hidden" name="sms_option" class="smsOption" value="ad"/>
                                 <input type="hidden" name="rcs_option" class="radioAd" value="ad"/>
+                            </div>
+                        </div>
+                        <div class="th left-border">수신 번호</div>
+                        <div class="inner_option area2">
+                            <div class="td cf" style="width: 100%;">
+                                <div class="select" id="recv_phone_to" name="edmDB">
+                                    <!-- selected value -->
+                                    <div class="value" data="0">개인화 변수</div>
+                                    <ul class="option mappingLst">
+                                        <c:forEach var="item" items="${column}" varStatus="status">
+                                            <li data="${item.list_val}">${item.list_nm}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+
+                                <input type="hidden" id="recv_phone" name="from_to"/>
                             </div>
                         </div>
                     </div>
@@ -130,6 +133,15 @@
                         <h2>카카오톡</h2>
                         <div class="flex_box">
                             <div class="left_area">
+                                <div class="row body">
+                                    <div class="th">문자 제목</div>
+                                    <div class="column_1">
+                                            <%--<input type="text" class="title kakaoTitle" name="cont_sub" placeholder="문자 제목을 입력하세요." />--%>
+                                        <input type="text" class="title kakaoTitle" name="cont_sub_list"
+                                               placeholder="문자 제목을 입력하세요."/>
+                                        <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
+                                    </div>
+                                </div>
                                 <div class="row body">
                                     <div class="th">타입</div>
                                     <div class="column_2">
@@ -153,6 +165,7 @@
                                                     placeholder ="발신 번호를 입력해주세요"
                                                 </c:if>
                                         />
+                                        <input type="hidden" name="send_key" id="send_key" value="${list[0].list_val}"/>
                                         <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
@@ -162,18 +175,24 @@
                                         <div class="row">
                                             <div class="th">이미지 선택</div>
                                             <div class="td">
-                                                <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png" alt="삭제">
+                                                <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png"
+                                                                                          alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly="">
-                                                <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage"
+                                                       placeholder="이미지를 선택해 주세요." readonly="">
+                                                <span class="btn_sm_line" data="kakaoImage"
+                                                      onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
-                                                <input type="hidden" name="kko_view_img_url" value=""> <!-- 프리뷰를 위한 이미지 URL -->
+                                                <input type="hidden" name="kko_view_img_url" value="">
+                                                <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="th top-border">이미지 링크 주소</div>
                                             <div class="td top-border">
-                                                <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)">
+                                                <input type="text" class="txt_input en_font width kakaoImgLink"
+                                                       name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);"
+                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)">
                                             </div>
                                         </div>
                                         <div class="row flex_row">
@@ -184,20 +203,21 @@
                                         </div>
                                     </div>
                                     <div class="block">
-                                        <div class="row">
-                                            <div class="th">개인화 변수</div>
-                                            <div class="td">
-                                                <!-- select 영역 시작 -->
-                                                <div class="select" id="kakaoValue" name="kkoDB">
-                                                    <!-- selected value -->
-                                                    <div class="value" data="0">개인화 변수</div>
-                                                    <ul class="option">
-                                                        <c:forEach var="item" items="${column}" varStatus="status">
-                                                            <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                        <div class="row flex_row">
+                                            <div class="row flex_row input-img on">
+                                                <div class="th">개인화 변수</div>
+                                                <div class="td">
+                                                    <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                    <div id="kakaoValue"
+                                                         style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                                        <c:forEach var="item" items="${column}"
+                                                                   varStatus="status">
+                                                            <input type="button" data="{{${item.list_val}}}"
+                                                                   value="${item.list_nm}" class="drag-button"
+                                                                   draggable="true">
                                                         </c:forEach>
-                                                    </ul>
+                                                    </div>
                                                 </div>
-                                                <!-- select 영역 끝 -->
                                             </div>
                                         </div>
                                     </div>
@@ -236,15 +256,20 @@
                                         <div class="row">
                                             <div class="th">템플릿 선택</div>
                                             <div class="td">
-                                                <div class="delete_img" data="kakao"><img
+                                                <div class="delete_tmpl" data="kakao"><img
                                                         src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input en_font" name="" id="templateCode"
+                                                <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm"
+                                                       id="tmplNm"
                                                        placeholder="템플릿을 선택해 주세요." readonly/>
+                                                <input type="text" name="key_id" id="templateCode" class="at_tmpl_data"
+                                                       readonly hidden/>
                                                 <span class="btn_sm_line" data="kakaoImage"
                                                       onclick="tmplListPopUp('1')">선택</span>
-                                                <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
+                                                <!--임시 히든값 -->
+                                                <input type="hidden" name="kko_img_cd" value="">
                                                 <input type="hidden" name="kko_view_img_url" value="">
+                                                <input type="hidden" name="kko_btn_obj" id="kko_btn_obj" value="">
                                                 <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
                                         </div>
@@ -349,42 +374,18 @@
                                         </div>
                                     </div>
                                     <div class="block">
-                                        <div class="row">
-                                            <div class="th">개인화 변수</div>
-                                            <div class="td">
-                                                <!-- select 영역 시작 -->
-                                                <div class="select" id="smsContsVal" name="edmDB">
-                                                    <!-- selected value -->
-                                                    <div class="value" data="0">개인화 변수</div>
-                                                    <ul class="option">
-                                                        <c:forEach var="item" items="${column}" varStatus="status">
-                                                            <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                        <div class="row flex_row">
+                                            <div class="row flex_row input-img on">
+                                                <div class="th">개인화 변수</div>
+                                                <div class="td">
+                                                    <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                    <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                                        <c:forEach var="item" items="${column}"
+                                                                   varStatus="status">
+                                                            <input type="button" data="{{${item.list_val}}}" value="${item.list_nm}" class="drag-button" draggable="true">
                                                         </c:forEach>
-                                                    </ul>
+                                                    </div>
                                                 </div>
-                                                <%--<div class="select" id="smsContsVal" name="defaultDB">
-                                                    <!-- selected value -->
-                                                    <div class="value" data="0">개인화 변수</div>
-                                                    <ul class="option">
-                                                        <li data="{{USR_ID}}">회원번호</li>
-                                                        <li data="{{USR_NM}}">이름</li>
-                                                        <li data="{{USR_MOB}}">모바일</li>
-                                                        <li data="{{USR_EDM}}">이메일</li>
-                                                        <li data="{{USR_GDR}}">성별</li>
-                                                        <li data="{{USR_ADDR}}">주소</li>
-                                                        <li data="{{USR_ETC1}}">ETC1</li>
-                                                        <li data="{{USR_ETC2}}">ETC2</li>
-                                                        <li data="{{USR_ETC3}}">ETC3</li>
-                                                        <li data="{{USR_ETC4}}">ETC4</li>
-                                                        <li data="{{USR_ETC5}}">ETC5</li>
-                                                        <li data="{{USR_ETC6}}">ETC6</li>
-                                                        <li data="{{USR_ETC7}}">ETC7</li>
-                                                        <li data="{{USR_ETC8}}">ETC8</li>
-                                                        <li data="{{USR_ETC9}}">ETC9</li>
-                                                        <li data="{{USR_ETC10}}">ETC10</li>
-                                                    </ul>
-                                                </div>--%>
-                                                <!-- select 영역 끝 -->
                                             </div>
                                         </div>
                                     </div>
@@ -476,45 +477,23 @@
                                     </div>
                                     <div class="input_area left">
                                         <div class="block">
-                                            <div class="row">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
-                                                    <!-- select 영역 시작 -->
-                                                    <div class="select rcsContsVal" name="edmDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option">
+                                            <%--<div class="row flex_row">
+                                                <div class="row flex_row input-img on">
+                                                    <div class="th">개인화 변수</div>
+                                                    <div class="td">
+                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                        <div id="kakaoValue"
+                                                             style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
                                                             <c:forEach var="item" items="${column}"
                                                                        varStatus="status">
-                                                                <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                                                <input type="button" data="{{${item.list_val}}}"
+                                                                       value="${item.list_nm}" class="drag-button"
+                                                                       draggable="true">
                                                             </c:forEach>
-                                                        </ul>
+                                                        </div>
                                                     </div>
-                                                    <div class="select rcsContsVal" name="defaultDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option" id="dbHtml">
-                                                            <li data="{{USR_ID}}">회원번호</li>
-                                                            <li data="{{USR_NM}}">이름</li>
-                                                            <li data="{{USR_MOB}}">모바일</li>
-                                                            <li data="{{USR_EDM}}">이메일</li>
-                                                            <li data="{{USR_GDR}}">성별</li>
-                                                            <li data="{{USR_ADDR}}">주소</li>
-                                                            <li data="{{USR_ETC1}}">ETC1</li>
-                                                            <li data="{{USR_ETC2}}">ETC2</li>
-                                                            <li data="{{USR_ETC3}}">ETC3</li>
-                                                            <li data="{{USR_ETC4}}">ETC4</li>
-                                                            <li data="{{USR_ETC5}}">ETC5</li>
-                                                            <li data="{{USR_ETC6}}">ETC6</li>
-                                                            <li data="{{USR_ETC7}}">ETC7</li>
-                                                            <li data="{{USR_ETC8}}">ETC8</li>
-                                                            <li data="{{USR_ETC9}}">ETC9</li>
-                                                            <li data="{{USR_ETC10}}">ETC10</li>
-                                                        </ul>
-                                                    </div>
-                                                    <!-- select 영역 끝 -->
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                             <div class="row rcs_textarea">
                                                 <div class="th top-border">내용</div>
                                                 <div class="td top-border">
@@ -675,25 +654,28 @@
 </span>
 </form:form>
 
-<form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
+
 <span id="tmplPopUp">
         <div class="layer_pop tmplPopUp">
     <div class="pop_container popup_size2">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">템플릿 선택</div>
         <div class="pop_inner">
+            <form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
             <div class="form_search">
                 <!-- 검색 영역 시작 -->
-                <input type="text" class="calendar" name="reg_dt" id="from" placeholder="등록일 선택"/>
+                <input type="text" class="calendar hasDatepicker" name="reg_dt" id="tmpl_from" placeholder="등록일 선택">
                 <span class="hyphen"></span>
-                <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
+                <input type="text" class="calendar hasDatepicker" name="reg_dt_range" id="tmpl_to" placeholder="등록일 선택">
                 <div class="input_txt left-border-none">
-                    <input type="text" name='tmpl_nm' placeholder="템플릿명 입력"/>
-                    <input type="button" class="btn_search" onclick="tmplListPaging('1')" value="검색"/>
+                    <input type="text" name="ex_tmpl_nm"
+                           onkeyup="if (window.event.keyCode == 13) { tmplListPaging('1'); } return false;"
+                           placeholder="템플릿명 입력">
+                    <input type="button" class="btn_search" onclick="tmplListPaging('1')" value="검색">
                 </div>
                 <!-- 검색 영역 끝 -->
             </div>
-            <form:form action="" id="imagePop">
+            </form:form>
                 <%--    템플릿 미리보기            --%>
                 <div class="list_container sms cf">
                     <div class="row_grid">
@@ -701,17 +683,16 @@
                     </div>
                 </div>
                 <span id="tmplPager"></span>
-            </form:form>
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장"
-                   onclick="imgSendSave();"/>
+            <input type="button" class="btn_bg btn_size2 btn_center" value="저장"
+                   onclick="tmplSendSave();"/>
         </div>
     </div>
 </div>
+
 </div>
 </span>
-</form:form>
 
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
@@ -763,11 +744,6 @@
             if (state == true) {
                 let tabInx = $('.formatType').index(this);
                 $('#js-smsTab li').eq(tabInx).show();
-
-                if (minInx === '' && minInx > tabInx) {
-                    minInx = tabInx;
-                }
-
                 $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
                 $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
             }
@@ -827,7 +803,7 @@
                 if (btnName != '') {
                     if (btnLink != '') {
                         if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao_ft').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
+                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
                             //name.attr('disabled', true);
                             //link.attr('disabled', true);
                             name.attr('readonly', true);
@@ -977,6 +953,15 @@
             }
         });
 
+        // 수신 번호 option click event
+        $(document).on('click', '#recv_phone_to .option li', function () {
+            let data = $(this).attr('data');
+            console.log(data)
+            if (data != 0) {
+                $('#recv_phone').val(data);
+            }
+        });
+
         // 카카오 개인 변수 option click event
         $('#kakaoValue .option li').on('click', function () {
             let data = $(this).attr('data');
@@ -1058,16 +1043,15 @@
         });
 
         //시작일 달력
-        $('#from').datepicker({
+        // 시작일,종료일
+        $(document).find('[name="reg_dt"]').removeClass('hasDatepicker').datepicker({
             onSelect: function (selected) {
-                $("#to").datepicker("option", "minDate", selected)
+                $('[name="reg_dt"]').next('[name="reg_dt_range"]').datepicker("option", "minDate", selected);
             }
         });
-
-        //종료일 달력
-        $('#to').datepicker({
+        $(document).find('[name="reg_dt_range"]').removeClass('hasDatepicker').datepicker({
             onSelect: function (selected) {
-                $("#from").datepicker("option", "maxDate", selected)
+                $('[name="reg_dt_range"]').prev('[name="reg_dt"]').datepicker("option", "maxDate", selected);
             }
         });
 
@@ -1462,6 +1446,11 @@
             $('.create_sms').find('.outline').removeClass('outline');
 
             if (tamplate.val() != '') {
+                if ($('#recv_phone').val() == '' || $('#recv_phone').val() == null) {
+                    popup.popAlert('수신 번호를 선택해 주세요.');
+                    return false;
+                }
+
                 if (smsFormatLength == 1) {
                     if (smsFormat == 'kakao') {
                         let kakaoSubmit = kakaoValidate();
@@ -1635,9 +1624,7 @@
             return false;
         }
 
-        console.log(kakaoOption)
         if (kakaoOption == 'ad') {
-            console.log(kakaoTitle.val())
             if (kakaoTitle.val().indexOf('(광고)') != -1) {
                 if (kakaoTxt.val() != '') {
                     let type = kakaoTypeValidate();
@@ -1660,10 +1647,16 @@
         }
         if (kakaoOption == 'guide') {
             if (kakaoTitle.val() != '') {
-                let type = kakaoTypeValidate();
-                if (type == true) {
-                    return true;
+                if ($('.kakao_txt').val() != '') {
+                    let type = kakaoTypeValidate();
+                    if (type == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 } else {
+                    popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
+                    $('.kakao_txt').focus();
                     return false;
                 }
             } else {
@@ -1672,18 +1665,6 @@
                 popup.popAlert("카카오톡 문자 제목을 입력해주세요.");
                 return false;
             }
-            /*if ($('.kakao_txt').val() != '') {
-                let type = kakaoTypeValidate();
-                if (type == true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                $('.kakao_txt').focus();
-                return false;
-            }*/
         }
         return false;
     }
@@ -1709,6 +1690,7 @@
                 return false;
             }
         }
+
         return true;
     }
 
@@ -2139,12 +2121,14 @@
     function preview() {
         const res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
-            let html = $("#js-area-popup", $doc).html();
-            let dynamic = $("#preview").html(html);
+            // let html = $("#js-area-popup", $doc).html();
+
+            let dynamic = $("#preview").html($("#js-area-popup", $doc).html());
             $("#smsContentsPopup").addClass("active");
             previewSlideLoad();
         }
         let data = $("#form").serializeArray();
+        data.p
         com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -2153,6 +2137,7 @@
     function isCheckTemplateName() {
         let cont_nm = $("input[name='cont_nm']").val();
         let rcsType = $("input[name='rcs_format_type']:checked").val();
+
         const res = function (response) {
             if (response.status == "true") {
                 // buttonHiddenAdd()
@@ -2271,7 +2256,7 @@
             // 타입이 SMS 라면 (모바일)
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP02'});
-        } else if(type == 'kko'){
+        } else if (type == 'kko') {
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP03'});
         } else {
@@ -2293,6 +2278,7 @@
         let send_number = $('input[name="callNumber"]:checked').val();
         let send_to_type = $('#mSendType').val();
         let sender = send_nm + "(" + send_to + ")";
+        console.log(send_to_type)
 
         if (send_to_type === 'sms') {
             $("#sms_send_to").val(sender);
@@ -2309,6 +2295,10 @@
         } else if (send_to_type === 'slidercs') {
             $("#send_slice_rcs").val(sender);
             $("#slide_send_num").val(send_number);
+        } else if (send_to_type === 'kko') {
+            if ($('.kkoType:checked').val() === "kko_at") {
+                $('.delete_tmpl').trigger('click');
+            }
         }
 
         $('.mobilePopup').removeClass('active');
@@ -2361,7 +2351,8 @@
                 // 이미지 타입 : RCS 슬라이드 medium
                 param.push({name: 'ch_tp', value: 'IMGTP08'});
             }
-        }else if(type === 'kakaoFt')
+        }
+
         param.push({name: 'pageNo', value: nowPage});
         com_ajax.ajax('post', '${baseURL}/cont/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -2746,11 +2737,14 @@
             '<tr>' +
             '<th>채널</th>' +
             '<td>' +
-            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" checked><span></span></label>' +
-            '<label class="custom_radio">카카오<input name="ch_tp" type="radio" value="IMGTP03"><span></span></label>' +
-            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label>' +
+            '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>' +
+            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
+            '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>' +
+            '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
+            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" ><span></span></label>' +
+            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label><br>' +
             '</td>' +
-            '</tr>' +
+            '</br>' +
             '<tr class="rcsImgForm rcs_option">' +
             '<th>양식</th>' +
             '<td>' +
@@ -2781,11 +2775,27 @@
             '</tr>' +
             '</tbody>' +
             '</table>' +
-            '<ul class="guide_txt">' +
+            '<ul class="guide_txt guide_lst">' +
             '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>' +
             '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>' +
             '</ul>' +
-            '<div class="left pop_error_txt other_guide">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>' +
+            '<ul class="at_guide1 guide_lst" hidden>' +
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</li>' +
+            '</ul>' +
+            '<ul class="at_guide2 guide_lst" hidden>' +
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.</li>' +
+            '</ul>' +
+            '<ul class="ft_guide1 guide_lst">' +
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 500px 이상이며 또는 가로:세로 비율이 2:1 또는 3:4 이어야 합니다.</li>' +
+            '</ul>' +
+            '<ul class="ft_guide2 guide_lst" hidden>' +
+            '<li>※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 800px 세로 600px 파일만 등록 가능합니다.</li>' +
+            '</ul>' +
+            '<div class="left pop_error_txt other_guide guide_lst" hidden>※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>' +
             '<div class="right pop_error_txt blue_point_color"></div>' +
             '<div class="img_viewer noImg"></div>' +
             '<div class="btn_row">' +
@@ -2848,11 +2858,51 @@
 
         let param = $("#searchForm").serializeArray();
         param.push({name: 'pageNo', value: pageNo});
+        param.push({name: 'send_key', value: $('#send_key').val()});
+
         com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
-    function tmplListPaging(pageNo){
-        console.log($('#tmplSetForm').formData())
+    function tmplListPaging(pageNo) {
+        let res = function (response) {
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            $('.row_grid').html($("#body", $doc).html());
+            $("#tmplPager").html($("#pager", $doc).html());
+        };
+        let param = $("#tmplSetForm").serializeArray();
+        param.push({name: 'pageNo', value: pageNo});
+
+        com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    $(document).on('click', '.delete_tmpl', (e) => {
+        $('.at_tmpl_data').val(''); // 템플릿 관련 데이터 삭제
+        $('.kakao_txt').val('');
+    })
+
+    function tmplSendSave() {
+
+        let res = function (response) {
+            if (response.status != 200) {
+                alert("에러가 발생했습니다. 새로고침 후 다시 시도해주세요.");
+                return;
+            }
+            //이름. 내용 ... 넣어주기기
+            const dto = response.dto;
+            $('#tmplNm').val(dto.tmpl_nm);
+            $('#templateCode').val(dto.tmpl_cd);
+            $('.kakao_txt').val(dto.tmpl_cont);
+            // $('#kko_btn_obj').val(dto.button_json);
+
+            $('#tmplPopUp').siblings('.pop_error_txt').html('');
+            $('#tmplPopUp input').val('');
+            $('.tmplPopUp').removeClass('active');
+        };
+
+        const tmpl = $('#tmplPopUp input[name="tmpl_cd"]:checked');
+        let param = {tmpl_cd: $(tmpl).attr("data")}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/getAtTmpl.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+
     }
 
     // 카카오 타입 변경
@@ -2893,7 +2943,13 @@
         beforeKkoType = $(check).val();
         $(check).prop('checked', true);
         $('.kko_area').hide();
-        $(`#` + beforeKkoType).show()
+        $(`#` + beforeKkoType).show();
+
+        if (check.val() == 'kko_at') {
+            $('.kakao_txt').attr('readonly', true).val("");
+        } else {
+            $('.kakao_txt').attr('readonly', false).val("");
+        }
     }
 
 </script>

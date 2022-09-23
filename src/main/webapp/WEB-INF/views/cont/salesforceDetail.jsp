@@ -200,16 +200,13 @@
                                             </div>
                                         </div>
                                         <div class="block">
-                                            <div class="row">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
-                                                    <!-- select 영역 시작 -->
-                                                    <div class="select" id="kakaoValue" name="edmDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingLst"></ul>
+                                            <div class="row flex_row">
+                                                <div class="row flex_row input-img on">
+                                                    <div class="th">개인화 변수</div>
+                                                    <div class="td">
+                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                        <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
-                                                    <!-- select 영역 끝 -->
                                                 </div>
                                             </div>
                                         </div>
@@ -368,17 +365,11 @@
                                                 </div>
                                             </div>
                                             <div class="block">
-                                                <div class="row">
+                                                <div class="row flex_row input-img on">
                                                     <div class="th">개인화 변수</div>
                                                     <div class="td">
-                                                        <!-- select 영역 시작 -->
-                                                        <div class="select" id="smsContsVal" name="edmDB">
-                                                            <!-- selected value -->
-                                                            <div class="value" data="0">개인화 변수</div>
-                                                            <ul class="option mappingLst">
-                                                            </ul>
-                                                        </div>
-                                                        <!-- select 영역 끝 -->
+                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                        <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
                                                 </div>
                                             </div>
