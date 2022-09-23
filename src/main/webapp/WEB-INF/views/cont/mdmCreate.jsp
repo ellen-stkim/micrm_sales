@@ -135,23 +135,16 @@
                                     <div class="column_2">
                                         <label class="type_check"><input type="radio" name="kko_format_type"
                                                                          class="kkoType"
-                                                                         value="kko_at"
-                                                                         checked/><span>알림톡</span></label>
+                                                                         value="kko_ft"
+                                                                         checked/><span>친구톡</span></label>
                                         <label class="type_check"><input type="radio" name="kko_format_type"
                                                                          class="kkoType"
-                                                                         value="kko_ft"
-                                        /><span>친구톡</span></label>
+                                                                         value="kko_at"/><span>알림톡</span></label>
                                     </div>
                                 </div>
                                 <div class="row body">
                                     <div class="th">발신 프로필</div>
                                     <div class="column_1">
-                                        <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
-                                            <%--<input type="text" class="sms_number smsNumber" name="send_to" id="send_to"
-                                                   value ="${list[0].list_val}"
-                                                   readonly/>--%>
-                                            <%--<input type="text" class="sms_number smsNumber_kko" id="send_to"
-                                                   value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly/>--%>
                                         <input type="text" class="sms_number smsNumber_kko" id="send_to"
                                                 <c:if test="${fn:trim(list[0].list_nm) != ''}">
                                                     value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly
@@ -164,34 +157,23 @@
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
                                 </div>
-                                <div class="input_area kko_area" id="kko_at">
+                                <div class="input_area kko_area" id="kko_ft">
                                     <div class="block">
                                         <div class="row">
-                                            <div class="th">템플릿 선택</div>
+                                            <div class="th">이미지 선택</div>
                                             <div class="td">
-                                                <div class="delete_img" data="kakao"><img
-                                                        src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png" alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input en_font" name="" id="templateCode"
-                                                       placeholder="템플릿을 선택해 주세요." readonly/>
-                                                <span class="btn_sm_line" data="kakaoImage"
-                                                      onclick="tmplListPopUp('1')">선택</span>
+                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly="">
+                                                <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
-                                                <input type="hidden" name="kko_view_img_url" value="">
-                                                <!-- 프리뷰를 위한 이미지 URL -->
+                                                <input type="hidden" name="kko_view_img_url" value=""> <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="input_area kko_area" id="kko_ft" hidden>
-                                    <div class="block">
                                         <div class="row">
                                             <div class="th top-border">이미지 링크 주소</div>
                                             <div class="td top-border">
-                                                <input type="text" class="txt_input en_font width kakaoImgLink"
-                                                       name="kko_img_url"
-                                                       onblur="smsCreate.imageLinkAdd(this);"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)">
                                             </div>
                                         </div>
                                         <div class="row flex_row">
@@ -245,6 +227,25 @@
                                                        placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                 <input type="hidden" name="kko_trackinglink"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input_area kko_area" id="kko_at" hidden>
+                                    <div class="block">
+                                        <div class="row">
+                                            <div class="th">템플릿 선택</div>
+                                            <div class="td">
+                                                <div class="delete_img" data="kakao"><img
+                                                        src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                </div>
+                                                <input type="text" class="txt_input en_font" name="" id="templateCode"
+                                                       placeholder="템플릿을 선택해 주세요." readonly/>
+                                                <span class="btn_sm_line" data="kakaoImage"
+                                                      onclick="tmplListPopUp('1')">선택</span>
+                                                <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
+                                                <input type="hidden" name="kko_view_img_url" value="">
+                                                <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
                                         </div>
                                     </div>
@@ -722,7 +723,6 @@
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
     function getDBValue() {
-        console.log("getDBValue")
         let dbValue = $('input[name="dbInfo"]:checked').val();
         let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
         let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
@@ -768,7 +768,6 @@
                     minInx = tabInx;
                 }
 
-                console.log(minInx)
                 $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
                 $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
             }
@@ -787,8 +786,6 @@
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
             let tabInx = $('.formatType').index(this);
-
-            console.log(tabInx)
 
             if (state == true) {
                 $('#js-smsTab li').eq(tabInx).show().addClass('on').siblings().removeClass('on');
@@ -1589,8 +1586,6 @@
             event.stopPropagation();
             typeValue = $(this).attr('data');
 
-            // console.log("slideData: " + slideData);
-
             if (slideData != typeValue) {
                 let message = "카드양식을 이동하시면 내용이 초기화됩니다. 이동하시겠습니까?";
                 let html = '';
@@ -1627,15 +1622,12 @@
         });
     });
 
-    // 카카오, SMS 유효성 검사
+    // 카카오, SMS 유효성 검사   // 확인
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
         let kakaoTitle = $('.kakaoTitle');
         let kakaoTxt = $('.kakao_txt');
         let kakaoSenderNo = $('.smsNumber_kko');
-
-        //console.log("kakaoOption : " + kakaoOption);
-
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
             popup.popAlert("카카오톡 발신 번호를 입력해주세요");
@@ -1643,7 +1635,9 @@
             return false;
         }
 
+        console.log(kakaoOption)
         if (kakaoOption == 'ad') {
+            console.log(kakaoTitle.val())
             if (kakaoTitle.val().indexOf('(광고)') != -1) {
                 if (kakaoTxt.val() != '') {
                     let type = kakaoTypeValidate();
@@ -2342,7 +2336,7 @@
 
         if (type === 'kakaoImage') {
             // 이미지 타입 : Kakao Image
-            param.push({name: 'ch_tp', value: 'IMGTP03'});
+            param.push({name: 'ch_tp', value: 'IMGTP_FT'});
         } else if (type === 'smsImage') {
             // 이미지 타입 : 문자(MMS)
             param.push({name: 'ch_tp', value: 'IMGTP02'});
@@ -2367,7 +2361,7 @@
                 // 이미지 타입 : RCS 슬라이드 medium
                 param.push({name: 'ch_tp', value: 'IMGTP08'});
             }
-        }
+        }else if(type === 'kakaoFt')
         param.push({name: 'pageNo', value: nowPage});
         com_ajax.ajax('post', '${baseURL}/cont/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -2863,7 +2857,7 @@
 
     // 카카오 타입 변경
     // RCS 포맷카드 변경시 초기화 알림
-    let beforeKkoType = "at";
+    let beforeKkoType = "ft";
     $('input[name="kko_format_type"]').on('click', function (event) {
         event.preventDefault();
         check = $('input[name="kko_format_type"]:checked');

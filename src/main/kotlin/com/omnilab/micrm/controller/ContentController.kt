@@ -1,11 +1,14 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
+import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.service.*
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
@@ -23,6 +26,7 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
+import kotlin.math.log
 
 
 @Controller
@@ -57,6 +61,10 @@ class ContentController  {
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
+
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -644,17 +652,18 @@ class ContentController  {
         if (file != null) {
             map["imgCheck"] = 1
             val userInfo = UsefulUtils.sessionUser()
-            var contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
+            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
             map = fileUpload.upload(contentFilePath, file, request);
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
             }else{
+
                 if(dto.ch_tp != "IMGTP01"){
                     val fileName = map["file_nm"]
-                    var image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.getWidth()
-                    val imageHeight: Int = image.getWidth()
-                    if(image.getWidth() < 500 || image.getHeight() < 250) {
+                    val image : BufferedImage = ImageIO.read(file.inputStream)
+                    val imageWidth: Int = image.width
+                    val imageHeight: Int = image.width
+                    if(image.width < 500 || image.height < 250) {
 
                         val newWidth = 500
                         val newHeight = 500
@@ -683,12 +692,32 @@ class ContentController  {
                         g.drawImage(resizeImage, 0, 0, null)
                         g.dispose()
 
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath(contentFilePath + "/" + fileName), FilenameUtils.getName(contentFilePath + "/" + fileName)))
+                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
 
                         resizeImage.flush()
                         image.flush()
                     }
                 }
+                var resultMap: MutableMap<String, Any>? = null
+                if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                    resultMap = kkoRestApiService.uploadTmplImg(file)
+                }
+                if(dto.ch_tp == "IMGTP11" || dto.ch_tp == "IMGTP12"){    // 카카오 친구톡 이미지
+                    resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                }
+                logger.error("{}",resultMap)
+                if(!CommonUtils.isEmptyObject(resultMap)){
+                    if(resultMap!!["result"] as Boolean){
+                        val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                        dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                    }else{
+                        map["uploaded"] = 0
+                        map["message"] = "파일 저장에 실패하였습니다."
+                        logger.info("File DB insert fail")
+                        return map
+                    }
+                }
+
             }
 
             dto.reg_id = userInfo.usr_id
@@ -1064,45 +1093,90 @@ class ContentController  {
     @GetMapping("/kko/tmplCreate.mi")
     fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
-        val map = sysSettingService.getDBValue();
+        val map = kkoMsgService.tmplCreateLst();
 
-        val kkoDto = SetLst_searchDto()
-        kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        kkoDto.list_tp_id = "CH02"
-        kkoDto.list_dt_id = "DMTP03"
-        kkoDto.def_yn = "Y"
-        val kkoSenderMap = mobileContentService.selectSenderList(kkoDto)
+        view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+        view.addObject("btnLinkLst", map["btnLinkLst"])
+        view.addObject("btnLst", map["btnLst"])
 
-        val smsDto = SetLst_searchDto()
-        smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        smsDto.list_tp_id = "CH02"
-        smsDto.list_dt_id = "DMTP02"
-        smsDto.def_yn = "Y"
-        val smsSenderMap = mobileContentService.selectSenderList(smsDto)
-
-
-        val rcsDto = SetLst_searchDto()
-        rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        rcsDto.list_tp_id = "CH02"
-        rcsDto.list_dt_id = "DMTP04"
-        rcsDto.def_yn = "Y"
-        val rcsSenderMap = mobileContentService.selectSenderList(rcsDto)
-
-
-        val cntMap = mobileContentService.isCheckSender()
-
-        // 개인화 변수 추가하기
-        view.addObject("column",map);
-        view.addObject("list",kkoSenderMap["list"])
-        view.addObject("smsSender",smsSenderMap["list"])
-        view.addObject("rcsSender",rcsSenderMap["list"])
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
+        view.addObject("column",sysSettingService.getDBValue())
 
         return view
     }
 
+    /**
+     * @Method Name  : tmplCreateService
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성
+     * @title : 알림톡 탬플릿 생성
+     */
+    @PostMapping("/kko/tmplCreate.service")
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestBody dto : Kko_at_tmplDto ): ModelAndView {
+        val view = ModelAndView("cont/kko/tmplCreate")
 
+        val map = kkoMsgService.createTmpl(dto)
+        /*, @ModelAttribute dto: Kko_at_tmplDto*/
+
+
+        logger.error("{}",dto)
+
+
+        /*view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+
+        view.addObject("column",sysSettingService.getDBValue())*/
+
+        return view
+    }
+
+    /**
+     * @Method Name  : isCheckTmplNm
+     * @Since    : 2022. 09. 20.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 체크
+     * @title : 알림톡 탬플릿명 체크
+     */
+    @ResponseBody
+    @PostMapping("/kko/isCheckTmplNm.ajax")
+    fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any> {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+        dto.use_yn = "Y"
+
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+
+        if(!CommonUtils.isEmptyObject(dto)){   //
+            map.put("status" , HttpServletResponse.SC_BAD_REQUEST)
+            map.put("msg" , "이미 사용중인 템플릿명 입니다.")
+            return map
+        }
+
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("msg" , "사용가능한 템플릿명 입니다.")
+
+        return map
+    }
 
 }

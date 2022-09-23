@@ -394,7 +394,7 @@
                           FROM   tblmicp_track_url
                           GROUP  BY url_id) AS b
                     ON b.url_id = a.seq
-        WHERE  cont_lst_cd = #{cont_id}
+        WHERE  cont_lst_cd = #{cont_id} AND a.URL_ID != 'mmsIMG001'
     </select>
 
     <select id="getContentsLst" resultType="Content_view_Dto">
