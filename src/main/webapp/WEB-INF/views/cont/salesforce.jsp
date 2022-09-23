@@ -2241,9 +2241,7 @@
         $('input[name="rcs_footer"]').val('');
         $('#rejectionArea').html('');
         $('.rcsContsVal[name="edmDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
-        $('.rcsContsVal[name="defaultDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
         $('.rcsTitle[name="edmDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
-        $('.rcsTitle[name="defaultDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
 
         if(radioVal == 'sms'){
             buttonReplace('text', 1, 17);
@@ -2270,11 +2268,7 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                    + '<ul class="option"></ul>'
-                + '</div>'
-                + '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
-                + '<div class="value" data="0">개인화 변수</div>'
-                    + '<ul class="option" id=""></ul>'
+                + '<ul class="option"></ul>'
                 + '</div>'
                 + '</div>'
                 + '</div>'

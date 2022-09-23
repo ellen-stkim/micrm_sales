@@ -322,6 +322,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsText.ajax")
     fun rcsText(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -341,6 +342,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsVertical.ajax")
     fun rcsVertical(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -360,6 +362,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsSlide.ajax")
     fun rcsSlide(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
