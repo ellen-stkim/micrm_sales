@@ -2143,7 +2143,7 @@
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
             $('.smsNumber_kko').val(sender);
-            $('.kakao_send_to_list').val(send_number);
+            $('#kakao_send_to_list').val(send_number);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
