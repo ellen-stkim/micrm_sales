@@ -1,15 +1,13 @@
 package com.omnilab.micrm.controller
 
 import com.google.gson.GsonBuilder
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
-import com.omnilab.micrm.service.ContentService
-import com.omnilab.micrm.service.ImageService
-import com.omnilab.micrm.service.SalesforceService
-import com.omnilab.micrm.service.SysSettingService
+import com.omnilab.micrm.service.*
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
 import org.apache.commons.io.FilenameUtils
@@ -66,6 +64,10 @@ class SalesforceController {
     @Autowired
     @Qualifier("SalesforceDaoImpl")
     lateinit var salesforceDao : SalesforceDao
+
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
 
 
     @Value("\${upload.content}")
@@ -436,6 +438,26 @@ class SalesforceController {
                         resizeImage.flush()
                         image.flush()
                     }
+                    var resultMap: MutableMap<String, Any>? = null
+                    if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                        resultMap = kkoRestApiService.uploadTmplImg(file)
+                    }
+                    if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                    }
+
+                    if(!CommonUtils.isEmptyObject(resultMap)){
+                        if(resultMap!!["result"] as Boolean){
+                            val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                        }else{
+                            map["uploaded"] = 0
+                            map["message"] = "파일 저장에 실패하였습니다."
+                            logger.info("File DB insert fail")
+                            return map
+                        }
+                    }
+
                 }
             }
 

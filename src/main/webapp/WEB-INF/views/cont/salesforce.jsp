@@ -132,13 +132,27 @@
                                         </div>
                                     </div>
                                     <div class="row body">
-                                        <div class="th">발신 번호</div>
-                                        <div class="column_1">
-                                            <input type="text" class="sms_number smsNumber_kko" id="send_to" placeholder ="발신 번호를 선택 해주세요" readonly/>
-                                            <input type="hidden" name="send_to_list" id="kakao_send_to_num" value=""/>
+                                        <div class="th">타입</div>
+                                        <div class="column_2">
+                                            <label class="type_check"><input type="radio" name="kko_format_type"
+                                                                             class="kkoType"
+                                                                             value="kko_ft"
+                                                                             checked/><span>친구톡</span></label>
+                                            <label class="type_check"><input type="radio" name="kko_format_type"
+                                                                             class="kkoType"
+                                                                             value="kko_at"/><span>알림톡</span></label>
                                         </div>
                                     </div>
-                                    <div class="input_area">
+                                    <div class="row body">
+                                        <div class="th">발신 프로필</div>
+                                        <div class="column_1">
+                                            <input type="text" class="sms_number smsNumber_kko" id="send_to" placeholder ="발신 프로필을 선택 해주세요" readonly/>
+                                            <input type="hidden" name="send_key" id="send_key" value="${list[0].list_val}"/>
+                                            <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
+                                            <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
+                                        </div>
+                                    </div>
+                                    <div class="input_area kko_area" id="kko_ft">
                                         <div class="block">
                                             <div class="row">
                                                 <div class="th">이미지 선택</div>
@@ -154,7 +168,7 @@
                                             <div class="row">
                                                 <div class="th top-border">이미지 링크 주소</div>
                                                 <div class="td top-border">
-                                                    <input type="text" class="txt_input en_font width kakaoImgLink" id="kko_img_url" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 </div>
                                             </div>
                                             <div class="row flex_row">
@@ -199,6 +213,30 @@
                                                            placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                     <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                     <input type="hidden" name="kko_trackinglink"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input_area kko_area" id="kko_at" hidden>
+                                        <div class="block">
+                                            <div class="row">
+                                                <div class="th">템플릿 선택</div>
+                                                <div class="td">
+                                                    <div class="delete_tmpl" data="kakao"><img
+                                                            src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                    </div>
+                                                    <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm"
+                                                           id="tmplNm"
+                                                           placeholder="템플릿을 선택해 주세요." readonly/>
+                                                    <input type="text" name="key_id" id="templateCode" class="at_tmpl_data"
+                                                           readonly hidden/>
+                                                    <span class="btn_sm_line" data="kakaoImage"
+                                                          onclick="tmplListPopUp('1')">선택</span>
+                                                    <!--임시 히든값 -->
+                                                    <input type="hidden" name="kko_img_cd" value="">
+                                                    <input type="hidden" name="kko_view_img_url" value="">
+                                                    <input type="hidden" name="kko_btn_obj" id="kko_btn_obj" value="">
+                                                    <!-- 프리뷰를 위한 이미지 URL -->
                                                 </div>
                                             </div>
                                         </div>
@@ -559,6 +597,45 @@
         </div>
     </div>
 </form:form>
+
+<span id="tmplPopUp">
+        <div class="layer_pop tmplPopUp">
+    <div class="pop_container popup_size2">
+        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+        <div class="pop_title">템플릿 선택</div>
+        <div class="pop_inner">
+            <form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
+            <div class="form_search">
+                <!-- 검색 영역 시작 -->
+                <input type="text" class="calendar hasDatepicker" name="reg_dt" id="tmpl_from" placeholder="등록일 선택">
+                <span class="hyphen"></span>
+                <input type="text" class="calendar hasDatepicker" name="reg_dt_range" id="tmpl_to" placeholder="등록일 선택">
+                <div class="input_txt left-border-none">
+                    <input type="text" name="ex_tmpl_nm"
+                           onkeyup="if (window.event.keyCode == 13) { tmplListPaging('1'); } return false;"
+                           placeholder="템플릿명 입력">
+                    <input type="button" class="btn_search" onclick="tmplListPaging('1')" value="검색">
+                </div>
+                <!-- 검색 영역 끝 -->
+            </div>
+            </form:form>
+                <%--    템플릿 미리보기            --%>
+                <div class="list_container sms cf">
+                    <div class="row_grid">
+                        <input type="hidden" id="nowPageNo" name="nowPageNo" value="1">
+                    </div>
+                </div>
+                <span id="tmplPager"></span>
+        <div class="pop_error_txt blue_point_color"></div>
+        <div class="btn_row">
+            <input type="button" class="btn_bg btn_size2 btn_center" value="저장"
+                   onclick="tmplSendSave();"/>
+        </div>
+    </div>
+</div>
+
+</div>
+</span>
 
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
@@ -1346,11 +1423,8 @@
         let kakaoTxt = $('.kakao_txt');
         let kakaoSenderNo = $('.smsNumber_kko');
 
-        //console.log("kakaoOption : " + kakaoOption);
-
-
         if(kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null){
-            popup.popAlert("카카오톡 발신 번호를 입력해주세요");
+            popup.popAlert("카카오톡 발신 프로필을 선택입력해주세요");
             //kakaoSenderNo.parent('.column_2').addClass('outline');
             return false;
         }
@@ -1378,10 +1452,16 @@
         }
         if (kakaoOption == 'guide') {
             if (kakaoTitle.val() != '') {
-                let type = kakaoTypeValidate();
-                if (type == true) {
-                    return true;
+                if ($('.kakao_txt').val() != '') {
+                    let type = kakaoTypeValidate();
+                    if (type == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 } else {
+                    popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
+                    $('.kakao_txt').focus();
                     return false;
                 }
             } else {
@@ -1981,11 +2061,13 @@
         };
 
         var param = $("#tblmisetForm").serializeArray();
-
         if (type === 'sms') {
             // 타입이 SMS 라면 (모바일)
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP02'});
+        } else if (type == 'kko') {
+            param.push({name: 'list_tp_id', value: 'CH02'});
+            param.push({name: 'list_dt_id', value: 'DMTP03'});
         } else {
             // 타입이 RCS 라면
             param.push({name: 'list_tp_id', value: 'CH02'});
@@ -2021,6 +2103,10 @@
         } else if (send_to_type === 'slidercs') {
             $("#send_slice_rcs").val(sender);
             $("#slide_send_num").val(send_number);
+        } else if (send_to_type === 'kko') {
+            if ($('.kkoType:checked').val() === "kko_at") {
+                $('.delete_tmpl').trigger('click');
+            }
         }
 
         $('.mobilePopup').removeClass('active');
@@ -2047,7 +2133,7 @@
 
         if (type === 'kakaoImage') {
             // 이미지 타입 : Kakao Image
-            param.push({name: 'ch_tp', value: 'IMGTP03'});
+            param.push({name: 'ch_tp', value: 'IMGTP_FT'});
         } else if (type === 'smsImage') {
             // 이미지 타입 : 문자(MMS)
             param.push({name: 'ch_tp', value: 'IMGTP02'});
@@ -2167,7 +2253,7 @@
             }
         } else {
             if (type == 'kakaoImage') {
-                $('#kakao').find('.sms_img').children().remove();
+                $('#kakao_ft').find('.sms_img').children().remove();
             } else if (type == 'smsImage') {
                 $('#sms').find('.sms_img').children().remove();
             }
@@ -2435,8 +2521,11 @@
             '<tr>'+
             '<th>채널</th>'+
             '<td>'+
-            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" checked><span></span></label>'+
-            '<label class="custom_radio">카카오<input name="ch_tp" type="radio" value="IMGTP03"><span></span></label>'+
+            '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>'+
+            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>'+
+            '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>'+
+            '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>'+
+            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02"><span></span></label>'+
             '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label>'+
             '</td>'+
             '</tr>'+
@@ -2470,11 +2559,27 @@
             '</tr>'+
             '</tbody>'+
             '</table>'+
-            '<ul class="guide_txt">'+
+            '<ul class="guide_txt guide_lst">'+
             '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>'+
             '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>'+
             '</ul>'+
-            '<div class="left pop_error_txt other_guide">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>'+
+            '<ul class="at_guide1 guide_lst" hidden>'+
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+            '<li>※ 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</li>'+
+            '</ul>'+
+            '<ul class="at_guide2 guide_lst" hidden>'+
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+            '<li>※ 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.</li>'+
+            '</ul>'+
+            '<ul class="ft_guide1 guide_lst">'+
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+            '<li>※ 이미지 파일은 가로 500px 이상이며 또는 가로:세로 비율이 2:1 또는 3:4 이어야 합니다.</li>'+
+            '</ul>'+
+            '<ul class="ft_guide2 guide_lst" hidden>'+
+            '<li>※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+            '<li>※ 이미지 파일은 가로 800px 세로 600px 파일만 등록 가능합니다.</li>'+
+            '</ul>'+
+            '<div class="left pop_error_txt other_guide guide_lst">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>'+
             '<div class="right pop_error_txt blue_point_color"></div>'+
             '<div class="img_viewer noImg"></div>'+
             '<div class="btn_row">'+
@@ -2552,6 +2657,55 @@
             return s.replace(/(\r\n|\r|\n|\n\r|\\\\r\\\\n)/gi, "<br>");
         }
     }
+
+    function tmplListPopUp(pageNo) {
+        $('.tmplPopUp').addClass('active');
+        tmplListPaging(1)
+    }
+
+    function tmplListPaging(pageNo) {
+        let res = function (response) {
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            $('.row_grid').html($("#body", $doc).html());
+            $("#tmplPager").html($("#pager", $doc).html());
+        };
+        let param = $("#tmplSetForm").serializeArray();
+        param.push({name: 'pageNo', value: pageNo});
+        data.append("usr_grp_cd", $('#usr-grp_cd').val());
+
+        com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    $(document).on('click', '.delete_tmpl', (e) => {
+        $('.at_tmpl_data').val(''); // 템플릿 관련 데이터 삭제
+        $('.kakao_txt').val('');
+    })
+
+    function tmplSendSave() {
+
+        let res = function (response) {
+            if (response.status != 200) {
+                alert("에러가 발생했습니다. 새로고침 후 다시 시도해주세요.");
+                return;
+            }
+            //이름. 내용 ... 넣어주기기
+            const dto = response.dto;
+            $('#tmplNm').val(dto.tmpl_nm);
+            $('#templateCode').val(dto.tmpl_cd);
+            $('.kakao_txt').val(dto.tmpl_cont);
+            // $('#kko_btn_obj').val(dto.button_json);
+
+            $('#tmplPopUp').siblings('.pop_error_txt').html('');
+            $('#tmplPopUp input').val('');
+            $('.tmplPopUp').removeClass('active');
+        };
+
+        const tmpl = $('#tmplPopUp input[name="tmpl_cd"]:checked');
+        let param = {tmpl_cd: $(tmpl).attr("data")}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/getAtTmpl.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+
+    }
+
 
     function textAreaParsing(s) {
         if(s == null) {
@@ -2890,6 +3044,49 @@
             mobileInfo(check);
         }else{
             return false;
+        }
+    }
+
+
+    // 카카오 타입 변경
+    let beforeKkoType = "ft";
+    $('input[name="kko_format_type"]').on('click', function (event) {
+        event.preventDefault();
+        check = $('input[name="kko_format_type"]:checked');
+        let nowVal = $('input[name="kko_format_type"]:checked').val();
+
+        if (beforeKkoType != nowVal) {
+            let message = "메시지 타입을 변경 할 경우 입력한 내용이 초기화됩니다.<br/>변경 하시겠습니까?";
+            let html = '';
+            html +=
+                '<div class="layer_pop alert active">' +
+                '<div class="pop_container popup_size3">' +
+                '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+                '<div class="pop_title">타입 변경</div>' +
+                '<div class="pop_inner">' +
+                '<div class="alert_txt">' + message + '</div>' +
+                '<div class="btn_row">' +
+                '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this); kkoChangeFormat(check);" value="확인" />' +
+                '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this); rollbackType(beforeKkoType)" value="취소" />' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $('body .layer_pop.alert').remove();
+            $('body').append(html);
+        }
+    });
+
+    function kkoChangeFormat(check) {
+        beforeKkoType = $(check).val();
+        $(check).prop('checked', true);
+        $('.kko_area').hide();
+        $(`#` + beforeKkoType).show();
+
+        if (check.val() == 'kko_at') {
+            $('.kakao_txt').attr('readonly', true).val("");
+        } else {
+            $('.kakao_txt').attr('readonly', false).val("");
         }
     }
 
