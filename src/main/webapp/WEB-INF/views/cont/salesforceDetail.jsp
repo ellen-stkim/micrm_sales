@@ -281,16 +281,12 @@
                                             <div class="row">
                                                 <div class="th">템플릿 선택</div>
                                                 <div class="td">
-                                                    <div class="delete_tmpl" data="kakao"><img
-                                                            src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                    <div class="delete_tmpl" data="kakao">
+                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                     </div>
-                                                    <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm"
-                                                           id="tmplNm" value="${list[0].tmpl_nm}"
-                                                           placeholder="템플릿을 선택해 주세요." readonly/>
-                                                    <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" value="${list[0].send_num}"
-                                                           readonly hidden/>
-                                                    <span class="btn_sm_line" data="kakaoImage"
-                                                          onclick="tmplListPopUp('1')">선택</span>
+                                                    <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm" id="tmplNm" value="${list[0].tmpl_nm}" placeholder="템플릿을 선택해 주세요." readonly/>
+                                                    <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" value="${list[0].tmpl_cd}" readonly hidden/>
+                                                    <span class="btn_sm_line" data="kakaoImage" onclick="tmplListPopUp('1')">선택</span>
                                                     <!-- 프리뷰를 위한 이미지 URL -->
                                                 </div>
                                             </div>

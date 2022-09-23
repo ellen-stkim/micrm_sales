@@ -110,6 +110,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
 
     // 알림톡 변수
     var tmpl_nm :String? = null
+    var tmpl_cd :String? = null
     var at_btn_obj: String? = null
     var at_btn_json: List<MutableMap<String, Any>>? = null
         get() = if (!at_btn_obj.isNullOrEmpty() && field == null) {

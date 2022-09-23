@@ -1183,6 +1183,7 @@
 			, l.use_yn                                                                                             AS list_use_yn
 			, l.from_to                                                                                            AS from_to
 			, tmpl.tmpl_nm AS tmpl_nm
+			, tmpl.tmpl_cd AS tmpl_cd
 			, tmpl.button_json AS at_btn_obj
 			, tmpl.quick_repl_json
 			, tmpl.item_highlight_json
