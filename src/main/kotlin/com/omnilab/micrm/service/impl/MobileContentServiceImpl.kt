@@ -837,11 +837,6 @@ class MobileContentServiceImpl : ContentService {
             //logger.error("one content: " + contentOne[i])
             val dto = contentOne[i]
 
-            if (dto.cont_tp.equals("DMTP05")) {
-                // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
-//                jsonOneContentsParsing(dto)
-            }
-
             if (dto.cont_tp.equals("DMTP04")) {
                 // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
                 jsonOneContentsParsing(dto)

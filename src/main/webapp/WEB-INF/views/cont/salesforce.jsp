@@ -147,10 +147,9 @@
                                 <div class="row body">
                                     <div class="th">발신 프로필</div>
                                     <div class="column_1">
-                                        <input type="text" class="sms_number smsNumber_kko" id="send_to"
-                                               placeholder="발신 프로필을 선택 해주세요" readonly/>
-                                        <input type="hidden" name="send_key" id="send_key" value="${list[0].list_val}"/>
-                                        <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
+                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to"
+                                               placeholder="발신 프로필을 선택 해주세요"  readonly/>
+                                        <input type="hidden" name="send_to_list" />
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
                                 </div>
@@ -2144,6 +2143,7 @@
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
             $('.smsNumber_kko').val(sender);
+            $('.send_to_list').val(send_number);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
