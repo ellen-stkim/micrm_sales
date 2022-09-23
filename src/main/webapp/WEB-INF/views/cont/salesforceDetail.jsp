@@ -5349,7 +5349,6 @@
 
     // 이미지 리스트 페이징
     function imageListPaging(nowPage) {
-
         let type = $('#imgType').val();
 
         const res = function (response) {
