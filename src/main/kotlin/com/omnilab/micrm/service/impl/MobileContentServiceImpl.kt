@@ -127,7 +127,6 @@ class MobileContentServiceImpl : ContentService {
                         atDto.tmpl_cd = contentListCreatedto.key_id
                         atDto.tmpl_nm = contentListCreatedto.tmpl_nm
                         val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
-                        logger.error("{}",resultDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
                             tblmiContLstdto.kko_btn_obj = resultDto!!.button_json

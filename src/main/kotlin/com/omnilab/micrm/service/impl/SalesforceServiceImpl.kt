@@ -892,9 +892,6 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.use_yn = "N"
                 }
 
-                tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
-
                 val kkoOption = contentListCreatedto.kko_option!!.trim()
                 if (kkoOption.equals("ad")) {
                     // 광고 처리
@@ -904,17 +901,41 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
 
-                // 카카오 이미지 처리
-                if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
-                    tblmiContLstdto.kko_img_cd = null
-                } else {
-                    tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
+
+                    var atDto =  AtTmpl_searchDto()
+                    atDto.tmpl_cd = contentListCreatedto.key_id
+                    atDto.tmpl_nm = contentListCreatedto.tmpl_nm
+                    val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
+                    if(!CommonUtils.isEmptyObject(resultDto)){
+                        tblmiContLstdto.key_id = resultDto!!.tmpl_cd
+                        tblmiContLstdto.kko_btn_obj = resultDto!!.button_json
+//                        개인화 변수 등 추가
+                    }
+
+                    tblmiContLstdto.cont_tp = "DMTP05"
+                    tblmiContLstdto.msg_tp = "DMCH216"
+
+                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                    
+                }else{
+
+                    // 카카오 이미지 처리
+                    if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                        tblmiContLstdto.kko_img_cd = null
+                    } else {
+                        tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                    }
+
+                    tblmiContLstdto.cont_tp = "DMTP03" // 카카오
+                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+
+                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                    tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
+                    tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
+                    tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
                 }
 
-                tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
             }
 
             // 인덱스 번호 1: SMS (문자 )
