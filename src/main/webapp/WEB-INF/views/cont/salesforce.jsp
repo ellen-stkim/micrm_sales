@@ -149,7 +149,7 @@
                                     <div class="column_1">
                                         <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to"
                                                placeholder="발신 프로필을 선택 해주세요"  readonly/>
-                                        <input type="hidden" name="send_to_list" id="kakao_send_to_list" />
+                                        <input type="hidden" name="send_to_list" id="kakao_send_to_num" />
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
                                 </div>
@@ -2143,7 +2143,7 @@
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
             $('.smsNumber_kko').val(sender);
-            $('#kakao_send_to_list').val(send_number);
+            $('#kakao_send_to_num').val(send_number);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
@@ -2729,12 +2729,10 @@
                 alert("에러가 발생했습니다. 새로고침 후 다시 시도해주세요.");
                 return;
             }
-            //이름. 내용 ... 넣어주기기
             const dto = response.dto;
             $('#tmplNm').val(dto.tmpl_nm);
             $('#templateCode').val(dto.tmpl_cd);
             $('.kakao_txt').val(dto.tmpl_cont);
-            // $('#kko_btn_obj').val(dto.button_json);
 
             $('#tmplPopUp').siblings('.pop_error_txt').html('');
             $('#tmplPopUp input').val('');
