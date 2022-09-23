@@ -74,7 +74,7 @@
                               <div class="value" data="0">개인화 변수</div>
                               <ul class="option">
                                  <c:forEach var="item" items="${column}" varStatus="status">
-                                    <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                    <li data="${item.list_val}">${item.list_nm}</li>
                                  </c:forEach>
                               </ul>
                            </div>
@@ -94,7 +94,7 @@
                               <div class="value" data="0">개인화 변수</div>
                               <ul class="option">
                                  <c:forEach var="item" items="${column}" varStatus="status">
-                                    <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                    <li data="${item.list_val}">${item.list_nm}</li>
                                  </c:forEach>
                               </ul>
                            </div>
@@ -102,8 +102,7 @@
                      </div>
                      <div class="row rcs_textarea">
                         <div class="th top-border">내용</div>
-                        <div class="td top-border"><textarea class="rcsContents" name="slide_cont_body" id="" cols="30" rows="10"
-                                                             placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this,0);"></textarea></div>
+                        <div class="td top-border"><textarea class="rcsContents" name="slide_cont_body" cols="30" rows="10" placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this,0);"></textarea></div>
                      </div>
                   </div>
                   <div class="block">
@@ -128,11 +127,11 @@
                      </div>
                      <div class="row">
                         <div class="th">버튼 명</div>
-                        <div class="td button-name"><input type="text" name="slide_rcs_btn_1" class="txt_input action_name" data="1"
-                                                           placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,'slideSmall');"><span
-                                class="text-count en_font"><span>0</span>/5</span></div>
+                        <div class="td button-name">
+                           <input type="text" name="slide_rcs_btn_1" class="txt_input action_name" data="1" placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,'slideSmall');">
+                           <span class="text-count en_font"><span>0</span>/5</span></div>
                      </div>
-                     <div class="custom_box"> </div>
+                     <div class="custom_box"></div>
                   </div>
                   <div class="block">
                      <div class="row">
@@ -185,7 +184,7 @@
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
                               <c:forEach var="item" items="${column}" varStatus="status">
-                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                 <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
@@ -205,7 +204,7 @@
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
                               <c:forEach var="item" items="${column}" varStatus="status">
-                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                 <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
@@ -296,7 +295,7 @@
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
                               <c:forEach var="item" items="${column}" varStatus="status">
-                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                 <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
@@ -316,7 +315,7 @@
                            <div class="value" data="0">개인화 변수</div>
                            <ul class="option">
                               <c:forEach var="item" items="${column}" varStatus="status">
-                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
+                                 <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
                            </ul>
                         </div>
