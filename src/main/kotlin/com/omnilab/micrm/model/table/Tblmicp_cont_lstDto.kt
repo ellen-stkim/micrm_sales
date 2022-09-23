@@ -42,6 +42,17 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.kko_img_url = tblmi_cont_lstDto.kko_img_url
         this.kko_btn_nm = tblmi_cont_lstDto.kko_btn_nm
         this.kko_btn_url = tblmi_cont_lstDto.kko_btn_url
+        this.kko_btn_obj = tblmi_cont_lstDto.kko_btn_obj
+        this.kko_etc_1 = tblmi_cont_lstDto.kko_etc_1
+        this.kko_etc_2 = tblmi_cont_lstDto.kko_etc_2
+        this.kko_etc_3 = tblmi_cont_lstDto.kko_etc_3
+        this.kko_etc_4 = tblmi_cont_lstDto.kko_etc_4
+        this.kko_etc_5 = tblmi_cont_lstDto.kko_etc_5
+        this.kko_etc_6 = tblmi_cont_lstDto.kko_etc_6
+        this.kko_etc_7 = tblmi_cont_lstDto.kko_etc_7
+        this.kko_etc_8 = tblmi_cont_lstDto.kko_etc_8
+        this.kko_etc_9 = tblmi_cont_lstDto.kko_etc_9
+        this.kko_etc_10 = tblmi_cont_lstDto.kko_etc_10
         this.img_cd_1 = tblmi_cont_lstDto.img_cd_1
         this.img_cd_2 = tblmi_cont_lstDto.img_cd_2
         this.img_cd_3 = tblmi_cont_lstDto.img_cd_3

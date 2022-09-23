@@ -15,17 +15,17 @@
     <c:when test="${not empty list}">
         <c:forEach var="tmpl" items="${list}">
             <c:if test="${tmpl.use_yn eq 'Y'}">
-                <div class="column size2">
+                <div class="column" style="height: 490px;">
             </c:if>
             <c:if test="${tmpl.use_yn eq 'N'}">
-                <div class="column off size2">
+                <div class="column off" style="height: 490px;">
             </c:if>
                     <!-- 비활성화 cover -->
                 <div class="hidden_cover"></div>
                 <div class="sms_head bg_color cf">
                     <!-- 체크박스 -->
                     <label class="custom_check1">
-                        <input type="checkbox" name="list" value="${tmpl.seq}"/><span></span></label>
+                        <input type="checkbox" name="tmpl_cd" value="${tmpl.tmpl_nm}" data="${tmpl.tmpl_cd}"/><span></span></label>
                     <ul class="sms_type cf">
                         <li>검수 승인</li>
                     </ul>
@@ -94,7 +94,7 @@
 <span id="pager">
 <div class="btn_row bottom-border">
                             <ul class="pager" id="pagingDom">
-                                <ui:pagination paginationInfo="${page}" type="image" jsFunction="linkPage"/>
+                                <ui:pagination paginationInfo="${page}" type="image" jsFunction="tmplListPaging"/>
                             </ul>
                         </div>
 </span>

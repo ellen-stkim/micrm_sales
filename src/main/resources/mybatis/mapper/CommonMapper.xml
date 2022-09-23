@@ -101,6 +101,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
 			and list_dt_id = #{list_dt_id}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+			and list_val = #{list_val}
+		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 			and usr_grp_cd = #{usr_grp_cd}
 		</if>
@@ -124,6 +127,9 @@
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
 			and list_dt_id = #{list_dt_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+			and list_val = #{list_val}
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 			and usr_grp_cd = #{usr_grp_cd}

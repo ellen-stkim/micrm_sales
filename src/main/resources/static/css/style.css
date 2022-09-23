@@ -369,6 +369,9 @@
 .column .row_body .sms_title + .sms_txt {max-height:401px;}
 .column .row_body .sms_btn ,.scroll-box .sms_btn {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
     line-height:37px; text-align:center; font-size:13px; background:#f2f2f2;}
+
+.column .round_box.head{ padding: 12px; background: #ffcd00; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
+
 .rcs_action {width:100%; padding:15px 0; text-align:center;}
 
 .rcs_txt_type {width:calc(100% - 40px); max-width:329px; border-radius:11px; background:#f2f2f2; padding:15px 15px 0 15px; margin:0 auto;}
@@ -564,6 +567,7 @@
 .td .kko_delete_img {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
 .td .sms_delete_img {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
 .td .vertical_delete_img {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
+.td .delete_tmpl {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
 
 .input_area .block .input-img .td .txt_input {padding:0 30px 0 10px;}
 
@@ -661,7 +665,8 @@
 /* 모바일 컨텐츠 미리보기 팝업 */
 .sms_preview {margin-bottom:30px;}
 #smsContentsPopup .list_container .row_grid {width:100%; justify-content:center;}
-#smsContentsPopup .column {float:left; flex:1 1 405px; height:auto; border:1px solid #dddddd;}
+#smsContentsPopup .column {float:left; flex:1 1 405px; height:auto; border:1px solid #dddddd;
+                            max-width: 340px; min-height: 450px;}
 #smsContentsPopup .column + .column {border-left:none;}
 #smsContentsPopup .column .row_body {height:auto; border-bottom:none;}
 #smsContentsPopup .column .sms_head {padding:0; text-align:center; font-size:14px;}

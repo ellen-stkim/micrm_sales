@@ -37,6 +37,14 @@ open class Tblmi_kko_at_tmplDto {
     var upd_id: String? = null
     var upd_dt: String? = null
 
+    constructor()
+
+
+    constructor(send_key: String?, tmpl_cd: String?) {
+        this.send_key = send_key
+        this.tmpl_cd = tmpl_cd
+    }
+
 
 
     override fun toString(): String {

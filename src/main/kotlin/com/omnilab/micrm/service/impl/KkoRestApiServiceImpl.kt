@@ -97,7 +97,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("version", version)
         headers.set("accept", MediaType.ALL_VALUE)
 
-        val urlString = if("IMGTP11".equals(imgType)) "$mstUrl/$version/upload/ft/image"
+        val urlString = if("IMGTP03".equals(imgType)) "$mstUrl/$version/upload/ft/image"
                             else "$mstUrl/$version/upload//ft/wide/image"
 
         val map = LinkedMultiValueMap<String, Any>()

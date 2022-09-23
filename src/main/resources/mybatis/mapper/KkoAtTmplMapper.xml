@@ -19,46 +19,88 @@
     </select>
 
     <select id="selTotalAtTmplCnt" resultType="Integer" parameterType="AtTmpl_searchDto">
-        SELECT COUNT(*) FROM tblmi_kko_at_tmpl
+        SELECT COUNT(*) FROM tblmi_kko_at_tmpl AS a
+            INNER JOIN tblmi_set_lst AS b
+                    ON a.SEND_KEY = b.LIST_VAL
+                    AND b.use_yn ='Y'
         <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
+                and a.send_key = #{send_key}
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
-                and tmpl_nm = #{tmpl_nm}
+                and a.tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ex_tmpl_nm)">
+                and a.tmpl_nm like CONCAT('%',  #{ex_tmpl_nm},'%')
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
-                and chan_id = #{chan_id}
+                and a.chan_id = #{chan_id}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
-                and kep_status = #{kep_status}
+                and a.kep_status = #{kep_status}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-                and use_yn = #{use_yn}
+                and a.use_yn = #{use_yn}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
-                and tmpl_status = #{tmpl_status}
+                and a.tmpl_status = #{tmpl_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        and a.reg_dt <![CDATA[ > ]]> #{reg_dt}   and a.reg_dt <![CDATA[ < ]]> #{reg_dt_range}
+                    </when>
+                    <otherwise>and a.reg_dt = #{reg_dt}</otherwise>
+                </choose>
+            </if>
+
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and b.usr_grp_cd = #{usr_grp_cd}
             </if>
         </where>
     </select>
 
     <select id="selAtTmplLst" resultType="Tblmi_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
-        SELECT * FROM tblmi_kko_at_tmpl
+        SELECT * FROM tblmi_kko_at_tmpl AS a
+            INNER JOIN tblmi_set_lst AS b
+                    ON a.SEND_KEY = b.LIST_VAL
+                        AND b.use_yn ='Y'
         <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
+                and a.send_key = #{send_key}
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
-                and tmpl_nm = #{tmpl_nm}
+                and a.tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ex_tmpl_nm)">
+                and a.tmpl_nm like CONCAT('%',  #{ex_tmpl_nm},'%')
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
-                and chan_id = #{chan_id}
+                and a.chan_id = #{chan_id}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
-                and kep_status = #{kep_status}
+                and a.kep_status = #{kep_status}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-                and use_yn = #{use_yn}
+                and a.use_yn = #{use_yn}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
-                and tmpl_status = #{tmpl_status}
+                and a.tmpl_status = #{tmpl_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        and a.reg_dt <![CDATA[ > ]]> #{reg_dt}   and a.reg_dt <![CDATA[ < ]]> #{reg_dt_range}
+                    </when>
+                    <otherwise>and a.reg_dt = #{reg_dt}</otherwise>
+                </choose>
+            </if>
+
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and b.usr_grp_cd = #{usr_grp_cd}
             </if>
         </where>
-        order by REG_DT DESC
+        order by a.REG_DT DESC
         <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
             LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
         </if>
@@ -72,6 +114,9 @@
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
                 and tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
+                and tmpl_cd = #{tmpl_cd}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
                 and chan_id = #{chan_id}

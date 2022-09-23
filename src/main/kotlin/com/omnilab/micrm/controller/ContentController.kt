@@ -26,7 +26,6 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
-import kotlin.math.log
 
 
 @Controller
@@ -392,7 +391,7 @@ class ContentController  {
      */
 
     @PostMapping("/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto,@ModelAttribute atSearchDto : AtTmpl_searchDto) : ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/mdmPreview")
         //logger.error("preview Dto : " + dto.toString());
         //logger.error("kakaoUrl : " + dto.kko_view_img_url);
@@ -406,6 +405,16 @@ class ContentController  {
          */
 
         val formatList = dto.formatType
+        val kkoFormatType = dto.kko_format_type
+
+        if(formatList!!.contains("kakao") && "kko_at".equals(kkoFormatType)) {
+            // 넘어 오는 Preview 데이터에 카카오 알림톡이 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
+            val atDto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(atSearchDto)
+            val map = mobileContentService.previewATJsonService(atDto!!)
+            //logger.error("jsonContent : " + map["jsonContent"])
+            view.addObject("jsonContent", map["jsonContent"])
+        }
+
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);
@@ -647,86 +656,94 @@ class ContentController  {
             return map;
         }
         if (file != null) {
-            map["imgCheck"] = 1
-            val userInfo = UsefulUtils.sessionUser()
-            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(contentFilePath, file, request);
-            if(map["uploaded"].toString() == "0"){
-                logger.info("File Upload fail")
-            }else{
+            try {
+                map["imgCheck"] = 1
+                val userInfo = UsefulUtils.sessionUser()
+                val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
+                map = fileUpload.upload(contentFilePath, file, request);
+                if(map["uploaded"].toString() == "0"){
+                    logger.info("File Upload fail")
+                }else{
 
-                if(dto.ch_tp != "IMGTP01"){
-                    val fileName = map["file_nm"]
-                    val image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.width
-                    val imageHeight: Int = image.width
-                    if(image.width < 500 || image.height < 250) {
+                    if(dto.ch_tp != "IMGTP01"){
+                        val fileName = map["file_nm"]
+                        val image : BufferedImage = ImageIO.read(file.inputStream)
+                        val imageWidth: Int = image.width
+                        val imageHeight: Int = image.width
+                        if(image.width < 500 || image.height < 250) {
 
-                        val newWidth = 500
-                        val newHeight = 500
-                        val ratio: Double
-                        val w: Int
-                        var h: Int
+                            val newWidth = 500
+                            val newHeight = 500
+                            val ratio: Double
+                            val w: Int
+                            var h: Int
 
-                        if (imageWidth > imageHeight) {
-                            ratio = newWidth.toDouble() / imageWidth.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else if (imageHeight > imageWidth) {
-                            ratio = newHeight.toDouble() / imageHeight.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else {
-                            w = newWidth
-                            h = newHeight
+                            if (imageWidth > imageHeight) {
+                                ratio = newWidth.toDouble() / imageWidth.toDouble()
+                                w = (imageWidth * ratio).toInt()
+                                h = (imageHeight * ratio).toInt()
+                            } else if (imageHeight > imageWidth) {
+                                ratio = newHeight.toDouble() / imageHeight.toDouble()
+                                w = (imageWidth * ratio).toInt()
+                                h = (imageHeight * ratio).toInt()
+                            } else {
+                                w = newWidth
+                                h = newHeight
+                            }
+                            if(h < 250){
+                                h = 250
+                            }
+                            val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
+                            val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+                            val g = newImage.graphics
+                            g.drawImage(resizeImage, 0, 0, null)
+                            g.dispose()
+
+                            ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
+
+                            resizeImage.flush()
+                            image.flush()
                         }
-                        if(h < 250){
-                            h = 250
+                    }
+                    var resultMap: MutableMap<String, Any>? = null
+                    if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                        resultMap = kkoRestApiService.uploadTmplImg(file)
+                    }
+                    if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                    }
+                    logger.error("{}",resultMap)
+                    if(!CommonUtils.isEmptyObject(resultMap)){
+                        if(resultMap!!["result"] as Boolean){
+                            val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                        }else{
+                            map["uploaded"] = 0
+                            map["message"] = "파일 저장에 실패하였습니다."
+                            logger.info("File DB insert fail")
+                            return map
                         }
-                        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
-                        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-                        val g = newImage.graphics
-                        g.drawImage(resizeImage, 0, 0, null)
-                        g.dispose()
-
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
-
-                        resizeImage.flush()
-                        image.flush()
                     }
-                }
-                var resultMap: MutableMap<String, Any>? = null
-                if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
-                    resultMap = kkoRestApiService.uploadTmplImg(file)
-                }
-                if(dto.ch_tp == "IMGTP11" || dto.ch_tp == "IMGTP12"){    // 카카오 친구톡 이미지
-                    resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
-                }
-                logger.error("{}",resultMap)
-                if(!CommonUtils.isEmptyObject(resultMap)){
-                    if(resultMap!!["result"] as Boolean){
-                        val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
-                        dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
-                    }else{
-                        map["uploaded"] = 0
-                        map["message"] = "파일 저장에 실패하였습니다."
-                        logger.info("File DB insert fail")
-                        return map
-                    }
+
                 }
 
-            }
+                dto.reg_id = userInfo.usr_id
+                dto.usr_grp_cd = userInfo.usr_grp_cd
+                dto.img_org_nm = map["fileName"].toString()
+                dto.img_file_nm = map["file_nm"].toString()
+                dto.img_url = map["url"].toString()
+                val returnMap = imageService.contentUpload(dto)
+                if(returnMap["message"].toString() == "0"){
+                    map["uploaded"] = 0
+                    map["message"] = "파일 저장에 실패하였습니다."
+                    logger.info("File DB insert fail")
+                }
 
-            dto.reg_id = userInfo.usr_id
-            dto.usr_grp_cd = userInfo.usr_grp_cd
-            dto.img_org_nm = map["fileName"].toString()
-            dto.img_file_nm = map["file_nm"].toString()
-            dto.img_url = map["url"].toString()
-            val returnMap = imageService.contentUpload(dto)
-            if(returnMap["message"].toString() == "0"){
+            }catch (e:Exception){
                 map["uploaded"] = 0
                 map["message"] = "파일 저장에 실패하였습니다."
                 logger.info("File DB insert fail")
+                return map
             }
         }
         return map
@@ -1053,15 +1070,14 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/kko/atTmplLst.ajax")
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
-//        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val view = ModelAndView("cont/kko/ajax/tmplListAjax")
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
 
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
-        view.addObject("nextCk", paramMap["nextCk"])
-        view.addObject("titleList",paramMap["titleList"])
+//        view.addObject("nextCk", paramMap["nextCk"])
+//        view.addObject("titleList",paramMap["titleList"])
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
@@ -1175,5 +1191,38 @@ class ContentController  {
 
         return map
     }
+
+
+    /**
+     * @Method Name  : getAtTmpl
+     * @Since    : 2022. 09. 22.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 조회
+     * @title : 알림톡 탬플릿 조회
+     */
+    @ResponseBody
+    @PostMapping("/kko/getAtTmpl.ajax")
+    fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any>? {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+        if(CommonUtils.isEmptyObject(dto)){
+            rep.status= HttpServletResponse.SC_BAD_REQUEST
+            return null
+        }
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("dto" , dto!!)
+        return map
+    }
+
+
 
 }

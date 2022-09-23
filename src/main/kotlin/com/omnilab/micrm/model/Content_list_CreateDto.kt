@@ -12,6 +12,9 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     // 체크한 값 넘기기
     var formatType : List<String> ?= null
 
+    // rcs 포멧카드
+    var kko_format_type : String?= null
+
     var cont_nm : String ?= null
     //var cont_sub: List<String> ?= null
     var cont_sub_list : List<String> ?= null
@@ -125,6 +128,8 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var orig_id: String? = null
     var inta_key: String? = null
     var inta_ve: String? = null
+
+
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

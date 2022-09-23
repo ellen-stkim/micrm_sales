@@ -167,14 +167,12 @@
             '<tr>'+
             '<th>채널</th>'+
             '<td>'+
-            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" checked><span></span></label>'+
-            '<label class="custom_radio">카카오<input name="ch_tp" type="radio" value="IMGTP03"><span></span></label>'+
-            '<label class="custom_radio">이메일<input name="ch_tp" type="radio" value="IMGTP01"><span></span></label>'+
-            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label><br>'+
-            '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>'+
-            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP12"><span></span></label>'+
+            '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>'+
+            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>'+
             '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>'+
             '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>'+
+            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02"><span></span></label>'+
+            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label><br>'+
             '</td>'+
             '</tr>'+
             '<tr class="rcsImgForm rcs_option">'+
@@ -221,7 +219,7 @@
                 '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
                 '<li>※ 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.</li>'+
             '</ul>'+
-            '<ul class="ft_guide1 guide_lst" hidden>'+
+            '<ul class="ft_guide1 guide_lst">'+
             '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
             '<li>※ 이미지 파일은 가로 500px 이상이며 또는 가로:세로 비율이 2:1 또는 3:4 이어야 합니다.</li>'+
             '</ul>'+
@@ -229,7 +227,7 @@
             '<li>※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
             '<li>※ 이미지 파일은 가로 800px 세로 600px 파일만 등록 가능합니다.</li>'+
             '</ul>'+
-            '<div class="left pop_error_txt other_guide guide_lst">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>'+
+            '<div class="left pop_error_txt other_guide guide_lst" hidden>※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>'+
             '<div class="right pop_error_txt blue_point_color"></div>'+
             '<div class="img_viewer noImg"></div>'+
             '<div class="btn_row">'+
