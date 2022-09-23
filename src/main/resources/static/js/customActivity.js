@@ -141,15 +141,22 @@ define(["postmonger"], function (Postmonger) {
 	// 개인화 변수 조회
 	function mappingLst() {
 	    const res = function(response) {
-	        let list = response.mappingLst;
-	        let html = '';
+			let list = response.mappingLst;
+			let html = '';
 
-	        for(let i=0; i<list.length; i++) {
-	            let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-	        	bindList.push(item.list_val);
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
 			}
-	        $('.mappingLst').html(html);
+			$('.mappingLst').html(html);
+
+			html = '';
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
+			}
+			$("#smsContsVal").html(html);
+			$("#kakaoValue").html(html);
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/mappingLst.ajax', param, res, null, null)
