@@ -293,8 +293,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="viewer_area">
-                                    <div class="top">카카오톡 본문 입력창</div>
+                                <c:if test="${cont_tp eq 'DMTP03'}">
+                                <div class="viewer_area" id="kakao_ft_viewer">
+                                    <div class="top">친구톡 본문 입력창</div>
                                     <div class="inner">
                                             <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
                                         <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
@@ -307,6 +308,59 @@
                                         (버튼제외)
                                     </div>
                                 </div>
+                                    <div class="viewer_area" id="kakao_at_viewer" hidden>
+                                        <div class="top">미리보기</div>
+                                        <div class="at_inner">
+                                            <div class="text">
+                                                <div class="row_body">
+                                                    <div class="round_box" >
+                                                        <div class="round_box head">
+                                                            <p>알림톡 도착</p>
+                                                        </div>
+                                                        <div class="sms_txt at_tmpl_data" ></div>
+                                                        <input type="hidden" class="kakao_txt" name="kakao_body" value="">
+                                                        <a href="" class="sms_btn"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${cont_tp eq 'DMTP05'}">
+                                    <div class="viewer_area" id="kakao_ft_viewer" hidden>
+                                        <div class="top">친구톡 본문 입력창</div>
+                                        <div class="inner">
+                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                        </div>
+                                        <div class="byte">
+                                            <span class="en_font kakao_byte">0</span>
+                                            <span class="en_font">byte</span>
+                                            (버튼제외)
+                                        </div>
+                                    </div>
+                                <div class="viewer_area" id="kakao_at_viewer">
+                                    <div class="top">미리보기</div>
+                                    <div class="at_inner">
+                                        <div class="text">
+                                            <div class="row_body">
+                                                <div class="round_box" >
+                                                    <div class="round_box head">
+                                                        <p>알림톡 도착</p>
+                                                    </div>
+                                                    <div class="sms_txt at_tmpl_data" >${list[0].cont_body}</div>
+                                                    <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
+                                                    <c:forEach var="btn" items="${list[0].at_btn_json}">
+                                                        <div>
+                                                            <a href="${btn.get('linkPc')}" target="_blank"
+                                                               class="sms_btn">${btn.get('name')}</a>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </c:if>
                             </div>
                         </div>
                     </div><!-- sms_form end-->

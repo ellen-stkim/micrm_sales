@@ -275,14 +275,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="viewer_area">
-                                <div class="top">카카오톡 본문 입력창</div>
+                            <div class="viewer_area" id="kakao_ft_viewer">
+                                <div class="top">친구톡 본문 입력창</div>
                                 <div class="inner">
                                         <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
                                                   onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
                                 </div>
                                 <div class="byte">
                                     <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
+                                </div>
+                            </div>
+                            <div class="viewer_area" id="kakao_at_viewer" hidden>
+                                <div class="top">미리보기</div>
+                                <div class="at_inner">
+                                    <div class="text">
+                                        <div class="row_body">
+                                            <div class="round_box">
+                                                <div class="round_box head">
+                                                    <p>알림톡 도착</p>
+                                                </div>
+                                                <div class="sms_txt at_tmpl_data"></div>
+                                                <input type="hidden" class="kakao_txt" name="kakao_body" value="">
+                                                <a href="" class="sms_btn">버튼</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1609,11 +1626,11 @@
         });
     });
 
-    // 카카오, SMS 유효성 검사   // 확인
+    // 카카오, SMS 유효성 검사
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
         let kakaoTitle = $('.kakaoTitle');
-        let kakaoTxt = $('.kakao_txt');
+        let kakaoTxt = $('.viewer_area:visible .kakao_txt');
         let kakaoSenderNo = $('.smsNumber_kko');
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
@@ -1627,11 +1644,18 @@
                 if (kakaoTxt.val() != '') {
                     let type = kakaoTypeValidate();
                     if (type == true) {
+                        $('.kakao_txt').removeAttr("name");
+                        $(kakaoTxt).attr("name",kakao_body);
                         return true;
                     } else {
                         return false;
                     }
                 } else {
+                    if($('.kkoType:checked').val() == 'kko_at'){
+                        popup.popAlert('템플릿을 선택해주세요.');
+                        $('#tmplNm').focus();
+                        return false;
+                    }
                     popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
                     kakaoTxt.focus();
                     return false;
@@ -1645,16 +1669,23 @@
         }
         if (kakaoOption == 'guide') {
             if (kakaoTitle.val() != '') {
-                if ($('.kakao_txt').val() != '') {
+                if (kakaoTxt.val() != '') {
                     let type = kakaoTypeValidate();
                     if (type == true) {
+                        $('.kakao_txt').removeAttr("name");
+                        $(kakaoTxt).attr("name",'kakao_body');
                         return true;
                     } else {
                         return false;
                     }
                 } else {
+                    if($('.kkoType:checked').val() == 'kko_at'){
+                        popup.popAlert('템플릿을 선택해주세요.');
+                        $('#tmplNm').focus();
+                        return false;
+                    }
                     popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                    $('.kakao_txt').focus();
+                    $(kakaoTxt).focus();
                     return false;
                 }
             } else {
@@ -2844,32 +2875,21 @@
 
     $(document).on('click', '.delete_tmpl', (e) => {
         $('.at_tmpl_data').val(''); // 템플릿 관련 데이터 삭제
+        $('.at_tmpl_data').html('');
         $('.kakao_txt').val('');
     })
 
     function tmplSendSave() {
-
-        let res = function (response) {
-            if (response.status != 200) {
-                alert("에러가 발생했습니다. 새로고침 후 다시 시도해주세요.");
-                return;
-            }
-            //이름. 내용 ... 넣어주기기
-            const dto = response.dto;
-            $('#tmplNm').val(dto.tmpl_nm);
-            $('#templateCode').val(dto.tmpl_cd);
-            $('.kakao_txt').val(dto.tmpl_cont);
-            // $('#kko_btn_obj').val(dto.button_json);
-
-            $('#tmplPopUp').siblings('.pop_error_txt').html('');
-            $('#tmplPopUp input').val('');
-            $('.tmplPopUp').removeClass('active');
-        };
-
         const tmpl = $('#tmplPopUp input[name="tmpl_cd"]:checked');
-        let param = {tmpl_cd: $(tmpl).attr("data")}
-        com_ajax.ajax('post', '${baseURL}/cont/kko/getAtTmpl.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        const tmplbody =$(tmpl).parents('.template_div').find('.template_body').html();
 
+        $('#kakao_at_viewer .at_inner .row_body').html(tmplbody)
+        $('#tmplNm').val($(tmpl).val());
+        $('#templateCode').val($(tmpl).attr('data'));
+
+        $('#tmplPopUp').siblings('.pop_error_txt').html('');
+        $('#tmplPopUp input').val('');
+        $('.tmplPopUp').removeClass('active');
     }
 
     // 카카오 타입 변경
@@ -2912,9 +2932,14 @@
         $(`#` + beforeKkoType).show();
 
         if (check.val() == 'kko_at') {
-            $('.kakao_txt').attr('readonly', true).val("");
+            $('.kakao_txt').val("");
+            $('#kakao_at_viewer').show();
+            $('#kakao_ft_viewer').hide();
         } else {
-            $('.kakao_txt').attr('readonly', false).val("");
+            $('#kakao_ft_viewer').show();
+            $('#kakao_at_viewer').hide();
+            $('.at_tmpl_data').val('');
+            $('.at_tmpl_data').html('');
         }
     }
 
