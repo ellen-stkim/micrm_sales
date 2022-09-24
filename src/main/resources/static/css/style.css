@@ -356,18 +356,18 @@
 .column .sms_head .remove_info a {float:left; display:block; padding:5px 13px; border:1px solid #dddddd;
     font-size:11px; line-height:1; background:#FFFFFF; color:#888888; cursor:pointer;}
 .column .sms_head .remove_info .useState {border-right:none;}
-.column .row_body .round_box  , .scroll-box .round_box {width:270px; border-radius:11px; border:1px solid #dddddd; overflow: hidden;
+.column .row_body .round_box  , .scroll-box .round_box , .at_inner .round_box{width:270px; border-radius:11px; border:1px solid #dddddd; overflow: hidden;
     margin:0 auto;}
 .column .row_body .sms , .scroll-box .sms {width:100%; height:270px; overflow:hidden;
     background:url('../image/bg_none.png') no-repeat center; text-align:center;}
 .column .row_body .sms img , .scroll-box .sms img {width:auto; height:100%; margin-left:-100%; margin-right:-100%;}
 .column .row_body .sms + .sms_txt  ,.scroll-box .sms + .sms_txt{max-height:110px; overflow:hidden;}
 .column .row_body .sms + .sms_txt:hover , .scroll-box .sms_txt:hover {overflow-y:auto;}
-.column .row_body .sms_txt ,.scroll-box .sms_txt{width:100%; height:auto; font-size:12px; line-height:1.6; padding:15px;
+.column .row_body .sms_txt ,.scroll-box .sms_txt , .at_inner .sms_txt{width:100%; height:auto; font-size:12px; line-height:1.6; padding:15px;
     max-height:449px; overflow:hidden; background:#FFFFFF; border-radius:0;}
 .column .row_body .sms_txt:hover {overflow-y:auto;}
 .column .row_body .sms_title + .sms_txt {max-height:401px;}
-.column .row_body .sms_btn ,.scroll-box .sms_btn {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
+.column .row_body .sms_btn ,.scroll-box .sms_btn , .at_inner .sms_btn  {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
     line-height:37px; text-align:center; font-size:13px; background:#f2f2f2;}
 
 .round_box .round_box.head{ padding: 12px; background: #ffcd00; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
@@ -595,7 +595,8 @@
 #rcs .rcs_textarea .td textarea:-ms-input-placeholder {color:#cccccc !important; font-weight:600;}
 
 .rcs_inner {height:100%; margin:0 auto; position:relative;}
-.rcs_inner.text {width:329px; padding-top:35px;}
+.at_inner{padding: 50px 0; height: 500px;margin:0 auto; position:relative;}
+.rcs_inner.text, .at_inner.text {width:329px; padding-top:35px;}
 .rcs_inner.horizontal {width:329px; padding-top:35px;}
 .rcs_inner.vertical {width:329px; padding-top:35px;}
 
