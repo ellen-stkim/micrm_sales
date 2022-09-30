@@ -271,7 +271,7 @@
                                                     <p>알림톡 도착</p>
                                                 </div>
                                                 <div class="sms_txt at_tmpl_data" ></div>
-                                                <input type="hidden" class="kakao_txt" value="">
+                                                <input type="hidden" class="kakao_txt" name="kakao_body" value="">
                                                 <a href="" class="sms_btn">버튼</a>
                                             </div>
                                         </div>
@@ -1474,7 +1474,13 @@
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
         let kakaoTitle = $('.kakaoTitle');
-        let kakaoTxt = $('.viewer_area:visible .kakao_txt');
+        let kkoType = $("input[name='kko_format_type']:checked").val();
+        let kakaoTxt = null;
+        if(kkoType == "kko_ft"){
+            kakaoTxt = $("textarea.kakao_txt");
+        }else{
+            kakaoTxt =  $("input.kakao_txt");
+        }
         let kakaoSenderNo = $('.smsNumber_kko');
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
