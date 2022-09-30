@@ -2352,6 +2352,7 @@ class SalesforceServiceImpl : SalesforceService {
                         contTpLst["DMTP03"] != null -> {
                             val send_to = inArguments[contTpLst["DMTP03"]!!.from_to]
                             if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
                                 sendHstDto.send_to = send_to.toString()
@@ -2365,6 +2366,7 @@ class SalesforceServiceImpl : SalesforceService {
                         contTpLst["DMTP04"] != null -> {
                             val send_to = inArguments[contTpLst["DMTP04"]!!.from_to]
                             if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
                                 sendHstDto.send_to = send_to.toString()
@@ -2378,6 +2380,7 @@ class SalesforceServiceImpl : SalesforceService {
                         else -> {
                             val send_to = inArguments[contTpLst["DMTP02"]!!.from_to]
                             if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
                                 sendHstDto.send_to = send_to.toString()

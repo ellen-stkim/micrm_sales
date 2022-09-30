@@ -101,7 +101,7 @@
 		</foreach>
 	</insert>
 
-	<insert id="ins_camp_send_kko_cj" parameterType="Kko_msgDto">
+	<insert id="ins_camp_send_kko_enter" parameterType="Kko_msgDto">
 		insert into ${list[0].m_server}.kko_msg
 		(
 		`ID`, `STATUS`, `REQDATE`, `PHONE`, `CALLBACK`, `MSG`, `TEMPLATE_CODE`, `PROFILE_KEY`, `FAILED_TYPE`, `FAILED_SUBJECT`, `FAILED_MSG`

@@ -1581,7 +1581,7 @@
     function smsValidate() {
         let smsOption = $('input[name="sms_option"]').val();
         let smsTitle = $('.smsTitle');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('.sms_txt.textarea');
         let smsNumber = $('.smsNumber')
         let smsNumberValue = $('#sms_send_to').val().trim();
 
