@@ -2155,6 +2155,7 @@ class SalesforceServiceImpl : SalesforceService {
                             val avo_nm = activity["name"].toString()
                             val avo_id = activity["id"].toString()
                             val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
+                            logger.error("seq {}", seq)
 
                             val temp = Tblmi_cont_mstDto(seq.toInt())
                             val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)

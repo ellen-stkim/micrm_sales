@@ -1436,10 +1436,7 @@
                 for (let i = 0; i < list.length; i++) {
                     let item = list[i];
                     html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-                    if(bindList){
-                        bindList.push(item.list_val);
-                    }
-                    console.log(bindList);
+                    bindList.push(item.list_val);
                 }
                 $('.mappingLst').html(html);
 
