@@ -101,6 +101,21 @@
 		</foreach>
 	</insert>
 
+	<insert id="ins_camp_send_kko_cj" parameterType="Kko_msgDto">
+		insert into ${list[0].m_server}.kko_msg
+		(
+		`ID`, `STATUS`, `REQDATE`, `PHONE`, `CALLBACK`, `MSG`, `TEMPLATE_CODE`, `PROFILE_KEY`, `FAILED_TYPE`, `FAILED_SUBJECT`, `FAILED_MSG`
+		, `BUTTON_JSON`, `IMG_PATH`, `IMG_URL`, `FAILED_IMG`, `ETC1`, `ETC2`, `ETC3`, `ETC4`, `ETC5`, `ETC6`, `SERIALNUM`
+		)
+		values
+		<foreach collection="list" item="list" separator="," >
+			(
+			#{list.id}, #{list.status}, #{list.reqdate}, #{list.phone}, #{list.callback}, #{list.msg}, '0000000', #{list.profile_key}, #{list.failed_type}, #{list.failed_subject}, #{list.failed_msg}
+			, #{list.button_json}, #{list.img_path}, #{list.img_url}, #{list.failed_img}, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.serialnum}
+			)
+		</foreach>
+	</insert>
+
 	<insert id="ins_camp_send_rcs_lg" parameterType="LgRcs_imgDto">
 		insert into ${list[0].m_server}.RCS_MSG
 		(

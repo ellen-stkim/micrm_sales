@@ -62,7 +62,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
     override fun getTmplSearchLst(): Map<String, Any> {
         val map : MutableMap<String,Any> = mutableMapOf()
-        var searchDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        val searchDto = Tblmi_comm_cdDto()
         searchDto.grp_id="KAKAO_TMPL"
         searchDto.cd_id = "TMPL_ST"
         map.put("tmplSt",kkoAtTmplDao.getTmplSearchLst(searchDto))
@@ -75,7 +75,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
     override fun tmplCreateLst(): Map<String, Any> {
         val map : MutableMap<String,Any> = mutableMapOf()
-        var searchDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        val searchDto = Tblmi_comm_cdDto()
         searchDto.grp_id= "KAKAO_TMPL"
 
         searchDto.cd_id ="CATE"
