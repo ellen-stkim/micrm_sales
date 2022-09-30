@@ -151,6 +151,7 @@ define(["postmonger"], function (Postmonger) {
 			for (let i = 0; i < list.length; i++) {
 				let item = list[i];
 				html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+				bindList.push(item.list_val);
 			}
 			$('.mappingLst').html(html);
 
