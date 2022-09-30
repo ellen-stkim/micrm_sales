@@ -46,7 +46,7 @@ $(function () {
                 // 이미지 유효성 검사
                 atImageUpload(this,type)
             }
-        } else if (type == 'IMGTP11' || type =='IMGTP12') {  // 친구톡
+        } else if (type == 'IMGTP03' || type =='IMGTP11') {  // 친구톡
             if (!(ex == "jpg" || ex == "png")) {
                 popup.popAlert('친구톡의 경우 jpg, png 파일만 업로드 가능 합니다.');
                 $(this).val('');
@@ -127,11 +127,11 @@ $(function () {
             $('.guide_lst').css('display','none');
             $('.at_guide2').css('display','block');
             $('tr.rcs_option').css('display','none');
-        } else if(channel == 'IMGTP11'){   // 친구톡 이미지
+        } else if(channel == 'IMGTP03'){   // 친구톡 이미지
             $('.guide_lst').css('display','none');
             $('.ft_guide1').css('display','block');
             $('tr.rcs_option').css('display','none');
-        } else if(channel == 'IMGTP12'){   // 친구톡 와이드 이미지
+        } else if(channel == 'IMGTP11'){   // 친구톡 와이드 이미지
             $('.guide_lst').css('display','none');
             $('.ft_guide2').css('display','block');
             $('tr.rcs_option').css('display','none');
@@ -413,7 +413,7 @@ function ftImageUpload(addImage,type) {
         imgHeight = this.height;
 
 
-        if(type == 'IMGTP11'){
+        if(type == 'IMGTP03'){
             let minWidth = 500;
             let ratio = "2:1 또는 3:4";
 

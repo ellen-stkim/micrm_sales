@@ -1,15 +1,13 @@
 package com.omnilab.micrm.controller
 
 import com.google.gson.GsonBuilder
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
-import com.omnilab.micrm.service.ContentService
-import com.omnilab.micrm.service.ImageService
-import com.omnilab.micrm.service.SalesforceService
-import com.omnilab.micrm.service.SysSettingService
+import com.omnilab.micrm.service.*
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
 import org.apache.commons.io.FilenameUtils
@@ -67,6 +65,13 @@ class SalesforceController {
     @Qualifier("SalesforceDaoImpl")
     lateinit var salesforceDao : SalesforceDao
 
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
+
+    @Autowired
+    @Qualifier("KkoMsgServiceImpl")
+    private lateinit var kkoMsgService: KkoMsgService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -153,7 +158,8 @@ class SalesforceController {
 
     //@ResponseBody
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
-    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
+    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int
+                            , @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         tblmiContMstdto.reg_dt = usr_cd
@@ -188,7 +194,7 @@ class SalesforceController {
      */
 
     @PostMapping("/{usr_cd}/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto,@ModelAttribute atSearchDto : AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/mdmPreview")
         //logger.error("preview Dto : " + dto.toString());
         //logger.error("kakaoUrl : " + dto.kko_view_img_url);
@@ -202,6 +208,15 @@ class SalesforceController {
          */
 
         val formatList = dto.formatType
+        val kkoFormatType = dto.kko_format_type
+
+        if(formatList!!.contains("kakao") && "kko_at".equals(kkoFormatType)) {
+            // 넘어 오는 Preview 데이터에 카카오 알림톡이 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
+            val atDto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(atSearchDto)
+            val map = mobileContentService.previewATJsonService(atDto!!)
+            //logger.error("jsonContent : " + map["jsonContent"])
+            view.addObject("jsonContent", map["jsonContent"])
+        }
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);
@@ -436,6 +451,26 @@ class SalesforceController {
                         resizeImage.flush()
                         image.flush()
                     }
+                    var resultMap: MutableMap<String, Any>? = null
+                    if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                        resultMap = kkoRestApiService.uploadTmplImg(file)
+                    }
+                    if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                    }
+
+                    if(!CommonUtils.isEmptyObject(resultMap)){
+                        if(resultMap!!["result"] as Boolean){
+                            val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                        }else{
+                            map["uploaded"] = 0
+                            map["message"] = "파일 저장에 실패하였습니다."
+                            logger.info("File DB insert fail")
+                            return map
+                        }
+                    }
+
                 }
             }
 
@@ -652,6 +687,41 @@ class SalesforceController {
             logger.error("execute.service", e)
             return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/{usr_cd}/kko/atTmplLst.ajax")
+    fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
+        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
+        dto.usr_grp_cd =usr_cd
+        val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
+
+        view.addObject("list" , paramMap["list"])
+        view.addObject("page", paramMap["page"])
+        view.addObject("pageNo", paramMap["pageNo"])
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
+    @ResponseBody
+    @PostMapping("/{usr_cd}/kko/getAtTmpl.ajax")
+    fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any>? {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+        dto.usr_grp_cd =usr_cd
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+        if(CommonUtils.isEmptyObject(dto)){
+            rep.status= HttpServletResponse.SC_BAD_REQUEST
+            return null
+        }
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("dto" , dto!!)
+        return map
     }
 
     @GetMapping("/{usr_cd}/error")

@@ -126,7 +126,11 @@ define(["postmonger"], function (Postmonger) {
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}
-					$("#contLoad").click();
+					console.log(response)
+					if(response.rcs.list){
+						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
+						$("#text_send_num").val(response.rcs.list[0].seq);
+					}
 				}
 			}else {
                 // 조회실패
@@ -141,15 +145,22 @@ define(["postmonger"], function (Postmonger) {
 	// 개인화 변수 조회
 	function mappingLst() {
 	    const res = function(response) {
-	        let list = response.mappingLst;
-	        let html = '';
+			let list = response.mappingLst;
+			let html = '';
 
-	        for(let i=0; i<list.length; i++) {
-	            let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-	        	bindList.push(item.list_val);
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
 			}
-	        $('.mappingLst').html(html);
+			$('.mappingLst').html(html);
+
+			html = '';
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
+			}
+			$("#smsContsVal").html(html);
+			$("#kakaoValue").html(html);
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/mappingLst.ajax', param, res, null, null)
@@ -229,6 +240,7 @@ define(["postmonger"], function (Postmonger) {
             }
         }
 		let data = $("#form").serializeArray();
+		console.log(data)
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
 		data.push({name: 'orig_id', value: model.id});

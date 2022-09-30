@@ -15,17 +15,17 @@
     <c:when test="${not empty list}">
         <c:forEach var="tmpl" items="${list}">
             <c:if test="${tmpl.use_yn eq 'Y'}">
-                <div class="column size2">
+                <div class="column template_div" style="height: 490px;" >
             </c:if>
             <c:if test="${tmpl.use_yn eq 'N'}">
-                <div class="column off size2">
+                <div class="column template_div off" style="height: 490px;">
             </c:if>
                     <!-- 비활성화 cover -->
                 <div class="hidden_cover"></div>
                 <div class="sms_head bg_color cf">
                     <!-- 체크박스 -->
                     <label class="custom_check1">
-                        <input type="checkbox" name="list" value="${tmpl.seq}"/><span></span></label>
+                        <input type="checkbox" name="tmpl_cd" value="${tmpl.tmpl_nm}" data="${tmpl.tmpl_cd}"/><span></span></label>
                     <ul class="sms_type cf">
                         <li>검수 승인</li>
                     </ul>
@@ -47,26 +47,34 @@
                 </div>
                     <!-- 카카오톡  -->
                     <c:if test="${not empty tmpl.tmpl_img_url}">
-                        <div class="row_body">
+                        <div class="row_body template_body">
                             <div class="round_box">
+                                <div class="round_box head">
+                                    <p>알림톡 도착</p>
+                                </div>
                                 <div class="sms">
                                     <img src="${filePath}${tmpl.kko_image_url}"
                                          onerror="this.src = '/image/bg_none.png'" alt="">
                                 </div>
-                                <p class="sms_txt">${tmpl.tmpl_cont}</p>
+                                <p class="sms_txt at_tmpl_data" >${tmpl.tmpl_cont}</p>
+                                <input type="hidden" class="kakao_txt" name="kakao_body" value="${tmpl.tmpl_cont}">
                                 <a href="https://milvus.co.kr" target="_blank" class="sms_btn">milvus</a>
                             </div>
                     </div>
                     </c:if>
                     <c:if test="${empty tmpl.tmpl_img_url}">
-                      <div class="row_body">
-                        <div class="round_box">
-                            <div class="sms_txt">
-                                    ${tmpl.tmpl_cont}
+                        <div class="row_body template_body">
+                            <div class="round_box">
+                                 <div class="round_box head">
+                                <p>알림톡 도착</p>
                             </div>
-                            <a href="https://milvus.co.kr" target="_blank" class="sms_btn">milvus</a>
+                                <div class="sms_txt at_tmpl_data">
+                                        ${tmpl.tmpl_cont}
+                                </div>
+                                <input type="hidden" class="kakao_txt" name="kakao_body" value="${tmpl.tmpl_cont}">
+                                <a href="https://milvus.co.kr" target="_blank" class="sms_btn">milvus</a>
+                            </div>
                         </div>
-                      </div>
                     </c:if>
                 <div class="row_footer">
                     <!-- 수정일 -->
@@ -94,7 +102,7 @@
 <span id="pager">
 <div class="btn_row bottom-border">
                             <ul class="pager" id="pagingDom">
-                                <ui:pagination paginationInfo="${page}" type="image" jsFunction="linkPage"/>
+                                <ui:pagination paginationInfo="${page}" type="image" jsFunction="tmplListPaging"/>
                             </ul>
                         </div>
 </span>

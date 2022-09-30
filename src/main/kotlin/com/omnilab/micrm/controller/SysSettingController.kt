@@ -5,9 +5,6 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
-import com.omnilab.micrm.model.table.Tblmite_target_grp
-import com.omnilab.micrm.model.table.Tblmite_target_lst
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.SysSettingService
 import org.springframework.stereotype.Controller
 import org.slf4j.LoggerFactory

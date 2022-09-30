@@ -108,6 +108,34 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
             ArrayList()
         }
 
+    // 알림톡 변수
+    var tmpl_nm :String? = null
+    var tmpl_cd :String? = null
+    var at_btn_obj: String? = null
+    var at_btn_json: List<MutableMap<String, Any>>? = null
+        get() = if (!at_btn_obj.isNullOrEmpty() && field == null) {
+            val g = GsonBuilder().create();
+            val obj = g.fromJson(at_btn_obj, Object::class.java)
+            val lst = ArrayList<MutableMap<String, Any>>()
+            if(obj is List<*>){
+                for(i in obj){
+                    if (i is Map<*, *>) {
+                        lst.add(i as MutableMap<String, Any>)
+                    }else {
+                        lst.add(g.fromJson(i.toString() , Map::class.java)  as MutableMap<String, Any>)
+                    }
+                }
+                lst
+            }else if(obj is Map<*, *>){
+                lst.add(obj as MutableMap<String, Any>)
+                lst
+            } else{
+                ArrayList()
+            }
+        } else{
+            ArrayList()
+        }
+
     var from_to: String? = null
 }
 

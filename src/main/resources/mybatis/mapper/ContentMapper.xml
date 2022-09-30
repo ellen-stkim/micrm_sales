@@ -55,6 +55,17 @@
 			kko_img_url,
 			kko_btn_nm,
 			kko_btn_url,
+			kko_btn_obj,
+			kko_etc_1,
+			kko_etc_2,
+			kko_etc_3,
+			kko_etc_4,
+			kko_etc_5,
+			kko_etc_6,
+			kko_etc_7,
+			kko_etc_8,
+			kko_etc_9,
+			kko_etc_10,
 			img_cd_1,
 			img_cd_2,
 			img_cd_3,
@@ -98,6 +109,17 @@
 			#{kko_img_url},
 			#{kko_btn_nm},
 			#{kko_btn_url},
+			#{kko_btn_obj},
+			#{kko_etc_1},
+			#{kko_etc_2},
+			#{kko_etc_3},
+			#{kko_etc_4},
+			#{kko_etc_5},
+			#{kko_etc_6},
+			#{kko_etc_7},
+			#{kko_etc_8},
+			#{kko_etc_9},
+			#{kko_etc_10},
 			#{img_cd_1},
 			#{img_cd_2},
 			#{img_cd_3},
@@ -327,6 +349,10 @@
 			, b.RCS_BTN_TP_3
 			, b.RCS_BTN_CONT_3
 			, b.RCS_FOOTER
+			, tmpl.button_json AS at_btn_obj
+			, tmpl.quick_repl_json
+			, tmpl.item_highlight_json
+			, tmpl.item_json
 		FROM (
 		SELECT mst.seq                                         AS seq
 		, mst.ch_tp                                        AS ch_tp
@@ -344,6 +370,7 @@
 		WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
 		WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
 		ELSE lst.SEQ END 							   AS lst_seq
+		, IF(Find_in_set('DMTP05', Group_concat(lst.cont_tp)),lst.KEY_ID,'')  AS key_id
 		FROM   tblmi_cont_mst AS mst
 		LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
 		INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
@@ -386,6 +413,7 @@
 		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
 		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
 		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+		LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON a.key_id = tmpl.tmpl_cd
 	</select>
 
 	<!-- 검색을 위해 상위,하위 컨텐츠 연결한 MoblieContent Cnt 뽑아내기 -->
@@ -471,7 +499,7 @@
 						and img.ch_tp in ('IMGTP09','IMGTP10')
 					</when>
 					<when test="'IMGTP_FT'.equals(ch_tp)">
-						and img.ch_tp in ('IMGTP11','IMGTP12')
+						and img.ch_tp in ('IMGTP03','IMGTP11')
 					</when>
 					<otherwise>
 						and img.ch_tp = #{ch_tp}
@@ -519,7 +547,7 @@
 						and img.ch_tp in ('IMGTP09','IMGTP10')
 					</when>
 					<when test="'IMGTP_FT'.equals(ch_tp)">
-						and img.ch_tp in ('IMGTP11','IMGTP12')
+						and img.ch_tp in ('IMGTP03','IMGTP11')
 					</when>
 					<otherwise>
 						and img.ch_tp = #{ch_tp}
@@ -1154,6 +1182,12 @@
 			, l.rcs_footer                                                                                         AS rcs_footer
 			, l.use_yn                                                                                             AS list_use_yn
 			, l.from_to                                                                                            AS from_to
+			, tmpl.tmpl_nm AS tmpl_nm
+			, tmpl.tmpl_cd AS tmpl_cd
+			, tmpl.button_json AS at_btn_obj
+			, tmpl.quick_repl_json
+			, tmpl.item_highlight_json
+			, tmpl.item_json
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
 		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq
@@ -1164,6 +1198,7 @@
 		   LEFT JOIN tblmi_cont_img AS img_5 ON l.img_cd_5 = img_5.seq
 		   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
 		   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
+		   LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
 		WHERE  m.seq = #{seq}
 		ORDER  BY l.seq;
 	</select>

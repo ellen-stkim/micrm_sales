@@ -126,6 +126,7 @@
                     <c:if test="${list[0].list_use_yn eq 'N'}">
                     <div class="tab_contents">
                         </c:if>
+                        <c:set var="cont_tp" value="${list[0].cont_tp}"/>
                         <div class="sms_form right-border cover" id="kakao">
                             <h2>카카오톡</h2>
                             <div class="flex_box">
@@ -139,7 +140,19 @@
                                         </div>
                                     </div>
                                     <div class="row body">
-                                        <div class="th">발신 번호</div>
+                                        <div class="th">타입</div>
+                                        <div class="column_2">
+                                            <label class="type_check"><input type="radio" name="kko_format_type"
+                                                                             class="kkoType"
+                                                                             value="kko_ft" ${cont_tp eq "DMTP03"?'checked': '' }
+                                                                             /><span>친구톡</span></label>
+                                            <label class="type_check"><input type="radio" name="kko_format_type"
+                                                                             class="kkoType" ${cont_tp eq "DMTP05"?'checked': '' }
+                                                                             value="kko_at"/><span>알림톡</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row body">
+                                        <div class="th">발신 프로필</div>
                                         <div class="column_1">
                                             <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
                                             <input type="text" class="sms_number smsNumber_kko" id="send_to"
@@ -147,24 +160,27 @@
                                                         value="${list[0].sender}(${cutil:numberToPhone(list[0].send_num)})" readonly
                                                     </c:if>
                                                     <c:if test="${fn:trim(list[0].send_num) == ''}">
-                                                        placeholder="발신 번호를 입력해주세요"
+                                                        placeholder="발신 프로필을 입력해주세요"
                                                     </c:if>
                                             />
-                                            <input type="hidden" name="send_to_list" value="${list[0].send_to}"/>
+                                            <input type="hidden" name="send_key" id="send_key" value="${list[0].send_num}"/>
+                                            <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].send_to}"/>
+                                            <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
+
                                         </div>
                                     </div>
-                                    <div class="input_area">
+                                    <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="block">
                                             <div class="row">
                                                 <div class="th">이미지 선택</div>
                                                 <div class="td">
-                                                    <div class="kko_delete_img">
-                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/bg_none.png'">
+                                                    <div class="kko_delete_img" data="kakao">
+                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
                                                     </div>
                                                     <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${list[0].kko_img_nm}" readonly/>
                                                     <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                     <!-- 카카오 이미지 저장 넘버 -->
-                                                    <input type="hidden" id="kko_img_cd" name="kko_img_cd" value="${list[0].kko_img_cd}"/>
+                                                    <input type="hidden" name="kko_img_cd" value="${list[0].kko_img_cd}"/>
                                                     <!-- 프리뷰를 위한 이미지 URL -->
                                                     <input type="hidden" name="kko_view_img_url"
                                                     <c:if test="${list[0].kko_img_lst ne null}">
@@ -260,9 +276,26 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="input_area kko_area" id="kko_at" ${cont_tp eq "DMTP05"?'': 'hidden'}>
+                                        <div class="block">
+                                            <div class="row">
+                                                <div class="th">템플릿 선택</div>
+                                                <div class="td">
+                                                    <div class="delete_tmpl" data="kakao">
+                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                    </div>
+                                                    <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm" id="tmplNm" value="${list[0].tmpl_nm}" placeholder="템플릿을 선택해 주세요." readonly/>
+                                                    <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" value="${list[0].tmpl_cd}" readonly hidden/>
+                                                    <span class="btn_sm_line" data="kakaoImage" onclick="tmplListPopUp('1')">선택</span>
+                                                    <!-- 프리뷰를 위한 이미지 URL -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="viewer_area">
-                                    <div class="top">카카오톡 본문 입력창</div>
+                                <c:if test="${cont_tp eq 'DMTP03'}">
+                                <div class="viewer_area" id="kakao_ft_viewer">
+                                    <div class="top">친구톡 본문 입력창</div>
                                     <div class="inner">
                                             <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
                                         <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
@@ -275,6 +308,59 @@
                                         (버튼제외)
                                     </div>
                                 </div>
+                                    <div class="viewer_area" id="kakao_at_viewer" hidden>
+                                        <div class="top">미리보기</div>
+                                        <div class="at_inner">
+                                            <div class="text">
+                                                <div class="row_body">
+                                                    <div class="round_box" >
+                                                        <div class="round_box head">
+                                                            <p>알림톡 도착</p>
+                                                        </div>
+                                                        <div class="sms_txt at_tmpl_data" ></div>
+                                                        <input type="hidden" class="kakao_txt" name="kakao_body" value="">
+                                                        <a href="" class="sms_btn"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${cont_tp eq 'DMTP05'}">
+                                    <div class="viewer_area" id="kakao_ft_viewer" hidden>
+                                        <div class="top">친구톡 본문 입력창</div>
+                                        <div class="inner">
+                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                        </div>
+                                        <div class="byte">
+                                            <span class="en_font kakao_byte">0</span>
+                                            <span class="en_font">byte</span>
+                                            (버튼제외)
+                                        </div>
+                                    </div>
+                                <div class="viewer_area" id="kakao_at_viewer">
+                                    <div class="top">미리보기</div>
+                                    <div class="at_inner">
+                                        <div class="text">
+                                            <div class="row_body">
+                                                <div class="round_box" >
+                                                    <div class="round_box head">
+                                                        <p>알림톡 도착</p>
+                                                    </div>
+                                                    <div class="sms_txt at_tmpl_data" >${list[0].cont_body}</div>
+                                                    <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
+                                                    <c:forEach var="btn" items="${list[0].at_btn_json}">
+                                                        <div>
+                                                            <a href="${btn.get('linkPc')}" target="_blank"
+                                                               class="sms_btn">${btn.get('name')}</a>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </c:if>
                             </div>
                         </div>
                     </div><!-- sms_form end-->
@@ -5317,7 +5403,6 @@
 
     // 이미지 리스트 페이징
     function imageListPaging(nowPage) {
-
         let type = $('#imgType').val();
 
         const res = function (response) {
