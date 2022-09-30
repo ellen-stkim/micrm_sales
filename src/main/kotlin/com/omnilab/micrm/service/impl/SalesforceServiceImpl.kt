@@ -860,6 +860,11 @@ class SalesforceServiceImpl : SalesforceService {
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
+        val contListDto = Tblmi_cont_lstDto()
+
+        contListDto.cont_cd = contentListCreatedto.mst_seq!!.toInt()
+        val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+
         val len = contentListCreatedto.send_to_list!!.size - 1;
 
         for (i in 0..len) {
@@ -868,7 +873,17 @@ class SalesforceServiceImpl : SalesforceService {
             // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
             val tblmiContLstdto = Tblmi_cont_lstDto()
 
-            tblmiContLstdto.seq = contentListCreatedto.list_seq!![i].toInt()
+            when (i) {
+                0 -> {
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP03" }.findFirst().orElse(null).seq
+                }
+                1 -> {
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP02" }.findFirst().orElse(null).seq
+                }
+                else -> {
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP04" }.findFirst().orElse(null).seq
+                }
+            }
             tblmiContLstdto.cont_cd = tblmiContMstDto.seq
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
             tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
