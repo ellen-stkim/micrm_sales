@@ -679,6 +679,7 @@ class SalesforceController {
             } else {
                 val gson = GsonBuilder().create()
                 val data = gson.fromJson(payload, Map::class.java)
+                logger.error("data : {}", data)
                 salesforceService.sendCampaign(data as MutableMap<String, Any>)
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
