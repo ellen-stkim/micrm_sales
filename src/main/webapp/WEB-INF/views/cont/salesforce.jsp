@@ -764,7 +764,6 @@
         });
 
         //컨텐츠 포맷 click event
-
         $(document).on('click', '.formatType', function () {
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
@@ -1432,9 +1431,14 @@
                 let list = response.mappingLst;
                 let html = '';
 
+
                 for (let i = 0; i < list.length; i++) {
                     let item = list[i];
                     html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+                    if(bindList){
+                        bindList.push(item.list_val);
+                    }
+                    console.log(bindList);
                 }
                 $('.mappingLst').html(html);
 
