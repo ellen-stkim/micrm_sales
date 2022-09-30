@@ -10,7 +10,6 @@ define(["postmonger"], function (Postmonger) {
 	let flag = true;
 	let cnt = 0;
 	let eventDefinitionKey;
-	let bindList = [];
 	let eventModel = null;
 
 	$(window).ready(function (){
