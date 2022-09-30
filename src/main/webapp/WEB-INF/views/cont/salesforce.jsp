@@ -696,6 +696,7 @@
     let firstLoad = true;
     let mstSeq = null;
     let dropTarget = null;
+    let bindList = [];
 
     function getDBValue() {
         const res = function (response) {
