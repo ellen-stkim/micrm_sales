@@ -98,12 +98,13 @@
                                                          data="${cateSubLst[0].cd_val}">${cateSubLst[0].cd_desc}</div>
                                                     <ol class="option">
                                                         <c:forEach var="cateSub" items="${cateSubLst}">
-                                                            <li class="cate_op_${cateSub.par_nm}"
+                                                            <li class="cate_op_${cateSub.par_nm}"  ${cateSub.par_nm eq '1' ? '' :'hidden'}
                                                                 data_sn="${cateSub.cd_sn}"
                                                                 value="${cateSub.cd_val}">${cateSub.cd_desc}</li>
                                                         </c:forEach>
                                                     </ol>
-                                                    <input class="selValue" name="categoryCode" readonly hidden>
+                                                    <input class="selValue" name="categoryCode"
+                                                           value="${cateSubLst[0].cd_val}" readonly hidden>
                                                 </div>
                                                 <!-- select 영역2 끝 -->
                                                 <p class="template_category_p">
@@ -198,16 +199,18 @@
                                         <div class="row">
                                             <div class="th">이미지 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <div class="template_add_img" name="addImgBtn">
+                                                <div class="template_add_img" name="addImgBtn"
+                                                     onclick="imageListPopUp(1,'img')">
                                                     click here to upload
                                                 </div>
-                                                <input type="file" name="templateImageUrl" hidden>
                                                 <p class="color_red">
                                                     - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                     - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</p>
                                             </div>
                                         </div>
                                     </div>
+                                    <input id="tmplImgUrl" name="templateImageUrl" readonly hidden>
+                                    <input id="tmplImgNm" name="templateImageName" readonly hidden>
                                     <div class="emphItemList_block display-none">
                                         <div class="block emphItemList_img">
                                             <div class="row" style="height: auto;">
@@ -217,10 +220,10 @@
                                                     <label for="img_check">설정</label>
 
                                                     <div class="itemlist_img_on dis_flex display-none">
-                                                        <div class="template_add_img" name="addImgBtn">
+                                                        <div class="template_add_img" onclick="imageListPopUp(1,'img')">
                                                             click here to upload
                                                         </div>
-                                                        <input type="file" name="templateImageUrl" hidden>
+                                                            <%--                                                        <input type="file" name="templateImageUrl" hidden>--%>
                                                         <p class="color_red">
                                                             - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                             - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.
@@ -268,13 +271,14 @@
                                                     </div>
 
                                                     <div class="highlight_div highlight_img_on dis_flex display-none">
-                                                        <div class="template_add_img" name="addImgBtn">
+                                                        <input id="imgUrl" name="imageUrl" disabled readonly hidden>
+                                                        <div class="template_add_img"
+                                                             onclick="imageListPopUp(1,'img_item')">
                                                             click here to upload
                                                         </div>
-                                                        <input type="file" name="imageUrl" hidden>
                                                         <p class="color_red">
                                                             - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
-                                                            - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.
+                                                            - 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.
                                                         </p>
                                                     </div>
                                                 </div>
@@ -309,7 +313,8 @@
                                                                        placeholder="아이템 명 (6자 이내)">
                                                             </td>
                                                             <td>
-                                                                <input class="border" type="text" data_name="description"
+                                                                <input class="border" type="text"
+                                                                       data_name="description"
                                                                        placeholder="아이템 내용 (23자 이내)">
                                                             </td>
                                                             <td>
@@ -332,7 +337,8 @@
                                                                        placeholder="아이템 명 (6자 이내)">
                                                             </td>
                                                             <td>
-                                                                <input class="border" type="text" data_name="description"
+                                                                <input class="border" type="text"
+                                                                       data_name="description"
                                                                        placeholder="아이템 내용 (23자 이내)">
                                                             </td>
                                                             <td>
@@ -365,9 +371,11 @@
                                                     </div>
 
                                                     <div class="itemInfo_div itemInfo_check_on display-none">
-                                                        <input type="text" class="txt_input4 first border" data_name="title"
+                                                        <input type="text" class="txt_input4 first border"
+                                                               data_name="title"
                                                                placeholder="아이템 명 (최대 6자)">
-                                                        <input type="text" class="txt_input4 border" data_name="description"
+                                                        <input type="text" class="txt_input4 border"
+                                                               data_name="description"
                                                                placeholder="아이템 내용 입력 (최대 14자, 화폐단위 및 숫자(쉼표 마침표 혀용) , 변수만 사용가능)">
                                                     </div>
 
@@ -376,15 +384,15 @@
                                         </div>
 
                                     </div>
-                                    <div class="block">
-                                        <div class="row template_textarea">
-                                            <div class="th">템플릿내용 <span class="color_red">*</span></div>
-                                            <div class="td">
-                                                <textarea rows="8" name="templateContent"
-                                                          placeholder="텍스트 입력 (최대 1000자)"></textarea>
+                                        <%--<div class="block">
+                                            <div class="row template_textarea">
+                                                <div class="th">템플릿내용 <span class="color_red">*</span></div>
+                                                <div class="td">
+                                                    <textarea rows="8" name="templateContent"
+                                                              placeholder="텍스트 입력 (최대 1000자)"></textarea>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div>--%>
                                     <div class="block addinfo_block">
                                         <div class="row template_textarea">
                                             <div class="th">부가 정보 <span class="color_red">*</span></div>
@@ -409,8 +417,8 @@
                                         <div class="row template_textarea2">
                                             <div class="th">채널 추가<br>안내 메시지</div>
                                             <div class="td">
-                                                <textarea rows="2" placeholder="채널 추가하고 이 채널의 광고와 마케팅 메시지 받기"
-                                                          readonly></textarea>
+                                                <textarea rows="2" name="templateAd"
+                                                          readonly>채널 추가하고 이 채널의 광고와 마케팅 메시지 받기</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -456,16 +464,18 @@
                                                         </td>
                                                     </tr>
 
-                                                    <tr class="channel_add_table display-none"
+                                                    <tr class="channel_add_table  display-none"
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
-                                                            <select class="border" id="channel_add_select" disabled>
-                                                                <option>채널추가</option>
+                                                            <select class="border btn_type" id="channel_add_select"
+                                                                    disabled>
+                                                                <option value="AC" selected>채널추가</option>
                                                             </select>
                                                         </td>
                                                         <td>
                                                             <input class="border" type="text" placeholder="채널 추가"
+                                                                   name='name' value="채널 추가"
                                                                    disabled readonly>
                                                         </td>
                                                         <td>
@@ -516,12 +526,10 @@
                                 </div>
                             </div>
                             <div class="viewer_area">
-                                <div class="top">문자 본문 입력창</div>
+                                <div class="top">템플릿 내용</div>
                                 <div class="inner">
-                                        <%--                                        <div class="sms_title" id="sms_title"></div>--%>
-                                        <%--                                        <div class="sms_img"></div>--%>
-                                    <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10"
-                                              onkeyup="smsCreate.byteCount(this, 'sms');"></textarea>
+                                    <textarea name="templateContent" id="" class="sms_txt templateContent" cols="30"
+                                              rows="10"></textarea>
                                 </div>
                                 <div class="byte">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
@@ -646,7 +654,7 @@
         let addCell3 = '';
         let addCell4 = '';
 
-        addCell1 += '<select class="border" id="table_btn_type" onchange="selectType(this, this)">' +
+        addCell1 += '<select class="border btn_type" id="table_btn_type" onchange="selectType(this, this)">' +
             '<option value="" selected disabled>버튼타입 선택</option>'
         <c:forEach var="btn" items="${btnLst}">
         addCell1 += '<option value="${btn.cd_val}" data_sn="${btn.cd_sn}">${btn.cd_desc}</option>'
@@ -1167,8 +1175,7 @@
             }
 
             // 소분류 변경
-            $('.bizContsVal .value').html($(list).eq(0).html());
-            $('.bizContsVal .value').val($(list).eq(0).val());
+            $('.bizContsVal .option li.cate_op_' + val + `:first`).trigger('click');
         });
         // 카테고리 소분류 선택
         $('.bizContsVal .option li').on('click', function () {
@@ -1264,15 +1271,14 @@
 
         //강조유형 선택
         $('.bizEmphVal .option li').on('click', function () {
-            let val = $(this).attr("data_sn");
-
-            if (val == 1) {
+            let sn = $(this).attr("data_sn");
+            if (sn == 1) {
                 emphAllNone();
-            } else if (val == 2) {
+            } else if (sn == 2) {
                 emphFirstOption();
-            } else if (val == 3) {
+            } else if (sn == 3) {
                 emphSecondOption();
-            } else if (val == 4) {
+            } else if (sn == 4) {
                 emphThirdOption();
             }
         })
@@ -1356,33 +1362,6 @@
         });//end
         getDBValue();
         //load 시 byte 계산
-
-        let minInx = '';
-
-        /*//load 시 컨텐츠 포맷 체크 후 주요 옵션 표시
-        $('.formatType').each(function () {
-            let checkLength = $('.formatType').filter(':checked').length;
-            let state = $(this).is(':checked');
-
-            if(state == true){
-                let tabInx = $('.formatType').index(this);
-                $('#js-smsTab li').eq(tabInx).show();
-
-                if(minInx === '' && minInx > tabInx){
-                    minInx = tabInx;
-                }
-                $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
-                $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
-            }
-
-            if(checkLength > 0){
-                $('.no_data').hide();
-                $('#js-btn-area').show();
-            }else{
-                $('.no_data').show();
-                $('#js-btn-area').hide();
-            }
-        });*/
 
 
         //카카오 링크 버튼 생성 event
@@ -1620,138 +1599,6 @@
 
     });
 
-    // 카카오, SMS 유효성 검사
-    function kakaoValidate() {
-        let kakaoOption = $('input[name="kko_option"]').val();
-        let kakaoTitle = $('.kakaoTitle');
-        let kakaoTxt = $('.kakao_txt');
-        let kakaoSenderNo = $('.smsNumber_kko');
-
-        if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
-            popup.popAlert("카카오톡 발신 번호를 입력해주세요");
-            //kakaoSenderNo.parent('.column_2').addClass('outline');
-            return false;
-        }
-
-        if (kakaoOption == 'ad') {
-            if (kakaoTitle.val().indexOf('(광고)') != -1) {
-                if (kakaoTxt.val() != '') {
-                    let type = kakaoTypeValidate();
-                    if (type == true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                    kakaoTxt.focus();
-                    return false;
-                }
-            } else {
-                kakaoTitle.parent('.column_1').addClass('outline');
-                kakaoTitle.focus();
-                popup.popAlert("카카오톡 광고성 메시지 제목에 '(광고)'입력이 필수 입니다.");
-                return false;
-            }
-        }
-        if (kakaoOption == 'guide') {
-            if (kakaoTitle.val() != '') {
-                let type = kakaoTypeValidate();
-                if (type == true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                kakaoTitle.parent('.column_1').addClass('outline');
-                kakaoTitle.focus();
-                popup.popAlert("카카오톡 문자 제목을 입력해주세요.");
-                return false;
-            }
-            /*if ($('.kakao_txt').val() != '') {
-                let type = kakaoTypeValidate();
-                if (type == true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                $('.kakao_txt').focus();
-                return false;
-            }*/
-        }
-        return false;
-    }
-
-    //카카오 유효성 검사
-    function kakaoTypeValidate() {
-        // 카카오의 경우 이미지 필수 -> 이미지 선택으로 바뀜
-        let kakaoByte = Number($('.kakao_byte').html());
-        let kakaoImage = $('#kakaoImage');
-        let kakaoTxt = $('.kakao_txt');
-
-        // 본문 byte 체크
-        if (kakaoImage.val() == '' || kakaoImage.val() == null) {
-            if (kakaoByte > 2000) {
-                kakaoTxt.focus();
-                popup.popAlert("카카오톡 본문 내용이 2000byte를 초과할 수 없습니다.");
-                return false;
-            }
-        } else if (kakaoImage.val() != '' || kakaoImage.val() != null) {
-            if (kakaoByte > 400) {
-                kakaoTxt.focus();
-                popup.popAlert("카카오톡 본문 내용이 400byte를 초과할 수 없습니다.");
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    // 문자 종류별 유효성 체크
-    function smsTypeValidate() {
-        let smsType = $('.smsType:checked').val();
-        let smsByte = Number($('.sms_byte').html());
-        let smsImage = $('#smsImage');
-        let smsTxt = $('.sms_txt');
-
-        if (smsType == 'LMS') {
-            //$("#mds_img_cd").val('');
-            if (smsByte > 2000) {
-                smsTxt.focus();
-                popup.popAlert("LMS의 경우 본문 내용이 2000byte를 초과할 수 없습니다.");
-                return false;
-            }
-        }
-
-        // 우선적으로 이미지 1개만 고려, 차후 이미지 멀티 저장 기능이 추가되면 수정 필요
-        // MMS 테스트
-        // 이미지 1개 : 2000 Byte 까지만 허용 , 이미지 여러개 : 1000 Byte 까지 허용
-        if (smsType == 'MMS') {
-            if (smsImage.val() != '') {
-                if (smsByte > 2000) {
-                    smsTxt.focus();
-                    popup.popAlert("MMS의 경우 본문 내용이 2000byte를 초과할 수 없습니다.");
-                    return false;
-                }
-            } else {
-                smsImage.parent('.td').addClass('outline');
-                smsImage.focus();
-                popup.popAlert("MMS를 선택하셨습니다. 이미지를 선택해 주세요.");
-                return false;
-            }
-        }
-        if (smsType == 'SMS') {
-            //$("#mds_img_cd").val('');
-            if (smsByte > 90) {
-                smsTxt.focus();
-                popup.popAlert("SMS의 경우 본문 내용이 90byte를 초과할 수 없습니다.");
-                return false;
-            }
-        }
-        return true;
-    }
 
     // 알림톡 템플릿 유효성 검사
     function tmplValidate() {
@@ -1920,15 +1767,18 @@
             return this;
         }.bind({}))[0];
 
-        // 버튼 정보
+        data.categoryCode = $('.bizContsVal .value').attr("data")
+        console.log($('.bizContsVal [name="categoryCode"]').attr("value"))
+
+        // --------- 버튼 정보 ---------
         let buttonLst = [];
         const butLst = $('#template_btn_table tbody tr:visible');
         for (let idx = 0; idx < butLst.length; idx++) {
             let button = butLst[idx]
             let obj = new Object();
             obj.ordering = idx + 1
-            obj.linkType = $(button).find('#table_btn_type option:selected').val();
-            obj.linkTypeName = $(button).find('#table_btn_type option:selected').html();
+            obj.linkType = $(button).find('.btn_type option:selected').val();
+            obj.linkTypeName = $(button).find('.btn_type option:selected').html();
             obj.name = $(button).find(`[name='name']`).val();
 
             // 버튼 링크
@@ -1974,7 +1824,6 @@
         //  ------ 바로 연결  end---------
 
 
-        // 이미지
 
         //  ------ 아이템 하이라이트  ---------
         //  imageUrl => 이미지 추가
@@ -1988,10 +1837,10 @@
 
 
         //  ------ 아이템 리스트  ---------
-        let tmplItem =new Object();
+        let tmplItem = new Object();
         let itemList = [];
         const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
-        for(selItemTr of selItemTrLst){
+        for (selItemTr of selItemTrLst) {
             const selItemLst = $(selItemTr).find('input[type="text"]:visible');
             let item = new Object();
             for (selItem of selItemLst) {
@@ -1999,7 +1848,7 @@
             }
             itemList.push(item);
         }
-            tmplItem.list = itemList;
+        tmplItem.list = itemList;
         //  ------ 아이템 리스트 end ---------
 
         //  ------ 아이템 요약정보  ---------
@@ -2011,12 +1860,12 @@
         }
         tmplItem.summary = itemInfo;
 
-        data.templateItem =tmplItem;
+        data.templateItem = tmplItem;
         //  ------ 아이템 요약정보 end ---------
 
         console.log(data)
 
-        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
+        <%--com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')--%>
 
     }
 
@@ -2108,26 +1957,223 @@
             + current.getHours().toString() + current.getMinutes() + current.getSeconds().toString();
     }
 
-    // 이미지 파일 등록 버튼
-    $(document).on('click', 'div[name="addImgBtn"]', (e) => {
-        $(e.target).siblings('input[type="file"]').trigger('click')
-    })
-
     // 셀렉트 값 변경
     $(document).on('click', '.select .option li', (e) => {
-        const val = $(e.target).val();
+        const val = $(e.target).attr("value");
         const nm = $(e.target).html();
         const select = $(e.target).parents(".select");
-
-        console.log($(e.target))
-        console.log($(e.target).val())
-        console.log(val)
 
         $(select).find('.value').attr('data', val);
         $(select).find('.value').html(nm);
         $(select).find('input.selValue').val(val);
-
     })
+
+    function imageListPopUp(nowPage, type) {
+        $('#imgType').val(type);
+        imageListPaging(nowPage);
+    }
+
+    // 이미지 리스트 팝업
+    function imageListPaging(nowPage) {
+
+        let type = $('#imgType').val();
+
+        const res = function (response) {
+            $('.imagePopup').addClass('active');
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            $("#bodyDom").html($("#bodyDom", $doc).html());
+            $("#pagingDom").html($("#pagingDom", $doc).html());
+            $('#imgType').val(type);
+        };
+
+        let param = $("#imgSetForm").serializeArray();
+        if (type === 'img') {
+            // 이미지 타입 : Kakao Image
+            param.push({name: 'ch_tp', value: 'IMGTP09'});
+        } else if (type === 'img_item') {
+            // 이미지 타입 : 문자(MMS)
+            param.push({name: 'ch_tp', value: 'IMGTP10'});
+        }
+
+        param.push({name: 'pageNo', value: nowPage});
+
+        com_ajax.ajax('post', '${baseURL}/cont/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+
+    // 이미지 추가 등록
+    function imgUploadPop() {
+        var html = '<div class="layer_pop uploadPopup active" style="z-index:960;">' +
+            '<div class="pop_container popup_size1">' +
+            '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />' +
+            '<div class="pop_title">새 이미지 파일 업로드</div>' +
+            '<div class="pop_inner">' +
+            '<table class="pop_table_type1">' +
+            '<colgroup>' +
+            '<col width="103" />' +
+            '<col width="*" />' +
+            '</colgroup>' +
+            '<tbody>' +
+            '<tr>' +
+            '<th>채널</th>' +
+            '<td>' +
+            '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>' +
+            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
+            '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>' +
+            '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
+            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" ><span></span></label>' +
+            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label><br>' +
+            '</td>' +
+            '</br>' +
+            '<tr class="rcsImgForm rcs_option">' +
+            '<th>양식</th>' +
+            '<td>' +
+            '<div class="select style1 rcs_select">' +
+            '<div class="value" data="">RCS 양식 선택</div>' +
+            '<ul class="option">' +
+            '<li data="0">RCS 양식 선택</li>' +
+            '<li data="IMGTP05">세로형 / Tall</li>' +
+            '<li data="IMGTP06">세로형 / Medium</li>' +
+            '<li data="IMGTP07">슬라이드형 / Small</li>' +
+            '<li data="IMGTP08">슬라이드형 / Medium</li>' +
+            '</ul>' +
+            '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>이미지 명</th>' +
+            '<td>' +
+            '<input type="text" placeholder="이미지 명을 입력해주세요." id="img_nmCk" name="img_nm" class="input_type1" />' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>이미지 파일</th>' +
+            '<td>' +
+            '<input type="text" id="fileName" name="fileName" class="input_file" placeholder="이미지 파일을 선택해주세요." readonly />' +
+            '<span class="btn_file">파일 선택<input type="file" class="file" id="file"/></span>' +
+            '</td>' +
+            '</tr>' +
+            '</tbody>' +
+            '</table>' +
+            '<ul class="guide_txt guide_lst">' +
+            '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>' +
+            '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>' +
+            '</ul>' +
+            '<ul class="at_guide1 guide_lst" hidden>' +
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</li>' +
+            '</ul>' +
+            '<ul class="at_guide2 guide_lst" hidden>' +
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.</li>' +
+            '</ul>' +
+            '<ul class="ft_guide1 guide_lst">' +
+            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 500px 이상이며 또는 가로:세로 비율이 2:1 또는 3:4 이어야 합니다.</li>' +
+            '</ul>' +
+            '<ul class="ft_guide2 guide_lst" hidden>' +
+            '<li>※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>' +
+            '<li>※ 이미지 파일은 가로 800px 세로 600px 파일만 등록 가능합니다.</li>' +
+            '</ul>' +
+            '<div class="left pop_error_txt other_guide guide_lst" hidden>※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>' +
+            '<div class="right pop_error_txt blue_point_color"></div>' +
+            '<div class="img_viewer noImg"></div>' +
+            '<div class="btn_row">' +
+            '<input type="button" class="btn_bg btn_size2 btn_center uploadSave" onclick="saveContentImg();" value="저장" />' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $("#imgListHtml").html(html);
+    }
+
+    function saveContentImg() {
+        var imgNm = $("#img_nmCk").val();
+        if (imgNm == "" || imgNm == null) {
+            popup.popAlert("이미지명을 입력해주세요.");
+            return false;
+        }
+        if ($("#file").val() == "" || $("#file").val() == null) {
+            popup.popAlert("업로드된 파일이 없습니다.");
+            return false;
+        }
+
+        var res = function (response) {
+            //TO-DO
+            //리스트 새로 불러오기
+            if (response.imgCheck == 0) {
+                popup.popAlert(response.imgCheckErr);
+                return false;
+            }
+            popup.popAlert(response.message);
+            $('.uploadPopup').removeClass('active');
+            //$("#form")[0].reset();
+            $("#file").val();
+            $(".img_viewer").children().remove();
+            $(".img_view").addClass('noImg');
+            imageListPaging('1');
+        };
+
+        var data = new FormData();
+        data.append("file", $("#file")[0].files[0]);
+        var ch_tp = $("input[name=ch_tp]:checked").val();
+        if (ch_tp == 'RCS') {
+            data.append("ch_tp", $('.rcs_select .value').attr('data'));
+        } else {
+            data.append("ch_tp", ch_tp);
+        }
+        data.append("img_nm", imgNm);
+
+        com_ajax.ajax_file('${baseURL}/cont/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    // 이미지 리스트 Input 저장하기
+    function imgSendSave(seq) {
+        let imgType = $("#imgType").val();  // 이미지 파일 타입
+        let imgLength = $('input[name="contentsImg"]:checked').length;
+        let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
+        let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
+        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val(); // 이미지 파일 url
+
+        if (imgLength > 0) {
+            /*let popParents = $('#form').parents('.layer_pop').attr('data');
+            $('#' + popParents).val(imgUrl);
+            $('#form').parents('.layer_pop').removeClass('active');*/
+            imageCreate(imgType, imgUrl, ImgNm, imgCheck);
+            $('#imagePop').siblings('.pop_error_txt').html('');
+            $('.imagePopup').removeClass('active');
+        } else {
+            return false;
+        }
+    }
+
+    function imageCreate(type, imageUrl, ImgNm, imgCheck) {
+        let imageType = imageUrl;
+
+        console.log("*-------*-*-*-*-*")
+        console.log(type)
+        console.log(imageUrl)
+        console.log(ImgNm)
+        console.log(imgCheck)
+
+        if (imageType != '') {
+            if (type == 'img') {
+                $("#tmplImgUrl").val(imageUrl);
+                $("#tmplImgNm").val(ImgNm);
+                // $('input[name="kko_img_cd"]').val(imgCheck);
+                // $('#kakaoImage').parent('.td').removeClass('outline');
+                // $('#js-kakao-img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
+            } else if (type == "img_item") {
+                $("#imgUrl").val(imageUrl);
+            }
+        } else {
+            if (type == 'kakaoImage') {
+                $('#kakao_ft').find('.sms_img').children().remove();
+            } else if (type == 'smsImage') {
+                $('#sms').find('.sms_img').children().remove();
+            }
+        }
+    }
 
 </script>
 
