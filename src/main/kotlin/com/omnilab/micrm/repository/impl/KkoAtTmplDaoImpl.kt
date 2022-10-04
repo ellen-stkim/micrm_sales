@@ -33,5 +33,9 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
         return sqlSession.selectOne("selKkoAtTmpl",dto)
     }
 
+    override fun insNewTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int {
+        return sqlSession.insert("insNewTmplDto",tmplDto)
+    }
+
 
 }

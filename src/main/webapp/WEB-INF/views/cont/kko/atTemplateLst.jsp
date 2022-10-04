@@ -99,9 +99,9 @@
 
             <!-- list_container 영역 끝 -->
             <span id="pageBtn">
-                <%--<c:if test="${nextCk eq true}">
+                <c:if test="${nextCk eq true}">
                     <div class="btn_more" onclick="getMobileListAdd();"><img src="/image/bullet_arrw1.png" alt="" />더보기</div>
-                </c:if>--%>
+                </c:if>
             </span>
         </div>
         <!-- section 영역 끝 -->
@@ -314,7 +314,7 @@
             }
         };
         var param = {seq: seq, use_yn: useValue};
-        com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        <%--com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');--%>
     }
 
     let type = ['kakao', 'MMS', 'SMS', 'rcsText', 'rcsHorizontalLeft', 'rcsHorizontalRight', 'rcsVerticalTall', 'rcsVerticalMedium', 'rcsSlideSmall', 'rcsSlideMedium'];

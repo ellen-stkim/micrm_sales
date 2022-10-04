@@ -1,5 +1,6 @@
 package com.omnilab.micrm.service.impl
 
+import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
 
 
@@ -70,6 +72,8 @@ class KkoMsgServiceImpl : KkoMsgService {
         searchDto.cd_id = "KEP_ST"
         map.put("kepSt",kkoAtTmplDao.getTmplSearchLst(searchDto))
 
+
+
         return map
     }
 
@@ -106,15 +110,75 @@ class KkoMsgServiceImpl : KkoMsgService {
         return kkoAtTmplDao.selKkoAtTmpl(dto)
     }
 
-    override fun createTmpl(dto: Kko_at_tmplDto): Any? {
+    override fun createTmpl(dto: Kko_at_tmplDto, regId: String): Any? {
 
+        val map :MutableMap<String,Any> = mutableMapOf()
         // 카카오 api 호풀
-        kkoRestApiService.createAtTmpl(dto)
+        val result:MutableMap<String,Any> = kkoRestApiService.createAtTmpl(dto)
+        val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
 
-        // tmplDto 저장
-        //
+        try {
+            if(result.get("result") as Boolean){
+                if("API_200".equals(data.get("code"))){
 
+                    // tmplDto 저장
+                    val tmplDto = getTmplDtoByKkoDto(dto,regId)
+                    kkoAtTmplDao.insNewTmplDto(tmplDto);
 
-        return null
+                    map.put("status",HttpServletResponse.SC_OK)
+                    map.put("msg", "알림톡 템플릿이 생성되었습니다.")
+
+                }else{
+                    logger.error("카카오 알림톡 템플릿 생성 데이터 에러")
+                    logger.error("data : {}",result)
+
+                    val code :String = data.get("code")?.toString()!!.replace("API_","")
+                    map.put("status", code.toInt())
+                    map.put("msg", data.get("message")!!)
+                }
+            }else{
+                logger.error("카카오 알림톡 템플릿 생성 API 에러")
+                logger.error("data : {}",result)
+
+                val code :String = data.get("code")?.toString()!!.replace("API_","")
+                map.put("status", code.toInt())
+                map.put("msg", data.get("message")!!)
+            }
+        }catch (e:Exception){
+            logger.error("",e)
+            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+            map.put("msg", "템플릿 등록에 실패했습니다. 관리자에게 문의 바랍니다.")
+        }
+
+        return map
+    }
+
+    private fun getTmplDtoByKkoDto(dto: Kko_at_tmplDto, regId: String): Tblmi_kko_at_tmplDto {
+        val gson = GsonBuilder().create()
+        val tmplDto = Tblmi_kko_at_tmplDto()
+        tmplDto.tmpl_nm = dto.templateName
+        tmplDto.tmpl_cd = dto.templateCode
+        tmplDto.send_key = dto.send_key
+        tmplDto.tmpl_cont = dto.templateContent
+        tmplDto.tmpl_img_nm = dto.templateImageName
+        tmplDto.tmpl_img_url = dto.templateImageUrl
+        tmplDto.secur_flag = dto.securityFlag
+        tmplDto.tmpl_status = dto.templateStatus
+        tmplDto.kep_status = "N"
+        tmplDto.tmpl_msg_tp = dto.templateMessageType
+        tmplDto.tmpl_ext = dto.templateExtra
+        tmplDto.tmpl_ad = dto.templateAd
+        tmplDto.tmpl_tit = dto.templateTitle
+        tmplDto.tmpl_subtit = dto.templateSubtitle
+        tmplDto.tmpl_empsize_tp = dto.templateEmphasizeType
+        tmplDto.cate_cd = dto.categoryCode
+        tmplDto.tmpl_header = dto.templateHeader
+        tmplDto.button_json = gson.toJson(dto.buttons)
+        tmplDto.quick_repl_json = gson.toJson(dto.quickReplies)
+        tmplDto.item_highlight_json = gson.toJson(dto.templateItemHighlight)
+        tmplDto.item_json =  gson.toJson(dto.templateItem)
+        tmplDto.reg_id = regId
+
+        return tmplDto
     }
 }

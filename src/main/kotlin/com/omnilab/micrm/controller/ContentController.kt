@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
+import java.security.Principal
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -668,7 +669,7 @@ class ContentController  {
                     logger.info("File Upload fail")
                 }else{
 
-                    if(dto.ch_tp != "IMGTP01"){
+                    if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
                         val fileName = map["file_nm"]
                         val image : BufferedImage = ImageIO.read(file.inputStream)
                         val imageWidth: Int = image.width
@@ -709,7 +710,7 @@ class ContentController  {
                         }
                     }
                     var resultMap: MutableMap<String, Any>? = null
-                    if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                    if(dto.ch_tp == "IMGTP09"){    // 카카오 알림톡 이미지
                         resultMap = kkoRestApiService.uploadTmplImg(file)
                     }
                     if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
@@ -719,6 +720,13 @@ class ContentController  {
                     if(!CommonUtils.isEmptyObject(resultMap)){
                         if(resultMap!!["result"] as Boolean){
                             val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            if(data["code"] != "API_200" ){
+                                map["uploaded"] = 0
+                                map["message"] = "파일 저장에 실패하였습니다."
+                                logger.info("File DB insert fail")
+                                return map
+                            }
+
                             dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
                         }else{
                             map["uploaded"] = 0
@@ -1055,6 +1063,7 @@ class ContentController  {
 
         view.addObject("tmplSt",map.get("tmplSt"))
         view.addObject("kepSt",map.get("kepSt"))
+
         return view
     }
 
@@ -1079,6 +1088,7 @@ class ContentController  {
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
+        view.addObject("nextCk", paramMap["nextCk"])
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
@@ -1136,26 +1146,11 @@ class ContentController  {
      * @Method Decription : 알림톡 탬플릿 생성
      * @title : 알림톡 탬플릿 생성
      */
+    @ResponseBody
     @PostMapping("/kko/tmplCreate.service")
-    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestBody dto : Kko_at_tmplDto ): ModelAndView {
-        val view = ModelAndView("cont/kko/tmplCreate")
-
-        val map = kkoMsgService.createTmpl(dto)
-        /*, @ModelAttribute dto: Kko_at_tmplDto*/
-
-
-        logger.error("{}",dto)
-
-
-        /*view.addObject("cateLst",map["cateLst"]);
-        view.addObject("cateSubLst",map["cateSubLst"])
-        view.addObject("msgTpLst", map["msgTpLst"])
-        view.addObject("empTpLst", map["empTpLst"])
-        view.addObject("cateSubGidLst", map["cateSubGidLst"])
-
-        view.addObject("column",sysSettingService.getDBValue())*/
-
-        return view
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestBody dto : Kko_at_tmplDto ,principal: Principal): Any? {
+        val map = kkoMsgService.createTmpl(dto,principal.name)
+        return map
     }
 
     /**
@@ -1224,6 +1219,41 @@ class ContentController  {
         return map
     }
 
+    /**
+     * @Method Name  : updateMoblieContent
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : seq: Int
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 모바일 컨텐츠 상세 페이지
+     * @title : 모바일 컨텐츠 상세 페이지
+     */
 
+    @GetMapping("/tmplDetail/{seq}.mi")
+    fun detailTmplContent(@PathVariable("seq") seq : Int) : ModelAndView {
+        val tblmiContMstdto = Tblmi_cont_mstDto()
+        tblmiContMstdto.seq = seq
+        val view = ModelAndView("/cont/detailTmpl")
+        val map = sysSettingService.getDBValue()
+       /* val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+        val cntMap = mobileContentService.isCheckSender()
+
+        view.addObject("list" , listMap["list"])
+        view.addObject("column",map);
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        view.addObject("filePath", uploadPrefix?.cd_val)
+*/
+        return view
+    }
 
 }

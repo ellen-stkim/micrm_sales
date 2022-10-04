@@ -24,6 +24,7 @@ open class Kko_at_tmplDto {
     var templateSubtitle: String? = null
     var templateEmphasizeType: String? = null
     var categoryCode: String? = null
+    var templateHeader: String? = null
 
     var newTemplateCode: String? = null
     var newTemplateName: String? = null
@@ -38,7 +39,6 @@ open class Kko_at_tmplDto {
     var newTemplateTitle: String? = null
     var newTemplateSubtitle: String? = null
     var newCategoryCode: String? = null
-    var templateHeader: String? = null
     var newTemplateHeader: String? = null
 
     var buttons: MutableList<AtButtonDto>? = null

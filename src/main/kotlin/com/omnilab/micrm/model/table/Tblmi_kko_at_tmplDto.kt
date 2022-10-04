@@ -13,7 +13,6 @@ open class Tblmi_kko_at_tmplDto {
     var tmpl_cont: String? = null
     var tmpl_img_nm: String? = null
     var tmpl_img_url: String? = null
-    var chan_id: String? = null
     var secur_flag: String? = null
     var tmpl_status: String? = null
     var kep_status: String? = null
@@ -31,7 +30,18 @@ open class Tblmi_kko_at_tmplDto {
     var item_highlight_json: String? = null
     var item_json: String? = null
 
-    var use_yn: String? = null
+    var etc_1: String? = null
+    var etc_2: String? = null
+    var etc_3: String? = null
+    var etc_4: String? = null
+    var etc_5: String? = null
+    var etc_6: String? = null
+    var etc_7: String? = null
+    var etc_8: String? = null
+    var etc_9: String? = null
+    var etc_10: String? = null
+
+    var use_yn: String? = "Y"
     var reg_id: String? = null
     var reg_dt: String? = null
     var upd_id: String? = null
