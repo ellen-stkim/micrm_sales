@@ -297,7 +297,7 @@
                                 <div class="viewer_area" id="kakao_ft_viewer">
                                     <div class="top">친구톡 본문 입력창</div>
                                     <div class="inner">
-                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
+                                            <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
                                         <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                             <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank">${list[0].kko_btn_nm}</a>
                                         </c:if>
@@ -330,7 +330,7 @@
                                     <div class="viewer_area" id="kakao_ft_viewer" hidden>
                                         <div class="top">친구톡 본문 입력창</div>
                                         <div class="inner">
-                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                            <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
                                         </div>
                                         <div class="byte">
                                             <span class="en_font kakao_byte">0</span>

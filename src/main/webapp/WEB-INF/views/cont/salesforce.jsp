@@ -255,8 +255,7 @@
                             <div class="viewer_area" id="kakao_ft_viewer">
                                 <div class="top">친구톡 본문 입력창</div>
                                 <div class="inner">
-                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
-                                                  onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                    <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
                                 </div>
                                 <div class="byte">
                                     <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
@@ -696,6 +695,7 @@
     let firstLoad = true;
     let mstSeq = null;
     let dropTarget = null;
+    let bindList = [];
 
     function getDBValue() {
         const res = function (response) {
@@ -764,7 +764,6 @@
         });
 
         //컨텐츠 포맷 click event
-
         $(document).on('click', '.formatType', function () {
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
@@ -1432,9 +1431,11 @@
                 let list = response.mappingLst;
                 let html = '';
 
+
                 for (let i = 0; i < list.length; i++) {
                     let item = list[i];
                     html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+                    bindList.push(item.list_val);
                 }
                 $('.mappingLst').html(html);
 
@@ -1473,7 +1474,13 @@
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
         let kakaoTitle = $('.kakaoTitle');
-        let kakaoTxt = $('.viewer_area:visible .kakao_txt');
+        let kkoType = $("input[name='kko_format_type']:checked").val();
+        let kakaoTxt = null;
+        if(kkoType == "kko_ft"){
+            kakaoTxt = $("textarea.kakao_txt");
+        }else{
+            kakaoTxt =  $("input.kakao_txt");
+        }
         let kakaoSenderNo = $('.smsNumber_kko');
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
@@ -1581,7 +1588,7 @@
     function smsValidate() {
         let smsOption = $('input[name="sms_option"]').val();
         let smsTitle = $('.smsTitle');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('.sms_txt.textarea');
         let smsNumber = $('.smsNumber')
         let smsNumberValue = $('#sms_send_to').val().trim();
 

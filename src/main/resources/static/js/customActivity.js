@@ -10,7 +10,6 @@ define(["postmonger"], function (Postmonger) {
 	let flag = true;
 	let cnt = 0;
 	let eventDefinitionKey;
-	let bindList = [];
 	let eventModel = null;
 
 	$(window).ready(function (){
@@ -151,6 +150,7 @@ define(["postmonger"], function (Postmonger) {
 			for (let i = 0; i < list.length; i++) {
 				let item = list[i];
 				html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+				bindList.push(item.list_val);
 			}
 			$('.mappingLst').html(html);
 
@@ -240,13 +240,16 @@ define(["postmonger"], function (Postmonger) {
             }
         }
 		let data = $("#form").serializeArray();
-		console.log(data)
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
-        com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
+		data.find(function(input) {
+			return input.name == 'mst_seq';
+		}).value = mstSeq
+
+		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
     }
 
 });

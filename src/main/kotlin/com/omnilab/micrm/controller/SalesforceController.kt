@@ -194,7 +194,7 @@ class SalesforceController {
      */
 
     @PostMapping("/{usr_cd}/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto,@ModelAttribute atSearchDto : AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto, @ModelAttribute atSearchDto : AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/mdmPreview")
         //logger.error("preview Dto : " + dto.toString());
         //logger.error("kakaoUrl : " + dto.kko_view_img_url);
@@ -210,14 +210,14 @@ class SalesforceController {
         val formatList = dto.formatType
         val kkoFormatType = dto.kko_format_type
 
-        if(formatList!!.contains("kakao") && "kko_at".equals(kkoFormatType)) {
+        if(formatList!!.contains("kakao") && "kko_at" == kkoFormatType) {
             // 넘어 오는 Preview 데이터에 카카오 알림톡이 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
-            val atDto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(atSearchDto)
+            val atDto: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(atSearchDto)
             val map = mobileContentService.previewATJsonService(atDto!!)
             //logger.error("jsonContent : " + map["jsonContent"])
             view.addObject("jsonContent", map["jsonContent"])
         }
-        if(formatList!!.contains("rcs")) {
+        if(formatList.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);
             //logger.error("jsonContent : " + map["jsonContent"])
@@ -230,7 +230,6 @@ class SalesforceController {
         commonCDDto.cd_id = "UPURL01"
         val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
         view.addObject("filePath", uploadPrefix?.cd_val)
-
         return view;
     }
 
@@ -679,6 +678,7 @@ class SalesforceController {
             } else {
                 val gson = GsonBuilder().create()
                 val data = gson.fromJson(payload, Map::class.java)
+                logger.error("data : {}", data)
                 salesforceService.sendCampaign(data as MutableMap<String, Any>)
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
