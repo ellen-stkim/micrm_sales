@@ -174,7 +174,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block_group emphtxt_block display-none">
+                                    <div class="block_group emphtxt_block display-none" name="emph_sel_box">
                                         <div class="block block4">
                                             <div class="row">
                                                 <div class="th">강조 표기 타이틀 <span class="color_red">*</span></div>
@@ -195,39 +195,53 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block emphImg_block display-none">
-                                        <div class="row">
+                                    <div class="block emphImg_block display-none"  name="emph_sel_box">
+                                        <div class="row flex_row" style="height: auto; min-height: 145px;">
                                             <div class="th">이미지 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <div class="template_add_img" name="addImgBtn"
-                                                     onclick="imageListPopUp(1,'img')">
-                                                    click here to upload
+                                                <div name="newImgBtn" class="imgBtn">
+                                                    <div class="template_add_img col_img" name="addImgBtn"
+                                                         onclick="imageListPopUp(1,'img')">
+                                                        click here to upload
+                                                    </div>
+                                                    <p class="color_red">
+                                                        - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
+                                                        - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</p>
                                                 </div>
-                                                <p class="color_red">
-                                                    - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
-                                                    - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</p>
+                                                <div class="col_img prv_col_img" name="prevImg"
+                                                     onclick="imageListPopUp(1,'img')">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div name="emph_sel_box">
+                                    <input id="tmplImgCd" name="tmpl_img_cd" readonly hidden>
                                     <input id="tmplImgUrl" name="templateImageUrl" readonly hidden>
                                     <input id="tmplImgNm" name="templateImageName" readonly hidden>
-                                    <div class="emphItemList_block display-none">
+                                    </div>
+                                    <div class="emphItemList_block display-none" name="emph_sel_box">
                                         <div class="block emphItemList_img">
-                                            <div class="row" style="height: auto;">
+                                            <div class="row flex_row" style="height: auto;">
                                                 <div class="th">이미지</div>
                                                 <div class="td">
                                                     <input type="checkbox" id="img_check">
                                                     <label for="img_check">설정</label>
 
                                                     <div class="itemlist_img_on dis_flex display-none">
-                                                        <div class="template_add_img" onclick="imageListPopUp(1,'img')">
-                                                            click here to upload
+                                                        <div name="newImgBtn"  class="imgBtn">
+                                                            <div class="template_add_img col_img" name="addImgBtn"
+                                                                 onclick="imageListPopUp(1,'img')">
+                                                                click here to upload
+                                                            </div>
+                                                            <p class="color_red">
+                                                                - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
+                                                                - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야
+                                                                합니다.
+                                                            </p>
                                                         </div>
-                                                            <%--                                                        <input type="file" name="templateImageUrl" hidden>--%>
-                                                        <p class="color_red">
-                                                            - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
-                                                            - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.
-                                                        </p>
+                                                        <div class="col_img prv_col_img" name="prevImg"
+                                                             onclick="imageListPopUp(1,'img')">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,7 +275,7 @@
                                                         <input type="text" class="txt_input4 first border" name="title"
                                                                placeholder="타이틀 입력 (최대 30자)">
                                                         <input type="text" class="txt_input4 border" name="description"
-                                                               placeholder="디스크립션 입력 (최대 19자)">
+                                                               placeholder="변수 및 화폐 단위, 숫자, 쉼표, 마침표만 사용 가능 (최대 19자)">
                                                     </div>
 
                                                     <div class="highlight_div highlight_check_on display-none">
@@ -272,14 +286,19 @@
 
                                                     <div class="highlight_div highlight_img_on dis_flex display-none">
                                                         <input id="imgUrl" name="imageUrl" disabled readonly hidden>
-                                                        <div class="template_add_img"
-                                                             onclick="imageListPopUp(1,'img_item')">
-                                                            click here to upload
+                                                        <div name="newItemImgBtn"  class="imgBtn">
+                                                            <div class="template_add_img col_img"
+                                                                 onclick="imageListPopUp(1,'img_item')">
+                                                                click here to upload
+                                                            </div>
+                                                            <p class="color_red">
+                                                                - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
+                                                                - 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.
+                                                            </p>
                                                         </div>
-                                                        <p class="color_red">
-                                                            - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
-                                                            - 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.
-                                                        </p>
+                                                        <div class="col_img prv_col_img" name="prevItemImg"
+                                                             onclick="imageListPopUp(1,'img')">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -393,7 +412,7 @@
                                                 </div>
                                             </div>
                                         </div>--%>
-                                    <div class="block addinfo_block">
+                                    <div class="block addinfo_block" name="sel_box">
                                         <div class="row template_textarea">
                                             <div class="th">부가 정보 <span class="color_red">*</span></div>
                                             <div class="td">
@@ -413,7 +432,7 @@
                                                 </div>
                                             </div>
                                         </div>--%>
-                                    <div class="block block2 addchannel_block">
+                                    <div class="block block2 addchannel_block" >
                                         <div class="row template_textarea2">
                                             <div class="th">채널 추가<br>안내 메시지</div>
                                             <div class="td">
@@ -1229,6 +1248,8 @@
             $('.channel_add_table').removeClass('display-none');
             $('.type_table_no_info').addClass('display-none');
 
+            $('div[name="sel_box"] input[type="text"]').val('');
+            $('div[name="sel_box"] textarea').val('');
             cellNum();
         }
 
@@ -1237,6 +1258,9 @@
             $('.adver_msg_block').css('display', 'none');
             $('.addchannel_block').css('display', 'none');
             $('.channel_add_table').addClass('display-none');
+
+            $('div[name="sel_box"] input[type="text"]').val('');
+            $('div[name="sel_box"] textarea').val('');
 
             let table = document.getElementById('template_btn_table');
 
@@ -1252,6 +1276,8 @@
             $('.channel_add_table').removeClass('display-none');
             $('.type_table_no_info').addClass('display-none');
 
+            $('div[name="sel_box"] input[type="text"]').val('');
+            $('div[name="sel_box"] textarea').val('');
             cellNum();
         }
 
@@ -1260,6 +1286,9 @@
             $('.adver_msg_block').css('display', 'none');
             $('.addchannel_block').css('display', 'none');
             $('.channel_add_table').addClass('display-none');
+
+            $('div[name="sel_box"] input[type="text"]').val('');
+            $('div[name="sel_box"] textarea').val('');
 
             let table = document.getElementById('template_btn_table');
 
@@ -1287,24 +1316,40 @@
             $('.emphtxt_block').addClass('display-none');
             $('.emphImg_block').addClass('display-none');
             $('.emphItemList_block').addClass('display-none');
+
+            emphClear();
         }
 
         function emphFirstOption() {
             $('.emphtxt_block').removeClass('display-none');
             $('.emphImg_block').addClass('display-none');
             $('.emphItemList_block').addClass('display-none');
+
+            emphClear();
         }
 
         function emphSecondOption() {
             $('.emphtxt_block').addClass('display-none');
             $('.emphImg_block').removeClass('display-none');
             $('.emphItemList_block').addClass('display-none');
+
+            emphClear();
         }
 
         function emphThirdOption() {
             $('.emphtxt_block').addClass('display-none');
             $('.emphImg_block').addClass('display-none');
             $('.emphItemList_block').removeClass('display-none');
+
+            emphClear();
+        }
+
+        function emphClear(){
+            $('div[name="emph_sel_box"] input[type="checkbox"]:checked').trigger("click");
+            $('div[name="emph_sel_box"] input[type="text"]').val('');
+            // $('div[name="emph_sel_box"] textarea').val('');
+            $('.prv_col_img').html('').hide();
+            $('.imgBtn').show();
         }
 
         //강조유형 - 아이템리스트 - 이미지
@@ -1429,7 +1474,7 @@
                         $("#kakaoImage").val('');
                         $("input[name='kko_img_cd']").val('');
                         $("input[name='kko_view_img_url']").val('');
-                        $("#js-kakao-img").empty();
+                        $('input[name="prevImg"]').empty();
                     }
                 }
             } else {
@@ -1603,8 +1648,7 @@
     // 알림톡 템플릿 유효성 검사
     function tmplValidate() {
 
-        return true;
-        /*let senderKey = $('#kko_send_to');  //발신 프로필
+        let senderKey = $('#kko_send_to');  //발신 프로필
         let tmplCode = $('input[name="templateCode"]');  //템플릿 코드
         let tmplCate1 = $('.bizContsVal_group .value');  //카테고리그룹
         let tmplCate2 = $('.bizContsVal .value');  //카테고리
@@ -1687,7 +1731,7 @@
         } else if (tmplEmph.text() == "이미지형") {
             console.log("이미지형")
         }
-        return true;*/
+        return true;
     }
 
 
@@ -1750,17 +1794,13 @@
 
     // 템플릿 등록
     function createTmpl() {
-        /*let selLst = $('.select')
-        for (select of selLst) {
-            let value = $(select).find('.value').attr("data");
-            $(select).find("input.selValue").val(value);
-        }
-        console.log(selLst)*/
-        //templateEmphasizeType
         const res = function (response) {
-            // console.log(response)
-            /*let $doc = new DOMParser().parseFromString(response, 'text/html');
-            $('#smsContentsPopup').addClass('active');*/
+            popup.popAlert(response.msg)
+            $('#smsContentsPopup').addClass('active');
+
+            if(response.status == 200){
+                window.location.href = '/cont/atTemplate.mi';
+            }
         }
         let data = $('#form').serializeArray().map(function (x) {
             this[x.name] = x.value;
@@ -1768,11 +1808,10 @@
         }.bind({}))[0];
 
         data.categoryCode = $('.bizContsVal .value').attr("data")
-        console.log($('.bizContsVal [name="categoryCode"]').attr("value"))
 
         // --------- 버튼 정보 ---------
         let buttonLst = [];
-        const butLst = $('#template_btn_table tbody tr:visible');
+        const butLst = $('#template_btn_table tbody .channel_add_table:visible');
         for (let idx = 0; idx < butLst.length; idx++) {
             let button = butLst[idx]
             let obj = new Object();
@@ -1824,14 +1863,14 @@
         //  ------ 바로 연결  end---------
 
 
-
         //  ------ 아이템 하이라이트  ---------
-        //  imageUrl => 이미지 추가
+        //  itemHigh => 이미지 추가
         let itemHigh = new Object();
         const highLst = $('.highlight_div input[type="text"]:visible');
         for (high of highLst) {
             itemHigh[$(high).attr("name")] = $(high).val();  // 이미지 추가
         }
+        itemHigh.imageUrl = $('#imageUrl').val();
         data.templateItemHighlight = itemHigh;
         //  ------ 아이템 하이라이트 end ---------
 
@@ -1855,7 +1894,6 @@
         let itemInfo = new Object();
         const itemInfoLst = $('.itemInfo_div input[type="text"]:visible');
         for (info of itemInfoLst) {
-            console.log(info)
             itemInfo[$(info).attr("data_name")] = $(info).val();  // 이미지 추가
         }
         tmplItem.summary = itemInfo;
@@ -1863,9 +1901,7 @@
         data.templateItem = tmplItem;
         //  ------ 아이템 요약정보 end ---------
 
-        console.log(data)
-
-        <%--com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')--%>
+        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
 
     }
 
@@ -2132,14 +2168,12 @@
         let imgType = $("#imgType").val();  // 이미지 파일 타입
         let imgLength = $('input[name="contentsImg"]:checked').length;
         let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
-        let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
-        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val(); // 이미지 파일 url
+        let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgOrgNm"]').val();    // 이미지 파일 본명
+        let kkoImgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val(); // 이미지 파일 url
+        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 아이템 이미지 파일 url
 
         if (imgLength > 0) {
-            /*let popParents = $('#form').parents('.layer_pop').attr('data');
-            $('#' + popParents).val(imgUrl);
-            $('#form').parents('.layer_pop').removeClass('active');*/
-            imageCreate(imgType, imgUrl, ImgNm, imgCheck);
+            imageCreate(imgType, kkoImgUrl, imgUrl, ImgNm, imgCheck);
             $('#imagePop').siblings('.pop_error_txt').html('');
             $('.imagePopup').removeClass('active');
         } else {
@@ -2147,30 +2181,19 @@
         }
     }
 
-    function imageCreate(type, imageUrl, ImgNm, imgCheck) {
-        let imageType = imageUrl;
-
-        console.log("*-------*-*-*-*-*")
-        console.log(type)
-        console.log(imageUrl)
-        console.log(ImgNm)
-        console.log(imgCheck)
-
-        if (imageType != '') {
+    function imageCreate(type, kkoImgUrl, imageUrl, ImgNm, imgCheck) {
+        if (imageUrl != '' || kkoImgUrl != '') {
             if (type == 'img') {
-                $("#tmplImgUrl").val(imageUrl);
+                $("#tmplImgUrl").val(kkoImgUrl);
                 $("#tmplImgNm").val(ImgNm);
-                // $('input[name="kko_img_cd"]').val(imgCheck);
+                $('#tmplImgCd').val(imgCheck);
                 // $('#kakaoImage').parent('.td').removeClass('outline');
-                // $('#js-kakao-img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
+                $('div[name="newImgBtn"]').hide();
+                $('div[name="prevImg"]').show().html('<a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
             } else if (type == "img_item") {
                 $("#imgUrl").val(imageUrl);
-            }
-        } else {
-            if (type == 'kakaoImage') {
-                $('#kakao_ft').find('.sms_img').children().remove();
-            } else if (type == 'smsImage') {
-                $('#sms').find('.sms_img').children().remove();
+                $('div[name="newItemImgBtn"]').hide();
+                $('div[name="prevItemImg"]').show().html('<a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" style="height: 175px; width: 175px;" />' + '</a>');
             }
         }
     }

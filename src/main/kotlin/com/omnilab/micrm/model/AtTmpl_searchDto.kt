@@ -13,5 +13,7 @@ class AtTmpl_searchDto : Tblmi_kko_at_tmplDto() {
     var reg_dt_range: String? = null
     var ex_tmpl_nm: String? = null
 
+    var chan_id: String? = null
+
 
 }

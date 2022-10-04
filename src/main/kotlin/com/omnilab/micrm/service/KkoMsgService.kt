@@ -11,7 +11,7 @@ interface KkoMsgService {
     fun getTmplSearchLst(): Map<String, Any>
     fun tmplCreateLst(): Map<String, Any>
     fun getKkoAtTmplDto(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto?
-    fun createTmpl(dto: Kko_at_tmplDto): Any?
+    fun createTmpl(dto: Kko_at_tmplDto, name: String): Any?
 
 
 }

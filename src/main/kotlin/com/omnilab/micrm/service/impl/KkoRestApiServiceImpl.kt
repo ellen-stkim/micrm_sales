@@ -44,7 +44,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
 
-    override fun createAtTmpl(dto: Kko_at_tmplDto) {
+    override fun createAtTmpl(dto: Kko_at_tmplDto): MutableMap<String, Any> {
         val token = getToken(url);
 
         //        header 설정
@@ -54,17 +54,12 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("version", version)
         headers.set("accept", MediaType.ALL_VALUE)
 
-        //  dto로 받아와서 확인
-
         var urlString = "$url/$version/resell/template/create/${dto.send_key}"
         val gson = GsonBuilder().create()
 
-
         val re_map: MutableMap<String, Any> = restExchange(urlString!!, HttpMethod.POST, HttpEntity(gson.toJson(dto), headers))
 
-
-        logger.error("{}",re_map);
-
+        return re_map
     }
 
     override fun uploadTmplImg(file: MultipartFile): MutableMap<String, Any> {

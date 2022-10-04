@@ -9,5 +9,6 @@ interface KkoAtTmplDao {
     fun getTmplSearchLst(searchDto: Tblmi_comm_cdDto): List<Tblmi_comm_cdDto>
     fun selectTotalAtTmplCnt(dto: AtTmpl_searchDto): Int
     fun selKkoAtTmpl(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto?
+    fun insNewTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int
 
 }

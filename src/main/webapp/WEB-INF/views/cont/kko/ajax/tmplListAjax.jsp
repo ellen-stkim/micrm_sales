@@ -30,12 +30,14 @@
                         <li>검수 승인</li>
                     </ul>
                 </div>
-                <div class="row_top cf">
-                    <!-- 컨텐츠 type -->
-                    <div class="contents_type">광고</div>
+                <div class="row_top cf sms_head">
                     <!-- 제목 -->
                     <%--<h4>${content.cont_sub}</h4>--%>
                     <h4>${tmpl.tmpl_nm}</h4>
+                    <div class="remove_info">
+                            <input type="button" value="Y" class="en_font useState" onclick="updateUseState(${tmpl.seq}, this);">
+                        <a href="/cont/tmplDetail/${tmpl.seq}.mi">수정</a>
+                    </div>
                    <%-- <c:choose>
                         <c:when test="${content.msg_tp eq 'DMCH211' || content.msg_tp eq 'DMCH212'}">
                             <h4>${content.slideTitle[0]}</h4>
