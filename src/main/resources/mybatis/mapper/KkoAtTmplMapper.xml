@@ -5,6 +5,50 @@
 <mapper namespace="mybatis.mapper.KkoAtTmplMapper">
     <cache/>
 
+    <select id="selTmplBytmplDto" resultType="AtTmpl_viewDto" parameterType="Tblmi_kko_at_tmplDto">
+        select  a.*,
+               CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
+               c.img_nm,
+               c.img_org_nm,
+               c.img_url,
+               c.kko_img_url
+        from tblmi_kko_at_tmpl AS a
+                INNER JOIN tblmi_set_lst AS b
+                    ON a.SEND_KEY = b.LIST_VAL
+                        AND b.use_yn ='Y'
+                LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
+        where a.seq = #{seq}
+    </select>
+
+    <select id="selTmplViewByTmplDto" resultType="AtTmpl_viewDto" parameterType="Tblmi_kko_at_tmplDto">
+        select  a.*,
+                CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
+                c.img_nm,
+                c.img_org_nm,
+                c.img_url,
+                c.kko_img_url,
+                e.CD_DESC AS cate_cd_desc,
+                e.CD_SN AS cate_cd_sn,
+                d.CD_VAL AS cate_sub_cd_val,
+                d.CD_DESC AS cate_sub_cd_desc,
+                d.CD_SN AS cate_sub_cd_sn,
+                f.cd_val  AS msg_tp,
+                f.cd_desc  AS msg_tp_nm,
+                g.cd_val  AS emp_tp,
+                g.cd_desc AS emp_tp_nm
+        from tblmi_kko_at_tmpl AS a
+                 INNER JOIN tblmi_set_lst AS b
+                            ON a.SEND_KEY = b.LIST_VAL
+                                AND b.use_yn ='Y'
+                 LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
+                 LEFT JOIN tblmi_comm_cd AS d ON d.CD_ID = 'CATE_SUB' AND d.cd_val = a.CATE_CD
+                 LEFT JOIN tblmi_comm_cd AS e ON e.CD_ID = 'CATE' AND e.cd_sn =  d.par_nm
+                 LEFT JOIN tblmi_comm_cd AS f ON f.CD_ID = 'MSG_TP' AND a.tmpl_msg_tp =  f.cd_val
+                 LEFT JOIN tblmi_comm_cd AS g ON g.CD_ID = 'EMP_TP' AND a.TMPL_EMPSIZE_TP =  g.cd_val
+        where a.seq = #{seq}
+    </select>
+<!--    그룹아이디 넣어주기-->
+
     <select id="getTmplSearchLst" resultType="Tblmi_comm_cdDto" parameterType="Tblmi_comm_cdDto">
         SELECT * FROM tblmi_comm_cd
         WHERE GRP_ID = #{grp_id}
@@ -60,11 +104,50 @@
         </where>
     </select>
 
-    <select id="selAtTmplLst" resultType="Tblmi_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
-        SELECT * FROM tblmi_kko_at_tmpl AS a
-        INNER JOIN tblmi_set_lst AS b
-        ON a.SEND_KEY = b.LIST_VAL
-        AND b.use_yn ='Y'
+    <select id="selAtTmplLst" resultType="HashMap" parameterType="AtTmpl_searchDto">
+        SELECT a.seq AS seq,
+                a.tmpl_cd AS tmpl_cd,
+                a.send_key AS send_key,
+                a.TMPL_NM AS tmpl_nm,
+                a.tmpl_cont AS tmpl_cont,
+                a.secur_flag AS secur_flag,
+                a.tmpl_status AS tmpl_status,
+                a.tmpl_msg_tp AS tmpl_msg_tp,
+                a.tmpl_ext AS tmpl_ext,
+                a.tmpl_ad AS tmpl_ad,
+                a.tmpl_tit AS tmpl_tit,
+                a.tmpl_subtit AS tmpl_subtit,
+                a.tmpl_empsize_tp AS tmpl_empsize_tp,
+                a.cate_cd AS cate_cd,
+                a.tmpl_header AS tmpl_header,
+                a.button_json AS button_json,
+                a.quick_repl_json AS  quick_repl_json,
+                a.item_highlight_json AS  item_heighlight_json,
+                a.use_yn AS use_yn,
+                a.etc_1 AS etc_1,
+                a.etc_2 AS etc_2,
+                a.etc_3 AS etc_3,
+                a.etc_4 AS etc_4,
+                a.etc_5 AS etc_5,
+                a.etc_6 AS etc_6,
+                a.etc_7 AS etc_7,
+                a.etc_8 AS etc_8,
+                a.etc_9 AS etc_9,
+                a.etc_10 AS etc_10,
+                a.reg_id AS reg_id,
+                a.reg_dt AS reg_dt,
+                a.upd_id AS upd_id,
+                a.upd_dt AS upd_dt,
+                CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
+                c.img_nm,
+                c.img_org_nm,
+                c.img_url,
+                c.kko_img_url
+            FROM tblmi_kko_at_tmpl AS a
+                INNER JOIN tblmi_set_lst AS b
+                    ON a.SEND_KEY = b.LIST_VAL
+                        AND b.use_yn ='Y'
+                LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
                 and a.send_key = #{send_key}
@@ -135,7 +218,7 @@
 
     <insert id="insNewTmplDto" parameterType="Tblmi_kko_at_tmplDto">
         INSERT INTO `tblmi_kko_at_tmpl`
-        (`SEND_KEY`, `TMPL_CD`, `TMPL_NM`, `TMPL_CONT`, `TMPL_IMG_NM`, `TMPL_IMG_URL`, `SECUR_FLAG`,
+        (`SEND_KEY`, `TMPL_CD`, `TMPL_NM`, `TMPL_CONT`, `IMG_SEQ`, `SECUR_FLAG`,
          `TMPL_STATUS`, `KEP_STATUS`, `TMPL_MSG_TP`, `TMPL_EXT`, `TMPL_AD`, `TMPL_TIT`, `TMPL_SUBTIT`,
          `TMPL_EMPSIZE_TP`, `CATE_CD`, `TMPL_HEADER`, `BUTTON_JSON`, `QUICK_REPL_JSON`, `ITEM_HIGHLIGHT_JSON`,
          `ITEM_JSON`, `USE_YN`, `ETC_1`, `ETC_2`, `ETC_3`, `ETC_4`, `ETC_5`, `ETC_6`, `ETC_7`, `ETC_8`, `ETC_9`,
@@ -144,8 +227,7 @@
                , #{tmpl_cd}
                , #{tmpl_nm}
                , #{tmpl_cont}
-               , #{tmpl_img_nm}
-               , #{tmpl_img_url}
+               , #{img_seq}
                , #{secur_flag}
                , #{tmpl_status}
                , #{kep_status}
@@ -175,6 +257,7 @@
                , #{reg_id}
                , now())
     </insert>
+
 </mapper>
 
 

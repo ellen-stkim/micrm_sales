@@ -62,6 +62,24 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return re_map
     }
 
+    override fun updateAtTmpl(newDto: Kko_at_tmplDto): MutableMap<String, Any> {
+        val token = getToken(url);
+
+        //        header 설정
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        var urlString = "$url/$version/resell/template/modify/${newDto.send_key}"
+        val gson = GsonBuilder().create()
+
+        val re_map: MutableMap<String, Any> = restExchange(urlString!!, HttpMethod.PUT, HttpEntity(gson.toJson(newDto), headers))
+
+        return re_map
+    }
+
     override fun uploadTmplImg(file: MultipartFile): MutableMap<String, Any> {
         val token = getToken(url);
         //        header 설정
@@ -103,6 +121,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
         return re_map
     }
+
 
     private fun getToken(thisUrl:String): String {
 

@@ -11,8 +11,7 @@ open class Tblmi_kko_at_tmplDto {
     var tmpl_cd: String? = null
     var tmpl_nm: String? = null
     var tmpl_cont: String? = null
-    var tmpl_img_nm: String? = null
-    var tmpl_img_url: String? = null
+    var img_seq: String? = null
     var secur_flag: String? = null
     var tmpl_status: String? = null
     var kep_status: String? = null
@@ -53,6 +52,12 @@ open class Tblmi_kko_at_tmplDto {
     constructor(send_key: String?, tmpl_cd: String?) {
         this.send_key = send_key
         this.tmpl_cd = tmpl_cd
+    }
+
+    constructor(seq:Int?,upd_id:String?,use_yn:String?){
+        this.seq = seq
+        this.upd_id = upd_id
+        this.use_yn = use_yn
     }
 
 

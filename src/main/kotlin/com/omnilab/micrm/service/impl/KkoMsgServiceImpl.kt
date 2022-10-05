@@ -3,6 +3,7 @@ package com.omnilab.micrm.service.impl
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.AtTmpl_searchDto
+import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
@@ -110,7 +111,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         return kkoAtTmplDao.selKkoAtTmpl(dto)
     }
 
-    override fun createTmpl(dto: Kko_at_tmplDto, regId: String): Any? {
+    override fun createTmpl(dto: Kko_at_tmplDto, regId: String): Map<String, Any> {
 
         val map :MutableMap<String,Any> = mutableMapOf()
         // 카카오 api 호풀
@@ -153,6 +154,48 @@ class KkoMsgServiceImpl : KkoMsgService {
         return map
     }
 
+    override fun selTmplDataBySeq(seq: Int): AtTmpl_viewDto {
+        val tmplDto :Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(seq,null,"Y")
+        return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
+    }
+
+    override fun updateTmpl(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Map<String, Any> {
+        val map :MutableMap<String,Any> = mutableMapOf()
+
+        val newDto: Kko_at_tmplDto = getNewAtTmpl(dto,tmplDto)
+
+        val result:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(newDto)
+        logger.error("{}",newDto)
+        logger.error("{}",result)
+        //at_tmplDto 변경
+
+        // api 업데이트
+        // db 업데이트
+
+        return map
+    }
+
+    private fun getNewAtTmpl(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Kko_at_tmplDto {
+        val curDto:AtTmpl_viewDto = kkoAtTmplDao.selTmplBytmplDto(tmplDto)
+        dto.templateName =  curDto.tmpl_nm
+        dto.templateCode =  curDto.tmpl_cd
+        dto.templateContent =  curDto.tmpl_cont
+        dto.securityFlag =  curDto.secur_flag
+        dto.templateStatus =  curDto.tmpl_status
+        dto.kepStatus =  curDto.kep_status
+        dto.templateMessageType =  curDto.tmpl_msg_tp
+        dto.templateExtra =  curDto.tmpl_ext
+        dto.templateAd =  curDto.tmpl_ad
+
+        dto.templateTitle =  curDto.tmpl_tit
+        dto.templateSubtitle =  curDto.tmpl_subtit
+        dto.templateEmphasizeType =  curDto.tmpl_empsize_tp
+        dto.categoryCode =  curDto.cate_cd
+        dto.templateHeader =  curDto.tmpl_header
+
+            return dto
+    }
+
     private fun getTmplDtoByKkoDto(dto: Kko_at_tmplDto, regId: String): Tblmi_kko_at_tmplDto {
         val gson = GsonBuilder().create()
         val tmplDto = Tblmi_kko_at_tmplDto()
@@ -160,8 +203,8 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.tmpl_cd = dto.templateCode
         tmplDto.send_key = dto.send_key
         tmplDto.tmpl_cont = dto.templateContent
-        tmplDto.tmpl_img_nm = dto.templateImageName
-        tmplDto.tmpl_img_url = dto.templateImageUrl
+        /*tmplDto.tmpl_img_nm = dto.templateImageName   //이미지 시퀀스로 변경
+        tmplDto.tmpl_img_url = dto.templateImageUrl*/
         tmplDto.secur_flag = dto.securityFlag
         tmplDto.tmpl_status = dto.templateStatus
         tmplDto.kep_status = "N"

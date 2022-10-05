@@ -1,6 +1,7 @@
 package com.omnilab.micrm.service
 
 import com.omnilab.micrm.model.AtTmpl_searchDto
+import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.Contents_searchDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
@@ -11,7 +12,9 @@ interface KkoMsgService {
     fun getTmplSearchLst(): Map<String, Any>
     fun tmplCreateLst(): Map<String, Any>
     fun getKkoAtTmplDto(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto?
-    fun createTmpl(dto: Kko_at_tmplDto, name: String): Any?
+    fun createTmpl(dto: Kko_at_tmplDto, name: String): Map<String, Any>
+    fun selTmplDataBySeq(seq: Int): AtTmpl_viewDto
+    fun updateTmpl(dto: Kko_at_tmplDto, name: Tblmi_kko_at_tmplDto): Map<String, Any>
 
 
 }

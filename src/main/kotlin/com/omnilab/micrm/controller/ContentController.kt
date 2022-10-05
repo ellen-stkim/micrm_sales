@@ -1084,7 +1084,6 @@ class ContentController  {
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
         val view = ModelAndView("cont/kko/ajax/tmplListAjax")
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
-
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
@@ -1221,39 +1220,61 @@ class ContentController  {
 
     /**
      * @Method Name  : updateMoblieContent
-     * @Since    : 2021. 03. 07.
-     * @author   : Grayson
+     * @Since    : 2022. 10. 05.
+     * @author   : Belisa
      * @param    : seq: Int
      * @return   : ModelAndView
      * @excetion :
      * @see      :
      * @version  : 0.01
-     * @Method Decription : 모바일 컨텐츠 상세 페이지
-     * @title : 모바일 컨텐츠 상세 페이지
+     * @Method Decription : 템플릿 수정 페이지
+     * @title : 템플릿 수정 페이지
      */
 
-    @GetMapping("/tmplDetail/{seq}.mi")
-    fun detailTmplContent(@PathVariable("seq") seq : Int) : ModelAndView {
+    @GetMapping("/kko/tmplDetail.mi")
+    fun detailTmplContent(@RequestParam("seq") seq : Int) : ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
-        val view = ModelAndView("/cont/detailTmpl")
-        val map = sysSettingService.getDBValue()
-       /* val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = mobileContentService.isCheckSender()
+        val view = ModelAndView("cont/kko/detailTmpl")
+        val map = kkoMsgService.tmplCreateLst();
 
-        view.addObject("list" , listMap["list"])
-        view.addObject("column",map);
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
+        view.addObject("dto", kkoMsgService.selTmplDataBySeq(seq))
+        view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+        view.addObject("btnLinkLst", map["btnLinkLst"])
+        view.addObject("btnLst", map["btnLst"])
 
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
-        view.addObject("filePath", uploadPrefix?.cd_val)
-*/
+        view.addObject("column",sysSettingService.getDBValue())
+
         return view
+    }
+
+
+    /**
+     * @Method Name  : tmplUpdateService
+     * @Since    : 2022. 10. 05.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 수정
+     * @title : 알림톡 템플릿 수정
+     */
+    @ResponseBody
+    @PostMapping("/kko/tmplUpate.service")
+    fun tmplUpdateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                          , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int, principal: Principal): Any? {
+        val tmplDto :Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(seq,principal.name,"Y")
+        val map = kkoMsgService.updateTmpl(dto,tmplDto)
+        logger.error("tmplDto {}",seq)
+        return map
     }
 
 }

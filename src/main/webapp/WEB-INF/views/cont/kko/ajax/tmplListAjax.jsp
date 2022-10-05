@@ -15,7 +15,7 @@
     <c:when test="${not empty list}">
         <c:forEach var="tmpl" items="${list}">
             <c:if test="${tmpl.use_yn eq 'Y'}">
-                <div class="column template_div" style="height: 490px;" >
+                <div class="column template_div" style="height: 630px;" >
             </c:if>
             <c:if test="${tmpl.use_yn eq 'N'}">
                 <div class="column template_div off" style="height: 490px;">
@@ -33,10 +33,10 @@
                 <div class="row_top cf sms_head">
                     <!-- 제목 -->
                     <%--<h4>${content.cont_sub}</h4>--%>
-                    <h4>${tmpl.tmpl_nm}</h4>
+                    <h4 style="width: 65%;">${tmpl.tmpl_nm}</h4>
                     <div class="remove_info">
                             <input type="button" value="Y" class="en_font useState" onclick="updateUseState(${tmpl.seq}, this);">
-                        <a href="/cont/tmplDetail/${tmpl.seq}.mi">수정</a>
+                        <a href="/cont/kko/tmplDetail.mi?seq=${tmpl.seq}">수정</a>
                     </div>
                    <%-- <c:choose>
                         <c:when test="${content.msg_tp eq 'DMCH211' || content.msg_tp eq 'DMCH212'}">
@@ -48,7 +48,7 @@
                     </c:choose>--%>
                 </div>
                     <!-- 카카오톡  -->
-                    <c:if test="${not empty tmpl.tmpl_img_url}">
+                    <c:if test="${not empty tmpl.kko_image_url}">
                         <div class="row_body template_body">
                             <div class="round_box">
                                 <div class="round_box head">
@@ -64,7 +64,7 @@
                             </div>
                     </div>
                     </c:if>
-                    <c:if test="${empty tmpl.tmpl_img_url}">
+                    <c:if test="${empty tmpl.kko_image_url}">
                         <div class="row_body template_body">
                             <div class="round_box">
                                  <div class="round_box head">

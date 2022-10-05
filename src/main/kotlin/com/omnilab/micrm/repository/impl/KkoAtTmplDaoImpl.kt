@@ -1,8 +1,8 @@
 package com.omnilab.micrm.repository.impl
 
 import com.omnilab.micrm.model.AtTmpl_searchDto
+import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
@@ -17,7 +17,7 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun selectAtTmplLst(dto: AtTmpl_searchDto): List<Tblmi_kko_at_tmplDto> {
+    override fun selectAtTmplLst(dto: AtTmpl_searchDto): List<MutableMap<String,String>> {
         return sqlSession.selectList("selAtTmplLst",dto)
     }
 
@@ -35,6 +35,14 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
 
     override fun insNewTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int {
         return sqlSession.insert("insNewTmplDto",tmplDto)
+    }
+
+    override fun selTmplViewByTmplDto(seq: Tblmi_kko_at_tmplDto): AtTmpl_viewDto {
+        return sqlSession.selectOne("selTmplViewByTmplDto",seq)
+    }
+
+    override fun selTmplBytmplDto(tmplDto: Tblmi_kko_at_tmplDto):AtTmpl_viewDto {
+        return sqlSession.selectOne("selTmplBytmplDto",tmplDto)
     }
 
 

@@ -208,8 +208,7 @@
                                                         - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                         - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</p>
                                                 </div>
-                                                <div class="col_img prv_col_img" name="prevImg"
-                                                     onclick="imageListPopUp(1,'img')">
+                                                <div class="col_img prv_col_img" name="prevImg">
                                                 </div>
                                             </div>
                                         </div>
@@ -239,8 +238,7 @@
                                                                 합니다.
                                                             </p>
                                                         </div>
-                                                        <div class="col_img prv_col_img" name="prevImg"
-                                                             onclick="imageListPopUp(1,'img')">
+                                                        <div class="col_img prv_col_img" name="prevImg">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -296,8 +294,7 @@
                                                                 - 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.
                                                             </p>
                                                         </div>
-                                                        <div class="col_img prv_col_img" name="prevItemImg"
-                                                             onclick="imageListPopUp(1,'img')">
+                                                        <div class="col_img prv_col_img" name="prevItemImg">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -403,16 +400,7 @@
                                         </div>
 
                                     </div>
-                                        <%--<div class="block">
-                                            <div class="row template_textarea">
-                                                <div class="th">템플릿내용 <span class="color_red">*</span></div>
-                                                <div class="td">
-                                                    <textarea rows="8" name="templateContent"
-                                                              placeholder="텍스트 입력 (최대 1000자)"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>--%>
-                                    <div class="block addinfo_block" name="sel_box">
+                                    <div class="block addinfo_block display-none" name="sel_box">
                                         <div class="row template_textarea">
                                             <div class="th">부가 정보 <span class="color_red">*</span></div>
                                             <div class="td">
@@ -421,18 +409,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                        <%--<div class="block adver_msg_block">
-                                            <div class="row template_textarea">
-                                                <div class="th">광고성 메시지 <span class="color_red">*</span><br>(수신 동의 요청 또는 간단
-                                                    광고 문구)
-                                                </div>
-                                                <div class="td">
-                                                    <textarea rows="8" name="tmpl_ad"
-                                                              placeholder="텍스트 입력 (최대 500자)"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>--%>
-                                    <div class="block block2 addchannel_block" >
+                                    <div class="block block2 addchannel_block display-none" >
                                         <div class="row template_textarea2">
                                             <div class="th">채널 추가<br>안내 메시지</div>
                                             <div class="td">
@@ -441,7 +418,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block block3 addchannel_block">
+                                    <div class="block block3 addchannel_block display-none">
                                         <div class="row row2 template_textarea3">
                                             <div class="th"></div>
                                             <div class="td">
@@ -1242,9 +1219,9 @@
         }
 
         function allBlock() {
-            $('.addinfo_block').css('display', 'block');
-            $('.adver_msg_block').css('display', 'block');
-            $('.addchannel_block').css('display', 'block');
+            $('.addinfo_block').removeClass('display-none');
+            $('.adver_msg_block').removeClass('display-none');
+            $('.addchannel_block').removeClass('display-none');
             $('.channel_add_table').removeClass('display-none');
             $('.type_table_no_info').addClass('display-none');
 
@@ -1254,9 +1231,9 @@
         }
 
         function BlockNone() {
-            $('.addinfo_block').css('display', 'block');
-            $('.adver_msg_block').css('display', 'none');
-            $('.addchannel_block').css('display', 'none');
+            $('.addinfo_block').removeClass('display-none');
+            $('.adver_msg_block').addClass('display-none');
+            $('.addchannel_block').addClass('display-none');
             $('.channel_add_table').addClass('display-none');
 
             $('div[name="sel_box"] input[type="text"]').val('');
@@ -1270,9 +1247,9 @@
         }
 
         function NoneBlock() {
-            $('.addinfo_block').css('display', 'none');
-            $('.adver_msg_block').css('display', 'none');
-            $('.addchannel_block').css('display', 'block');
+            $('.addinfo_block').addClass('display-none');
+            $('.adver_msg_block').addClass('display-none');
+            $('.addchannel_block').removeClass('display-none');
             $('.channel_add_table').removeClass('display-none');
             $('.type_table_no_info').addClass('display-none');
 
@@ -1282,8 +1259,8 @@
         }
 
         function allNone() {
-            $('.addinfo_block').css('display', 'none');
-            $('.adver_msg_block').css('display', 'none');
+            $('.addinfo_block').addClass('display-none');
+            $('.adver_msg_block').addClass('display-none');
             $('.addchannel_block').css('display', 'none');
             $('.channel_add_table').addClass('display-none');
 
@@ -1408,79 +1385,6 @@
         getDBValue();
         //load 시 byte 계산
 
-
-        //카카오 링크 버튼 생성 event
-        $('.kakaoLinkBtn').on('click', function () {
-            let btnState = $(this).val();
-            let link = $('.kakao_btn_link');
-            let name = $('.kakao_btn_name');
-            let btnLink = link.val();
-            let btnName = name.val();
-
-            if (btnState == '생성') {
-                if (btnName != '') {
-                    if (btnLink != '') {
-                        if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
-                            //name.attr('disabled', true);
-                            //link.attr('disabled', true);
-                            name.attr('readonly', true);
-                            link.attr('readonly', true);
-                            $(this).val('삭제');
-                        } else {
-                            popup.popAlert('정확한 링크 URL을 입력해주세요.');
-                            return false;
-                        }
-                    } else {
-                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
-                        return false;
-                    }
-                } else {
-                    popup.popAlert('메시지에 노출될 링크 버튼의 이름을 입력해주세요!');
-                    return false;
-                }
-            } else {
-                $(this).val('생성');
-                $(this).parents('#kakao').find('.kakao_link').remove();
-                link.val('');
-                name.val('');
-                //name.attr('disabled', false);
-                //link.attr('disabled', false);
-                name.attr('readonly', false);
-                link.attr('readonly', false);
-            }
-        });
-
-
-        // MMS, 카카오 이미지 삭제
-        $('.delete_img').on('click', function () {
-            let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
-            let imgcount = imgElement.length;
-            let imgUrl = $(this).next('.txt_input').val();
-            let data = $(this).attr('data');
-
-            if (imgcount > 0 || imgUrl != '') {
-                if (data == "mms") {
-                    // 문자 : 이미지 X버튼 누르면 초기화
-                    $("input[name='mds_img_cd']").val('');
-                    $("#smsImage").val('');
-                    if ($("input[name='mms_imgurl']") != '') {
-                        $("input[name='mms_imgurl']").val('')
-                        $("#js-sms-img").empty();
-                    }
-                } else if (data == 'kakao') {
-                    if ($('input[name="kko_img_cd"]').val() != '') {
-                        // 카카오 : 이미지 X버튼 누르면 초기화
-                        $("#kakaoImage").val('');
-                        $("input[name='kko_img_cd']").val('');
-                        $("input[name='kko_view_img_url']").val('');
-                        $('input[name="prevImg"]').empty();
-                    }
-                }
-            } else {
-                return false;
-            }
-        });
 
         // 템플릿 코드 자동 생성
         $('.tmplCodeBtn').on('click', function () {
@@ -2189,14 +2093,32 @@
                 $('#tmplImgCd').val(imgCheck);
                 // $('#kakaoImage').parent('.td').removeClass('outline');
                 $('div[name="newImgBtn"]').hide();
-                $('div[name="prevImg"]').show().html('<a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
+                $('div[name="prevImg"]').show().html('<div class="delete_img" data="img" style="right: 10px;"><img src="/image/btn_delete1.png" alt="삭제"> </div><a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
             } else if (type == "img_item") {
                 $("#imgUrl").val(imageUrl);
                 $('div[name="newItemImgBtn"]').hide();
-                $('div[name="prevItemImg"]').show().html('<a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" style="height: 175px; width: 175px;" />' + '</a>');
+                $('div[name="prevItemImg"]').show().html('<div class="delete_img" data="img_item" style="right: 20px; top: 110px;"><img src="/image/btn_delete1.png" alt="삭제"> </div> <a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" style="height: 175px; width: 175px;" />' + '</a>');
             }
         }
     }
+
+
+    // 이미지 삭제
+    $(document).on('click','.delete_img', function () {
+        let data = $(this).attr('data');
+
+        if (data == "img") {
+            $("#tmplImgUrl").val('');
+            $("#tmplImgNm").val('');
+            $('#tmplImgCd').val('');
+            $('div[name="newImgBtn"]').show();
+            $('div[name="prevImg"]').hide().html('');
+        } else if (data == 'img_item') {
+            $("#imgUrl").val('');
+            $('div[name="newItemImgBtn"]').show();
+            $('div[name="prevItemImg"]').hide().html('');
+        }
+    });
 
 </script>
 
