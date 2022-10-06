@@ -413,7 +413,7 @@ class SalesforceController {
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
             }else{
-                if(dto.ch_tp != "IMGTP01"){
+                if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
                     val fileName = map["file_nm"]
                     val image : BufferedImage = ImageIO.read(file.inputStream)
                     val imageWidth: Int = image.width
@@ -451,16 +451,24 @@ class SalesforceController {
                         image.flush()
                     }
                     var resultMap: MutableMap<String, Any>? = null
-                    if(dto.ch_tp == "IMGTP09" || dto.ch_tp == "IMGTP10"){    // 카카오 알림톡 이미지
+                    if(dto.ch_tp == "IMGTP09" ){    // 카카오 알림톡 이미지
                         resultMap = kkoRestApiService.uploadTmplImg(file)
-                    }
-                    if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                    } else if (dto.ch_tp == "IMGTP10"){
+                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
+                    } else if (dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
                         resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
                     }
 
                     if(!CommonUtils.isEmptyObject(resultMap)){
                         if(resultMap!!["result"] as Boolean){
                             val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            if(data["code"] != "API_200" ){
+                                map["uploaded"] = 0
+                                map["message"] = "파일 저장에 실패하였습니다."
+                                logger.info("File DB insert fail")
+                                return map
+                            }
+
                             dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
                         }else{
                             map["uploaded"] = 0

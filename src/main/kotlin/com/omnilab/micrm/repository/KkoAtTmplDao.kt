@@ -13,5 +13,6 @@ interface KkoAtTmplDao {
     fun insNewTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int
     fun selTmplViewByTmplDto(seq: Tblmi_kko_at_tmplDto): AtTmpl_viewDto
     fun selTmplBytmplDto(tmplDto: Tblmi_kko_at_tmplDto): AtTmpl_viewDto
+    fun updTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int
 
 }

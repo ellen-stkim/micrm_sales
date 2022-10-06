@@ -712,8 +712,9 @@ class ContentController  {
                     var resultMap: MutableMap<String, Any>? = null
                     if(dto.ch_tp == "IMGTP09"){    // 카카오 알림톡 이미지
                         resultMap = kkoRestApiService.uploadTmplImg(file)
-                    }
-                    if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                    }else if(dto.ch_tp == "IMGTP10"){
+                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
+                    }else if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
                         resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
                     }
 
@@ -1128,6 +1129,12 @@ class ContentController  {
 
         view.addObject("column",sysSettingService.getDBValue())
 
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
         return view
     }
 
@@ -1147,8 +1154,12 @@ class ContentController  {
      */
     @ResponseBody
     @PostMapping("/kko/tmplCreate.service")
-    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestBody dto : Kko_at_tmplDto ,principal: Principal): Any? {
-        val map = kkoMsgService.createTmpl(dto,principal.name)
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,
+                          @RequestBody dto : Kko_at_tmplDto, @RequestParam(value="img_seq", required = false) img_seq : String,
+                          @RequestParam(value="item_img_seq", required = false) item_img_seq :String, principal: Principal): Any? {
+        val tmplDto : Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(img_seq.toIntOrNull(),item_img_seq.toIntOrNull())
+        tmplDto.reg_id = principal.name
+        val map = kkoMsgService.createTmpl(dto,tmplDto)
         return map
     }
 
@@ -1183,6 +1194,43 @@ class ContentController  {
 
         map.put("status" , HttpServletResponse.SC_OK)
         map.put("msg" , "사용가능한 템플릿명 입니다.")
+
+        return map
+    }
+
+    /**
+     * @Method Name  : isCheckUpdTmplNm
+     * @Since    : 2022. 10. 06.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 체크
+     * @title : 알림톡 탬플릿명 체크
+     */
+    @ResponseBody
+    @PostMapping("/kko/isCheckUpdTmplNm.ajax")
+    fun isCheckUpdTmplNm( req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute curdto: AtTmpl_searchDto, ): MutableMap<String, Any> {
+
+        val map: MutableMap<String, Any> = mutableMapOf()
+        curdto.use_yn = "Y"
+
+        val dto: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(curdto)
+
+        if (!CommonUtils.isEmptyObject(dto)) {
+            if(!curdto.seq!!.equals(dto!!.seq)){
+                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
+                map.put("msg", "이미 사용중인 템플릿명 입니다.")
+                return map
+            }
+        }
+
+        map.put("status", HttpServletResponse.SC_OK)
+        map.put("msg", "사용가능한 템플릿명 입니다.")
 
         return map
     }
@@ -1249,6 +1297,12 @@ class ContentController  {
 
         view.addObject("column",sysSettingService.getDBValue())
 
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
         return view
     }
 
@@ -1273,7 +1327,6 @@ class ContentController  {
                           , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int, principal: Principal): Any? {
         val tmplDto :Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(seq,principal.name,"Y")
         val map = kkoMsgService.updateTmpl(dto,tmplDto)
-        logger.error("tmplDto {}",seq)
         return map
     }
 

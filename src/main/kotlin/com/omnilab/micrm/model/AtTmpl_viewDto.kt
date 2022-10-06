@@ -45,5 +45,21 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
             ArrayList()
         }
 
+    var highlight_json: Object? = null
+        get() = if (!item_highlight_json.isNullOrEmpty() && field == null) {
+            val g = GsonBuilder().create();
+            val obj = g.fromJson(item_highlight_json, Object::class.java)
+            obj
+        } else{
+            Object()
+        }
 
+    var item_list_json: Object? = null
+        get() = if (!item_json.isNullOrEmpty() && field == null) {
+            val g = GsonBuilder().create();
+            val obj = g.fromJson(item_json, Object::class.java)
+            obj
+        } else{
+            Object()
+        }
 }

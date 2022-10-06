@@ -101,6 +101,26 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
     }
 
+    override fun uploadTmplItemImg(file: MultipartFile): MutableMap<String, Any>? {
+        val token = getToken(url);
+        //        header 설정
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.MULTIPART_FORM_DATA
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        val urlString = "$url/$version/upload/image/alimtalk/itemHighlight"
+
+        val map = LinkedMultiValueMap<String, Any>()
+        val resource = FilenameAwareInputStreamResource(file.inputStream, file.size, file.originalFilename.toString())
+        map["image"] = resource
+
+        val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(map, headers))
+
+        return re_map
+    }
+
     override fun uploadFtImg(file: MultipartFile, imgType: String): MutableMap<String, Any> {
         val token = getToken(mstUrl);
         //        header 설정

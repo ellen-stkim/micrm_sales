@@ -11,7 +11,7 @@ open class Tblmi_kko_at_tmplDto {
     var tmpl_cd: String? = null
     var tmpl_nm: String? = null
     var tmpl_cont: String? = null
-    var img_seq: String? = null
+    var img_seq: Int? = null
     var secur_flag: String? = null
     var tmpl_status: String? = null
     var kep_status: String? = null
@@ -27,6 +27,7 @@ open class Tblmi_kko_at_tmplDto {
     var button_json: String? = null
     var quick_repl_json: String? = null
     var item_highlight_json: String? = null
+    var item_img_seq: Int? = null
     var item_json: String? = null
 
     var etc_1: String? = null
@@ -59,6 +60,12 @@ open class Tblmi_kko_at_tmplDto {
         this.upd_id = upd_id
         this.use_yn = use_yn
     }
+
+    constructor(img_seq:Int?,item_img_seq:Int?){
+        this.img_seq = img_seq
+        this.item_img_seq = item_img_seq
+    }
+
 
 
 

@@ -45,5 +45,9 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
         return sqlSession.selectOne("selTmplBytmplDto",tmplDto)
     }
 
+    override fun updTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int {
+        return sqlSession.update("updTmplDto",tmplDto)
+    }
+
 
 }

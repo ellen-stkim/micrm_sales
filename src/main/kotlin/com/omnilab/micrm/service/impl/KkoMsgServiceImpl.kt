@@ -111,9 +111,10 @@ class KkoMsgServiceImpl : KkoMsgService {
         return kkoAtTmplDao.selKkoAtTmpl(dto)
     }
 
-    override fun createTmpl(dto: Kko_at_tmplDto, regId: String): Map<String, Any> {
+    override fun createTmpl(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Map<String, Any> {
 
         val map :MutableMap<String,Any> = mutableMapOf()
+
         // 카카오 api 호풀
         val result:MutableMap<String,Any> = kkoRestApiService.createAtTmpl(dto)
         val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
@@ -123,7 +124,30 @@ class KkoMsgServiceImpl : KkoMsgService {
                 if("API_200".equals(data.get("code"))){
 
                     // tmplDto 저장
-                    val tmplDto = getTmplDtoByKkoDto(dto,regId)
+                    val tmplDto = getTmplDtoByKkoDto(dto,tmplDto)
+
+                    //개인화 변수 파싱
+                    val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
+                    var etcArr = mutableListOf<String>()
+                    var tempCont: String? = null
+                    for(idx in 1 until tempContStrs.size){
+                        tempCont = tempContStrs[idx]
+                        etcArr.add(tempCont.substring(0,tempCont.indexOf("}")))
+                        tmplDto.tmpl_cont
+                    }
+
+                    val size = etcArr.size
+                    tmplDto.etc_1 =  if (size >= 1) etcArr[0] else null
+                    tmplDto.etc_2 = if (size >= 2) etcArr[1] else null
+                    tmplDto.etc_3 = if (size >= 3) etcArr[2] else null
+                    tmplDto.etc_4 = if (size >= 4) etcArr[3] else null
+                    tmplDto.etc_5 = if (size >= 5) etcArr[4] else null
+                    tmplDto.etc_6 = if (size >= 6) etcArr[5] else null
+                    tmplDto.etc_7 = if (size >= 7) etcArr[6] else null
+                    tmplDto.etc_8 = if (size >= 8) etcArr[7] else null
+                    tmplDto.etc_9 = if (size >= 9) etcArr[8] else null
+                    tmplDto.etc_10 = if (size >= 10) etcArr[9] else null
+
                     kkoAtTmplDao.insNewTmplDto(tmplDto);
 
                     map.put("status",HttpServletResponse.SC_OK)
@@ -159,18 +183,70 @@ class KkoMsgServiceImpl : KkoMsgService {
         return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
     }
 
-    override fun updateTmpl(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Map<String, Any> {
+    override fun updateTmpl(dto: Kko_at_tmplDto, searchTmplDto: Tblmi_kko_at_tmplDto): Map<String, Any> {
         val map :MutableMap<String,Any> = mutableMapOf()
 
-        val newDto: Kko_at_tmplDto = getNewAtTmpl(dto,tmplDto)
+        val newDto: Kko_at_tmplDto = getNewAtTmpl(dto,searchTmplDto)
 
+        // 카카오 템플릿 변경
         val result:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(newDto)
-        logger.error("{}",newDto)
-        logger.error("{}",result)
-        //at_tmplDto 변경
+        val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
 
-        // api 업데이트
-        // db 업데이트
+        try {
+            if(result.get("result") as Boolean){
+                if("API_200".equals(data.get("code"))){
+
+                    //at_tmplDto 변경
+                    val tmplDto = getTmplDtoByKkoDto(dto, Tblmi_kko_at_tmplDto())  //변경
+                    tmplDto.seq = searchTmplDto.seq
+                    //개인화 변수 파싱
+                    val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
+                    var etcArr = mutableListOf<String>()
+                    var tempCont: String? = null
+                    for (idx in 1 until tempContStrs.size) {
+                        tempCont = tempContStrs[idx]
+                        etcArr.add(tempCont.substring(0, tempCont.indexOf("}")))
+                        tmplDto.tmpl_cont
+                    }
+
+                    val size = etcArr.size
+                    tmplDto.etc_1 = if (size >= 1) etcArr[0] else null
+                    tmplDto.etc_2 = if (size >= 2) etcArr[1] else null
+                    tmplDto.etc_3 = if (size >= 3) etcArr[2] else null
+                    tmplDto.etc_4 = if (size >= 4) etcArr[3] else null
+                    tmplDto.etc_5 = if (size >= 5) etcArr[4] else null
+                    tmplDto.etc_6 = if (size >= 6) etcArr[5] else null
+                    tmplDto.etc_7 = if (size >= 7) etcArr[6] else null
+                    tmplDto.etc_8 = if (size >= 8) etcArr[7] else null
+                    tmplDto.etc_9 = if (size >= 9) etcArr[8] else null
+                    tmplDto.etc_10 = if (size >= 10) etcArr[9] else null
+
+                    kkoAtTmplDao.updTmplDto(tmplDto)
+
+                    map.put("status",HttpServletResponse.SC_OK)
+                    map.put("msg", "알림톡 템플릿이 수정되었습니다.")
+
+                }else{
+                    logger.error("카카오 알림톡 템플릿 수정 데이터 에러")
+                    logger.error("data : {}",result)
+
+                    val code :String = data.get("code")?.toString()!!.replace("API_","")
+                    map.put("status", code.toInt())
+                    map.put("msg", data.get("message")!!)
+                }
+            }else{
+                logger.error("카카오 알림톡 템플릿 수정 API 에러")
+                logger.error("data : {}",result)
+
+                val code :String = data.get("code")?.toString()!!.replace("API_","")
+                map.put("status", code.toInt())
+                map.put("msg", data.get("message")!!)
+            }
+        }catch (e:Exception){
+            logger.error("",e)
+            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+            map.put("msg", "템플릿 수정에 실패했습니다. 관리자에게 문의 바랍니다.")
+        }
 
         return map
     }
@@ -196,15 +272,12 @@ class KkoMsgServiceImpl : KkoMsgService {
             return dto
     }
 
-    private fun getTmplDtoByKkoDto(dto: Kko_at_tmplDto, regId: String): Tblmi_kko_at_tmplDto {
+    private fun getTmplDtoByKkoDto(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Tblmi_kko_at_tmplDto {
         val gson = GsonBuilder().create()
-        val tmplDto = Tblmi_kko_at_tmplDto()
         tmplDto.tmpl_nm = dto.templateName
         tmplDto.tmpl_cd = dto.templateCode
         tmplDto.send_key = dto.send_key
         tmplDto.tmpl_cont = dto.templateContent
-        /*tmplDto.tmpl_img_nm = dto.templateImageName   //이미지 시퀀스로 변경
-        tmplDto.tmpl_img_url = dto.templateImageUrl*/
         tmplDto.secur_flag = dto.securityFlag
         tmplDto.tmpl_status = dto.templateStatus
         tmplDto.kep_status = "N"
@@ -220,7 +293,6 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.quick_repl_json = gson.toJson(dto.quickReplies)
         tmplDto.item_highlight_json = gson.toJson(dto.templateItemHighlight)
         tmplDto.item_json =  gson.toJson(dto.templateItem)
-        tmplDto.reg_id = regId
 
         return tmplDto
     }
