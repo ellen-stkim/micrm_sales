@@ -52,6 +52,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.firstIndex = paginationInfo.firstRecordIndex
         dto.recordCountPerPage = paginationInfo.recordCountPerPage
 
+
         paginationInfo.totalRecordCount =  kkoAtTmplDao.selectTotalAtTmplCnt(dto)
         paramMap["page"] = paginationInfo
         paramMap["pageNo"] = paginationInfo.currentPageNo
@@ -72,8 +73,6 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         searchDto.cd_id = "KEP_ST"
         map.put("kepSt",kkoAtTmplDao.getTmplSearchLst(searchDto))
-
-
 
         return map
     }

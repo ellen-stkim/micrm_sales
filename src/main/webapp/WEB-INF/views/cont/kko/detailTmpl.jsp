@@ -713,6 +713,47 @@
                                             </div>
                                         </div>
                                     </div>--%>
+
+                                    <div class="block template_table template_link_table">
+                                        <div class="row" style="height: auto;">
+                                            <div class="th">검수 결과</div>
+                                            <div class="td">
+                                                <table>
+                                                    <colgroup>
+                                                        <col width="10%">
+                                                        <col width="16%">
+                                                        <col width="7%">
+                                                        <col width="67%">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>작성자</th>
+                                                        <th>등록시간</th>
+                                                        <th>상태</th>
+                                                        <th>결과 및 요청사항</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <c:forEach var="comment" items="${dto.comment_json}" varStatus="st" >
+                                                        <tr class="itemList_add_table1">
+                                                            <td>${comment.commentUserName}</td>
+                                                            <td>
+                                                                    ${comment.commentCreateAt}
+                                                            </td>
+                                                            <td>
+                                                                    ${comment.commentStatus}
+                                                            </td>
+                                                            <td style="line-height: 1.5;">
+                                                                    ${comment.commentContent}
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="viewer_area">
@@ -726,12 +767,9 @@
                                 </div>
                             </div>
                         </div>
-<%--                        검수 내용 --%>
-                        <div class="flex_box">
-
-                        </div>
                     </div>
                 </div>
+
                 </form:form>
                 <div class="btn_row bottom-border" id="js-btn-area">
                     <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn" value="저장"/>
@@ -1842,7 +1880,7 @@
         const send_key = $('#send_key').val();
         const res = function (response) {
             if (response.status == 200) {
-                popup.confirmAlertCallback("템플릿을 등록 하시겠습니까?", "createTmpl()");
+                popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "createTmpl()");
 
             } else {
                 // 중복된 명칭 존재

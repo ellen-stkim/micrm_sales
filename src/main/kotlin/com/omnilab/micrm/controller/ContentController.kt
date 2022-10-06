@@ -1084,12 +1084,17 @@ class ContentController  {
     @PostMapping("/kko/atTmplLst.ajax")
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
         val view = ModelAndView("cont/kko/ajax/tmplListAjax")
+        logger.error("dfjndilsngl")
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
         view.addObject("nextCk", paramMap["nextCk"])
-
+/*
+        val map : Map<String,Any> = kkoMsgService.getTmplSearchLst()   // 템플릿 상태
+        view.addObject("tmplSt", map.get("tmplSt") )
+        view.addObject("kepSt", map.get("kepSt") )*/
+        
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"

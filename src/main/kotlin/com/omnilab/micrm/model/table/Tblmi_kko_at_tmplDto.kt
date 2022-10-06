@@ -15,6 +15,8 @@ open class Tblmi_kko_at_tmplDto {
     var secur_flag: String? = null
     var tmpl_status: String? = null
     var kep_status: String? = null
+    var tmpl_dormant: String? = null
+    var tmpl_block: String? = null
     var tmpl_msg_tp: String? = null
     var tmpl_ext: String? = null
     var tmpl_ad: String? = null
@@ -29,6 +31,7 @@ open class Tblmi_kko_at_tmplDto {
     var item_highlight_json: String? = null
     var item_img_seq: Int? = null
     var item_json: String? = null
+    var cmt_json: String? = null
 
     var etc_1: String? = null
     var etc_2: String? = null
