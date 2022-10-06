@@ -377,7 +377,7 @@
                                                         <th>삭제</th>
                                                         </thead>
                                                         <tbody>
-                                                        <c:if test="${empty dto.item_list_json}">
+                                                        <c:if test="${empty dto.item_list_json || !fn:contains(item_json,'\"list\"')}">
                                                             <tr class="itemList_add_table1" id="itemList_add_table1">
                                                                 <td>1</td>
                                                                 <td>
@@ -427,7 +427,7 @@
                                                                 </td>
                                                             </tr>
                                                         </c:if>
-                                                        <c:if test="${!empty dto.item_list_json}">
+                                                        <c:if test="${!empty dto.item_list_json && fn:contains(item_json,'\"list\"')}">
                                                             <c:forEach var="item" items="${dto.item_list_json.list}" varStatus="st">
                                                                 <tr class="itemList_add_table1" id="itemList_add_table1">
                                                                     <td>${st.index+1}</td>
@@ -462,7 +462,7 @@
                                             </div>
                                         </div>
 
-                                        <c:if test="${!empty dto.item_list_json && !empty dto.item_list_json.summary}">
+                                        <c:if test="${!empty dto.item_list_json  && fn:contains(item_json,'\"summary\"')}">
                                             <c:set var="summary" value="${dto.item_list_json.summary}" />
                                             <div class="block emphItemList_itemInfo ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
                                                 <div class="row" style="height: auto;">
@@ -487,7 +487,7 @@
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <c:if test="${empty dto.item_list_json || empty dto.item_list_json.summary}">
+                                        <c:if test="${empty dto.item_list_json || !fn:contains(item_json,'\"summary\"')}">
                                             <div class="block emphItemList_itemInfo">
                                                 <div class="row" style="height: auto;">
                                                     <div class="th" style="line-height: 17px;">아이템<br>요약정보</div>
