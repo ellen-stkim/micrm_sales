@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error("{}", enc.encrypt("jdbc:mariadb://121.78.144.83/db_micrm_sales"))
+    log.error("{}", enc.decrypt("jdbc:mariadb://121.78.144.83/db_micrm_sales"))
     log.error("{}", enc.encrypt("db_micrm_sales"))
     log.error("{}", enc.encrypt("db_micrm_sales_2020##"))
     log.error("=========================")

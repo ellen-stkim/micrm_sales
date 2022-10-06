@@ -10,5 +10,7 @@ interface KkoRestApiService {
     fun createAtTmpl(dto: Kko_at_tmplDto): MutableMap<String, Any>
     fun uploadTmplImg(file: MultipartFile): MutableMap<String, Any>
     fun uploadFtImg(file: MultipartFile, imgType: String): MutableMap<String, Any>
+    fun updateAtTmpl(newDto: Kko_at_tmplDto): MutableMap<String, Any>
+    fun uploadTmplItemImg(file: MultipartFile): MutableMap<String, Any>?
 
 }

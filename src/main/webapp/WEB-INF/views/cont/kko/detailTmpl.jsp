@@ -25,18 +25,19 @@
                     <li>홈</li>
                     <li>메세지</li>
                     <li>알림톡</li>
-                    <li>알림톡 템플릿 생성</li>
+                    <li>알림톡 템플릿 수정</li>
                 </ul>
             </div>
         </div>
         <!-- row 영역 끝 -->
         <!-- section 영역 시작 -->
         <div class="section">
-            <form:form id="form" action="/cont/kko/tmplCreate.service" method="post">
+            <form:form id="form" action="/cont/kko/tmplUpate.service" method="post">
+            <input name="seq" id="tmplSeq" value="${dto.seq}" readonly hidden>
             <div class="create_sms cf">
                 <div class="tab_contents active">
                     <div class="sms_form cover" id="kakao">
-                        <h2>알림톡 템플릿</h2>
+                        <h2>알림톡 템플릿 수정</h2>
                         <div class="flex_box">
                             <div class="left_area">
                                 <div class="input_area left">
@@ -46,10 +47,8 @@
                                             <div class="td">
                                                 <input type="text" class="sms_number smsNumber" id="kko_send_to"
                                                        style="width: 90%; height: 100%;"
-                                                       placeholder="발신 프로필을 선택해주세요." readonly/>
-                                                <input type="hidden" name="send_key" id="send_key" value=""/>
-                                                <span class="btn_sm_line"
-                                                      onclick="mobileSenderPopup('1','sms')">변경</span>
+                                                       placeholder="발신 프로필을 선택해주세요." value="${dto.sender}" readonly/>
+                                                <input type="hidden" name="send_key" id="send_key" value="${dto.send_key}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -57,9 +56,9 @@
                                         <div class="row">
                                             <div class="th">템플릿코드 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <input type="text" class="txt_input txt_input2" name="templateCode"
-                                                       id="tmplCode"
-                                                       placeholder=""/>
+                                                <input type="text" class="txt_input txt_input2" name="newTemplateCode"
+                                                       id="tmplCode" value="${dto.tmpl_cd}"
+                                                       placeholder=""  />
                                                 <span class="btn_sm_line btn_sm_line2 tmplCodeBtn">코드 자동 생성</span>
                                             </div>
                                         </div>
@@ -68,7 +67,7 @@
                                         <div class="row">
                                             <div class="th th2">보안템플릿</div>
                                             <div class="td template_check_td">
-                                                <input type="checkbox" name="securityFlag" value="true"
+                                                <input type="checkbox" name="securityFlag" value="Y" ${dto.secur_flag eq "Y"? 'checked' : ''}
                                                        id="template_check">
                                                 <label for="template_check">보안 템플릿 설정 시, 메인 디바이스 모바일 외 모든 서브 디바이스에서는 메시지
                                                     내용이 노출되지 않습니다.</label>
@@ -83,7 +82,7 @@
                                                 <div class="select bizContsVal_group" name="edmDB">
                                                     <!-- selected value -->
                                                     <div class="value"
-                                                         data="${cateLst[0].cd_sn}">${cateLst[0].cd_desc}</div>
+                                                         data="${dto.cate_cd_val}">${dto.cate_cd_desc}</div>
                                                     <ol class="option">
                                                         <c:forEach var="cate" items="${cateLst}">
                                                             <li value="${cate.cd_sn}">${cate.cd_desc}</li>
@@ -95,7 +94,7 @@
                                                 <div class="select select2 bizContsVal" name="edmDB">
                                                     <!-- selected value -->
                                                     <div class="value"
-                                                         data="${cateSubLst[0].cd_val}">${cateSubLst[0].cd_desc}</div>
+                                                         data="${dto.cate_sub_cd_val}">${dto.cate_sub_cd_desc}</div>
                                                     <ol class="option">
                                                         <c:forEach var="cateSub" items="${cateSubLst}">
                                                             <li class="cate_op_${cateSub.par_nm}"  ${cateSub.par_nm eq '1' ? '' :'hidden'}
@@ -103,8 +102,8 @@
                                                                 value="${cateSub.cd_val}">${cateSub.cd_desc}</li>
                                                         </c:forEach>
                                                     </ol>
-                                                    <input class="selValue" name="categoryCode"
-                                                           value="${cateSubLst[0].cd_val}" readonly hidden>
+                                                    <input class="selValue" name="newCategoryCode"
+                                                           value="${dto.cate_sub_cd_val}" readonly hidden>
                                                 </div>
                                                 <!-- select 영역2 끝 -->
                                                 <p class="template_category_p">
@@ -122,9 +121,26 @@
                                         <div class="row">
                                             <div class="th">템플릿명 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <input type="text" class="txt_input" name="templateName"
-                                                       style="width: 100%;"
+                                                <input type="text" class="txt_input" name="newTemplateName"
+                                                       style="width: 100%;" value="${dto.tmpl_nm}"
                                                        placeholder="템플릿명 입력 (최대 200자)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block">
+                                        <div class="row flex_row">
+                                            <div class="row flex_row input-img on">
+                                                <div class="th">개인화 변수</div>
+                                                <div class="td">
+                                                    <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span><br>
+                                                    <span class="color_red" style="font-size: 9px">   ※ 개인화 변수는 최대 10개까지 사용할 수 있습니다.</span>
+                                                    <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                                        <c:forEach var="item" items="${column}"
+                                                                   varStatus="status">
+                                                            <input type="button" data="\#{${item.list_val}}" value="${item.list_nm}" class="drag-button" draggable="true">
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,14 +153,14 @@
                                                     <div class="select bizMsgVal" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value"
-                                                             data="${msgTpLst[0].cd_val}">${msgTpLst[0].cd_desc}</div>
+                                                             data="${dto.msg_tp}">${dto.msg_tp_nm}</div>
                                                         <ol class="option">
                                                             <c:forEach var="msgTp" items="${msgTpLst}">
                                                                 <li data_sn="${msgTp.cd_sn}"
                                                                     value="${msgTp.cd_val}">${msgTp.cd_desc}</li>
                                                             </c:forEach>
                                                         </ol>
-                                                        <input class="selValue" type="text" name="templateMessageType"
+                                                        <input class="selValue" type="text" name="newTemplateMessageType" value="${dto.msg_tp}"
                                                                readonly hidden>
                                                     </div>
                                                     <!-- select 영역 끝 -->
@@ -159,14 +175,14 @@
                                                     <div class="select bizEmphVal" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value"
-                                                             data="${empTpLst[0].cd_val}">${empTpLst[0].cd_desc}</div>
+                                                             data="${dto.emp_tp}">${dto.emp_tp_nm}</div>
                                                         <ol class="option">
                                                             <c:forEach var="empTp" items="${empTpLst}">
                                                                 <li value="${empTp.cd_val}"
                                                                     data_sn="${empTp.cd_sn}">${empTp.cd_desc}</li>
                                                             </c:forEach>
                                                         </ol>
-                                                        <input type="text" class="selValue" name="templateEmphasizeType"
+                                                        <input type="text" class="selValue" name="newTemplateEmphasizeType" value="${dto.emp_tp}"
                                                                readonly hidden>
                                                     </div>
                                                     <!-- select 영역 끝 -->
@@ -174,12 +190,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block_group emphtxt_block display-none" name="emph_sel_box">
+                                    <div class="block_group emphtxt_block  ${dto.emp_tp ne 'TEXT'? 'display-none':''} " name="emph_sel_box">
                                         <div class="block block4">
                                             <div class="row">
                                                 <div class="th">강조 표기 타이틀 <span class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input3" name="templateTitle"
+                                                    <input type="text" class="txt_input3" name="newTemplateTitle" value="${dto.tmpl_tit}"
                                                            placeholder="강조 표기 타이틀 입력 (최대 50자)">
                                                 </div>
                                             </div>
@@ -189,17 +205,17 @@
                                                 <div class="th" style="line-height: 18px;">강조 표기<br>보조 문구 <span
                                                         class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input3" name="templateSubtitle"
+                                                    <input type="text" class="txt_input3" name="newTemplateSubtitle" value="${dto.tmpl_subtit}"
                                                            placeholder="강조 표기 보조 문구 입력 (최대 50자)">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block emphImg_block display-none"  name="emph_sel_box">
+                                    <div class="block emphImg_block ${dto.emp_tp ne 'IMAGE'? 'display-none':''}"  name="emph_sel_box">
                                         <div class="row flex_row" style="height: auto; min-height: 145px;">
                                             <div class="th">이미지 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <div name="newImgBtn" class="imgBtn">
+                                                            <div name="newImgBtn" class="imgBtn ${!empty dto.img_seq ? 'display-none' :''}">
                                                     <div class="template_add_img col_img" name="addImgBtn"
                                                          onclick="imageListPopUp(1,'img')">
                                                         click here to upload
@@ -208,27 +224,32 @@
                                                         - 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다. <br>
                                                         - 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</p>
                                                 </div>
-                                                <div class="col_img prv_col_img" name="prevImg"
-                                                     onclick="imageListPopUp(1,'img')">
+                                                <div class="col_img prv_col_img" name="prevImg">
+                                                    <c:if test="${!empty dto.img_seq}">
+                                                        <div class="delete_img" data="img" style="right: 10px;">
+                                                            <img src="/image/btn_delete1.png" alt="삭제"></div>
+                                                        <a href="${dto.kko_img_url}" target="_blank">
+                                                            <img src="/image/bg_none.png" onerror="this.src='/image/bg_none.png'">
+                                                        </a>
+                                                    </c:if>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div name="emph_sel_box">
-                                    <input id="tmplImgCd" name="tmpl_img_cd" readonly hidden>
-                                    <input id="tmplImgUrl" name="templateImageUrl" readonly hidden>
-                                    <input id="tmplImgNm" name="templateImageName" readonly hidden>
+                                    <input id="tmplImgSeq" name="img_seq"  value="${dto.img_seq}" readonly hidden>
+                                    <input id="tmplImgUrl" name="newTemplateImageUrl"  value="${dto.kko_img_url}" readonly hidden>
+                                    <input id="tmplImgNm" name="newTemplateImageName"  value="${dto.img_org_nm}" readonly hidden>
                                     </div>
-                                    <div class="emphItemList_block display-none" name="emph_sel_box">
+                                    <div class="emphItemList_block ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''} " name="emph_sel_box">
                                         <div class="block emphItemList_img">
                                             <div class="row flex_row" style="height: auto;">
                                                 <div class="th">이미지</div>
                                                 <div class="td">
-                                                    <input type="checkbox" id="img_check">
+                                                    <input type="checkbox" id="img_check" ${!empty dto.img_seq ? 'checked' :''}>
                                                     <label for="img_check">설정</label>
-
-                                                    <div class="itemlist_img_on dis_flex display-none">
-                                                        <div name="newImgBtn"  class="imgBtn">
+                                                    <div class="itemlist_img_on dis_flex ${!empty dto.img_seq ? '' :'display-none'}">
+                                                        <div name="newImgBtn"  class="imgBtn ${!empty dto.img_seq ? 'display-none' :''}">
                                                             <div class="template_add_img col_img" name="addImgBtn"
                                                                  onclick="imageListPopUp(1,'img')">
                                                                 click here to upload
@@ -239,54 +260,69 @@
                                                                 합니다.
                                                             </p>
                                                         </div>
-                                                        <div class="col_img prv_col_img" name="prevImg"
-                                                             onclick="imageListPopUp(1,'img')">
+                                                        <div class="col_img prv_col_img" name="prevImg">
+                                                            <c:if test="${!empty dto.img_seq}">
+                                                                <div class="delete_img" data="img" style="right: 10px;">
+                                                                    <img src="/image/btn_delete1.png" alt="삭제"></div>
+                                                                <a href="${dto.kko_img_url}" target="_blank">
+                                                                    <img src="/image/bg_none.png" onerror="this.src='/image/bg_none.png'">
+                                                                </a>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="block emphItemList_header">
+                                        <div class="block emphItemList_header ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
                                             <div class="row" style="height: auto;">
                                                 <div class="th">헤더</div>
                                                 <div class="td">
-                                                    <input type="checkbox" id="header_check">
+                                                    <input type="checkbox" id="header_check" ${!empty dto.tmpl_header? 'checked':''}>
                                                     <label for="header_check">설정</label>
 
-                                                    <input type="text" class="header-check-on border display-none"
-                                                           name="templateHeader"
+                                                    <input type="text" class="header-check-on border ${!empty dto.tmpl_header? '':'display-none'}"
+                                                           name="newTemplateHeader"  value="${dto.tmpl_header}"
                                                            placeholder="헤더 내용 입력 (최대 16자)">
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="block emphItemList_highlight">
+                                        <div class="block emphItemList_highlight ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
                                             <div class="row" style="height: auto;">
                                                 <div class="th" style="line-height: 17px;">아이템<br>하이라이트</div>
                                                 <div class="td">
                                                     <div class="highlight_div">
-                                                        <input type="checkbox" id="highlight_check">
+                                                        <input type="checkbox" id="highlight_check" ${!empty dto.item_highlight_json? 'checked':''} >
                                                         <label for="highlight_check">설정 (아이템 하이라이트 체크 시, 하이라이트 타이틀 및
                                                             디스크립션 설정이 필수입니다.)</label>
                                                     </div>
 
-                                                    <div class="highlight_div highlight_check_on display-none">
-                                                        <input type="text" class="txt_input4 first border" name="title"
-                                                               placeholder="타이틀 입력 (최대 30자)">
-                                                        <input type="text" class="txt_input4 border" name="description"
-                                                               placeholder="변수 및 화폐 단위, 숫자, 쉼표, 마침표만 사용 가능 (최대 19자)">
-                                                    </div>
+                                                    <c:if test="${empty dto.item_highlight_json}" >
+                                                        <div class="highlight_div highlight_check_on ${!empty dto.item_highlight_json? '':'display-none'}">
+                                                            <input type="text" class="txt_input4 first border" name="title"
+                                                                   placeholder="타이틀 입력 (최대 30자)">
+                                                            <input type="text" class="txt_input4 border" name="description"
+                                                                   placeholder="변수 및 화폐 단위, 숫자, 쉼표, 마침표만 사용 가능 (최대 19자)">
+                                                        </div>
+                                                    </c:if>
+                                                    <c:if test="${!empty dto.item_highlight_json}" >
+                                                        <div class="highlight_div highlight_check_on ${!empty dto.item_highlight_json? '':'display-none'}">
+                                                            <input type="text" class="txt_input4 first border" name="title" value="${dto.highlight_json.title}"
+                                                                   placeholder="타이틀 입력 (최대 30자)">
+                                                            <input type="text" class="txt_input4 border" name="description" value="${dto.highlight_json.description}"
+                                                                   placeholder="변수 및 화폐 단위, 숫자, 쉼표, 마침표만 사용 가능 (최대 19자)">
+                                                        </div>
+                                                    </c:if>
 
-                                                    <div class="highlight_div highlight_check_on display-none">
-                                                        <input type="checkbox" id="highlight_img_check">
+                                                    <div class="highlight_div highlight_check_on ${!empty dto.item_highlight_json? '':'display-none'}">
+                                                        <input type="checkbox" id="highlight_img_check" ${!empty dto.item_img_seq? 'checked':''}>
                                                         <label for="highlight_img_check">이미지 (썸네일을 추가하면 타이틀은 21자, 디스크립션은
                                                             13자까지 입력 가능합니다.)</label>
                                                     </div>
 
-                                                    <div class="highlight_div highlight_img_on dis_flex display-none">
-                                                        <input id="imgUrl" name="imageUrl" disabled readonly hidden>
-                                                        <div name="newItemImgBtn"  class="imgBtn">
+                                                    <div class="highlight_div highlight_img_on dis_flex ${!empty dto.item_highlight_json && !empty  dto.item_img_seq  ? '':'display-none'}">
+                                                        <div name="newItemImgBtn"  class="imgBtn ${empty  dto.item_img_seq  ? '':'display-none'}">
                                                             <div class="template_add_img col_img"
                                                                  onclick="imageListPopUp(1,'img_item')">
                                                                 click here to upload
@@ -296,15 +332,31 @@
                                                                 - 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.
                                                             </p>
                                                         </div>
-                                                        <div class="col_img prv_col_img" name="prevItemImg"
-                                                             onclick="imageListPopUp(1,'img')">
-                                                        </div>
+                                                        <c:if test="${empty dto.item_img_seq}">
+                                                            <input id="itemImgSeq" name="item_img_seq"  readonly hidden>
+                                                            <input id="imageUrl" name="imageUrl" disabled readonly hidden>
+                                                            <div class="col_img prv_col_img" name="prevItemImg"></div>
+                                                        </c:if>
+                                                        <c:if test="${!empty dto.item_img_seq}">
+                                                            <input id="itemImgSeq" name="item_img_seq"
+                                                                   value="${dto.item_img_seq}" readonly hidden>
+                                                            <input id="imageUrl" name="imageUrl"
+                                                                   value="${dto.highlight_json.imageUrl}" disabled
+                                                                   readonly hidden>
+                                                            <div class="col_img prv_col_img" name="prevItemImg">
+                                                                <div class="delete_img" data="img_item"  style="right: 20px; top: 110px;">
+                                                                    <img src="/image/btn_delete1.png" alt="삭제"></div>
+                                                                <a href="${dto.highlight_json.imageUrl}" target="_blank">
+                                                                    <img src="/image/bg_none.png" onerror="this.src='/image/bg_none.png'" style="height: 175px; width: 175px;">
+                                                                </a>
+                                                            </div>
+                                                        </c:if>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="block template_table emphItemList_list">
+                                        <div class="block template_table emphItemList_list ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
                                             <div class="row" style="height: auto;">
                                                 <div class="th" style="line-height: 17px;">
                                                     아이템<br/>리스트
@@ -325,82 +377,140 @@
                                                         <th>삭제</th>
                                                         </thead>
                                                         <tbody>
-                                                        <tr class="itemList_add_table1" id="itemList_add_table1">
-                                                            <td>1</td>
-                                                            <td>
-                                                                <input class="border" type="text" data_name="title"
-                                                                       placeholder="아이템 명 (6자 이내)">
-                                                            </td>
-                                                            <td>
-                                                                <input class="border" type="text"
-                                                                       data_name="description"
-                                                                       placeholder="아이템 내용 (23자 이내)">
-                                                            </td>
-                                                            <td>
-                                                                <div class="table_btn">
-                                                                    <div class="up" onclick="upRow3(this)"><i
-                                                                            class="fa-solid fa-square-caret-up"></i>
+                                                        <c:if test="${empty dto.item_list_json}">
+                                                            <tr class="itemList_add_table1" id="itemList_add_table1">
+                                                                <td>1</td>
+                                                                <td>
+                                                                    <input class="border" type="text" data_name="title"
+                                                                           placeholder="아이템 명 (6자 이내)">
+                                                                </td>
+                                                                <td>
+                                                                    <input class="border" type="text"
+                                                                           data_name="description"
+                                                                           placeholder="아이템 내용 (23자 이내)">
+                                                                </td>
+                                                                <td>
+                                                                    <div class="table_btn">
+                                                                        <div class="up" onclick="upRow3(this)"><i
+                                                                                class="fa-solid fa-square-caret-up"></i>
+                                                                        </div>
+                                                                        <div class="down" onclick="downRow3(this)"><i
+                                                                                class="fa-solid fa-square-caret-down"></i>
+                                                                        </div>
+                                                                        <div class="del" onclick="deleteRow3(this)"><i
+                                                                                class="fa-solid fa-square-xmark"></i></div>
                                                                     </div>
-                                                                    <div class="down" onclick="downRow3(this)"><i
-                                                                            class="fa-solid fa-square-caret-down"></i>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="itemList_add_table2" id="itemList_add_table2">
+                                                                <td>2</td>
+                                                                <td>
+                                                                    <input class="border" type="text" data_name="title"
+                                                                           placeholder="아이템 명 (6자 이내)">
+                                                                </td>
+                                                                <td>
+                                                                    <input class="border" type="text"
+                                                                           data_name="description"
+                                                                           placeholder="아이템 내용 (23자 이내)">
+                                                                </td>
+                                                                <td>
+                                                                    <div class="table_btn">
+                                                                        <div class="up" onclick="upRow3(this)"><i
+                                                                                class="fa-solid fa-square-caret-up"></i>
+                                                                        </div>
+                                                                        <div class="down" onclick="downRow3(this)"><i
+                                                                                class="fa-solid fa-square-caret-down"></i>
+                                                                        </div>
+                                                                        <div class="del" onclick="deleteRow3(this)"><i
+                                                                                class="fa-solid fa-square-xmark"></i></div>
                                                                     </div>
-                                                                    <div class="del" onclick="deleteRow3(this)"><i
-                                                                            class="fa-solid fa-square-xmark"></i></div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="itemList_add_table2" id="itemList_add_table2">
-                                                            <td>2</td>
-                                                            <td>
-                                                                <input class="border" type="text" data_name="title"
-                                                                       placeholder="아이템 명 (6자 이내)">
-                                                            </td>
-                                                            <td>
-                                                                <input class="border" type="text"
-                                                                       data_name="description"
-                                                                       placeholder="아이템 내용 (23자 이내)">
-                                                            </td>
-                                                            <td>
-                                                                <div class="table_btn">
-                                                                    <div class="up" onclick="upRow3(this)"><i
-                                                                            class="fa-solid fa-square-caret-up"></i>
-                                                                    </div>
-                                                                    <div class="down" onclick="downRow3(this)"><i
-                                                                            class="fa-solid fa-square-caret-down"></i>
-                                                                    </div>
-                                                                    <div class="del" onclick="deleteRow3(this)"><i
-                                                                            class="fa-solid fa-square-xmark"></i></div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                                </td>
+                                                            </tr>
+                                                        </c:if>
+                                                        <c:if test="${!empty dto.item_list_json}">
+                                                            <c:forEach var="item" items="${dto.item_list_json.list}" varStatus="st">
+                                                                <tr class="itemList_add_table1" id="itemList_add_table1">
+                                                                    <td>${st.index+1}</td>
+                                                                    <td>
+                                                                        <input class="border" type="text" data_name="title" value="${item.title}"
+                                                                               placeholder="아이템 명 (6자 이내)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="border" type="text" value="${item.description}"
+                                                                               data_name="description"
+                                                                               placeholder="아이템 내용 (23자 이내)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="table_btn">
+                                                                            <div class="up" onclick="upRow3(this)"><i
+                                                                                    class="fa-solid fa-square-caret-up"></i>
+                                                                            </div>
+                                                                            <div class="down" onclick="downRow3(this)"><i
+                                                                                    class="fa-solid fa-square-caret-down"></i>
+                                                                            </div>
+                                                                            <div class="del" onclick="deleteRow3(this)"><i
+                                                                                    class="fa-solid fa-square-xmark"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                        </c:if>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="block emphItemList_itemInfo">
-                                            <div class="row" style="height: auto;">
-                                                <div class="th" style="line-height: 17px;">아이템<br>요약정보</div>
-                                                <div class="td">
-                                                    <div class="itemInfo_div">
-                                                        <input type="checkbox" id="itemInfo_check">
-                                                        <label for="itemInfo_check">설정 (요약정보의 아이템내용은 변수 및 화폐 단위, 숫자, 쉼표,
-                                                            마침표만 사용 가능합니다.)</label>
-                                                    </div>
+                                        <c:if test="${!empty dto.item_list_json && !empty dto.item_list_json.summary}">
+                                            <c:set var="summary" value="${dto.item_list_json.summary}" />
+                                            <div class="block emphItemList_itemInfo ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
+                                                <div class="row" style="height: auto;">
+                                                    <div class="th" style="line-height: 17px;">아이템<br>요약정보</div>
+                                                    <div class="td">
+                                                        <div class="itemInfo_div">
+                                                            <input type="checkbox" id="itemInfo_check" ${!empty summary? 'checked':''}>
+                                                            <label for="itemInfo_check">설정 (요약정보의 아이템내용은 변수 및 화폐 단위, 숫자, 쉼표,
+                                                                마침표만 사용 가능합니다.)</label>
+                                                        </div>
 
-                                                    <div class="itemInfo_div itemInfo_check_on display-none">
-                                                        <input type="text" class="txt_input4 first border"
-                                                               data_name="title"
-                                                               placeholder="아이템 명 (최대 6자)">
-                                                        <input type="text" class="txt_input4 border"
-                                                               data_name="description"
-                                                               placeholder="아이템 내용 입력 (최대 14자, 화폐단위 및 숫자(쉼표 마침표 혀용) , 변수만 사용가능)">
-                                                    </div>
+                                                        <div class="itemInfo_div itemInfo_check_on ${!empty summary ? '':'display-none'}">
+                                                            <input type="text" class="txt_input4 first border" value="${summary.title}"
+                                                                   data_name="title"
+                                                                   placeholder="아이템 명 (최대 6자)">
+                                                            <input type="text" class="txt_input4 border"  value="${summary.description}"
+                                                                   data_name="description"
+                                                                   placeholder="아이템 내용 입력 (최대 14자, 화폐단위 및 숫자(쉼표 마침표 혀용) , 변수만 사용가능)">
+                                                        </div>
 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </c:if>
+                                        <c:if test="${empty dto.item_list_json || empty dto.item_list_json.summary}">
+                                            <div class="block emphItemList_itemInfo">
+                                                <div class="row" style="height: auto;">
+                                                    <div class="th" style="line-height: 17px;">아이템<br>요약정보</div>
+                                                    <div class="td">
+                                                        <div class="itemInfo_div">
+                                                            <input type="checkbox" id="itemInfo_check">
+                                                            <label for="itemInfo_check">설정 (요약정보의 아이템내용은 변수 및 화폐 단위, 숫자, 쉼표,
+                                                                마침표만 사용 가능합니다.)</label>
+                                                        </div>
+
+                                                        <div class="itemInfo_div itemInfo_check_on display-none">
+                                                            <input type="text" class="txt_input4 first border"
+                                                                   data_name="title"
+                                                                   placeholder="아이템 명 (최대 6자)">
+                                                            <input type="text" class="txt_input4 border"
+                                                                   data_name="description"
+                                                                   placeholder="아이템 내용 입력 (최대 14자, 화폐단위 및 숫자(쉼표 마침표 혀용) , 변수만 사용가능)">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
 
                                     </div>
                                         <%--<div class="block">
@@ -412,12 +522,12 @@
                                                 </div>
                                             </div>
                                         </div>--%>
-                                    <div class="block addinfo_block" name="sel_box">
+                                    <div class="block addinfo_block ${dto.tmpl_msg_tp ne 'EX'  && dto.tmpl_msg_tp ne 'MI'? 'display-none':''}" name="sel_box">
                                         <div class="row template_textarea">
                                             <div class="th">부가 정보 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <textarea rows="8" name="templateExtra"
-                                                          placeholder="텍스트 입력 (최대 500자)"></textarea>
+                                                <textarea rows="8" name="newTemplateExtra"
+                                                          placeholder="텍스트 입력 (최대 500자)">${dto.tmpl_ext}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -432,16 +542,16 @@
                                                 </div>
                                             </div>
                                         </div>--%>
-                                    <div class="block block2 addchannel_block" >
+                                    <div class="block block2 addchannel_block ${dto.tmpl_msg_tp ne 'AD'  && dto.tmpl_msg_tp ne 'MI'? 'display-none':''}" >
                                         <div class="row template_textarea2">
                                             <div class="th">채널 추가<br>안내 메시지</div>
                                             <div class="td">
-                                                <textarea rows="2" name="templateAd"
+                                                <textarea rows="2" name="newTemplateAd"
                                                           readonly>채널 추가하고 이 채널의 광고와 마케팅 메시지 받기</textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block block3 addchannel_block">
+                                    <div class="block block3 addchannel_block  ${dto.tmpl_msg_tp ne 'AD'  && dto.tmpl_msg_tp ne 'MI'? 'display-none':''}">
                                         <div class="row row2 template_textarea3">
                                             <div class="th"></div>
                                             <div class="td">
@@ -477,11 +587,14 @@
                                                     <th>삭제</th>
                                                     </thead>
                                                     <tbody>
-                                                    <tr class="type_table_no_info">
-                                                        <td colspan="5">
-                                                            버튼 정보가 없습니다.
-                                                        </td>
-                                                    </tr>
+                                                    <c:set var="buttons" value="${dto.btn_json}" />
+                                                    <c:if test="${fn:length(buttons) ==0}">
+                                                        <tr class="type_table_no_info">
+                                                            <td colspan="5">
+                                                                버튼 정보가 없습니다.
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
 
                                                     <tr class="channel_add_table  display-none"
                                                         id="channel_add_table">
@@ -503,13 +616,71 @@
                                                         </td>
                                                         <td></td>
                                                     </tr>
+
+                                                    <c:forEach var="button" items="${buttons}" varStatus="st">
+                                                    <tr>
+                                                        <td>${st.index +1}</td>
+                                                        <td><select class="border btn_type" id="table_btn_type"
+                                                                    onchange="selectType(this, this)">
+                                                            <option value="" selected="" disabled="">버튼타입 선택</option>
+                                                            <c:forEach var="btn" items="${btnLst}">
+                                                                <option value="${btn.cd_val}" data_sn="${btn.cd_sn}"
+                                                                    ${button.linkType eq btn.cd_val ? 'selected' : ''}>${btn.cd_desc}</option>
+                                                            </c:forEach>
+                                                        </select></td>
+                                                        <td><input class="border" type="text" name="name" value="${button.name}"
+                                                                   placeholder="버튼명 입력 (14자 이내)"></td>
+                                                        <td>
+                                                            <div class="webLink-on ${button.linkType ne 'WL'? 'display-none': ''}"><p
+                                                                    class="btn_link_title_first">Moblie</p><input
+                                                                    type="text" class="border" name="linkMo" value="${button.linkMo}"
+                                                                    placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                                <p class="btn_link_title">PC(선택)</p><input type="text"
+                                                                                                           class="border"
+                                                                                                           name="linkPc"  value="${button.linkPc}"
+                                                                                                           placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                            </div>
+                                                            <div class="appLink-on ${button.linkType ne 'AL'? 'display-none': ''}"><p class="color_red">*
+                                                                Android, iOS, Mobile 중 2가지 이상 입력 필수</p>
+                                                                <p class="btn_link_title">Android</p><input type="text"
+                                                                                                            class="border"
+                                                                                                            name="linkAnd" value="${button.linkAnd}"
+                                                                                                            placeholder="scheme android 링크">
+                                                                <p class="btn_link_title">iOS</p><input type="text"
+                                                                                                        class="border"
+                                                                                                        name="linkIos" value="${button.linkIos}"
+                                                                                                        placeholder="scheme iOS 링크">
+                                                                <p class="btn_link_title">Moblie</p><input type="text"
+                                                                                                           class="border"
+                                                                                                           name="linkMo" value="${button.linkMo}"
+                                                                                                           placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                                <p class="btn_link_title">PC(선택)</p><input type="text"
+                                                                                                           class="border"
+                                                                                                           name="linkPc" value="${button.linkPc}"
+                                                                                                           placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                            </div>
+                                                            <div class="plugin-on display-none"><input type="text"
+                                                                                                       class="border"
+                                                                                                       name="pluginId" value="${button.pluginId}"
+                                                                                                       placeholder="플러그인 ID">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table_btn">
+                                                                <div class="up" onclick="upRow(this)"><i class="fa-solid fa-square-caret-up"></i></div>
+                                                                <div class="down" onclick="downRow(this)"><i class="fa-solid fa-square-caret-down"></i></div>
+                                                                <div class="del" onclick="deleteRow(this)"><i class="fa-solid fa-square-xmark"></i></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </c:forEach>
                                                     </tbody>
                                                 </table>
 
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block template_table template_link_table">
+                                    <%--<div class="block template_table template_link_table">
                                         <div class="row" style="height: auto;">
                                             <div class="th">
                                                 바로연결
@@ -541,23 +712,26 @@
                                                 </table>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--%>
                                 </div>
                             </div>
                             <div class="viewer_area">
                                 <div class="top">템플릿 내용</div>
                                 <div class="inner">
-                                    <textarea name="templateContent" id="" class="sms_txt templateContent" cols="30"
-                                              rows="10"></textarea>
+                                    <textarea name="newTemplateContent" id="" class="sms_txt templateContent" cols="30"
+                                              rows="10">${dto.tmpl_cont}</textarea>
                                 </div>
                                 <div class="byte">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
                                 </div>
                             </div>
                         </div>
+<%--                        검수 내용 --%>
+                        <div class="flex_box">
+
+                        </div>
                     </div>
                 </div>
-                    <%--                    </div>--%>
                 </form:form>
                 <div class="btn_row bottom-border" id="js-btn-area">
                     <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn" value="저장"/>
@@ -662,6 +836,7 @@
         let table = document.getElementById('template_btn_table');
 
         let newRow = table.insertRow();
+        $(newRow).addClass("use_btn");
         let newCell1 = newRow.insertCell(0);
         let newCell2 = newRow.insertCell(1);
         let newCell3 = newRow.insertCell(2);
@@ -1161,6 +1336,7 @@
             let list = $(".bizContsVal .option").find('li[class="cate_op_' + val + '"]');
             let not_list = $(".bizContsVal .option").find('li[class!="cate_op_' + val + '"]');
 
+            console.log(val)
             if (val == 1) {
                 list.css('display', 'block');
                 not_list.css('display', 'none');
@@ -1198,7 +1374,7 @@
         });
         // 카테고리 소분류 선택
         $('.bizContsVal .option li').on('click', function () {
-            let val = $(this).index();
+            let val = $(this).index()+1;
             $('.template_category_p').hide();
             $(`.template_category_p.gid_` + val).show();
         })
@@ -1242,9 +1418,9 @@
         }
 
         function allBlock() {
-            $('.addinfo_block').css('display', 'block');
-            $('.adver_msg_block').css('display', 'block');
-            $('.addchannel_block').css('display', 'block');
+            $('.addinfo_block').removeClass('display-none');
+            $('.adver_msg_block').removeClass('display-none');
+            $('.addchannel_block').removeClass('display-none');
             $('.channel_add_table').removeClass('display-none');
             $('.type_table_no_info').addClass('display-none');
 
@@ -1254,9 +1430,9 @@
         }
 
         function BlockNone() {
-            $('.addinfo_block').css('display', 'block');
-            $('.adver_msg_block').css('display', 'none');
-            $('.addchannel_block').css('display', 'none');
+            $('.addinfo_block').removeClass('display-none');
+            $('.adver_msg_block').addClass('display-none');
+            $('.addchannel_block').addClass('display-none');
             $('.channel_add_table').addClass('display-none');
 
             $('div[name="sel_box"] input[type="text"]').val('');
@@ -1270,9 +1446,9 @@
         }
 
         function NoneBlock() {
-            $('.addinfo_block').css('display', 'none');
-            $('.adver_msg_block').css('display', 'none');
-            $('.addchannel_block').css('display', 'block');
+            $('.addinfo_block').addClass('display-none');
+            $('.adver_msg_block').addClass('display-none');
+            $('.addchannel_block').removeClass('display-none');
             $('.channel_add_table').removeClass('display-none');
             $('.type_table_no_info').addClass('display-none');
 
@@ -1282,9 +1458,9 @@
         }
 
         function allNone() {
-            $('.addinfo_block').css('display', 'none');
-            $('.adver_msg_block').css('display', 'none');
-            $('.addchannel_block').css('display', 'none');
+            $('.addinfo_block').addClass('display-none');
+            $('.adver_msg_block').addClass('display-none');
+            $('.addchannel_block').addClass('display-none');
             $('.channel_add_table').addClass('display-none');
 
             $('div[name="sel_box"] input[type="text"]').val('');
@@ -1355,11 +1531,17 @@
         //강조유형 - 아이템리스트 - 이미지
         $('#img_check').on('click', function () {
             $('.itemlist_img_on').toggleClass('display-none');
+            if($('.itemlist_img_on').hasClass('display-none')){
+                $('div[name="emph_sel_box"] input[type="text"]').val("");
+            }
         })
 
         //강조유형 - 아이템리스트 - 헤더
         $('#header_check').on('click', function () {
             $('.header-check-on').toggleClass('display-none');
+            if($('.header-check-on').hasClass('display-none')){
+                $('.header-check-on').val("");
+            }
         })
 
         //강조유형 - 아이템리스트 - 하이라이트
@@ -1408,138 +1590,15 @@
         getDBValue();
         //load 시 byte 계산
 
-
-        //카카오 링크 버튼 생성 event
-        $('.kakaoLinkBtn').on('click', function () {
-            let btnState = $(this).val();
-            let link = $('.kakao_btn_link');
-            let name = $('.kakao_btn_name');
-            let btnLink = link.val();
-            let btnName = name.val();
-
-            if (btnState == '생성') {
-                if (btnName != '') {
-                    if (btnLink != '') {
-                        if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
-                            //name.attr('disabled', true);
-                            //link.attr('disabled', true);
-                            name.attr('readonly', true);
-                            link.attr('readonly', true);
-                            $(this).val('삭제');
-                        } else {
-                            popup.popAlert('정확한 링크 URL을 입력해주세요.');
-                            return false;
-                        }
-                    } else {
-                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
-                        return false;
-                    }
-                } else {
-                    popup.popAlert('메시지에 노출될 링크 버튼의 이름을 입력해주세요!');
-                    return false;
-                }
-            } else {
-                $(this).val('생성');
-                $(this).parents('#kakao').find('.kakao_link').remove();
-                link.val('');
-                name.val('');
-                //name.attr('disabled', false);
-                //link.attr('disabled', false);
-                name.attr('readonly', false);
-                link.attr('readonly', false);
-            }
-        });
-
-
-        // MMS, 카카오 이미지 삭제
-        $('.delete_img').on('click', function () {
-            let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
-            let imgcount = imgElement.length;
-            let imgUrl = $(this).next('.txt_input').val();
-            let data = $(this).attr('data');
-
-            if (imgcount > 0 || imgUrl != '') {
-                if (data == "mms") {
-                    // 문자 : 이미지 X버튼 누르면 초기화
-                    $("input[name='mds_img_cd']").val('');
-                    $("#smsImage").val('');
-                    if ($("input[name='mms_imgurl']") != '') {
-                        $("input[name='mms_imgurl']").val('')
-                        $("#js-sms-img").empty();
-                    }
-                } else if (data == 'kakao') {
-                    if ($('input[name="kko_img_cd"]').val() != '') {
-                        // 카카오 : 이미지 X버튼 누르면 초기화
-                        $("#kakaoImage").val('');
-                        $("input[name='kko_img_cd']").val('');
-                        $("input[name='kko_view_img_url']").val('');
-                        $('input[name="prevImg"]').empty();
-                    }
-                }
-            } else {
-                return false;
-            }
-        });
-
         // 템플릿 코드 자동 생성
         $('.tmplCodeBtn').on('click', function () {
             $('#tmplCode').val(uuidv4())
         });
 
-        $(document).on('click', '#rcs .vertical_delete_img', function () {
-            let deleteInx = $('#rcs .vertical_delete_img').index(this);
-            let imgElement = $('.img_area').eq(deleteInx).children();
-            let imgcount = imgElement.length;
-            let imgUrl = $(this).next('.txt_input').val();
-            $("#verticalImg").val('')
-
-            if (imgcount > 0 || imgUrl != '') {
-                $(this).next('.txt_input').val('');
-                imgElement.remove();
-            } else {
-                return false;
-            }
-        });
 
         // 프리뷰에서 저장 버튼 누르기
         $(document).on('click', '#saveBtn', function () {
             $("#form").submit();
-        });
-
-        // RCS 선택 이미지 삭제
-        $(document).on('click', '#rcs .delete_img', function () {
-            let deleteInx = $('#rcs .delete_img').index(this);
-            let imgElement = $('.img_area').eq(deleteInx).children();
-            let imgcount = imgElement.length;
-            let imgUrl = $(this).next('.txt_input').val();
-
-            if (deleteInx == 0) {
-                // 1번 이미지 카드 삭제
-                $('input[name ="rcs_img_cd_1"]').val('');
-            } else if (deleteInx == 1) {
-                // 2번 이미지 카드 삭제
-                $('input[name ="rcs_img_cd_2"]').val('');
-            } else if (deleteInx == 2) {
-                // 3번 이미지 카드 삭제
-                $('input[name ="rcs_img_cd_3"]').val('');
-            } else if (deleteInx == 3) {
-                // 4번 이미지 카드 삭제
-                $('input[name ="rcs_img_cd_4"]').val('');
-            } else if (deleteInx == 4) {
-                // 5번 이미지 카드 삭제
-                $('input[name ="rcs_img_cd_5"]').val('');
-            } else if (deleteInx == 5) {
-                // 6번 이미지 카드 삭제
-                $('input[name ="rcs_img_cd_6"]').val('');
-            }
-
-            if (imgcount > 0 || imgUrl != '') {
-                $(this).next('.txt_input').val('');
-                imgElement.remove();
-            } else {
-                return false;
-            }
         });
 
         // 카카오 개인 변수 option click event
@@ -1778,7 +1837,8 @@
 
     // 템플릿 명 유효성 검사
     function isCheckTemplateName() {
-        const tmpl_nm = $("input[name='templateName']").val();
+        const seq = $("#tmplSeq").val();
+        const tmpl_nm = $("input[name='newTemplateName']").val();
         const send_key = $('#send_key').val();
         const res = function (response) {
             if (response.status == 200) {
@@ -1789,8 +1849,8 @@
                 popup.popAlert(response.msg)
             }
         }
-        let param = {tmpl_nm: tmpl_nm, send_key: send_key}
-        com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        let param = {seq :seq ,tmpl_nm: tmpl_nm, send_key: send_key}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckUpdTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 템플릿 등록
@@ -1811,102 +1871,113 @@
         data.categoryCode = $('.bizContsVal .value').attr("data")
 
         // --------- 버튼 정보 ---------
-        let buttonLst = [];
-        const butLst = $('#template_btn_table tbody .channel_add_table:visible');
-        for (let idx = 0; idx < butLst.length; idx++) {
-            let button = butLst[idx]
-            let obj = new Object();
-            obj.ordering = idx + 1
-            obj.linkType = $(button).find('.btn_type option:selected').val();
-            obj.linkTypeName = $(button).find('.btn_type option:selected').html();
-            obj.name = $(button).find(`[name='name']`).val();
+        const butLst = $('#template_btn_table tbody tr.use_btn:visible');
+        if(butLst.length > 0){
+            let buttonLst = [];
+            for (let idx = 0; idx < butLst.length; idx++) {
+                let button = butLst[idx]
+                let obj = new Object();
+                obj.ordering = idx + 1
+                obj.linkType = $(button).find('.btn_type option:selected').val();
+                obj.linkTypeName = $(button).find('.btn_type option:selected').html();
+                obj.name = $(button).find(`[name='name']`).val();
 
-            // 버튼 링크
-            const btnInpLst1 = $(button).find(".webLink-on input:visible");
-            const btnInpLst2 = $(button).find(".appLink-on input:visible");
-            const btnInpLst3 = $(button).find(".plugin-on input:visible");
-            let btnLst;
-            if (btnInpLst1.length > 0) {
-                btnLst = btnInpLst1
-            } else if (btnInpLst2.length > 0) {
-                btnLst = btnInpLst2
-            } else {
-                btnLst = btnInpLst3
-            }
+                // 버튼 링크
+                const btnInpLst1 = $(button).find(".webLink-on input:visible");
+                const btnInpLst2 = $(button).find(".appLink-on input:visible");
+                const btnInpLst3 = $(button).find(".plugin-on input:visible");
+                let btnLst;
+                if (btnInpLst1.length > 0) {
+                    btnLst = btnInpLst1
+                } else if (btnInpLst2.length > 0) {
+                    btnLst = btnInpLst2
+                } else {
+                    btnLst = btnInpLst3
+                }
 
-            for (btnInf of btnLst) {
-                obj[$(btnInf).attr("name")] = $(btnInf).val();
+                for (btnInf of btnLst) {
+                    obj[$(btnInf).attr("name")] = $(btnInf).val();
+                }
+                buttonLst.push(obj);
             }
-            buttonLst.push(obj);
+            data.buttons = buttonLst;
         }
-        data.buttons = buttonLst;
 
         //  ------ 바로 연결  ---------
-        let quickReplies = [];
+
         const quickLst = $('#template_link_table tbody tr:visible');
-        for (quick of quickLst) {
+        if(quickLst.length > 0) {
+            let quickReplies = [];
+            for (quick of quickLst) {
 
-            let obj = new Object();
-            obj.linkType = $(quick).find('#table_link_type option:selected').val();
-            obj.name = $(quick).find(`[name='name']`).val();
+                let obj = new Object();
+                obj.linkType = $(quick).find('#table_link_type option:selected').val();
+                obj.name = $(quick).find(`[name='name']`).val();
 
-            const linkLst1 = $(quick).find(".appLink-on:visible");
-            const linkLst2 = $(quick).find(".webLink-on:visible");
-            let linkLst = linkLst1.length > 0 ? linkLst1 : linkLst2;
+                const linkLst1 = $(quick).find(".appLink-on:visible");
+                const linkLst2 = $(quick).find(".webLink-on:visible");
+                let linkLst = linkLst1.length > 0 ? linkLst1 : linkLst2;
 
-            const inpLst = $(linkLst).find('input')
-            for (link of inpLst) {
-                obj[$(link).attr("name")] = $(link).val()
+                const inpLst = $(linkLst).find('input')
+                for (link of inpLst) {
+                    obj[$(link).attr("name")] = $(link).val()
+                }
+                quickReplies.push(obj);
             }
-            quickReplies.push(obj);
+            data.quickReplies = quickReplies
+            //  ------ 바로 연결  end---------
         }
-        data.quickReplies = quickReplies
-        //  ------ 바로 연결  end---------
-
 
         //  ------ 아이템 하이라이트  ---------
         //  itemHigh => 이미지 추가
-        let itemHigh = new Object();
+
         const highLst = $('.highlight_div input[type="text"]:visible');
-        for (high of highLst) {
-            itemHigh[$(high).attr("name")] = $(high).val();  // 이미지 추가
+        if(highLst.length > 0) {
+            let itemHigh = new Object();
+            for (high of highLst) {
+                itemHigh[$(high).attr("name")] = $(high).val();  // 이미지 추가
+            }
+            let imgUrl = $('#imageUrl').val()
+            if(imgUrl != undefined && imgUrl != ''){
+                itemHigh.imageUrl = $('#imageUrl').val();
+            }
+            data.templabbbteItemHighlight = itemHigh;
         }
-        itemHigh.imageUrl = $('#imageUrl').val();
-        data.templateItemHighlight = itemHigh;
+
         //  ------ 아이템 하이라이트 end ---------
 
 
         //  ------ 아이템 리스트  ---------
-        let tmplItem = new Object();
-        let itemList = [];
         const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
-        for (selItemTr of selItemTrLst) {
-            const selItemLst = $(selItemTr).find('input[type="text"]:visible');
-            let item = new Object();
-            for (selItem of selItemLst) {
-                item[$(selItem).attr("data_name")] = $(selItem).val();  // 이미지 추가
+        if(selItemTrLst.length >0){
+            let tmplItem = new Object();
+            let itemList = [];
+            for (selItemTr of selItemTrLst) {
+                const selItemLst = $(selItemTr).find('input[type="text"]:visible');
+                let item = new Object();
+                for (selItem of selItemLst) {
+                    item[$(selItem).attr("data_name")] = $(selItem).val();  // 이미지 추가
+                }
+                itemList.push(item);
             }
-            itemList.push(item);
+            tmplItem.list = itemList;
+            //  ------ 아이템 리스트 end ---------
+
+            //  ------ 아이템 요약정보  ---------
+            const itemInfoLst = $('.itemInfo_div input[type="text"]:visible');
+            if(itemInfoLst.length >0) {
+                let itemInfo = new Object();
+                for (info of itemInfoLst) {
+                    itemInfo[$(info).attr("data_name")] = $(info).val();  // 이미지 추가
+                }
+                tmplItem.summary = itemInfo;
+            }
+
+            data.templateItem = tmplItem;
+            //  ------ 아이템 요약정보 end ---------
         }
-        tmplItem.list = itemList;
-        //  ------ 아이템 리스트 end ---------
-
-        //  ------ 아이템 요약정보  ---------
-        let itemInfo = new Object();
-        const itemInfoLst = $('.itemInfo_div input[type="text"]:visible');
-        for (info of itemInfoLst) {
-            console.log(info)
-            itemInfo[$(info).attr("data_name")] = $(info).val();  // 이미지 추가
-        }
-        tmplItem.summary = itemInfo;
-
-        data.templateItem = tmplItem;
-        //  ------ 아이템 요약정보 end ---------
-
         console.log(data)
-
-        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
-
+        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplUpate.service?seq='+$('#tmplSeq').val(), JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 발신자 리스트 불러오기
@@ -2164,6 +2235,8 @@
         }
         data.append("img_nm", imgNm);
 
+        console.log(data)
+
         com_ajax.ajax_file('${baseURL}/cont/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
@@ -2174,7 +2247,7 @@
         let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
         let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgOrgNm"]').val();    // 이미지 파일 본명
         let kkoImgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val(); // 이미지 파일 url
-        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 아이템 이미지 파일 url
+        let imgUrl = `${fn:substring(filePath,0,fn:length(filePath)-2)}` +  $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 아이템 이미지 파일 url
 
         if (imgLength > 0) {
             imageCreate(imgType, kkoImgUrl, imgUrl, ImgNm, imgCheck);
@@ -2192,15 +2265,51 @@
                 $("#tmplImgNm").val(ImgNm);
                 $('#tmplImgCd').val(imgCheck);
                 // $('#kakaoImage').parent('.td').removeClass('outline');
-                $('div[name="newImgBtn"]').hide();
-                $('div[name="prevImg"]').show().html('<a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
+                $('div[name="newImgBtn"]').addClass('display-none');
+                $('div[name="prevImg"]').removeClass('display-none').html('<div class="delete_img" data="img" style="right: 10px;"><img src="/image/btn_delete1.png" alt="삭제"> </div><a href="' + kkoImgUrl + '" target="_blank">' + '<img src="' + kkoImgUrl + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
             } else if (type == "img_item") {
-                $("#imgUrl").val(imageUrl);
-                $('div[name="newItemImgBtn"]').hide();
-                $('div[name="prevItemImg"]').show().html('<a href="' + imageUrl + '" target="_blank">' + '<img src="' + imageUrl + '" onerror="this.src=\'/image/bg_none.png\'" style="height: 175px; width: 175px;" />' + '</a>');
+                $("#imageUrl").val(kkoImgUrl);
+                $('#itemImgSeq').val(imgCheck);
+                $('div[name="newItemImgBtn"]').addClass('display-none');
+                $('div[name="prevItemImg"]').removeClass('display-none').html('<div class="delete_img" data="img_item" style="right: 20px; top: 110px;"><img src="/image/btn_delete1.png" alt="삭제"> </div> <a href="' + kkoImgUrl + '" target="_blank">' + '<img src="' + kkoImgUrl + '" onerror="this.src=\'/image/bg_none.png\'" style="height: 175px; width: 175px;" />' + '</a>');
             }
         }
     }
+
+
+    // 이미지 삭제
+    $(document).on('click','.delete_img', function () {
+        let data = $(this).attr('data');
+
+        if (data == "img") {
+            $("#tmplImgUrl").val('');
+            $("#tmplImgNm").val('');
+            $('#tmplImgCd').val('');
+            $('div[name="newImgBtn"]').removeClass('display-none');
+            $('div[name="prevImg"]').addClass('display-none').html('');
+        } else if (data == 'img_item') {
+            $("#imageUrl").val('');
+            $('#itemImgSeq').val('');
+            $('div[name="newItemImgBtn"]').removeClass('display-none');
+            $('div[name="prevItemImg"]').addClass('display-none').html('');
+        }
+    });
+
+
+    //개인화 변수 드래그
+    $(document).on('dragstart', function(ev){
+        ev.originalEvent.dataTransfer.setData("text", $(ev.target).attr("data"));
+    });
+
+    $(document).on('drop', function(ev){
+        dropTarget = $(ev.target);
+    });
+
+    $(document).on('dragend', function(ev){
+        let value = dropTarget.val();
+        dropTarget.val("");
+        dropTarget.val(value);
+    });
 
 </script>
 

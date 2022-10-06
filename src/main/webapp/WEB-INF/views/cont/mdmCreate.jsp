@@ -1630,7 +1630,13 @@
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
         let kakaoTitle = $('.kakaoTitle');
-        let kakaoTxt = $('.viewer_area:visible .kakao_txt');
+        let kkoType = $("input[name='kko_format_type']:checked").val();
+        let kakaoTxt = null;
+        if(kkoType == "kko_ft"){
+            kakaoTxt = $("textarea.kakao_txt");
+        }else{
+            kakaoTxt =  $("input.kakao_txt");
+        }
         let kakaoSenderNo = $('.smsNumber_kko');
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
@@ -2156,6 +2162,7 @@
             previewSlideLoad();
         }
         let data = $("#form").serializeArray();
+        console.log(data)
         com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
