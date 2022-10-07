@@ -2,6 +2,7 @@ package com.omnilab.micrm.model
 
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
 
@@ -61,5 +62,29 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
             obj
         } else{
             Object()
+        }
+
+    var comment_json: ArrayList<MutableMap<String, Any>>? = null
+        get() = if (!cmt_json.isNullOrEmpty() && field == null) {
+            val g = GsonBuilder().create();
+            val obj = g.fromJson(cmt_json, Object::class.java)
+            val lst = ArrayList<MutableMap<String, Any>>()
+            if(obj is List<*>){
+                for(i in obj){
+                    if (i is Map<*, *>) {
+                        lst.add(i as MutableMap<String, Any>)
+                    }else {
+                        lst.add(g.fromJson(i.toString() , Map::class.java)  as MutableMap<String, Any>)
+                    }
+                }
+                lst
+            }else if(obj is Map<*, *>){
+                lst.add(obj as MutableMap<String, Any>)
+                lst
+            } else{
+                ArrayList()
+            }
+        } else{
+            ArrayList()
         }
 }

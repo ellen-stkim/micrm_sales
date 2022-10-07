@@ -12,7 +12,10 @@ interface KkoAtTmplDao {
     fun selKkoAtTmpl(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto?
     fun insNewTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int
     fun selTmplViewByTmplDto(seq: Tblmi_kko_at_tmplDto): AtTmpl_viewDto
-    fun selTmplBytmplDto(tmplDto: Tblmi_kko_at_tmplDto): AtTmpl_viewDto
+    fun selTmplBytmplDto(tmplDto: AtTmpl_searchDto): AtTmpl_viewDto
     fun updTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int
+    fun updTmplDtoBySeq(tmplDto: Tblmi_kko_at_tmplDto): Int
+    fun selKkoAtTmplByGrpCd(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto?
+
 
 }

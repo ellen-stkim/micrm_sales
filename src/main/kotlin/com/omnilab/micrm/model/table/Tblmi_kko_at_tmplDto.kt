@@ -15,6 +15,8 @@ open class Tblmi_kko_at_tmplDto {
     var secur_flag: String? = null
     var tmpl_status: String? = null
     var kep_status: String? = null
+    var tmpl_dormant: String? = null
+    var tmpl_block: String? = null
     var tmpl_msg_tp: String? = null
     var tmpl_ext: String? = null
     var tmpl_ad: String? = null
@@ -29,6 +31,7 @@ open class Tblmi_kko_at_tmplDto {
     var item_highlight_json: String? = null
     var item_img_seq: Int? = null
     var item_json: String? = null
+    var cmt_json: String? = null
 
     var etc_1: String? = null
     var etc_2: String? = null
@@ -54,6 +57,10 @@ open class Tblmi_kko_at_tmplDto {
         this.send_key = send_key
         this.tmpl_cd = tmpl_cd
     }
+    constructor(img_seq:Int?,item_img_seq:Int?){
+        this.img_seq = img_seq
+        this.item_img_seq = item_img_seq
+    }
 
     constructor(seq:Int?,upd_id:String?,use_yn:String?){
         this.seq = seq
@@ -61,10 +68,16 @@ open class Tblmi_kko_at_tmplDto {
         this.use_yn = use_yn
     }
 
-    constructor(img_seq:Int?,item_img_seq:Int?){
-        this.img_seq = img_seq
-        this.item_img_seq = item_img_seq
+    constructor(seq:Int?,tmpl_status:String?,kep_status:String?,tmpl_dormant:String?,tmpl_block:String?){
+        this.seq = seq
+        this.tmpl_status = tmpl_status
+        this.kep_status = kep_status
+        this.tmpl_dormant = tmpl_dormant
+        this.tmpl_block = tmpl_block
     }
+
+
+
 
 
 

@@ -27,7 +27,7 @@
                     <label class="custom_check1">
                         <input type="checkbox" name="tmpl_cd" value="${tmpl.tmpl_nm}" data="${tmpl.tmpl_cd}"/><span></span></label>
                     <ul class="sms_type cf">
-                        <li>검수 승인</li>
+                        <li>${tmpl.kep_status_nm}</li>
                     </ul>
                 </div>
                 <div class="row_top cf sms_head">
