@@ -41,12 +41,20 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
         return sqlSession.selectOne("selTmplViewByTmplDto",seq)
     }
 
-    override fun selTmplBytmplDto(tmplDto: Tblmi_kko_at_tmplDto):AtTmpl_viewDto {
+    override fun selTmplBytmplDto(tmplDto: AtTmpl_searchDto):AtTmpl_viewDto {
         return sqlSession.selectOne("selTmplBytmplDto",tmplDto)
     }
 
     override fun updTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int {
         return sqlSession.update("updTmplDto",tmplDto)
+    }
+
+    override fun updTmplDtoBySeq(tmplDto: Tblmi_kko_at_tmplDto): Int {
+        return sqlSession.update("updTmplDtoBySeq",tmplDto)
+    }
+
+    override fun selKkoAtTmplByGrpCd(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto? {
+        return sqlSession.selectOne("selKkoAtTmplByGrpCd",dto)
     }
 
 

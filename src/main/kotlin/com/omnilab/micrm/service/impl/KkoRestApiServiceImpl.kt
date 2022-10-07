@@ -2,6 +2,7 @@ package com.omnilab.micrm.service.impl
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.common.FilenameAwareInputStreamResource
@@ -65,7 +66,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     override fun updateAtTmpl(newDto: Kko_at_tmplDto): MutableMap<String, Any> {
         val token = getToken(url);
 
-        //        header 설정
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         headers.set("Authorization", "Bearer $token")
@@ -77,6 +77,19 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
         val re_map: MutableMap<String, Any> = restExchange(urlString!!, HttpMethod.PUT, HttpEntity(gson.toJson(newDto), headers))
 
+        return re_map
+    }
+
+    override fun getTmplDetail(tmplCd: String?, sendKey: String?): MutableMap<String, Any> {
+        val token = getToken(url)
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+        var urlString = "$url/$version/resell/template/select/$sendKey/$tmplCd"
+        val re_map: MutableMap<String, Any> = restExchange(urlString!!, HttpMethod.GET, HttpEntity(null, headers))
         return re_map
     }
 
@@ -102,8 +115,8 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     }
 
     override fun uploadTmplItemImg(file: MultipartFile): MutableMap<String, Any>? {
-        val token = getToken(url);
-        //        header 설정
+        val token = getToken(url)
+
         val headers = HttpHeaders()
         headers.contentType = MediaType.MULTIPART_FORM_DATA
         headers.set("Authorization", "Bearer $token")
@@ -119,6 +132,20 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(map, headers))
 
         return re_map
+    }
+
+    override fun cancleKepReq(tmplCd: String?, sendKey: String?): MutableMap<String, Any>? {
+        val token = getToken(url);
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+        var urlString = "$url/$version/resell/template/cancel/request/${sendKey}/${tmplCd}"
+
+//        val re_map: MutableMap<String, Any> =
+        return restExchange(urlString!!, HttpMethod.PUT, HttpEntity(null, headers))
     }
 
     override fun uploadFtImg(file: MultipartFile, imgType: String): MutableMap<String, Any> {

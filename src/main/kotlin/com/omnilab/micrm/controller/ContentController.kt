@@ -1084,7 +1084,6 @@ class ContentController  {
     @PostMapping("/kko/atTmplLst.ajax")
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
         val view = ModelAndView("cont/kko/ajax/tmplListAjax")
-        logger.error("dfjndilsngl")
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
@@ -1289,13 +1288,14 @@ class ContentController  {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         val view = ModelAndView("cont/kko/detailTmpl")
-        val map = kkoMsgService.tmplCreateLst();
+        val map = kkoMsgService.tmplDataLst();
 
         view.addObject("dto", kkoMsgService.selTmplDataBySeq(seq))
         view.addObject("cateLst",map["cateLst"]);
         view.addObject("cateSubLst",map["cateSubLst"])
         view.addObject("msgTpLst", map["msgTpLst"])
         view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cmtStLst", map["cmtStLst"])
         view.addObject("cateSubGidLst", map["cateSubGidLst"])
         view.addObject("btnLinkLst", map["btnLinkLst"])
         view.addObject("btnLst", map["btnLst"])
@@ -1330,9 +1330,96 @@ class ContentController  {
     @PostMapping("/kko/tmplUpate.service")
     fun tmplUpdateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
                           , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int, principal: Principal): Any? {
-        val tmplDto :Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(seq,principal.name,"Y")
+        val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,principal.name,"Y")
         val map = kkoMsgService.updateTmpl(dto,tmplDto)
         return map
     }
+
+    /**
+     * @Method Name  : cancleTmplReq
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 검수요청 취소
+     * @title : 알림톡 템플릿 검수요청 취소
+     */
+    @ResponseBody
+    @PostMapping("/kko/cancleTmplReq.service")
+    fun cancleTmplReq(req: HttpServletRequest, rep: HttpServletResponse, @ModelAttribute searchDto: AtTmpl_searchDto, session: HttpSession, principal: Principal): Any? {
+        return kkoMsgService.cancleTmplReq(searchDto,principal.name)
+    }
+
+    /**
+     * @Method Name  : updTmplSt
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 상태 업데이트
+     * @title : 알림톡 템플릿 상태 업데이트
+     */
+    @ResponseBody
+    @PostMapping("/kko/updTmplSt.service")
+    fun updTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                  , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+        return kkoMsgService.updAtTmplData(searchDto,principal.name)
+    }
+
+    /**
+     * @Method Name  : removeTmpl
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 검수요청
+     * @title : 알림톡 템플릿 검수요청
+     */
+    @ResponseBody
+    @PostMapping("/kko/updReqTmplSt.service")
+    fun updReqTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                     , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+        return kkoMsgService.reqTmplST(searchDto,principal.name)
+    }
+
+    /**
+     * @Method Name  : removeTmpl
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 삭제
+     * @title : 알림톡 템플릿 삭제
+     */
+    @ResponseBody
+    @PostMapping("/kko/removeTmpl.service")
+    fun removeTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                      , @RequestBody dto : Kko_at_tmplDto, principal: Principal): Any? {
+        logger.error("removeTmpl.service")
+
+        return null
+    }
+
+
 
 }

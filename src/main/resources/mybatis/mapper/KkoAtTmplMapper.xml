@@ -5,7 +5,7 @@
 <mapper namespace="mybatis.mapper.KkoAtTmplMapper">
     <cache/>
 
-    <select id="selTmplBytmplDto" resultType="AtTmpl_viewDto" parameterType="Tblmi_kko_at_tmplDto">
+    <select id="selTmplBytmplDto" resultType="AtTmpl_viewDto" parameterType="AtTmpl_searchDto">
         select  a.*,
                CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
                c.img_nm,
@@ -18,6 +18,7 @@
                         AND b.use_yn ='Y'
                 LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
         where a.seq = #{seq}
+            and b.usr_grp_cd = #{usr_grp_cd}
     </select>
 
     <select id="selTmplViewByTmplDto" resultType="AtTmpl_viewDto" parameterType="Tblmi_kko_at_tmplDto">
@@ -221,6 +222,40 @@
         </where>
     </select>
 
+    <select id="selKkoAtTmplByGrpCd" resultType="Tblmi_kko_at_tmplDto" parameterType="AtTmpl_searchDto">
+        SELECT *
+        FROM tblmi_kko_at_tmpl AS a
+            INNER JOIN tblmi_set_lst AS b ON  a.SEND_KEY = b.list_val
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and a.seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
+                and a.send_key = #{send_key}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and a.tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
+                and a.tmpl_cd = #{tmpl_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
+                and a.chan_id = #{chan_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
+                and a.kep_status = #{kep_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and a.use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
+                and a.tmpl_status = #{tmpl_status}
+            </if>
+            AND b.list_dt_id = 'DMTP03'
+            AND b.USR_GRP_CD = #{usr_grp_cd}
+        </where>
+    </select>
+
     <insert id="insNewTmplDto" parameterType="Tblmi_kko_at_tmplDto">
         INSERT INTO `tblmi_kko_at_tmpl`
         (`SEND_KEY`, `TMPL_CD`, `TMPL_NM`, `TMPL_CONT`, `IMG_SEQ`, `SECUR_FLAG`,
@@ -264,7 +299,7 @@
                , now())
     </insert>
 
-
+<!-- null 값도 update -->
     <update id="updTmplDto" parameterType="Tblmi_kko_at_tmplDto">
         UPDATE tblmi_kko_at_tmpl
             SET tmpl_cd = #{tmpl_cd},
@@ -300,8 +335,47 @@
                 upd_id = #{upd_id},
                 upd_dt = now()
         WHERE seq = #{seq}
+    </update>
 
-
+    <update id="updTmplDtoBySeq" parameterType="Tblmi_kko_at_tmplDto">
+        UPDATE tblmi_kko_at_tmpl
+            <trim prefix="SET" prefixOverrides=",">
+                upd_id = #{upd_id}
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">, tmpl_cd = #{tmpl_cd}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">, tmpl_nm = #{tmpl_nm}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cont)">, tmpl_cont = #{tmpl_cont}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_seq)">, img_seq = #{img_seq}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(secur_flag)">, secur_flag = #{secur_flag}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">, tmpl_status = #{tmpl_status}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">, kep_status = #{kep_status}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_msg_tp)">, tmpl_msg_tp = #{tmpl_msg_tp}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_ext)">, tmpl_ext = #{tmpl_ext}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_ad)">, tmpl_ad = #{tmpl_ad}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_tit)">, tmpl_tit = #{tmpl_tit}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_subtit)">, tmpl_subtit = #{tmpl_subtit}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_empsize_tp)">, tmpl_empsize_tp = #{tmpl_empsize_tp}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cate_cd)">, cate_cd = #{cate_cd}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_tit)">, tmpl_header = #{tmpl_header}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(button_json)">, button_json = #{button_json}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(quick_repl_json)">, quick_repl_json = #{quick_repl_json}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(item_highlight_json)">, item_highlight_json = #{item_highlight_json}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(item_img_seq)">, item_img_seq = #{item_img_seq}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(item_json)">, item_json = #{item_json}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cmt_json)">, cmt_json = #{cmt_json}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">, use_yn = #{use_yn}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_1)">, etc_1 = #{etc_1}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_1)">, etc_1 = #{etc_1}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_2)">, etc_2 = #{etc_2}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_3)">, etc_3 = #{etc_3}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_4)">, etc_4 = #{etc_4}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_5)">, etc_5 = #{etc_5}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_6)">, etc_6 = #{etc_6}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_7)">, etc_7 = #{etc_7}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_8)">, etc_8 = #{etc_8}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_9)">, etc_9 = #{etc_9}</if>
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_10)">, etc_10 = #{etc_10}</if>
+            </trim>
+        WHERE seq = #{seq}
     </update>
 </mapper>
 

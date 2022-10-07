@@ -29,6 +29,20 @@
                 </ul>
             </div>
         </div>
+        <div class="row tooltip_area bottom-border min-width cf">
+            <div class="left">
+                현재상태??
+            </div>
+            <div class="right tmplAcDiv">
+                <p id="updTmplBtn"
+                   class="btn_basic checkDelete left left-border">상태 업데이트</p>
+                <p id="reqCancleBtn" class="btn_basic rejection left left-border ${dto.kep_status eq 'I'? '' : 'display-none'}">검수요청 취소</p>
+                <a id="reqTmplBtn"
+                   class="btn_basic ico_test left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}">템플릿 검수요청</a>
+                <a href="./removeTmpl.service?seq=${dto.seq}"
+                   class="btn_basic delete left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}" >삭제</a>
+            </div>
+        </div>
         <!-- row 영역 끝 -->
         <!-- section 영역 시작 -->
         <div class="section">
@@ -237,9 +251,9 @@
                                         </div>
                                     </div>
                                     <div name="emph_sel_box">
-                                    <input id="tmplImgSeq" name="img_seq"  value="${dto.img_seq}" readonly hidden>
-                                    <input id="tmplImgUrl" name="newTemplateImageUrl"  value="${dto.kko_img_url}" readonly hidden>
-                                    <input id="tmplImgNm" name="newTemplateImageName"  value="${dto.img_org_nm}" readonly hidden>
+                                        <input id="tmplImgSeq" name="img_seq"  value="${dto.img_seq}" readonly hidden>
+                                        <input id="tmplImgUrl" name="newTemplateImageUrl"  value="${dto.kko_img_url}" readonly hidden>
+                                        <input id="tmplImgNm" name="newTemplateImageName"  value="${dto.img_org_nm}" readonly hidden>
                                     </div>
                                     <div class="emphItemList_block ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''} " name="emph_sel_box">
                                         <div class="block emphItemList_img">
@@ -737,12 +751,12 @@
                                                     <c:forEach var="comment" items="${dto.comment_json}" varStatus="st" >
                                                         <tr class="itemList_add_table1">
                                                             <td>${comment.commentUserName}</td>
+                                                            <td>${comment.commentCreateAt}</td>
                                                             <td>
-                                                                    ${comment.commentCreateAt}
-                                                            </td>
-                                                            <td>
-                                                                    ${comment.commentStatus}
-                                                            </td>
+                                                                <c:forEach var="cmtSt" items="${cmtStLst}">
+                                                                    <c:if test="${cmtSt.cd_val eq comment.commentStatus}">${cmtSt.cd_desc}</c:if>
+                                                                </c:forEach>
+                                                                    </td>
                                                             <td style="line-height: 1.5;">
                                                                     ${comment.commentContent}
                                                             </td>
@@ -843,28 +857,48 @@
 
 
 <script>
-    let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
-    let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
-    function getDBValue() {
-        let dbValue = $('input[name="dbInfo"]:checked').val();
-        let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
-        let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
+<%--    href="./cancleTmplReq.service?seq=${dto.seq}" href="./updTmplSt.service?seq=${dto.seq}"
+--%>
 
-        $('.rcsTitleVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsContsVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsTitleVal[name="defaultDB"] .option').html(defaultDB);
-        $('.rcsContsVal[name="defaultDB"] .option').html(defaultDB);
-
-        if (dbValue == '0') {
-            $('div[name="edmDB"]').show();
-            $('div[name="defaultDB"]').hide();
+//  검수요청 취소
+    $(document).on('click','#reqCancleBtn',()=>{
+        const seq = $("#tmplSeq").val();
+        const res = function (response) {
+            popup.popAlert(response.msg)
+            if (response.status == 200) {
+                location.reload()
+            }
         }
-        if (dbValue == '1') {
-            $('div[name="edmDB"]').hide();
-            $('div[name="defaultDB"]').show();
+        let param = {seq :seq}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/cancleTmplReq.service', param, res, '${_csrf.headerName}', '${_csrf.token}')
+    })
+
+//  상태 업데이트
+    $(document).on('click','#updTmplBtn',()=>{
+        const seq = $("#tmplSeq").val();
+        const res = function (response) {
+            popup.popAlert(response.msg)
+            if (response.status == 200) {
+                location.reload()
+            }
         }
-    }
+        let param = {seq :seq}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/updTmplSt.service', param, res, '${_csrf.headerName}', '${_csrf.token}')
+    })
+
+    //  검수요청
+    $(document).on('click', '#reqTmplBtn', () => {
+        const seq = $("#tmplSeq").val();
+        const res = function (response) {
+            popup.popAlert(response.msg)
+            if (response.status == 200) {
+                location.reload()
+            }
+        }
+        let param = {seq: seq}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/updReqTmplSt.service', param, res, '${_csrf.headerName}', '${_csrf.token}')
+    })
 
     /*----- 알림톡 템플릿 테이블 ------*/
     // 버튼 열 추가
@@ -1622,12 +1656,6 @@
         });
         /*-------  알림톡 템플릿 끝  ------*/
 
-        $('input[name="dbInfo"]').on('change', function () {
-            getDBValue();
-        });//end
-        getDBValue();
-        //load 시 byte 계산
-
         // 템플릿 코드 자동 생성
         $('.tmplCodeBtn').on('click', function () {
             $('#tmplCode').val(uuidv4())
@@ -1874,25 +1902,25 @@
     });
 
     // 템플릿 명 유효성 검사
-    function isCheckTemplateName() {
-        const seq = $("#tmplSeq").val();
-        const tmpl_nm = $("input[name='newTemplateName']").val();
-        const send_key = $('#send_key').val();
-        const res = function (response) {
-            if (response.status == 200) {
-                popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "createTmpl()");
-
-            } else {
-                // 중복된 명칭 존재
-                popup.popAlert(response.msg)
-            }
-        }
-        let param = {seq :seq ,tmpl_nm: tmpl_nm, send_key: send_key}
-        com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckUpdTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
-    }
-
     // 템플릿 등록
-    function createTmpl() {
+
+function isCheckTemplateName() {
+    const seq = $("#tmplSeq").val();
+    const tmpl_nm = $("input[name='newTemplateName']").val();
+    const send_key = $('#send_key').val();
+    const res = function (response) {
+        if (response.status == 200) {
+            popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "createTmpl()");
+
+        } else {
+            // 중복된 명칭 존재
+            popup.popAlert(response.msg)
+        }
+    }
+    let param = {seq :seq ,tmpl_nm: tmpl_nm, send_key: send_key}
+    com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckUpdTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+}
+function createTmpl() {
         const res = function (response) {
             popup.popAlert(response.msg)
             $('#smsContentsPopup').addClass('active');
