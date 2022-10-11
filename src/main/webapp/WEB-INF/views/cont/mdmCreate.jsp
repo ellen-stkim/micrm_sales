@@ -287,7 +287,7 @@
                             </div>
                             <div class="viewer_area" id="kakao_at_viewer" hidden>
                                 <div class="top">미리보기</div>
-                                <div class="at_inner">
+                                <div class="at_inner template_body">
                                     <div class="text">
                                         <div class="row_body">
                                             <div class="round_box">
@@ -295,8 +295,6 @@
                                                     <p>알림톡 도착</p>
                                                 </div>
                                                 <div class="sms_txt at_tmpl_data"></div>
-                                                <input type="hidden" class="kakao_txt" name="kakao_body" value="">
-                                                <a href="" class="sms_btn">버튼</a>
                                             </div>
                                         </div>
                                     </div>
@@ -971,7 +969,6 @@
         // 수신 번호 option click event
         $(document).on('click', '#recv_phone_to .option li', function () {
             let data = $(this).attr('data');
-            console.log(data)
             if (data != 0) {
                 $('#recv_phone').val(data);
             }
@@ -1647,24 +1644,28 @@
 
         if (kakaoOption == 'ad') {
             if (kakaoTitle.val().indexOf('(광고)') != -1) {
-                if (kakaoTxt.val() != '') {
-                    let type = kakaoTypeValidate();
-                    if (type == true) {
-                        $('.kakao_txt').removeAttr("name");
-                        $(kakaoTxt).attr("name",kakao_body);
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if($('.kkoType:checked').val() == 'kko_at'){
+                if($('.kkoType:checked').val() == 'kko_at'){   //알림톡
+                    if($('#templateCode').val() == ''){
                         popup.popAlert('템플릿을 선택해주세요.');
                         $('#tmplNm').focus();
                         return false;
                     }
-                    popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                    kakaoTxt.focus();
-                    return false;
+                    return true;
+                }else{
+                    if (kakaoTxt.val() != '') {
+                        let type = kakaoTypeValidate();
+                        if (type == true) {
+                            $('.kakao_txt').removeAttr("name");
+                            $(kakaoTxt).attr("name",kakao_body);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
+                        kakaoTxt.focus();
+                        return false;
+                    }
                 }
             } else {
                 kakaoTitle.parent('.column_1').addClass('outline');
@@ -1675,24 +1676,29 @@
         }
         if (kakaoOption == 'guide') {
             if (kakaoTitle.val() != '') {
-                if (kakaoTxt.val() != '') {
-                    let type = kakaoTypeValidate();
-                    if (type == true) {
-                        $('.kakao_txt').removeAttr("name");
-                        $(kakaoTxt).attr("name",'kakao_body');
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if($('.kkoType:checked').val() == 'kko_at'){
+                if($('.kkoType:checked').val() == 'kko_at'){   //알림톡
+                    if($('#templateCode').val() == ''){
                         popup.popAlert('템플릿을 선택해주세요.');
                         $('#tmplNm').focus();
                         return false;
                     }
-                    popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                    $(kakaoTxt).focus();
-                    return false;
+                    return true;
+                }
+                else {   //친구톡
+                    if (kakaoTxt.val() != '') {
+                        let type = kakaoTypeValidate();
+                        if (type == true) {
+                            $('.kakao_txt').removeAttr("name");
+                            $(kakaoTxt).attr("name",'kakao_body');
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
+                        $(kakaoTxt).focus();
+                        return false;
+                    }
                 }
             } else {
                 kakaoTitle.parent('.column_1').addClass('outline');
@@ -2158,11 +2164,15 @@
             let $doc = new DOMParser().parseFromString(response, "text/html");
             let html = $("#js-area-popup",$doc).html();
             let dynamic = $("#preview").html(html);
+
+            // 알림톡 미리보기
+            if($("#preview").find("#at_tmpl_privew").length >0 ){
+                $("#at_tmpl_privew").html($('.at_inner .row_body').html())
+            }
             $("#smsContentsPopup").addClass("active");
             previewSlideLoad();
         }
         let data = $("#form").serializeArray();
-        console.log(data)
         com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
@@ -2875,6 +2885,7 @@
         };
         let param = $("#tmplSetForm").serializeArray();
         param.push({name: 'pageNo', value: pageNo});
+        param.push({name: 'kep_status', value: 'O'});   // 승인건
 
         com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }

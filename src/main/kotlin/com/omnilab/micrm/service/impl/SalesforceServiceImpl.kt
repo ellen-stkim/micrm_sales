@@ -2,6 +2,8 @@ package com.omnilab.micrm.service.impl
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
@@ -369,23 +371,28 @@ class SalesforceServiceImpl : SalesforceService {
 
                     if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
 
-                        // key_id (템플릿 코드) 로 템플릿 유효한지 확인
-                        /* var dto =  Tblmi_kko_at_tmplDto(contentListCreatedto.key_id,tblmiContLstdto.cont_sub)
-                         dto = kkoAtTmplDao.selKkoAtTmpl(dto as AtTmpl_searchDto)!!*/
+                        // 템플릿 조회
+                        var atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
+                        atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                        atDto.kep_status = "O"  // 승인완료
 
-                        val atDto =  AtTmpl_searchDto()
-                        atDto.tmpl_cd = contentListCreatedto.key_id
-                        atDto.tmpl_nm = contentListCreatedto.tmpl_nm
-                        val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
+                        val resultDto = kkoAtTmplDao.selKkoAtTmplByGrpCd(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
-                            tblmiContLstdto.kko_btn_obj = resultDto.button_json
+
+                            val g = GsonBuilder().create()
+                            val obj = JsonObject()
+                            obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+                            obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
+                            obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
+                            obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
+                            tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+
+                            tblmiContLstdto.cont_tp = "DMTP05"
+                            tblmiContLstdto.msg_tp = "DMCH216"
+
+                            tblmiContLstdto.cont_body = resultDto.tmpl_cont
                         }
-
-                        tblmiContLstdto.cont_tp = "DMTP05"
-                        tblmiContLstdto.msg_tp = "DMCH216"
-
-                        tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
 
                     } else {
                         // key_id 로 발신키 유효한지 확인

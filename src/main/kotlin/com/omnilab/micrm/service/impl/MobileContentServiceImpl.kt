@@ -1,9 +1,7 @@
 package com.omnilab.micrm.service.impl
 
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
+import com.google.gson.*
 import com.omnilab.micrm.common.BtnValueUtils
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
@@ -123,19 +121,28 @@ class MobileContentServiceImpl : ContentService {
 
                     if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
 
-                        var atDto =  AtTmpl_searchDto()
-                        atDto.tmpl_cd = contentListCreatedto.key_id
-                        atDto.tmpl_nm = contentListCreatedto.tmpl_nm
-                        val resultDto = kkoAtTmplDao.selKkoAtTmpl(atDto)
+                        // 템플릿 조회
+                        var atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
+                        atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                        atDto.kep_status = "O"  // 승인완료
+
+                        val resultDto = kkoAtTmplDao.selKkoAtTmplByGrpCd(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
-                            tblmiContLstdto.kko_btn_obj = resultDto!!.button_json
+
+                            val g = GsonBuilder().create()
+                            val obj = JsonObject()
+                            obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+                            obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
+                            obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
+                            obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
+                            tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+
+                            tblmiContLstdto.cont_tp = "DMTP05"
+                            tblmiContLstdto.msg_tp = "DMCH216"
+
+                            tblmiContLstdto.cont_body = resultDto.tmpl_cont
                         }
-
-                        tblmiContLstdto.cont_tp = "DMTP05"
-                        tblmiContLstdto.msg_tp = "DMCH216"
-
-                        tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
 
                     } else {
                         // key_id 로 발신키 유효한지 확인
@@ -812,7 +819,21 @@ class MobileContentServiceImpl : ContentService {
      * @title : 모바일 컨텐츠 리스트 뽑아내기
      */
     private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Contents_lstDto> {
-        return contentDao.selectMobileContent(dto)
+        var list = contentDao.selectMobileContent(dto)
+
+        for(dto in list){
+            if(dto.cont_tp_lst!!.contains("DMTP05") && !CommonUtils.isEmptyObject(dto.key_id)){  // 알림톡을 포함할 경우
+
+                // 템플릿 조회
+                var atDto =  AtTmpl_searchDto(dto.key_id,null,"Y")
+                atDto.usr_grp_cd =dto.cont_grp_cd
+
+                val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
+
+                dto.at_preview_obj = resultDto
+            }
+        }
+        return list
     }
 
     /**
@@ -2440,10 +2461,20 @@ class MobileContentServiceImpl : ContentService {
         val dataMap = HashMap<String, Any>();
 
         val g = GsonBuilder().create()
-        val buttons = g.fromJson(dto.button_json, JSONArray::class.java)
+        val buttons = g.fromJson(dto.button_json, JsonArray::class.java)
+        val quickLst = g.fromJson(dto.quick_repl_json, JsonArray::class.java)
+        val itemHighs = g.fromJson(dto.item_highlight_json, JsonObject::class.java)
+        val items = g.fromJson(dto.item_json, JsonObject::class.java)
 
-        dataMap["jsonContent"] = buttons
+        val obj = JsonObject()
+        obj.add("button", buttons)
+        obj.add("quick_reply", quickLst)
+        obj.add("item_highlight", itemHighs)
+        obj.add("item", items)
+
+        dataMap["kko_btn_obj"] = obj
         return dataMap
     }
 
 }
+

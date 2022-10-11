@@ -334,6 +334,7 @@
 			, b.kko_img_url
 			, b.kko_BTN_nm
 			, b.KKO_BTN_URL
+			, b.kko_btn_obj
 			, CONCAT(IFNULL(img_1.img_url,' '),',',IFNULL(img_2.img_url,' '),',',IFNULL(img_3.img_url,' '),',',IFNULL(img_4.img_url,' '),',',IFNULL( img_5.img_url,' '),',',IFNULL(img_6.img_url,' ')) AS IMG_LST
 			, CONCAT(IFNULL(img_1.img_nm,' '), ',' , IFNULL(img_2.img_nm,' '), ',' , IFNULL(img_3.img_nm,' '), ',' , IFNULL(img_4.img_nm,' '), ',' , IFNULL(img_5.img_nm,' '), ',' , IFNULL(img_6.img_nm,' ')) AS IMG_NM_LST
 			, b.RCS_BTN_INS_TP
@@ -349,10 +350,7 @@
 			, b.RCS_BTN_TP_3
 			, b.RCS_BTN_CONT_3
 			, b.RCS_FOOTER
-			, tmpl.button_json AS at_btn_obj
-			, tmpl.quick_repl_json
-			, tmpl.item_highlight_json
-			, tmpl.item_json
+			, b.key_id
 		FROM (
 		SELECT mst.seq                                         AS seq
 		, mst.ch_tp                                        AS ch_tp
@@ -413,7 +411,6 @@
 		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
 		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
 		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
-		LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON a.key_id = tmpl.tmpl_cd
 	</select>
 
 	<!-- 검색을 위해 상위,하위 컨텐츠 연결한 MoblieContent Cnt 뽑아내기 -->

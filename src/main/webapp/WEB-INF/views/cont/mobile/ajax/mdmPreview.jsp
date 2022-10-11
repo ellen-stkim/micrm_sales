@@ -36,23 +36,7 @@
                                  </div>
                                  <h4>${content.cont_sub_list[0]}</h4>
                               </div>
-                              <div class="row_body">
-                                 <div class="round_box">
-                                    <div class="round_box head">
-                                       <p>알림톡 도착</p>
-                                    </div>
-                                    <c:if test="${not empty fn:trim(content.kko_view_img_url) and fn:trim(content.kko_view_img_url) ne ',' }">
-                                       <div class="sms">
-                                          <img src="${content.kko_view_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
-                                       </div>
-                                    </c:if>
-                                    <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
-                                    <c:forEach var="btn" items="${jsonContent}">
-                                       <div class="rcs_action">
-                                          <a href="${btn.get('linkPc')}" target="_blank" class="sms_btn">${btn.get('name')}</a>
-                                       </div>
-                                    </c:forEach>
-                                 </div>
+                              <div class="row_body template_body" id="at_tmpl_privew">
                               </div>
                            </div>
                         </c:if>

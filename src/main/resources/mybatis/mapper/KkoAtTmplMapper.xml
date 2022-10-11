@@ -17,8 +17,21 @@
                     ON a.SEND_KEY = b.LIST_VAL
                         AND b.use_yn ='Y'
                 LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
-        where a.seq = #{seq}
-            and b.usr_grp_cd = #{usr_grp_cd}
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and a.seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
+                and a.tmpl_cd = #{tmpl_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and a.use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and b.usr_grp_cd = #{usr_grp_cd}
+            </if>
+        </where>
+
     </select>
 
     <select id="selTmplViewByTmplDto" resultType="AtTmpl_viewDto" parameterType="Tblmi_kko_at_tmplDto">
@@ -36,7 +49,9 @@
                 f.cd_val  AS msg_tp,
                 f.cd_desc  AS msg_tp_nm,
                 g.cd_val  AS emp_tp,
-                g.cd_desc AS emp_tp_nm
+                g.cd_desc AS emp_tp_nm,
+                h.cd_desc  AS tmpl_status_nm,
+                i.cd_desc AS kep_status_nm
         from tblmi_kko_at_tmpl AS a
                  INNER JOIN tblmi_set_lst AS b
                             ON a.SEND_KEY = b.LIST_VAL
@@ -45,8 +60,50 @@
                  LEFT JOIN tblmi_comm_cd AS d ON d.CD_ID = 'CATE_SUB' AND d.cd_val = a.CATE_CD
                  LEFT JOIN tblmi_comm_cd AS e ON e.CD_ID = 'CATE' AND e.cd_sn =  d.par_nm
                  LEFT JOIN tblmi_comm_cd AS f ON f.CD_ID = 'MSG_TP' AND a.tmpl_msg_tp =  f.cd_val
-                 LEFT JOIN tblmi_comm_cd AS g ON g.CD_ID = 'EMP_TP' AND a.TMPL_EMPSIZE_TP =  g.cd_val
-        where a.seq = #{seq}
+                 LEFT JOIN tblmi_comm_cd AS g ON g.CD_ID = 'EMP_TP' AND a.tmpl_empsize_tp =  g.cd_val
+                 LEFT JOIN tblmi_comm_cd AS h ON h.CD_ID = 'TMPL_ST' AND a.tmpl_status =  h.cd_val
+                 LEFT JOIN tblmi_comm_cd AS i ON i.CD_ID = 'KEP_ST' AND a.kep_status =  i.cd_val
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and a.seq = #{seq}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
+                and a.send_key = #{send_key}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
+                and a.tmpl_cd = #{tmpl_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and a.tmpl_nm = #{tmpl_nm}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ex_tmpl_nm)">
+                and a.tmpl_nm like CONCAT('%', #{ex_tmpl_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
+                and a.chan_id = #{chan_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
+                and a.kep_status = #{kep_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and a.use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
+                and a.tmpl_status = #{tmpl_status}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        and a.reg_dt <![CDATA[ > ]]> #{reg_dt} and a.reg_dt <![CDATA[ < ]]> #{reg_dt_range}
+                    </when>
+                    <otherwise>and a.reg_dt = #{reg_dt}</otherwise>
+                </choose>
+            </if>
+
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and b.usr_grp_cd = #{usr_grp_cd}
+            </if>
+        </where>
     </select>
 <!--    그룹아이디 넣어주기-->
 
@@ -71,6 +128,9 @@
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
                 and a.send_key = #{send_key}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
+                and a.tmpl_cd = #{tmpl_cd}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
                 and a.tmpl_nm = #{tmpl_nm}
@@ -105,7 +165,7 @@
         </where>
     </select>
 
-    <select id="selAtTmplLst" resultType="HashMap" parameterType="AtTmpl_searchDto">
+    <select id="selAtTmplLst" resultType="AtTmpl_viewDto" parameterType="AtTmpl_searchDto">
         SELECT a.seq AS seq,
                 a.tmpl_cd AS tmpl_cd,
                 a.send_key AS send_key,
@@ -125,8 +185,10 @@
                 a.tmpl_header AS tmpl_header,
                 a.button_json AS button_json,
                 a.quick_repl_json AS  quick_repl_json,
-                a.item_highlight_json AS  item_heighlight_json,
+                a.item_highlight_json AS  item_highlight_json,
                 a.item_img_seq AS item_img_seq,
+                a.item_img_seq AS  item_img_seq,
+                a.item_json AS  item_json,
                 a.use_yn AS use_yn,
                 a.etc_1 AS etc_1,
                 a.etc_2 AS etc_2,
@@ -143,6 +205,7 @@
                 a.upd_id AS upd_id,
                 a.upd_dt AS upd_dt,
                 CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
+                a.img_seq,
                 c.img_nm,
                 c.img_org_nm,
                 c.img_url,

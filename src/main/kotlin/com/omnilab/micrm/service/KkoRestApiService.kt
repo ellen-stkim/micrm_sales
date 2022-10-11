@@ -14,5 +14,7 @@ interface KkoRestApiService {
     fun getTmplDetail(tmplCd: String?, sendKey: String?): MutableMap<String, Any>
     fun uploadTmplItemImg(file: MultipartFile): MutableMap<String, Any>?
     fun cancleKepReq(tmplCd: String?, sendKey: String?): MutableMap<String, Any>?
+    fun delTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any>
+    fun cancleAppTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any>
 
 }

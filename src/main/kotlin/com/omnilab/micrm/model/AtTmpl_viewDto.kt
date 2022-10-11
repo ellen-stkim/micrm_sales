@@ -21,6 +21,8 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
     var msg_tp_nm: String? = null
     var emp_tp: String? = null
     var emp_tp_nm: String? = null
+    var tmpl_status_nm: String? = null
+    var kep_status_nm: String? = null
 
     var btn_json: ArrayList<MutableMap<String, Any>>? = null
         get() = if (!button_json.isNullOrEmpty() && field == null) {
