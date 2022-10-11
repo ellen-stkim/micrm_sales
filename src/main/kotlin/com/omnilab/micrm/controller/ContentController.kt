@@ -1059,6 +1059,31 @@ class ContentController  {
         return view
     }
 
+
+    /**
+     * @Method Name  : updateUseYn
+     * @Since    : 2022. 10. 11.
+     * @author   : Belisa
+     * @param    : dto :
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 알림톡 템플릿 사용여부 변경
+     * @title : 카카오 알림톡 템플릿 사용여부 변경
+     */
+    @ResponseBody
+    @PostMapping("/kko/updateUseYn.ajax")
+    fun updateUseYn(@ModelAttribute  dto : Tblmi_kko_at_tmplDto , principal: Principal): Int {
+        dto.upd_id = principal.name
+        val map = kkoMsgService.updTmplDto(dto)
+//        kkoAtTmplDao.updTmplDtoBySeq(updDto)
+        logger.error("{}",dto)
+
+        return map
+    }
+
+
     /**
      * @Method Name  : selectKkoAtTmplLst
      * @Since    : 2022. 09. 15.
@@ -1074,8 +1099,8 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/kko/atTmplLst.ajax")
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
-        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
+        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
@@ -1173,7 +1198,6 @@ class ContentController  {
     fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any> {
 
         val map :MutableMap<String,Any> = mutableMapOf()
-        dto.use_yn = "Y"
 
         val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
 

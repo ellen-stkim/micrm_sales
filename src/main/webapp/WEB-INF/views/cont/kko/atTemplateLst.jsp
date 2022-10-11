@@ -314,7 +314,7 @@
             }
         };
         var param = {seq: seq, use_yn: useValue};
-        <%--com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');--%>
+        com_ajax.ajax('post', '${baseURL}/cont/kko/updateUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     let type = ['kakao', 'MMS', 'SMS', 'rcsText', 'rcsHorizontalLeft', 'rcsHorizontalRight', 'rcsVerticalTall', 'rcsVerticalMedium', 'rcsSlideSmall', 'rcsSlideMedium'];
