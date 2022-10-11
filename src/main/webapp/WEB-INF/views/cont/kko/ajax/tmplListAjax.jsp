@@ -18,7 +18,7 @@
                 <div class="column template_div" style="height: 632px;" >
             </c:if>
             <c:if test="${tmpl.use_yn eq 'N'}">
-                <div class="column template_div off" style="height: 490px;">
+                <div class="column template_div off" style="height: 632px;">
             </c:if>
                     <!-- 비활성화 cover -->
                 <div class="hidden_cover"></div>
@@ -37,7 +37,7 @@
                     <%--<h4>${content.cont_sub}</h4>--%>
                     <h4 style="width: 65%;">${tmpl.tmpl_nm}</h4>
                     <div class="remove_info">
-                            <input type="button" value="Y" class="en_font useState" onclick="updateUseState(${tmpl.seq}, this);">
+                            <input type="button" value="${tmpl.use_yn}" class="en_font useState" onclick="updateUseState(${tmpl.seq}, this);">
                         <a href="/cont/kko/tmplDetail.mi?seq=${tmpl.seq}">수정</a>
                     </div>
                    <%-- <c:choose>

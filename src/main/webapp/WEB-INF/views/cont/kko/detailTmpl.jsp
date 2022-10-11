@@ -128,6 +128,16 @@
                                             <div class="th th2">카테고리 <span class="color_red">*</span></div>
                                             <div class="td template_category_td">
                                                 <!-- select 영역1 시작 -->
+                                               <%-- <div class="select bizContsVal_group" name="edmDB">
+                                                    <!-- selected value -->
+                                                    <div class="value"
+                                                         data="${dto.cate_cd_val}">${dto.cate_cd_desc}</div>
+                                                    <ol class="option">
+                                                        <c:forEach var="cate" items="${cateLst}">
+                                                            <li value="${cate.cd_sn}">${cate.cd_desc}</li>
+                                                        </c:forEach>
+                                                    </ol>
+                                                </div>--%>
                                                 <div class="select bizContsVal_group" name="edmDB">
                                                     <!-- selected value -->
                                                     <div class="value"
@@ -155,7 +165,7 @@
                                                            value="${dto.cate_sub_cd_val}" readonly hidden>
                                                 </div>
                                                 <!-- select 영역2 끝 -->
-                                                <p class="template_category_p">
+                                                <p class="template_category_p display-none">
                                                     카테고리 그룹, 카테고리를 모두 설정해주세요.
                                                 </p>
                                                 <c:forEach var="guideMsg" items="${cateSubGidLst}">
@@ -278,7 +288,7 @@
                                                         <div class="delete_img" data="img" style="right: 10px;">
                                                             <img src="/image/btn_delete1.png" alt="삭제"></div>
                                                         <a href="${dto.kko_img_url}" target="_blank">
-                                                            <img src="/image/bg_none.png" onerror="this.src='/image/bg_none.png'">
+                                                            <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'">
                                                         </a>
                                                     </c:if>
                                                 </div>
@@ -314,7 +324,7 @@
                                                                 <div class="delete_img" data="img" style="right: 10px;">
                                                                     <img src="/image/btn_delete1.png" alt="삭제"></div>
                                                                 <a href="${dto.kko_img_url}" target="_blank">
-                                                                    <img src="/image/bg_none.png" onerror="this.src='/image/bg_none.png'">
+                                                                    <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'">
                                                                 </a>
                                                             </c:if>
                                                         </div>
@@ -395,8 +405,9 @@
                                                             <div class="col_img prv_col_img" name="prevItemImg">
                                                                 <div class="delete_img" data="img_item"  style="right: 20px; top: 110px;">
                                                                     <img src="/image/btn_delete1.png" alt="삭제"></div>
+
                                                                 <a href="${dto.highlight_json.imageUrl}" target="_blank">
-                                                                    <img src="/image/bg_none.png" onerror="this.src='/image/bg_none.png'" style="height: 175px; width: 175px;">
+                                                                    <img src="${dto.highlight_json.imageUrl}" onerror="this.src='/image/bg_none.png'" style="height: 175px; width: 175px;">
                                                                 </a>
                                                             </div>
                                                         </c:if>
@@ -1835,13 +1846,13 @@
     function tmplValidate() {
 
         let senderKey = $('#kko_send_to');  //발신 프로필
-        let tmplCode = $('input[name="templateCode"]');  //템플릿 코드
+        let tmplCode = $('input[name="newTemplateCode"]');  //템플릿 코드
         let tmplCate1 = $('.bizContsVal_group .value');  //카테고리그룹
         let tmplCate2 = $('.bizContsVal .value');  //카테고리
-        let tmplName = $('input[name="templateName"]');  //템플릿명
+        let tmplName = $('input[name="newTemplateName"]');  //템플릿명
         let tmplMsg = $('.bizMsgVal .value'); //메시지 유형
         let tmplEmph = $('.bizEmphVal .value');  //강조유형
-        let tmplTxt = $('textarea[name="templateContent"]');  //템플릿내용
+        let tmplTxt = $('textarea[name="newTemplateContent"]');  //템플릿내용
 
         if (senderKey.val() == '' || senderKey.val() == null) {
             senderKey.focus().addClass('outline');
@@ -1899,8 +1910,8 @@
 
 
         //강조표기형
-        let tmplEmphTitle = $('input[name="templateTitle"]');
-        let tmplEmphTxt = $('input[name="templateSubtitle"]');
+        let tmplEmphTitle = $('input[name="newTemplateTitle"]');
+        let tmplEmphTxt = $('input[name="newTemplateSubtitle"]');
 
         if (tmplEmph.text() == "강조표기형") {
             if (tmplEmphTitle.val() == '' || tmplEmphTitle.val() == null) {
@@ -1969,7 +1980,7 @@ function isCheckTemplateName() {
     const send_key = $('#send_key').val();
     const res = function (response) {
         if (response.status == 200) {
-            popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "createTmpl()");
+            popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "updateTmpl()");
 
         } else {
             // 중복된 명칭 존재
@@ -1979,7 +1990,7 @@ function isCheckTemplateName() {
     let param = {seq :seq ,tmpl_nm: tmpl_nm, send_key: send_key}
     com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckUpdTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
 }
-function createTmpl() {
+function updateTmpl() {
         const res = function (response) {
             popup.popAlert(response.msg)
             $('#smsContentsPopup').addClass('active');

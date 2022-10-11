@@ -122,6 +122,10 @@ class KkoMsgServiceImpl : KkoMsgService {
         return kkoAtTmplDao.selKkoAtTmpl(dto)
     }
 
+    override fun updTmplDto(dto: Tblmi_kko_at_tmplDto): Int {
+        return kkoAtTmplDao.updTmplDtoBySeq(dto)
+    }
+
     override fun createTmpl(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Map<String, Any> {
 
         val map :MutableMap<String,Any> = mutableMapOf()
@@ -136,6 +140,9 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     // tmplDto 저장
                     val tmplDto = getTmplDtoByKkoDto(dto,tmplDto)
+                    tmplDto.use_yn = "Y"
+                    tmplDto.tmpl_status = "N"
+                    tmplDto.kep_status = "I"   // 등록 후 자동 검수 요청
 
                     //개인화 변수 파싱
                     val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
@@ -192,7 +199,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,usr_grp_cd)
         tmplDto.use_yn = "Y"
 
-        return  kkoAtTmplDao.selTmplBytmplDto(tmplDto)
+        return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
     }
 
     override fun updateTmpl(dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto): Map<String, Any> {
@@ -212,6 +219,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     //at_tmplDto 변경
                     val tmplDto = getTmplDtoByKkoDto(dto, Tblmi_kko_at_tmplDto())  //변경
+                    tmplDto.kep_status = "I"   // 수정 후 자동 검수 요청
                     tmplDto.seq = searchTmplDto.seq
                     //개인화 변수 파싱
                     val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
@@ -515,8 +523,8 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.templateName =  curDto.tmpl_nm
         dto.templateCode =  curDto.tmpl_cd
         dto.templateContent =  curDto.tmpl_cont
-        dto.securityFlag =  curDto.secur_flag
-        dto.templateStatus =  curDto.tmpl_status
+        dto.securityFlag =  if("Y".equals(curDto.secur_flag)) "true" else null
+            dto.templateStatus =  curDto.tmpl_status
         dto.kepStatus =  curDto.kep_status
         dto.templateMessageType =  curDto.tmpl_msg_tp
         dto.templateExtra =  curDto.tmpl_ext
@@ -562,7 +570,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.tmpl_cont = dto.templateContent
         tmplDto.secur_flag = dto.securityFlag
         tmplDto.tmpl_status = dto.templateStatus
-        tmplDto.kep_status = "N"
+        tmplDto.secur_flag = if ("true".equals(dto.securityFlag)) "Y" else "N"
         tmplDto.tmpl_msg_tp = dto.templateMessageType
         tmplDto.tmpl_ext = dto.templateExtra
         tmplDto.tmpl_ad = dto.templateAd
@@ -571,10 +579,10 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.tmpl_empsize_tp = dto.templateEmphasizeType
         tmplDto.cate_cd = dto.categoryCode
         tmplDto.tmpl_header = dto.templateHeader
-        tmplDto.button_json = gson.toJson(dto.buttons)
-        tmplDto.quick_repl_json = gson.toJson(dto.quickReplies)
-        tmplDto.item_highlight_json = gson.toJson(dto.templateItemHighlight)
-        tmplDto.item_json =  gson.toJson(dto.templateItem)
+        tmplDto.button_json = if (!CommonUtils.isEmptyObject(dto.buttons)) gson.toJson(dto.buttons) else null
+        tmplDto.quick_repl_json = if (!CommonUtils.isEmptyObject(dto.quickReplies)) gson.toJson(dto.quickReplies) else null
+        tmplDto.item_highlight_json = if (!CommonUtils.isEmptyObject(dto.templateItemHighlight)) gson.toJson(dto.templateItemHighlight) else null
+        tmplDto.item_json = if (!CommonUtils.isEmptyObject(dto.templateItem)) gson.toJson(dto.templateItem) else null
 
         return tmplDto
     }

@@ -183,7 +183,7 @@
                                                                     data_sn="${empTp.cd_sn}">${empTp.cd_desc}</li>
                                                             </c:forEach>
                                                         </ol>
-                                                        <input type="text" class="selValue" name="templateEmphasizeType"
+                                                        <input type="text" class="selValue" name="templateEmphasizeType" value="${empTpLst[0].cd_val}"
                                                                readonly hidden>
                                                     </div>
                                                     <!-- select 영역 끝 -->

@@ -24,9 +24,10 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
     log.error("=========================")
-    log.error("{}", enc.decrypt("jdbc:mariadb://121.78.144.83/db_micrm_sales"))
-    log.error("{}", enc.encrypt("db_micrm_sales"))
-    log.error("{}", enc.encrypt("db_micrm_sales_2020##"))
+    log.error("{}", enc.encrypt("https://bizmsg-web.kakaoenterprise.com"))
+    log.error("{}", enc.encrypt("Basic R000000029 R000000029_n6LtN7z7ReeOJaduoQgG+w"))
+    log.error("{}", enc.decrypt("GDaXkEIOePI8UF3TWrvkF6M1h89wUxi4KjedlrIsrmq4CYSG64Z5iW8P3Ov+rw4sHufwDXtS2Njccl6Uj+g2pcyoyYxFMxM0CJ9bbsO8bIWFsBq+sXdY77spuAE4R0wV"))
+
     log.error("=========================")
 
 }

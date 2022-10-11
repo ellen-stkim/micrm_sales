@@ -335,13 +335,13 @@
                , #{tmpl_status}
                , #{kep_status}
                , #{tmpl_msg_tp}
-               , #{tmpl_ext}
-               , #{tmpl_ad}
-               , #{tmpl_tit}
-               , #{tmpl_subtit}
+               , NULLIF(#{tmpl_ext},'')
+               , NULLIF(#{tmpl_ad},'')
+               , NULLIF(#{tmpl_tit},'')
+               , NULLIF(#{tmpl_subtit},'')
                , #{tmpl_empsize_tp}
                , #{cate_cd}
-               , #{tmpl_header}
+               , NULLIF(#{tmpl_header},'')
                , #{button_json}
                , #{quick_repl_json}
                , #{item_highlight_json}
@@ -371,6 +371,7 @@
                 img_seq = #{img_seq},
                 secur_flag = #{secur_flag},
                 tmpl_status = #{tmpl_status},
+                kep_status = #{kep_status},
                 tmpl_msg_tp = #{tmpl_msg_tp},
                 tmpl_ext = #{tmpl_ext},
                 tmpl_ad = #{tmpl_ad},

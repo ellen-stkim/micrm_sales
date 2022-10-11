@@ -44,7 +44,7 @@ open class Tblmi_kko_at_tmplDto {
     var etc_9: String? = null
     var etc_10: String? = null
 
-    var use_yn: String? = "Y"
+    var use_yn: String? = null
     var reg_id: String? = null
     var reg_dt: String? = null
     var upd_id: String? = null
