@@ -144,7 +144,32 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("accept", MediaType.ALL_VALUE)
         var urlString = "$url/$version/resell/template/cancel/request/${sendKey}/${tmplCd}"
 
-//        val re_map: MutableMap<String, Any> =
+        return restExchange(urlString!!, HttpMethod.PUT, HttpEntity(null, headers))
+    }
+
+    override fun delTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any> {
+        val token = getToken(url);
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+        var urlString = "$url/$version/resell/template/cancel/request/${sendKey}/${tmplCd}"
+
+        return restExchange(urlString!!, HttpMethod.PUT, HttpEntity(null, headers))
+    }
+
+    override fun cancleAppTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any> {
+        val token = getToken(url)
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+        var urlString = "$url/$version/resell/template/cancel/approval/${sendKey}/${tmplCd}"
+
         return restExchange(urlString!!, HttpMethod.PUT, HttpEntity(null, headers))
     }
 

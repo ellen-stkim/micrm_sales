@@ -395,7 +395,7 @@ class ContentController  {
      */
 
     @PostMapping("/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto,@ModelAttribute atSearchDto : AtTmpl_searchDto) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto) : ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/mdmPreview")
         //logger.error("preview Dto : " + dto.toString());
         //logger.error("kakaoUrl : " + dto.kko_view_img_url);
@@ -409,17 +409,8 @@ class ContentController  {
          */
 
         val formatList = dto.formatType
-        val kkoFormatType = dto.kko_format_type
 
-        if(formatList!!.contains("kakao") && "kko_at".equals(kkoFormatType)) {
-            // 넘어 오는 Preview 데이터에 카카오 알림톡이 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
-            val atDto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(atSearchDto)
-            val map = mobileContentService.previewATJsonService(atDto!!)
-            //logger.error("jsonContent : " + map["jsonContent"])
-            view.addObject("jsonContent", map["jsonContent"])
-        }
-
-        if(formatList.contains("rcs")) {
+        if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);
             //logger.error("jsonContent : " + map["jsonContent"])
@@ -1089,11 +1080,7 @@ class ContentController  {
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
         view.addObject("nextCk", paramMap["nextCk"])
-/*
-        val map : Map<String,Any> = kkoMsgService.getTmplSearchLst()   // 템플릿 상태
-        view.addObject("tmplSt", map.get("tmplSt") )
-        view.addObject("kepSt", map.get("kepSt") )*/
-        
+
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
@@ -1398,6 +1385,27 @@ class ContentController  {
     }
 
     /**
+     * @Method Name  : cancleTmplApp
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 승인 취소
+     * @title : 알림톡 템플릿 승인 취소
+     */
+    @ResponseBody
+    @PostMapping("/kko/cancleTmplApp.service")
+    fun cancleTmplApp(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                   , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+        return kkoMsgService.cancleTmplApp(searchDto,principal.name)   // 사용 x
+    }
+
+    /**
      * @Method Name  : removeTmpl
      * @Since    : 2022. 10. 07.
      * @author   : Belisa
@@ -1411,15 +1419,14 @@ class ContentController  {
      * @Method Decription : 알림톡 템플릿 삭제
      * @title : 알림톡 템플릿 삭제
      */
-    @ResponseBody
+    /*@ResponseBody
     @PostMapping("/kko/removeTmpl.service")
     fun removeTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
                       , @RequestBody dto : Kko_at_tmplDto, principal: Principal): Any? {
-        logger.error("removeTmpl.service")
-
-        return null
+        // 사용 x
+       return kkoMsgService.removeTmpl(searchDto,principal.name)
     }
-
+*/
 
 
 }

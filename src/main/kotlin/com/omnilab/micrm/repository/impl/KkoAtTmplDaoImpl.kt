@@ -17,7 +17,7 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun selectAtTmplLst(dto: AtTmpl_searchDto): List<MutableMap<String,String>> {
+    override fun selectAtTmplLst(dto: AtTmpl_searchDto): List<AtTmpl_viewDto> {
         return sqlSession.selectList("selAtTmplLst",dto)
     }
 

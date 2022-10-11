@@ -28,4 +28,10 @@ class AtTmpl_searchDto : Tblmi_kko_at_tmplDto {
         this.use_yn = use_yn
     }
 
+    constructor(tmpl_cd:String?,tmpl_nm:String?,use_yn:String?){
+        this.tmpl_cd = tmpl_cd
+        this.tmpl_nm = tmpl_nm
+        this.use_yn = use_yn
+    }
+
 }

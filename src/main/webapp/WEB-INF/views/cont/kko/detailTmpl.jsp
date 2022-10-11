@@ -30,17 +30,16 @@
             </div>
         </div>
         <div class="row tooltip_area bottom-border min-width cf">
-            <div class="left">
-                현재상태??
-            </div>
             <div class="right tmplAcDiv">
                 <p id="updTmplBtn"
                    class="btn_basic checkDelete left left-border">상태 업데이트</p>
                 <p id="reqCancleBtn" class="btn_basic rejection left left-border ${dto.kep_status eq 'I'? '' : 'display-none'}">검수요청 취소</p>
-                <a id="reqTmplBtn"
-                   class="btn_basic ico_test left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}">템플릿 검수요청</a>
-                <a href="./removeTmpl.service?seq=${dto.seq}"
-                   class="btn_basic delete left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}" >삭제</a>
+                <p id="reqTmplBtn"
+                   class="btn_basic ico_test left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}">템플릿 검수요청</p>
+                 <%--<p id="appCancleBtn"
+                    class="btn_basic delete left left-border " >승인 취소</p>--%>
+               <%-- <p id="delTmplBtn"
+                   class="btn_basic delete left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}" >삭제</p>--%>
             </div>
         </div>
         <!-- row 영역 끝 -->
@@ -55,6 +54,42 @@
                         <div class="flex_box">
                             <div class="left_area">
                                 <div class="input_area left">
+                                    <div class="block_group">
+                                        <div class="block block4 template_msg">
+                                            <div class="row">
+                                                <div class="th">검수 상태 <span class="color_red">*</span></div>
+                                                <div class="td">
+                                                    <span class="filx_data">${dto.kep_status_nm}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="block block4">
+                                            <div class="row">
+                                                <div class="th">탬플릿 상태 <span class="color_red">*</span></div>
+                                                <div class="td">
+                                                    <span class="filx_data">${dto.tmpl_status_nm}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block_group">
+                                        <div class="block block4 template_msg">
+                                            <div class="row">
+                                                <div class="th">차단 상태 <span class="color_red">*</span></div>
+                                                <div class="td">
+                                                    <span class="filx_data">${dto.tmpl_block eq 'Y' ? '차단' : '정상'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="block block4">
+                                            <div class="row">
+                                                <div class="th">휴면 상태 <span class="color_red">*</span></div>
+                                                <div class="td">
+                                                    <span class="filx_data">${dto.tmpl_dormant eq 'Y' ? '휴면' : '정상'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="block">
                                         <div class="row">
                                             <div class="th">발신 프로필 <span class="color_red">*</span></div>
@@ -288,7 +323,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="block emphItemList_header ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
+                                        <div class="block emphItemList_header">
                                             <div class="row" style="height: auto;">
                                                 <div class="th">헤더</div>
                                                 <div class="td">
@@ -391,7 +426,7 @@
                                                         <th>삭제</th>
                                                         </thead>
                                                         <tbody>
-                                                        <c:if test="${empty dto.item_list_json || !fn:contains(item_json,'\"list\"')}">
+                                                        <c:if test="${empty dto.item_list_json || !fn:contains(dto.item_json,'\"list\"')}">
                                                             <tr class="itemList_add_table1" id="itemList_add_table1">
                                                                 <td>1</td>
                                                                 <td>
@@ -441,7 +476,7 @@
                                                                 </td>
                                                             </tr>
                                                         </c:if>
-                                                        <c:if test="${!empty dto.item_list_json && fn:contains(item_json,'\"list\"')}">
+                                                        <c:if test="${!empty dto.item_list_json && fn:contains(dto.item_json,'\"list\"')}">
                                                             <c:forEach var="item" items="${dto.item_list_json.list}" varStatus="st">
                                                                 <tr class="itemList_add_table1" id="itemList_add_table1">
                                                                     <td>${st.index+1}</td>
@@ -476,7 +511,7 @@
                                             </div>
                                         </div>
 
-                                        <c:if test="${!empty dto.item_list_json  && fn:contains(item_json,'\"summary\"')}">
+                                        <c:if test="${!empty dto.item_list_json  && fn:contains(dto.item_json,'\"summary\"')}">
                                             <c:set var="summary" value="${dto.item_list_json.summary}" />
                                             <div class="block emphItemList_itemInfo ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''}">
                                                 <div class="row" style="height: auto;">
@@ -501,7 +536,7 @@
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <c:if test="${empty dto.item_list_json || !fn:contains(item_json,'\"summary\"')}">
+                                        <c:if test="${empty dto.item_list_json || !fn:contains(dto.item_json,'\"summary\"')}">
                                             <div class="block emphItemList_itemInfo">
                                                 <div class="row" style="height: auto;">
                                                     <div class="th" style="line-height: 17px;">아이템<br>요약정보</div>
@@ -610,7 +645,7 @@
                                                         </tr>
                                                     </c:if>
 
-                                                    <tr class="channel_add_table  display-none"
+                                                    <tr class="channel_add_table  display-none use_btn"
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
@@ -899,6 +934,33 @@
         let param = {seq: seq}
         com_ajax.ajax('post', '${baseURL}/cont/kko/updReqTmplSt.service', param, res, '${_csrf.headerName}', '${_csrf.token}')
     })
+
+   /* //  템플릿 삭제
+    $(document).on('click', '#appCancleBtn', () => {
+        const seq = $("#tmplSeq").val();
+        const res = function (response) {
+            popup.popAlert(response.msg)
+            if (response.status == 200) {
+                location.reload()
+            }
+        }
+        let param = {seq: seq}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/cancleTmplApp.service', param, res, '${_csrf.headerName}', '${_csrf.token}')
+    })
+
+    //  템플릿 삭제
+    $(document).on('click', '#delTmplBtn', () => {
+        const seq = $("#tmplSeq").val();
+        const res = function (response) {
+            popup.popAlert(response.msg)
+            if (response.status == 200) {
+                location.reload()
+            }
+        }
+        let param = {seq: seq}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/removeTmpl.service', param, res, '${_csrf.headerName}', '${_csrf.token}')
+    })*/
+
 
     /*----- 알림톡 템플릿 테이블 ------*/
     // 버튼 열 추가
@@ -1408,7 +1470,6 @@
             let list = $(".bizContsVal .option").find('li[class="cate_op_' + val + '"]');
             let not_list = $(".bizContsVal .option").find('li[class!="cate_op_' + val + '"]');
 
-            console.log(val)
             if (val == 1) {
                 list.css('display', 'block');
                 not_list.css('display', 'none');
@@ -1773,8 +1834,7 @@
     // 알림톡 템플릿 유효성 검사
     function tmplValidate() {
 
-        return true;
-        /*let senderKey = $('#kko_send_to');  //발신 프로필
+        let senderKey = $('#kko_send_to');  //발신 프로필
         let tmplCode = $('input[name="templateCode"]');  //템플릿 코드
         let tmplCate1 = $('.bizContsVal_group .value');  //카테고리그룹
         let tmplCate2 = $('.bizContsVal .value');  //카테고리
@@ -1855,9 +1915,8 @@
                 return false;
             }
         } else if (tmplEmph.text() == "이미지형") {
-            console.log("이미지형")
         }
-        return true;*/
+        return true;
     }
 
 
@@ -2300,8 +2359,6 @@ function createTmpl() {
             data.append("ch_tp", ch_tp);
         }
         data.append("img_nm", imgNm);
-
-        console.log(data)
 
         com_ajax.ajax_file('${baseURL}/cont/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }

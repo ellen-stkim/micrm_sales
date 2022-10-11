@@ -478,7 +478,7 @@
                                                         </td>
                                                     </tr>
 
-                                                    <tr class="channel_add_table  display-none"
+                                                    <tr class="channel_add_table  display-none use_btn"
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
@@ -1210,11 +1210,11 @@
             } else if (idx == 3) {  // 광고추가형
                 NoneBlock();
                 let msg = '메시지 유형이 "채널 추가형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
-                alertMsg(msg)
+                alertMsg(msg);
             } else if (idx == 4) {  // 복합형
                 allBlock();
                 let msg = '메시지 유형이 "복합형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
-                alertMsg(msg)
+                alertMsg(msg);
             }
         })
 
@@ -1658,7 +1658,6 @@
                 return false;
             }
         } else if (tmplEmph.text() == "이미지형") {
-            console.log("이미지형")
         }
         return true;
     }
@@ -1845,7 +1844,6 @@
         let img_seq =$('#tmplImgSeq').val();
         let item_img_seq = $('#itemImgSeq').val();
 
-        console.log(data)
         com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service?img_seq='+img_seq+"&item_img_seq="+item_img_seq, JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
 
     }

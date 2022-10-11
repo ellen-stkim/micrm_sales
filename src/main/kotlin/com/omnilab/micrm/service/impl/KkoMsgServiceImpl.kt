@@ -188,14 +188,18 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     override fun selTmplDataBySeq(seq: Int): AtTmpl_viewDto {
-        val tmplDto :Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(seq,null,"Y")
-        return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
+        val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,usr_grp_cd)
+        tmplDto.use_yn = "Y"
+
+        return  kkoAtTmplDao.selTmplBytmplDto(tmplDto)
     }
 
     override fun updateTmpl(dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto): Map<String, Any> {
         val map :MutableMap<String,Any> = mutableMapOf()
 
         searchTmplDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchTmplDto.use_yn = "Y"
         val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto,kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
 
         // 카카오 템플릿 변경
@@ -305,7 +309,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         return map
     }
 
-    override fun updAtTmplData(searchDto: AtTmpl_searchDto, updId: String?): Any? {
+    override fun updAtTmplData(searchDto: AtTmpl_searchDto, updId: String?): MutableMap<String, Any> {
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
 
         val map :MutableMap<String,Any> = mutableMapOf()
@@ -359,8 +363,9 @@ class KkoMsgServiceImpl : KkoMsgService {
         return map
     }
 
-    override fun reqTmplST(searchDto: AtTmpl_searchDto, updId: String?): Any? {
+    override fun reqTmplST(searchDto: AtTmpl_searchDto, updId: String?): MutableMap<String, Any> {
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.use_yn = "Y"
 
         val map :MutableMap<String,Any> = mutableMapOf()
         try {
@@ -417,6 +422,92 @@ class KkoMsgServiceImpl : KkoMsgService {
             map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
             map.put("msg", "검수요청에 실패했습니다. 관리자에게 문의 바랍니다.")
         }
+        return map
+    }
+
+    override fun removeTmpl(searchDto: AtTmpl_searchDto, name: String?): MutableMap<String, Any> {
+        val map: MutableMap<String, Any> = mutableMapOf()
+        /*searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        try {
+            val dto: Tblmi_kko_at_tmplDto? = kkoAtTmplDao.selKkoAtTmplByGrpCd(searchDto)
+
+            // 데이터가 있으면
+            if (!CommonUtils.isEmptyObject(dto)) {
+                if ("N".equals(dto!!.kep_status) || "R".equals(dto!!.kep_status)) {   // 검수 요청 전이거나 반려상태의 경우에만
+
+                    // 카카오 삭제,
+                    val delResult:MutableMap<String,Any> = kkoRestApiService.delTemplate(dto.send_key,dto.tmpl_cd)
+
+                    logger.error("{}",delResult)
+                    if (delResult!!.get("result") as Boolean) {
+                    } else {
+                        logger.error("템플릿 삭제 에러 {}", delResult)
+                    }
+
+                } else {
+                    map.put("status", HttpServletResponse.SC_BAD_REQUEST)
+                    map.put("msg", "")
+                }
+            }
+
+            if(CommonUtils.isEmptyObject(map.get("status"))){
+                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
+                map.put("msg", "에러가 발생했습니다. 새로고침 후 다시 시도해주세요.")
+            }
+
+        }catch (e:Exception){
+            logger.error("removeTmpl : {}",e)
+        }*/
+
+        return map
+    }
+
+    override fun cancleTmplApp(searchDto: AtTmpl_searchDto, updId: String?): MutableMap<String, Any> {
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+        /*try {
+            val dto: Tblmi_kko_at_tmplDto? = kkoAtTmplDao.selKkoAtTmplByGrpCd(searchDto)
+
+            if (!CommonUtils.isEmptyObject(dto)) {
+                logger.error("{}",dto)
+                if(true){
+                    // 카카오 승인 취소
+                    val appResult:MutableMap<String,Any> = kkoRestApiService.cancleAppTemplate(dto!!.send_key,dto.tmpl_cd)
+
+                    logger.error("{}",appResult)
+
+                    if (appResult!!.get("result") as Boolean) {
+                        val tempData :MutableMap<String,Any> = appResult.get("data") as MutableMap<String, Any>
+                        if ("API_200".equals(tempData.get("code"))) {
+
+                            // 승인 취소 ?
+
+                            map.put("status", HttpServletResponse.SC_OK)
+                            map.put("msg", "승인취소가 요청되었습니다.")
+
+                        } else {
+                            logger.error("템플릿 승인취소 에러 {}", appResult)
+                            map.put("status", HttpServletResponse.SC_BAD_REQUEST)
+                            map.put("msg", tempData.get("message") as String)
+                        }
+                    } else {
+                        logger.error("템플릿 승인취소 에러 {}", appResult)
+                    }
+
+                }
+            }
+
+            if(CommonUtils.isEmptyObject(map.get("status"))){
+                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
+                map.put("msg", "에러가 발생했습니다. 새로고침 후 다시 시도해주세요.")
+            }
+
+        } catch (e: Exception) {
+            logger.error("", e)
+            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+            map.put("msg", "검수요청에 실패했습니다. 관리자에게 문의 바랍니다.")
+        }*/
         return map
     }
 

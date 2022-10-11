@@ -370,7 +370,7 @@
 .column .row_body .sms_btn ,.scroll-box .sms_btn , .at_inner .sms_btn  {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
     line-height:37px; text-align:center; font-size:13px; background:#f2f2f2;}
 
-.round_box .round_box.head{ padding: 12px; background: #ffcd00; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
+.round_box .round_box.head{ padding: 12px; background: #ffcd00; width: 290px; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
 
 .rcs_action {width:100%; padding:15px 0; text-align:center;}
 
@@ -516,6 +516,8 @@
 .input_area .block .row.flex_row .td .col_img {max-width:173px; max-height:173px;
     min-width:0; min-height:0; overflow:hidden;}
 .input_area .block .row.flex_row .td .col_img img {width:100%; height:100%;}
+
+.input_area .block .row .td .filx_data { width: 100%; line-height: 35px; padding: 0 17px 0 9px;  position: relative; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
 
 .viewer_area {width:50%; /*overflow-y:auto;*/ position:relative;}
 .viewer_area .top {line-height:35px; border-bottom:1px solid #f4f4f4; text-align:center; background:#fafafa;}
@@ -2110,4 +2112,66 @@ select option[value=""][disabled] {
     boxshadow: 3px 3px 8px #333;
     border-color: #ea3333;
     color: #ea3333;
+}
+
+.template_body .round_box .kko_img_box{
+    width: 100%;
+    overflow: hidden;
+    background: url(../image/bg_none.png) no-repeat center;
+    text-align: center;
+}
+.template_body .round_box .kko_img_box img {
+    width: 100%;
+    margin-left: -100%;
+    margin-right: -100%;
+}
+
+/*.template_body{font-family: 'Spoqa Han Sans' }*/
+.template_body{ height: 523px!important;}
+.template_body .round_box{ max-height: 100%;}
+.template_body .at_tmpl_data{width:100%;  padding:15px 0 0 0!important;
+    font-size: 12px;
+    line-height: 1.6;
+    max-height: 449px;
+    background: #FFFFFF;
+    border-radius: 0;}
+.template_body .at_tmpl_data .at_msg_cont{width:100%; max-height: 260px; padding:0 15px!important; word-break: break-all;}
+.template_body .at_tmpl_data .at_msg_cont:hover{overflow-y: scroll;}
+.template_body .tmpl_subtit{font-size: 10px; color: #cccccc;}
+.template_body .tmpl_tit{padding-bottom: 15px; font-size: 13px;}
+.template_body .tmpl_high{display: inline-block; padding-bottom: 15px; font-size: 13px;}
+.template_body .right_img_box {
+    margin-left: 12px;
+    float: right;
+    display: inline-block;
+    width: 20%;
+    height: 50px;
+}
+.template_body .right_img_box img{width: 100%;}
+.template_body .tmpl_header{padding-bottom: 15px; font-size: 13px; font-weight: bold;}
+.template_body .item_table{padding-bottom: 15px;}
+.template_body .item_table .th{color: #cccccc; padding-right: 5px;}
+.template_body .at_tmpl_data .at_msg_cont .cont {padding-bottom: 5px;}
+.template_body .at_tmpl_data .at_msg_cont .etx ,.template_body .at_tmpl_data .at_msg_cont .ad  {padding-bottom: 5px; color: #cccccc}
+.template_body .sms_btn{margin: 5px 15px 10px 15px!important;}
+.kakao_yellow {background: #ffcd00!important;}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

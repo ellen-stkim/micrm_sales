@@ -17,6 +17,8 @@ interface KkoMsgService {
     fun selTmplDataBySeq(seq: Int): AtTmpl_viewDto
     fun updateTmpl(dto: Kko_at_tmplDto, searchDto: AtTmpl_searchDto): Map<String, Any>
     fun cancleTmplReq(seq: AtTmpl_searchDto, updId: String) : MutableMap<String, Any>
-    fun updAtTmplData(searchDto: AtTmpl_searchDto, updId: String?): Any?
-    fun reqTmplST(searchDto: AtTmpl_searchDto, updId: String?): Any?
+    fun updAtTmplData(searchDto: AtTmpl_searchDto, updId: String?): MutableMap<String, Any>
+    fun reqTmplST(searchDto: AtTmpl_searchDto, updId: String?): MutableMap<String, Any>
+    fun removeTmpl(searchDto: AtTmpl_searchDto, name: String?): MutableMap<String, Any>
+    fun cancleTmplApp(searchDto: AtTmpl_searchDto, name: String?): MutableMap<String, Any>
 }
