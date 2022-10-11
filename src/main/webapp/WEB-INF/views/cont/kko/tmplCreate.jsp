@@ -478,7 +478,7 @@
                                                         </td>
                                                     </tr>
 
-                                                    <tr class="channel_add_table  display-none"
+                                                    <tr class="channel_add_table  display-none use_btn"
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
@@ -1658,7 +1658,6 @@
                 return false;
             }
         } else if (tmplEmph.text() == "이미지형") {
-            console.log("이미지형")
         }
         return true;
     }
@@ -1845,7 +1844,6 @@
         let img_seq =$('#tmplImgSeq').val();
         let item_img_seq = $('#itemImgSeq').val();
 
-        console.log(data)
         com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplCreate.service?img_seq='+img_seq+"&item_img_seq="+item_img_seq, JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
 
     }

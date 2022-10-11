@@ -645,7 +645,7 @@
                                                         </tr>
                                                     </c:if>
 
-                                                    <tr class="channel_add_table  display-none"
+                                                    <tr class="channel_add_table  display-none use_btn"
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
