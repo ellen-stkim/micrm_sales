@@ -2,6 +2,7 @@ package com.omnilab.micrm.service.impl
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.AtTmpl_searchDto
@@ -202,11 +203,10 @@ class KkoMsgServiceImpl : KkoMsgService {
         return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
     }
 
-    override fun updateTmpl(dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto): Map<String, Any> {
+    override fun updateTmpl( dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto, updDto: Tblmi_kko_at_tmplDto ): Map<String, Any> {
         val map :MutableMap<String,Any> = mutableMapOf()
 
         searchTmplDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        searchTmplDto.use_yn = "Y"
         val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto,kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
 
         // 카카오 템플릿 변경
@@ -218,9 +218,11 @@ class KkoMsgServiceImpl : KkoMsgService {
                 if("API_200".equals(data.get("code"))){
 
                     //at_tmplDto 변경
-                    val tmplDto = getTmplDtoByKkoDto(dto, Tblmi_kko_at_tmplDto())  //변경
+                    val tmplDto = getTmplDtoByUpdKkoDto(dto, updDto)  //변경
                     tmplDto.kep_status = "I"   // 수정 후 자동 검수 요청
                     tmplDto.seq = searchTmplDto.seq
+                    tmplDto.use_yn = "Y"
+
                     //개인화 변수 파싱
                     val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
                     var etcArr = mutableListOf<String>()
@@ -270,6 +272,8 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         return map
     }
+
+
 
     override fun cancleTmplReq(searchDto: AtTmpl_searchDto, updId: String): MutableMap<String, Any> {
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -520,21 +524,28 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     private fun getAtTmplDataByViewDto(dto: Kko_at_tmplDto, curDto: AtTmpl_viewDto): Kko_at_tmplDto {
+        val gson = GsonBuilder().create()
         dto.templateName =  curDto.tmpl_nm
         dto.templateCode =  curDto.tmpl_cd
         dto.templateContent =  curDto.tmpl_cont
         dto.securityFlag =  if("Y".equals(curDto.secur_flag)) "true" else null
-            dto.templateStatus =  curDto.tmpl_status
+        dto.templateStatus =  curDto.tmpl_status
         dto.kepStatus =  curDto.kep_status
         dto.templateMessageType =  curDto.tmpl_msg_tp
         dto.templateExtra =  curDto.tmpl_ext
         dto.templateAd =  curDto.tmpl_ad
+
+        dto.templateImageName = curDto.img_org_nm
+        dto.templateImageUrl = curDto.kko_img_url
 
         dto.templateTitle =  curDto.tmpl_tit
         dto.templateSubtitle =  curDto.tmpl_subtit
         dto.templateEmphasizeType =  curDto.tmpl_empsize_tp
         dto.categoryCode =  curDto.cate_cd
         dto.templateHeader =  curDto.tmpl_header
+
+        dto.templateItem = gson.fromJson(curDto.item_json, object : TypeToken<HashMap<String, Any>>() {}.type)
+        dto.templateItemHighlight =  gson.fromJson(curDto.item_highlight_json, object : TypeToken<HashMap<String, Any>>() {}.type)
 
         return dto
     }
@@ -568,7 +579,6 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.tmpl_cd = dto.templateCode
         tmplDto.send_key = dto.send_key
         tmplDto.tmpl_cont = dto.templateContent
-        tmplDto.secur_flag = dto.securityFlag
         tmplDto.tmpl_status = dto.templateStatus
         tmplDto.secur_flag = if ("true".equals(dto.securityFlag)) "Y" else "N"
         tmplDto.tmpl_msg_tp = dto.templateMessageType
@@ -585,5 +595,31 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.item_json = if (!CommonUtils.isEmptyObject(dto.templateItem)) gson.toJson(dto.templateItem) else null
 
         return tmplDto
+    }
+
+    private fun getTmplDtoByUpdKkoDto(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Tblmi_kko_at_tmplDto {
+
+        val gson = GsonBuilder().create()
+        tmplDto.tmpl_nm = dto.newTemplateName
+        tmplDto.tmpl_cd = dto.newTemplateCode
+        tmplDto.send_key = dto.send_key
+        tmplDto.tmpl_cont = dto.newTemplateContent
+        tmplDto.tmpl_status = dto.templateStatus
+        tmplDto.secur_flag = if ("true".equals(dto.securityFlag)) "Y" else "N"
+        tmplDto.tmpl_msg_tp = dto.newTemplateMessageType
+        tmplDto.tmpl_ext = dto.newTemplateExtra
+        tmplDto.tmpl_ad = dto.newTemplateAd
+        tmplDto.tmpl_tit = dto.newTemplateTitle
+        tmplDto.tmpl_subtit = dto.newTemplateSubtitle
+        tmplDto.tmpl_empsize_tp = dto.newTemplateEmphasizeType
+        tmplDto.cate_cd = dto.newCategoryCode
+        tmplDto.tmpl_header = dto.newTemplateHeader
+        tmplDto.button_json = if (!CommonUtils.isEmptyObject(dto.buttons)) gson.toJson(dto.buttons) else null
+        tmplDto.quick_repl_json = if (!CommonUtils.isEmptyObject(dto.quickReplies)) gson.toJson(dto.quickReplies) else null
+        tmplDto.item_highlight_json = if (!CommonUtils.isEmptyObject(dto.newTemplateItemHighlight)) gson.toJson(dto.newTemplateItemHighlight) else null
+        tmplDto.item_json = if (!CommonUtils.isEmptyObject(dto.newTemplateItem)) gson.toJson(dto.newTemplateItem) else null
+
+        return tmplDto
+
     }
 }
