@@ -1352,7 +1352,7 @@
         $('#img_check').on('click', function () {
             $('.itemlist_img_on').toggleClass('display-none');
             if($('.itemlist_img_on').hasClass('display-none')){
-                $('div[name="emph_sel_box"] input[type="text"]').val("");
+                $('#img_data input[type="text"]').val("");
             }
         })
 
