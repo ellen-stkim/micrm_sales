@@ -294,7 +294,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div name="emph_sel_box">
+                                    <div name="emph_sel_box" id="img_data">
                                         <input id="tmplImgSeq" name="img_seq"  value="${dto.img_seq}" readonly hidden>
                                         <input id="tmplImgUrl" name="newTemplateImageUrl"  value="${dto.kko_img_url}" readonly hidden>
                                         <input id="tmplImgNm" name="newTemplateImageName"  value="${dto.img_org_nm}" readonly hidden>
@@ -1674,7 +1674,7 @@
         $('#img_check').on('click', function () {
             $('.itemlist_img_on').toggleClass('display-none');
             if($('.itemlist_img_on').hasClass('display-none')){
-                $('div[name="emph_sel_box"] input[type="text"]').val("");
+                $('#img_data input[type="text"]').val("");
             }
         })
 
