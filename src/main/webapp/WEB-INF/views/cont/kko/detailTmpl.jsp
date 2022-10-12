@@ -254,8 +254,7 @@
                                             <div class="row">
                                                 <div class="th">강조 표기 타이틀 <span class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input3" name="newTemplateTitle" value="${dto.tmpl_tit}"
-                                                           placeholder="강조 표기 타이틀 입력 (최대 50자)">
+                                                    <input type="text" class="txt_input3" name="newTemplateTitle" ${!empty dto.tmpl_tit ?'value="'+= dto.tmpl_tit+= '"' :''}                                                            placeholder="강조 표기 타이틀 입력 (최대 50자)">
                                                 </div>
                                             </div>
                                         </div>
@@ -264,7 +263,7 @@
                                                 <div class="th" style="line-height: 18px;">강조 표기<br>보조 문구 <span
                                                         class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input3" name="newTemplateSubtitle" value="${dto.tmpl_subtit}"
+                                                    <input type="text" class="txt_input3" name="newTemplateSubtitle" ${!empty dto.tmpl_subtit ?'value="'+= dto.tmpl_subtit+= '"' :''}
                                                            placeholder="강조 표기 보조 문구 입력 (최대 50자)">
                                                 </div>
                                             </div>
@@ -341,7 +340,7 @@
                                                     <label for="header_check">설정</label>
 
                                                     <input type="text" class="header-check-on border ${!empty dto.tmpl_header? '':'display-none'}"
-                                                           name="newTemplateHeader"  value="${dto.tmpl_header}"
+                                                           name="newTemplateHeader"  ${!empty dto.tmpl_header? 'value="' += dto.tmpl_header += '"' : ''}
                                                            placeholder="헤더 내용 입력 (최대 16자)">
                                                 </div>
                                             </div>
@@ -379,9 +378,8 @@
                                                         <label for="highlight_img_check">이미지 (썸네일을 추가하면 타이틀은 21자, 디스크립션은
                                                             13자까지 입력 가능합니다.)</label>
                                                     </div>
-
                                                     <div class="highlight_div highlight_img_on dis_flex ${!empty dto.item_highlight_json && !empty  dto.item_img_seq  ? '':'display-none'}">
-                                                        <div name="newItemImgBtn"  class="imgBtn ${empty  dto.item_img_seq  ? '':'display-none'}">
+                                                        <div name="newItemImgBtn"  class="imgBtn ${empty dto.item_img_seq || !fn:contains(dto.item_highlight_json,'\"imageUrl\"') ? '':'display-none'}">
                                                             <div class="template_add_img col_img"
                                                                  onclick="imageListPopUp(1,'img_item')">
                                                                 click here to upload
@@ -391,12 +389,12 @@
                                                                 - 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.
                                                             </p>
                                                         </div>
-                                                        <c:if test="${empty dto.item_img_seq}">
+                                                        <c:if test="${empty dto.item_img_seq || !fn:contains(dto.item_highlight_json,'\"imageUrl\"')}">
                                                             <input id="itemImgSeq" name="item_img_seq"  readonly hidden>
                                                             <input id="imageUrl" name="imageUrl" disabled readonly hidden>
                                                             <div class="col_img prv_col_img" name="prevItemImg"></div>
                                                         </c:if>
-                                                        <c:if test="${!empty dto.item_img_seq}">
+                                                        <c:if test="${!empty dto.item_img_seq && fn:contains(dto.item_highlight_json,'\"imageUrl\"')}">
                                                             <input id="itemImgSeq" name="item_img_seq"
                                                                    value="${dto.item_img_seq}" readonly hidden>
                                                             <input id="imageUrl" name="imageUrl"
@@ -1691,10 +1689,18 @@
         //강조유형 - 아이템리스트 - 하이라이트
         $('#highlight_check').on('click', function () {
             $('.highlight_check_on').toggleClass('display-none');
+            if($('#highlight_check').prop("checked") != true){
+                $('#highlight_img_check').prop("checked",false)
+                $('.highlight_img_on').addClass('display-none');
+                $(".highlight_div input").val(''); // 초기화
+            }
         })
 
         $('#highlight_img_check').on('click', function () {
             $('.highlight_img_on').toggleClass('display-none');
+            if($('#highlight_check').prop("checked") != true){
+                $(".highlight_img_on input").val(''); // 초기화
+            }
         })
 
         //강조유형 - 아이템리스트 - 아이템 요약정보
@@ -1926,6 +1932,15 @@
                 return false;
             }
         } else if (tmplEmph.text() == "이미지형") {
+            if($('#highlight_img_check').prop('checked')){
+                if($('#imageUrl').val() == ''){
+                    popup.popAlert("아이템 하이라이트 이미지를 선택해주세요.");
+                }
+                if($('.highlight_div input[name="title"]').val() == ''
+                    || $('.highlight_div input[name="description"]').val() == ''){
+                    popup.popAlert("아이템 하이라이트 이미지를 사용할 경우, 설정이 필수입니다.");
+                }
+            }
         }
         return true;
     }
@@ -2077,14 +2092,14 @@ function updateTmpl() {
             if(imgUrl != undefined && imgUrl != ''){
                 itemHigh.imageUrl = $('#imageUrl').val();
             }
-            data.templabbbteItemHighlight = itemHigh;
+            data.newTemplateItemHighlight = itemHigh;
         }
 
         //  ------ 아이템 하이라이트 end ---------
 
 
         //  ------ 아이템 리스트  ---------
-        const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
+        const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');""
         if(selItemTrLst.length >0){
             let tmplItem = new Object();
             let itemList = [];
@@ -2109,11 +2124,14 @@ function updateTmpl() {
                 tmplItem.summary = itemInfo;
             }
 
-            data.templateItem = tmplItem;
+            data.newTemplateItem = tmplItem;
             //  ------ 아이템 요약정보 end ---------
         }
+        let img_seq = $('#tmplImgSeq').val();
+        let item_img_seq = $('#itemImgSeq').val();
+
         console.log(data)
-        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplUpate.service?seq='+$('#tmplSeq').val(), JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplUpate.service?seq='+$('#tmplSeq').val()+'&img_seq='+img_seq+"&item_img_seq="+item_img_seq, JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
     // 발신자 리스트 불러오기

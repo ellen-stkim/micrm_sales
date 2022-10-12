@@ -1367,10 +1367,18 @@
         //강조유형 - 아이템리스트 - 하이라이트
         $('#highlight_check').on('click', function () {
             $('.highlight_check_on').toggleClass('display-none');
+            if($('#highlight_check').prop("checked") != true){
+                $('#highlight_img_check').prop("checked",false)
+                $('.highlight_img_on').addClass('display-none');
+                $(".highlight_div input").val(''); // 초기화
+            }
         })
 
         $('#highlight_img_check').on('click', function () {
             $('.highlight_img_on').toggleClass('display-none');
+            if($('#highlight_check').prop("checked") != true){
+                $(".highlight_img_on input").val(''); // 초기화
+            }
         })
 
         //강조유형 - 아이템리스트 - 아이템 요약정보
@@ -1658,6 +1666,15 @@
                 return false;
             }
         } else if (tmplEmph.text() == "이미지형") {
+            if($('#highlight_img_check').prop('checked')){
+                if($('#imageUrl').val() == ''){
+                    popup.popAlert("아이템 하이라이트 이미지를 선택해주세요.");
+                }
+                if($('.highlight_div input[name="title"]').val() == ''
+                || $('.highlight_div input[name="description"]').val() == ''){
+                    popup.popAlert("아이템 하이라이트 이미지를 사용할 경우, 설정이 필수입니다.");
+                }
+            }
         }
         return true;
     }
@@ -1807,7 +1824,7 @@
             if(imgUrl != undefined && imgUrl != ''){
                 itemHigh.imageUrl = $('#imageUrl').val();
             }
-            data.templabbbteItemHighlight = itemHigh;
+            data.templateItemHighlight = itemHigh;
         }
         //  ------ 아이템 하이라이트 end ---------
 

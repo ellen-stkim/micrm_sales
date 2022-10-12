@@ -1340,10 +1340,12 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/kko/tmplUpate.service")
     fun tmplUpdateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
-                          , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int, principal: Principal): Any? {
+                          , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int
+                          , @RequestParam(value="img_seq", required = false) img_seq : String,
+                          @RequestParam(value="item_img_seq", required = false) item_img_seq :String , principal: Principal): Any? {
         val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,principal.name,"Y")
-        val map = kkoMsgService.updateTmpl(dto,tmplDto)
-        return map
+        var updDto  =Tblmi_kko_at_tmplDto(img_seq.toIntOrNull(),item_img_seq.toIntOrNull())
+        return kkoMsgService.updateTmpl(dto,tmplDto,updDto)
     }
 
     /**
