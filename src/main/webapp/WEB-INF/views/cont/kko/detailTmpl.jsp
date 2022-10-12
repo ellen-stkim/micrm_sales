@@ -654,7 +654,7 @@
                                                         </tr>
                                                     </c:if>
 
-                                                    <tr class="channel_add_table use_btn display-none "
+                                                    <tr class="channel_add_table use_btn ${dto.tmpl_msg_tp eq 'MI'  || dto.tmpl_msg_tp eq 'AD' ? '' :'display-none'} "
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
@@ -676,6 +676,7 @@
                                                     </tr>
 
                                                     <c:forEach var="button" items="${buttons}" varStatus="st">
+                                                        <c:if test="${(dto.tmpl_msg_tp eq 'MI'|| dto.tmpl_msg_tp eq 'AD')  && st.index ne 0}">
                                                     <tr>
                                                         <td>${st.index +1}</td>
                                                         <td><select class="border btn_type" id="table_btn_type"
@@ -731,6 +732,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                        </c:if>
                                                     </c:forEach>
                                                     </tbody>
                                                 </table>
