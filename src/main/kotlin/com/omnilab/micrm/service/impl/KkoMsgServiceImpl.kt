@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Service("KkoMsgServiceImpl")
@@ -335,24 +336,26 @@ class KkoMsgServiceImpl : KkoMsgService {
                 if (tmplResult!!.get("result") as Boolean) {
                     val tempData: MutableMap<String, Any> = tmplResult.get("data") as MutableMap<String, Any>
                     if ("API_200".equals(tempData.get("code"))) {
-                        val data: MutableMap<String, Any> = tempData.get("data") as MutableMap<String, Any>
+                        if(!CommonUtils.isEmptyObject(tempData.get("data"))){
+                            val data: MutableMap<String, Any> = tempData.get("data") as MutableMap<String, Any>
 
-                        val gson :Gson = GsonBuilder().create()
-                        val cmtLstStr = data.get("templateComments")
+                            val gson :Gson = GsonBuilder().create()
+                            val cmtLstStr = data.get("templateComments")
 
-                        val tmplSt :String = data.get("templateStatus") as String
-                        val kepSt :String = data.get("kepStatus") as String
-                        val tmplDormant :String = if(data.get("templateDormant")as Boolean) "Y" else "N"  //휴면
-                        val tmplBlock :String = if(data.get("templateBlock")as Boolean) "Y" else "N"   //차단
+                            val tmplSt :String = data.get("templateStatus") as String
+                            val kepSt :String = data.get("kepStatus") as String
+                            val tmplDormant :String = if(data.get("templateDormant")as Boolean) "Y" else "N"  //휴면
+                            val tmplBlock :String = if(data.get("templateBlock")as Boolean) "Y" else "N"   //차단
 
-                        val updDto = Tblmi_kko_at_tmplDto(dto.seq, tmplSt, kepSt,tmplDormant,tmplBlock)
-                        updDto.cmt_json = gson.toJson(cmtLstStr)
-                        updDto.upd_id = updId
+                            val updDto = Tblmi_kko_at_tmplDto(dto.seq, tmplSt, kepSt,tmplDormant,tmplBlock)
+                            updDto.cmt_json = gson.toJson(cmtLstStr)
+                            updDto.upd_id = updId
 
-                        kkoAtTmplDao.updTmplDtoBySeq(updDto)
+                            kkoAtTmplDao.updTmplDtoBySeq(updDto)
 
-                        map.put("status", HttpServletResponse.SC_OK)
-                        map.put("msg", "템플릿 상태가 업데이트 됐습니다.")
+                            map.put("status", HttpServletResponse.SC_OK)
+                            map.put("msg", "템플릿 상태가 업데이트 됐습니다.")
+                        }
                     } else {
                         logger.error("템플릿 업테이트 에러 {}", tmplResult)
                         map.put("status", HttpServletResponse.SC_BAD_REQUEST)
