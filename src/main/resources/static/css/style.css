@@ -2129,13 +2129,13 @@ select option[value=""][disabled] {
 /*.template_body{font-family: 'Spoqa Han Sans' }*/
 .template_body{ height: 523px!important;}
 .template_body .round_box{ max-height: 100%;}
-.template_body .at_tmpl_data{width:100%;  padding:15px 0 0 0!important;
+.template_body .at_tmpl_data{width:100%;  padding:0 0 5px 0!important;
     font-size: 12px;
     line-height: 1.6;
     max-height: 449px;
     background: #FFFFFF;
     border-radius: 0;}
-.template_body .at_tmpl_data .at_msg_cont{width:100%; max-height: 260px; padding:0 15px!important; word-break: break-all;}
+.template_body .at_tmpl_data .at_msg_cont{width:100%; max-height: 260px; padding:5px 15px!important; word-break: break-all;}
 .template_body .at_tmpl_data .at_msg_cont:hover{overflow-y: scroll;}
 .template_body .tmpl_subtit{font-size: 10px; color: #cccccc;}
 .template_body .tmpl_tit{padding-bottom: 15px; font-size: 13px;}
@@ -2174,4 +2174,21 @@ select option[value=""][disabled] {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.marg-lf {margin-left: 85px;}
+.prev_btn{
+    display: block;
+    width: 78px;
+    height: 23px;
+    line-height: 21px;
+    border: 1px solid #dddddd;
+    background: #FFFFFF;
+    color: #888888;
+    font-weight: 400;
+    cursor: pointer;
+    float: right;
+    text-align: center;
+    position: relative;
+    margin: 6px 15px 0 0;
 }

@@ -32,7 +32,7 @@
         <!-- row 영역 끝 -->
         <!-- section 영역 시작 -->
         <div class="section">
-            <form:form id="form" action="/cont/kko/tmplCreate.service" method="post">
+            <form:form id="atForm" action="/cont/kko/tmplCreate.service" method="post">
             <div class="create_sms cf">
                 <div class="tab_contents active">
                     <div class="sms_form cover" id="kakao">
@@ -125,6 +125,15 @@
                                                 <input type="text" class="txt_input" name="templateName"
                                                        style="width: 100%;"
                                                        placeholder="템플릿명 입력 (최대 200자)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block">
+                                        <div class="row template_textarea">
+                                            <div class="th">템플릿내용 <span class="color_red">*</span></div>
+                                            <div class="td">
+                                                <textarea name="templateContent"  cols="30"
+                                                          rows="10"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -540,14 +549,24 @@
                                 </div>
                             </div>
                             <div class="viewer_area">
-                                <div class="top">템플릿 내용</div>
-                                <div class="inner">
-                                    <textarea name="templateContent" id="" class="sms_txt templateContent" cols="30"
-                                              rows="10"></textarea>
+                                <div class="top"><span class="marg-lf">템플릿 내용</span>
+                                    <span class="prev_btn" onclick="prevAtTmplImg()">미리보기</span>
                                 </div>
-                                <div class="byte">
+                                <div class="at_inner template_body">
+                                    <div class="text">
+                                        <div class="row_body">
+                                            <div class="round_box" id="prev_cont">
+                                                <div class="round_box head">
+                                                    <p>알림톡 도착</p>
+                                                </div>
+                                                <div class="sms_txt at_tmpl_data"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--<div class="byte">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                     </div>
@@ -1207,7 +1226,7 @@
                 allNone();
             } else if (idx == 2) {  //부가정보형
                 BlockNone();
-            } else if (idx == 3) {  // 광고추가형
+            } else if (idx == 3) {  // 채널추가형
                 NoneBlock();
                 let msg = '메시지 유형이 "채널 추가형"으로 변경되어,<br/>첫번째 버튼의 타입이 "채널추가"로 변경 입력되며<br/>기존 입력한 버튼정보는 유지되지 않습니다.';
                 alertMsg(msg);
@@ -1443,7 +1462,7 @@
 
         // 프리뷰에서 저장 버튼 누르기
         $(document).on('click', '#saveBtn', function () {
-            $("#form").submit();
+            $("#atForm").submit();
         });
 
         // RCS 선택 이미지 삭제
@@ -1749,7 +1768,7 @@
                 window.location.href = '/cont/atTemplate.mi';
             }
         }
-        let data = $('#form').serializeArray().map(function (x) {
+        let data = $('#atForm').serializeArray().map(function (x) {
             this[x.name] = x.value;
             return this;
         }.bind({}))[0];
@@ -1996,7 +2015,7 @@
 
     // 이미지 추가 등록
     function imgUploadPop() {
-        var html = '<div class="layer_pop uploadPopup active" style="z-index:960;">' +
+        var html = '<form id="form"><div class="layer_pop uploadPopup active" style="z-index:960;">' +
             '<div class="pop_container popup_size1">' +
             '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />' +
             '<div class="pop_title">새 이미지 파일 업로드</div>' +
@@ -2076,7 +2095,7 @@
             '</div>' +
             '</div>' +
             '</div>' +
-            '</div>';
+            '</div></form>';
         $("#imgListHtml").html(html);
     }
 
@@ -2174,6 +2193,93 @@
             $('div[name="prevItemImg"]').hide().html('');
         }
     });
+
+    function prevAtTmplImg(){
+        let msgTp  = $('.bizMsgVal .selValue').val();
+        let empTp = $('.bizEmphVal .selValue').val();
+        let imgUrl = $('#img_data #tmplImgUrl').val()
+
+        let contHtml=``;
+        switch (empTp) {
+            case 'NONE':
+                contHtml +=  `<div class="at_msg_cont">`
+                break;
+            case 'TEXT':
+                contHtml +=  `<div class="at_msg_cont">
+                                  <div class="tmpl_subtit">`+ $('input[name="templateTitle"]').val() +`</div>
+                                  <div class="tmpl_tit">`+ $('input[name="templateSubtitle"]').val() +`</div>`
+                break;
+
+            case 'IMAGE':
+                contHtml += `<div class="kko_img_box">
+                                <img src="` + imgUrl +`" onerror="this.src = '/image/bg_none.png'" alt="">
+                            </div>`
+                contHtml +=  `<div class="at_msg_cont">`
+                break;
+
+            case 'ITEM_LIST':
+                if($('#img_check').is(':checked')){
+                    contHtml += `<div class="kko_img_box">
+                                <img src="` + imgUrl +`" onerror="this.src = '/image/bg_none.png'" alt="">
+                            </div>`
+                }
+                contHtml +=  `<div class="at_msg_cont">`
+                if($('#header_check').is(':checked')){
+                    contHtml += `<div class="tmpl_header">`+ $('input[name="templateHeader"]').val() +`</div>`
+                }
+                if($('#highlight_check').is(':checked')){
+                    contHtml += `<div class="tmpl_high">
+                                     <div>` + $('.highlight_div input[name="title"]').val() + `</div>
+                                     <div class="tmpl_subtit">` + $('.highlight_div input[name="description"]').val() + `</div>
+                                 </div>`
+                }
+                if($('#highlight_img_check').is(':checked')){
+                    contHtml += `<div class="right_img_box">
+                        <img src="`+ $('#imageUrl').val()  + `" onerror="this.src = '/image/bg_none.png'" alt=""></div>`
+                }
+                const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
+                if(selItemTrLst.length > 0){
+                    contHtml += `<div class="item_table">`
+                    // 아이템 리스트 넣어주기
+                    for (var i = 0; i <selItemTrLst.length; i++) {
+                        contHtml += `<div>
+                            <span class="th">`+$(selItemTrLst[i]).find('input[data_name="title"]').val() +`</span>
+                            <span class="td">`+$(selItemTrLst[i]).find('input[data_name="description"]').val() +`</span>
+                        </div>`
+                    };
+                    contHtml += `</div>`
+                }
+
+                //아이템 요약정보 넣어주기
+                break;
+        }
+
+        contHtml += `<div class="cont">`+$('textarea[name="templateContent"]').val()+`</div>`
+
+        switch (msgTp) {
+            case 'BA':
+                contHtml += `</div>`
+                break;
+            case 'EX':
+                contHtml += `<div class="etx">`+ $('textarea[name="templateExtra"]').val() +`</div></div>`
+                break;
+            case 'AD':
+                contHtml += `<div class="ad">`+ $('textarea[name="templateAd"]').val() +`</div></div>`
+                break;
+            case 'MI':
+                contHtml += `<div class="etx">`+ $('textarea[name="templateExtra"]').val() +`</div>
+                            <div class="ad">`+ $('textarea[name="templateAd"]').val() +`</div></div>`
+                break;
+        }
+
+        const butLst = $('#template_btn_table tbody tr.use_btn:visible');
+        if(butLst.length > 0){
+            for (var i = 0; i <butLst.length; i++) {
+                contHtml += `<a target="_blank" class="sms_btn">`+$(butLst[i]).find('input[name="name"]').val()+`</a>`
+            };
+        }
+        $('#prev_cont .at_tmpl_data').html(contHtml)
+    }
 
     //개인화 변수 드래그
     $(document).on('dragstart', function(ev){
