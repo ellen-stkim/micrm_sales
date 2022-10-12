@@ -273,7 +273,7 @@
                                         <div class="row flex_row" style="height: auto; min-height: 145px;">
                                             <div class="th">이미지 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                            <div name="newImgBtn" class="imgBtn ${!empty dto.img_seq ? 'display-none' :''}">
+                                                <div name="newImgBtn" class="imgBtn newImgDiv ${!empty dto.img_seq ? 'display-none' :''}">
                                                     <div class="template_add_img col_img" name="addImgBtn"
                                                          onclick="imageListPopUp(1,'img')">
                                                         click here to upload
@@ -295,9 +295,9 @@
                                         </div>
                                     </div>
                                     <div name="emph_sel_box" id="img_data">
-                                        <input id="tmplImgSeq" name="img_seq"  value="${dto.img_seq}" readonly hidden>
-                                        <input id="tmplImgUrl" name="newTemplateImageUrl"  value="${dto.kko_img_url}" readonly hidden>
-                                        <input id="tmplImgNm" name="newTemplateImageName"  value="${dto.img_org_nm}" readonly hidden>
+                                        <input type="text" id="tmplImgSeq" name="img_seq"  value="${dto.img_seq}" readonly hidden>
+                                        <input type="text" id="tmplImgUrl" name="newTemplateImageUrl"  value="${dto.kko_img_url}" readonly hidden>
+                                        <input type="text" id="tmplImgNm" name="newTemplateImageName"  value="${dto.img_org_nm}" readonly hidden>
                                     </div>
                                     <div class="emphItemList_block ${dto.emp_tp ne 'ITEM_LIST'? 'display-none':''} " name="emph_sel_box">
                                         <div class="block emphItemList_img">
@@ -307,7 +307,7 @@
                                                     <input type="checkbox" id="img_check" ${!empty dto.img_seq ? 'checked' :''}>
                                                     <label for="img_check">설정</label>
                                                     <div class="itemlist_img_on dis_flex ${!empty dto.img_seq ? '' :'display-none'}">
-                                                        <div name="newImgBtn"  class="imgBtn ${!empty dto.img_seq ? 'display-none' :''}">
+                                                        <div name="newImgBtn"  class="imgBtn newImgDiv ${!empty dto.img_seq ? 'display-none' :''}">
                                                             <div class="template_add_img col_img" name="addImgBtn"
                                                                  onclick="imageListPopUp(1,'img')">
                                                                 click here to upload
@@ -654,7 +654,7 @@
                                                         </tr>
                                                     </c:if>
 
-                                                    <tr class="channel_add_table  display-none use_btn"
+                                                    <tr class="channel_add_table use_btn display-none "
                                                         id="channel_add_table">
                                                         <td>1</td>
                                                         <td>
@@ -1675,6 +1675,8 @@
             $('.itemlist_img_on').toggleClass('display-none');
             if($('.itemlist_img_on').hasClass('display-none')){
                 $('#img_data input[type="text"]').val("");
+                $('.newImgDiv').removeClass('display-none');
+                $('div[name="prevImg"]').html('');
             }
         })
 
@@ -1895,7 +1897,7 @@
         }
 
         //부가정보형, 복합형인 경우 부가정보
-        let templateExtra = $('textarea[name="templateExtra"]');
+        let templateExtra = $('textarea[name="newTemplateExtra"]');
         // let tmplAd = $('textarea[name="tmpl_ad"]');
 
         if (tmplMsg.text() == "부가 정보형" || tmplMsg.text() == "복합형") {
@@ -2023,6 +2025,7 @@ function updateTmpl() {
 
         // --------- 버튼 정보 ---------
         const butLst = $('#template_btn_table tbody tr.use_btn:visible');
+
         if(butLst.length > 0){
             let buttonLst = [];
             for (let idx = 0; idx < butLst.length; idx++) {

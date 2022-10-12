@@ -216,7 +216,7 @@
                                         <div class="row flex_row" style="height: auto; min-height: 145px;">
                                             <div class="th">이미지 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <div name="newImgBtn" class="imgBtn">
+                                                <div name="newImgBtn" class="imgBtn newImgDiv">
                                                     <div class="template_add_img col_img" name="addImgBtn"
                                                          onclick="imageListPopUp(1,'img')">
                                                         click here to upload
@@ -230,10 +230,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div name="emph_sel_box">
-                                    <input id="tmplImgSeq" name="img_seq" readonly hidden>
-                                    <input id="tmplImgUrl" name="templateImageUrl" readonly hidden>
-                                    <input id="tmplImgNm" name="templateImageName" readonly hidden>
+                                    <div name="emph_sel_box" id="img_data">
+                                    <input type="text" id="tmplImgSeq" name="img_seq" readonly hidden>
+                                    <input type="text" id="tmplImgUrl" name="templateImageUrl" readonly hidden>
+                                    <input type="text" id="tmplImgNm" name="templateImageName" readonly hidden>
                                     </div>
                                     <div class="emphItemList_block display-none" name="emph_sel_box">
                                         <div class="block emphItemList_img">
@@ -244,7 +244,7 @@
                                                     <label for="img_check">설정</label>
 
                                                     <div class="itemlist_img_on dis_flex display-none">
-                                                        <div name="newImgBtn"  class="imgBtn">
+                                                        <div name="newImgBtn"  class="imgBtn newImgDiv" id="newImgDiv">
                                                             <div class="template_add_img col_img" name="addImgBtn"
                                                                  onclick="imageListPopUp(1,'img')">
                                                                 click here to upload
@@ -255,7 +255,7 @@
                                                                 합니다.
                                                             </p>
                                                         </div>
-                                                        <div class="col_img prv_col_img" name="prevImg">
+                                                        <div class="col_img prv_col_img" name="prevImg" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1353,6 +1353,8 @@
             $('.itemlist_img_on').toggleClass('display-none');
             if($('.itemlist_img_on').hasClass('display-none')){
                 $('#img_data input[type="text"]').val("");
+                $('.newImgDiv').removeClass('display-none');
+                $('div[name="prevImg"]').html('');
             }
         })
 
