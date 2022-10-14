@@ -2238,15 +2238,27 @@
                         <img src="`+ $('#imageUrl').val()  + `" onerror="this.src = '/image/bg_none.png'" alt=""></div>`
                 }
                 const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
-                if(selItemTrLst.length > 0){
-                    contHtml += `<div class="item_table">`
-                    // 아이템 리스트 넣어주기
-                    for (var i = 0; i <selItemTrLst.length; i++) {
-                        contHtml += `<div>
+                const itemSummaryYn = $('#itemInfo_check').is(":checked");
+                console.log(itemSummaryYn)
+                if(selItemTrLst.length > 0 || itemSummaryYn ){
+                    contHtml += ` <div class="item_div">`
+                    if(selItemTrLst.length > 0){
+                        contHtml += `<div class="item_table">`
+                        // 아이템 리스트 넣어주기
+                        for (var i = 0; i <selItemTrLst.length; i++) {
+                            contHtml += `<div>
                             <span class="th">`+$(selItemTrLst[i]).find('input[data_name="title"]').val() +`</span>
                             <span class="td">`+$(selItemTrLst[i]).find('input[data_name="description"]').val() +`</span>
                         </div>`
-                    };
+                        };
+                        contHtml += `</div>`
+                    }
+                    if(itemSummaryYn){
+                        contHtml += `  <div class="item_summary">
+                                                      <span class="th">`+$('.itemInfo_div input[data_name="title"]').val() +`</span>
+                                                      <span class="td">`+$('.itemInfo_div input[data_name="description"]').val() +`</span>
+                                                 </div>`
+                    }
                     contHtml += `</div>`
                 }
 

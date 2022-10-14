@@ -208,6 +208,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }else{
                     val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+
                     val auth = customAuthenticationProvider.authenticate(token)
                     if (auth.isAuthenticated) {
                         session.setAttribute("MID", userId)
