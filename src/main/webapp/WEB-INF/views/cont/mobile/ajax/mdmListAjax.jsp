@@ -151,6 +151,7 @@
                                                     </c:if>
                                                    </div>
                                         </c:if>
+                                        <c:if test="${fn:contains(tmpl.item_json,'\"list\"') ||fn:contains(tmpl.item_json,'\"summary\"')}">
                                         <div class="item_div">
                                             <c:if test="${fn:contains(tmpl.item_json,'\"list\"')}">
                                                 <div class="item_table">
@@ -169,6 +170,7 @@
                                                  </div>
                                             </c:if>
                                         </div>
+                                        </c:if>
                                     </c:if>
                                      <div class="cont">${tmpl.tmpl_cont}</div>
                                     <%--     부가 정보--%>
