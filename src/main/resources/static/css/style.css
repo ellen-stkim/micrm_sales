@@ -2135,8 +2135,8 @@ select option[value=""][disabled] {
     max-height: 449px;
     background: #FFFFFF;
     border-radius: 0;}
-.template_body .at_tmpl_data .at_msg_cont{width:100%; max-height: 260px; padding:5px 15px!important; word-break: break-all;}
-.template_body .at_tmpl_data .at_msg_cont:hover{overflow-y: scroll;}
+.template_body .at_tmpl_data .at_msg_cont{width:98.3%; max-height: 225px; padding:5px 15px!important; word-break: break-all; overflow-y: hidden}
+.template_body .at_tmpl_data .at_msg_cont:hover{width:100%; overflow-y: scroll;}
 .template_body .tmpl_subtit{font-size: 10px; color: #cccccc;}
 .template_body .tmpl_tit{padding-bottom: 15px; font-size: 13px;}
 .template_body .tmpl_high{display: inline-block; padding-bottom: 15px; font-size: 13px;}
@@ -2148,17 +2148,22 @@ select option[value=""][disabled] {
     height: 50px;
 }
 .template_body .right_img_box img{width: 100%;}
-.template_body .tmpl_header{padding-bottom: 15px; font-size: 13px; font-weight: bold;}
-.template_body .item_table{padding-bottom: 15px;}
-.template_body .item_table .th{color: #cccccc; padding-right: 5px;}
-.template_body .at_tmpl_data .at_msg_cont .cont {padding-bottom: 5px;}
+.template_body .tmpl_header{ padding: 5px 0 5px 0; font-size: 12px; font-weight: 500; border-bottom: solid 0.5px #f3f3f3}
+.template_body .item_high_div{ padding: 5px 0;border-bottom: solid 0.5px #f3f3f3}
+.template_body .item_div{padding: 5px 0;border-bottom: solid 0.5px #f3f3f3}
+.template_body .item_table .th,.template_body .item_summary .th{color: #cccccc; padding-right: 5px;}
+.template_body .item_table .td,.template_body .item_summary .td{ float: right;}
+.template_body .item_summary{padding: 5px 0;font-size: 12px;}
+.template_body .item_summary .td{    font-size: 14px;}
+
+.template_body .at_tmpl_data .at_msg_cont .cont {padding: 5px 0;}
 .template_body .at_tmpl_data .at_msg_cont .etx ,.template_body .at_tmpl_data .at_msg_cont .ad  {padding-bottom: 5px; color: #cccccc}
 .template_body .sms_btn{margin: 5px 15px 10px 15px!important;}
 .kakao_yellow {background: #ffcd00!important;}
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 /* Track */

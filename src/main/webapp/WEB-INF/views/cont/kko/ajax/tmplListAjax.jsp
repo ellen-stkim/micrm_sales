@@ -78,7 +78,7 @@
                                         <c:if test="${!empty tmpl.item_highlight_json}">
                                             <c:set var="highlight" value="${tmpl.highlight_json}"/>
                                             <div class="tmpl_header">${tmpl.tmpl_header}</div>
-                                            <div>
+                                            <div class="item_high_div">
                                                     <div class="tmpl_high">
                                                         <div>${highlight.title}</div>
                                                         <div class="tmpl_subtit">${highlight.description}</div>
@@ -90,7 +90,8 @@
                                                     </c:if>
                                                    </div>
                                         </c:if>
-                                        <c:if test="${fn:contains(tmpl.item_json,'\"list\"')}">
+                                        <div class="item_div">
+                                            <c:if test="${fn:contains(tmpl.item_json,'\"list\"')}">
                                                 <div class="item_table">
                                                     <c:forEach var="item" items="${tmpl.item_list_json.list}">
                                                         <div>
@@ -98,9 +99,15 @@
                                                             <span class="td">${item.description}</span>
                                                         </div>
                                                     </c:forEach>
-                                                </div>
-                                        </c:if>
-
+                                                    </div>
+                                            </c:if>
+                                            <c:if test="${fn:contains(tmpl.item_json,'\"summary\"')}">
+                                                 <div class="item_summary">
+                                                      <span class="th">${tmpl.item_list_json.summary.title}</span>
+                                                      <span class="td">${tmpl.item_list_json.summary.description}</span>
+                                                 </div>
+                                            </c:if>
+                                        </div>
                                     </c:if>
                                      <div class="cont">${tmpl.tmpl_cont}</div>
 <%--                                         부가 정보--%>
