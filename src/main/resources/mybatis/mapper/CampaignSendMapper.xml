@@ -109,7 +109,7 @@
 		values
 		<foreach collection="list" item="list" separator="," >
 		(
-			'R000000029', #{list.type}, #{list.list.profile_key}, #{list.phone}, #{list.msg}, #{list.callback}, #{list.button_json}, #{list.img_url}, 'N'
+			'R000000029', #{list.type}, #{list.profile_key}, #{list.phone}, #{list.msg}, #{list.callback}, #{list.button_json}, #{list.img_url}, 'N'
 			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.serialnum}, #{list.reqdate}
 		)
 		</foreach>
