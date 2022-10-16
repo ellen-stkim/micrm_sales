@@ -36,9 +36,11 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val kakaoDbDto = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_DB", dto.usr_grp_cd!!))
         val kakaoDb = kakaoDbDto.cd_val
         //val kakaoDbType = kakaoDbDto.cd_desc
-        val kakaoKey = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_KEY", dto.usr_grp_cd!!)).cd_val
+        val kakaoSenderNo = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_KEY", dto.usr_grp_cd!!)).cd_desc
+        //고객사 ID
+        val kakaoClientId = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_ID", dto.usr_grp_cd!!)).cd_val
 
-        if(kakaoKey.isNullOrEmpty()){
+        if(kakaoClientId.isNullOrEmpty()){
             return cnt
         }
 
@@ -268,24 +270,26 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             }
 
             val kkoMsgdto = Kko_msgDto()
+            kkoMsgdto.clientId = kakaoClientId
             kkoMsgdto.id = "MICRM_SALES"
             kkoMsgdto.serialnum = dto.usr_grp_cd!!.toInt()
             kkoMsgdto.status = "1"
             kkoMsgdto.reqdate = dto.start_dt
             kkoMsgdto.phone = map["SEND_TO"].toString()
-            kkoMsgdto.callback = kakaoCont.send_to
+            kkoMsgdto.callback = kakaoSenderNo
             kkoMsgdto.msg = targetBody
-            kkoMsgdto.profile_key = kakaoKey
+            kkoMsgdto.profile_key = kakaoCont.send_to
+            kkoMsgdto.ad_flag = "N"
 
             if(kakaoBtnUrl != null){
                 //kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
                 kkoMsgdto.button_json = "[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]"
             }
             if(kakaoCont.kko_server_image_url != null){
-                kkoMsgdto.type = "FT"
+                kkoMsgdto.type = "FI"
                 kkoMsgdto.img_url = "{'img_url': '${kakaoCont.kko_server_image_url}', 'img_link': '$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}'}"
             }else{
-                kkoMsgdto.type = "FI"
+                kkoMsgdto.type = "FT"
             }
 
             kkoMsgdto.failed_type = "NO"

@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
+import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
@@ -36,9 +37,11 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         val kakaoDbDto = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_DB", dto.usr_grp_cd!!))
         val kakaoDb = kakaoDbDto.cd_val
         //val kakaoDbType = kakaoDbDto.cd_desc
-        val kakaoKey = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_KEY", dto.usr_grp_cd!!)).cd_val
+        val kakaoSenderNo = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_KEY", dto.usr_grp_cd!!)).cd_desc
+        //고객사 ID
+        val kakaoClientId = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_ID", dto.usr_grp_cd!!)).cd_val
 
-        if(kakaoKey.isNullOrEmpty()){
+        if(kakaoClientId.isNullOrEmpty()){
             return cnt
         }
 
@@ -268,15 +271,43 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             }
 
             val kkoMsgdto = Kko_msgDto()
+            kkoMsgdto.clientId = kakaoClientId
             kkoMsgdto.id = "MICRM_SALES"
             kkoMsgdto.serialnum = dto.usr_grp_cd!!.toInt()
             kkoMsgdto.status = "1"
             kkoMsgdto.reqdate = dto.start_dt
             kkoMsgdto.phone = map["SEND_TO"].toString()
-            kkoMsgdto.callback = kakaoCont.send_to
+            kkoMsgdto.callback = kakaoSenderNo
             kkoMsgdto.msg = targetBody
-            kkoMsgdto.profile_key = kakaoKey
+            kkoMsgdto.profile_key = kakaoCont.send_to
+            kkoMsgdto.template_code = kakaoCont.key_id
+            kkoMsgdto.ad_flag = "N"
 
+            if(kakaoCont.kko_btn_obj != null){
+                val gson = GsonBuilder().create()
+                val objMap: MutableMap<String, Any> = gson.fromJson(kakaoCont.kko_btn_obj, MutableMap::class.java) as MutableMap<String, Any>
+
+                if(objMap["button"] != null){
+                    kkoMsgdto.button_json = gson.toJson(objMap["button"])
+                }
+                if(objMap["quick_reply"] != null){
+                    kkoMsgdto.quick_reply = gson.toJson(objMap["quick_reply"])
+                }
+                if(objMap["item_highlight"] != null){
+                    kkoMsgdto.item_highlight = gson.toJson(objMap["item_highlight"])
+                }
+                if(objMap["item"] != null){
+                    kkoMsgdto.item = gson.toJson(objMap["item"])
+                }
+            }
+            if(kakaoCont.kko_img_cd != null){
+                kkoMsgdto.type = "AT"
+            }else{
+                kkoMsgdto.type = "AI"
+            }
+
+
+            /*
             if(kakaoBtnUrl != null){
                 kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
             }
@@ -286,6 +317,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             if(kakaoImgUrl != null) {
                 kkoMsgdto.img_url = "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
             }
+            */
             if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.lowercase(Locale.getDefault())){
                 when(mdmCont.msg_tp){
                     "DMCH201" ->  kkoMsgdto.failed_type = "SMS"
