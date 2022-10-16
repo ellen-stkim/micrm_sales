@@ -416,7 +416,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             kkoMsgdto.m_server = kakaoDb
 
             sendLst.add(kkoMsgdto)
-            sqlSession.insert("ins_camp_send_kko_cj", sendLst)
+            sqlSession.insert("ins_camp_send_kko_enter", sendLst)
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendKKo", e)
