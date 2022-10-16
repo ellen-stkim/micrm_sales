@@ -2382,6 +2382,8 @@ class SalesforceServiceImpl : SalesforceService {
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                                 inArguments["SEND_TO"] = send_to.toString()
+
+                                // DMCH204 친구톡, DMCH216 알림톡
                                 kkoSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
