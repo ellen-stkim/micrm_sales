@@ -351,8 +351,7 @@
                                                     <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
                                                     <c:forEach var="btn" items="${list[0].at_btn_json}">
                                                         <div>
-                                                            <a href="${btn.get('linkPc')}" target="_blank"
-                                                               class="sms_btn">${btn.get('name')}</a>
+                                                            <a href="${btn.get('linkPc')}" target="_blank" class="sms_btn">${btn.get('name')}</a>
                                                         </div>
                                                     </c:forEach>
                                                 </div>

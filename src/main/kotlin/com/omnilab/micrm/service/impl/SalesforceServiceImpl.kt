@@ -94,6 +94,10 @@ class SalesforceServiceImpl : SalesforceService {
     private lateinit var kkoSend: CampaignSendDao
 
     @Autowired
+    @Qualifier("CampaignKakaoAtDaoImpl")
+    private lateinit var kkoSendAt: CampaignSendDao
+
+    @Autowired
     @Qualifier("CampaignRcsDaoImpl")
     private lateinit var rcsSend: CampaignSendDao
 
@@ -2371,7 +2375,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                     // 발송
                     when {
-                        // 카카오
+                        // 카카오 친구톡
                         contTpLst["DMTP03"] != null -> {
                             val send_to = inArguments[contTpLst["DMTP03"]!!.from_to]
                             if(send_to == null){
@@ -2382,8 +2386,20 @@ class SalesforceServiceImpl : SalesforceService {
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                                 inArguments["SEND_TO"] = send_to.toString()
-
-                                // DMCH204 친구톡, DMCH216 알림톡
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                            }
+                        }
+                        // 카카오 알림톡
+                        contTpLst["DMTP05"] != null -> {
+                            val send_to = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
+                                salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else{
+                                sendHstDto.send_to = send_to.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = send_to.toString()
                                 kkoSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
