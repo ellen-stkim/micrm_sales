@@ -130,8 +130,8 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
 
             // 제목 , 내용 치환
             for (key in map.keys) {
-                targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                targetSubject = targetSubject?.replace("#{$key}", CommonUtils.stringValueOf(map[key]))
+                targetBody = targetBody?.replace("#{$key}", CommonUtils.stringValueOf(map[key]))
                 mdmSubject = mdmSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
                 mdmBody = mdmBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
                 rcsSubject = rcsSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
