@@ -282,7 +282,10 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                 kkoMsgdto.button_json = "[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]"
             }
             if(kakaoCont.kko_server_image_url != null){
+                kkoMsgdto.type = "FT"
                 kkoMsgdto.img_url = "{'img_url': '${kakaoCont.kko_server_image_url}', 'img_link': '$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}'}"
+            }else{
+                kkoMsgdto.type = "FI"
             }
 
             kkoMsgdto.failed_type = "NO"

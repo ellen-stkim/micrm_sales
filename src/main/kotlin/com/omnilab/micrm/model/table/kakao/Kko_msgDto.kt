@@ -39,6 +39,7 @@ class Kko_msgDto {
     var etc5: String? = null
     var etc6: String? = null
 
+    var type: String? = null
     var m_server: String? = null
 
     override fun toString(): String {
