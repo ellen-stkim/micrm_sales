@@ -103,7 +103,7 @@
 
 	<insert id="ins_camp_send_kko_enter" parameterType="Kko_msgDto">
 		insert into ${list[0].m_server}.kko_msg (
-			`CLIENT_ID`, `MESSAGE_TYPE`, `SENDER_KEY`, `PHONE_NUMBER`, `MESSAGE`, `SENDER_NO`, `BUTTON`, `IMAGE`, `AD_FLAG`
+			`CLIENT_ID`, `MESSAGE_TYPE`, `SENDER_KEY`, `PHONE_NUMBER`, `MESSAGE`, `SENDER_NO`, `BUTTON_JSON`, `IMAGE_JSON`, `AD_FLAG`
 			, `ETC1`, `ETC2`, `ETC3`, `ETC4`, `ETC5`, `ETC6`, `CID`, `REQDATE`
 		)
 		values
