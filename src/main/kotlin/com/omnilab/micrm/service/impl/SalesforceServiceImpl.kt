@@ -886,7 +886,7 @@ class SalesforceServiceImpl : SalesforceService {
 
             when (i) {
                 0 -> {
-                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP03" }.findFirst().orElse(null).seq
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP03" || it.cont_tp == "DMTP05" }.findFirst().orElse(null).seq
                 }
                 1 -> {
                     tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP02" }.findFirst().orElse(null).seq
