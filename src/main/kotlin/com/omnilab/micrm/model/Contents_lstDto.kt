@@ -69,7 +69,6 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
 
 
     // 알림톡 변수
-    var at_preview_obj: AtTmpl_viewDto? = null
     var tmpl_msg_tp: String? = null
     var tmpl_ext: String? = null
     var tmpl_ad: String? = null
