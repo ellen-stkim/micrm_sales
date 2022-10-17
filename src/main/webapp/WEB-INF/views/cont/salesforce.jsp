@@ -2780,7 +2780,7 @@
         $('#templateCode').val($(tmpl).attr('data'));
 
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
-        $('#tmplPopUp input').val('');
+        $('#tmplSetForm input').val('');
         $('.tmplPopUp').removeClass('active');
 
     }
