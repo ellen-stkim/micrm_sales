@@ -169,6 +169,7 @@
 
                                         </div>
                                     </div>
+                                        cont tp : ${cont_tp}
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="block">
                                             <div class="row">
