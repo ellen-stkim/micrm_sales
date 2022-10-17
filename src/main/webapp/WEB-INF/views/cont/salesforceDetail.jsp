@@ -350,7 +350,7 @@
                                                     <div class="at_tmpl_data">
                                                         <!-- 이미지형  아이템리스트형 -->
                                                         <c:set var="tmpl" value="${list[0]}"/>
-                                                        ${tmpl}
+                                                        <span class="dkdkdkdkdkdk">${tmpl}</span>
                                                         <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
                                                             <c:if test="${!empty tmpl.kko_img_cd}">
                                                                 <div class="kko_img_box">
