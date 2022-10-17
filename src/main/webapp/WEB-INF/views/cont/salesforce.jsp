@@ -1368,7 +1368,6 @@
     // 정보 조회
     function mobileInfo(seq) {
         const res = function (response) {
-            console.log(response)
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
 
