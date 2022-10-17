@@ -428,7 +428,6 @@
                                                             </c:if>
                                                                 <div class="sms_txt at_tmpl_data" >${list[0].cont_body}</div>
                                                                 <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
-                                                            </c:if>
                                                         </div>
                                                     </div>
                                                 </div>
