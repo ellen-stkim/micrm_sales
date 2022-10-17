@@ -425,8 +425,7 @@
                                                                         <a href="${btn.linkPc}" target="_blank" class="sms_btn">${btn.name}</a></c:if>
                                                                 </c:forEach>
                                                             </c:if>
-                                                                <div class="sms_txt at_tmpl_data" >${list[0].cont_body}</div>
-                                                                <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
+                                                            <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
                                                         </div>
                                                     </div>
                                                 </div>
