@@ -1193,7 +1193,9 @@
 			, l.rcs_footer                                                                                         AS rcs_footer
 			, l.use_yn                                                                                             AS list_use_yn
 			, l.from_to                                                                                            AS from_to
-			, tmpl.tmpl_ext
+			, tmpl.tmpl_nm
+			, tmpl.tmpl_cd
+		    , tmpl.tmpl_ext
 			, tmpl.tmpl_ad
 			, tmpl.tmpl_tit
 			, tmpl.tmpl_subtit
