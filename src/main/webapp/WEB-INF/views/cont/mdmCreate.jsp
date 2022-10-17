@@ -698,8 +698,7 @@
                 <span id="tmplPager"></span>
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center" value="저장"
-                   onclick="tmplSendSave();"/>
+            <input type="button" class="btn_bg btn_size2 btn_center" onclick="tmplSendSave();"  value="저장"/>
         </div>
     </div>
 </div>

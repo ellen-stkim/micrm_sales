@@ -678,8 +678,7 @@
                 <span id="tmplPager"></span>
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center" value="저장"
-                   onclick="tmplSendSave();"/>
+            <input type="button" class="btn_bg btn_size2 btn_center" onclick="tmplSendSave();" value="저장"/>
         </div>
     </div>
 </div>
@@ -2746,8 +2745,6 @@
     }
 
     function tmplListPopUp(pageNo) {
-        console.log($('#send_key'))
-        console.log($('#send_key').val() =='')
         if($('#send_key').val() ==''){
             popup.popAlert("발신 프로필을 선택해주세요");
             return;
