@@ -76,6 +76,7 @@
             , a.KKO_IMG_URL
             , a.KKO_BTN_NM
             , a.KKO_BTN_URL
+            , a.KKO_BTN_OBJ
             , a.IMG_CD_1
             , a.IMG_CD_2
             , a.IMG_CD_3
@@ -194,9 +195,9 @@
 
     <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
         insert into tblmicp_cont_lst
-            (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, FROM_TO, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
+            (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, FROM_TO, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL, KKO_BTN_NM, KKO_BTN_URL, KKO_BTN_OBJ, IMG_CD_1, IMG_CD_2, IMG_CD_3, IMG_CD_4, IMG_CD_5, IMG_CD_6, RCS_BTN_INS_TP, RCS_BTN_CNT, RCS_BTN_OBJ, RCS_BTN_1, RCS_BTN_TP_1, RCS_BTN_CONT_1, RCS_BTN_2, RCS_BTN_TP_2, RCS_BTN_CONT_2, RCS_BTN_3, RCS_BTN_TP_3, RCS_BTN_CONT_3, RCS_FOOTER, KEY_ID, CONT_GRP_CD, REG_ID)
         values
-            (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}, #{kko_btn_nm}, #{kko_btn_url}, #{img_cd_1}, #{img_cd_2}, #{img_cd_3}, #{img_cd_4}, #{img_cd_5}, #{img_cd_6}, #{rcs_btn_ins_tp}, #{rcs_btn_cnt}, #{rcs_btn_obj}, #{rcs_btn_1}, #{rcs_btn_tp_1}, #{rcs_btn_cont_1}, #{rcs_btn_2}, #{rcs_btn_tp_2}, #{rcs_btn_cont_2}, #{rcs_btn_3}, #{rcs_btn_tp_3}, #{rcs_btn_cont_3}, #{rcs_footer}, #{key_id}, #{cont_grp_cd}, #{reg_id})
+            (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}, #{kko_btn_nm}, #{kko_btn_url}, #{kko_btn_obj}, #{img_cd_1}, #{img_cd_2}, #{img_cd_3}, #{img_cd_4}, #{img_cd_5}, #{img_cd_6}, #{rcs_btn_ins_tp}, #{rcs_btn_cnt}, #{rcs_btn_obj}, #{rcs_btn_1}, #{rcs_btn_tp_1}, #{rcs_btn_cont_1}, #{rcs_btn_2}, #{rcs_btn_tp_2}, #{rcs_btn_cont_2}, #{rcs_btn_3}, #{rcs_btn_tp_3}, #{rcs_btn_cont_3}, #{rcs_footer}, #{key_id}, #{cont_grp_cd}, #{reg_id})
     </insert>
 
     <insert id="ins_tblmicp_cont_url_lst" parameterType="HashMap">

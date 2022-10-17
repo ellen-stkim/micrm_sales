@@ -353,6 +353,7 @@
 			, CONCAT_WS(',', img_1.IMG_FILE_NM, img_2.IMG_FILE_NM, img_3.IMG_FILE_NM, img_4.IMG_FILE_NM, img_5.IMG_FILE_NM, img_6.IMG_FILE_NM) AS IMG_NM_LST
 			, e.IMG_URL as kko_image_url
 			, e.IMG_FILE_NM as kko_image_file_nm
+			, e.KKO_IMG_URL as kko_server_image_url
 			, d.cd_nm AS send_tp_nm
 			, f.cd_val as msg_tp_val
 		from tblmicp_cont_lst as a

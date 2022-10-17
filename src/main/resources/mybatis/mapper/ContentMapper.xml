@@ -989,6 +989,7 @@
 		kko_img_url = #{kko_img_url},
 		kko_btn_nm = #{kko_btn_nm},
 		kko_btn_url = #{kko_btn_url},
+		kko_btn_obj = #{kko_btn_obj},
 		rcs_btn_ins_tp = #{rcs_btn_ins_tp},
 		rcs_btn_cnt = #{rcs_btn_cnt},
 		rcs_btn_obj = #{rcs_btn_obj},

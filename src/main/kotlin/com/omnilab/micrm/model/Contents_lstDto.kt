@@ -21,6 +21,7 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
     var cont_tp_nm: String? = null
     var kko_image_url: String? = null
     var kko_image_file_nm: String? = null
+    var kko_server_image_url: String? = null
     var img_lst: String? = null
     var cont_body_json : List<MutableMap<String, Any>>? = null
         get() = if (!cont_body.isNullOrEmpty() && field == null) {
