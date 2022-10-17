@@ -169,7 +169,6 @@
 
                                         </div>
                                     </div>
-                                        cont tp : ${cont_tp}
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="block">
                                             <div class="row">
@@ -327,6 +326,8 @@
                                         </div>
                                     </div>
                                 </c:if>
+                                cont tp : ${cont_tp}
+                                cont tp DMTP05 : ${cont_tp eq 'DMTP05'}
                                 <c:if test="${cont_tp eq 'DMTP05'}">
                                     <div class="viewer_area" id="kakao_ft_viewer" hidden>
                                         <div class="top">친구톡 본문 입력창</div>
