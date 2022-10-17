@@ -126,7 +126,7 @@ class MobileContentServiceImpl : ContentService {
                         atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
                         atDto.kep_status = "O"  // 승인완료
 
-                        val resultDto = kkoAtTmplDao.selKkoAtTmplByGrpCd(atDto)
+                        val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
 
@@ -137,6 +137,8 @@ class MobileContentServiceImpl : ContentService {
                             obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
                             obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
                             tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+                            tblmiContLstdto.kko_img_cd = resultDto.img_seq
+                            tblmiContLstdto.kko_img_url = resultDto.kko_img_url
 
                             tblmiContLstdto.cont_tp = "DMTP05"
                             tblmiContLstdto.msg_tp = "DMCH216"
@@ -819,7 +821,7 @@ class MobileContentServiceImpl : ContentService {
      * @title : 모바일 컨텐츠 리스트 뽑아내기
      */
     private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Contents_lstDto> {
-        var list = contentDao.selectMobileContent(dto)
+       /* var list = contentDao.selectMobileContent(dto)
 
         for(dto in list){
             if(dto.cont_tp_lst!!.contains("DMTP05") && !CommonUtils.isEmptyObject(dto.key_id)){  // 알림톡을 포함할 경우
@@ -832,8 +834,8 @@ class MobileContentServiceImpl : ContentService {
 
                 dto.at_preview_obj = resultDto
             }
-        }
-        return list
+        }*/
+        return contentDao.selectMobileContent(dto)
     }
 
     /**

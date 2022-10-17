@@ -381,7 +381,7 @@ class SalesforceServiceImpl : SalesforceService {
                         atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
                         atDto.kep_status = "O"  // 승인완료
 
-                        val resultDto = kkoAtTmplDao.selKkoAtTmplByGrpCd(atDto)
+                        val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto!!.tmpl_cd
 
@@ -392,6 +392,8 @@ class SalesforceServiceImpl : SalesforceService {
                             obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
                             obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
                             tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+                            tblmiContLstdto.kko_img_cd = resultDto.img_seq
+                            tblmiContLstdto.kko_img_url = resultDto.kko_img_url
 
                             tblmiContLstdto.cont_tp = "DMTP05"
                             tblmiContLstdto.msg_tp = "DMCH216"

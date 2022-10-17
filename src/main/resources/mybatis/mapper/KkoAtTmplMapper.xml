@@ -21,14 +21,30 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
                 and a.seq = #{seq}
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
+                and a.send_key = #{send_key}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and a.tmpl_nm = #{tmpl_nm}
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
                 and a.tmpl_cd = #{tmpl_cd}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
+                and a.chan_id = #{chan_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
+                and a.kep_status = #{kep_status}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
                 and a.use_yn = #{use_yn}
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
+                and a.tmpl_status = #{tmpl_status}
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
-                and b.usr_grp_cd = #{usr_grp_cd}
+                AND b.list_dt_id = 'DMTP03'
+                AND b.USR_GRP_CD = #{usr_grp_cd}
             </if>
         </where>
 

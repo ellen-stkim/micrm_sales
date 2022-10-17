@@ -109,13 +109,23 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
         }
 
     // 알림톡 변수
-    var tmpl_nm :String? = null
-    var tmpl_cd :String? = null
-    var at_btn_obj: String? = null
-    var at_btn_json: List<MutableMap<String, Any>>? = null
-        get() = if (!at_btn_obj.isNullOrEmpty() && field == null) {
+    var tmpl_msg_tp: String? = null
+    var tmpl_ext: String? = null
+    var tmpl_ad: String? = null
+    var tmpl_tit: String? = null
+    var tmpl_subtit: String? = null
+    var tmpl_empsize_tp: String? = null
+    var tmpl_header: String? = null
+    var button_json: String? = null
+    var quick_repl_json: String? = null
+    var item_highlight_json: String? = null
+    var item_img_seq: Int? = null
+    var item_json: String? = null
+
+    var btn_json: ArrayList<MutableMap<String, Any>>? = null
+        get() = if (!button_json.isNullOrEmpty() && field == null) {
             val g = GsonBuilder().create();
-            val obj = g.fromJson(at_btn_obj, Object::class.java)
+            val obj = g.fromJson(button_json, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()
             if(obj is List<*>){
                 for(i in obj){
@@ -134,6 +144,24 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
             }
         } else{
             ArrayList()
+        }
+
+    var highlight_json: Object? = null
+        get() = if (!item_highlight_json.isNullOrEmpty() && field == null) {
+            val g = GsonBuilder().create();
+            val obj = g.fromJson(item_highlight_json, Object::class.java)
+            obj
+        } else{
+            Object()
+        }
+
+    var item_list_json: Object? = null
+        get() = if (!item_json.isNullOrEmpty() && field == null) {
+            val g = GsonBuilder().create();
+            val obj = g.fromJson(item_json, Object::class.java)
+            obj
+        } else{
+            Object()
         }
 
     var from_to: String? = null
