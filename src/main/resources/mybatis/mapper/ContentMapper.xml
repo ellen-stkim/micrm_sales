@@ -351,6 +351,18 @@
 			, b.RCS_BTN_CONT_3
 			, b.RCS_FOOTER
 			, b.key_id
+			, tmpl.tmpl_ext
+			, tmpl.tmpl_ad
+			, tmpl.tmpl_tit
+			, tmpl.tmpl_subtit
+			, tmpl.tmpl_empsize_tp
+			, tmpl.img_seq
+			, tmpl.tmpl_subtit
+			, tmpl.item_highlight_json
+			, tmpl.tmpl_header
+			, tmpl.item_json
+			, tmpl.tmpl_msg_tp
+			, tmpl.button_json
 		FROM (
 		SELECT mst.seq                                         AS seq
 		, mst.ch_tp                                        AS ch_tp
@@ -411,6 +423,7 @@
 		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
 		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
 		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+		LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON a.key_id = tmpl.tmpl_cd
 	</select>
 
 	<!-- 검색을 위해 상위,하위 컨텐츠 연결한 MoblieContent Cnt 뽑아내기 -->

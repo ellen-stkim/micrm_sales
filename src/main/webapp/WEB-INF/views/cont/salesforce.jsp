@@ -147,7 +147,9 @@
                                 <div class="row body">
                                     <div class="th">발신 프로필</div>
                                     <div class="column_1">
-                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder="발신 프로필을 선택 해주세요" readonly/>
+                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder ="발신 프로필을 선택해주세요"
+                                               readonly/>
+                                        <input type="hidden" name="send_key" id="send_key"/>
                                         <input type="hidden" name="send_to_list" id="kakao_send_to_num" />
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
@@ -263,7 +265,7 @@
                             </div>
                             <div class="viewer_area" id="kakao_at_viewer" hidden>
                                 <div class="top">미리보기</div>
-                                <div class="at_inner">
+                                <div class="at_inner template_body">
                                     <div class="text">
                                         <div class="row_body">
                                             <div class="round_box" >
@@ -2013,6 +2015,11 @@
             let $doc = new DOMParser().parseFromString(response, "text/html");
             let html = $("#js-area-popup", $doc).html();
             let dynamic = $("#preview").html(html);
+
+            // 알림톡 미리보기
+            if($("#preview").find("#at_tmpl_privew").length >0 ){
+                $("#at_tmpl_privew").html($('.at_inner .row_body').html())
+            }
             $("#smsContentsPopup").addClass("active");
             previewSlideLoad();
         }
@@ -2180,6 +2187,7 @@
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
             $('.smsNumber_kko').val(sender);
+            $('#send_key').val(send_to);
             $('#kakao_send_to_num').val(send_number);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
@@ -2738,6 +2746,12 @@
     }
 
     function tmplListPopUp(pageNo) {
+        console.log($('#send_key'))
+        console.log($('#send_key').val() =='')
+        if($('#send_key').val() ==''){
+            popup.popAlert("발신 프로필을 선택해주세요");
+            return;
+        }
         $('.tmplPopUp').addClass('active');
         tmplListPaging(1)
     }
@@ -2749,7 +2763,7 @@
             $("#tmplPager").html($("#pager", $doc).html());
         };
         let param = $("#tmplSetForm").serializeArray();
-        param.push({name: 'pageNo', value: pageNo},{name : 'usr_grp_cd',value : $('#usr-grp_cd').val()});
+        param.push({name: 'pageNo', value: pageNo},{name : 'usr_grp_cd',value : $('#usr-grp_cd').val()},{name: 'kep_status', value: 'O'},{name:'send_key',value: $('#send_key').val()});
 
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
