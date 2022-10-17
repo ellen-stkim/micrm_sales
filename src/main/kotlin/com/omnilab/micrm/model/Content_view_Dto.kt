@@ -109,6 +109,8 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
         }
 
     // 알림톡 변수
+    var tmpl_nm: String? = null
+    var tmpl_cd: String? = null
     var tmpl_msg_tp: String? = null
     var tmpl_ext: String? = null
     var tmpl_ad: String? = null
