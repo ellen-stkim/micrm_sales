@@ -1450,7 +1450,6 @@
 
 
         $('#previewBtn').on('click', function () {
-
             let tamplate = $('.template_name');
             let smsFormat = $('.formatType:checked').val();
             let smsFormatLength = $('.formatType:checked').length;
@@ -2338,6 +2337,7 @@
             $("#slide_send_num").val(send_number);
         } else if (send_to_type === 'kko') {
             $('.smsNumber_kko').val(sender);
+            $('#send_key').val(send_to);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
@@ -2886,6 +2886,7 @@
         let param = $("#tmplSetForm").serializeArray();
         param.push({name: 'pageNo', value: pageNo});
         param.push({name: 'kep_status', value: 'O'});   // 승인건
+        param.push({name:'send_key',value: $('#send_key').val()});
 
         com_ajax.ajax('post', '${baseURL}/cont/kko/atTmplLst.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }

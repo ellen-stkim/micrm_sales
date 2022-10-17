@@ -819,7 +819,7 @@ class MobileContentServiceImpl : ContentService {
      * @title : 모바일 컨텐츠 리스트 뽑아내기
      */
     private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Contents_lstDto> {
-        var list = contentDao.selectMobileContent(dto)
+       /* var list = contentDao.selectMobileContent(dto)
 
         for(dto in list){
             if(dto.cont_tp_lst!!.contains("DMTP05") && !CommonUtils.isEmptyObject(dto.key_id)){  // 알림톡을 포함할 경우
@@ -832,8 +832,8 @@ class MobileContentServiceImpl : ContentService {
 
                 dto.at_preview_obj = resultDto
             }
-        }
-        return list
+        }*/
+        return contentDao.selectMobileContent(dto)
     }
 
     /**
