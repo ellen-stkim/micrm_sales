@@ -305,19 +305,11 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             }else{
                 kkoMsgdto.type = "AI"
             }
+            kkoMsgdto.price = kakaoCont.kko_price.toString()
+            kkoMsgdto.currency_type = kakaoCont.kko_currency_type
+            kkoMsgdto.title = kakaoCont.kko_title
+            kkoMsgdto.header = kakaoCont.kko_header
 
-
-            /*
-            if(kakaoBtnUrl != null){
-                kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
-            }
-            if(kakaoCont.kko_image_file_nm != null){
-                kkoMsgdto.img_path = imgPath + kakaoCont.kko_image_file_nm
-            }
-            if(kakaoImgUrl != null) {
-                kkoMsgdto.img_url = "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
-            }
-            */
             if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.lowercase(Locale.getDefault())){
                 when(mdmCont.msg_tp){
                     "DMCH201" ->  kkoMsgdto.failed_type = "SMS"
