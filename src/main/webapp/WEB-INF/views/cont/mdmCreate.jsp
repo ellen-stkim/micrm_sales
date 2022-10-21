@@ -835,6 +835,7 @@
                 }
             } else {
                 $(this).val('생성');
+                $(this).parents('#kakao').find('.viewer_area .inner a.kakao_link').remove();
                 $(this).parents('#kakao_ft').find('.kakao_link').remove();
                 link.val('');
                 name.val('');
@@ -2949,9 +2950,14 @@
         $(`#` + beforeKkoType).show();
 
         if (check.val() == 'kko_at') {
-            $('.kakao_txt').val("");
             $('#kakao_at_viewer').show();
             $('#kakao_ft_viewer').hide();
+
+            $('.kakao_txt').val("");
+            $('#kko_ft input[type="text"]').val('');
+            $('#js-kakao-img').html('');
+            $('.kakao_link').remove()
+
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
