@@ -200,16 +200,18 @@
                                                 <div class="td top-border">
                                                     <div class="col_img" id="js-kakao-img">
                                                         <!-- 이미지는 있고, 이미지 링크는 없을때 -->
-                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                            <a href="${list[0].kko_img_lst}" target="_blank">
-                                                                <img src="${filePath}${list[0].kko_img_lst}"/>
-                                                            </a>
-                                                        </c:if>
-                                                        <!-- 이미지는 있고, 이미지 링크도 있을때 -->
-                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                            <a href="${list[0].kko_img_url}" target="_blank">
-                                                                <img src="${filePath}${list[0].kko_img_lst}"/>
-                                                            </a>
+                                                        <c:if test="${cont_tp eq 'DMTP03'}">
+                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
+                                                                <a href="${list[0].kko_img_lst}" target="_blank">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                </a>
+                                                            </c:if>
+                                                            <!-- 이미지는 있고, 이미지 링크도 있을때 -->
+                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
+                                                                <a href="${list[0].kko_img_url}" target="_blank">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                </a>
+                                                            </c:if>
                                                         </c:if>
                                                     </div>
                                                 </div>
