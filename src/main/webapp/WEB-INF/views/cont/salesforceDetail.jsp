@@ -192,7 +192,7 @@
                                             <div class="row">
                                                 <div class="th top-border">이미지 링크 주소</div>
                                                 <div class="td top-border">
-                                                    <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${list[0].kko_img_url}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${cont_tp eq 'DMTP03'? list[0].kko_img_url : ''}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 </div>
                                             </div>
                                             <div class="row flex_row">
