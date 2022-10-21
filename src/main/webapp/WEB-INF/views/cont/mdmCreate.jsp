@@ -2954,6 +2954,7 @@
             $('#kakao_ft_viewer').hide();
 
             $('.kakao_txt').val("");
+            $('.kakao_byte').html('');
             $('#kko_ft input[type="text"]').val('');
             $('#js-kakao-img').html('');
             $('.kakao_link').remove()
