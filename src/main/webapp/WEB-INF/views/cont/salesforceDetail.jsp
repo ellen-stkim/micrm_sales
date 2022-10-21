@@ -177,13 +177,13 @@
                                                     <div class="kko_delete_img" data="kakao">
                                                         <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
                                                     </div>
-                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${list[0].kko_img_nm}" readonly/>
+                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>
                                                     <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                     <!-- 카카오 이미지 저장 넘버 -->
-                                                    <input type="hidden" name="kko_img_cd" value="${list[0].kko_img_cd}"/>
+                                                    <input type="hidden" name="kko_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_img_cd: ''}"/>
                                                     <!-- 프리뷰를 위한 이미지 URL -->
                                                     <input type="hidden" name="kko_view_img_url"
-                                                    <c:if test="${list[0].kko_img_lst ne null}">
+                                                    <c:if test="${cont_tp eq 'DMTP03'  &&list[0].kko_img_lst ne null}">
                                                            value="${filePath}${list[0].kko_img_lst}"
                                                     </c:if>
                                                     >
