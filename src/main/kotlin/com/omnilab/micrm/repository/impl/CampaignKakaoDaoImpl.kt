@@ -287,7 +287,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             }
             if(kakaoCont.kko_server_image_url != null){
                 kkoMsgdto.type = "FI"
-                kkoMsgdto.img_url = "{'img_url': '${kakaoCont.kko_server_image_url}', 'img_link': '$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}'}"
+                kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}\"}"
             }else{
                 kkoMsgdto.type = "FT"
             }
