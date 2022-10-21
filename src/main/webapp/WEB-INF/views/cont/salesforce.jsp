@@ -1371,6 +1371,11 @@
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
 
+            beforeKkoType = $('.kko_format_type:checked').val();
+            console.log(beforeKkoType);
+
+            mobileListSave()
+
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
             let smsTxt = $('#sms .textarea');
