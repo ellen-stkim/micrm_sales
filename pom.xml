@@ -439,7 +439,6 @@
 			<url>http://repo.spring.io/plugins-release/</url>
 		</repository>
 	</repositories>
-
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>

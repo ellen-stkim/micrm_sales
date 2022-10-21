@@ -37,8 +37,7 @@
                     <div class="left" id="typeArea"></div>
                     <input type="hidden" name="searchType" id="searchType"/>
                     <!-- select 영역 끝 -->
-                    <input type="text" class="searchInp left-border" name="searchValue" id="searchValue"
-                           placeholder="검색어입력"/>
+                    <input type="text" class="searchInp left-border" name="searchValue" id="searchValue" placeholder="검색어입력"/>
                     <input type="submit" class="searchBtn" value="검색" onclick="return searchMobileList();"/>
                 </div>
             </form:form>

@@ -139,6 +139,8 @@ class MobileContentServiceImpl : ContentService {
                             tblmiContLstdto.kko_btn_obj = g.toJson(obj)
                             tblmiContLstdto.kko_img_cd = resultDto.img_seq
                             tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                            tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                            tblmiContLstdto.kko_header = resultDto.tmpl_header
 
                             tblmiContLstdto.cont_tp = "DMTP05"
                             tblmiContLstdto.msg_tp = "DMCH216"
@@ -821,20 +823,6 @@ class MobileContentServiceImpl : ContentService {
      * @title : 모바일 컨텐츠 리스트 뽑아내기
      */
     private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Contents_lstDto> {
-       /* var list = contentDao.selectMobileContent(dto)
-
-        for(dto in list){
-            if(dto.cont_tp_lst!!.contains("DMTP05") && !CommonUtils.isEmptyObject(dto.key_id)){  // 알림톡을 포함할 경우
-
-                // 템플릿 조회
-                var atDto =  AtTmpl_searchDto(dto.key_id,null,"Y")
-                atDto.usr_grp_cd =dto.cont_grp_cd
-
-                val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
-
-                dto.at_preview_obj = resultDto
-            }
-        }*/
         return contentDao.selectMobileContent(dto)
     }
 

@@ -56,16 +56,10 @@
 			kko_btn_nm,
 			kko_btn_url,
 			kko_btn_obj,
-			kko_etc_1,
-			kko_etc_2,
-			kko_etc_3,
-			kko_etc_4,
-			kko_etc_5,
-			kko_etc_6,
-			kko_etc_7,
-			kko_etc_8,
-			kko_etc_9,
-			kko_etc_10,
+			kko_price,
+			kko_currency_type,
+			kko_title,
+			kko_header,
 			img_cd_1,
 			img_cd_2,
 			img_cd_3,
@@ -110,16 +104,10 @@
 			#{kko_btn_nm},
 			#{kko_btn_url},
 			#{kko_btn_obj},
-			#{kko_etc_1},
-			#{kko_etc_2},
-			#{kko_etc_3},
-			#{kko_etc_4},
-			#{kko_etc_5},
-			#{kko_etc_6},
-			#{kko_etc_7},
-			#{kko_etc_8},
-			#{kko_etc_9},
-			#{kko_etc_10},
+			#{kko_price},
+			#{kko_currency_type},
+			#{kko_title},
+			#{kko_header},
 			#{img_cd_1},
 			#{img_cd_2},
 			#{img_cd_3},
@@ -989,6 +977,7 @@
 		kko_img_url = #{kko_img_url},
 		kko_btn_nm = #{kko_btn_nm},
 		kko_btn_url = #{kko_btn_url},
+		kko_btn_obj = #{kko_btn_obj},
 		rcs_btn_ins_tp = #{rcs_btn_ins_tp},
 		rcs_btn_cnt = #{rcs_btn_cnt},
 		rcs_btn_obj = #{rcs_btn_obj},
@@ -1192,7 +1181,9 @@
 			, l.rcs_footer                                                                                         AS rcs_footer
 			, l.use_yn                                                                                             AS list_use_yn
 			, l.from_to                                                                                            AS from_to
-			, tmpl.tmpl_ext
+			, tmpl.tmpl_nm
+			, tmpl.tmpl_cd
+		    , tmpl.tmpl_ext
 			, tmpl.tmpl_ad
 			, tmpl.tmpl_tit
 			, tmpl.tmpl_subtit

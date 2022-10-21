@@ -26,16 +26,11 @@ open class Tblmi_cont_lstDto {
     var kko_btn_nm : String?= null  // (친구톡) 버튼 내용
     var kko_btn_url : String ?= null    // (친구톡) 버튼 클릭 주소
     var kko_btn_obj : String ?= null    // (알림톡) 버튼 내용
-    var kko_etc_1 : String ?= null    // (알림톡) 개인화 변수1
-    var kko_etc_2 : String ?= null    // (알림톡) 개인화 변수2
-    var kko_etc_3 : String ?= null    // (알림톡) 개인화 변수3
-    var kko_etc_4 : String ?= null    // (알림톡) 개인화 변수4
-    var kko_etc_5 : String ?= null    // (알림톡) 개인화 변수5
-    var kko_etc_6 : String ?= null    // (알림톡) 개인화 변수6
-    var kko_etc_7 : String ?= null    // (알림톡) 개인화 변수7
-    var kko_etc_8 : String ?= null    // (알림톡) 개인화 변수8
-    var kko_etc_9 : String ?= null    // (알림톡) 개인화 변수9
-    var kko_etc_10 : String ?= null    // (알림톡) 개인화 변수10
+    var kko_price : Int ?= null    // (알림톡) message 내 포함된 가격/금액/결제금액
+    var kko_currency_type : String ?= null    // (알림톡)
+    var kko_title : String ?= null    // (알림톡) 템플릿 내용 중 강조 표기할 핵심 정보 text(50)
+    var kko_header : String ?= null    // (알림톡) 메시지 상단에 표기할 제목 text(16)
+
     var img_cd_1 : Int?= null   // 이미지 번호
     var img_cd_2 : Int?= null
     var img_cd_3 : Int?= null

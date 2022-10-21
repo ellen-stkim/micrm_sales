@@ -678,8 +678,7 @@
                 <span id="tmplPager"></span>
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center" value="저장"
-                   onclick="tmplSendSave();"/>
+            <input type="button" class="btn_bg btn_size2 btn_center" onclick="tmplSendSave();" value="저장"/>
         </div>
     </div>
 </div>
@@ -831,7 +830,8 @@
                 }
             } else {
                 $(this).val('생성');
-                $(this).parents('#kakao').find('.kakao_link').remove();
+                $(this).parents('#kakao').find('.viewer_area .inner a.kakao_link').remove();
+                $(this).parents('#kakao_ft').find('.kakao_link').remove();
                 link.val('');
                 name.val('');
                 //name.attr('disabled', false);
@@ -1368,9 +1368,10 @@
     // 정보 조회
     function mobileInfo(seq) {
         const res = function (response) {
-            console.log(response)
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
+
+            beforeKkoType = $('.kko_format_type:checked').val();
 
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
@@ -2747,8 +2748,6 @@
     }
 
     function tmplListPopUp(pageNo) {
-        console.log($('#send_key'))
-        console.log($('#send_key').val() =='')
         if($('#send_key').val() ==''){
             popup.popAlert("발신 프로필을 선택해주세요");
             return;
@@ -2784,7 +2783,7 @@
         $('#templateCode').val($(tmpl).attr('data'));
 
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
-        $('#tmplPopUp input').val('');
+        $('#tmplSetForm input').val('');
         $('.tmplPopUp').removeClass('active');
 
     }
@@ -3167,9 +3166,15 @@
         $(`#` + beforeKkoType).show();
 
         if (check.val() == 'kko_at') {
-            $('.kakao_txt').val("");
             $('#kakao_at_viewer').show();
             $('#kakao_ft_viewer').hide();
+
+            $('.kakao_txt').val("");
+            $('.kakao_byte').html('0');
+            $('#kko_ft input[type="text"]').val('');
+            $('#js-kakao-img').html('');
+            $('.kakao_link').remove()
+
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
