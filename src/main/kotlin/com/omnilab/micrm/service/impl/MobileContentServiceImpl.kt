@@ -139,6 +139,8 @@ class MobileContentServiceImpl : ContentService {
                             tblmiContLstdto.kko_btn_obj = g.toJson(obj)
                             tblmiContLstdto.kko_img_cd = resultDto.img_seq
                             tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                            tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                            tblmiContLstdto.kko_header = resultDto.tmpl_header
 
                             tblmiContLstdto.cont_tp = "DMTP05"
                             tblmiContLstdto.msg_tp = "DMCH216"
