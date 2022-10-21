@@ -114,7 +114,7 @@
 		(
 			#{list.clientId}, #{list.type}, #{list.profile_key}, #{list.phone}, #{list.msg}, #{list.callback}
 			, #{list.button_json}, #{list.quick_reply}, #{list.item_highlight}, #{list.item}
-			, #{list.kko_price}, #{list.kko_currency_type}, #{list.kko_title}, #{list.kko_header}
+			, #{list.price}, #{list.currency_type}, #{list.title}, #{list.header}
 			, #{list.img_url}, #{list.ad_flag}, #{list.template_code}
 			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.serialnum}, #{list.reqdate}
 		)

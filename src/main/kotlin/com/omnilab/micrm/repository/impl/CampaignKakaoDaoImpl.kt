@@ -291,6 +291,10 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             }else{
                 kkoMsgdto.type = "FT"
             }
+            kkoMsgdto.price = kakaoCont.kko_price.toString()
+            kkoMsgdto.currency_type = kakaoCont.kko_currency_type
+            kkoMsgdto.title = kakaoCont.kko_title
+            kkoMsgdto.header = kakaoCont.kko_header
 
             kkoMsgdto.failed_type = "NO"
             if(rcsCont != null || mdmCont != null){
