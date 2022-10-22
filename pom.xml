@@ -302,6 +302,7 @@
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
     </dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
