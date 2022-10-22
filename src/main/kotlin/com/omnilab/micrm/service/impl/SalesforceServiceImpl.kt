@@ -383,7 +383,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                         val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
-                            tblmiContLstdto.key_id = resultDto!!.tmpl_cd
+                            tblmiContLstdto.key_id = resultDto.tmpl_cd
 
                             val g = GsonBuilder().create()
                             val obj = JsonObject()
@@ -939,7 +939,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                     if(!CommonUtils.isEmptyObject(resultDto)){
-                        tblmiContLstdto.key_id = resultDto!!.tmpl_cd
+                        tblmiContLstdto.key_id = resultDto.tmpl_cd
 
                         val g = GsonBuilder().create()
                         val obj = JsonObject()
@@ -950,6 +950,8 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.kko_btn_obj = g.toJson(obj)
                         tblmiContLstdto.kko_img_cd = resultDto.img_seq
                         tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                        tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                        tblmiContLstdto.kko_header = resultDto.tmpl_header
 
                         tblmiContLstdto.cont_tp = "DMTP05"
                         tblmiContLstdto.msg_tp = "DMCH216"
