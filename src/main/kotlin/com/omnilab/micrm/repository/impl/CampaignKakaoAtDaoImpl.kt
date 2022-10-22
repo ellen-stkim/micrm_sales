@@ -305,7 +305,9 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             }else{
                 kkoMsgdto.type = "AI"
             }
-            kkoMsgdto.price = kakaoCont.kko_price.toString()
+            if(kakaoCont.kko_price != null){
+                kkoMsgdto.price = kakaoCont.kko_price.toString()
+            }
             kkoMsgdto.currency_type = kakaoCont.kko_currency_type
             kkoMsgdto.title = kakaoCont.kko_title
             kkoMsgdto.header = kakaoCont.kko_header
