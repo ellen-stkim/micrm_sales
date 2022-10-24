@@ -4,15 +4,17 @@ import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.Contents_lstDto
-import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.Tblmicp_cont_url_lstDto
+import com.omnilab.micrm.model.table.Tblmicp_send_callback_msgDto
 import com.omnilab.micrm.model.table.kakao.Kko_msgDto
 import com.omnilab.micrm.repository.CampaignSendDao
-import org.apache.ibatis.session.ResultContext
-import org.apache.ibatis.session.ResultHandler
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -21,6 +23,8 @@ import kotlin.collections.ArrayList
 class CampaignKakaoDaoImpl : CampaignSendDao {
 
     val logger = LoggerFactory.getLogger(this::class.java)
+
+    val sdf = SimpleDateFormat("yyyyMMddHHmm")
 
     @Autowired
     private lateinit var sqlSession: SqlSession
@@ -272,7 +276,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             val kkoMsgdto = Kko_msgDto()
             kkoMsgdto.clientId = kakaoClientId
             kkoMsgdto.id = "MICRM_SALES"
-            kkoMsgdto.serialnum = dto.usr_grp_cd!!.toInt()
+            kkoMsgdto.serialnum = "${dto.usr_grp_cd!!}${sdf.format(Date())}${map["SEND_TO"].toString()}"
             kkoMsgdto.status = "1"
             kkoMsgdto.reqdate = dto.start_dt
             kkoMsgdto.phone = map["SEND_TO"].toString()
