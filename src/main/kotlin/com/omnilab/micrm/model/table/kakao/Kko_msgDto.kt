@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias
 @Alias("Kko_msgDto")
 class Kko_msgDto {
     var msgkey: Int? = null
-    var serialnum: Int? = null
+    var serialnum: String? = null
     var id: String? = null
     var status: String? = null
     var phone: String? = null

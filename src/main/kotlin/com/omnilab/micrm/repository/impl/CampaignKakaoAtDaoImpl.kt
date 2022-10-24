@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,6 +23,7 @@ import kotlin.collections.ArrayList
 class CampaignKakaoAtDaoImpl : CampaignSendDao {
 
     val logger = LoggerFactory.getLogger(this::class.java)
+    val sdf = SimpleDateFormat("yyyyMMddHHmm")
 
     @Autowired
     private lateinit var sqlSession: SqlSession
@@ -273,7 +275,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             val kkoMsgdto = Kko_msgDto()
             kkoMsgdto.clientId = kakaoClientId
             kkoMsgdto.id = "MICRM_SALES"
-            kkoMsgdto.serialnum = dto.usr_grp_cd!!.toInt()
+            kkoMsgdto.serialnum = "${dto.usr_grp_cd!!}${sdf.format(Date())}${map["SEND_TO"].toString()}"
             kkoMsgdto.status = "1"
             kkoMsgdto.reqdate = dto.start_dt
             kkoMsgdto.phone = map["SEND_TO"].toString()

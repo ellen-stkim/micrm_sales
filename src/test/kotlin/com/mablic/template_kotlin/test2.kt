@@ -1,6 +1,7 @@
 package com.mablic.template_kotlin
 
 import com.google.gson.GsonBuilder
+import com.omnilab.micrm.common.CommonUtils
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
 import org.slf4j.LoggerFactory
@@ -35,4 +36,6 @@ fun main() {
         val data = gson.fromJson(payload, Map::class.java)
         logger.error("{}", data)
     }
+
+    logger.error("{}", CommonUtils.sha512("010-3396-6795"))
 }
