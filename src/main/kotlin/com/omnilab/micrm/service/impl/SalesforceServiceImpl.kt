@@ -903,6 +903,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
             tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
             tblmiContLstdto.send_nm = null
+            tblmiContLstdto.from_to = contentListCreatedto.from_to
             tblmiContLstdto.thm_url = null
             tblmiContLstdto.br_yn = "N"
             tblmiContLstdto.sup_yn = "N"
