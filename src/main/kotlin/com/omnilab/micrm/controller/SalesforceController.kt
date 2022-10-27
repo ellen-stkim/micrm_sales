@@ -721,8 +721,8 @@ class SalesforceController {
             rep.status= HttpServletResponse.SC_BAD_REQUEST
             return null
         }
-        map.put("status" , HttpServletResponse.SC_OK)
-        map.put("dto" , dto!!)
+        map["status"] = HttpServletResponse.SC_OK
+        map["dto"] = dto!!
         return map
     }
 
