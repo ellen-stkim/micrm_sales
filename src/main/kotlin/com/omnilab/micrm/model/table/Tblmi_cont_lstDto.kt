@@ -1,5 +1,7 @@
 package com.omnilab.micrm.model.table
 
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
 
 @Alias("Tblmi_cont_lstDto")
@@ -23,6 +25,12 @@ open class Tblmi_cont_lstDto {
     var kko_img_url : String?= null // (친구톡) 이미지 클릭 링크 주소
     var kko_btn_nm : String?= null  // (친구톡) 버튼 내용
     var kko_btn_url : String ?= null    // (친구톡) 버튼 클릭 주소
+    var kko_btn_obj : String ?= null    // (알림톡) 버튼 내용
+    var kko_price : Int ?= null    // (알림톡) message 내 포함된 가격/금액/결제금액
+    var kko_currency_type : String ?= null    // (알림톡)
+    var kko_title : String ?= null    // (알림톡) 템플릿 내용 중 강조 표기할 핵심 정보 text(50)
+    var kko_header : String ?= null    // (알림톡) 메시지 상단에 표기할 제목 text(16)
+
     var img_cd_1 : Int?= null   // 이미지 번호
     var img_cd_2 : Int?= null
     var img_cd_3 : Int?= null
@@ -56,7 +64,7 @@ open class Tblmi_cont_lstDto {
     }
 
     override fun toString(): String {
-        return "Tblmi_cont_lstDto(seq=$seq, cont_cd=$cont_cd, cont_tp=$cont_tp, cont_sub=$cont_sub, cont_top_body=$cont_top_body, cont_body=$cont_body, send_tp=$send_tp, send_to=$send_to, send_nm=$send_nm, thm_url=$thm_url, br_yn=$br_yn, sup_yn=$sup_yn, msg_tp=$msg_tp, kko_img_cd=$kko_img_cd, kko_img_url=$kko_img_url, kko_btn_nm=$kko_btn_nm, kko_btn_url=$kko_btn_url, img_cd_1=$img_cd_1, img_cd_2=$img_cd_2, img_cd_3=$img_cd_3, img_cd_4=$img_cd_4, img_cd_5=$img_cd_5, img_cd_6=$img_cd_6, rcs_btn_ins_tp=$rcs_btn_ins_tp, rcs_btn_cnt=$rcs_btn_cnt, rcs_btn_obj=$rcs_btn_obj, rcs_btn_1=$rcs_btn_1, rcs_btn_tp_1=$rcs_btn_tp_1, rcs_btn_cont_1=$rcs_btn_cont_1, rcs_btn_2=$rcs_btn_2, rcs_btn_tp_2=$rcs_btn_tp_2, rcs_btn_cont_2=$rcs_btn_cont_2, rcs_btn_3=$rcs_btn_3, rcs_btn_tp_3=$rcs_btn_tp_3, rcs_btn_cont_3=$rcs_btn_cont_3, key_id=$key_id, cont_grp_cd=$cont_grp_cd, rcs_footer=$rcs_footer, use_yn=$use_yn, reg_id=$reg_id, reg_dt=$reg_dt, upd_id=$upd_id, upd_dt=$upd_dt)"
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }
 
 

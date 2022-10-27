@@ -131,7 +131,6 @@ class CampaignController {
         val view = ModelAndView("camp/ajax/sendSettingPreview")
         view.addObject("dto", campaignServiceImpl.getCampContentPreview(dto))
         view.addObject("filePath", sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val)
-        logger.error("{}",campaignServiceImpl.getCampContentPreview(dto).msg_tp)
         return view
     }
 

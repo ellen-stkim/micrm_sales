@@ -232,6 +232,10 @@
     width:1px; height:14px; background:#e6e6e6; margin:0 10px; vertical-align: middle;}
 .column .row_footer .date span {font-family:"Gotham"; font-size:11px;}
 
+.pop_inner .list_container .row_grid{ border: solid 1px #efefef; border-bottom: none;}
+.pop_inner .list_container.sms .column { height: 490px; }
+.pop_inner .list_container.sms .column .row_body{ height: 380px; }
+
 /* 이메일 컨텐츠 생성 */
 .create_edm .th {float:left; width:154px; height:35px; line-height:35px; padding:0 20px;
     background-color:#fafafa; border-right:1px solid #dddddd;}
@@ -332,6 +336,7 @@
 
 /* 모바일 컨텐츠 */
 .list_container.sms .column {height:667px;}
+.list_container.sms .column.size2 {height:630px;}
 .create_sms {min-width:1600px; width:100%;}
 .column .sms_head {width:100%; height:36px; line-height:35px; background:#FFFFFF;
     border-bottom:1px solid #f4f4f4; position:relative; padding:0 0 0 26px;}
@@ -351,19 +356,22 @@
 .column .sms_head .remove_info a {float:left; display:block; padding:5px 13px; border:1px solid #dddddd;
     font-size:11px; line-height:1; background:#FFFFFF; color:#888888; cursor:pointer;}
 .column .sms_head .remove_info .useState {border-right:none;}
-.column .row_body .round_box  , .scroll-box .round_box {width:270px; border-radius:11px; border:1px solid #dddddd; overflow: hidden;
+.column .row_body .round_box  , .scroll-box .round_box , .at_inner .round_box{width:270px; border-radius:11px; border:1px solid #dddddd; overflow: hidden;
     margin:0 auto;}
 .column .row_body .sms , .scroll-box .sms {width:100%; height:270px; overflow:hidden;
     background:url('../image/bg_none.png') no-repeat center; text-align:center;}
 .column .row_body .sms img , .scroll-box .sms img {width:auto; height:100%; margin-left:-100%; margin-right:-100%;}
 .column .row_body .sms + .sms_txt  ,.scroll-box .sms + .sms_txt{max-height:110px; overflow:hidden;}
 .column .row_body .sms + .sms_txt:hover , .scroll-box .sms_txt:hover {overflow-y:auto;}
-.column .row_body .sms_txt ,.scroll-box .sms_txt{width:100%; height:auto; font-size:12px; line-height:1.6; padding:15px;
+.column .row_body .sms_txt ,.scroll-box .sms_txt , .at_inner .sms_txt{width:100%; height:auto; font-size:12px; line-height:1.6; padding:15px;
     max-height:449px; overflow:hidden; background:#FFFFFF; border-radius:0;}
 .column .row_body .sms_txt:hover {overflow-y:auto;}
 .column .row_body .sms_title + .sms_txt {max-height:401px;}
-.column .row_body .sms_btn ,.scroll-box .sms_btn {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
+.column .row_body .sms_btn ,.scroll-box .sms_btn , .at_inner .sms_btn  {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
     line-height:37px; text-align:center; font-size:13px; background:#f2f2f2;}
+
+.round_box .round_box.head{ padding: 12px; background: #ffcd00; width: 290px; height: 36px; border-radius: 11px 11px 0px 0px; border: #ffcd00;}
+
 .rcs_action {width:100%; padding:15px 0; text-align:center;}
 
 .rcs_txt_type {width:calc(100% - 40px); max-width:329px; border-radius:11px; background:#f2f2f2; padding:15px 15px 0 15px; margin:0 auto;}
@@ -412,13 +420,16 @@
 
 .create_sms .head .th {float:left; width:154px; height:35px; line-height:35px;
     padding:0 20px; border-right:1px solid #dddddd; background:#fafafa;}
+/*.create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}*/
 .create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}
+.create_sms .head .td:last-child {float:left; width:calc(50% - 154px); height:100%;}
 .create_sms .head .td .txt_input {width:100%; padding:0 20px; font-size:11px;
     line-height:35px; height:35px;}
 .flex_row {display:flex; flex-direction:row;}
 .flex_row .sms_option {flex:2 0 247px;}
 .flex_row .area1 {flex:1 0 225px;}
 .flex_row .area2 {flex:1 0 175px;}
+.flex_row .area3 {flex:0 0 175px;}
 .sms_option {float:left; /*width:calc(100% - 246px);*/ height:100%; line-height:34px; padding-right:15px;}
 .sms_option .custom_check2 {vertical-align:middle; margin-left:20px;}
 .inner_option {float:left; /*width:246px;*/}
@@ -506,6 +517,8 @@
     min-width:0; min-height:0; overflow:hidden;}
 .input_area .block .row.flex_row .td .col_img img {width:100%; height:100%;}
 
+.input_area .block .row .td .filx_data { width: 100%; line-height: 35px; padding: 0 17px 0 9px;  position: relative; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+
 .viewer_area {width:50%; /*overflow-y:auto;*/ position:relative;}
 .viewer_area .top {line-height:35px; border-bottom:1px solid #f4f4f4; text-align:center; background:#fafafa;}
 .view_title {width:50%; /*border-left:1px solid #dddddd;*/ line-height:35px; border-bottom:1px solid #f4f4f4; text-align:center; background:#fafafa;}
@@ -556,6 +569,7 @@
 .td .kko_delete_img {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
 .td .sms_delete_img {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
 .td .vertical_delete_img {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
+.td .delete_tmpl {position:absolute; right:65px; top:13px; z-index:10; cursor:pointer;}
 
 .input_area .block .input-img .td .txt_input {padding:0 30px 0 10px;}
 
@@ -583,7 +597,8 @@
 #rcs .rcs_textarea .td textarea:-ms-input-placeholder {color:#cccccc !important; font-weight:600;}
 
 .rcs_inner {height:100%; margin:0 auto; position:relative;}
-.rcs_inner.text {width:329px; padding-top:35px;}
+.at_inner{padding: 50px 0; height: 500px;margin:0 auto; position:relative;}
+.rcs_inner.text, .at_inner.text {width:329px; padding-top:35px;}
 .rcs_inner.horizontal {width:329px; padding-top:35px;}
 .rcs_inner.vertical {width:329px; padding-top:35px;}
 
@@ -653,7 +668,8 @@
 /* 모바일 컨텐츠 미리보기 팝업 */
 .sms_preview {margin-bottom:30px;}
 #smsContentsPopup .list_container .row_grid {width:100%; justify-content:center;}
-#smsContentsPopup .column {float:left; flex:1 1 405px; height:auto; border:1px solid #dddddd;}
+#smsContentsPopup .column {float:left; flex:1 1 405px; height:auto; border:1px solid #dddddd;
+                            max-width: 340px; min-height: 450px;}
 #smsContentsPopup .column + .column {border-left:none;}
 #smsContentsPopup .column .row_body {height:auto; border-bottom:none;}
 #smsContentsPopup .column .sms_head {padding:0; text-align:center; font-size:14px;}
@@ -680,7 +696,7 @@
 .rcsImgForm td .select .option li {padding:12px 15px;}
 .rcs_option,
 .guide_txt {display:none;}
-.guide_txt {color:#cccccc; padding:10px 0 0; line-height:1.4;}
+.guide_txt,.guide_lst {color:#cccccc; padding:10px 0 0; line-height:1.4;}
 .guide_txt li.on {color:#666666;}
 
 /* 이미지 파일 */
@@ -701,7 +717,7 @@
     font-size:11px; line-height:1; background:#FFFFFF; color:#888888; cursor:pointer;}
 .column .img_head .remove_info .useState {border-right:none;}
 .img_viewer {clear:both; position:relative; width:538px; height:245px; border:1px solid #dddddd;
-    margin:50px 0 30px; text-align:center; overflow-y:auto; padding:35px 0;}
+    margin:50px auto 30px; text-align:center; overflow-y:auto; padding:35px 0;}
 .img_viewer.noImg::before {content:'업로드한 이미지가 없습니다.'; display:block; position:absolute; left:0; top:50%;
     transform:translateY(-50%); text-align:center; width:100%;}
 .pop_table_type1 td .input_type1 {display:block; width:100%; height:100%; padding:0 15px;}
@@ -1928,12 +1944,9 @@ input[type=checkbox], label {
 .template_textarea2 textarea::placeholder {
     color: #a1a1a1;
 }
-.addinfo_block {
+/*.addinfo_block ,.addchannel_block , .adver_msg_block{
     display: none;
-}
-.addchannel_block {
-    display: none;
-}
+}*/
 .emphImg_block .row {
     height: 145px;
 }
@@ -1943,7 +1956,8 @@ input[type=checkbox], label {
 }
 .emphItemList_img .row .td,
 .emphItemList_header .row .td,
-.emphItemList_highlight .row .td {
+.emphItemList_highlight .row .td,
+.emphItemList_itemInfo .row .td {
     padding: 9px;
 }
 .emphItemList_header .header-check-on{
@@ -1952,7 +1966,8 @@ input[type=checkbox], label {
     margin-top: 9px;
     padding: 0 10px;
 }
-.emphItemList_highlight .highlight_div:nth-child(2) {
+.emphItemList_highlight .highlight_div:nth-child(2),
+.emphItemList_itemInfo .itemInfo_div:nth-child(2) {
     height: 36px;
     margin: 10px 0;
 }
@@ -1979,6 +1994,7 @@ input[type=checkbox], label {
     height: 177px;
 }
 .emphItemList_block .dis_flex {
+    padding: 10px;
     align-items: center;
 }
 
@@ -2048,13 +2064,13 @@ input[type=checkbox], label {
 }
 .template_table .table_btn .up,
 .template_table .table_btn .down {
-    color: #129312;
+    color: #618cd3;
 }
 .template_table .table_btn .down {
     margin: 0 6px;
 }
 .template_table .table_btn .del {
-    color: #db094d;
+    color: #d92660;
 }
 
 .color_red {
@@ -2066,4 +2082,118 @@ input[type=checkbox], label {
 }
 select option[value=""][disabled] {
     display: none;
+}
+
+.drag-button{
+    background: #fff;
+    border: 1px #aaa solid;
+    color: #333;
+    padding: 5px 12px 8px 12px;
+    margin: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all ease 0.5s;
+    box-shadow: 1px 1px 0px #C8C8C8;
+    vertical-align: middle;
+}
+
+.drag-button[draggable=true]{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+.drag-button:hover{
+    transition: all ease 0.5s;
+    boxshadow: 3px 3px 8px #333;
+    border-color: #ea3333;
+    color: #ea3333;
+}
+
+.template_body .round_box .kko_img_box{
+    width: 100%;
+    overflow: hidden;
+    background: url(../image/bg_none.png) no-repeat center;
+    text-align: center;
+}
+.template_body .round_box .kko_img_box img {
+    width: 100%;
+    margin-left: -100%;
+    margin-right: -100%;
+}
+
+/*.template_body{font-family: 'Spoqa Han Sans' }*/
+.template_body{ height: 523px!important;}
+.template_body .round_box{ max-height: 100%;}
+.template_body .at_tmpl_data{width:100%;  padding:0 0 5px 0!important;
+    font-size: 12px;
+    line-height: 1.6;
+    max-height: 449px;
+    background: #FFFFFF;
+    border-radius: 0;}
+.template_body .at_tmpl_data .at_msg_cont{width:98.3%; max-height: 225px; padding:5px 15px!important; word-break: break-all; overflow-y: hidden}
+.template_body .at_tmpl_data .at_msg_cont:hover{width:100%; overflow-y: scroll;}
+.template_body .tmpl_subtit{font-size: 10px; color: #cccccc;}
+.template_body .tmpl_tit{padding-bottom: 15px; font-size: 13px;}
+.template_body .tmpl_high{display: inline-block; padding-bottom: 15px; font-size: 13px;}
+.template_body .right_img_box {
+    margin-left: 12px;
+    float: right;
+    display: inline-block;
+    width: 20%;
+    height: 50px;
+}
+.template_body .right_img_box img{width: 100%;}
+.template_body .tmpl_header{ padding: 5px 0 5px 0; font-size: 12px; font-weight: 500; border-bottom: solid 0.5px #f3f3f3}
+.template_body .item_high_div{ padding: 5px 0;border-bottom: solid 0.5px #f3f3f3}
+.template_body .item_div{padding: 5px 0;border-bottom: solid 0.5px #f3f3f3}
+.template_body .item_table .th,.template_body .item_summary .th{color: #cccccc; padding-right: 5px;}
+.template_body .item_table .td,.template_body .item_summary .td{ float: right;}
+.template_body .item_summary{padding: 5px 0;font-size: 12px;}
+.template_body .item_summary .td{    font-size: 14px;}
+
+.template_body .at_tmpl_data .at_msg_cont .cont {padding: 5px 0;}
+.template_body .at_tmpl_data .at_msg_cont .etx ,.template_body .at_tmpl_data .at_msg_cont .ad  {padding-bottom: 5px; color: #cccccc}
+.template_body .sms_btn{margin: 5px 15px 10px 15px!important;}
+.kakao_yellow {background: #ffcd00!important;}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.marg-lf {margin-left: 85px;}
+.prev_btn{
+    display: block;
+    width: 78px;
+    height: 23px;
+    line-height: 21px;
+    border: 1px solid #dddddd;
+    background: #FFFFFF;
+    color: #888888;
+    font-weight: 400;
+    cursor: pointer;
+    float: right;
+    text-align: center;
+    position: relative;
+    margin: 6px 15px 0 0;
 }

@@ -394,7 +394,7 @@
                           FROM   tblmicp_track_url
                           GROUP  BY url_id) AS b
                     ON b.url_id = a.seq
-        WHERE  cont_lst_cd = #{cont_id}
+        WHERE  cont_lst_cd = #{cont_id} AND a.URL_ID != 'mmsIMG001'
     </select>
 
     <select id="getContentsLst" resultType="Content_view_Dto">
@@ -439,6 +439,7 @@
             ,l.rcs_btn_tp_3   AS rcs_btn_tp_3
             ,l.rcs_btn_cont_3 AS rcs_btn_cont_3
             ,l.rcs_footer     AS rcs_footer
+            , tmpl.button_json AS at_btn_obj
         FROM   tblmicp_cont_lst l
                INNER JOIN tblmicp_cont_mst m ON l.cont_cd = m.seq
                LEFT JOIN tblmi_cont_img AS kko_img ON l.kko_img_cd = kko_img.seq
@@ -449,6 +450,7 @@
                LEFT JOIN tblmi_cont_img AS img_5 ON l.img_cd_5 = img_5.seq
                LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
                LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
+               LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
         WHERE  l.seq = #{seq}
         ORDER  BY l.seq
     </select>

@@ -10,7 +10,6 @@ define(["postmonger"], function (Postmonger) {
 	let flag = true;
 	let cnt = 0;
 	let eventDefinitionKey;
-	let bindList = [];
 	let eventModel = null;
 
 	$(window).ready(function (){
@@ -126,7 +125,11 @@ define(["postmonger"], function (Postmonger) {
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}
-					$("#contLoad").click();
+					console.log(response)
+					if(response.rcs.list){
+						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
+						$("#text_send_num").val(response.rcs.list[0].seq);
+					}
 				}
 			}else {
                 // 조회실패
@@ -141,15 +144,23 @@ define(["postmonger"], function (Postmonger) {
 	// 개인화 변수 조회
 	function mappingLst() {
 	    const res = function(response) {
-	        let list = response.mappingLst;
-	        let html = '';
+			let list = response.mappingLst;
+			let html = '';
 
-	        for(let i=0; i<list.length; i++) {
-	            let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-	        	bindList.push(item.list_val);
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
+				bindList.push(item.list_val);
 			}
-	        $('.mappingLst').html(html);
+			$('.mappingLst').html(html);
+
+			html = '';
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
+			}
+			$("#smsContsVal").html(html);
+			$("#kakaoValue").html(html);
         }
         let param = {usr_grp_cd: $('#usr_grp_cd').val()}
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/mappingLst.ajax', param, res, null, null)
@@ -234,7 +245,11 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
-        com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
+		data.find(function(input) {
+			return input.name == 'mst_seq';
+		}).value = mstSeq
+
+		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
     }
 
 });

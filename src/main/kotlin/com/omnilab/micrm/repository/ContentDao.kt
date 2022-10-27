@@ -26,7 +26,7 @@ interface ContentDao {
 
    /* fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto) : List<Content_view_Dto>*/
 
-    fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto) : List<Tblmi_cont_lstDto>
+    fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto) : List<Contents_lstDto>
 
 
     fun selectMobileContentCnt (tblmiContMstdto: Tblmi_cont_mstDto) : Int

@@ -50,32 +50,9 @@
                      <!-- selected value -->
                      <div class="value" data="0">개인화 변수</div>
                      <ul class="option">
-                        <c:forEach var="item" items="${columnNm}"
-                                   varStatus="status">
-                           <li data="{{${columnValue[status.count]}}}">${item}</li>
+                        <c:forEach var="item" items="${column}" varStatus="status">
+                           <li data="${item.list_val}">${item.list_nm}</li>
                         </c:forEach>
-                     </ul>
-                  </div>
-                  <div class="select rcsContsVal" name="defaultDB">
-                     <!-- selected value -->
-                     <div class="value" data="0">개인화 변수</div>
-                     <ul class="option" id="dbHtml">
-                        <li data="{{USR_ID}}">회원번호</li>
-                        <li data="{{USR_NM}}">이름</li>
-                        <li data="{{USR_MOB}}">모바일</li>
-                        <li data="{{USR_EDM}}">이메일</li>
-                        <li data="{{USR_GDR}}">성별</li>
-                        <li data="{{USR_ADDR}}">주소</li>
-                        <li data="{{USR_ETC1}}">ETC1</li>
-                        <li data="{{USR_ETC2}}">ETC2</li>
-                        <li data="{{USR_ETC3}}">ETC3</li>
-                        <li data="{{USR_ETC4}}">ETC4</li>
-                        <li data="{{USR_ETC5}}">ETC5</li>
-                        <li data="{{USR_ETC6}}">ETC6</li>
-                        <li data="{{USR_ETC7}}">ETC7</li>
-                        <li data="{{USR_ETC8}}">ETC8</li>
-                        <li data="{{USR_ETC9}}">ETC9</li>
-                        <li data="{{USR_ETC10}}">ETC10</li>
                      </ul>
                   </div>
                   <!-- select 영역 끝 -->
@@ -84,9 +61,7 @@
             <div class="row rcs_textarea">
                <div class="th top-border">내용</div>
                <div class="td top-border">
-                        <textarea class="rcsContents" name="rcs_body" id="" cols="30"
-                                  rows="10" placeholder="내용을 입력해주세요."
-                                  onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
+                        <textarea class="rcsContents" name="rcs_body" id="" cols="30" rows="10" placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
                </div>
             </div>
          </div>

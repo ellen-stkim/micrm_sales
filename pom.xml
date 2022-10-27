@@ -301,7 +301,8 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
-	</dependencies>
+    </dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -439,7 +440,6 @@
 			<url>http://repo.spring.io/plugins-release/</url>
 		</repository>
 	</repositories>
-
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>

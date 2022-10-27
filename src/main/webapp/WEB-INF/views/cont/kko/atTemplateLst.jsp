@@ -82,7 +82,7 @@
         <!-- row 영역 시작 -->
         <div class="row bottom-border cf">
             <div class="left">
-                <a href="/cont/mdmCreate.mi" class="btn_basic smsCreate left right-border">알림톡 템플릿 생성</a>
+                <a href="/cont/kko/tmplCreate.mi" class="btn_basic smsCreate left right-border">알림톡 템플릿 생성</a>
                 <input type="button" class="btn_basic delete left right-border"
                        onclick="deleteMobileList('campaign','');" value="삭제"/>
             </div>
@@ -99,9 +99,9 @@
 
             <!-- list_container 영역 끝 -->
             <span id="pageBtn">
-                <%--<c:if test="${nextCk eq true}">
+                <c:if test="${nextCk eq true}">
                     <div class="btn_more" onclick="getMobileListAdd();"><img src="/image/bullet_arrw1.png" alt="" />더보기</div>
-                </c:if>--%>
+                </c:if>
             </span>
         </div>
         <!-- section 영역 끝 -->
@@ -314,7 +314,7 @@
             }
         };
         var param = {seq: seq, use_yn: useValue};
-        com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/cont/kko/updateUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     let type = ['kakao', 'MMS', 'SMS', 'rcsText', 'rcsHorizontalLeft', 'rcsHorizontalRight', 'rcsVerticalTall', 'rcsVerticalMedium', 'rcsSlideSmall', 'rcsSlideMedium'];

@@ -122,10 +122,11 @@
                 </ul>
                 <c:if test="${list[0].list_use_yn eq 'Y'}">
                 <div class="tab_contents active">
-                    </c:if>
+                </c:if>
                     <c:if test="${list[0].list_use_yn eq 'N'}">
                     <div class="tab_contents">
-                        </c:if>
+                    </c:if>
+                        <c:set var="cont_tp" value="${list[0].cont_tp}"/>
                         <div class="sms_form right-border cover" id="kakao">
                             <h2>카카오톡</h2>
                             <div class="flex_box">
@@ -139,7 +140,19 @@
                                         </div>
                                     </div>
                                     <div class="row body">
-                                        <div class="th">발신 번호</div>
+                                        <div class="th">타입</div>
+                                        <div class="column_2">
+                                            <label class="type_check"><input type="radio" name="kko_format_type"
+                                                                             class="kkoType"
+                                                                             value="kko_ft" ${cont_tp eq "DMTP03"?'checked': '' }
+                                                                             /><span>친구톡</span></label>
+                                            <label class="type_check"><input type="radio" name="kko_format_type"
+                                                                             class="kkoType" ${cont_tp eq "DMTP05"?'checked': '' }
+                                                                             value="kko_at"/><span>알림톡</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row body">
+                                        <div class="th">발신 프로필</div>
                                         <div class="column_1">
                                             <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
                                             <input type="text" class="sms_number smsNumber_kko" id="send_to"
@@ -147,27 +160,30 @@
                                                         value="${list[0].sender}(${cutil:numberToPhone(list[0].send_num)})" readonly
                                                     </c:if>
                                                     <c:if test="${fn:trim(list[0].send_num) == ''}">
-                                                        placeholder="발신 번호를 입력해주세요"
+                                                        placeholder="발신 프로필을 입력해주세요"
                                                     </c:if>
                                             />
-                                            <input type="hidden" name="send_to_list" value="${list[0].send_to}"/>
+                                            <input type="hidden" name="send_key" id="send_key" value="${list[0].send_num}"/>
+                                            <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].send_to}"/>
+                                            <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
+
                                         </div>
                                     </div>
-                                    <div class="input_area">
+                                    <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="block">
                                             <div class="row">
                                                 <div class="th">이미지 선택</div>
                                                 <div class="td">
-                                                    <div class="kko_delete_img">
-                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/bg_none.png'">
+                                                    <div class="kko_delete_img" data="kakao">
+                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
                                                     </div>
-                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${list[0].kko_img_nm}" readonly/>
+                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>
                                                     <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                     <!-- 카카오 이미지 저장 넘버 -->
-                                                    <input type="hidden" id="kko_img_cd" name="kko_img_cd" value="${list[0].kko_img_cd}"/>
+                                                    <input type="hidden" name="kko_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_img_cd: ''}"/>
                                                     <!-- 프리뷰를 위한 이미지 URL -->
                                                     <input type="hidden" name="kko_view_img_url"
-                                                    <c:if test="${list[0].kko_img_lst ne null}">
+                                                    <c:if test="${cont_tp eq 'DMTP03'  &&list[0].kko_img_lst ne null}">
                                                            value="${filePath}${list[0].kko_img_lst}"
                                                     </c:if>
                                                     >
@@ -176,7 +192,7 @@
                                             <div class="row">
                                                 <div class="th top-border">이미지 링크 주소</div>
                                                 <div class="td top-border">
-                                                    <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${list[0].kko_img_url}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${cont_tp eq 'DMTP03'? list[0].kko_img_url : ''}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 </div>
                                             </div>
                                             <div class="row flex_row">
@@ -184,32 +200,31 @@
                                                 <div class="td top-border">
                                                     <div class="col_img" id="js-kakao-img">
                                                         <!-- 이미지는 있고, 이미지 링크는 없을때 -->
-                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                            <a href="${list[0].kko_img_lst}" target="_blank">
-                                                                <img src="${filePath}${list[0].kko_img_lst}"/>
-                                                            </a>
-                                                        </c:if>
-                                                        <!-- 이미지는 있고, 이미지 링크도 있을때 -->
-                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                            <a href="${list[0].kko_img_url}" target="_blank">
-                                                                <img src="${filePath}${list[0].kko_img_lst}"/>
-                                                            </a>
+                                                        <c:if test="${cont_tp eq 'DMTP03'}">
+                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
+                                                                <a href="${list[0].kko_img_lst}" target="_blank">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                </a>
+                                                            </c:if>
+                                                            <!-- 이미지는 있고, 이미지 링크도 있을때 -->
+                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
+                                                                <a href="${list[0].kko_img_url}" target="_blank">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                </a>
+                                                            </c:if>
                                                         </c:if>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="block">
-                                            <div class="row">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
-                                                    <!-- select 영역 시작 -->
-                                                    <div class="select" id="kakaoValue" name="edmDB">
-                                                        <!-- selected value -->
-                                                        <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option mappingLst"></ul>
+                                            <div class="row flex_row">
+                                                <div class="row flex_row input-img on">
+                                                    <div class="th">개인화 변수</div>
+                                                    <div class="td">
+                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                        <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
-                                                    <!-- select 영역 끝 -->
                                                 </div>
                                             </div>
                                         </div>
@@ -263,21 +278,163 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="viewer_area">
-                                    <div class="top">카카오톡 본문 입력창</div>
-                                    <div class="inner">
-                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
-                                        <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                            <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank">${list[0].kko_btn_nm}</a>
-                                        </c:if>
+                                    <div class="input_area kko_area" id="kko_at" ${cont_tp eq "DMTP05"?'': 'hidden'}>
+                                        <div class="block">
+                                            <div class="row">
+                                                <div class="th">템플릿 선택</div>
+                                                <div class="td">
+                                                    <div class="delete_tmpl" data="kakao">
+                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                    </div>
+                                                    <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm" id="tmplNm" value="${list[0].tmpl_nm}" placeholder="템플릿을 선택해 주세요." readonly/>
+                                                    <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" value="${list[0].tmpl_cd}" readonly hidden/>
+                                                    <span class="btn_sm_line" data="kakaoImage" onclick="tmplListPopUp('1')">선택</span>
+                                                    <!-- 프리뷰를 위한 이미지 URL -->
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="byte">
-                                        <span class="en_font kakao_byte">0</span>
-                                        <span class="en_font">byte</span>
-                                        (버튼제외)
-                                    </div>
                                 </div>
+                                <c:if test="${cont_tp eq 'DMTP03'}">
+                                    <div class="viewer_area" id="kakao_ft_viewer">
+                                        <div class="top">친구톡 본문 입력창</div>
+                                        <div class="inner">
+                                            <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
+                                                      onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
+                                            <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                <a href="${list[0].kko_btn_url}" class="kakao_link"
+                                                   target="_blank">${list[0].kko_btn_nm}</a>
+                                            </c:if>
+                                        </div>
+                                        <div class="byte">
+                                            <span class="en_font kakao_byte">0</span>
+                                            <span class="en_font">byte</span>
+                                            (버튼제외)
+                                        </div>
+                                    </div>
+                                    <div class="viewer_area" id="kakao_at_viewer" hidden>
+                                        <div class="top">미리보기</div>
+                                        <div class="at_inner template_body">
+                                            <div class="text">
+                                                <div class="row_body">
+                                                    <div class="round_box">
+                                                        <div class="round_box head">
+                                                            <p>알림톡 도착</p>
+                                                        </div>
+                                                        <div class="at_tmpl_data">
+                                                        <div class="sms_txt at_tmpl_data"></div>
+                                                        <input type="hidden" class="kakao_txt" name="kakao_body"
+                                                               value="">
+                                                        <a href="" class="sms_btn"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${cont_tp eq 'DMTP05'}">
+                                    <div class="viewer_area" id="kakao_ft_viewer" hidden>
+                                        <div class="top">친구톡 본문 입력창</div>
+                                        <div class="inner">
+                                            <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                        </div>
+                                        <div class="byte">
+                                            <span class="en_font kakao_byte">0</span>
+                                            <span class="en_font">byte</span>
+                                            (버튼제외)
+                                        </div>
+                                    </div>
+                                    <div class="viewer_area" id="kakao_at_viewer">
+                                        <div class="top">미리보기</div>
+                                        <div class="at_inner template_body">
+                                            <div class="text">
+                                                <div class="row_body">
+                                                    <div class="round_box" >
+                                                        <div class="round_box head">
+                                                            <p>알림톡 도착</p>
+                                                        </div>
+                                                        <div class="at_tmpl_data">
+                                                            <!-- 이미지형  아이템리스트형 -->
+                                                            <c:set var="tmpl" value="${list[0]}"/>
+                                                            <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
+                                                                <c:if test="${!empty tmpl.kko_img_cd}">
+                                                                    <div class="kko_img_box">
+                                                                        <img src="${tmpl.kko_img_url}" style="max-height: 135px;"
+                                                                             onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                    </div>
+                                                                </c:if>
+                                                            </c:if>
+                                                            <div class="at_msg_cont">
+                                                                    <%--  강조유형 강조표기형 --%>
+                                                                <c:if test="${tmpl.tmpl_empsize_tp eq 'TEXT'}">
+                                                                    <div class="tmpl_subtit">${tmpl.tmpl_subtit}</div>
+                                                                    <div class="tmpl_tit">${tmpl.tmpl_tit}</div>
+                                                                </c:if>
+                                                                    <%--  강조유형 아이템리스트형 --%>
+                                                                <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'}">
+                                                                    <c:if test="${!empty tmpl.item_highlight_json}">
+                                                                        <c:set var="highlight" value="${tmpl.highlight_json}"/>
+                                                                        <div class="tmpl_header">${tmpl.tmpl_header}</div>
+                                                                        <div class="item_high_div">
+                                                                            <div class="tmpl_high">
+                                                                                <div>${highlight.title}</div>
+                                                                                <div class="tmpl_subtit">${highlight.description}</div>
+                                                                            </div>
+                                                                            <c:if test="${fn:contains(tmpl.item_highlight_json,'\"imageUrl\"')}">
+                                                                                <div class="right_img_box"><img src="${highlight.imageUrl}"
+                                                                                                                onerror="this.src = '/image/bg_none.png'"
+                                                                                                                alt=""></div>
+                                                                            </c:if>
+                                                                        </div>
+                                                                    </c:if>
+                                                                    <c:if test="${fn:contains(tmpl.item_json,'\"list\"') ||fn:contains(tmpl.item_json,'\"summary\"')}">
+                                                                        <div class="item_div">
+                                                                            <c:if test="${fn:contains(tmpl.item_json,'\"list\"')}">
+                                                                                <div class="item_table">
+                                                                                    <c:forEach var="item" items="${tmpl.item_list_json.list}">
+                                                                                        <div>
+                                                                                            <span class="th">${item.title}</span>
+                                                                                            <span class="td">${item.description}</span>
+                                                                                        </div>
+                                                                                    </c:forEach>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:if test="${fn:contains(tmpl.item_json,'\"summary\"')}">
+                                                                                <div class="item_summary">
+                                                                                    <span class="th">${tmpl.item_list_json.summary.title}</span>
+                                                                                    <span class="td">${tmpl.item_list_json.summary.description}</span>
+                                                                                </div>
+                                                                            </c:if>
+                                                                        </div>
+                                                                    </c:if>
+                                                                </c:if>
+                                                                <div class="cont">${tmpl.cont_body}</div>
+                                                                    <%--     부가 정보--%>
+                                                                <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
+                                                                    <div class="etx">${tmpl.tmpl_ext}</div>
+                                                                </c:if>
+                                                                <c:if test="${tmpl.tmpl_msg_tp eq 'AD'}">
+                                                                    <div class="ad">${tmpl.tmpl_ad}</div>
+                                                                </c:if>
+                                                            </div>
+                                                            <c:if test="${!empty tmpl.button_json}">
+                                                                <c:forEach var="btn" items="${tmpl.btn_json}">
+                                                                    <c:if test="${btn.linkType eq 'AC'}">
+                                                                        <a class="sms_btn kakao_yellow">${btn.name}</a>
+                                                                    </c:if>
+                                                                    <c:if test="${btn.linkType ne 'AC'}">
+                                                                        <a href="${btn.linkPc}" target="_blank" class="sms_btn">${btn.name}</a></c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                            <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div><!-- sms_form end-->
@@ -368,17 +525,11 @@
                                                 </div>
                                             </div>
                                             <div class="block">
-                                                <div class="row">
+                                                <div class="row flex_row input-img on">
                                                     <div class="th">개인화 변수</div>
                                                     <div class="td">
-                                                        <!-- select 영역 시작 -->
-                                                        <div class="select" id="smsContsVal" name="edmDB">
-                                                            <!-- selected value -->
-                                                            <div class="value" data="0">개인화 변수</div>
-                                                            <ul class="option mappingLst">
-                                                            </ul>
-                                                        </div>
-                                                        <!-- select 영역 끝 -->
+                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                        <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -5326,7 +5477,6 @@
 
     // 이미지 리스트 페이징
     function imageListPaging(nowPage) {
-
         let type = $('#imgType').val();
 
         const res = function (response) {

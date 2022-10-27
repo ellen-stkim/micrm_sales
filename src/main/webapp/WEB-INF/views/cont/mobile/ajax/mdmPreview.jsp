@@ -20,9 +20,30 @@
                   <div class="row_grid">
                      <!-- 카카오톡 영역 시작 -->
                      <c:if test="${fn:contains(content.formatType,'kakao')}">
+                        <c:if test="${fn:contains(content.kko_format_type,'kko_at')}">
+                           <div class="column">
+                              <div class="sms_head bg_color cf">
+                                 알림톡
+                              </div>
+                              <div class="row_top cf">
+                                 <div class="contents_type">
+                                    <c:if test="${content.kko_option eq 'ad'}">
+                                       광고
+                                    </c:if>
+                                    <c:if test="${content.kko_option eq 'guide'}">
+                                       안내
+                                    </c:if>
+                                 </div>
+                                 <h4>${content.cont_sub_list[0]}</h4>
+                              </div>
+                              <div class="row_body template_body" id="at_tmpl_privew">
+                              </div>
+                           </div>
+                        </c:if>
+                        <c:if test="${!fn:contains(content.kko_format_type,'kko_at')}">
                         <div class="column">
                            <div class="sms_head bg_color cf">
-                              카카오톡
+                              친구톡
                            </div>
                            <div class="row_top cf">
                               <div class="contents_type">
@@ -35,28 +56,21 @@
                               </div>
                               <h4>${content.cont_sub_list[0]}</h4>
                            </div>
-                           <c:if test="${not empty content.kko_view_img_url}">
                               <div class="row_body">
                                  <div class="round_box">
+                                    <c:if test="${not empty fn:trim(content.kko_view_img_url) and fn:trim(content.kko_view_img_url) ne ',' }">
                                     <div class="sms">
                                        <img src="${content.kko_view_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
                                     </div>
+                                    </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
+                                    <c:if test="${not empty content.kko_btn_url}">
                                     <a href="${content.kko_btn_url}" target="_blank" class="sms_btn">${content.kko_btn_nm}</a>
+                                    </c:if>
                                  </div>
                               </div>
-                           </c:if>
-                           <c:if test="${empty content.kko_view_img_url}">
-                              <div class="row_body">
-                                 <div class="round_box">
-                                    <div class="sms_txt">
-                                          ${content.cont_sub_list[0]}<br/><br/>
-                                          ${cutil:replaceBr(content.kakao_body)}
-                                    </div>
-                                 </div>
-                              </div>
-                           </c:if>
                         </div>
+                        </c:if>
                      </c:if>
                      <!-- 카카오톡 영역 끝 -->
                      <!-- 문자 영역 시작 -->

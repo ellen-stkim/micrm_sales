@@ -1,14 +1,14 @@
 package com.omnilab.micrm.service.impl
 
 
-import com.google.gson.Gson
-import com.google.gson.JsonParser
+import com.google.gson.*
 import com.omnilab.micrm.common.BtnValueUtils
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
+import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.ContentService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
@@ -18,10 +18,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
-import java.lang.Exception
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.HashMap
 
 @Service("MobileContentServiceImpl")
 class MobileContentServiceImpl : ContentService {
@@ -35,6 +33,10 @@ class MobileContentServiceImpl : ContentService {
     @Autowired
     @Qualifier("ContentDaoImpl")
     private lateinit var contentDao: ContentDao
+
+    @Autowired
+    @Qualifier("KkoAtTmplDaoImpl")
+    private lateinit var kkoAtTmplDao: KkoAtTmplDao
 
 
     /**
@@ -55,15 +57,13 @@ class MobileContentServiceImpl : ContentService {
         val contentListCreatedto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
 
-        //logger.error("Ins Dto : " + dto.toString());
-        //logger.error("Ins ContetnLstDto : " + contentListCreatedto.toString());
-
         val isByte = isCheckByte(contentListCreatedto);
 
         if (!isByte) {
             statusMap["status"] = false
             return statusMap
         }
+        statusMap["status"] = true
 
         val tblmiContMstDto = Tblmi_cont_mstDto()
 
@@ -73,21 +73,21 @@ class MobileContentServiceImpl : ContentService {
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
-            tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);
+            statusMap["seq"] = tblmiContMstDto.seq as Int
 
             // 인덱스 값은 고정되서 넘어온다 [ 0번 인덱스 : kakao , 1번 인덱스 : sms , 2번 인덱스: rcs ]
             val len = contentListCreatedto.send_to_list!!.size - 1;
 
             for (i in 0..len) {
-
                 // 항상 3번 Insert 작업을 진행한다.
                 // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
                 val tblmiContLstdto = Tblmi_cont_lstDto()
 
                 tblmiContLstdto.cont_cd = tblmiContMstDto.seq   // 마스터 코드 삽입
                 tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
+                tblmiContLstdto.from_to = contentListCreatedto.from_to
                 tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
                 tblmiContLstdto.send_nm = null
                 tblmiContLstdto.thm_url = null
@@ -100,19 +100,8 @@ class MobileContentServiceImpl : ContentService {
 
                 // 인덱스 번호 0 : 카카오
                 if (i == 0) {
-
                     // 제목 저장
                     tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
-
-                    // 키 삽입
-                    val cdDto = Tblmi_comm_cdDto()
-                    cdDto.grp_id = "KAKAO_KEY"
-                    cdDto.cd_id = userInfo.usr_grp_cd
-
-                    val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                    if (codeDto != null) {
-                        tblmiContLstdto.key_id = codeDto.cd_val
-                    }
 
                     // 체크 여부에 따라 USE_YN 설정
                     if (formatList!!.contains("kakao")) {
@@ -120,11 +109,8 @@ class MobileContentServiceImpl : ContentService {
                     } else {
                         tblmiContLstdto.use_yn = "N"
                     }
-                    tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
 
                     val kkoOption = contentListCreatedto.kko_option!!.trim()
-
                     if (kkoOption.equals("ad")) {
                         // 광고 처리
                         tblmiContLstdto.send_tp = "SENDTP01"
@@ -133,18 +119,68 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    // 카카오 이미지 처리
-                    if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
-                        tblmiContLstdto.kko_img_cd = null
+                    if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
+
+                        // 템플릿 조회
+                        var atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
+                        atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                        atDto.kep_status = "O"  // 승인완료
+
+                        val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
+                        if(!CommonUtils.isEmptyObject(resultDto)){
+                            tblmiContLstdto.key_id = resultDto!!.tmpl_cd
+
+                            val g = GsonBuilder().create()
+                            val obj = JsonObject()
+                            obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+                            obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
+                            obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
+                            obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
+                            tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+                            tblmiContLstdto.kko_img_cd = resultDto.img_seq
+                            tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                            tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                            tblmiContLstdto.kko_header = resultDto.tmpl_header
+
+                            tblmiContLstdto.cont_tp = "DMTP05"
+                            tblmiContLstdto.msg_tp = "DMCH216"
+
+                            tblmiContLstdto.cont_body = resultDto.tmpl_cont
+                        }
+
                     } else {
-                        tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                        // key_id 로 발신키 유효한지 확인
+                        val cdDto = Tblmi_comm_cdDto()
+                        cdDto.grp_id = "KAKAO_KEY"
+                        cdDto.cd_id = userInfo.usr_grp_cd
+
+                        val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
+                        kkoDto.list_val = contentListCreatedto.key_id
+                        val kkoSenderLst = contentDao.selectSenderList(kkoDto)
+
+                        if (kkoSenderLst.size > 0) {
+                            tblmiContLstdto.key_id = kkoSenderLst[0].list_val
+                        }
+
+                        tblmiContLstdto.cont_tp = "DMTP03" // 카카오
+                        tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+
+
+                        // 카카오 이미지 처리
+                        if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                            tblmiContLstdto.kko_img_cd = null
+                        } else {
+                            tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                        }
+
+
+                        tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                        tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
+                        tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
+                        tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+
+
                     }
-
-                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                    tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                    tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                    tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
-
                 }
 
                 // 인덱스 번호 1: SMS (문자 )
@@ -404,8 +440,8 @@ class MobileContentServiceImpl : ContentService {
                             if (matcher.find(start)) {
                                 start = matcher.start() + matcher.group().length
                                 val url = matcher.group()
-                                        .replace("{{", "")
-                                        .replace("}}", "")
+                                    .replace("{{", "")
+                                    .replace("}}", "")
                                 if (url.contains("http") || url.contains("https")) {
                                     // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
                                     idx++
@@ -456,8 +492,8 @@ class MobileContentServiceImpl : ContentService {
                             if (matcher.find(start)) {
                                 start = matcher.start() + matcher.group().length
                                 val url = matcher.group()
-                                        .replace("{{", "")
-                                        .replace("}}", "")
+                                    .replace("{{", "")
+                                    .replace("}}", "")
                                 if (url.contains("http") || url.contains("https")) {
                                     // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
                                     idx++
@@ -786,7 +822,7 @@ class MobileContentServiceImpl : ContentService {
      * @Method Decription : 리스트 화면에 필요한 Json 양식 형태로 모바일 컨텐츠 출력 -> 05.03 파싱 제거 수정
      * @title : 모바일 컨텐츠 리스트 뽑아내기
      */
-    private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Tblmi_cont_lstDto> {
+    private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Contents_lstDto> {
         return contentDao.selectMobileContent(dto)
     }
 
@@ -1183,8 +1219,8 @@ class MobileContentServiceImpl : ContentService {
                         if (matcher.find(start)) {
                             start = matcher.start() + matcher.group().length
                             val url = matcher.group()
-                                    .replace("{{", "")
-                                    .replace("}}", "")
+                                .replace("{{", "")
+                                .replace("}}", "")
                             if (url.contains("http") || url.contains("https")) {
                                 idx++
                                 // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
@@ -1244,8 +1280,8 @@ class MobileContentServiceImpl : ContentService {
                         if (matcher.find(start)) {
                             start = matcher.start() + matcher.group().length
                             val url = matcher.group()
-                                    .replace("{{", "")
-                                    .replace("}}", "")
+                                .replace("{{", "")
+                                .replace("}}", "")
                             if (url.contains("http") || url.contains("https")) {
                                 idx++
                                 // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
@@ -1377,9 +1413,9 @@ class MobileContentServiceImpl : ContentService {
             if (dto.cont_body != null) {
                 val jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
                 dto.cont_body = jsonObject.get("description").toString()
-                        .replace("\\\\r\\\\n", "<br/>")
-                        .replace("\\r\\n", "<br/>")
-                        .replace("\"", "")
+                    .replace("\\\\r\\\\n", "<br/>")
+                    .replace("\\r\\n", "<br/>")
+                    .replace("\"", "")
             }
         }
         if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
@@ -1429,13 +1465,14 @@ class MobileContentServiceImpl : ContentService {
         val rcsMsgTp = dto.msg_tp
 
         if (rcsMsgTp.equals("DMCH205") || rcsMsgTp.equals("DMCH206") ||
-                rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH209")
-                || rcsMsgTp.equals("DMCH210")) {
+            rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH209")
+            || rcsMsgTp.equals("DMCH210")
+        ) {
             // 슬라이드 형태가 아닌 것들 Json 파싱
             // 초기 Suggestion Json 배열은 1개이다
             val jsonBtnArray = jsonParser?.parse(dto?.rcs_btn_obj).asJsonArray
             val jsonSuggestArray = jsonBtnArray.get(0).asJsonObject
-                    .get("suggestions").asJsonArray
+                .get("suggestions").asJsonArray
             val len = jsonSuggestArray.size()
 
             //logger.error("jsonBtnArray : " + jsonBtnArray.size())
@@ -1454,14 +1491,15 @@ class MobileContentServiceImpl : ContentService {
                     // 복사하기 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.clipBoardAction)
                     val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
-                    val textData = (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
+                    val textData =
+                        (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
 
                     //logger.error("복사 데이터가 존재한다 : " + dataJsonObj.toString());
 
                     dto.btnData?.add(listOf(textData.toString()))
                     dto.btnType?.add(BtnValueUtils.clipBoardAction)
                     dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""));
+                        .replace("\"", ""));
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.urlAction))) {
                     // URL 버튼
@@ -1475,13 +1513,14 @@ class MobileContentServiceImpl : ContentService {
                     dto.btnType?.add(BtnValueUtils.urlAction)
                     dto.btnData?.add(listOf(urlData.toString()))
                     dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""))
+                        .replace("\"", ""))
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.dialerAction))) {
                     // 전화 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.dialerAction)
                     val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
-                    val phoneNumber = (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
+                    val phoneNumber =
+                        (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
 
                     //logger.error("전화 데이터가 존재한다 : " + dataJsonObj.toString())
                     // logger.error("phoneNumber : " + phoneNumber.toString())
@@ -1489,7 +1528,7 @@ class MobileContentServiceImpl : ContentService {
                     dto.btnType?.add(BtnValueUtils.dialerAction)
                     dto.btnData?.add(listOf(phoneNumber.toString()))
                     dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""))
+                        .replace("\"", ""))
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.mapAction))) {
                     // MapAction의 경우 3가지가 존재한다 ( 1. 좌표 입력 , 2. 쿼리 입력 , 3. 내 위치 보내기)
@@ -1505,19 +1544,19 @@ class MobileContentServiceImpl : ContentService {
                         dto.btnType?.add(BtnValueUtils.requestLocationPush)
                         dto.btnData?.add(listOf(""))
                         dto.btnText?.add(displayText.toString()
-                                .replace("\"", ""))
+                            .replace("\"", ""))
                     } else {
                         logger.error("nothing : 좌표 or 쿼리 입력")
                         val fallbackUrl =
-                                (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                        ?.get(BtnValueUtils.fallbackUrl)
-                                        .toString()
+                            (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
+                                ?.get(BtnValueUtils.fallbackUrl)
+                                .toString()
 
                         // 좌표 입력과 쿼리 입력 여부의 차이는 location 하위의 query 여부이다
                         val location =
-                                gson?.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                        ?.get(BtnValueUtils.location)
-                                        .toString(), MutableMap::class.java)
+                            gson?.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
+                                ?.get(BtnValueUtils.location)
+                                .toString(), MutableMap::class.java)
 
                         if (!CommonUtils.isEmptyObject(location[BtnValueUtils.query])) {
                             // 좌표 쿼리가 존재하는 Json 버튼 데이터
@@ -1525,7 +1564,7 @@ class MobileContentServiceImpl : ContentService {
                             // logger.error("좌표 쿼리 존재1 " + query);
                             dto.btnData?.add(listOf(query, fallbackUrl))
                             dto.btnText?.add(displayText.toString()
-                                    .replace("\"", ""))
+                                .replace("\"", ""))
                             dto.btnType?.add(BtnValueUtils.query)
 
                         } else {
@@ -1540,7 +1579,7 @@ class MobileContentServiceImpl : ContentService {
 
                             dto.btnData?.add(listOf(latitude, longitude, label, fallbackUrl))
                             dto.btnText?.add(displayText.toString()
-                                    .replace("\"", ""))
+                                .replace("\"", ""))
                             dto.btnType?.add(BtnValueUtils.latitude)
                         }
                     }
@@ -1599,23 +1638,23 @@ class MobileContentServiceImpl : ContentService {
                     val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
                     val description = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                            ?.get(BtnValueUtils.description)
-                            .toString()
+                        ?.get(BtnValueUtils.description)
+                        .toString()
                     val startTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                            ?.get(BtnValueUtils.startTime)
-                            .toString()
-                            .split("T")
+                        ?.get(BtnValueUtils.startTime)
+                        .toString()
+                        .split("T")
                     val endTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                            ?.get(BtnValueUtils.endTime)
-                            .toString()
-                            .split("T")
+                        ?.get(BtnValueUtils.endTime)
+                        .toString()
+                        .split("T")
                     val title = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                            ?.get(BtnValueUtils.title)
-                            .toString()
+                        ?.get(BtnValueUtils.title)
+                        .toString()
 
                     dto.btnData?.add(listOf(startTime[0], endTime[0], title, description))
                     dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""))
+                        .replace("\"", ""))
                     dto.btnType?.add(BtnValueUtils.calendarAction)
 
 
@@ -1630,15 +1669,15 @@ class MobileContentServiceImpl : ContentService {
                     val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
                     val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)
-                            ?.get(BtnValueUtils.phoneNumber)
-                            .toString()
+                        ?.get(BtnValueUtils.phoneNumber)
+                        .toString()
                     val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)
-                            ?.get(BtnValueUtils.text)
-                            .toString()
+                        ?.get(BtnValueUtils.text)
+                        .toString()
 
                     dto.btnData?.add(listOf(phoneNumber, text))
                     dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""))
+                        .replace("\"", ""))
                     dto.btnType?.add(BtnValueUtils.composeAction)
 
 
@@ -1815,7 +1854,10 @@ class MobileContentServiceImpl : ContentService {
      * @Method Decription : RCS 버튼 저장 Json 파싱
      * @title : RCS 버튼 저장
      */
-    private fun rcsButtonMakeJsonString(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
+    private fun rcsButtonMakeJsonString(
+        contentListCreatedto: Content_list_CreateDto,
+        tblmiContLstdto: Tblmi_cont_lstDto,
+    ) {
 
         val len = contentListCreatedto?.copy_value?.size
         val jsonSuggestObj = JSONObject()
@@ -2142,7 +2184,10 @@ class MobileContentServiceImpl : ContentService {
      * @title : RCS 슬라이드 버튼 저장
      */
 
-    private fun rcsButtonMakeJsonStringSlide(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
+    private fun rcsButtonMakeJsonStringSlide(
+        contentListCreatedto: Content_list_CreateDto,
+        tblmiContLstdto: Tblmi_cont_lstDto,
+    ) {
 
         /*
             1. slide_rcs_btn_tp 값과 slide_rcs_btn 값은 카드의 개수 만큼 고정 되서 들어 온다 (각각 분리되어 카드의 idx로 체크한다)
@@ -2368,7 +2413,7 @@ class MobileContentServiceImpl : ContentService {
 
     override fun previewJsonService(dto: Tblmi_cont_lstDto): Map<String, Any> {
 
-        val dataMap = HashMap<String,Any>();
+        val dataMap = HashMap<String, Any>();
         val contentListCreatedto = dto as Content_list_CreateDto
         val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
         val tblmiContLstDto = Tblmi_cont_lstDto()
@@ -2380,8 +2425,7 @@ class MobileContentServiceImpl : ContentService {
             // 공백 파싱 처리
             tblmiContLstDto.cont_body = jsonBody.toString();
             tblmiContLstDto.img_cd_1 = contentListCreatedto.verticalImg
-        }
-        else if (rcsFormatType == "slide") {
+        } else if (rcsFormatType == "slide") {
             // RCS 슬라이드 관련 INSERT 처리
             rcsSlideSetting(contentListCreatedto, tblmiContLstDto)
         }
@@ -2396,11 +2440,31 @@ class MobileContentServiceImpl : ContentService {
         }
 
         val viewDto = Contents_lstDto();
-        viewDto.rcs_btn_obj =  tblmiContLstDto.rcs_btn_obj;
+        viewDto.rcs_btn_obj = tblmiContLstDto.rcs_btn_obj;
         viewDto.cont_body = tblmiContLstDto.cont_body;
         dataMap["jsonContent"] = viewDto;
 
         return dataMap;
     }
 
+    override fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String, Any> {
+        val dataMap = HashMap<String, Any>();
+
+        val g = GsonBuilder().create()
+        val buttons = g.fromJson(dto.button_json, JsonArray::class.java)
+        val quickLst = g.fromJson(dto.quick_repl_json, JsonArray::class.java)
+        val itemHighs = g.fromJson(dto.item_highlight_json, JsonObject::class.java)
+        val items = g.fromJson(dto.item_json, JsonObject::class.java)
+
+        val obj = JsonObject()
+        obj.add("button", buttons)
+        obj.add("quick_reply", quickLst)
+        obj.add("item_highlight", itemHighs)
+        obj.add("item", items)
+
+        dataMap["kko_btn_obj"] = obj
+        return dataMap
+    }
+
 }
+

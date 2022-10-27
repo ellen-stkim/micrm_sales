@@ -3,6 +3,7 @@ package com.omnilab.micrm.service
 import com.omnilab.micrm.model.Content_list_CreateDto
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
+import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
 
 interface ContentService {
@@ -32,5 +33,7 @@ interface ContentService {
     fun contents_thumbnail_save(map: MutableMap<String, Any>) : Boolean
 
     fun previewJsonService(dto : Tblmi_cont_lstDto) : Map<String,Any>
+
+    fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String,Any>
 
 }

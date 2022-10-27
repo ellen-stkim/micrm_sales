@@ -1,15 +1,13 @@
 package com.omnilab.micrm.controller
 
 import com.google.gson.GsonBuilder
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
-import com.omnilab.micrm.service.ContentService
-import com.omnilab.micrm.service.ImageService
-import com.omnilab.micrm.service.SalesforceService
-import com.omnilab.micrm.service.SysSettingService
+import com.omnilab.micrm.service.*
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
 import org.apache.commons.io.FilenameUtils
@@ -67,6 +65,13 @@ class SalesforceController {
     @Qualifier("SalesforceDaoImpl")
     lateinit var salesforceDao : SalesforceDao
 
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
+
+    @Autowired
+    @Qualifier("KkoMsgServiceImpl")
+    private lateinit var kkoMsgService: KkoMsgService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -153,7 +158,8 @@ class SalesforceController {
 
     //@ResponseBody
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
-    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
+    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int
+                            , @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         tblmiContMstdto.reg_dt = usr_cd
@@ -202,6 +208,7 @@ class SalesforceController {
          */
 
         val formatList = dto.formatType
+
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);
@@ -215,7 +222,6 @@ class SalesforceController {
         commonCDDto.cd_id = "UPURL01"
         val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
         view.addObject("filePath", uploadPrefix?.cd_val)
-
         return view;
     }
 
@@ -322,6 +328,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsText.ajax")
     fun rcsText(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -341,6 +348,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsVertical.ajax")
     fun rcsVertical(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -360,6 +368,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsSlide.ajax")
     fun rcsSlide(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -396,7 +405,7 @@ class SalesforceController {
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
             }else{
-                if(dto.ch_tp != "IMGTP01"){
+                if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
                     val fileName = map["file_nm"]
                     val image : BufferedImage = ImageIO.read(file.inputStream)
                     val imageWidth: Int = image.width
@@ -433,6 +442,34 @@ class SalesforceController {
                         resizeImage.flush()
                         image.flush()
                     }
+                    var resultMap: MutableMap<String, Any>? = null
+                    if(dto.ch_tp == "IMGTP09" ){    // 카카오 알림톡 이미지
+                        resultMap = kkoRestApiService.uploadTmplImg(file)
+                    } else if (dto.ch_tp == "IMGTP10"){
+                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
+                    } else if (dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                    }
+
+                    if(!CommonUtils.isEmptyObject(resultMap)){
+                        if(resultMap!!["result"] as Boolean){
+                            val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            if(data["code"] != "API_200" ){
+                                map["uploaded"] = 0
+                                map["message"] = "파일 저장에 실패하였습니다."
+                                logger.info("File DB insert fail")
+                                return map
+                            }
+
+                            dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                        }else{
+                            map["uploaded"] = 0
+                            map["message"] = "파일 저장에 실패하였습니다."
+                            logger.info("File DB insert fail")
+                            return map
+                        }
+                    }
+
                 }
             }
 
@@ -641,6 +678,7 @@ class SalesforceController {
             } else {
                 val gson = GsonBuilder().create()
                 val data = gson.fromJson(payload, Map::class.java)
+                logger.error("data : {}", data)
                 salesforceService.sendCampaign(data as MutableMap<String, Any>)
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
@@ -649,6 +687,43 @@ class SalesforceController {
             logger.error("execute.service", e)
             return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/{usr_cd}/kko/atTmplLst.ajax")
+    fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
+        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
+        dto.usr_grp_cd =usr_cd
+        val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
+
+        view.addObject("list" , paramMap["list"])
+        view.addObject("page", paramMap["page"])
+        view.addObject("pageNo", paramMap["pageNo"])
+        view.addObject("nextCk", paramMap["nextCk"])
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
+    @ResponseBody
+    @PostMapping("/{usr_cd}/kko/getAtTmpl.ajax")
+    fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any>? {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+        dto.usr_grp_cd =usr_cd
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+        if(CommonUtils.isEmptyObject(dto)){
+            rep.status= HttpServletResponse.SC_BAD_REQUEST
+            return null
+        }
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("dto" , dto!!)
+        return map
     }
 
     @GetMapping("/{usr_cd}/error")

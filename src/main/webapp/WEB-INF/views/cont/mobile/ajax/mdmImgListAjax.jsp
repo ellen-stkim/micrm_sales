@@ -43,6 +43,7 @@
                                             <input type="hidden" name="ImgNm" value="${item.img_nm}"/>
                                             <input type="hidden" name="ImgOrgNm" value="${item.img_org_nm}"/>
                                             <input type="hidden" name="imgurl" value="${item.img_url}"/>
+                                            <input type="hidden" name="kkoImgurl" value="${item.kko_img_url}"/>
                                         </span></label>
                                     <!-- 이미지명 -->
                                     <span class="title">${item.img_nm}</span>

@@ -35,6 +35,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         val usr_email = auth.principal.toString()
         val usr_pw = auth.credentials.toString()
 
+
         if(usr_email.trim().isEmpty() || usr_pw.trim().isEmpty()){
             throw BadCredentialsException("BAD")
         }

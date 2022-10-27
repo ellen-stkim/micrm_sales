@@ -55,7 +55,7 @@ class ContentDaoImpl : ContentDao {
         return sqlSession.selectList("selectMobileContent",tblmiContMstdto)
     }*/
 
-    override fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto): List<Tblmi_cont_lstDto> {
+    override fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto): List<Contents_lstDto> {
         return sqlSession.selectList("selectMobileContent",tblmiContMstdto)
     }
 

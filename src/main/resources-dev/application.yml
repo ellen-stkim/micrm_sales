@@ -42,9 +42,10 @@ variable:
   static-path : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
-  biz-url: https://stg-web.bizmsg.kakaoenterprise.com/mng
+  biz-url: ENC(d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY=)
+  biz-msg-url: ENC(E61c3eAA5KnRsxfXBjTAlcsCe8QU8ws5Xq38DRBES4UW2yenht4i9bCLsOw5nRurga6Vid3k3PQGs6a85ji6bvXU/XG709kt74MrT0uDLaU=)
   biz-version: v1
-  biz-Auth: ENC(GDaXkEIOePI8UF3TWrvkF6M1h89wUxi4KjedlrIsrmq4CYSG64Z5iW8P3Ov+rw4sHufwDXtS2Njccl6Uj+g2pcyoyYxFMxM0CJ9bbsO8bIWFsBq+sXdY77spuAE4R0wV)
+  biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
 
 upload:
   src : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"

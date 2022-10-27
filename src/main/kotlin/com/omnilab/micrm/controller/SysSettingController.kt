@@ -5,9 +5,6 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
-import com.omnilab.micrm.model.table.Tblmite_target_grp
-import com.omnilab.micrm.model.table.Tblmite_target_lst
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.SysSettingService
 import org.springframework.stereotype.Controller
 import org.slf4j.LoggerFactory
@@ -469,6 +466,19 @@ class SysSettingController {
     @PostMapping("/deleteMapping.ajax")
     fun deleteMapping(lstDto: Tblmi_set_lstDto) : Map<String,Any> {
         return sysSettingService.deleteSetLst(lstDto)
+    }
+
+
+    @GetMapping("/kkoSetting.mi")
+    fun kkoSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/kkoSetting")
+        val dto = SetLst_searchDto()
+        val map = sysSettingService.getKkoSettingList(dto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+
+        return view;
     }
 
 }

@@ -2,6 +2,8 @@ package com.omnilab.micrm.service.impl
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
@@ -92,6 +94,10 @@ class SalesforceServiceImpl : SalesforceService {
     private lateinit var kkoSend: CampaignSendDao
 
     @Autowired
+    @Qualifier("CampaignKakaoAtDaoImpl")
+    private lateinit var kkoSendAt: CampaignSendDao
+
+    @Autowired
     @Qualifier("CampaignRcsDaoImpl")
     private lateinit var rcsSend: CampaignSendDao
 
@@ -99,6 +105,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
     private lateinit var mobileContentService: ContentService
+
+    @Autowired
+    @Qualifier("KkoAtTmplDaoImpl")
+    private lateinit var kkoAtTmplDao: KkoAtTmplDao
 
     @Autowired
     private lateinit var customAuthenticationProvider: AuthenticationProvider
@@ -202,6 +212,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }else{
                     val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+
                     val auth = customAuthenticationProvider.authenticate(token)
                     if (auth.isAuthenticated) {
                         session.setAttribute("MID", userId)
@@ -289,9 +300,8 @@ class SalesforceServiceImpl : SalesforceService {
      * @title : 모바일 컨텐츠 저장
      */
 
-    override fun insertContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
+    override fun insertContentList(contentListCreatedto: Content_list_CreateDto): Map<String, Any> {
         val statusMap: MutableMap<String, Any> = HashMap()
-        val contentListCreatedto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
         val cont_grp_cd = contentListCreatedto.cont_grp_cd
 
@@ -348,28 +358,14 @@ class SalesforceServiceImpl : SalesforceService {
                     // 제목 저장
                     tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
 
-                    // 키 삽입
-                    val cdDto = Tblmi_comm_cdDto()
-                    cdDto.grp_id = "KAKAO_KEY"
-                    //cdDto.cd_id = userInfo.usr_grp_cd
-                    cdDto.cd_id = cont_grp_cd
-
-                    val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                    if (codeDto != null) {
-                        tblmiContLstdto.key_id = codeDto.cd_val
-                    }
-
                     // 체크 여부에 따라 USE_YN 설정
                     if (formatList!!.contains("kakao")) {
                         tblmiContLstdto.use_yn = "Y"
                     } else {
                         tblmiContLstdto.use_yn = "N"
                     }
-                    tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
 
                     val kkoOption = contentListCreatedto.kko_option!!.trim()
-
                     if (kkoOption.equals("ad")) {
                         // 광고 처리
                         tblmiContLstdto.send_tp = "SENDTP01"
@@ -378,18 +374,65 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    // 카카오 이미지 처리
-                    if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
-                        tblmiContLstdto.kko_img_cd = null
+                    if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
+
+                        // 템플릿 조회
+                        val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id, contentListCreatedto.tmpl_nm,"Y")
+                        atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                        atDto.kep_status = "O"  // 승인완료
+
+                        val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
+                        if(!CommonUtils.isEmptyObject(resultDto)){
+                            tblmiContLstdto.key_id = resultDto.tmpl_cd
+
+                            val g = GsonBuilder().create()
+                            val obj = JsonObject()
+                            obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+                            obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
+                            obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
+                            obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
+                            tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+                            tblmiContLstdto.kko_img_cd = resultDto.img_seq
+                            tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                            tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                            tblmiContLstdto.kko_header = resultDto.tmpl_header
+
+                            tblmiContLstdto.cont_tp = "DMTP05"
+                            tblmiContLstdto.msg_tp = "DMCH216"
+
+                            tblmiContLstdto.cont_body = resultDto.tmpl_cont
+                        }
                     } else {
-                        tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                        // key_id 로 발신키 유효한지 확인
+                        val cdDto = Tblmi_comm_cdDto()
+                        cdDto.grp_id = "KAKAO_KEY"
+                        cdDto.cd_id = userInfo.usr_grp_cd
+
+                        val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
+                        kkoDto.list_val = contentListCreatedto.key_id
+                        val kkoSenderLst = contentDao.selectSenderList(kkoDto)
+
+                        if (kkoSenderLst.size > 0) {
+                            tblmiContLstdto.key_id = kkoSenderLst[0].list_val
+                        }
+
+                        tblmiContLstdto.cont_tp = "DMTP03" // 카카오
+                        tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+
+
+                        // 카카오 이미지 처리
+                        if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                            tblmiContLstdto.kko_img_cd = null
+                        } else {
+                            tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                        }
+
+
+                        tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                        tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
+                        tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
+                        tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
                     }
-
-                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                    tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                    tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                    tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
-
                 }
 
                 // 인덱스 번호 1: SMS (문자 )
@@ -594,6 +637,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                 }
+
                 contentDao.insertContent(tblmiContLstdto)
 
                 // Url 처리
@@ -831,6 +875,11 @@ class SalesforceServiceImpl : SalesforceService {
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
+        val contListDto = Tblmi_cont_lstDto()
+
+        contListDto.cont_cd = contentListCreatedto.mst_seq!!.toInt()
+        val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+
         val len = contentListCreatedto.send_to_list!!.size - 1;
 
         for (i in 0..len) {
@@ -839,7 +888,17 @@ class SalesforceServiceImpl : SalesforceService {
             // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
             val tblmiContLstdto = Tblmi_cont_lstDto()
 
-            tblmiContLstdto.seq = contentListCreatedto.list_seq!![i].toInt()
+            when (i) {
+                0 -> {
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP03" || it.cont_tp == "DMTP05" }.findFirst().orElse(null).seq
+                }
+                1 -> {
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP02" }.findFirst().orElse(null).seq
+                }
+                else -> {
+                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP04" }.findFirst().orElse(null).seq
+                }
+            }
             tblmiContLstdto.cont_cd = tblmiContMstDto.seq
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
             tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
@@ -863,9 +922,6 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.use_yn = "N"
                 }
 
-                tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
-
                 val kkoOption = contentListCreatedto.kko_option!!.trim()
                 if (kkoOption.equals("ad")) {
                     // 광고 처리
@@ -875,17 +931,63 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
 
-                // 카카오 이미지 처리
-                if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
-                    tblmiContLstdto.kko_img_cd = null
-                } else {
-                    tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
+                    // 템플릿 조회
+                    val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id, contentListCreatedto.tmpl_nm,"Y")
+                    atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                    atDto.kep_status = "O"  // 승인완료
+
+                    val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
+                    if(!CommonUtils.isEmptyObject(resultDto)){
+                        tblmiContLstdto.key_id = resultDto.tmpl_cd
+
+                        val g = GsonBuilder().create()
+                        val obj = JsonObject()
+                        obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+                        obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
+                        obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
+                        obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
+                        tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+                        tblmiContLstdto.kko_img_cd = resultDto.img_seq
+                        tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                        tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                        tblmiContLstdto.kko_header = resultDto.tmpl_header
+
+                        tblmiContLstdto.cont_tp = "DMTP05"
+                        tblmiContLstdto.msg_tp = "DMCH216"
+
+                        tblmiContLstdto.cont_body = resultDto.tmpl_cont
+                    }
+                }else{
+                    // key_id 로 발신키 유효한지 확인
+                    val cdDto = Tblmi_comm_cdDto()
+                    cdDto.grp_id = "KAKAO_KEY"
+                    cdDto.cd_id = userInfo.usr_grp_cd
+
+                    val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
+                    kkoDto.list_val = contentListCreatedto.key_id
+                    val kkoSenderLst = contentDao.selectSenderList(kkoDto)
+
+                    if (kkoSenderLst.size > 0) {
+                        tblmiContLstdto.key_id = kkoSenderLst[0].list_val
+                    }
+
+                    tblmiContLstdto.cont_tp = "DMTP03" // 카카오
+                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+
+                    // 카카오 이미지 처리
+                    if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                        tblmiContLstdto.kko_img_cd = null
+                    } else {
+                        tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                    }
+
+                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                    tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
+                    tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
+                    tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
                 }
 
-                tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
             }
 
             // 인덱스 번호 1: SMS (문자 )
@@ -2104,7 +2206,7 @@ class SalesforceServiceImpl : SalesforceService {
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
                             val avo_id = activity["id"].toString()
-                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
+                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
 
                             val temp = Tblmi_cont_mstDto(seq.toInt())
                             val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
@@ -2298,10 +2400,11 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                     // 발송
                     when {
-                        // 카카오
+                        // 카카오 친구톡
                         contTpLst["DMTP03"] != null -> {
                             val send_to = inArguments[contTpLst["DMTP03"]!!.from_to]
                             if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
                                 sendHstDto.send_to = send_to.toString()
@@ -2311,10 +2414,25 @@ class SalesforceServiceImpl : SalesforceService {
                                 kkoSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
+                        // 카카오 알림톡
+                        contTpLst["DMTP05"] != null -> {
+                            val send_to = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
+                                salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else{
+                                sendHstDto.send_to = send_to.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = send_to.toString()
+                                kkoSendAt.ins_send(campaignDto, contTpLst, inArguments)
+                            }
+                        }
                         // RCS
                         contTpLst["DMTP04"] != null -> {
                             val send_to = inArguments[contTpLst["DMTP04"]!!.from_to]
                             if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
                                 sendHstDto.send_to = send_to.toString()
@@ -2328,6 +2446,7 @@ class SalesforceServiceImpl : SalesforceService {
                         else -> {
                             val send_to = inArguments[contTpLst["DMTP02"]!!.from_to]
                             if(send_to == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
                                 sendHstDto.send_to = send_to.toString()

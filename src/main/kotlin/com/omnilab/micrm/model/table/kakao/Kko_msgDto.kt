@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias
 @Alias("Kko_msgDto")
 class Kko_msgDto {
     var msgkey: Int? = null
-    var serialnum: Int? = null
+    var serialnum: String? = null
     var id: String? = null
     var status: String? = null
     var phone: String? = null
@@ -38,7 +38,17 @@ class Kko_msgDto {
     var etc4: String? = null
     var etc5: String? = null
     var etc6: String? = null
+    var clientId: String? = null
 
+    var title: String? = null
+    var kko_title: String? = null
+    var header: String? = null
+    var type: String? = null
+    var price: String? = null
+    var currency_type: String? = null
+    var quick_reply: String? = null
+    var item_highlight: String? = null
+    var item: String? = null
     var m_server: String? = null
 
     override fun toString(): String {

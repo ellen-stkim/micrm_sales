@@ -69,7 +69,7 @@
                 </c:if>
                 <c:if test="${dto.pro_st eq '04'}">
                     <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                    <a href="#" class="btn_basic ico_result left right-border" onclick="alert('페이지 준비중입니다.');"> 결과</a>
+                    <a href="#" class="btn_basic ico_result left right-border" onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
                     <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 결과 다운로드</a>
                 </c:if>
                 <c:if test="${dto.pro_st eq '99'}">

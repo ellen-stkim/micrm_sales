@@ -1,11 +1,14 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
+import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.service.*
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
+import java.security.Principal
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -57,6 +61,10 @@ class ContentController  {
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
+
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -120,7 +128,7 @@ class ContentController  {
     @GetMapping("/mdmCreate.mi")
     fun mdmCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mdmCreate")
-        val map = sysSettingService.getDBValue();
+        val map = sysSettingService.getDBValue()
 
         val kkoDto = SetLst_searchDto()
         kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -148,8 +156,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         // 개인화 변수 추가하기
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map)
         view.addObject("list",kkoSenderMap["list"])
         view.addObject("smsSender",smsSenderMap["list"])
         view.addObject("rcsSender",rcsSenderMap["list"])
@@ -212,8 +219,7 @@ class ContentController  {
         val cntMap = mobileContentService.isCheckSender()
 
         view.addObject("list" , listMap["list"])
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
+        view.addObject("column",map);
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
@@ -332,6 +338,7 @@ class ContentController  {
     @GetMapping("/rcsText.ajax")
     fun rcsText(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -351,6 +358,7 @@ class ContentController  {
     @GetMapping("/rcsVertical.ajax")
     fun rcsVertical(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -370,6 +378,7 @@ class ContentController  {
     @GetMapping("/rcsSlide.ajax")
     fun rcsSlide(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
+        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -400,6 +409,7 @@ class ContentController  {
          */
 
         val formatList = dto.formatType
+
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);
@@ -489,36 +499,6 @@ class ContentController  {
     }
 
 
-    /**
-     * @Method Name  : edmCreate
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : req: : HttpServletRequest
-     * @param    : rep: : HttpServletResponse
-     * @param    : session : HttpSession
-     * @return   : ModelAndView
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 리스트 생성 뷰 페이지
-     * @title : 이메일 리스트 조회 하기
-     */
-    @GetMapping("/edmCreate.mi")
-    fun edmCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val view = ModelAndView("cont/edmCreate")
-        val map = sysSettingService.getDBValue();
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-
-        val dto = SetLst_searchDto()
-        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        dto.list_tp_id = "CH01"
-        dto.list_dt_id = "DMTP01"
-        dto.def_yn = "Y"
-        val sendList = mobileContentService.selectSenderList(dto)
-        view.addObject("slist", sendList["list"])
-        return view
-    }
 
     /**
      * @Method Name  : imgLst
@@ -671,65 +651,102 @@ class ContentController  {
             return map;
         }
         if (file != null) {
-            map["imgCheck"] = 1
-            val userInfo = UsefulUtils.sessionUser()
-            var contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(contentFilePath, file, request);
-            if(map["uploaded"].toString() == "0"){
-                logger.info("File Upload fail")
-            }else{
-                if(dto.ch_tp != "IMGTP01"){
-                    val fileName = map["file_nm"]
-                    var image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.getWidth()
-                    val imageHeight: Int = image.getWidth()
-                    if(image.getWidth() < 500 || image.getHeight() < 250) {
+            try {
+                map["imgCheck"] = 1
+                val userInfo = UsefulUtils.sessionUser()
+                val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
+                map = fileUpload.upload(contentFilePath, file, request);
+                if(map["uploaded"].toString() == "0"){
+                    logger.info("File Upload fail")
+                }else{
 
-                        val newWidth = 500
-                        val newHeight = 500
-                        val ratio: Double
-                        val w: Int
-                        var h: Int
+                    if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
+                        val fileName = map["file_nm"]
+                        val image : BufferedImage = ImageIO.read(file.inputStream)
+                        val imageWidth: Int = image.width
+                        val imageHeight: Int = image.width
+                        if(image.width < 500 || image.height < 250) {
 
-                        if (imageWidth > imageHeight) {
-                            ratio = newWidth.toDouble() / imageWidth.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else if (imageHeight > imageWidth) {
-                            ratio = newHeight.toDouble() / imageHeight.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else {
-                            w = newWidth
-                            h = newHeight
+                            val newWidth = 500
+                            val newHeight = 500
+                            val ratio: Double
+                            val w: Int
+                            var h: Int
+
+                            if (imageWidth > imageHeight) {
+                                ratio = newWidth.toDouble() / imageWidth.toDouble()
+                                w = (imageWidth * ratio).toInt()
+                                h = (imageHeight * ratio).toInt()
+                            } else if (imageHeight > imageWidth) {
+                                ratio = newHeight.toDouble() / imageHeight.toDouble()
+                                w = (imageWidth * ratio).toInt()
+                                h = (imageHeight * ratio).toInt()
+                            } else {
+                                w = newWidth
+                                h = newHeight
+                            }
+                            if(h < 250){
+                                h = 250
+                            }
+                            val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
+                            val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+                            val g = newImage.graphics
+                            g.drawImage(resizeImage, 0, 0, null)
+                            g.dispose()
+
+                            ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
+
+                            resizeImage.flush()
+                            image.flush()
                         }
-                        if(h < 250){
-                            h = 250
-                        }
-                        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
-                        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-                        val g = newImage.graphics
-                        g.drawImage(resizeImage, 0, 0, null)
-                        g.dispose()
-
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath(contentFilePath + "/" + fileName), FilenameUtils.getName(contentFilePath + "/" + fileName)))
-
-                        resizeImage.flush()
-                        image.flush()
                     }
-                }
-            }
+                    var resultMap: MutableMap<String, Any>? = null
+                    if(dto.ch_tp == "IMGTP09"){    // 카카오 알림톡 이미지
+                        resultMap = kkoRestApiService.uploadTmplImg(file)
+                    }else if(dto.ch_tp == "IMGTP10"){
+                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
+                    }else if(dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
+                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                    }
 
-            dto.reg_id = userInfo.usr_id
-            dto.usr_grp_cd = userInfo.usr_grp_cd
-            dto.img_org_nm = map["fileName"].toString()
-            dto.img_file_nm = map["file_nm"].toString()
-            dto.img_url = map["url"].toString()
-            val returnMap = imageService.contentUpload(dto)
-            if(returnMap["message"].toString() == "0"){
+                    if(!CommonUtils.isEmptyObject(resultMap)){
+                        if(resultMap!!["result"] as Boolean){
+                            val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                            if(data["code"] != "API_200" ){
+                                map["uploaded"] = 0
+                                map["message"] = "파일 저장에 실패하였습니다."
+                                logger.info("File DB insert fail")
+                                return map
+                            }
+
+                            dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                        }else{
+                            map["uploaded"] = 0
+                            map["message"] = "파일 저장에 실패하였습니다."
+                            logger.info("File DB insert fail")
+                            return map
+                        }
+                    }
+
+                }
+
+                dto.reg_id = userInfo.usr_id
+                dto.usr_grp_cd = userInfo.usr_grp_cd
+                dto.img_org_nm = map["fileName"].toString()
+                dto.img_file_nm = map["file_nm"].toString()
+                dto.img_url = map["url"].toString()
+                val returnMap = imageService.contentUpload(dto)
+                if(returnMap["message"].toString() == "0"){
+                    map["uploaded"] = 0
+                    map["message"] = "파일 저장에 실패하였습니다."
+                    logger.info("File DB insert fail")
+                }
+
+            }catch (e:Exception){
                 map["uploaded"] = 0
                 map["message"] = "파일 저장에 실패하였습니다."
                 logger.info("File DB insert fail")
+                return map
             }
         }
         return map
@@ -919,32 +936,6 @@ class ContentController  {
         return map
     }
 
-    /**
-     * @Method Name  : updateImgYn
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : dto : Tblmi_cont_mstDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이메일 컨텐츠 상세 페이지
-     * @title : 이메일 컨텐츠 상세 페이지
-     */
-    @PostMapping("/edmDetail.mi")
-    fun detailEdm(@ModelAttribute dto : Tblmi_cont_mstDto): ModelAndView {
-        val view = ModelAndView("cont/detailEdm")
-        val tempDto : Contents_searchDto = Contents_searchDto()
-        tempDto.seq = dto.seq
-        val resuleMap =  emailContentService.selectOneContentView(tempDto)
-        view.addObject("list",resuleMap["list"])
-
-        val map = sysSettingService.getDBValue();
-        view.addObject("columnValue",map["columnValue"]);
-        view.addObject("columnNm",map["columnNm"]);
-        return view
-    }
-
     /*
      * @Method Name  : saveContForm
      * @Since    : 2021. 03. 07.
@@ -1038,7 +1029,7 @@ class ContentController  {
     //DB 개인화변수.
     @ResponseBody
     @PostMapping("/getDBValue.ajax")
-    fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): Map<String, Any> {
+    fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): MutableList<SalesforceDto> {
         return sysSettingService.getDBValue();
     }
 
@@ -1064,8 +1055,34 @@ class ContentController  {
 
         view.addObject("tmplSt",map.get("tmplSt"))
         view.addObject("kepSt",map.get("kepSt"))
+
         return view
     }
+
+
+    /**
+     * @Method Name  : updateUseYn
+     * @Since    : 2022. 10. 11.
+     * @author   : Belisa
+     * @param    : dto :
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 알림톡 템플릿 사용여부 변경
+     * @title : 카카오 알림톡 템플릿 사용여부 변경
+     */
+    @ResponseBody
+    @PostMapping("/kko/updateUseYn.ajax")
+    fun updateUseYn(@ModelAttribute  dto : Tblmi_kko_at_tmplDto , principal: Principal): Int {
+        dto.upd_id = principal.name
+        val map = kkoMsgService.updTmplDto(dto)
+//        kkoAtTmplDao.updTmplDtoBySeq(updDto)
+        logger.error("{}",dto)
+
+        return map
+    }
+
 
     /**
      * @Method Name  : selectKkoAtTmplLst
@@ -1082,15 +1099,12 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/kko/atTmplLst.ajax")
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto) : ModelAndView {
-//        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
-
+        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
         view.addObject("list" , paramMap["list"])
         view.addObject("page", paramMap["page"])
         view.addObject("pageNo", paramMap["pageNo"])
         view.addObject("nextCk", paramMap["nextCk"])
-        view.addObject("titleList",paramMap["titleList"])
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
@@ -1100,5 +1114,345 @@ class ContentController  {
 
         return view
     }
+
+
+    /**
+     * @Method Name  : atTmplCreate
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성 뷰 페이지 조회
+     * @title : 알림톡 탬플릿 생성 뷰 페이지
+     */
+    @GetMapping("/kko/tmplCreate.mi")
+    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val view = ModelAndView("cont/kko/tmplCreate")
+        val map = kkoMsgService.tmplCreateLst();
+
+        view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+        view.addObject("btnLinkLst", map["btnLinkLst"])
+        view.addObject("btnLst", map["btnLst"])
+
+        view.addObject("column",sysSettingService.getDBValue())
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
+    /**
+     * @Method Name  : tmplCreateService
+     * @Since    : 2022. 09. 19.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿 생성
+     * @title : 알림톡 탬플릿 생성
+     */
+    @ResponseBody
+    @PostMapping("/kko/tmplCreate.service")
+    fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,
+                          @RequestBody dto : Kko_at_tmplDto, @RequestParam(value="img_seq", required = false) img_seq : String,
+                          @RequestParam(value="item_img_seq", required = false) item_img_seq :String, principal: Principal): Any? {
+        val tmplDto : Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(img_seq.toIntOrNull(),item_img_seq.toIntOrNull())
+        tmplDto.reg_id = principal.name
+        val map = kkoMsgService.createTmpl(dto,tmplDto)
+        return map
+    }
+
+    /**
+     * @Method Name  : isCheckTmplNm
+     * @Since    : 2022. 09. 20.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 체크
+     * @title : 알림톡 탬플릿명 체크
+     */
+    @ResponseBody
+    @PostMapping("/kko/isCheckTmplNm.ajax")
+    fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any> {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+
+        if(!CommonUtils.isEmptyObject(dto)){   //
+            map.put("status" , HttpServletResponse.SC_BAD_REQUEST)
+            map.put("msg" , "이미 사용중인 템플릿명 입니다.")
+            return map
+        }
+
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("msg" , "사용가능한 템플릿명 입니다.")
+
+        return map
+    }
+
+    /**
+     * @Method Name  : isCheckUpdTmplNm
+     * @Since    : 2022. 10. 06.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 체크
+     * @title : 알림톡 탬플릿명 체크
+     */
+    @ResponseBody
+    @PostMapping("/kko/isCheckUpdTmplNm.ajax")
+    fun isCheckUpdTmplNm( req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute curdto: AtTmpl_searchDto, ): MutableMap<String, Any> {
+
+        val map: MutableMap<String, Any> = mutableMapOf()
+        curdto.use_yn = "Y"
+
+        val dto: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(curdto)
+
+        if (!CommonUtils.isEmptyObject(dto)) {
+            if(!curdto.seq!!.equals(dto!!.seq)){
+                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
+                map.put("msg", "이미 사용중인 템플릿명 입니다.")
+                return map
+            }
+        }
+
+        map.put("status", HttpServletResponse.SC_OK)
+        map.put("msg", "사용가능한 템플릿명 입니다.")
+
+        return map
+    }
+
+
+    /**
+     * @Method Name  : getAtTmpl
+     * @Since    : 2022. 09. 22.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : String
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 탬플릿명 조회
+     * @title : 알림톡 탬플릿 조회
+     */
+    @ResponseBody
+    @PostMapping("/kko/getAtTmpl.ajax")
+    fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any>? {
+
+        val map :MutableMap<String,Any> = mutableMapOf()
+
+        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
+        if(CommonUtils.isEmptyObject(dto)){
+            rep.status= HttpServletResponse.SC_BAD_REQUEST
+            return null
+        }
+        map.put("status" , HttpServletResponse.SC_OK)
+        map.put("dto" , dto!!)
+        return map
+    }
+
+    /**
+     * @Method Name  : updateMoblieContent
+     * @Since    : 2022. 10. 05.
+     * @author   : Belisa
+     * @param    : seq: Int
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 템플릿 수정 페이지
+     * @title : 템플릿 수정 페이지
+     */
+
+    @GetMapping("/kko/tmplDetail.mi")
+    fun detailTmplContent(@RequestParam("seq") seq : Int) : ModelAndView {
+        val tblmiContMstdto = Tblmi_cont_mstDto()
+        tblmiContMstdto.seq = seq
+        val view = ModelAndView("cont/kko/detailTmpl")
+        val map = kkoMsgService.tmplDataLst();
+
+        view.addObject("dto", kkoMsgService.selTmplDataBySeq(seq))
+        view.addObject("cateLst",map["cateLst"]);
+        view.addObject("cateSubLst",map["cateSubLst"])
+        view.addObject("msgTpLst", map["msgTpLst"])
+        view.addObject("empTpLst", map["empTpLst"])
+        view.addObject("cmtStLst", map["cmtStLst"])
+        view.addObject("cateSubGidLst", map["cateSubGidLst"])
+        view.addObject("btnLinkLst", map["btnLinkLst"])
+        view.addObject("btnLst", map["btnLst"])
+
+        view.addObject("column",sysSettingService.getDBValue())
+
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "COMMON"
+        commonCDDto.cd_id = "UPURL01"
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+        view.addObject("filePath", uploadPrefix?.cd_val)
+
+        return view
+    }
+
+
+    /**
+     * @Method Name  : tmplUpdateService
+     * @Since    : 2022. 10. 05.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 수정
+     * @title : 알림톡 템플릿 수정
+     */
+    @ResponseBody
+    @PostMapping("/kko/tmplUpate.service")
+    fun tmplUpdateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                          , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int
+                          , @RequestParam(value="img_seq", required = false) img_seq : String,
+                          @RequestParam(value="item_img_seq", required = false) item_img_seq :String , principal: Principal): Any? {
+        val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,principal.name,"Y")
+        var updDto  =Tblmi_kko_at_tmplDto(img_seq.toIntOrNull(),item_img_seq.toIntOrNull())
+        return kkoMsgService.updateTmpl(dto,tmplDto,updDto)
+    }
+
+    /**
+     * @Method Name  : cancleTmplReq
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 검수요청 취소
+     * @title : 알림톡 템플릿 검수요청 취소
+     */
+    @ResponseBody
+    @PostMapping("/kko/cancleTmplReq.service")
+    fun cancleTmplReq(req: HttpServletRequest, rep: HttpServletResponse, @ModelAttribute searchDto: AtTmpl_searchDto, session: HttpSession, principal: Principal): Any? {
+        return kkoMsgService.cancleTmplReq(searchDto,principal.name)
+    }
+
+    /**
+     * @Method Name  : updTmplSt
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 상태 업데이트
+     * @title : 알림톡 템플릿 상태 업데이트
+     */
+    @ResponseBody
+    @PostMapping("/kko/updTmplSt.service")
+    fun updTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                  , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+        return kkoMsgService.updAtTmplData(searchDto,principal.name)
+    }
+
+    /**
+     * @Method Name  : removeTmpl
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 검수요청
+     * @title : 알림톡 템플릿 검수요청
+     */
+    @ResponseBody
+    @PostMapping("/kko/updReqTmplSt.service")
+    fun updReqTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                     , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+        return kkoMsgService.reqTmplST(searchDto,principal.name)
+    }
+
+    /**
+     * @Method Name  : cancleTmplApp
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 승인 취소
+     * @title : 알림톡 템플릿 승인 취소
+     */
+    @ResponseBody
+    @PostMapping("/kko/cancleTmplApp.service")
+    fun cancleTmplApp(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                   , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+        return kkoMsgService.cancleTmplApp(searchDto,principal.name)   // 사용 x
+    }
+
+    /**
+     * @Method Name  : removeTmpl
+     * @Since    : 2022. 10. 07.
+     * @author   : Belisa
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 알림톡 템플릿 삭제
+     * @title : 알림톡 템플릿 삭제
+     */
+    /*@ResponseBody
+    @PostMapping("/kko/removeTmpl.service")
+    fun removeTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
+                      , @RequestBody dto : Kko_at_tmplDto, principal: Principal): Any? {
+        // 사용 x
+       return kkoMsgService.removeTmpl(searchDto,principal.name)
+    }
+*/
+
 
 }
