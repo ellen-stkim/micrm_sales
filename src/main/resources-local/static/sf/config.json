@@ -7,8 +7,8 @@
   "type": "Rest",
   "lang": {
     "en-US": {
-      "name": "DM Solution",
-      "description": "DM Solution"
+      "name": "SMS/KAKAO",
+      "description": "SMS/KAKAO"
     }
   },
   "arguments": {
