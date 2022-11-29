@@ -31,11 +31,10 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-
-		connection.on('requestedSchema', function (data) {
-			// save schema
-			console.log('*** Schema ***', JSON.stringify(data['schema']));
-		});
+	});
+	connection.on('requestedSchema', function (data) {
+		// save schema
+		console.log('*** Schema ***', JSON.stringify(data['schema']));
 	});
 
 	connection.on("initActivity", function (data) {
@@ -91,6 +90,7 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
+		console.log(eventDefinitionModel);
 		if(eventDefinitionModel){
 			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
