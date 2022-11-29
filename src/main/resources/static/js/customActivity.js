@@ -31,6 +31,11 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
+
+		connection.on('requestedSchema', function (data) {
+			// save schema
+			console.log('*** Schema ***', JSON.stringify(data['schema']));
+		});
 	});
 
 	connection.on("initActivity", function (data) {
