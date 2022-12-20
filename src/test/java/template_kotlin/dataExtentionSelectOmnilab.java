@@ -37,10 +37,13 @@ public class dataExtentionSelectOmnilab {
 
         System.out.println("---------------------ETDataExtension------------------------");
 
-        ETResponse<ETDataExtensionRow> response =  ETDataExtension.select(client,"key=test2");
-        System.out.println("resp="+response);
-        Set<String> columnNameSet = response.getObject().getColumnNames();
-        System.out.println("columnNameSet : " + columnNameSet);
+        ETResponse<ETDataExtension> response = client.retrieve(ETDataExtension.class, "id=cce071c7-4680-ed11-ba43-5cba2c19aa40");
+        ETResult<ETDataExtension> result = response.getResult();
+        ETDataExtension dataExtension = result.getObject();
+
+        ETResponse<ETDataExtensionRow> res = dataExtension.select();
+
+        System.out.println(res.getObject().getColumnNames());
 
         System.out.println("---------------------ETDataExtension------------------------");
     }
