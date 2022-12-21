@@ -2472,17 +2472,13 @@ class SalesforceServiceImpl : SalesforceService {
     @Throws(ETSdkException::class)
     override fun getDataExtention(extentionId: String) : List<String> {
 
-        logger.error("*------------------------------------------------------------*")
         val client  = ETClient(FUELSDK_PROPERTIES)
 
-        logger.error("{}",ETDataExtension::class.java)
         val response = client.retrieve(ETDataExtension::class.java, "id=$extentionId")
         val dataExtension = response.result.getObject()
 
         val res = dataExtension.select()
 
-        logger.error("columnName = {}",res.getObject().columnNames)
-        logger.error("*------------------------------------------------------------*")
         return res.getObject().columnNames.stream().collect(Collectors.toList())
     }
 
