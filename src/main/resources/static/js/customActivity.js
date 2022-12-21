@@ -31,6 +31,7 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
+
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -94,11 +95,7 @@ define(["postmonger"], function (Postmonger) {
 			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 
-			const res = function(response) {
-				console.log(response);
-
-				let colNameList  =["test","tttt"];
-
+			const res = function(colNameList) {
 				$('#kakaoValue').html('');
 				$('#smsContsVal').html('');
 				$('[name="edmDB"] ul.mappingLst').html('');
