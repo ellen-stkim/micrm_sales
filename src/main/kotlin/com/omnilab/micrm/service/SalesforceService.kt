@@ -20,5 +20,4 @@ interface SalesforceService {
 
     fun publish(dto: Tblmicp_cont_mstDto): Boolean
     fun sendCampaign(map: MutableMap<String, Any>): Boolean
-    fun getDataExtention(extentionId: String): List<String>
 }

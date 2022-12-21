@@ -1,6 +1,6 @@
 package com.omnilab.micrm.config
 
-import com.omnilab.micrm.TemplateKotlinApplication
+import com.omnilab.micrm.MicrmApplication
 import com.omnilab.micrm.config.listener.SessionListener
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
@@ -17,7 +17,7 @@ class ServletInitializer : SpringBootServletInitializer() {
 	}
 
 	override fun configure(application: SpringApplicationBuilder): SpringApplicationBuilder {
-		return application.sources(TemplateKotlinApplication::class.java)
+		return application.sources(MicrmApplication::class.java)
 	}
 
 	override fun onStartup(servletContext: ServletContext) {
