@@ -53,6 +53,8 @@ class SalesforceServiceImpl : SalesforceService {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
 
+    val FUELSDK_PROPERTIES : String = "/fuelSdk.properties"
+
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
 
@@ -2466,6 +2468,23 @@ class SalesforceServiceImpl : SalesforceService {
         return true
     }
 
+
+    @Throws(ETSdkException::class)
+    override fun getDataExtention(extentionId: String) : List<String> {
+
+        logger.error("*------------------------------------------------------------*")
+        val client  = ETClient(FUELSDK_PROPERTIES)
+
+        logger.error("{}",ETDataExtension::class.java)
+        val response = client.retrieve(ETDataExtension::class.java, "id=$extentionId")
+        val dataExtension = response.result.getObject()
+
+        val res = dataExtension.select()
+
+        logger.error("columnName = {}",res.getObject().columnNames)
+        logger.error("*------------------------------------------------------------*")
+        return res.getObject().columnNames.stream().collect(Collectors.toList())
+    }
 
 
     private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {

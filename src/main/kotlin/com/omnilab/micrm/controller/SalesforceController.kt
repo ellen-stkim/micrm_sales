@@ -46,9 +46,6 @@ class SalesforceController {
     @Autowired
     lateinit var salesforceService: SalesforceService;
 
-    @Autowired
-    lateinit var salesforceSoapService: SalesforceSoapService;
-
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
     private lateinit var mobileContentService: ContentService
@@ -112,7 +109,6 @@ class SalesforceController {
     fun mdmCreate(@PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val view =  ModelAndView("cont/salesforce")
         view.addObject("usr_cd", usr_cd)
-        salesforceSoapService.getDataExtention("cce071c7-4680-ed11-ba43-5cba2c19aa40")
         return view
     }
 
@@ -733,7 +729,7 @@ class SalesforceController {
     @ResponseBody
     @GetMapping("/getDataExtension.ajax")
     fun getDataExtension(@PathVariable(value = "extentionId") extentionId: String): List<String> {
-        val columnNames:List<String>  = salesforceSoapService.getDataExtention(extentionId)
+        val columnNames:List<String>  = salesforceService.getDataExtention(extentionId)
 
         return columnNames
     }
