@@ -3,7 +3,7 @@ package com.mablic.template_kotlin
 
 import com.exacttarget.fuelsdk.*
 import com.omnilab.micrm.MicrmApplication
-import com.omnilab.micrm.service.SalesforceSoapService
+import com.omnilab.micrm.service.SalesforceService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.slf4j.Logger
@@ -24,11 +24,23 @@ class TemplateKotlinApplicationTests {
     private val logger: Logger = LoggerFactory.getLogger(TemplateKotlinApplicationTests::class.java)
 
     @Autowired
-    private lateinit var salesforceSoapService: SalesforceSoapService
+    private lateinit var salesforceService: SalesforceService
 
     @Test
     fun contextLoads() {
-        salesforceSoapService.getDataExtention("cce071c7-4680-ed11-ba43-5cba2c19aa40")
+        salesforceService.getDataExtention("cce071c7-4680-ed11-ba43-5cba2c19aa40")
     }
+    
+    
+    /**
+     * pom.xml에 추가 후 테스트 가능 
+     * <!-- https://mvnrepository.com/artifact/org.codehaus.woodstox/stax2-api -->
+    <dependency>
+    <groupId>org.codehaus.woodstox</groupId>
+    <artifactId>stax2-api</artifactId>
+    <version>4.2.1</version>
+    </dependency>
+     
+     */
 }
 
