@@ -39,7 +39,7 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
-  static-path : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
+  static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
   biz-url: ENC(d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY=)
