@@ -32,7 +32,6 @@ define(["postmonger"], function (Postmonger) {
 		}, 1000);
 		 */
 
-
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -155,23 +154,19 @@ define(["postmonger"], function (Postmonger) {
 
 	// 개인화 변수 조회
 	function mappingLst() {
-
+		$('#commonLoading').addClass('active');
 		const res = function(colNameList) {
 			$('#kakaoValue').html('');
 			$('#smsContsVal').html('');
 			$('[name="edmDB"] ul.mappingLst').html('');
-			/*$('#kakaoValue').html('');
-            $('#kakaoValue').html('');*/
 
 			$(colNameList).each((idx,colName)=>{
 				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-				// $('#smsTitleVal ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
 				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
-				// $('#recv_phone_to')
 			});
+			$('#commonLoading').removeClass('active');
 		}
-		console.log(dataExtensionId)
 
 		let param = {}
 		com_ajax.ajax('get', '/sf/getDataExtension.ajax?extentionId='+dataExtensionId, param, res, null, null)
