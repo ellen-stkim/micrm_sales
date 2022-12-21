@@ -89,7 +89,6 @@ define(["postmonger"], function (Postmonger) {
 		}
 	});
 
-	let dataExtensionId;
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
@@ -150,26 +149,6 @@ define(["postmonger"], function (Postmonger) {
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null)
-	}
-
-	// 개인화 변수 조회
-	function mappingLst() {
-		$('#commonLoading').addClass('active');
-		const res = function(colNameList) {
-			$('#kakaoValue').html('');
-			$('#smsContsVal').html('');
-			$('[name="edmDB"] ul.mappingLst').html('');
-
-			$(colNameList).each((idx,colName)=>{
-				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
-			});
-			$('#commonLoading').removeClass('active');
-		}
-
-		let param = {}
-		com_ajax.ajax('get', '/sf/getDataExtension.ajax?extentionId='+dataExtensionId, param, res, null, null)
 	}
 
 	function save() {
@@ -259,3 +238,27 @@ define(["postmonger"], function (Postmonger) {
     }
 
 });
+
+let dataExtensionId;
+
+// 개인화 변수 조회
+function mappingLst() {
+	$('#commonLoading').addClass('active');
+
+	const res = function(colNameList) {
+		$('#kakaoValue').html('');
+		$('#smsContsVal').html('');
+		$('[name="edmDB"] ul.mappingLst').html('');
+
+		$(colNameList).each((idx,colName)=>{
+			$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+			$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+			$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+		});
+
+		$('#commonLoading').removeClass('active');
+	}
+
+	let param = {}
+	com_ajax.ajax('get', '/sf/getDataExtension.ajax?extentionId='+dataExtensionId, param, res, null, null)
+}

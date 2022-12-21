@@ -1431,43 +1431,9 @@
                 }
             });
 
-            const res2 = function (response) {
-                let list = response.mappingLst;
-                let html = '';
 
-
-                for (let i = 0; i < list.length; i++) {
-                    let item = list[i];
-                    html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-                    bindList.push(item.list_val);
-                }
-                $('.mappingLst').html(html);
-
-                getDBValue();
-                if ($("#recv_phone").val() && $("#recv_phone").val() != "") {
-                    $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='" + $("#recv_phone").val() + "']").html());
-                    $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
-                    $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
-                }
-                let swiperEl = $('.slideSwiper').length;
-                if (swiperEl > 0) {
-                    new Swiper('.slideSwiper', {
-                        direction: 'horizontal',
-                        pagination: {
-                            el: '.rcs_paging',
-                            type: 'fraction',
-                        },
-                        navigation: {
-                            nextEl: '.rcs_next',
-                            prevEl: '.rcs_prev',
-                        },
-                    });
-                }
-
-                $('.mobileLstPopup').removeClass('active');
-            }
-            let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-            com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res2, null, null)
+            mappingLst();
+            $('.mobileLstPopup').removeClass('active');
         }
 
         let param = {seq: seq}
