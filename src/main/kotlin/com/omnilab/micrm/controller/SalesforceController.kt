@@ -726,6 +726,19 @@ class SalesforceController {
         return map
     }
 
+    @ResponseBody
+    @GetMapping("/getDataExtension.ajax")
+    fun getDataExtension(@PathVariable(value = "extentionId") extentionId: String): String {
+        logger.error("error")
+        logger.error("{}",extentionId)
+
+        val columnNames:List<String>  = salesforceService.getDataExtention(extentionId);
+
+
+
+        return "index"
+    }
+
     @GetMapping("/{usr_cd}/error")
     fun error(@PathVariable(value = "usr_cd") usr_cd: String): String {
         logger.error("error")

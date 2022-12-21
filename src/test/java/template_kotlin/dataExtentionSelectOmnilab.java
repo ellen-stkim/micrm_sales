@@ -19,7 +19,6 @@ public class dataExtentionSelectOmnilab {
         configuration.set("useOAuth2Authentication", "true");
         ETClient client = new ETClient(configuration);
 
-
         ETFilter etf = new ETFilter();
         etf.addProperty("id");
         etf.addProperty("key");

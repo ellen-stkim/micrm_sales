@@ -90,10 +90,34 @@ define(["postmonger"], function (Postmonger) {
 
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
-		console.log(eventDefinitionModel);
 		if(eventDefinitionModel){
 			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+
+			const res = function(response) {
+				console.log(response);
+
+				let colNameList  =["test","tttt"];
+
+				$('#kakaoValue').html('');
+				$('#smsContsVal').html('');
+				$('[name="edmDB"] ul.mappingLst').html('');
+				/*$('#kakaoValue').html('');
+				$('#kakaoValue').html('');*/
+
+				$(colNameList).each((idx,colName)=>{
+					$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+					$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+					// $('#smsTitleVal ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+					$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+					// $('#recv_phone_to')
+				});
+			}
+			console.log(eventDefinitionModel.dataExtensionId)
+
+			let param = {}
+			com_ajax.ajax('get', '/sf/getDataExtension.ajax?extentionId='+eventDefinitionModel.dataExtensionId, param, res, null, null)
+
 		}
 	});
 
