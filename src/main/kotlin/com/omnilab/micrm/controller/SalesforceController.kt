@@ -326,9 +326,8 @@ class SalesforceController {
      * @title : RCS 텍스트형 페이지
      */
     @GetMapping("/{usr_cd}/rcsText.ajax")
-    fun rcsText(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun rcsText(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest , rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
-        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -348,7 +347,6 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsVertical.ajax")
     fun rcsVertical(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
-        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -368,7 +366,6 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/rcsSlide.ajax")
     fun rcsSlide(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
-        view.addObject("column", sysSettingService.getDBValue())
         return view
     }
 
@@ -530,8 +527,8 @@ class SalesforceController {
     fun getUser(@PathVariable(value = "usr_cd") usr_cd: String, @ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
         return salesforceService.getUser(dto, session)
     }
-
-    /**
+/*
+    *//**
      * @Method Name  : mappingLst
      * @Since    : 2022. 08. 04.
      * @author   : SSW
@@ -542,12 +539,12 @@ class SalesforceController {
      * @version  : 0.01
      * @Method Decription : 사용자 조회
      * @title : 사용자 조회
-     */
+     *//*
     @ResponseBody
     @PostMapping("/{usr_cd}/mappingLst.ajax")
     fun mappingLst(@PathVariable(value = "usr_cd") usr_cd: String, @ModelAttribute dto: SalesforceDto, session: HttpSession): Map<String, Any> {
         return salesforceService.mappingLst(dto)
-    }
+    }*/
 
     @ResponseBody
     @PostMapping("/{usr_cd}/save.service")
@@ -724,6 +721,14 @@ class SalesforceController {
         map["status"] = HttpServletResponse.SC_OK
         map["dto"] = dto!!
         return map
+    }
+
+    @ResponseBody
+    @GetMapping("/getDataExtension.ajax")
+    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String): List<String> {
+        val columnNames:List<String>  = salesforceService.getDataExtention(extentionId)
+
+        return columnNames
     }
 
     @GetMapping("/{usr_cd}/error")

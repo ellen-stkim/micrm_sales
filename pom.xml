@@ -11,7 +11,7 @@
 	<description>micrm Project</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 		<kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
 		<kotlin.version>1.6.0</kotlin.version>
 		<spring.version>2.4.2</spring.version>
@@ -301,6 +301,16 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.github.salesforce-marketingcloud/fuelsdk -->
+		<dependency>
+			<groupId>com.github.salesforce-marketingcloud</groupId>
+			<artifactId>fuelsdk</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+
     </dependencies>
 
 	<build>

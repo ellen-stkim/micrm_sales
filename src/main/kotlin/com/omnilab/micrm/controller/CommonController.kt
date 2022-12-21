@@ -119,7 +119,7 @@ class CommonController {
         return listCamp
     }
 
-    @RequestMapping("/error/error.mi", method = [RequestMethod.POST, RequestMethod.GET])
+    @RequestMapping("/error/error.mi")
     fun errorCon(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): String {
         try{
             val throwable = req.getAttribute("javax.servlet.error.exception") as Throwable

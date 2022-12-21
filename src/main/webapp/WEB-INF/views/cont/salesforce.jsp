@@ -698,32 +698,9 @@
     let dropTarget = null;
     let bindList = [];
 
-    function getDBValue() {
-        const res = function (response) {
-            let list = response.mappingLst;
-            let html = '';
-
-            for (let i = 0; i < list.length; i++) {
-                let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-            }
-            $('.mappingLst').html(html);
-
-            html = '';
-            for (let i = 0; i < list.length; i++) {
-                let item = list[i];
-                html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
-            }
-            $("#smsContsVal").html(html);
-            $("#kakaoValue").html(html);
-        }
-        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
-    }
-
     $(function () {
         $('input[name="dbInfo"]').on('change', function () {
-            getDBValue();
+            mappingLst();
         });//end
 
 
@@ -1431,47 +1408,14 @@
                 }
             });
 
-            const res2 = function (response) {
-                let list = response.mappingLst;
-                let html = '';
 
-
-                for (let i = 0; i < list.length; i++) {
-                    let item = list[i];
-                    html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-                    bindList.push(item.list_val);
-                }
-                $('.mappingLst').html(html);
-
-                getDBValue();
-                if ($("#recv_phone").val() && $("#recv_phone").val() != "") {
-                    $("#recv_phone_to .value").html($("#recv_phone_to .option li[data='" + $("#recv_phone").val() + "']").html());
-                    $("#recv_phone_to .value").attr("data", $("#recv_phone").val());
-                    $("#recv_phone_to .value").css("color", "rgb(34, 34, 34)");
-                }
-                let swiperEl = $('.slideSwiper').length;
-                if (swiperEl > 0) {
-                    new Swiper('.slideSwiper', {
-                        direction: 'horizontal',
-                        pagination: {
-                            el: '.rcs_paging',
-                            type: 'fraction',
-                        },
-                        navigation: {
-                            nextEl: '.rcs_next',
-                            prevEl: '.rcs_prev',
-                        },
-                    });
-                }
-
-                $('.mobileLstPopup').removeClass('active');
-            }
-            let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-            com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res2, null, null)
+            $('.mobileLstPopup').removeClass('active');
         }
 
         let param = {seq: seq}
         com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+
+        mappingLst();
     }
 
     // 카카오, SMS 유효성 검사
@@ -2362,27 +2306,27 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#textArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
             }
-            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/${usr_cd}/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}' , true);
         }
         if (checkType == 'vertical') {
             let res = function (response) {
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#verticalArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
             }
-            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/${usr_cd}/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }
         if (checkType == 'slide') {
             let res = function (response) {
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#slideArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
                 var mySwiper = new Swiper('.slideSwiper', {
                     direction: 'horizontal',
@@ -2397,7 +2341,7 @@
                     },
                 });
             }
-            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/${usr_cd}/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}',true);
         }
     }
 
@@ -2443,7 +2387,7 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option"></ul>'
+                + '<ul class="option mappingLst"></ul>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -2499,7 +2443,7 @@
                 );
             }
         }
-        getDBValue();
+        mappingLst();
         adTypeCheck();
     }
 
@@ -2556,7 +2500,7 @@
             $('input[name="rcs_msg_tp"]').val("medium");
         }
 
-        getDBValue();
+        mappingLst();
         adTypeCheck();
 
         new Swiper('.slideSwiper', {

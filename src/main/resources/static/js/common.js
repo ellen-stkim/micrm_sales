@@ -79,7 +79,7 @@ function searchCheck() {
 
 
 const com_ajax = {
-    ajax: function (c_method, c_url, c_data, c_callback, header, token) {
+    ajax: function (c_method, c_url, c_data, c_callback, header, token, isLoading) {
         $.ajax({
             name: "form",
             type: c_method,
@@ -102,16 +102,20 @@ const com_ajax = {
                 }
             }
             , beforeSend: function (e) {
-                $('#commonLoading').addClass('active');
+                if(!isLoading) {
+                    $('#commonLoading').addClass('active');
+                }
                 if (header != null) {
                     e.setRequestHeader(header, token);
                 }
             }, complete: function () {
-                $('#commonLoading').removeClass('active');
+                if(!isLoading){
+                    $('#commonLoading').removeClass('active');
+                }
             }
         });
     }
-    , ajaxSync: function (c_method, c_url, c_data, c_callback, header, token) {
+    , ajaxSync: function (c_method, c_url, c_data, c_callback, header, token, isNotLoading) {
         $.ajax({
             name: "form",
             type: c_method,
@@ -130,12 +134,16 @@ const com_ajax = {
 
             }
             , beforeSend: function (e) {
-                $('#commonLoading').addClass('active');
+                if(!isLoading) {
+                    $('#commonLoading').addClass('active');
+                }
                 if (header != null) {
                     e.setRequestHeader(header, token);
                 }
             }, complete: function () {
-                $('#commonLoading').removeClass('active');
+                if(!isLoading){
+                    $('#commonLoading').removeClass('active');
+                }
             }
         });
     }

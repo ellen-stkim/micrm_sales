@@ -1478,7 +1478,7 @@
                                                        onkeyup="rcsCreate.rcsTitle(this, 0);">
                                                 <div class="select column_4 left-border rcsTitleVal" name="edmDB">
                                                     <div class="value" data="0">개인화 변수</div>
-                                                    <ul class="option"></ul>
+                                                    <ul class="option mappingLst"></ul>
                                                 </div>
                                             </div>
                                         </div>
@@ -2508,7 +2508,7 @@
                                                     <div class="td">
                                                         <div class="select rcsTitleVal" name="edmDB">
                                                             <div class="value" data="0">개인화 변수</div>
-                                                            <ul class="option">
+                                                            <ul class="option mappingLst">
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -2538,7 +2538,7 @@
                                                         <div class="select column_4 rcsContsVal"
                                                              name="edmDB">
                                                             <div class="value" data="0">개인화 변수</div>
-                                                            <ul class="option">
+                                                            <ul class="option mappingLst">
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -3577,33 +3577,6 @@
 <script>
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
-
-    function getDBValue() {
-        let dbValue = $('input[name="dbInfo"]:checked').val();
-        let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
-        let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
-
-        $('.rcsTitleVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsContsVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsTitleVal[name="defaultDB"] .option').html(defaultDB);
-        $('.rcsContsVal[name="defaultDB"] .option').html(defaultDB);
-
-        if (dbValue == '0') {
-            $('div[name="edmDB"]').show();
-            $('div[name="defaultDB"]').hide();
-        }
-        if (dbValue == '1') {
-            $('div[name="edmDB"]').hide();
-            $('div[name="defaultDB"]').show();
-        }
-    }
-
-    $(document).ready(function () {
-        $('input[name="dbInfo"]').on('change', function () {
-            getDBValue();
-        });//end
-        getDBValue();
-    });
 
     function mdmLoad() {
         //load 시 byte 계산
@@ -4778,7 +4751,7 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option"></ul>'
+                + '<ul class="option mappingLst"></ul>'
                 + '</div>'
                 + '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
@@ -4838,7 +4811,7 @@
                 );
             }
         }
-        getDBValue();
+        mappingLst()
         adTypeCheck();
     }
 
@@ -5617,58 +5590,6 @@
         }
     }
 
-    // RCS 포맷카드 변경
-    function rcsChangeFormat(type) {
-
-        let checkType = $(type)[0].value;
-        $(type).prop('checked', true);
-        $('.layer_pop').removeClass('active');
-
-        type.value != 'slide' ? beforeSub = $('input[name="rcs_msg_tp"]:checked').val() : beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
-
-        if (checkType == 'text') {
-            let res = function (response) {
-                let $doc = new DOMParser().parseFromString(response, "text/html");
-                let html = $("#textArea", $doc).html();
-                let dynamic = $('#js-replace').html(html);
-                getDBValue();
-                adTypeCheck();
-            }
-            com_ajax.ajax('get', '/cont/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
-        }
-        if (checkType == 'vertical') {
-            let res = function (response) {
-                let $doc = new DOMParser().parseFromString(response, "text/html");
-                let html = $("#verticalArea", $doc).html();
-                let dynamic = $('#js-replace').html(html);
-                getDBValue();
-                adTypeCheck();
-            }
-            com_ajax.ajax('get', '/cont/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
-        }
-        if (checkType == 'slide') {
-            let res = function (response) {
-                let $doc = new DOMParser().parseFromString(response, "text/html");
-                let html = $("#slideArea", $doc).html();
-                let dynamic = $('#js-replace').html(html);
-                getDBValue();
-                adTypeCheck();
-                var mySwiper = new Swiper('.slideSwiper', {
-                    direction: 'horizontal',
-                    pagination: {
-                        el: '.rcs_paging',
-                        type: 'fraction',
-                    },
-                    // Navigation arrows
-                    navigation: {
-                        nextEl: '.rcs_next',
-                        prevEl: '.rcs_prev',
-                    },
-                });
-            }
-            com_ajax.ajax('get', '/cont/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
-        }
-    }
 
     // RCS 카드양식 변경
     function rcsLowTypeChange(type) {
@@ -5713,11 +5634,11 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option"></ul>'
+                + '<ul class="option mappingLst"></ul>'
                 + '</div>'
                 + '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option" id=""></ul>'
+                + '<ul class="option mappingLst" id=""></ul>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -5773,7 +5694,7 @@
                 );
             }
         }
-        getDBValue();
+        mappingLst();
         adTypeCheck();
     }
 
@@ -5830,7 +5751,7 @@
             $('input[name="rcs_msg_tp"]').val("medium");
         }
 
-        getDBValue();
+        mappingLst();
         adTypeCheck();
 
         new Swiper('.slideSwiper', {

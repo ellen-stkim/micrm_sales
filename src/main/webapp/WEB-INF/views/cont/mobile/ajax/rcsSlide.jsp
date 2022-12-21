@@ -72,7 +72,7 @@
                         <div class="td">
                            <div class="select rcsTitleVal" name="edmDB">
                               <div class="value" data="0">개인화 변수</div>
-                              <ul class="option">
+                              <ul class="option mappingLst">
                                  <c:forEach var="item" items="${column}" varStatus="status">
                                     <li data="${item.list_val}">${item.list_nm}</li>
                                  </c:forEach>
@@ -92,7 +92,7 @@
                         <div class="td">
                            <div class="select column_4 rcsContsVal" name="edmDB">
                               <div class="value" data="0">개인화 변수</div>
-                              <ul class="option">
+                              <ul class="option mappingLst">
                                  <c:forEach var="item" items="${column}" varStatus="status">
                                     <li data="${item.list_val}">${item.list_nm}</li>
                                  </c:forEach>
@@ -182,7 +182,7 @@
                      <div class="td">
                         <div class="select rcsTitleVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
-                           <ul class="option">
+                           <ul class="option mappingLst">
                               <c:forEach var="item" items="${column}" varStatus="status">
                                  <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
@@ -202,7 +202,7 @@
                      <div class="td">
                         <div class="select column_4 rcsContsVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
-                           <ul class="option">
+                           <ul class="option mappingLst">
                               <c:forEach var="item" items="${column}" varStatus="status">
                                  <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
@@ -293,7 +293,7 @@
                      <div class="td">
                         <div class="select rcsTitleVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
-                           <ul class="option">
+                           <ul class="option mappingLst">
                               <c:forEach var="item" items="${column}" varStatus="status">
                                  <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>
@@ -313,7 +313,7 @@
                      <div class="td">
                         <div class="select column_4 rcsContsVal" name="edmDB">
                            <div class="value" data="0">개인화 변수</div>
-                           <ul class="option">
+                           <ul class="option mappingLst">
                               <c:forEach var="item" items="${column}" varStatus="status">
                                  <li data="${item.list_val}">${item.list_nm}</li>
                               </c:forEach>

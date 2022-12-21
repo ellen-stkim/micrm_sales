@@ -1,5 +1,7 @@
 package template_kotlin;
 
+import com.omnilab.micrm.common.AES256;
+import com.omnilab.micrm.common.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -15,7 +17,8 @@ public class testReg {
     public static Logger logger = LoggerFactory.getLogger("testReg");
 
     public static void main(String[] args) {
-        HttpHeaders headers = new HttpHeaders();
+
+        /*HttpHeaders headers = new HttpHeaders();
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("username", "lucas");
         parameters.add("server", "https://tableau-report.com/");
@@ -27,5 +30,10 @@ public class testReg {
         logger.error("{}", result.getBody());
         logger.error("{}", result.getHeaders());
         logger.error("{}", result.getStatusCode());
+        */
+        logger.error("{}", AES256.AES_Encode("01033966795/1", "7779328267167869"));
+        logger.error("{}", AES256.AES_Encode("1", "7779328267167869"));
+
+
     }
 }
