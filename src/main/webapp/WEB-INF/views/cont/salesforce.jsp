@@ -2309,7 +2309,7 @@
                 mappingLst();
                 adTypeCheck();
             }
-            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/${usr_cd}/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}' , true);
         }
         if (checkType == 'vertical') {
             let res = function (response) {
@@ -2319,7 +2319,7 @@
                 mappingLst();
                 adTypeCheck();
             }
-            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/${usr_cd}/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }
         if (checkType == 'slide') {
             let res = function (response) {
@@ -2341,7 +2341,7 @@
                     },
                 });
             }
-            com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
+            com_ajax.ajax('get', '/sf/${usr_cd}/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}',true);
         }
     }
 

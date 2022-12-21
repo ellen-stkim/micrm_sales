@@ -260,6 +260,6 @@ function mappingLst() {
 	}
 
 	let param = {}
-	com_ajax.ajax('get', '/sf/getDataExtension.ajax?extentionId='+dataExtensionId, param, res, null, null)
+	com_ajax.ajax('get', '/sf/getDataExtension.ajax?extentionId='+dataExtensionId, param, res, null, null,false)
 
 }
