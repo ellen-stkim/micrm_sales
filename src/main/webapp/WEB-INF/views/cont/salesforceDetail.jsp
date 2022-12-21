@@ -3578,33 +3578,6 @@
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
-    function getDBValue() {
-        let dbValue = $('input[name="dbInfo"]:checked').val();
-        let edmDB = $('#smsContsVal[name="edmDB"] .option').html();
-        let defaultDB = $('#smsContsVal[name="defaultDB"] .option').html();
-
-        $('.rcsTitleVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsContsVal[name="edmDB"] .option').html(edmDB);
-        $('.rcsTitleVal[name="defaultDB"] .option').html(defaultDB);
-        $('.rcsContsVal[name="defaultDB"] .option').html(defaultDB);
-
-        if (dbValue == '0') {
-            $('div[name="edmDB"]').show();
-            $('div[name="defaultDB"]').hide();
-        }
-        if (dbValue == '1') {
-            $('div[name="edmDB"]').hide();
-            $('div[name="defaultDB"]').show();
-        }
-    }
-
-    $(document).ready(function () {
-        $('input[name="dbInfo"]').on('change', function () {
-            getDBValue();
-        });//end
-        getDBValue();
-    });
-
     function mdmLoad() {
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
@@ -4838,7 +4811,7 @@
                 );
             }
         }
-        getDBValue();
+        mappingLst()
         adTypeCheck();
     }
 
@@ -5631,7 +5604,7 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#textArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
             }
             com_ajax.ajax('get', '/cont/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -5641,7 +5614,7 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#verticalArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
             }
             com_ajax.ajax('get', '/cont/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -5651,7 +5624,7 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#slideArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
                 var mySwiper = new Swiper('.slideSwiper', {
                     direction: 'horizontal',
@@ -5773,7 +5746,7 @@
                 );
             }
         }
-        getDBValue();
+        mappingLst();
         adTypeCheck();
     }
 
@@ -5830,7 +5803,7 @@
             $('input[name="rcs_msg_tp"]').val("medium");
         }
 
-        getDBValue();
+        mappingLst();
         adTypeCheck();
 
         new Swiper('.slideSwiper', {
