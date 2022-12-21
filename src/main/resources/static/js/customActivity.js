@@ -98,7 +98,6 @@ define(["postmonger"], function (Postmonger) {
 
 			dataExtensionId = eventDefinitionModel.dataExtensionId;
 			mappingLst();
-
 		}
 	});
 
@@ -121,7 +120,6 @@ define(["postmonger"], function (Postmonger) {
 				}else{
 					$('#usr_grp_cd').val(response.usr_grp_cd);
 					$('#cont_grp_cd').val(response.usr_grp_cd);
-					mappingLst();
 
 					if(response.kko.list){
 						$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
@@ -149,6 +147,8 @@ define(["postmonger"], function (Postmonger) {
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null)
+
+		mappingLst();
 	}
 
 	function save() {
@@ -256,7 +256,9 @@ function mappingLst() {
 			$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
 		});
 
-		$('#commonLoading').removeClass('active');
+		setTimeout(()=>{
+			$('#commonLoading').removeClass('active');
+		},1000);
 	}
 
 	let param = {}
