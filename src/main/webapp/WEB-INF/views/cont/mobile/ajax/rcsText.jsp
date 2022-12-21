@@ -49,7 +49,7 @@
                   <div class="select rcsContsVal" name="edmDB">
                      <!-- selected value -->
                      <div class="value" data="0">개인화 변수</div>
-                     <ul class="option">
+                     <ul class="option mappingLst">
                         <c:forEach var="item" items="${column}" varStatus="status">
                            <li data="${item.list_val}">${item.list_nm}</li>
                         </c:forEach>

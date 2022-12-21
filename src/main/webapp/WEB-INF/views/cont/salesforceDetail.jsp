@@ -5590,58 +5590,6 @@
         }
     }
 
-    // RCS 포맷카드 변경
-    function rcsChangeFormat(type) {
-
-        let checkType = $(type)[0].value;
-        $(type).prop('checked', true);
-        $('.layer_pop').removeClass('active');
-
-        type.value != 'slide' ? beforeSub = $('input[name="rcs_msg_tp"]:checked').val() : beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
-
-        if (checkType == 'text') {
-            let res = function (response) {
-                let $doc = new DOMParser().parseFromString(response, "text/html");
-                let html = $("#textArea", $doc).html();
-                let dynamic = $('#js-replace').html(html);
-                mappingLst();
-                adTypeCheck();
-            }
-            com_ajax.ajax('get', '/cont/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
-        }
-        if (checkType == 'vertical') {
-            let res = function (response) {
-                let $doc = new DOMParser().parseFromString(response, "text/html");
-                let html = $("#verticalArea", $doc).html();
-                let dynamic = $('#js-replace').html(html);
-                mappingLst();
-                adTypeCheck();
-            }
-            com_ajax.ajax('get', '/cont/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
-        }
-        if (checkType == 'slide') {
-            let res = function (response) {
-                let $doc = new DOMParser().parseFromString(response, "text/html");
-                let html = $("#slideArea", $doc).html();
-                let dynamic = $('#js-replace').html(html);
-                mappingLst();
-                adTypeCheck();
-                var mySwiper = new Swiper('.slideSwiper', {
-                    direction: 'horizontal',
-                    pagination: {
-                        el: '.rcs_paging',
-                        type: 'fraction',
-                    },
-                    // Navigation arrows
-                    navigation: {
-                        nextEl: '.rcs_next',
-                        prevEl: '.rcs_prev',
-                    },
-                });
-            }
-            com_ajax.ajax('get', '/cont/rcsSlide.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
-        }
-    }
 
     // RCS 카드양식 변경
     function rcsLowTypeChange(type) {
