@@ -256,9 +256,7 @@ function mappingLst() {
 			$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
 		});
 
-		setTimeout(()=>{
-			$('#commonLoading').removeClass('active');
-		},1000);
+		$('#commonLoading').removeClass('active');
 	}
 
 	let param = {}
