@@ -10,8 +10,8 @@ import kotlin.collections.HashMap
 
 @SpringBootApplication(exclude = [DataSourceTransactionManagerAutoConfiguration::class, DataSourceAutoConfiguration::class])
 @ComponentScan(basePackages = ["com.omnilab.micrm.*"])
-open class TemplateKotlinApplication
+open class MicrmApplication
 
 fun main(args: Array<String>) {
-	runApplication<TemplateKotlinApplication>(*args)
+	runApplication<MicrmApplication>(*args)
 }
