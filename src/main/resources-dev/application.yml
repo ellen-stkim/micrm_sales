@@ -48,7 +48,7 @@ variable:
   biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
 
 upload:
-  src : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
-  temp : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
+  src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
+  temp : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
 
