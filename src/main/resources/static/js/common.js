@@ -102,7 +102,9 @@ const com_ajax = {
                 }
             }
             , beforeSend: function (e) {
-                $('#commonLoading').addClass('active');
+                if(!isLoading) {
+                    $('#commonLoading').addClass('active');
+                }
                 if (header != null) {
                     e.setRequestHeader(header, token);
                 }

@@ -2410,7 +2410,7 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option"></ul>'
+                + '<ul class="option mappingLst"></ul>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
