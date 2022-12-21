@@ -698,32 +698,9 @@
     let dropTarget = null;
     let bindList = [];
 
-    function getDBValue() {
-        const res = function (response) {
-            let list = response.mappingLst;
-            let html = '';
-
-            for (let i = 0; i < list.length; i++) {
-                let item = list[i];
-                html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-            }
-            $('.mappingLst').html(html);
-
-            html = '';
-            for (let i = 0; i < list.length; i++) {
-                let item = list[i];
-                html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
-            }
-            $("#smsContsVal").html(html);
-            $("#kakaoValue").html(html);
-        }
-        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/${usr_cd}/mappingLst.ajax', param, res, null, null)
-    }
-
     $(function () {
         $('input[name="dbInfo"]').on('change', function () {
-            getDBValue();
+            mappingLst();
         });//end
 
 
@@ -2329,7 +2306,7 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#textArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
             }
             com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsText.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -2339,7 +2316,7 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#verticalArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
             }
             com_ajax.ajaxSync('get', '/sf/${usr_cd}/rcsVertical.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -2349,7 +2326,7 @@
                 let $doc = new DOMParser().parseFromString(response, "text/html");
                 let html = $("#slideArea", $doc).html();
                 let dynamic = $('#js-replace').html(html);
-                getDBValue();
+                mappingLst();
                 adTypeCheck();
                 var mySwiper = new Swiper('.slideSwiper', {
                     direction: 'horizontal',
@@ -2466,7 +2443,7 @@
                 );
             }
         }
-        getDBValue();
+        mappingLst();
         adTypeCheck();
     }
 
@@ -2523,7 +2500,7 @@
             $('input[name="rcs_msg_tp"]').val("medium");
         }
 
-        getDBValue();
+        mappingLst();
         adTypeCheck();
 
         new Swiper('.slideSwiper', {
