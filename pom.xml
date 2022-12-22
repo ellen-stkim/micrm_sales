@@ -11,7 +11,7 @@
 	<description>micrm Project</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 		<kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
 		<kotlin.version>1.6.0</kotlin.version>
 		<spring.version>2.4.2</spring.version>
@@ -310,12 +310,6 @@
 			<version>1.6.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.codehaus.woodstox</groupId>
-			<artifactId>stax2-api</artifactId>
-			<version>3.1.3</version>
-		</dependency>
-		<!-- Thanks for using https://jar-download.com -->
 
     </dependencies>
 

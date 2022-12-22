@@ -31,6 +31,7 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
+
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -88,12 +89,15 @@ define(["postmonger"], function (Postmonger) {
 		}
 	});
 
+
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
-		console.log(eventDefinitionModel);
 		if(eventDefinitionModel){
 			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+
+			dataExtensionId = eventDefinitionModel.dataExtensionId;
+			mappingLst();
 		}
 	});
 
@@ -116,7 +120,6 @@ define(["postmonger"], function (Postmonger) {
 				}else{
 					$('#usr_grp_cd').val(response.usr_grp_cd);
 					$('#cont_grp_cd').val(response.usr_grp_cd);
-					mappingLst();
 
 					if(response.kko.list){
 						$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
@@ -141,34 +144,11 @@ define(["postmonger"], function (Postmonger) {
                 alert('사용자 조회에 실패하였습니다.');
 				parent.location.reload();
             }
+			mappingLst()
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
-        com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null)
-	}
+        com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null,true)
 
-	// 개인화 변수 조회
-	function mappingLst() {
-	    const res = function(response) {
-			let list = response.mappingLst;
-			let html = '';
-
-			for (let i = 0; i < list.length; i++) {
-				let item = list[i];
-				html += '<li data="' + item.list_val + '">' + item.list_nm + '</li>';
-				bindList.push(item.list_val);
-			}
-			$('.mappingLst').html(html);
-
-			html = '';
-			for (let i = 0; i < list.length; i++) {
-				let item = list[i];
-				html += '<input type="button" data="{{' + item.list_val + '}}" value="' + item.list_nm + '" class="drag-button" draggable="true">';
-			}
-			$("#smsContsVal").html(html);
-			$("#kakaoValue").html(html);
-        }
-        let param = {usr_grp_cd: $('#usr_grp_cd').val()}
-        com_ajax.ajax('post', '/sf/'+ usr_cd +'/mappingLst.ajax', param, res, null, null)
 	}
 
 	function save() {
@@ -258,3 +238,28 @@ define(["postmonger"], function (Postmonger) {
     }
 
 });
+
+let dataExtensionId;
+
+// 개인화 변수 조회
+function mappingLst() {
+	$('#commonLoading').addClass('active');
+
+	const res = function(colNameList) {
+		$('#kakaoValue').html('');
+		$('#smsContsVal').html('');
+		$('[name="edmDB"] ul.mappingLst').html('');
+
+		$(colNameList).each((idx,colName)=>{
+			$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+			$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+			$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+		});
+
+		$('#commonLoading').removeClass('active');
+	}
+
+	let param = {}
+	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
+
+}

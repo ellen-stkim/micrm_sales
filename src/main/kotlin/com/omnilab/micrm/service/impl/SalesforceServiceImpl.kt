@@ -1,5 +1,6 @@
 package com.omnilab.micrm.service.impl
 
+import com.exacttarget.fuelsdk.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
@@ -43,6 +44,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.regex.Pattern
+import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 
 
@@ -2463,6 +2465,34 @@ class SalesforceServiceImpl : SalesforceService {
         }
         return true
     }
+
+
+    @Throws(ETSdkException::class)
+    override fun getDataExtention(usr_cd: String, extentionId: String) : List<String> {
+
+        val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
+
+        val configuration = ETConfiguration()
+        for (commCd in commCdList){
+            when (commCd.grp_id) {
+                "SALES_CID" -> configuration["clientId"] = commCd.cd_val
+                "SALES_SEC" ->  configuration["clientSecret"] = commCd.cd_val
+                "SALES_AUTH_URL" ->  configuration["authEndpoint"] = commCd.cd_val
+                "SALES_REST_URL" ->  configuration["endpoint"] = commCd.cd_val
+                "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
+            }
+        }
+        configuration["useOAuth2Authentication"] = "true"
+        val client = ETClient(configuration)
+
+        val response = client.retrieve(ETDataExtension::class.java, "id=$extentionId")
+        val dataExtension = response.result.getObject()
+
+        val res = dataExtension.select()
+
+        return res.getObject().columnNames.stream().collect(Collectors.toList())
+    }
+
 
     private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {
         val re_map: MutableMap<String, Any> = HashMap()

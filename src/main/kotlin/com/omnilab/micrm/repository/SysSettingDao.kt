@@ -12,6 +12,8 @@ interface SysSettingDao {
 
     fun getCommCD(dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?
 
+    fun getCommCDList(dto: Tblmi_comm_cdDto) : List<Tblmi_comm_cdDto>
+
     fun getCommCdKeyValueNull (dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?
 
     fun getCommCDLst(dto: Tblmi_comm_cdDto) : List<Tblmi_comm_cdDto>

@@ -19,7 +19,6 @@ public class dataExtentionSelectOmnilab {
         configuration.set("useOAuth2Authentication", "true");
         ETClient client = new ETClient(configuration);
 
-
         ETFilter etf = new ETFilter();
         etf.addProperty("id");
         etf.addProperty("key");
@@ -35,8 +34,9 @@ public class dataExtentionSelectOmnilab {
         exp.setValue("cce071c7-4680-ed11-ba43-5cba2c19aa40");
         etf.setExpression(exp);
 
-        System.out.println("---------------------ETDataExtension------------------------");
+//        ETClient client  = new ETClient("/fuelSdk.properties");
 
+        System.out.println("---------------------ETDataExtension------------------------");
         ETResponse<ETDataExtension> response = client.retrieve(ETDataExtension.class, "id=cce071c7-4680-ed11-ba43-5cba2c19aa40");
         ETResult<ETDataExtension> result = response.getResult();
         ETDataExtension dataExtension = result.getObject();

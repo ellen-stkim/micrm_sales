@@ -39,7 +39,7 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
-  static-path : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
+  static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
   biz-url: ENC(d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY=)
@@ -48,7 +48,7 @@ variable:
   biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
 
 upload:
-  src : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
-  temp : "/web/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
+  src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
+  temp : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
 
