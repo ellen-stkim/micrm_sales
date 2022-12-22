@@ -37,6 +37,14 @@ class Tblmi_comm_cdDto {
         this.cd_desc = cd_desc
     }
 
+    constructor(cd_id: String?, par_id: String?, par_nm: String?, use_yn: String?) {
+        this.cd_id = cd_id
+        this.par_id = par_id
+        this.par_nm = par_nm
+        this.use_yn = use_yn
+    }
+
+
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }
