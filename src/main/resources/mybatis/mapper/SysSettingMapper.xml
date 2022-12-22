@@ -100,6 +100,7 @@
 		</where>
 	</select>
 
+
 	<update id ="updateSetLstYn" parameterType="Tblmi_set_lst">
 		UPDATE tblmi_set_lst
 		SET use_yn = #{use_yn}

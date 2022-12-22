@@ -724,11 +724,9 @@ class SalesforceController {
     }
 
     @ResponseBody
-    @GetMapping("/getDataExtension.ajax")
-    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String): List<String> {
-        val columnNames:List<String>  = salesforceService.getDataExtention(extentionId)
-
-        return columnNames
+    @GetMapping("/{usr_cd}/getDataExtension.ajax")
+    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usr_cd: String): List<String>? {
+        return salesforceService.getDataExtention(usr_cd,extentionId)
     }
 
     @GetMapping("/{usr_cd}/error")

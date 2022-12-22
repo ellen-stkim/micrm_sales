@@ -33,6 +33,10 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.selectOne("getCommCD", dto)
     }
 
+    override fun getCommCDList(dto: Tblmi_comm_cdDto): List<Tblmi_comm_cdDto> {
+        return sqlSession.selectList("getCommCD", dto)
+    }
+
     override fun getCommCdKeyValueNull(dto: Tblmi_comm_cdDto): Tblmi_comm_cdDto? {
         return sqlSession.selectOne("getCommCD", dto)
     }
