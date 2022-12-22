@@ -28,12 +28,12 @@ class TemplateKotlinApplicationTests {
 
     @Test
     fun contextLoads() {
-        salesforceService.getDataExtention("cce071c7-4680-ed11-ba43-5cba2c19aa40")
+        salesforceService.getDataExtention("03","cce071c7-4680-ed11-ba43-5cba2c19aa40")
     }
     
     
     /**
-     * pom.xml에 추가 후 테스트 가능 
+     * pom.xml에 추가 후 테스트 가능
      * <!-- https://mvnrepository.com/artifact/org.codehaus.woodstox/stax2-api -->
     <dependency>
     <groupId>org.codehaus.woodstox</groupId>

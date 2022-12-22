@@ -79,7 +79,7 @@ function searchCheck() {
 
 
 const com_ajax = {
-    ajax: function (c_method, c_url, c_data, c_callback, header, token, isLoading) {
+    ajax: function (c_method, c_url, c_data, c_callback, header, token, isNotLoading) {
         $.ajax({
             name: "form",
             type: c_method,
@@ -102,14 +102,14 @@ const com_ajax = {
                 }
             }
             , beforeSend: function (e) {
-                if(!isLoading) {
+                if(!isNotLoading) {
                     $('#commonLoading').addClass('active');
                 }
                 if (header != null) {
                     e.setRequestHeader(header, token);
                 }
             }, complete: function () {
-                if(!isLoading){
+                if(!isNotLoading){
                     $('#commonLoading').removeClass('active');
                 }
             }
@@ -134,14 +134,14 @@ const com_ajax = {
 
             }
             , beforeSend: function (e) {
-                if(!isLoading) {
+                if(!isNotLoading) {
                     $('#commonLoading').addClass('active');
                 }
                 if (header != null) {
                     e.setRequestHeader(header, token);
                 }
             }, complete: function () {
-                if(!isLoading){
+                if(!isNotLoading){
                     $('#commonLoading').removeClass('active');
                 }
             }

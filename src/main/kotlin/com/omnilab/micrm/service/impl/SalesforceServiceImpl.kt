@@ -53,8 +53,6 @@ class SalesforceServiceImpl : SalesforceService {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
 
-    val FUELSDK_PROPERTIES : String = "/fuelSdk.properties"
-
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
 
@@ -2470,9 +2468,22 @@ class SalesforceServiceImpl : SalesforceService {
 
 
     @Throws(ETSdkException::class)
-    override fun getDataExtention(extentionId: String) : List<String> {
+    override fun getDataExtention(usr_cd: String, extentionId: String) : List<String> {
 
-        val client  = ETClient(FUELSDK_PROPERTIES)
+        val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
+
+        val configuration = ETConfiguration()
+        for (commCd in commCdList){
+            when (commCd.grp_id) {
+                "SALES_CID" -> configuration["clientId"] = commCd.cd_val
+                "SALES_SEC" ->  configuration["clientSecret"] = commCd.cd_val
+                "SALES_AUTH_URL" ->  configuration["authEndpoint"] = commCd.cd_val
+                "SALES_REST_URL" ->  configuration["endpoint"] = commCd.cd_val
+                "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
+            }
+        }
+        configuration["useOAuth2Authentication"] = "true"
+        val client = ETClient(configuration)
 
         val response = client.retrieve(ETDataExtension::class.java, "id=$extentionId")
         val dataExtension = response.result.getObject()
