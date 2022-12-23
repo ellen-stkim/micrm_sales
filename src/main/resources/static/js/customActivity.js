@@ -89,7 +89,6 @@ define(["postmonger"], function (Postmonger) {
 		}
 	});
 
-
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		if(eventDefinitionModel){
@@ -109,7 +108,6 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('ready');
 		$('#previewBtn').trigger('click');
 	});
-
 
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
@@ -133,7 +131,6 @@ define(["postmonger"], function (Postmonger) {
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}
-					console.log(response)
 					if(response.rcs.list){
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
@@ -148,7 +145,6 @@ define(["postmonger"], function (Postmonger) {
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null,true)
-
 	}
 
 	function save() {
@@ -245,21 +241,22 @@ let dataExtensionId;
 function mappingLst() {
 	$('#commonLoading').addClass('active');
 
-	const res = function(colNameList) {
-		$('#kakaoValue').html('');
-		$('#smsContsVal').html('');
-		$('[name="edmDB"] ul.mappingLst').html('');
-
-		$(colNameList).each((idx,colName)=>{
-			$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-			$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-			$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
-		});
-
-		$('#commonLoading').removeClass('active');
+	const res = function(e) {
+		if(e.check){
+			$('#kakaoValue').html('');
+			$('#smsContsVal').html('');
+			$('[name="edmDB"] ul.mappingLst').html('');
+			$(e.list).each((idx, colName)=>{
+				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+			});
+			$('#commonLoading').removeClass('active');
+		}else{
+			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
+			connection.trigger('destroy');
+		}
 	}
-
 	let param = {}
 	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
-
 }

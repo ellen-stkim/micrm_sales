@@ -2467,9 +2467,7 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
 
-    @Throws(ETSdkException::class)
     override fun getDataExtention(usr_cd: String, extentionId: String) : List<String> {
-
         val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
 
         val configuration = ETConfiguration()

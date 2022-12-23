@@ -35,6 +35,7 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
+import kotlin.collections.HashMap
 
 
 @Controller
@@ -710,7 +711,6 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/kko/getAtTmpl.ajax")
     fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any>? {
-
         val map :MutableMap<String,Any> = mutableMapOf()
         dto.usr_grp_cd =usr_cd
         val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
@@ -725,8 +725,18 @@ class SalesforceController {
 
     @ResponseBody
     @GetMapping("/{usr_cd}/getDataExtension.ajax")
-    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usr_cd: String): List<String>? {
-        return salesforceService.getDataExtention(usr_cd,extentionId)
+    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any> {
+        val reMap = HashMap<String, Any>()
+        return try{
+            val list = salesforceService.getDataExtention(usr_cd,extentionId)
+            reMap["check"] = true
+            reMap["list"] = list
+            reMap
+        }catch (e: Exception){
+            logger.error("getDataExtension {}", e)
+            reMap["check"] = false
+            reMap
+        }
     }
 
     @GetMapping("/{usr_cd}/error")
