@@ -133,7 +133,6 @@ define(["postmonger"], function (Postmonger) {
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}
-					console.log(response)
 					if(response.rcs.list){
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
@@ -262,5 +261,4 @@ function mappingLst() {
 	}
 	let param = {}
 	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
-
 }
