@@ -89,7 +89,6 @@ define(["postmonger"], function (Postmonger) {
 		}
 	});
 
-
 	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		if(eventDefinitionModel){
@@ -109,7 +108,6 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('ready');
 		$('#previewBtn').trigger('click');
 	});
-
 
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
@@ -147,7 +145,6 @@ define(["postmonger"], function (Postmonger) {
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null,true)
-
 	}
 
 	function save() {
@@ -257,6 +254,7 @@ function mappingLst() {
 			$('#commonLoading').removeClass('active');
 		}else{
 			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
+			connection.trigger('destroy');
 		}
 	}
 	let param = {}
