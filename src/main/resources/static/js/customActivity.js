@@ -245,20 +245,21 @@ let dataExtensionId;
 function mappingLst() {
 	$('#commonLoading').addClass('active');
 
-	const res = function(colNameList) {
-		$('#kakaoValue').html('');
-		$('#smsContsVal').html('');
-		$('[name="edmDB"] ul.mappingLst').html('');
-
-		$(colNameList).each((idx,colName)=>{
-			$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-			$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-			$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
-		});
-
-		$('#commonLoading').removeClass('active');
+	const res = function(e) {
+		if(e.check){
+			$('#kakaoValue').html('');
+			$('#smsContsVal').html('');
+			$('[name="edmDB"] ul.mappingLst').html('');
+			$(e.list).each((idx,colName)=>{
+				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+			});
+			$('#commonLoading').removeClass('active');
+		}else{
+			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
+		}
 	}
-
 	let param = {}
 	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
 
