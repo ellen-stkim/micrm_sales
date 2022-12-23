@@ -691,6 +691,7 @@
 </form:form>
 <script>
     let usr_cd = '${usr_cd}';
+    let _connection;
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
     let firstLoad = true;

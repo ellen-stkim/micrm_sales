@@ -13,6 +13,7 @@ define(["postmonger"], function (Postmonger) {
 	let eventModel = null;
 
 	$(window).ready(function (){
+		_connection = connection;
 		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
 		connection.trigger('requestTokens');
@@ -139,7 +140,7 @@ define(["postmonger"], function (Postmonger) {
 			}else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
-				parent.location.reload();
+				connection.trigger("destroy");
             }
 			mappingLst()
         }
@@ -254,7 +255,9 @@ function mappingLst() {
 			$('#commonLoading').removeClass('active');
 		}else{
 			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
-			connection.trigger('destroy');
+			if(_connection){
+				_connection.trigger('destroy');
+			}
 		}
 	}
 	let param = {}
