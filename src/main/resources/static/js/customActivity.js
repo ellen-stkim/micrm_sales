@@ -250,7 +250,7 @@ function mappingLst() {
 			$('#kakaoValue').html('');
 			$('#smsContsVal').html('');
 			$('[name="edmDB"] ul.mappingLst').html('');
-			$(e.list).each((idx,colName)=>{
+			$(e.list).each((idx, colName)=>{
 				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
