@@ -251,6 +251,7 @@ function mappingLst() {
 				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+				bindList.push(colName);
 			});
 			$('#commonLoading').removeClass('active');
 		}else{
