@@ -161,9 +161,11 @@ define(["postmonger"], function (Postmonger) {
 		data.seq = mstSeq;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
-		payload["arguments"].execute.extantionCnt = dataExtensionCnt;
+		payload["arguments"].execute.extentionCnt = dataExtensionCnt;
 		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
+
+		console.log(dataList)
 	}
 
     // 프리뷰에서 저장 버튼 누르기

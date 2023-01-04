@@ -2361,7 +2361,7 @@ class SalesforceServiceImpl : SalesforceService {
                 for(campaignDto in campLst){
                     // 타겟수 업데이트
                     if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
-                        logger.error("totalCnt : {}",map["extantionCnt"])
+                        logger.error("totalCnt : {}",map["extentionCnt"])
                     }
 
                     // sendhst 삽입
