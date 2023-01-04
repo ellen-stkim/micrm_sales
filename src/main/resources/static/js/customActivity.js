@@ -162,9 +162,6 @@ define(["postmonger"], function (Postmonger) {
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
-		console.log(payload)
-		console.log(payload["arguments"].execute)
-		setTimeout(() => {console.log("!!")}, 20000);
 
         connection.trigger("updateActivity", payload);
 

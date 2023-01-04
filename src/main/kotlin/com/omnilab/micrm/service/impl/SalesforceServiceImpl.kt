@@ -2361,7 +2361,7 @@ class SalesforceServiceImpl : SalesforceService {
                 for(campaignDto in campLst){
                     // 타겟수 업데이트
                     if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
-                        val targetCnt :Int = inArguments.get("extentionCnt") as Int
+                        val targetCnt = inArguments.get("extentionCnt").toString().toInt()
                         campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
                     }
                     inArguments.remove("extentionCnt")
