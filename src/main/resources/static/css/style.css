@@ -533,11 +533,16 @@
 .viewer_area .inner .sms_img img {width:100%; max-height:268px;}
 .viewer_area .inner .sms_txt,
 .viewer_area .inner .kakao_txt {display:block; width:100%; height:445px; /*resize:none;*/ line-height:1.6; overflow:auto;
-    padding:15px; border:1px solid #dddddd;}
+    padding:15px;}
 .viewer_area .inner .sms_txt {border-radius:0; background:#FFFFFF;}
 .viewer_area .kakao_link {display:block; width:100%; height:37px; line-height:35px; background:#f2f2f2;
     font-size:12px; text-align:center; margin:15px auto; outline:none; border-radius:5px;}
 .viewer_area .byte {width:397px; text-align:right; color:#cccccc; font-size:11px; margin:15px auto 40px;}
+.viewer_area .inner .round_box{width: 270px; border-radius: 11px; border: 1px solid #dddddd; overflow: hidden; margin: 0 auto;}
+.viewer_area .inner .kakao_ft{width: 100%; max-height: 270px; overflow: hidden; background: url(../image/bg_none.png) no-repeat center; text-align: center;}
+.viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 110px; overflow: hidden;    word-break: break-all;}
+.viewer_area .inner .kakao_link{ width: 90%;}
+
 
 .sms_box {width:270px; margin:0 auto;}
 .sms_box .sms_title {margin-top:0;}
@@ -556,6 +561,15 @@
 .sms_title + .sms_img {border-radius:10px; overflow:hidden; margin-bottom:5px;}
 .sms_txt {width:100%; height:370px; padding:15px; border-radius:10px;
     background:#f2f2f2;}
+.sms_body {
+
+}
+
+.viewer_area .sms_img_box {width:100%; border-radius:10px; background:#f2f2f2; overflow:hidden;}
+.viewer_area .text_box {width:100%; border-radius:10px; background:#f2f2f2; padding:15px; overflow:hidden; max-height: 245px;}
+.viewer_area .text_box .title {font-weight: bold; font-size: 13px; margin-bottom: 10px;}
+.viewer_area .scroll_txt_area {height:120px; overflow-y:auto; max-height: 215px; word-wrap: break-word;
+    overflow-y: auto;}
 
 .row.body .column_5 .title.type1 {float:left; width:calc(100% - 60px); font-weight:700; height:100%;
     padding:0 20px; font-size:13px;}

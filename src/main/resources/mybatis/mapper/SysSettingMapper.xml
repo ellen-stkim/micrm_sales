@@ -26,7 +26,7 @@
 			)
 	</insert>
 
-	<select id="getMailSettingListCnt" parameterType="Tblmi_set_lst"  resultType="INT">
+	<select id="getSettingListCnt" parameterType="Tblmi_set_lst"  resultType="INT">
 		SELECT COUNT(seq)
 		FROM tblmi_set_lst
 		WHERE DEL_DT = 'N'
@@ -50,7 +50,7 @@
 		</if>
 	</select>
 
-	<select id="getMailSettingList" parameterType="Tblmi_set_lst"  resultType="Tblmi_set_lst">
+	<select id="getSettingList" parameterType="Tblmi_set_lst"  resultType="Tblmi_set_lst">
 		SELECT *
 		FROM tblmi_set_lst
 		WHERE DEL_DT = 'N'
