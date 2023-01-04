@@ -481,4 +481,52 @@ class SysSettingController {
         return view;
     }
 
+    /**
+     * @Method Name  : rejectSetting
+     * @Since    : 2023. 01. 03
+     * @author   : Belisa
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 수신거부 문구 설정 페이지 조회
+     * @title : 수신거부 문구 설정 페이지 조회
+     */
+
+    @GetMapping("/rejectSetting.mi")
+    fun rejectSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/rejectSetting")
+        val dto = SetLst_searchDto()
+        val map = sysSettingService.getRejectSettingList(dto)
+        logger.error("}{dfgmdslkmslgsmlkm")
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+
+        return view;
+    }
+
+    /**
+     * @Method Name  : getRejtSettingList
+     * @Since    : 2023. 01. 03
+     * @author   : Belisa
+     * @param    : lstStDto: SetLst_searchDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 수신거부 문구 리스트
+     * @title :  수신거부 문구 리스트
+     */
+
+    @PostMapping("/getRejtSettingList.ajax")
+    fun getRejtSettingList(@ModelAttribute("form") lstStDto: SetLst_searchDto) : ModelAndView {
+        val view = ModelAndView("sys/setting/ajax/getSmsSettingList")
+        val map = sysSettingService.getRejtSettingList(lstStDto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+        return view;
+    }
+
 }

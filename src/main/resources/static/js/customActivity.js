@@ -24,6 +24,9 @@ define(["postmonger"], function (Postmonger) {
 		// refresh
 		connection.trigger('ready');
 
+	/*	dataExtensionId = "26adecd7-7c2e-ed11-ba3c-5cba2c19b648";
+		mappingLst();*/
+
 		/** 에러페이지 리턴이 필요하면
 		 setTimeout(function() {
 			if(flag) {
@@ -239,7 +242,7 @@ define(["postmonger"], function (Postmonger) {
 
 });
 
-let dataExtensionId;
+let dataExtensionId ="cce071c7-4680-ed11-ba43-5cba2c19aa40";
 
 // 개인화 변수 조회
 function mappingLst() {

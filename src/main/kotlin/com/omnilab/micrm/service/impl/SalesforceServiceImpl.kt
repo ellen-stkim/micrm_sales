@@ -44,14 +44,15 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.regex.Pattern
-import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
+import kotlin.streams.toList
 
 
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
+
 
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
@@ -2485,12 +2486,40 @@ class SalesforceServiceImpl : SalesforceService {
         configuration["useOAuth2Authentication"] = "true"
         val client = ETClient(configuration)
 
-        val response = client.retrieve(ETDataExtension::class.java, "id=$extentionId")
+        val filter = ETFilter()
+        val exp = ETExpression()
+
+        exp.property = "id"
+        exp.operator = ETExpression.Operator.EQUALS
+        exp.addValue(extentionId)
+
+        filter.expression = exp
+        val props = arrayOf(
+            "TotalCount",
+        )
+
+        filter.addProperty(props.toString())
+
+        /*val client = ETClient()
+        val filter: ETFilter = ETSimpleFilter(
+            "CustomerKey",
+            ETFilterOperators.EQUALS,
+            "subscribers"
+        )*/
+
+        val response = client.retrieve(ETDataExtension::class.java, filter)
+
         val dataExtension = response.result.getObject()
+        val reList =  dataExtension.retrieveColumns()
+                                        .stream().map {column->column.name}.toList()
 
-        val res = dataExtension.select()
+        /*logger.error("-------------------------------------------------------")
+        logger.error("{}",response.totalCount)
+        response.setMoreResults(true)
+        logger.error("{}",response.totalCount)
+        logger.error("-------------------------------------------------------")*/
 
-        return res.getObject().columnNames.stream().collect(Collectors.toList())
+        return reList
     }
 
 
