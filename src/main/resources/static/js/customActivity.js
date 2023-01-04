@@ -159,9 +159,9 @@ define(["postmonger"], function (Postmonger) {
 			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 		}
 		data.seq = mstSeq;
+		data.extentionCnt = dataExtensionCnt;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
-		payload["arguments"].execute.extentionCnt = dataExtensionCnt;
 		payload["metaData"].isConfigured = true;
 		console.log(payload)
 		console.log(payload["arguments"].execute)
