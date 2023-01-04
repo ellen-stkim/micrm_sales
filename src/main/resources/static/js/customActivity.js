@@ -25,7 +25,7 @@ define(["postmonger"], function (Postmonger) {
 		// refresh
 		connection.trigger('ready');
 
-	/*	dataExtensionId = "26adecd7-7c2e-ed11-ba3c-5cba2c19b648";
+	/*	dataExtensionId = "cce071c7-4680-ed11-ba43-5cba2c19aa40";
 		mappingLst();*/
 
 		/** 에러페이지 리턴이 필요하면
@@ -161,6 +161,7 @@ define(["postmonger"], function (Postmonger) {
 		data.seq = mstSeq;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
+		payload["arguments"].execute.extantionCnt = dataExtensionCnt;
 		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
 	}
@@ -212,6 +213,7 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
+
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
     }
 
@@ -237,36 +239,41 @@ define(["postmonger"], function (Postmonger) {
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
     }
 
-});
 
-let dataExtensionId ="cce071c7-4680-ed11-ba43-5cba2c19aa40";
+
+	let dataExtensionId;
+	let dataExtensionCnt;
 
 // 개인화 변수 조회
-function mappingLst() {
-	$('#commonLoading').addClass('active');
+	function mappingLst() {
+		$('#commonLoading').addClass('active');
 
-	const res = function(e) {
-		if(e.check){
-			const set = new Set();
-			$('#kakaoValue').html('');
-			$('#smsContsVal').html('');
-			$('[name="edmDB"] ul.mappingLst').html('');
-			$(e.list).each((idx, colName)=>{
-				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
-				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
-				set.add(colName);
-			});
-			const uniqueArr = [...set];
-			bindList = uniqueArr;
-			$('#commonLoading').removeClass('active');
-		}else{
-			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
-			if(_connection){
-				_connection.trigger('destroy');
+		const res = function(e) {
+			if(e.check){
+				dataExtensionCnt = e.totalCnt;
+
+				const set = new Set();
+				$('#kakaoValue').html('');
+				$('#smsContsVal').html('');
+				$('[name="edmDB"] ul.mappingLst').html('');
+				$(e.list).each((idx, colName)=>{
+					$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+					$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
+					$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+					set.add(colName);
+				});
+				const uniqueArr = [...set];
+				bindList = uniqueArr;
+				$('#commonLoading').removeClass('active');
+			}else{
+				alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
+				if(_connection){
+					_connection.trigger('destroy');
+				}
 			}
 		}
+		let param = {}
+		com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
 	}
-	let param = {}
-	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
-}
+
+});
