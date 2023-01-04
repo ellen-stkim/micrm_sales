@@ -145,7 +145,6 @@ define(["postmonger"], function (Postmonger) {
                 alert('사용자 조회에 실패하였습니다.');
 				connection.trigger("destroy");
             }
-			mappingLst()
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null,true)
@@ -165,7 +164,6 @@ define(["postmonger"], function (Postmonger) {
 		payload["metaData"].isConfigured = true;
         connection.trigger("updateActivity", payload);
 
-		console.log(dataList)
 	}
 
     // 프리뷰에서 저장 버튼 누르기
