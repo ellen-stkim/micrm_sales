@@ -247,6 +247,7 @@ function mappingLst() {
 
 	const res = function(e) {
 		if(e.check){
+			const set = new Set();
 			$('#kakaoValue').html('');
 			$('#smsContsVal').html('');
 			$('[name="edmDB"] ul.mappingLst').html('');
@@ -254,7 +255,10 @@ function mappingLst() {
 				$('#kakaoValue').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('#smsContsVal').append(`<input type="button" data="{{${colName}}}" value="${colName}" class="drag-button" draggable="true">`);
 				$('[name="edmDB"] ul.mappingLst').append(`<li data="${colName}">${colName}</li>`);
+				set.add(colName);
 			});
+			const uniqueArr = [...set];
+			bindList = uniqueArr;
 			$('#commonLoading').removeClass('active');
 		}else{
 			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
