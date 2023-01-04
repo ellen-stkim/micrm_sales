@@ -2361,8 +2361,9 @@ class SalesforceServiceImpl : SalesforceService {
                 for(campaignDto in campLst){
                     // 타겟수 업데이트
                     if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
-                        logger.error("totalCnt : {}",exMap["extentionCnt"])
+                        logger.error("totalCnt : {}",inArguments.get("extentionCnt"))
                     }
+                    inArguments.remove("extentionCnt")
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
