@@ -2492,11 +2492,6 @@ class SalesforceServiceImpl : SalesforceService {
         exp.addValue(extentionId)
 
         filter.expression = exp
-        val props = arrayOf(
-            "TotalCount",
-        )
-
-        filter.addProperty(props.toString())
 
         /*val client = ETClient()
         val filter: ETFilter = ETSimpleFilter(
