@@ -190,8 +190,8 @@
                                     <div class="block">
                                         <div class="row flex_row">
                                             <div class="row flex_row input-img on">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
+                                                <div class="th bottom-border">개인화 변수</div>
+                                                <div class="td bottom-border">
                                                     <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
                                                     <div id="kakaoValue"
                                                          style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
@@ -375,8 +375,8 @@
                                     </div>
                                     <div class="block">
                                         <div class="row flex_row input-img on">
-                                            <div class="th">개인화 변수</div>
-                                            <div class="td">
+                                            <div class="th bottom-border">개인화 변수</div>
+                                            <div class="td bottom-border">
                                                 <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
                                                 <div id="smsContsVal"
                                                      style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
@@ -808,9 +808,13 @@
                 if (btnName != '') {
                     if (btnLink != '') {
                         if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
+                            // <a href="http://localhost:8083/cont/mdmCreate.mi" target="_blank" class="sms_btn">모바일 컨텐츠 생성</a>
+                            $(this).parents('#kakao').find('.viewer_area .round_box').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
                             //name.attr('disabled', true);
                             //link.attr('disabled', true);
+                            $('#kko_btn_url').val(btnLink);
+                            $('#kko_btn_nm').val(btnName);
+
                             name.attr('readonly', true);
                             link.attr('readonly', true);
                             $(this).val('삭제');
@@ -830,6 +834,9 @@
                 $(this).val('생성');
                 $(this).parents('#kakao').find('.viewer_area .inner a.kakao_link').remove();
                 $(this).parents('#kakao_ft').find('.kakao_link').remove();
+
+                $('#kko_btn_url').val('');
+                $('#kko_btn_nm').val('');
                 link.val('');
                 name.val('');
                 //name.attr('disabled', false);
@@ -894,8 +901,16 @@
 
             if (link != '') {
                 if (link.substring(0, 4) == 'http') {
-                    $(this).parents('.sms_form').find('.textarea').val(text + '{{' + link + '}}');
+                    let textarea = $(this).parents('.sms_form').find('.textarea')
+                    $(textarea).val(text + '{{' + link + '}}');
                     $(this).prev('input').val('');
+
+                    const targetNm = $(textarea).attr('name');
+                    if(targetNm == 'kakao_body'){
+                        onchangePrevKkoTxt(textarea);
+                    } else if(targetNm == 'sms_body'){
+                        onchangePrevSmsTxt(textarea);
+                    }
                 } else {
                     popup.popAlert('정확한 링크 URL을 입력해주세요.');
                 }
@@ -969,6 +984,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다. ");
                 $('.kakao_txt').val(txt + data);
+                onchangePrevKkoTxt($('.kakao_txt'));
             }
         });
 
@@ -979,6 +995,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms .title').val(txt + '{{' + data + '}}');
+                onchangePrevSmsTitle($('#sms .title'));
             }
         });
 
@@ -988,6 +1005,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms_txt_area').val(txt + data);
+                onchangePrevSmsTxt($('#sms_txt_area'));
             }
         });
 
