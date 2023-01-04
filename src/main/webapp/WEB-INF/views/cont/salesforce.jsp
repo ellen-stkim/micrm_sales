@@ -1454,7 +1454,7 @@
         let param = {seq: seq}
         com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
 
-        mappingLst();
+        // mappingLst();
     }
 
     // 카카오, SMS 유효성 검사
