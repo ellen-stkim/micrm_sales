@@ -202,40 +202,45 @@
                                         </div>
                                     </div>
                                     <div class="block">
-                                        <div class="row flex_row">
-                                            <div class="row flex_row input-img on">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
-                                                    <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                    <div id="kakaoValue"
-                                                         style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
-                                                        <c:forEach var="item" items="${column}"
-                                                                   varStatus="status">
-                                                            <input type="button" data="{{${item.list_val}}}"
-                                                                   value="${item.list_nm}" class="drag-button"
-                                                                   draggable="true">
-                                                        </c:forEach>
-                                                    </div>
+                                        <div class="row flex_row input-img on">
+                                            <div class="th bottom-border">개인화 변수</div>
+                                            <div class="td bottom-border">
+                                                <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                <div id="kakaoValue"
+                                                     style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                                    <c:forEach var="item" items="${column}"
+                                                               varStatus="status">
+                                                        <input type="button" data="{{${item.list_val}}}"
+                                                               value="${item.list_nm}" class="drag-button"
+                                                               draggable="true">
+                                                    </c:forEach>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row" style="height:150px;">
+                                            <div class="th">내용</div>
+                                            <div class="td">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
+                                                                        onkeyup="onchangePrevKkoTxt(this)"></textarea></div>
                                         </div>
                                     </div>
                                     <div class="block">
                                         <div class="row">
                                             <div class="th bottom-border">버튼 링크 제목</div>
                                             <div class="td bottom-border">
-                                                <input type="text" name="kko_btn_nm"
+                                                <input type="text"
                                                        class="txt_input width kakao_btn_name"
                                                        placeholder="버튼 링크 제목을 입력해주세요."
                                                        onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                <input type="hidden" name="kko_btn_nm" id="kko_btn_nm"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="th bottom-border">버튼 링크 주소</div>
                                             <div class="td bottom-border">
-                                                <input type="text" name="kko_btn_url"
+                                                <input type="text"
                                                        class="txt_input en_font kakao_btn_link"
                                                        placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <input type="hidden" name="kko_btn_url" id="kko_btn_url" />
                                                 <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
                                             </div>
                                         </div>
@@ -276,10 +281,15 @@
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_ft_viewer">
-                                <div class="top">친구톡 본문 입력창</div>
+                                <div class="top">친구톡 미리보기</div>
                                 <div class="inner">
-                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
-                                                  onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                    <div class="row_body">
+                                        <div class="round_box">
+                                            <div class="kakao_ft" id="prev_ft_img">
+                                            </div>
+                                            <p class="kakao_txt" id="prev_ft_txt"></p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="byte">
                                     <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
@@ -314,8 +324,8 @@
                                         <div class="column_5">
                                                 <%--<input type="text" class="title type1 smsTitle" name="cont_sub"
                                                        onkeyup="smsCreate.titleCount(this);" placeholder="문자 제목을 입력하세요." />--%>
-                                            <input type="text" class="title type1 smsTitle" name="cont_sub_list"
-                                                   onkeyup="smsCreate.titleCount(this,'sms');"
+                                            <input type="text" class="title type1 smsTitle" name="cont_sub_list" id="sms_title"
+                                                   onkeyup="onchangePrevSmsTitle(this)"
                                                    placeholder="문자 제목을 입력하세요."/>
                                             <span class="title_byte en_font">(40byte)</span>
                                         </div>
@@ -390,10 +400,10 @@
                                     <div class="block">
                                         <div class="row flex_row">
                                             <div class="row flex_row input-img on">
-                                                <div class="th">개인화 변수</div>
-                                                <div class="td">
+                                                <div class="th bottom-border">개인화 변수</div>
+                                                <div class="td bottom-border">
                                                     <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                    <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                                    <div style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
                                                         <c:forEach var="item" items="${column}"
                                                                    varStatus="status">
                                                             <input type="button" data="{{${item.list_val}}}" value="${item.list_nm}" class="drag-button" draggable="true">
@@ -401,6 +411,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row"  style="height:150px;">
+                                            <div class="th">내용</div>
+                                            <div class="td"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
+                                                                       onkeyup="onchangePrevSmsTxt(this)"></textarea></div>
                                         </div>
                                     </div>
                                     <div class="block">
@@ -417,14 +432,14 @@
                                 </div>
                             </div>
                             <div class="viewer_area">
-                                <div class="top">문자 본문 입력창</div>
-                                <div class="inner">
-                                        <%--                                        <div class="sms_title" id="sms_title"></div>--%>
+                                <div class="top">문자 미리보기</div>
+                                <div class="inner" style="width: 270px">
+                                    <div class="sms_title" id="prev_sms_title">제목</div>
                                         <%--                                        <div class="sms_img"></div>--%>
-                                    <textarea name="sms_body" id="" class="sms_txt textarea" cols="30" rows="10"
-                                              onkeyup="smsCreate.byteCount(this, 'sms');"></textarea>
+                                    <div class="sms_img_box" id="sms_img_box"></div>
+                                    <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">내용 영역</p></div>
                                 </div>
-                                <div class="byte">
+                                <div class="byte"  style="width: 270px">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
                                 </div>
                             </div>
@@ -815,9 +830,13 @@
                 if (btnName != '') {
                     if (btnLink != '') {
                         if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
+                            // <a href="http://localhost:8083/cont/mdmCreate.mi" target="_blank" class="sms_btn">모바일 컨텐츠 생성</a>
+                            $(this).parents('#kakao').find('.viewer_area .round_box').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
                             //name.attr('disabled', true);
                             //link.attr('disabled', true);
+                            $('#kko_btn_url').val(btnLink);
+                            $('#kko_btn_nm').val(btnName);
+
                             name.attr('readonly', true);
                             link.attr('readonly', true);
                             $(this).val('삭제');
@@ -837,6 +856,9 @@
                 $(this).val('생성');
                 $(this).parents('#kakao').find('.viewer_area .inner a.kakao_link').remove();
                 $(this).parents('#kakao_ft').find('.kakao_link').remove();
+
+                $('#kko_btn_url').val('');
+                $('#kko_btn_nm').val('');
                 link.val('');
                 name.val('');
                 //name.attr('disabled', false);
@@ -901,8 +923,16 @@
 
             if (link != '') {
                 if (link.substring(0, 4) == 'http') {
-                    $(this).parents('.sms_form').find('.textarea').val(text + '{{' + link + '}}');
+                    let textarea = $(this).parents('.sms_form').find('.textarea')
+                    $(textarea).val(text + '{{' + link + '}}');
                     $(this).prev('input').val('');
+
+                    const targetNm = $(textarea).attr('name');
+                    if(targetNm == 'kakao_body'){
+                        onchangePrevKkoTxt(textarea);
+                    } else if(targetNm == 'sms_body'){
+                        onchangePrevSmsTxt(textarea);
+                    }
                 } else {
                     popup.popAlert('정확한 링크 URL을 입력해주세요.');
                 }
@@ -991,6 +1021,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms .title').val(txt + data);
+                onchangePrevSmsTitle($('#sms .title'));
             }
         });
 
@@ -2431,6 +2462,7 @@
                     $('#kakaoImage').parent('.td').removeClass('outline');
                     // $('#kakao').find('.sms_img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'" />' + '</a>');
                     $('#js-kakao-img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
+                    $('#prev_ft_img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />');
                 } else {
                     $("input[name='kko_view_img_url']").val(imageUrl);
                     $("#kakaoImage").val(ImgNm);
@@ -2445,6 +2477,8 @@
                 $('#smsImage').parent('.td').removeClass('outline');
                 //$('#sms').find('.sms_img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>');
                 $('#js-sms-img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'"/>');
+
+                $('#sms_img_box').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'"/>');
                 $('input[name="mms_imgurl"]').val(imageType);
             } else if (type == 'horizontalImage') {
                 $("#horizontalImage").val(ImgNm);
@@ -2974,14 +3008,36 @@
 
     $(document).on('drop', function(ev){
         dropTarget = $(ev.target);
+
     });
 
     $(document).on('dragend', function(ev){
         let value = dropTarget.val();
         dropTarget.val("");
         dropTarget.val(value);
+
+        const targetNm = $(dropTarget).attr('name');
+        if(targetNm == 'kakao_body'){
+            onchangePrevKkoTxt(dropTarget);
+        } else if(targetNm == 'sms_body'){
+            onchangePrevSmsTxt(dropTarget);
+        }
     });
 
+    function onchangePrevSmsTitle(e) {
+        smsCreate.titleCount(e, 'sms');
+        $('#prev_sms_title').html($(e).val());
+    }
+    function onchangePrevSmsTxt(e){
+        smsCreate.byteCount(e, 'kakao');
+        let txt = $(e).val().replaceAll("\n", "<br/>");
+        $('#smsTextArea').html(txt);
+    }
+
+    function onchangePrevKkoTxt(e){
+        smsCreate.byteCount(e, 'kakao');
+        $('#prev_ft_txt').html($(e).val().replaceAll("\n", "<br/>"));
+    }
 </script>
 
 

@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SysSettingDao
 import org.apache.ibatis.session.SqlSession
@@ -69,12 +70,12 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.update("updateDefaultSender",dto)
     }
 
-    override fun getSmsSettingList(dto: Tblmi_set_lstDto): List<Tblmi_set_lstDto> {
-        return sqlSession.selectList("getMailSettingList", dto);
+    override fun getSettingList(dto: Tblmi_set_lstDto): List<Tblmi_set_lstDto> {
+        return sqlSession.selectList("getSettingList", dto);
     }
 
-    override fun getSmsSettingListCnt(dto: Tblmi_set_lstDto): Int {
-        return sqlSession.selectOne("getMailSettingListCnt", dto)
+    override fun getSettingListCnt(dto: Tblmi_set_lstDto): Int {
+        return sqlSession.selectOne("getSettingListCnt", dto)
     }
 
     override fun getDetailLst(dto: Tblmi_set_lstDto): Tblmi_set_lstDto {
@@ -100,5 +101,6 @@ class SysSettingDaoImpl: SysSettingDao{
     override fun isExistModifyMapping(dto: Tblmi_set_lstDto): Int {
         return sqlSession.selectOne("isExistModifyMapping",dto)
     }
+
 
 }

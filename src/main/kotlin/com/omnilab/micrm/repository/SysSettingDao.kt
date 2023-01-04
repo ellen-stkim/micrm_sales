@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository
 
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 
 interface SysSettingDao {
@@ -30,9 +31,9 @@ interface SysSettingDao {
 
     fun updateDefultSender(dto : Tblmi_set_lstDto) : Int
 
-    fun getSmsSettingList(dto : Tblmi_set_lstDto) : List<Tblmi_set_lstDto>
+    fun getSettingList(dto : Tblmi_set_lstDto) : List<Tblmi_set_lstDto>
 
-    fun getSmsSettingListCnt(dto: Tblmi_set_lstDto) : Int
+    fun getSettingListCnt(dto: Tblmi_set_lstDto) : Int
 
     fun getDetailLst(dto : Tblmi_set_lstDto) : Tblmi_set_lstDto
 
