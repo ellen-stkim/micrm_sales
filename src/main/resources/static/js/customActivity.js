@@ -145,7 +145,7 @@ define(["postmonger"], function (Postmonger) {
                 alert('사용자 조회에 실패하였습니다.');
 				connection.trigger("destroy");
             }
-			mappingLst()
+			// mappingLst();
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null,true)
@@ -164,6 +164,7 @@ define(["postmonger"], function (Postmonger) {
 		payload["arguments"].execute.extentionCnt = dataExtensionCnt;
 		payload["metaData"].isConfigured = true;
 		console.log(payload)
+		console.log(payload["arguments"].execute)
 		setTimeout(() => {console.log("!!")}, 20000);
 
         connection.trigger("updateActivity", payload);
