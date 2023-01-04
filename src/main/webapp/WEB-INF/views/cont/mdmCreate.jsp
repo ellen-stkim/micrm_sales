@@ -403,7 +403,7 @@
                                                 <div class="th bottom-border">개인화 변수</div>
                                                 <div class="td bottom-border">
                                                     <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                    <div style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
+                                                    <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
                                                         <c:forEach var="item" items="${column}"
                                                                    varStatus="status">
                                                             <input type="button" data="{{${item.list_val}}}" value="${item.list_nm}" class="drag-button" draggable="true">
@@ -1005,12 +1005,13 @@
         });
 
         // 카카오 개인 변수 option click event
-        $('#kakaoValue .option li').on('click', function () {
+        $('#kakaoValue input').on('click', function () {
             let data = $(this).attr('data');
             let txt = $('.kakao_txt').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다. ");
                 $('.kakao_txt').val(txt + data);
+                onchangePrevKkoTxt($('.kakao_txt'));
             }
         });
 
@@ -1026,12 +1027,13 @@
         });
 
         // SMS 개인화 변수 option click event
-        $('#smsContsVal .option li').on('click', function () {
+        $('#smsContsVal input').on('click', function () {
             let data = $(this).attr('data');
             let txt = $('#sms_txt_area').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms_txt_area').val(txt + data);
+                onchangePrevSmsTxt($('#sms_txt_area'));
             }
         });
 
