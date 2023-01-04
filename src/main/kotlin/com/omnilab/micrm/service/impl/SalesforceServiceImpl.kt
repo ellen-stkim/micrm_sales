@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.regex.Pattern
+import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.streams.toList
 
@@ -2358,6 +2359,11 @@ class SalesforceServiceImpl : SalesforceService {
                 return false
             }else{
                 for(campaignDto in campLst){
+                    // 타겟수 업데이트
+                    if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
+                        logger.error("totalCnt : {}",map["extantionCnt"])
+                    }
+
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
                     sendHstDto.pro_id = campaignDto.pro_id
@@ -2468,7 +2474,7 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
 
-    override fun getDataExtention(usr_cd: String, extentionId: String) : List<String> {
+    override fun getDataExtention(usr_cd: String, extentionId: String) : HashMap<String,Any> {
         val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
 
         val configuration = ETConfiguration()
@@ -2491,14 +2497,8 @@ class SalesforceServiceImpl : SalesforceService {
         exp.operator = ETExpression.Operator.EQUALS
         exp.addValue(extentionId)
 
-        filter.expression = exp
 
-        /*val client = ETClient()
-        val filter: ETFilter = ETSimpleFilter(
-            "CustomerKey",
-            ETFilterOperators.EQUALS,
-            "subscribers"
-        )*/
+        filter.expression = exp
 
         val response = client.retrieve(ETDataExtension::class.java, filter)
 
@@ -2506,13 +2506,11 @@ class SalesforceServiceImpl : SalesforceService {
         val reList =  dataExtension.retrieveColumns()
                                         .stream().map {column->column.name}.toList()
 
-        /*logger.error("-------------------------------------------------------")
-        logger.error("{}",response.totalCount)
-        response.setMoreResults(true)
-        logger.error("{}",response.totalCount)
-        logger.error("-------------------------------------------------------")*/
+        val reMap = HashMap<String, Any>()
+        reMap.put("list",reList)
+        reMap.put("totalCnt",dataExtension.select().totalCount)
 
-        return reList
+        return reMap
     }
 
 
