@@ -1028,10 +1028,10 @@
         // SMS 개인화 변수 option click event
         $('#smsContsVal .option li').on('click', function () {
             let data = $(this).attr('data');
-            let txt = $('.sms_txt').val();
+            let txt = $('#sms_txt_area').val();
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                $('.sms_txt').val(txt + data);
+                $('#sms_txt_area').val(txt + data);
             }
         });
 
@@ -2867,7 +2867,7 @@
     }
 
     function saveContentImg() {
-        var imgNm = $("#img_nmCk").val();
+        let imgNm = $("#img_nmCk").val();
         if (imgNm == "" || imgNm == null) {
             popup.popAlert("이미지명을 입력해주세요.");
             return false;
@@ -2877,7 +2877,7 @@
             return false;
         }
 
-        var res = function (response) {
+        let res = function (response) {
             //TO-DO
             //리스트 새로 불러오기
             if (response.imgCheck == 0) {
