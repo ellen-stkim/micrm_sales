@@ -25,9 +25,6 @@ define(["postmonger"], function (Postmonger) {
 		// refresh
 		connection.trigger('ready');
 
-	/*	dataExtensionId = "cce071c7-4680-ed11-ba43-5cba2c19aa40";
-		mappingLst();*/
-
 		/** 에러페이지 리턴이 필요하면
 		 setTimeout(function() {
 			if(flag) {
@@ -162,9 +159,6 @@ define(["postmonger"], function (Postmonger) {
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
-		console.log(payload)
-		console.log(payload["arguments"].execute)
-		setTimeout(() => {console.log("!!")}, 20000);
 
         connection.trigger("updateActivity", payload);
 
