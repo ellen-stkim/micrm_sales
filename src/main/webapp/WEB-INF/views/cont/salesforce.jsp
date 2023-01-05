@@ -398,7 +398,6 @@
                                                 <input type="hidden" name="sms_trackinglink"/>
                                             </div>
                                         </div>
-
                                         <div class="row">
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">

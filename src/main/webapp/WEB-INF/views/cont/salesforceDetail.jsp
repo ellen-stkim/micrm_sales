@@ -220,12 +220,17 @@
                                         <div class="block">
                                             <div class="row flex_row">
                                                 <div class="row flex_row input-img on">
-                                                    <div class="th">개인화 변수</div>
-                                                    <div class="td">
+                                                    <div class="th bottom-border">개인화 변수</div>
+                                                    <div class="td bottom-border">
                                                         <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
                                                         <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row" style="height:150px;">
+                                                <div class="th">내용</div>
+                                                <div class="td">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
+                                                                            onkeyup="onchangePrevKkoTxt(this)"></textarea></div>
                                             </div>
                                         </div>
                                         <div class="block">
@@ -297,19 +302,22 @@
                                 </div>
                                 <c:if test="${cont_tp eq 'DMTP03'}">
                                     <div class="viewer_area" id="kakao_ft_viewer">
-                                        <div class="top">친구톡 본문 입력창</div>
+                                        <div class="top">친구톡 미리보기</div>
                                         <div class="inner">
-                                            <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10"
-                                                      onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
-                                            <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                <a href="${list[0].kko_btn_url}" class="kakao_link"
-                                                   target="_blank">${list[0].kko_btn_nm}</a>
-                                            </c:if>
+                                            <div class="row_body">
+                                                <div class="round_box">
+                                                    <div class="kakao_ft" id="prev_ft_img">
+                                                    </div>
+                                                    <p class="kakao_txt" id="prev_ft_txt">${list[0].cont_body}</p>
+                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                        <a href="${list[0].kko_btn_url}" class="kakao_link"
+                                                           target="_blank">${list[0].kko_btn_nm}</a>
+                                                    </c:if>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="byte">
-                                            <span class="en_font kakao_byte">0</span>
-                                            <span class="en_font">byte</span>
-                                            (버튼제외)
+                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
                                         </div>
                                     </div>
                                     <div class="viewer_area" id="kakao_at_viewer" hidden>
@@ -334,15 +342,19 @@
                                     </div>
                                 </c:if>
                                 <c:if test="${cont_tp eq 'DMTP05'}">
-                                    <div class="viewer_area" id="kakao_ft_viewer" hidden>
-                                        <div class="top">친구톡 본문 입력창</div>
+                                    <div class="viewer_area" id="kakao_ft_viewer">
+                                        <div class="top">친구톡 미리보기</div>
                                         <div class="inner">
-                                            <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');"></textarea>
+                                            <div class="row_body">
+                                                <div class="round_box">
+                                                    <div class="kakao_ft" id="prev_ft_img">
+                                                    </div>
+                                                    <p class="kakao_txt" id="prev_ft_txt"></p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="byte">
-                                            <span class="en_font kakao_byte">0</span>
-                                            <span class="en_font">byte</span>
-                                            (버튼제외)
+                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
                                         </div>
                                     </div>
                                     <div class="viewer_area" id="kakao_at_viewer">
@@ -526,19 +538,42 @@
                                             </div>
                                             <div class="block">
                                                 <div class="row flex_row input-img on">
-                                                    <div class="th">개인화 변수</div>
-                                                    <div class="td">
+                                                    <div class="th bottom-border">개인화 변수</div>
+                                                    <div class="td bottom-border">
                                                         <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
                                                         <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                     </div>
                                                 </div>
+                                                <div class="row"  style="height:150px;">
+                                                    <div class="th">내용</div>
+                                                    <div class="td"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
+                                                                               onkeyup="onchangePrevSmsTxt(this)"></textarea></div>
+                                                </div>
                                             </div>
                                             <div class="block">
                                                 <div class="row">
-                                                    <div class="th">추적 링크 생성</div>
-                                                    <div class="td">
+                                                    <div class="th bottom-border">추적 링크 생성</div>
+                                                    <div class="td bottom-border">
                                                         <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                         <span class="btn_sm_line trackingLinkBtn">생성</span>
+                                                        <input type="hidden" name="sms_trackinglink"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="th">수신거부 문구</div>
+                                                    <div class="td">
+                                                        <input type="text" class="txt_input" id="rejectText" style="width: calc(100% - 110px);"
+                                                                <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                                    value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                                </c:if>
+                                                                <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                                    placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                                </c:if>
+                                                        />
+                                                        <div style="display: flex; width: 110px">
+                                                            <span class="btn_sm_line btn_inline" onclick="addRejectText()">사용</span>
+                                                            <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
+                                                        </div>
                                                         <input type="hidden" name="sms_trackinglink"/>
                                                     </div>
                                                 </div>
@@ -546,13 +581,15 @@
                                         </div>
                                     </div>
                                     <div class="viewer_area">
-                                        <div class="top">문자 본문 입력창</div>
-                                        <div class="inner">
-                                            <textarea name="sms_body" class="sms_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'sms');">${list[1].cont_body}</textarea>
-                                            <div class="byte">
-                                                <span class="en_font sms_byte">0</span>
-                                                <span class="en_font">byte</span>
-                                            </div>
+                                        <div class="top">문자 미리보기</div>
+                                        <div class="inner" style="width: 270px">
+                                            <div class="sms_title" id="prev_sms_title">제목</div>
+                                                <%--                                        <div class="sms_img"></div>--%>
+                                            <div class="sms_img_box" id="sms_img_box"></div>
+                                            <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">내용 영역</p></div>
+                                        </div>
+                                        <div class="byte"  style="width: 270px">
+                                            <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
                                         </div>
                                     </div>
                                 </div>
