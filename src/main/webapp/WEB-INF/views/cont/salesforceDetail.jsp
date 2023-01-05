@@ -301,7 +301,7 @@
                                     </div>
                                 </div>
                                 <c:if test="${cont_tp eq 'DMTP03'}">
-                                    <div class="viewer_area" id="kakao_ft_viewer">
+                                    <div class="viewer_area" id="kakao_ft_viewer" >
                                         <div class="top">친구톡 미리보기</div>
                                         <div class="inner">
                                             <div class="row_body">
@@ -342,7 +342,7 @@
                                     </div>
                                 </c:if>
                                 <c:if test="${cont_tp eq 'DMTP05'}">
-                                    <div class="viewer_area" id="kakao_ft_viewer">
+                                    <div class="viewer_area" id="kakao_ft_viewer" hidden>
                                         <div class="top">친구톡 미리보기</div>
                                         <div class="inner">
                                             <div class="row_body">
