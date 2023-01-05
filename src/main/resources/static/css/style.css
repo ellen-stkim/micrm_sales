@@ -540,7 +540,7 @@
 .viewer_area .byte {width:397px; text-align:right; color:#cccccc; font-size:11px; margin:15px auto 40px;}
 .viewer_area .inner .round_box{width: 270px; border-radius: 11px; border: 1px solid #dddddd; overflow: hidden; margin: 0 auto;}
 .viewer_area .inner .kakao_ft{width: 100%; max-height: 270px; overflow: hidden; background: url(../image/bg_none.png) no-repeat center; text-align: center;}
-.viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 110px; overflow: hidden;    word-break: break-all;}
+.viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 500px; overflow: hidden;    word-break: break-all;}
 .viewer_area .inner .kakao_link{ width: 90%;}
 
 
@@ -566,9 +566,9 @@
 }
 
 .viewer_area .sms_img_box {width:100%; border-radius:10px; background:#f2f2f2; overflow:hidden;}
-.viewer_area .text_box {width:100%; border-radius:10px; background:#f2f2f2; padding:15px; overflow:hidden; max-height: 245px;}
+.viewer_area .text_box {width:100%; border-radius:10px; background:#f2f2f2; padding:15px; overflow:hidden; max-height: 300px;}
 .viewer_area .text_box .title {font-weight: bold; font-size: 13px; margin-bottom: 10px;}
-.viewer_area .scroll_txt_area {height:120px; overflow-y:auto; max-height: 215px; word-wrap: break-word;
+.viewer_area .scroll_txt_area {min-height:120px; overflow-y:auto; max-height: 260px; word-wrap: break-word;
     overflow-y: auto;}
 
 .row.body .column_5 .title.type1 {float:left; width:calc(100% - 60px); font-weight:700; height:100%;

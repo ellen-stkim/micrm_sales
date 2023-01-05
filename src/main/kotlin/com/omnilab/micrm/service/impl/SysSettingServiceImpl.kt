@@ -533,4 +533,18 @@ class SysSettingServiceImpl : SysSettingService {
 
         return map;
     }
+
+    override fun insertRejectText(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        lstDto.list_tp_id = "CH04"
+        lstDto.list_dt_id = "REJT01"
+        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+        lstDto.reg_id = userInfo.usr_id
+
+        val result = sysSettingDao.insertSetLst(lstDto)
+
+        return statusMap
+    }
 }

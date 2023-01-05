@@ -94,11 +94,7 @@
                 <tr>
                     <th>수신거부 문구</th>
                     <td>
-                        <span class="en_font" id="sendDefaultAddress">
-                            <c:if test = "${list[0].def_yn == 'Y'}">
-                                ${cutil:numberToPhone(list[0].list_val)}
-                            </c:if>
-                        </span>
+                        <textarea id ="sendDefaultAddress" cols="30" rows="10" style="width: 100%;height: 80px; padding: 0 15px; resize: none;"><c:if test = "${list[0].def_yn == 'Y'}">${cutil:numberToPhone(list[0].list_val)}</c:if></textarea>
                     </td>
                 </tr>
                 </tbody>
@@ -141,14 +137,15 @@
                     </tr>
                     <tr>
                         <th>수신거부 문구</th>
-                        <td><input type="text" name="list_val" id="list_val" placeholder="수신거부 문구를 입력해주세요." class="input_type1" /></td>
+                        <td><textarea name="list_val" id ="list_val" cols="30" rows="10" placeholder="수신거부 문구를 입력해주세요." style="width: 100%;height: 80px; padding: 0 15px; resize: none;"></textarea>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
             <div class="pop_error_txt blue_point_color" id="errorArea1"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkSmsAddress();" value="저장" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkRejectText();" value="저장" />
             </div>
         </div>
     </div>
@@ -175,14 +172,15 @@
                     </tr>
                     <tr>
                         <th>수신거부 문구</th>
-                        <td><input type="text" name="list_val_mod" id ="list_val_mod" placeholder="수신거부 문구를 입력해주세요." class="input_type1" /></td>
+                        <td>
+                            <textarea name="list_val_mod" id ="list_val_mod" cols="30" rows="10" placeholder="수신거부 문구를 입력해주세요." style="width: 100%;height: 80px; padding: 0 15px; resize: none;"></textarea>
                     </tr>
                     </tbody>
                 </table>
             </form>
             <div class="pop_error_txt blue_point_color" id="errorArea2"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkSmsAddressModify($('#seq_mod').val());" value="저장" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkRejectTextModify($('#seq_mod').val());" value="저장" />
             </div>
         </div>
     </div>
@@ -245,7 +243,7 @@
     }
 
 
-    // SMS 저장하기
+    // 수신거부 문구 저장하기
     function saveSms() {
 
         const res = function(response){
@@ -261,29 +259,25 @@
         data.push({name : "list_nm" , value : $("#list_nm").val().trim()})
         data.push({name : "list_val" , value : $("#list_val").val().trim()})
 
-        com_ajax.ajax('post', '${baseURL}/sys/setting/insertSms.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sys/setting/insertRejectText.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
-    // 중복 메일 체크하기
-    function checkSmsAddress() {
+    // 중복 체크하기
+    function checkRejectText() {
 
-        let senderName = $("#list_nm").val().trim();
-        let senderNumber = $("#list_val").val().trim();
+        let textName = $("#list_nm").val().trim();
+        let rejectText = $("#list_val").val().trim();
 
-        if(senderName == '') {
+        if(textName == '') {
             $("#errorArea1").html("문구명을 입력해 주세요.")
             return false;
         }
-        if(senderNumber == '') {
+        if(rejectText == '') {
             $("#errorArea1").html('수신거부 문구를 입력해 주세요.')
             return false;
         }
-        if(!chkNumber(senderNumber)){
+        if(!chkNumber(rejectText)){
             $("#errorArea1").html("숫자만 입력해 주세요");
-            return false;
-        }
-        if(senderNumber.length < 10 || senderNumber.length > 12 ){
-            $("#errorArea1").html("핸드폰 번호는 10 ~ 11자리 이내로 입력해 주세요.");
             return false;
         }
 
@@ -297,30 +291,26 @@
         }
 
         let data = []
-        data.push({name : "list_val" , value : senderNumber})
+        data.push({name : "list_val" , value : rejectText})
         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
-    // 중복 메일 수정 체크하기
-    function checkSmsAddressModify(seq) {
+    // 중복 체크하기 (수정)
+    function checkRejectTextModify(seq) {
 
-        let senderName = $("#list_nm_mod").val().trim();
-        let senderNumber = $("#list_val_mod").val().trim();
+        let textName = $("#list_nm_mod").val().trim();
+        let rejectText = $("#list_val_mod").val().trim();
 
-        if(senderName == '') {
+        if(textName == '') {
             $("#errorArea2").html("문구명을 입력해 주세요.")
             return false;
         }
-        if(senderNumber == '') {
+        if(rejectText == '') {
             $("#errorArea2").html('수신거부 문구를 입력해 주세요.')
             return false;
         }
-        if(!chkNumber(senderNumber)){
+        if(!chkNumber(rejectText)){
             $("#errorArea2").html("숫자만 입력해 주세요");
-            return false;
-        }
-        if(senderNumber.length < 10 || senderNumber.length > 12 ){
-            $("#errorArea2").html("핸드폰 번호는 10 ~ 11자리 이내로 입력해 주세요.");
             return false;
         }
 
@@ -334,7 +324,7 @@
         }
 
         let data = []
-        data.push({name : "list_val" , value : senderNumber} )
+        data.push({name : "list_val" , value : rejectText} )
         data.push({name : "seq" , value : seq} )
         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistSmsModifyAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -485,10 +475,10 @@
 
 
     // 기본 메일 값 변경 하기
-    function modifyDefaultAddress(changeSendNo,changeSenderNumber,changeSender){
+    function modifyDefaultAddress(changeSendNo,changerejectText,changeSender){
 
         let nowPage = $("#nowPageNo").val();
-        //let changeFormatNumber = phoneFormatter(changeSenderNumber)
+        //let changeFormatNumber = phoneFormatter(changerejectText)
         let defaultMailNo = $("#sendDefaultNo").val();
 
         const res = function(response){
@@ -498,7 +488,7 @@
                 // 메일 값 설정해 주기
                 $("#sendDefaultNo").val(changeSendNo)
                 $("#sendDefaultNm").text(changeSender)
-                $("#sendDefaultAddress").text(changeSenderNumber)
+                $("#sendDefaultAddress").text(changerejectText)
                 getSmsSettingList(nowPage);
             }
         }
@@ -517,7 +507,7 @@
     function modifySms(seq){
 
         let senderNm = $("#list_nm_mod").val().trim();
-        let senderNumber = $("#list_val_mod").val().trim();
+        let rejectText = $("#list_val_mod").val().trim();
         const pageNo = $("#nowPageNo").val();
 
         const res = function(response) {
@@ -532,7 +522,7 @@
         let data = [];
         data.push({name: 'seq', value: seq});
         data.push({name: 'list_nm', value: senderNm});
-        data.push({name: 'list_val', value: senderNumber});
+        data.push({name: 'list_val', value: rejectText});
 
         com_ajax.ajax('post', '${baseURL}/sys/setting/updateLst.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
 
