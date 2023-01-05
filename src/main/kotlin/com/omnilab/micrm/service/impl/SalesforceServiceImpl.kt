@@ -2554,12 +2554,12 @@ class SalesforceServiceImpl : SalesforceService {
         val smsMiDto = Tblmi_set_lstDto()
         smsMiDto.list_tp_id = "CH02"
         smsMiDto.list_dt_id = "DMTP02"
-        tblmiDto.usr_grp_cd = usr_cd
+        smsMiDto.usr_grp_cd = usr_cd
 
         val rcsMiDto = Tblmi_set_lstDto()
         rcsMiDto.list_tp_id = "CH02"
         rcsMiDto.list_dt_id = "DMTP04"
-        tblmiDto.usr_grp_cd = usr_cd
+        rcsMiDto.usr_grp_cd = usr_cd
 
         paramMap["kakaoCnt"] = contentDao.selectSenderListCnt(tblmiDto)
         paramMap["smsCnt"] = contentDao.selectSenderListCnt(smsMiDto)
