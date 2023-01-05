@@ -72,4 +72,6 @@ interface SysSettingService {
 
     fun getRejtSettingList(lstStDto: SetLst_searchDto): Map<String,Any>
 
+    fun insertRejectText(lstDto: Tblmi_set_lstDto): Map<String, Any>
+
 }

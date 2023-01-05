@@ -2466,5 +2466,23 @@ class MobileContentServiceImpl : ContentService {
         return dataMap
     }
 
+    override fun selectRejectTextList(dto: SetLst_searchDto): Map<String, Any> {
+        val searchDto = dto as SetLst_searchDto
+        val paramMap: MutableMap<String, Any> = HashMap()
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
+
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
+
+        paramMap["page"] = paginationInfo
+        paramMap["pageNo"] = paginationInfo.currentPageNo
+        paramMap["list"] = contentDao.selectSenderList(searchDto)
+        paramMap["listCnt"] = contentDao.selectSenderListCnt(searchDto)
+
+        return paramMap
+    }
+
 }
 

@@ -420,11 +420,30 @@
                                     </div>
                                     <div class="block">
                                         <div class="row">
-                                            <div class="th">추적 링크 생성</div>
-                                            <div class="td">
+                                            <div class="th bottom-border">추적 링크 생성</div>
+                                            <div class="td bottom-border">
                                                 <input type="text" class="txt_input" id="smsTracking"
                                                        placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 <span class="btn_sm_line trackingLinkBtn">생성</span>
+                                                <input type="hidden" name="sms_trackinglink"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="th">수신거부 문구</div>
+                                            <div class="td">
+                                                <input type="text" class="txt_input" id="rejectText" style="width: calc(100% - 110px);"
+                                                        <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                    value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                        </c:if>
+                                                        <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                            placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                        </c:if>
+                                                       />
+                                                <div style="display: flex; width: 110px">
+                                                    <span class="btn_sm_line btn_inline" onclick="addRejectText()">사용</span>
+                                                    <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
+                                                </div>
                                                 <input type="hidden" name="sms_trackinglink"/>
                                             </div>
                                         </div>
@@ -1653,6 +1672,13 @@
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
         });
+
+        // 수신 거부 문구 사용
+        $(document).on('click','#useRejectTextBtn',(e)=>{
+            console.log($(e.target));
+
+
+        })
     });
 
     // 카카오, SMS 유효성 검사
@@ -2344,6 +2370,32 @@
         com_ajax.ajax('post', '${baseURL}/cont/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
+    // 수신거부 문구 리스트 불러오기
+    function mobileRejectTextPopup(nowPage) {
+
+        var res = function (response) {
+            $("#callPopUp").html(response);
+            $("#mSendType").val("아랑");
+        };
+
+        let param = $("#tblmisetForm").serializeArray();
+        param.push({name: 'list_tp_id', value: 'CH04'});
+        param.push({name: 'list_dt_id', value: 'REJT01'});
+        param.push({name: 'pageNo', value: nowPage})
+
+        com_ajax.ajax('post', '${baseURL}/cont/mobileRejectTextList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    function changeMobileRejectText(){
+        const checkedTr = $('.mobilePopup input[name="callNumber"]:checked').parents('tr');
+        const text = $(checkedTr).children('td:last-child').html()
+
+        $('#rejectText').val(text)
+
+        $('.mobilePopup').removeClass('active');
+    }
+
+
     // 발신자 번호 input 저장하기
     function mobileSendSave(type) {
 
@@ -2355,7 +2407,6 @@
 
         if (send_to_type === 'sms') {
             $("#sms_send_to").val(sender);
-            $("#sms_send_to_num").val(send_number);
         } else if (send_to_type === 'horizonrcs') {
             $("#send_horizon_rcs").val(sender);
             $("#horizon_send_num").val(send_number);
@@ -2375,6 +2426,7 @@
                 $('.delete_tmpl').trigger('click');
             }
         }
+        $("#sms_send_to_num").val(send_number);
 
         $('.mobilePopup').removeClass('active');
     }
@@ -3040,6 +3092,15 @@
         smsCreate.byteCount(e, 'kakao');
         $('#prev_ft_txt').html($(e).val().replaceAll("\n", "<br/>"));
     }
+
+    function addRejectText(){
+        const txtbox = $('#sms_txt_area');
+        if($('#rejectText').val() != ''){
+            $(txtbox).val($(txtbox).val()+"\n\n"+$('#rejectText').val());
+            onchangePrevSmsTxt(txtbox);
+        }
+    }
+
 </script>
 
 

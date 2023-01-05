@@ -376,6 +376,10 @@ class EmailContentServiceImpl : ContentService {
         return true
     }
 
+    override fun selectRejectTextList(smsDto: SetLst_searchDto): Map<String, Any> {
+        TODO("Not yet implemented")
+    }
+
     override fun previewJsonService(dto: Tblmi_cont_lstDto): Map<String, Any> {
         TODO("Not yet implemented")
     }
@@ -383,5 +387,6 @@ class EmailContentServiceImpl : ContentService {
     override fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String, Any> {
         TODO("Not yet implemented")
     }
+
 
 }

@@ -144,6 +144,12 @@ class ContentController  {
         smsDto.def_yn = "Y"
         val smsSenderMap = mobileContentService.selectSenderList(smsDto)
 
+        val rejDto = SetLst_searchDto()
+        rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        rejDto.list_tp_id = "CH04"
+        rejDto.list_dt_id = "REJT01"
+        rejDto.def_yn = "Y"
+        val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
 
         val rcsDto = SetLst_searchDto()
         rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -152,17 +158,18 @@ class ContentController  {
         rcsDto.def_yn = "Y"
         val rcsSenderMap = mobileContentService.selectSenderList(rcsDto)
 
-
         val cntMap = mobileContentService.isCheckSender()
 
-        // 개인화 변수 추가하기
         view.addObject("column",map)
         view.addObject("list",kkoSenderMap["list"])
         view.addObject("smsSender",smsSenderMap["list"])
+        view.addObject("rejectText",smsRejectTextMap["list"])
         view.addObject("rcsSender",rcsSenderMap["list"])
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
+
+        // 개인화 변수 추가하기
 
         return view
     }
@@ -259,32 +266,28 @@ class ContentController  {
     }
 
     /**
-     * @Method Name  : isCheckTemplateName
-     * @Since    : 2021. 03. 07.
+     * @Method Name  : mobileRejectTextList
+     * @Since    : 2023. 01. 05.
      * @author   : Grayson
-     * @param    : contMstdto: Tblmi_cont_mstDto
-     * @return   : HashMap<String,String>
+     * @param    : tblmiSetLstdto: Tblmi_set_lstDto
+     * @return   : ModelAndView
      * @excetion :
      * @see      :
      * @version  : 0.01
-     * @Method Decription : 모바일 컨텐츠 이름 중복 체크하기
-     * @title : 모바일 컨텐츠 이름 중복 체크 하기
+     * @Method Decription : 모바일 수신거부 문자 리스트 가져오기
+     * @title : 모바일 수신거부 문자 리스트 가져오기
      */
-    @ResponseBody
-    @PostMapping("/isCheckTmplateNm.ajax")
-    fun isCheckTemplateName(@ModelAttribute contMstdto: Tblmi_cont_mstDto) : HashMap<String,String>{
+    @PostMapping("/mobileRejectTextList.ajax")
+    fun mobileRejectTextList(@ModelAttribute dto : SetLst_searchDto): ModelAndView {
+        val view = ModelAndView("cont/mobile/ajax/mobileRejectTextListAjax")
+        val senderMap = mobileContentService.selectRejectTextList(dto)
 
-        val result = mobileContentService.checkContNm(contMstdto)
-        val statusMap = HashMap<String,String>()
+        view.addObject("list", senderMap["list"])
+        view.addObject("page", senderMap["page"])
+        view.addObject("pageNo", senderMap["pageNo"])
+        view.addObject("listCnt", senderMap["listCnt"])
 
-        if(result == 0) {
-            statusMap["status"] = "true"
-            statusMap["message"] = "모바일 컨텐츠 저장이 완료 되었습니다"
-        } else {
-            statusMap["status"] = "false"
-            statusMap["message"] = "중복된 컨텐츠 이름이 존재합니다"
-        }
-        return statusMap
+        return view
     }
 
     /**
@@ -319,6 +322,35 @@ class ContentController  {
         view.addObject("filePath", uploadPrefix?.cd_val)
 
         return view
+    }
+
+    /**
+     * @Method Name  : isCheckTemplateName
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : contMstdto: Tblmi_cont_mstDto
+     * @return   : HashMap<String,String>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 모바일 컨텐츠 이름 중복 체크하기
+     * @title : 모바일 컨텐츠 이름 중복 체크 하기
+     */
+    @ResponseBody
+    @PostMapping("/isCheckTmplateNm.ajax")
+    fun isCheckTemplateName(@ModelAttribute contMstdto: Tblmi_cont_mstDto) : HashMap<String,String>{
+
+        val result = mobileContentService.checkContNm(contMstdto)
+        val statusMap = HashMap<String,String>()
+
+        if(result == 0) {
+            statusMap["status"] = "true"
+            statusMap["message"] = "모바일 컨텐츠 저장이 완료 되었습니다"
+        } else {
+            statusMap["status"] = "false"
+            statusMap["message"] = "중복된 컨텐츠 이름이 존재합니다"
+        }
+        return statusMap
     }
 
     /**

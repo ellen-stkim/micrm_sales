@@ -2,6 +2,7 @@ package com.omnilab.micrm.service
 
 import com.omnilab.micrm.model.Content_list_CreateDto
 import com.omnilab.micrm.model.SalesforceDto
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 import javax.servlet.http.HttpSession
 
@@ -13,12 +14,14 @@ interface SalesforceService {
     fun updateContentList(dto : Tblmi_cont_lstDto) : Map<String, Any>
     fun checkContNm(dto:Tblmi_cont_mstDto):Int
     fun selectSenderList(dto: Tblmi_set_lstDto) : Map<String, Any>
+    fun selectRejectTextList(dto: SetLst_searchDto): MutableMap<String, Any>
     fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto) : Map<String,Any>
+
     fun getImgNmCh(dto:Tblmi_cont_imgDto): Int
 
     fun campaingContent(dto: Tblmi_cont_mstDto): Boolean
-
     fun publish(dto: Tblmicp_cont_mstDto): Boolean
     fun sendCampaign(map: MutableMap<String, Any>): Boolean
     fun getDataExtention(usr_cd: String, extentionId: String): HashMap<String,Any>
+    fun isCheckSender(usr_cd: String): Map<String, Any>
 }
