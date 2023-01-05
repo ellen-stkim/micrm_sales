@@ -3253,7 +3253,7 @@
 
     function addRejectText(){
         const txtbox = $('#sms_txt_area');
-        if($(#rejectText).val() != ''){
+        if($('#rejectText').val() != ''){
             $(txtbox).val($(txtbox).val()+"\n\n"+$('#rejectText').val());
             onchangePrevSmsTxt(txtbox);
         }
