@@ -110,6 +110,7 @@ class SalesforceController {
     fun mdmCreate(@PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val view =  ModelAndView("cont/salesforce")
         view.addObject("usr_cd", usr_cd)
+
         return view
     }
 
@@ -133,6 +134,7 @@ class SalesforceController {
     fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String, response: HttpServletResponse): Map<String, Any> {
         content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val statusMap = salesforceService.insertContentList(content_list_dto)
+
         return statusMap;
     }
 
@@ -269,8 +271,36 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/senderMobileList.ajax")
     fun selectSenderMobileList(@ModelAttribute dto : SetLst_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
+        dto.usr_grp_cd = usr_cd
         val view = ModelAndView("cont/mobile/ajax/senderMobileListAjax")
         val senderMap = salesforceService.selectSenderList(dto)
+
+        view.addObject("list", senderMap["list"])
+        view.addObject("page", senderMap["page"])
+        view.addObject("pageNo", senderMap["pageNo"])
+        view.addObject("listCnt", senderMap["listCnt"])
+
+        return view
+    }
+
+    /**
+     * @Method Name  : mobileRejectTextList
+     * @Since    : 2023. 01. 05.
+     * @author   : Grayson
+     * @param    : tblmiSetLstdto: Tblmi_set_lstDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 모바일 수신거부 문자 리스트 가져오기
+     * @title : 모바일 수신거부 문자 리스트 가져오기
+     */
+    @PostMapping("/{usr_cd}/mobileRejectTextList.ajax")
+    fun mobileRejectTextList(@PathVariable(value = "usr_cd") usr_cd: String,@ModelAttribute dto : SetLst_searchDto): ModelAndView {
+        dto.usr_grp_cd = usr_cd
+
+        val view = ModelAndView("cont/mobile/ajax/mobileRejectTextListAjax")
+        val senderMap = salesforceService.selectRejectTextList(dto)
 
         view.addObject("list", senderMap["list"])
         view.addObject("page", senderMap["page"])

@@ -498,7 +498,6 @@ class SysSettingController {
         val view = ModelAndView("sys/setting/rejectSetting")
         val dto = SetLst_searchDto()
         val map = sysSettingService.getRejectSettingList(dto)
-        logger.error("}{dfgmdslkmslgsmlkm")
         view.addObject("list",map["list"])
         view.addObject("page",map["page"])
         view.addObject("pageNo",map["pageNo"])
@@ -521,12 +520,51 @@ class SysSettingController {
 
     @PostMapping("/getRejtSettingList.ajax")
     fun getRejtSettingList(@ModelAttribute("form") lstStDto: SetLst_searchDto) : ModelAndView {
-        val view = ModelAndView("sys/setting/ajax/getSmsSettingList")
+        val view = ModelAndView("sys/setting/ajax/getRejectSettingList")
         val map = sysSettingService.getRejtSettingList(lstStDto)
         view.addObject("list",map["list"])
         view.addObject("page",map["page"])
         view.addObject("pageNo",map["pageNo"])
         return view;
+    }
+
+    /**
+     * @Method Name  : isExistRejectText
+     * @Since    : 2023. 01. 05
+     * @author   : Belisa
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 수신거부 문자 중복 여부 확인하기
+     * @title : 수신 거부 문자 중복 확인
+     */
+
+    @ResponseBody
+    @PostMapping("/isExistRejectText.ajax")
+    fun isExistRejectText(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.isExistSmsAddress(lstDto)
+    }
+
+
+    /**
+     * @Method Name  : insertRejectText
+     * @Since    : 2023. 01. 05
+     * @author   : Belisa
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 수신 거부 문자 INSERT 하기
+     * @title : 수신 거부 문자 INSERT 하기
+     */
+
+    @ResponseBody
+    @PostMapping("/insertRejectText.ajax")
+    fun insertRejectText(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.insertRejectText(lstDto)
     }
 
 }
