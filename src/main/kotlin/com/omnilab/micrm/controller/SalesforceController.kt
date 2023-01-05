@@ -168,7 +168,7 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = mobileContentService.isCheckSender()
+        val cntMap = salesforceService.isCheckSender(usr_cd)
 
         view.addObject("list" , listMap["list"])
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])

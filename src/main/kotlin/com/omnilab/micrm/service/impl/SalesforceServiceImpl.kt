@@ -44,7 +44,6 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.regex.Pattern
-import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.streams.toList
 
@@ -2531,6 +2530,43 @@ class SalesforceServiceImpl : SalesforceService {
         return reMap
     }
 
+    /**
+     * @Method Name  : isCheckSender
+     * @Since    : 2023. 01. 05.
+     * @author   : Belisa
+     * @return    : Int
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 발신자 체크 하기
+     * @title  카카오 발신자 체크
+     */
+
+    override fun isCheckSender(usr_cd: String): Map<String, Any> {
+
+        val paramMap: MutableMap<String, Any> = java.util.HashMap()
+
+        val tblmiDto = Tblmi_set_lstDto()
+        tblmiDto.list_tp_id = "CH02"
+        tblmiDto.list_dt_id = "DMTP03"
+        tblmiDto.usr_grp_cd = usr_cd
+
+        val smsMiDto = Tblmi_set_lstDto()
+        smsMiDto.list_tp_id = "CH02"
+        smsMiDto.list_dt_id = "DMTP02"
+        tblmiDto.usr_grp_cd = usr_cd
+
+        val rcsMiDto = Tblmi_set_lstDto()
+        rcsMiDto.list_tp_id = "CH02"
+        rcsMiDto.list_dt_id = "DMTP04"
+        tblmiDto.usr_grp_cd = usr_cd
+
+        paramMap["kakaoCnt"] = contentDao.selectSenderListCnt(tblmiDto)
+        paramMap["smsCnt"] = contentDao.selectSenderListCnt(smsMiDto)
+        paramMap["rcsCnt"] = contentDao.selectSenderListCnt(rcsMiDto)
+
+        return paramMap
+    }
 
     private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {
         val re_map: MutableMap<String, Any> = HashMap()
