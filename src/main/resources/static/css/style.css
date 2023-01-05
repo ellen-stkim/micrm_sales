@@ -540,7 +540,7 @@
 .viewer_area .byte {width:397px; text-align:right; color:#cccccc; font-size:11px; margin:15px auto 40px;}
 .viewer_area .inner .round_box{width: 270px; border-radius: 11px; border: 1px solid #dddddd; overflow: hidden; margin: 0 auto;}
 .viewer_area .inner .kakao_ft{width: 100%; max-height: 270px; overflow: hidden; background: url(../image/bg_none.png) no-repeat center; text-align: center;}
-.viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 500px; overflow: hidden;    word-break: break-all;}
+.viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 500px; word-break: break-all; overflow-y: scroll;}
 .viewer_area .inner .kakao_link{ width: 90%;}
 
 
