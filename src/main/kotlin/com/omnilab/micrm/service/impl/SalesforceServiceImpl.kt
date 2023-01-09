@@ -247,26 +247,6 @@ class SalesforceServiceImpl : SalesforceService {
                     }else{
                         returnMap["status"] = "false"
                     }
-                    // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
-                    /*
-                    val commDto = Tblmi_comm_cdDto()
-                    commDto.cd_id = userInfo!!.usr_grp_cd
-                    commDto.par_id = "SALESFORCE"
-                    val urlInfo = systemDao.getCommCDLst(commDto)
-
-                    val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
-                    val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
-                    val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
-
-                    val headers = HttpHeaders()
-                    headers.contentType = MediaType.APPLICATION_JSON
-                    val acceptableMediaType: MutableList<MediaType> = ArrayList()
-                    acceptableMediaType.add(MediaType.APPLICATION_JSON)
-                    headers.accept = acceptableMediaType
-
-                    headers.set("Authorization", "Bearer $token")
-                    val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-                    */
                 }
             } else {
                 logger.error("tokenContext fail: $responseBody")
