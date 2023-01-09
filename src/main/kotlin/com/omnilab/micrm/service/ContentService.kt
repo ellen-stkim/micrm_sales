@@ -1,6 +1,7 @@
 package com.omnilab.micrm.service
 
 import com.omnilab.micrm.model.Content_list_CreateDto
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
@@ -35,5 +36,7 @@ interface ContentService {
     fun previewJsonService(dto : Tblmi_cont_lstDto) : Map<String,Any>
 
     fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String,Any>
+
+    fun selectRejectTextList(smsDto: SetLst_searchDto): Map<String,Any>
 
 }

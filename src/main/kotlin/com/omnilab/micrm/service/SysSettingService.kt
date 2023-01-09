@@ -68,4 +68,10 @@ interface SysSettingService {
 
     fun getKkoSettingList(dto: SetLst_searchDto): Map<String,Any>
 
+    fun getRejectSettingList(dto: SetLst_searchDto): Map<String,Any>
+
+    fun getRejtSettingList(lstStDto: SetLst_searchDto): Map<String,Any>
+
+    fun insertRejectText(lstDto: Tblmi_set_lstDto): Map<String, Any>
+
 }

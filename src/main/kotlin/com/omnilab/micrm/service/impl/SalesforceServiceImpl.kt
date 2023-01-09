@@ -44,14 +44,15 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.regex.Pattern
-import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
+import kotlin.streams.toList
 
 
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
+
 
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
@@ -2083,7 +2084,23 @@ class SalesforceServiceImpl : SalesforceService {
         val paramMap: MutableMap<String, Any> = HashMap()
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
 
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
+
+        paramMap["page"] = paginationInfo
+        paramMap["pageNo"] = paginationInfo.currentPageNo
+        paramMap["list"] = contentDao.selectSenderList(searchDto)
+        paramMap["listCnt"] = contentDao.selectSenderListCnt(searchDto)
+
+        return paramMap
+    }
+
+    override fun selectRejectTextList(dto: SetLst_searchDto): MutableMap<String, Any> {
+        val searchDto = dto as SetLst_searchDto
+        val paramMap: MutableMap<String, Any> = java.util.HashMap()
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
+
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
         paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
@@ -2337,6 +2354,13 @@ class SalesforceServiceImpl : SalesforceService {
                 return false
             }else{
                 for(campaignDto in campLst){
+                    // 타겟수 업데이트
+                    if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
+                        val targetCnt = inArguments.get("extentionCnt").toString().toDouble().toInt()
+                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
+                    }
+                    inArguments.remove("extentionCnt")
+
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
                     sendHstDto.pro_id = campaignDto.pro_id
@@ -2447,7 +2471,7 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
 
-    override fun getDataExtention(usr_cd: String, extentionId: String) : List<String> {
+    override fun getDataExtention(usr_cd: String, extentionId: String) : HashMap<String,Any> {
         val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
 
         val configuration = ETConfiguration()
@@ -2463,14 +2487,66 @@ class SalesforceServiceImpl : SalesforceService {
         configuration["useOAuth2Authentication"] = "true"
         val client = ETClient(configuration)
 
-        val response = client.retrieve(ETDataExtension::class.java, "id=$extentionId")
+        val filter = ETFilter()
+        val exp = ETExpression()
+
+        exp.property = "id"
+        exp.operator = ETExpression.Operator.EQUALS
+        exp.addValue(extentionId)
+
+
+        filter.expression = exp
+
+        val response = client.retrieve(ETDataExtension::class.java, filter)
+
         val dataExtension = response.result.getObject()
+        val reList =  dataExtension.retrieveColumns()
+                                        .stream().map {column->column.name}.toList()
 
-        val res = dataExtension.select()
+        val reMap = HashMap<String, Any>()
+        reMap.put("list",reList)
+        reMap.put("totalCnt",dataExtension.select().totalCount)
 
-        return res.getObject().columnNames.stream().collect(Collectors.toList())
+        return reMap
     }
 
+    /**
+     * @Method Name  : isCheckSender
+     * @Since    : 2023. 01. 05.
+     * @author   : Belisa
+     * @return    : Int
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 발신자 체크 하기
+     * @title  카카오 발신자 체크
+     */
+
+    override fun isCheckSender(usr_cd: String): Map<String, Any> {
+
+        val paramMap: MutableMap<String, Any> = java.util.HashMap()
+
+        val tblmiDto = Tblmi_set_lstDto()
+        tblmiDto.list_tp_id = "CH02"
+        tblmiDto.list_dt_id = "DMTP03"
+        tblmiDto.usr_grp_cd = usr_cd
+
+        val smsMiDto = Tblmi_set_lstDto()
+        smsMiDto.list_tp_id = "CH02"
+        smsMiDto.list_dt_id = "DMTP02"
+        smsMiDto.usr_grp_cd = usr_cd
+
+        val rcsMiDto = Tblmi_set_lstDto()
+        rcsMiDto.list_tp_id = "CH02"
+        rcsMiDto.list_dt_id = "DMTP04"
+        rcsMiDto.usr_grp_cd = usr_cd
+
+        paramMap["kakaoCnt"] = contentDao.selectSenderListCnt(tblmiDto)
+        paramMap["smsCnt"] = contentDao.selectSenderListCnt(smsMiDto)
+        paramMap["rcsCnt"] = contentDao.selectSenderListCnt(rcsMiDto)
+
+        return paramMap
+    }
 
     private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {
         val re_map: MutableMap<String, Any> = HashMap()

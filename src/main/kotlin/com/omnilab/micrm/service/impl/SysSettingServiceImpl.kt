@@ -282,12 +282,12 @@ class SysSettingServiceImpl : SysSettingService {
 
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getSmsSettingListCnt(searchDto)
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
 
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getSmsSettingList(searchDto);
+        map["list"] = sysSettingDao.getSettingList(searchDto);
 
         return map;
     }
@@ -452,14 +452,99 @@ class SysSettingServiceImpl : SysSettingService {
 
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getSmsSettingListCnt(searchDto)
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
 
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getSmsSettingList(searchDto);
+        map["list"] = sysSettingDao.getSettingList(searchDto);
 
         return map;
     }
 
+    override fun getRejectSettingList(dto: SetLst_searchDto): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        val searchDto = dto as SetLst_searchDto
+
+        val pageNo = if (searchDto.pageNo == null) {
+            1
+        } else {
+            searchDto.pageNo!!
+        }
+
+        if (searchDto.searchType == "list_nm") {
+            searchDto.list_nm = searchDto.searchValue
+        } else if (searchDto.searchType == "list_val") {
+            searchDto.list_val = searchDto.searchValue
+        } else if (searchDto.searchType == "use_yn") {
+            searchDto.use_yn = searchDto.searchValue
+        }
+
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.list_tp_id = "CH04"
+        searchDto.list_dt_id = "REJT01"
+
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
+
+        map["page"] = paginationInfo
+        map["pageNo"] = paginationInfo.currentPageNo
+        map["cnt"] = paginationInfo.totalRecordCount
+        map["list"] = sysSettingDao.getSettingList(searchDto);
+
+        return map;
+    }
+
+    override fun getRejtSettingList(dto: SetLst_searchDto): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        val searchDto = dto as SetLst_searchDto
+
+        val pageNo = if (searchDto.pageNo == null) {
+            1
+        } else {
+            searchDto.pageNo!!
+        }
+
+        if (searchDto.searchType == "list_nm") {
+            searchDto.list_nm = searchDto.searchValue
+        } else if (searchDto.searchType == "list_val") {
+            searchDto.list_val = searchDto.searchValue
+        } else if (searchDto.searchType == "use_yn") {
+            searchDto.use_yn = searchDto.searchValue
+        }
+
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.list_tp_id = "CH04"
+        searchDto.list_dt_id = "REJT01"
+
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
+
+        map["page"] = paginationInfo
+        map["pageNo"] = paginationInfo.currentPageNo
+        map["cnt"] = paginationInfo.totalRecordCount
+        map["list"] = sysSettingDao.getSettingList(searchDto);
+
+        return map;
+    }
+
+    override fun insertRejectText(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        lstDto.list_tp_id = "CH04"
+        lstDto.list_dt_id = "REJT01"
+        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+        lstDto.reg_id = userInfo.usr_id
+
+        val result = sysSettingDao.insertSetLst(lstDto)
+
+        return statusMap
+    }
 }

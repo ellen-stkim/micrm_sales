@@ -142,7 +142,6 @@ define(["postmonger"], function (Postmonger) {
                 alert('사용자 조회에 실패하였습니다.');
 				connection.trigger("destroy");
             }
-			mappingLst()
         }
         let param = { host: host, fuel2token: fuel2token, token: token }
         com_ajax.ajax('post', '/sf/'+ usr_cd +'/getUser.ajax', param, res, null, null,true)
@@ -156,10 +155,13 @@ define(["postmonger"], function (Postmonger) {
 			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 		}
 		data.seq = mstSeq;
+		data.extentionCnt = dataExtensionCnt;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
+
         connection.trigger("updateActivity", payload);
+
 	}
 
     // 프리뷰에서 저장 버튼 누르기
@@ -209,6 +211,7 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'orig_id', value: model.id});
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
+
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
     }
 
@@ -236,7 +239,9 @@ define(["postmonger"], function (Postmonger) {
 
 });
 
+
 let dataExtensionId;
+let dataExtensionCnt;
 
 // 개인화 변수 조회
 function mappingLst() {
@@ -244,6 +249,8 @@ function mappingLst() {
 
 	const res = function(e) {
 		if(e.check){
+			dataExtensionCnt = e.totalCnt;
+
 			const set = new Set();
 			$('#kakaoValue').html('');
 			$('#smsContsVal').html('');
