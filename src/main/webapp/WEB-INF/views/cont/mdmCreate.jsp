@@ -304,7 +304,9 @@
                                                 <div class="round_box head">
                                                     <p>알림톡 도착</p>
                                                 </div>
-                                                <div class="sms_txt at_tmpl_data"></div>
+                                                <div class="at_tmpl_data" ></div>
+                                                <input type="hidden" class="kakao_txt" name="kakao_body" value="">
+                                                <a href="" class="sms_btn">버튼</a>
                                             </div>
                                         </div>
                                     </div>
@@ -428,7 +430,6 @@
                                                 <input type="hidden" name="sms_trackinglink"/>
                                             </div>
                                         </div>
-
                                         <div class="row">
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">
@@ -654,52 +655,50 @@
 <!-- 새 이미지 파일 업로드 팝업 영역 시작 -->
 <span id="imgListHtml"></span>
 <!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
-
 <form:form id="tblmisetForm" name="tblmisetForm" onsubmit="return false">
-    <span id="callPopUp">
-    </span>
+    <span id="callPopUp"></span>
 </form:form>
 
+<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
 <form:form id="imgSetForm" name="imgSetForm" onsubmit="return false">
 <span id="imgPopUp">
-        <div class="layer_pop imagePopup">
-    <div class="pop_container popup_size2">
-        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
-        <div class="pop_title">이미지 선택</div>
-        <div class="pop_inner">
-            <div class="form_search">
-                <!-- 검색 영역 시작 -->
-                <input type="text" class="calendar" name="reg_dt" id="from" placeholder="등록일 선택"/>
-                <span class="hyphen"></span>
-                <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
-                <div class="input_txt left-border-none">
-                    <input type="text" name='img_nm' placeholder="이미지 명 입력"/>
-                    <input type="button" class="btn_search" onclick="imageListPaging('1')" value="검색"/>
+    <div class="layer_pop imagePopup">
+        <div class="pop_container popup_size2">
+            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
+            <div class="pop_title">이미지 선택</div>
+            <div class="pop_inner">
+                <div class="form_search">
+                    <!-- 검색 영역 시작 -->
+                    <input type="text" class="calendar" name="reg_dt" id="from" placeholder="등록일 선택"/>
+                    <span class="hyphen"></span>
+                    <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
+                    <div class="input_txt left-border-none">
+                        <input type="text" name='img_nm' placeholder="이미지 명 입력"/>
+                        <input type="button" class="btn_search" onclick="imageListPaging('1')" value="검색"/>
+                    </div>
+                    <!-- 검색 영역 끝 -->
+                    <!-- 새 이미지 등록 버튼 -->
+                    <div class="btn_new_image" onclick="imgUploadPop();">새 이미지 등록</div>
                 </div>
-                <!-- 검색 영역 끝 -->
-
-                <!-- 새 이미지 등록 버튼 -->
-                <div class="btn_new_image" onclick="imgUploadPop();">새 이미지 등록</div>
+                <form action="" id="imagePop">
+                    <div class="image_container" id="bodyDom">
+                    </div>
+                </form>
+                <div class="btn_row bottom-border left-border right-border">
+                    <ul class="pager" id="pagingDom"></ul>
+                    <input type="hidden" id="imgType" name="imgType" value=""/>
+                </div>
+                <div class="pop_error_txt blue_point_color"></div>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장"
+                           onclick="imgSendSave();"/>
+                </div>
             </div>
-            <form action="" id="imagePop">
-                <div class="image_container" id="bodyDom">
-                </div>
-        </form>
-        <div class="btn_row bottom-border left-border right-border">
-            <ul class="pager" id="pagingDom">
-            </ul>
-            <input type="hidden" id="imgType" name="imgType" value=""/>
-        </div>
-        <div class="pop_error_txt blue_point_color"></div>
-        <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장"
-                   onclick="imgSendSave();"/>
         </div>
     </div>
-</div>
-</div>
 </span>
 </form:form>
+<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
 
 
 <span id="tmplPopUp">
@@ -732,7 +731,7 @@
                 <span id="tmplPager"></span>
         <div class="pop_error_txt blue_point_color"></div>
         <div class="btn_row">
-            <input type="button" class="btn_bg btn_size2 btn_center" onclick="tmplSendSave();"  value="저장"/>
+            <input type="button" class="btn_bg btn_size2 btn_center" onclick="tmplSendSave();" value="저장"/>
         </div>
     </div>
 </div>
@@ -743,8 +742,6 @@
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
-
-
 <script>
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
@@ -804,7 +801,7 @@
         });
 
         //컨텐츠 포맷 click event
-        $('.formatType').on('click', function () {
+        $(document).on('click', '.formatType', function () {
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
             let tabInx = $('.formatType').index(this);
@@ -838,7 +835,7 @@
         });
 
         //카카오 링크 버튼 생성 event
-        $('.kakaoLinkBtn').on('click', function () {
+        $(document).on('click', '.kakaoLinkBtn', function () {
             let btnState = $(this).val();
             let link = $('.kakao_btn_link');
             let name = $('.kakao_btn_name');
@@ -887,7 +884,7 @@
             }
         });
 
-        $('.smsType').on('change', function () {
+        $(document).on('change', '.smsType', function () {
             let smsType = $(this).val();
             if (smsType != 'MMS') {
                 $(this).parents('.row').siblings('.input-img').removeClass('on');
@@ -897,7 +894,7 @@
         });
 
         // MMS, 카카오 이미지 삭제
-        $('.delete_img').on('click', function () {
+        $(document).on('click', '.delete_img', function () {
             let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
             let imgcount = imgElement.length;
             let imgUrl = $(this).next('.txt_input').val();
@@ -927,7 +924,7 @@
         });
 
         // 추적 링크 생성 동작
-        $('.trackingLinkBtn').on('click', function () {
+        $(document).on('click', '.trackingLinkBtn', function () {
             let link = $(this).prev('input').val();
             let text = $(this).parents('.sms_form').find('.textarea').val();
             let type = $(this).parent().find('.txt_input').attr('id');
@@ -1024,7 +1021,7 @@
         });
 
         // 카카오 개인 변수 option click event
-        $('#kakaoValue input').on('click', function () {
+        $(document).on('click', '#kakaoValue input', function () {
             let data = $(this).attr('data');
             let txt = $('.kakao_txt').val();
             if (data != 0) {
@@ -1035,7 +1032,7 @@
         });
 
         // SMS 제목 개인화 변수 option click event
-        $('#smsTitleVal .option li').on('click', function () {
+        $(document).on('click', '#smsTitleVal .option li', function () {
             let data = $(this).attr('data');
             let txt = $('#sms .title').val();
             if (data != 0) {
@@ -1045,8 +1042,7 @@
             }
         });
 
-        // SMS 개인화 변수 option click event
-        $('#smsContsVal input').on('click', function () {
+        $(document).on('click', '#smsContsVal input', function () {
             let data = $(this).attr('data');
             let txt = $('#sms_txt_area').val();
             if (data != 0) {
@@ -1120,7 +1116,8 @@
         });
 
         //이미지 선택 팝업 저장 event
-        $('.imageSave').on('click', function () {
+
+        $(document).on('click', '.imageSave', function () {
             $('#imagePop').submit();
         });
 
@@ -1160,7 +1157,7 @@
         });
 
         //발신 번호 선택 팝업 event
-        $('.numberSave').on('click', function () {
+        $(document).on('click', '.numberSave', function () {
             let callCheck = $('.call:checked').length;
             let callNumber = $('.call:checked').val();
             if (callCheck > 0) {
@@ -1173,7 +1170,7 @@
             }
         });
 
-        $('.js-ad').on('click', function () {
+        $(document).on('click', '.js-ad', function () {
             adTypeCheck();
         });
 
@@ -1500,8 +1497,7 @@
             $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
         });
 
-
-        $('#previewBtn').on('click', function () {
+        $(document).on('click', '#previewBtn', function () {
             let tamplate = $('.template_name');
             let smsFormat = $('.formatType:checked').val();
             let smsFormatLength = $('.formatType:checked').length;
@@ -1577,7 +1573,7 @@
         let beforeType = $('input[name="rcs_format_type"]:checked').val();
 
         // RCS 포맷카드 변경시 초기화 알림
-        $('input[name="rcs_format_type"]').on('click', function (event) {
+        $(document).on('click', 'input[name="rcs_format_type"]', function (event) {
             event.preventDefault();
             check = $('input[name="rcs_format_type"]:checked');
             let nowVal = $('input[name="rcs_format_type"]:checked').val();
@@ -1667,7 +1663,7 @@
         });
 
         // 포맷 Tab
-        $('#js-smsTab > li').on('click', function () {
+        $(document).on('click', '#js-smsTab > li', function (event) {
             let tab = $('#js-smsTab > li').index(this);
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
@@ -1789,7 +1785,6 @@
                 return false;
             }
         }
-
         return true;
     }
 
@@ -2220,7 +2215,7 @@
     function preview() {
         const res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
-            let html = $("#js-area-popup",$doc).html();
+            let html = $("#js-area-popup", $doc).html();
             let dynamic = $("#preview").html(html);
 
             // 알림톡 미리보기
@@ -2260,14 +2255,12 @@
 
     // 버튼 타입 Hidden 값 추가
     function buttonHiddenAdd() {
-
         var rcsType = $("input[name='rcs_format_type']:checked").val();
         var checkType = $("input[name='rcs_msg_tp']:checked").val();
 
         var valueCheck1 = $("input[name='rcs_btn_tp_1']").val();
         var valueCheck2 = $("input[name='rcs_btn_tp_2']").val();
         var valueCheck3 = $("input[name='rcs_btn_tp_3']").val();
-
 
         var layout = '<input type="hidden" name="phone_value_03"  value=" "/>' +
             '<input type ="hidden" name="copy_value" value=" "/>' +
@@ -2407,6 +2400,7 @@
 
         if (send_to_type === 'sms') {
             $("#sms_send_to").val(sender);
+            $("#sms_send_to_num").val(send_number);
         } else if (send_to_type === 'horizonrcs') {
             $("#send_horizon_rcs").val(sender);
             $("#horizon_send_num").val(send_number);
@@ -2422,11 +2416,11 @@
         } else if (send_to_type === 'kko') {
             $('.smsNumber_kko').val(sender);
             $('#send_key').val(send_to);
+            $('#kakao_send_to_num').val(send_number);
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
         }
-        $("#sms_send_to_num").val(send_number);
 
         $('.mobilePopup').removeClass('active');
     }
@@ -2947,9 +2941,9 @@
             imageListPaging('1');
         };
 
-        var data = new FormData();
+        let data = new FormData();
         data.append("file", $("#file")[0].files[0]);
-        var ch_tp = $("input[name=ch_tp]:checked").val();
+        let ch_tp = $("input[name=ch_tp]:checked").val();
         if (ch_tp == 'RCS') {
             data.append("ch_tp", $('.rcs_select .value').attr('data'));
         } else {
@@ -2961,6 +2955,10 @@
     }
 
     function tmplListPopUp(pageNo) {
+        if($('#send_key').val() ==''){
+            popup.popAlert("발신 프로필을 선택해주세요");
+            return;
+        }
         $('.tmplPopUp').addClass('active');
         tmplListPaging(1)
     }
@@ -3000,7 +2998,7 @@
 
     // 카카오 타입 변경
     let beforeKkoType = "ft";
-    $('input[name="kko_format_type"]').on('click', function (event) {
+    $(document).on('click','input[name="kko_format_type"]', function (event) {
         event.preventDefault();
         check = $('input[name="kko_format_type"]:checked');
         let nowVal = $('input[name="kko_format_type"]:checked').val();
@@ -3044,14 +3042,17 @@
             $('.kakao_txt').val("");
             $('.kakao_byte').html('0');
             $('#kko_ft input[type="text"]').val('');
+            $('#prev_ft_img').html('');
+            $('#prev_ft_txt').html('');
+
             $('#js-kakao-img').html('');
             $('.kakao_link').remove()
 
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
-            $('.at_tmpl_data').val('');
-            $('.at_tmpl_data').html('');
+            $('#kakao_at_viewer .at_tmpl_data').val('');
+            $('#kakao_at_viewer .at_tmpl_data').html('');
         }
     }
 

@@ -230,7 +230,7 @@
                                             <div class="row" style="height:150px;">
                                                 <div class="th">내용</div>
                                                 <div class="td">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                            onkeyup="onchangePrevKkoTxt(this)">${list[0].cont_body}</textarea></div>
+                                                                            onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' ? list[0].cont_body :''}</textarea></div>
                                             </div>
                                         </div>
                                         <div class="block">
