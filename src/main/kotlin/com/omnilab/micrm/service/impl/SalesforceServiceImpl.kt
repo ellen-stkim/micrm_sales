@@ -43,8 +43,11 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
+import java.util.*
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.streams.toList
 
 
@@ -2347,7 +2350,10 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
-        val inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        val inArguments = mutableMapOf<String,Any>()
+        val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        _inArguments.forEach{tempMap -> inArguments.put(tempMap.key.lowercase(Locale.getDefault()),tempMap.value)}
+
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
@@ -2514,18 +2520,17 @@ class SalesforceServiceImpl : SalesforceService {
         exp.operator = ETExpression.Operator.EQUALS
         exp.addValue(extentionId)
 
-
         filter.expression = exp
 
         val response = client.retrieve(ETDataExtension::class.java, filter)
 
         val dataExtension = response.result.getObject()
         val reList =  dataExtension.retrieveColumns()
-                                        .stream().map {column->column.name}.toList()
+                                        .stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
 
         val reMap = HashMap<String, Any>()
-        reMap.put("list",reList)
-        reMap.put("totalCnt",dataExtension.select().totalCount)
+        reMap["list"] = reList
+        reMap["totalCnt"] = dataExtension.select().totalCount
 
         return reMap
     }

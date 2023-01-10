@@ -203,13 +203,13 @@
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
                                                                 <a href="${list[0].kko_img_lst}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
                                                                 </a>
                                                             </c:if>
                                                             <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
                                                                 <a href="${list[0].kko_img_url}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
                                                                 </a>
                                                             </c:if>
                                                         </c:if>
@@ -289,7 +289,7 @@
                                                 <div class="th">템플릿 선택</div>
                                                 <div class="td">
                                                     <div class="delete_tmpl" data="kakao">
-                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제" >
                                                     </div>
                                                     <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm" id="tmplNm" value="${list[0].tmpl_nm}" placeholder="템플릿을 선택해 주세요." readonly/>
                                                     <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" value="${list[0].tmpl_cd}" readonly hidden/>
@@ -311,13 +311,13 @@
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
                                                                 <a href="${list[0].kko_img_lst}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'"/>
                                                                 </a>
                                                             </c:if>
                                                             <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
                                                                 <a href="${list[0].kko_img_url}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
                                                                 </a>
                                                             </c:if>
                                                         </c:if>
@@ -543,7 +543,7 @@
                                                         <div class="col_img" id="js-sms-img">
                                                             <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                             <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
-                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
+                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" />
                                                             </a>
                                                             </c:if>
                                                         </div>
@@ -602,7 +602,7 @@
                                             <div class="sms_img_box" id="sms_img_box"><c:if
                                                     test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                 <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
-                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
+                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'"/>
                                                 </a>
                                             </c:if></div>
                                             <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">${cutil:replaceBr(list[1].cont_body)}</p></div>
