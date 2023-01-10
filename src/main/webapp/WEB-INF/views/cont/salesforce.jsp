@@ -1359,6 +1359,7 @@
                     $("input[name='mms_imgurl']").val('');
                     $("input[name='mds_img_cd']").val('');
                     $("#js-sms-img").empty();
+                    $('#sms_img_box').empty();
                 }
                 imgElement.remove();
             } else {
@@ -1378,6 +1379,7 @@
                 $("input[name='kko_view_img_url']").val('');
                 // $("input[name='kko_img_url']").val(''); // 이미지 삭제시 링크 주소 삭제
                 $("#js-kakao-img").empty();
+                $('#prev_ft_img').empty();
             } else {
                 return false;
             }
@@ -1467,6 +1469,7 @@
 
 
             $('.mobileLstPopup').removeClass('active');
+            previewSlideLoad();
             mappingLst();
         }
 

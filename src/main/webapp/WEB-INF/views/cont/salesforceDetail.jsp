@@ -306,7 +306,7 @@
                                         <div class="inner">
                                             <div class="row_body">
                                                 <div class="round_box">
-                                                    <div class="kakao_ft" id="prev_ft_img">
+                                                    <div class="kakao_ft sms_img_box" id="prev_ft_img">
                                                         <!-- 이미지는 있고, 이미지 링크는 없을때 -->
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
@@ -361,7 +361,7 @@
                                         <div class="inner">
                                             <div class="row_body">
                                                 <div class="round_box">
-                                                    <div class="kakao_ft" id="prev_ft_img">
+                                                    <div class="kakao_ft sms_img_box" id="prev_ft_img">
                                                     </div>
                                                     <p class="kakao_txt" id="prev_ft_txt"></p>
                                                 </div>
@@ -525,7 +525,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="row input-img">
+                                                <div class="row input-img <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">
                                                     <div class="th top-border <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">이미지 선택</div>
                                                     <div class="td top-border">
                                                         <div class="sms_delete_img">
