@@ -249,9 +249,7 @@ function mappingLst() {
 
 	const res = function(e) {
 		if(e.check){
-			dataExtensionCnt = Math.floor(e.totalCnt);
-			console.log(e.totalCnt)
-			console.log(Math.floor(e.totalCnt))
+			dataExtensionCnt = e.totalCnt;
 
 			const set = new Set();
 			$('#kakaoValue').html('');

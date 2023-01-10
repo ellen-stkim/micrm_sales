@@ -2383,10 +2383,7 @@ class SalesforceServiceImpl : SalesforceService {
                     // 타겟수 업데이트
                     if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
                         logger.error("{}",inArguments["extention_cnt"])
-                        logger.error("{}",inArguments["extention_cnt"].toString())
-                        logger.error("{}",inArguments["extention_cnt"].toString().toDouble())
-                        logger.error("{}",inArguments["extention_cnt"].toString().toInt())
-                        val targetCnt = inArguments["extention_cnt"].toString().toDouble().toInt()
+                        val targetCnt:Int = inArguments["extention_cnt"].toString().toDouble().toInt()
                         campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
                     }
                     inArguments.remove("extention_cnt")
