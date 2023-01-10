@@ -1467,8 +1467,9 @@
                 }
             });
 
-
             $('.mobileLstPopup').removeClass('active');
+
+            $('#recv_phone_to').attr('data','').html('개인화변수');
             mappingLst();
 
             var mySwiper = new Swiper('.slideSwiper', {
@@ -1486,7 +1487,7 @@
         }
 
         let param = {seq: seq}
-        com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}',true)
 
     }
 
