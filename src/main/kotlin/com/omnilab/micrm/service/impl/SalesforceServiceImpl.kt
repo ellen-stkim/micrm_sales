@@ -2382,14 +2382,14 @@ class SalesforceServiceImpl : SalesforceService {
                 for(campaignDto in campLst){
                     // 타겟수 업데이트
                     if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
-                        logger.error("{}",inArguments["extentionCnt"])
-                        logger.error("{}",inArguments["extentionCnt"].toString())
-                        logger.error("{}",inArguments["extentionCnt"].toString().toDouble())
-                        logger.error("{}",inArguments["extentionCnt"].toString().toInt())
-                        val targetCnt = inArguments["extentionCnt"].toString().toDouble().toInt()
+                        logger.error("{}",inArguments["extention_cnt"])
+                        logger.error("{}",inArguments["extention_cnt"].toString())
+                        logger.error("{}",inArguments["extention_cnt"].toString().toDouble())
+                        logger.error("{}",inArguments["extention_cnt"].toString().toInt())
+                        val targetCnt = inArguments["extention_cnt"].toString().toDouble().toInt()
                         campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
                     }
-                    inArguments.remove("extentionCnt")
+                    inArguments.remove("extention_cnt")
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
