@@ -3053,6 +3053,8 @@
             $('#kakao_at_viewer').hide();
             $('#kakao_at_viewer .at_tmpl_data').val('');
             $('#kakao_at_viewer .at_tmpl_data').html('');
+            $('#tmplNm').val('');
+            $('#templateCode').val('');
         }
     }
 
