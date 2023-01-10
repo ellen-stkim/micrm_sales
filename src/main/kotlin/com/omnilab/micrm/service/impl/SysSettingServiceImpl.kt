@@ -1,5 +1,7 @@
 package com.omnilab.micrm.service.impl
 
+import com.google.gson.internal.LinkedTreeMap
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SalesforceDto
@@ -582,7 +584,33 @@ class SysSettingServiceImpl : SysSettingService {
                 val data = result["data"] as MutableMap<String, Any>
                 logger.error("{}", data)
 
-                val userInfo = UsefulUtils.sessionUser()
+                val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
+                if(getTodaySendProfileResult["status"] == 200){
+                    val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
+
+                    var sendKey:String =""
+                    for(sendProfile in todaySendProfileList){
+                        if(sendProfile["channelId"] == lstDto.list_nm!!) {
+                            sendKey = sendProfile["sendProfileKey"].toString()
+                        }
+                    }
+                    if(!CommonUtils.isEmptyObject(sendKey)){
+                        val userInfo = UsefulUtils.sessionUser()
+
+                        lstDto.list_tp_id = "CH02"
+                        lstDto.list_dt_id = "DMTP02"
+                        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+                        lstDto.reg_id = userInfo.usr_id
+                        lstDto.list_val = sendKey
+
+                        sysSettingDao.insertSetLst(lstDto)
+                    }else{
+                        result["status"] = 302
+                        result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
+                    }
+                }
+
+               /* val userInfo = UsefulUtils.sessionUser()
 
                 lstDto.list_tp_id = "CH02"
                 lstDto.list_dt_id = "DMTP02"
@@ -590,7 +618,7 @@ class SysSettingServiceImpl : SysSettingService {
                 lstDto.reg_id = userInfo.usr_id
                 lstDto.list_val = data["sendProfileKey"]?.toString()
 
-                sysSettingDao.insertSetLst(lstDto)
+                sysSettingDao.insertSetLst(lstDto)*/
             }
         } catch (e: Exception) {
             logger.error("", e)
