@@ -678,7 +678,7 @@
                 </div>
                 <div class="pop_error_txt blue_point_color"></div>
                 <div class="btn_row">
-                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장"
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="불러오기"
                            onclick="mobileListSave();"/>
                 </div>
             </div>
@@ -1467,6 +1467,7 @@
 
 
             $('.mobileLstPopup').removeClass('active');
+            mappingLst();
         }
 
         let param = {seq: seq}
