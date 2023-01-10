@@ -1469,7 +1469,7 @@
 
             $('.mobileLstPopup').removeClass('active');
 
-            $('#recv_phone_to').attr('data','').html('개인화변수');
+            $('#recv_phone_to .value').attr('data','').html('개인화변수');
             mappingLst();
 
             var mySwiper = new Swiper('.slideSwiper', {
