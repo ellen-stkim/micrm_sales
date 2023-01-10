@@ -1029,7 +1029,7 @@
 
         //RCS 제목 개인화 변수 option click event
         $(document).on('click', '.rcsTitleVal ul li', function () {
-            let type = $('.type_check input:checked').val();
+            let type = $('.type_check input[name="rcs_format_type"]:checked').val();
             let data = $(this).attr('data');
             if (type != 'slide') {
                 let txt = $('.rcsTitle').val();
