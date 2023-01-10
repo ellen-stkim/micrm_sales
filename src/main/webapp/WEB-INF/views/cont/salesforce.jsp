@@ -1469,8 +1469,20 @@
 
 
             $('.mobileLstPopup').removeClass('active');
-            previewSlideLoad();
             mappingLst();
+
+            var mySwiper = new Swiper('.slideSwiper', {
+                direction: 'horizontal',
+                pagination: {
+                    el: '.rcs_paging',
+                    type: 'fraction',
+                },
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.rcs_next',
+                    prevEl: '.rcs_prev',
+                },
+            });
         }
 
         let param = {seq: seq}
