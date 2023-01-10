@@ -344,7 +344,7 @@
                                                             <p>알림톡 도착</p>
                                                         </div>
                                                         <div class="at_tmpl_data">
-                                                        <div class="sms_txt at_tmpl_data"></div>
+                                                        <div class="at_tmpl_data"></div>
                                                         <input type="hidden" class="kakao_txt" name="kakao_body"
                                                                value="">
                                                         <a href="" class="sms_btn"></a>
