@@ -99,7 +99,7 @@
                                 </div>
                                 </c:if>
                                 <p class="sms_txt">
-                                    ${content.cont_sub}<br/><br>
+<%--                                    ${content.cont_sub}<br/><br>--%>
                                     ${cutil:replaceBr(content.cont_body)}
                                 </p>
                                 <c:if test="${not empty content.kko_btn_url}">

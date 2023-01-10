@@ -132,7 +132,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         val map :MutableMap<String,Any> = mutableMapOf()
 
-        // 카카오 api 호풀
+        // 카카오 api 호출
         val result:MutableMap<String,Any> = kkoRestApiService.createAtTmpl(dto)
         val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
 

@@ -230,7 +230,7 @@
                                             <div class="row" style="height:150px;">
                                                 <div class="th">내용</div>
                                                 <div class="td">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                            onkeyup="onchangePrevKkoTxt(this)"></textarea></div>
+                                                                            onkeyup="onchangePrevKkoTxt(this)">${list[0].cont_body}</textarea></div>
                                             </div>
                                         </div>
                                         <div class="block">
@@ -307,6 +307,20 @@
                                             <div class="row_body">
                                                 <div class="round_box">
                                                     <div class="kakao_ft" id="prev_ft_img">
+                                                        <!-- 이미지는 있고, 이미지 링크는 없을때 -->
+                                                        <c:if test="${cont_tp eq 'DMTP03'}">
+                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
+                                                                <a href="${list[0].kko_img_lst}" target="_blank">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                </a>
+                                                            </c:if>
+                                                            <!-- 이미지는 있고, 이미지 링크도 있을때 -->
+                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
+                                                                <a href="${list[0].kko_img_url}" target="_blank">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                </a>
+                                                            </c:if>
+                                                        </c:if>
                                                     </div>
                                                     <p class="kakao_txt" id="prev_ft_txt">${list[0].cont_body}</p>
                                                     <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
@@ -465,7 +479,7 @@
                                             <div class="th">문자 제목</div>
                                             <div class="column_1">
                                                 <div class="column_5">
-                                                    <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="smsCreate.titleCount(this,'sms');" value="${list[1].cont_sub}"/>
+                                                    <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="onchangePrevSmsTitle(this)" value="${list[1].cont_sub}"/>
                                                     <span class="title_byte en_font">(40byte)</span>
                                                 </div>
                                                 <!-- select 영역 시작 -->
@@ -547,7 +561,7 @@
                                                 <div class="row"  style="height:150px;">
                                                     <div class="th">내용</div>
                                                     <div class="td"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                               onkeyup="onchangePrevSmsTxt(this)"></textarea></div>
+                                                                               onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea></div>
                                                 </div>
                                             </div>
                                             <div class="block">
@@ -583,10 +597,15 @@
                                     <div class="viewer_area">
                                         <div class="top">문자 미리보기</div>
                                         <div class="inner" style="width: 270px">
-                                            <div class="sms_title" id="prev_sms_title">제목</div>
+                                            <div class="sms_title" id="prev_sms_title">${list[1].cont_sub}</div>
                                                 <%--                                        <div class="sms_img"></div>--%>
-                                            <div class="sms_img_box" id="sms_img_box"></div>
-                                            <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">내용 영역</p></div>
+                                            <div class="sms_img_box" id="sms_img_box"><c:if
+                                                    test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
+                                                <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
+                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
+                                                </a>
+                                            </c:if></div>
+                                            <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">${cutil:replaceBr(list[1].cont_body)}</p></div>
                                         </div>
                                         <div class="byte"  style="width: 270px">
                                             <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
