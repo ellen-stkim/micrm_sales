@@ -2388,6 +2388,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                         val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
                         campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
+                        logger.error("--------------------------------------------------------------")
                     }
                     inArguments.remove("§extention_cnt§")
 
