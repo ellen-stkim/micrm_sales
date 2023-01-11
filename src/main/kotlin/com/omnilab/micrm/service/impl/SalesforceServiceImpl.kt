@@ -2352,7 +2352,7 @@ class SalesforceServiceImpl : SalesforceService {
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
         val inArguments = mutableMapOf<String,Any>()
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
-        _inArguments.forEach{tempMap -> inArguments.put(tempMap.key.lowercase(Locale.getDefault()),tempMap.value)}
+        _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
@@ -2381,11 +2381,15 @@ class SalesforceServiceImpl : SalesforceService {
             }else{
                 for(campaignDto in campLst){
                     // 타겟수 업데이트
-                    if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
+                    logger.error("{}",inArguments["§extention_cnt§"])
+                    if((campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0)
+                                && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+                        logger.error("--------------------------------------------------------------")
+
                         val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
                         campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
                     }
-                    inArguments.remove("extention_cnt")
+                    inArguments.remove("§extention_cnt§")
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
