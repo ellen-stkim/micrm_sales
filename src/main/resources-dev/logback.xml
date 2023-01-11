@@ -58,11 +58,6 @@
     	<appender-ref ref="CONSOLE"/>
 	</logger>
 
-	<logger name="com.exacttarget.fuelsdk.ETClient" additivity="false">
-		<level value="WARN"/>
-		<appender-ref ref="CONSOLE"/>
-	</logger>
-
 	<logger name="org.apache.cxf" additivity="false">
 		<level value="WARN"/>
 		<appender-ref ref="CONSOLE"/>
