@@ -322,7 +322,7 @@
                                                             </c:if>
                                                         </c:if>
                                                     </div>
-                                                    <p class="kakao_txt" id="prev_ft_txt">${list[0].cont_body}</p>
+                                                    <p class="kakao_txt" id="prev_ft_txt">${cutil:replaceBr(list[0].cont_body)}</p>
                                                     <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                                         <a href="${list[0].kko_btn_url}" class="kakao_link"
                                                            target="_blank">${list[0].kko_btn_nm}</a>
