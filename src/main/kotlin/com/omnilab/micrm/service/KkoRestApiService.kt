@@ -19,5 +19,6 @@ interface KkoRestApiService {
     fun cancleAppTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any>
     fun sendSenderKeyToken(param: HashMap<String, String>): MutableMap<String, Any>
     fun createSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any>
+    fun getSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any>
 
 }

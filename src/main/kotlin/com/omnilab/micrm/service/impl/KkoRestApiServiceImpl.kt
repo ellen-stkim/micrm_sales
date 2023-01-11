@@ -252,10 +252,9 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
         val gson = GsonBuilder().create()
 
-        logger.error("{}",HttpEntity(gson.toJson(bodyMap), headers))
         val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(bodyMap), headers))
-
         val data = re_map["data"] as MutableMap<String, Any>
+        logger.error("re_map: {}",re_map)
 
         if ("API_200" == data["code"]) {
             result["status"] = 200
@@ -265,6 +264,32 @@ class KkoRestApiServiceImpl : KkoRestApiService {
             result["msg"] = data["message"]!!
         }
         return result
+    }
+
+    override fun getSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any> {
+        val result: MutableMap<String, Any> = mutableMapOf()
+        val token = getToken(url)
+        //        header 설정
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        val urlString = "$url/$version/sendProfile/select"
+
+        val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.GET, HttpEntity(null, headers))
+        val data = re_map["data"] as MutableMap<String, Any>
+
+        if ("API_200" == data["code"]) {
+            result["status"] = 200
+            result["data"] = data["data"] as List<HashMap<String, Any>>
+        } else {
+            result["status"] = data["code"]!!.toString().replace("API_","")
+            result["msg"] = data["message"]!!
+        }
+        return result
+
     }
 
     private fun getToken(thisUrl:String): String {
