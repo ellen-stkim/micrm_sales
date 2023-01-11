@@ -64,7 +64,7 @@
             <ul class="tab_row">
                 <li class="on"><a href="/sys/user/userManagement.mi">사용자 관리</a></li>
                <%-- <li><a href="permission.html">권한 설정</a></li>--%>
-                <li><a href="#">권한 설정</a></li>
+<%--                <li><a href="#">권한 설정</a></li>--%>
             </ul>
         </form:form>
         <form:form id="userDetailForm" name="userDetailForm" method="post" >

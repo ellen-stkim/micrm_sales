@@ -2161,13 +2161,16 @@
             // 타입이 SMS 라면 (모바일)
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP02'});
+            param.push({name: 'use_yn', value: 'Y'});
         } else if (type == 'kko') {
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP03'});
+            param.push({name: 'use_yn', value: 'Y'});
         } else {
             // 타입이 RCS 라면
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP04'});
+            param.push({name: 'use_yn', value: 'Y'});
         }
 
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()})
@@ -2632,6 +2635,7 @@
             let smsTitle = $('.smsTitle[name="cont_sub_list"]');
             if($(smsTitle).val().indexOf('(광고)') != 0){
                 $(smsTitle).val('(광고)' + $(smsTitle).val());
+                onchangePrevSmsTitle(smsTitle);
             }
 
             $('.rcs_head').html('[WEB발신]광고');
@@ -2647,6 +2651,7 @@
             let smsTitle = $('.smsTitle[name="cont_sub_list"]');
             if($(smsTitle).val().indexOf('(광고)') == 0){
                 $(smsTitle).val($(smsTitle).val().substr(4));
+                onchangePrevSmsTitle(smsTitle);
             }
             $('.rcs_head').html('[WEB발신]');
         }

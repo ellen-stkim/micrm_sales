@@ -151,7 +151,7 @@
                 $("#searchValue").hide();
                 $("#use_yn_area").hide();
                 $("#tmpl_st_area").hide();
-                $("#searchValue").val('${kepSt[0].cd_desc}');
+                $("#searchValue").val('${kepSt[0].cd_val}');
             } else if (searchItem == 'use_yn') {
                 $('#use_yn_area').show();
 
@@ -166,7 +166,7 @@
                 $("#kep_st_area").hide();
                 $("#use_yn_area").hide();
 
-                $("#searchValue").val('${tmplSt[0].cd_desc}');
+                $("#searchValue").val('${tmplSt[0].cd_val}');
             }
         });
 
