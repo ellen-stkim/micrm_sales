@@ -106,7 +106,7 @@
             <div class="count border-bottom cf">
                 <div class="total left">발신번호 리스트</div>
                 <div class="btn_col right">
-                    <input type="button" value="추가" class="btn_sm_line" onclick="numberAddPopup();" />
+<%--                    <input type="button" value="추가" class="btn_sm_line" onclick="numberAddPopup();" />--%>
                     <input type="button" value="기본 발신번호 지정" class="btn_sm_line" onclick="callingNumPopup();" />
                 </div>
             </div>

@@ -110,6 +110,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(def_yn)">
 			and def_yn = #{def_yn}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			and use_yn = #{use_yn}
+		</if>
 		ORDER BY
 		FIELD(DEF_YN, 'Y') DESC,
 		REG_DT DESC
