@@ -174,6 +174,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return restExchange(urlString!!, HttpMethod.PUT, HttpEntity(null, headers))
     }
 
+
     override fun uploadFtImg(file: MultipartFile, imgType: String): MutableMap<String, Any> {
         val token = getToken(mstUrl);
         //        header 설정
@@ -195,6 +196,101 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return re_map
     }
 
+
+    override fun sendSenderKeyToken(param: java.util.HashMap<String, String>): MutableMap<String, Any> {
+        val result: MutableMap<String, Any> = mutableMapOf()
+        try {
+            val token = getToken(url);
+            //        header 설정
+            val headers = HttpHeaders()
+            headers.contentType = MediaType.APPLICATION_JSON
+            headers.set("Authorization", "Bearer $token")
+            headers.set("version", version)
+            headers.set("accept", MediaType.ALL_VALUE)
+
+            val chanId = param.get("channelId")
+            val phoneNum = param.get("phoneNum")
+            val urlString = "$url/$version/sendProfile/token?yellowId=$chanId&phoneNumber=$phoneNum"
+
+            val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.GET, HttpEntity(null, headers))
+
+            val data = re_map["data"] as MutableMap<String, Any>
+
+            if("API_200" == data["code"]){
+                result["status"] = 200
+                result["msg"] = "인증번호가 카카오톡으로 발송되었습니다."
+            }else{
+                result["status"] = data["code"]!!.toString().replace("API_","")
+                result["msg"] = data["message"]!!
+            }
+        }catch (e:Exception){
+            result["status"] = 302
+            result["msg"] = "에러가 발생했습니다. 새로고침 후 다시 시도해주세요."
+        }
+
+        return result
+    }
+
+    override fun createSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any> {
+        val result: MutableMap<String, Any> = mutableMapOf()
+        val token = getToken(url)
+        //        header 설정
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        headers.set("token", map["token"]?.toString())
+        headers.set("phoneNumber", map["phoneNumber"]?.toString())
+
+        val urlString = "$url/$version/sendProfile/create"
+        val bodyMap = HashMap<String, String>()
+        bodyMap["yellowId"] = map["yellowId"] as String
+        bodyMap["categoryCode"] = map["cateCd"] as String
+        bodyMap["channelKey"] = "base"
+
+        val gson = GsonBuilder().create()
+
+        val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(bodyMap), headers))
+        val data = re_map["data"] as MutableMap<String, Any>
+        logger.error("re_map: {}",re_map)
+
+        if ("API_200" == data["code"]) {
+            result["status"] = 200
+            result["data"] = data
+        } else {
+            result["status"] = data["code"]!!.toString().replace("API_","")
+            result["msg"] = data["message"]!!
+        }
+        return result
+    }
+
+    override fun getSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any> {
+        val result: MutableMap<String, Any> = mutableMapOf()
+        val token = getToken(url)
+        //        header 설정
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", version)
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        val urlString = "$url/$version/sendProfile/select"
+
+        val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.GET, HttpEntity(null, headers))
+        val data = re_map["data"] as MutableMap<String, Any>
+
+        if ("API_200" == data["code"]) {
+            result["status"] = 200
+            result["data"] = data["data"] as List<HashMap<String, Any>>
+        } else {
+            result["status"] = data["code"]!!.toString().replace("API_","")
+            result["msg"] = data["message"]!!
+        }
+        return result
+
+    }
 
     private fun getToken(thisUrl:String): String {
 

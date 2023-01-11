@@ -2,15 +2,16 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.*
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
+import com.omnilab.micrm.service.KkoRestApiService
 import com.omnilab.micrm.service.SysSettingService
-import org.springframework.stereotype.Controller
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
@@ -33,6 +34,11 @@ class SysSettingController {
     @Autowired
     @Qualifier("CampaignServiceImpl")
     private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
+
+
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
@@ -315,6 +321,25 @@ class SysSettingController {
         return view;
     }
 
+    /**
+     * @Method Name  : requestKkoToken
+     * @Since    : 2023. 01. 09
+     * @author   : Belisa
+     * @param    :
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : SMS INSERT 하기
+     * @title : SMS INSERT 하기
+     */
+
+    @ResponseBody
+    @PostMapping("/requestKkoToken.ajax")
+    fun requestKkoToken(@RequestBody param : HashMap<String,String>) : Map<String,Any> {
+        return kkoRestApiService.sendSenderKeyToken(param)
+    }
+
 
     /**
      * @Method Name  : insertSmsLst
@@ -475,10 +500,33 @@ class SysSettingController {
         val dto = SetLst_searchDto()
         val map = sysSettingService.getKkoSettingList(dto)
         view.addObject("list",map["list"])
+        view.addObject("cateLst",map["cateLst"])
+        view.addObject("cateMidLst",map["cateMidLst"])
+        view.addObject("cateSubLst",map["cateSubLst"])
         view.addObject("page",map["page"])
         view.addObject("pageNo",map["pageNo"])
 
         return view;
+    }
+
+
+
+    /**
+     * @Method Name  : insertKkoSenderKey
+     * @Since    : 2023. 01. 09
+     * @author   : Belisa
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 발신자 프로필 등록
+     * @title : 카카오 발신자 프로필 등록
+     */
+    @ResponseBody
+    @PostMapping("/insertKkoSenderKey.ajax")
+    fun insertKkoSenderKey(lstDto : Tblmi_set_lstDto,@RequestParam(value = "kko_token") token : String, @RequestParam(value = "kko_cate") cateCd :String) : Map<String,Any> {
+        return sysSettingService.insertKkoSenderKey(lstDto,token,cateCd)
     }
 
     /**
@@ -563,7 +611,7 @@ class SysSettingController {
 
     @ResponseBody
     @PostMapping("/insertRejectText.ajax")
-    fun insertRejectText(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+    fun insertRejectText(lstDto : Tblmi_set_lstDto) : Int {
         return sysSettingService.insertRejectText(lstDto)
     }
 

@@ -1,5 +1,7 @@
 package com.omnilab.micrm.service.impl
 
+import com.google.gson.internal.LinkedTreeMap
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SalesforceDto
@@ -8,6 +10,7 @@ import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.MemberDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
+import com.omnilab.micrm.service.KkoRestApiService
 import com.omnilab.micrm.service.SysSettingService
 import com.omnilab.micrm.service.WorkService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 @Service("SysSettingServiceImpl")
@@ -45,6 +49,10 @@ class SysSettingServiceImpl : SysSettingService {
 
     @Autowired
     lateinit var fileUpload: FileUploadUtils;
+
+    @Autowired
+    @Qualifier("KkoRestApiServiceImpl")
+    lateinit var kkoRestApiService: KkoRestApiService
 
 
     //공지사항 파일 업로드 정보 저장
@@ -454,10 +462,26 @@ class SysSettingServiceImpl : SysSettingService {
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
         paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
 
+        // 발신 채널 카테고리
+        var cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        cdDto.grp_id = "KAKAO_PROF_CATE"
+        cdDto.cd_id = "PROF_CATE"
+        val cataLst = sysSettingDao.getCommCDLst(cdDto)
+
+        cdDto.cd_id = "CATE_MID"
+        val cataMidLst = sysSettingDao.getCommCDLst(cdDto)
+
+        cdDto.cd_id = "CATE_SUB"
+        val cataSubLst = sysSettingDao.getCommCDLst(cdDto)
+
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getSettingList(searchDto);
+        map["list"] = sysSettingDao.getSettingList(searchDto)
+        map["cateLst"] = cataLst
+        map["cateMidLst"] = cataMidLst
+        map["cateSubLst"] = cataSubLst
+        map["sendCate"] = sysSettingDao.getSettingList(searchDto)
 
         return map;
     }
@@ -534,17 +558,75 @@ class SysSettingServiceImpl : SysSettingService {
         return map;
     }
 
-    override fun insertRejectText(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+    override fun insertRejectText(lstDto: Tblmi_set_lstDto): Int {
         val userInfo = UsefulUtils.sessionUser()
-        val statusMap: MutableMap<String, Any> = HashMap()
 
         lstDto.list_tp_id = "CH04"
         lstDto.list_dt_id = "REJT01"
         lstDto.usr_grp_cd = userInfo.usr_grp_cd
         lstDto.reg_id = userInfo.usr_id
 
-        val result = sysSettingDao.insertSetLst(lstDto)
+        return sysSettingDao.insertSetLst(lstDto)
+    }
 
-        return statusMap
+
+    override fun insertKkoSenderKey(lstDto: Tblmi_set_lstDto, token: String, cateCd: String): Map<String, Any> {
+        val map = mutableMapOf<String, Any>()
+        map["token"] = token
+        map["cateCd"] = cateCd
+        map["yellowId"] = lstDto.list_nm!!
+        map["phoneNumber"] = lstDto.list_val!!
+        var result: MutableMap<String, Any>
+        try {
+            result = kkoRestApiService.createSendProfile(map)
+            if (result["status"] == 200) {
+
+                val data = result["data"] as MutableMap<String, Any>
+                logger.error("{}", data)
+
+                val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
+                if(getTodaySendProfileResult["status"] == 200){
+                    val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
+
+                    var sendKey:String =""
+                    for(sendProfile in todaySendProfileList){
+                        if(sendProfile["channelId"] == lstDto.list_nm!!) {
+                            sendKey = sendProfile["sendProfileKey"].toString()
+                        }
+                    }
+                    if(!CommonUtils.isEmptyObject(sendKey)){
+                        val userInfo = UsefulUtils.sessionUser()
+
+                        lstDto.list_tp_id = "CH02"
+                        lstDto.list_dt_id = "DMTP02"
+                        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+                        lstDto.reg_id = userInfo.usr_id
+                        lstDto.list_val = sendKey
+
+                        sysSettingDao.insertSetLst(lstDto)
+                    }else{
+                        result["status"] = 302
+                        result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
+                    }
+                }
+
+               /* val userInfo = UsefulUtils.sessionUser()
+
+                lstDto.list_tp_id = "CH02"
+                lstDto.list_dt_id = "DMTP02"
+                lstDto.usr_grp_cd = userInfo.usr_grp_cd
+                lstDto.reg_id = userInfo.usr_id
+                lstDto.list_val = data["sendProfileKey"]?.toString()
+
+                sysSettingDao.insertSetLst(lstDto)*/
+            }
+        } catch (e: Exception) {
+            logger.error("", e)
+            result = mutableMapOf()
+            result["status"] = 302
+            result["msg"] = "오류가 발생했습니다. 새로고침 후 다시 시도해주세요."
+        }
+
+        return result
     }
 }

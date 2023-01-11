@@ -32,7 +32,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -122,6 +121,7 @@ define(["postmonger"], function (Postmonger) {
 
 					if(response.kko.list){
 						$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
+						$('#send_key').val(response.kko.list[0].list_val)
 						$("#kakao_send_to_num").val(response.kko.list[0].seq);
 					}
 					if(response.mdm.list){
@@ -155,7 +155,7 @@ define(["postmonger"], function (Postmonger) {
 			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
 		}
 		data.seq = mstSeq;
-		data.extentionCnt = dataExtensionCnt;
+		data["§extention_cnt§"] = dataExtensionCnt;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
