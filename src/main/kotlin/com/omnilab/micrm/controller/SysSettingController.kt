@@ -509,6 +509,28 @@ class SysSettingController {
         return view;
     }
 
+    /**
+     * @Method Name  : getKkoSettingList
+     * @Since    : 2023. 01. 11
+     * @author   : Belisa
+     * @param    : lstStDto: SetLst_searchDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 정보 설정 페이지 가져오기
+     * @title : 카카오 정보 설정 페이지 가져오기
+     */
+
+    @PostMapping("/getKkoSettingList.ajax")
+    fun getKkoSettingList(@ModelAttribute("form") lstStDto: SetLst_searchDto) : ModelAndView {
+        val view = ModelAndView("sys/setting/ajax/getKkoSettingList")
+        val map = sysSettingService.getKkoSettingList(lstStDto)
+        view.addObject("list",map["list"])
+        view.addObject("page",map["page"])
+        view.addObject("pageNo",map["pageNo"])
+        return view;
+    }
 
 
     /**

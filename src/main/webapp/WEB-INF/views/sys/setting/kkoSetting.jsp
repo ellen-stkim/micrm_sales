@@ -517,7 +517,7 @@
         data.push({name: 'pageNo', value: page});
         data.push({name: 'searchType', value: $("#searchType").val()});
         data.push({name: 'searchValue', value: $("#searchValue").val()});
-        com_ajax.ajax('post', '${baseURL}/sys/setting/getSmsSettingList.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sys/setting/getKkoSettingList.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     function enterSearch() {

@@ -400,6 +400,7 @@ class SysSettingServiceImpl : SysSettingService {
         lstDto.list_dt_id = "SPTP01"
         lstDto.usr_grp_cd = userInfo.usr_grp_cd
         lstDto.reg_id = userInfo.usr_id
+        lstDto.list_val = lstDto.list_val!!.lowercase(Locale.getDefault())
 
         val result = sysSettingDao.insertSetLst(lstDto)
 
@@ -577,54 +578,59 @@ class SysSettingServiceImpl : SysSettingService {
         map["yellowId"] = lstDto.list_nm!!
         map["phoneNumber"] = lstDto.list_val!!
         var result: MutableMap<String, Any>
+
+        result = kkoRestApiService.createSendProfile(map)   // 발신프로필 키 등록 후 등록된 프로필 데이터 반환
         try {
-            result = kkoRestApiService.createSendProfile(map)
             if (result["status"] == 200) {
 
-                val data = result["data"] as MutableMap<String, Any>
+                val tempData = result["data"] as MutableMap<String, Any>
+                val data = tempData["data"] as MutableMap<String, Any>
                 logger.error("{}", data)
 
-                val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
-                if(getTodaySendProfileResult["status"] == 200){
-                    val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
-
-                    var sendKey:String =""
-                    for(sendProfile in todaySendProfileList){
-                        if(sendProfile["channelId"] == lstDto.list_nm!!) {
-                            sendKey = sendProfile["sendProfileKey"].toString()
-                        }
-                    }
-                    if(!CommonUtils.isEmptyObject(sendKey)){
-                        val userInfo = UsefulUtils.sessionUser()
-
-                        lstDto.list_tp_id = "CH02"
-                        lstDto.list_dt_id = "DMTP02"
-                        lstDto.usr_grp_cd = userInfo.usr_grp_cd
-                        lstDto.reg_id = userInfo.usr_id
-                        lstDto.list_val = sendKey
-
-                        sysSettingDao.insertSetLst(lstDto)
-                    }else{
-                        result["status"] = 302
-                        result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
-                    }
-                }
-
-               /* val userInfo = UsefulUtils.sessionUser()
+                val userInfo = UsefulUtils.sessionUser()
 
                 lstDto.list_tp_id = "CH02"
-                lstDto.list_dt_id = "DMTP02"
+                lstDto.list_dt_id = "DMTP03"
                 lstDto.usr_grp_cd = userInfo.usr_grp_cd
                 lstDto.reg_id = userInfo.usr_id
                 lstDto.list_val = data["sendProfileKey"]?.toString()
 
-                sysSettingDao.insertSetLst(lstDto)*/
+                sysSettingDao.insertSetLst(lstDto)
             }
         } catch (e: Exception) {
-            logger.error("", e)
+
+            // 발신 프로필 등록 후 데이터 등록 에러 발생시 프로필 리스트 조회 후 데이터 등록
             result = mutableMapOf()
-            result["status"] = 302
-            result["msg"] = "오류가 발생했습니다. 새로고침 후 다시 시도해주세요."
+            val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
+            if(getTodaySendProfileResult["status"] == 200){
+                val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
+
+                var sendKey:String =""
+                for(sendProfile in todaySendProfileList){
+                    if(sendProfile["channelId"] == lstDto.list_nm!!) {
+                        sendKey = sendProfile["sendProfileKey"].toString()
+                    }
+                }
+                if(!CommonUtils.isEmptyObject(sendKey)){
+                    val userInfo = UsefulUtils.sessionUser()
+
+                    lstDto.list_tp_id = "CH02"
+                    lstDto.list_dt_id = "DMTP03"
+                    lstDto.usr_grp_cd = userInfo.usr_grp_cd
+                    lstDto.reg_id = userInfo.usr_id
+                    lstDto.list_val = sendKey
+
+                    sysSettingDao.insertSetLst(lstDto)
+                }else{
+                    logger.error("", e)
+                    result["status"] = 302
+                    result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
+                }
+            }else{
+                logger.error("", getTodaySendProfileResult)
+                result["status"] = 302
+                result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
+            }
         }
 
         return result

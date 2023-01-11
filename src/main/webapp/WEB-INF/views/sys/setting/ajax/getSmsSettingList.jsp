@@ -31,7 +31,7 @@
                 <th>발신번호</th>
                 <th>생성일</th>
                 <th>사용여부</th>
-                <th>수정/삭제</th>
+                <th>삭제</th>
             </tr>
             </thead>
             <tbody>
@@ -63,7 +63,7 @@
                         </c:if>
                     </td>
                     <td>
-                        <input type="button" class="btn_sm_line btn_inline size" value="수정" onclick="numberRePopup('${n.seq}');" />
+<%--                        <input type="button" class="btn_sm_line btn_inline size" value="수정" onclick="numberRePopup('${n.seq}');" />--%>
                         <input type="button" class="btn_sm_line btn_inline size" value="삭제" onclick="deleteAlert(this ,'${n.seq}');" />
                     </td>
                 </tr>
@@ -96,7 +96,7 @@
                 <th>발신번호</th>
                 <th>생성일</th>
                 <th>사용여부</th>
-                <th>수정/삭제</th>
+                <th>삭제</th>
             </tr>
             </thead>
             <tbody>
