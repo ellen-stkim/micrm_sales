@@ -128,6 +128,7 @@
                                     <div class="th">문자 제목</div>
                                     <div class="column_1">
                                         <input type="text" class="title kakaoTitle" name="cont_sub_list"
+                                               value="(광고)"
                                                placeholder="문자 제목을 입력하세요."/>
                                         <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                     </div>
@@ -310,6 +311,7 @@
                                                        onkeyup="smsCreate.titleCount(this);" placeholder="문자 제목을 입력하세요." />--%>
                                             <input type="text" class="title type1 smsTitle" name="cont_sub_list" id="sms_title"
                                                    onkeyup="onchangePrevSmsTitle(this)"
+                                                   value="(광고)"
                                                    placeholder="문자 제목을 입력하세요."/>
                                             <span class="title_byte en_font">(40byte)</span>
                                         </div>
@@ -2622,11 +2624,30 @@
             kakao.val('ad');
             sms.val('ad');
             rcs.val('ad');
+
+            let kakaoTitle = $('.kakaoTitle[name="cont_sub_list"]');
+            if($(kakaoTitle).val().indexOf('(광고)') != 0){
+                $(kakaoTitle).val('(광고)' + $(kakaoTitle).val());
+            }
+            let smsTitle = $('.smsTitle[name="cont_sub_list"]');
+            if($(smsTitle).val().indexOf('(광고)') != 0){
+                $(smsTitle).val('(광고)' + $(smsTitle).val());
+            }
+
             $('.rcs_head').html('[WEB발신]광고');
         } else {
             kakao.val('guide');
             sms.val('guide');
             rcs.val('guide');
+
+            let kakaoTitle = $('.kakaoTitle[name="cont_sub_list"]');
+            if($(kakaoTitle).val().indexOf('(광고)') == 0){
+                $(kakaoTitle).val($(kakaoTitle).val().substr(4));
+            }
+            let smsTitle = $('.smsTitle[name="cont_sub_list"]');
+            if($(smsTitle).val().indexOf('(광고)') == 0){
+                $(smsTitle).val($(smsTitle).val().substr(4));
+            }
             $('.rcs_head').html('[WEB발신]');
         }
     }
