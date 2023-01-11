@@ -2632,6 +2632,7 @@
             let smsTitle = $('.smsTitle[name="cont_sub_list"]');
             if($(smsTitle).val().indexOf('(광고)') != 0){
                 $(smsTitle).val('(광고)' + $(smsTitle).val());
+                onchangePrevSmsTitle(smsTitle);
             }
 
             $('.rcs_head').html('[WEB발신]광고');
