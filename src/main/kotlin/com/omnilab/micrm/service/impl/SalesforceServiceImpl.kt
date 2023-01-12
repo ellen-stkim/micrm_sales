@@ -48,6 +48,7 @@ import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -2380,12 +2381,19 @@ class SalesforceServiceImpl : SalesforceService {
             if(campLst.isEmpty()){
                 return false
             }else{
+                logger.error("=========================")
+                logger.error("{}",campLst)
                 for(campaignDto in campLst){
+                    logger.error("---------------------------------------------------")
+                    logger.error("{}",campaignDto)
+                    logger.error("{}",!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"]))
+                    logger.error("---------------------------------------------------")
+
                     // 타겟수 업데이트
                     if((campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0)
                                 && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
 
-                        logger.error("{}",campaignDto)
+
                         val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
                         salesforceDao.upd_tblmicp_campaign(Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,targetCnt,campaignDto.reg_id))
                         // 프로그램 tarcnt 수정
