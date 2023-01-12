@@ -411,7 +411,7 @@
 
         let data = []
         data.push({name : "list_nm" , value : senderName})
-        com_ajax.ajax('post', '${baseURL}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sys/setting/isExistKkoAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 중복 메일 수정 체크하기
