@@ -1604,7 +1604,7 @@
     function smsValidate() {
         let smsOption = $('input[name="sms_option"]').val();
         let smsTitle = $('.smsTitle');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('#sms_txt_area');
         let smsNumber = $('.smsNumber')
         let smsNumberValue = $('#sms_send_to').val().trim();
 
@@ -1664,7 +1664,7 @@
         let smsType = $('.smsType:checked').val();
         let smsByte = Number($('.sms_byte').html());
         let smsImage = $('#smsImage');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('#sms_txt_area');
 
         if (smsType == 'LMS') {
             //$("#mds_img_cd").val('');

@@ -17,6 +17,7 @@ open class Tblmicp_campaignDto {
     var sto: String? = null
     var send_st_tp: String? = null
     var tar_cnt: Int? = null
+    var send_cnt: Int? = null
     var start_dt: String? = null
     var end_dt: String? = null
     var suppressed: String? = null
