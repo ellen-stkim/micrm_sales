@@ -218,9 +218,27 @@
                                             </div>
                                         </div>
                                         <div class="row" style="height:150px;">
-                                            <div class="th">내용</div>
-                                            <div class="td">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
+                                            <div class="th bottom-border">내용</div>
+                                            <div class="td bottom-border">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
                                                                         onkeyup="onchangePrevKkoTxt(this)"></textarea></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="th">수신거부 문구</div>
+                                            <div class="td">
+                                                <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
+                                                        <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                            value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                        </c:if>
+                                                        <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                            placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                        </c:if>
+                                                />
+                                                <div style="display: flex; width: 110px">
+                                                    <span class="btn_sm_line btn_inline" onclick="addRejectText('kko_ft')">사용</span>
+                                                    <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
+                                                </div>
+                                                <input type="hidden" name="sms_trackinglink"/>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="block">
@@ -415,36 +433,36 @@
                                             </div>
                                         </div>
                                         <div class="row"  style="height:150px;">
-                                            <div class="th">내용</div>
-                                            <div class="td"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
+                                            <div class="th bottom-border">내용</div>
+                                            <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
                                                                        onkeyup="onchangePrevSmsTxt(this)"></textarea></div>
-                                        </div>
-                                    </div>
-                                    <div class="block">
-                                        <div class="row">
-                                            <div class="th bottom-border">추적 링크 생성</div>
-                                            <div class="td bottom-border">
-                                                <input type="text" class="txt_input" id="smsTracking"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                <span class="btn_sm_line trackingLinkBtn">생성</span>
-                                                <input type="hidden" name="sms_trackinglink"/>
-                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">
-                                                <input type="text" class="txt_input" id="rejectText" style="width: calc(100% - 110px);"
+                                                <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                    value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                            value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
                                                         </c:if>
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                             placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
                                                         </c:if>
-                                                       />
+                                                />
                                                 <div style="display: flex; width: 110px">
-                                                    <span class="btn_sm_line btn_inline" onclick="addRejectText()">사용</span>
+                                                    <span class="btn_sm_line btn_inline" onclick="addRejectText('sms')">사용</span>
                                                     <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
                                                 </div>
+                                                <input type="hidden" name="sms_trackinglink"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block">
+                                        <div class="row">
+                                            <div class="th">추적 링크 생성</div>
+                                            <div class="td">
+                                                <input type="text" class="txt_input" id="smsTracking"
+                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                 <input type="hidden" name="sms_trackinglink"/>
                                             </div>
                                         </div>
@@ -1671,12 +1689,6 @@
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
         });
 
-        // 수신 거부 문구 사용
-        $(document).on('click','#useRejectTextBtn',(e)=>{
-            console.log($(e.target));
-
-
-        })
     });
 
     // 카카오, SMS 유효성 검사
@@ -2383,9 +2395,9 @@
 
     function changeMobileRejectText(){
         const checkedTr = $('.mobilePopup input[name="callNumber"]:checked').parents('tr');
-        const text = $(checkedTr).children('td:last-child').html()
+        const text = $(checkedTr).children('td:last-child').html();
 
-        $('#rejectText').val(text)
+        $('input[name="rejectText"]:visible').val(text);
 
         $('.mobilePopup').removeClass('active');
     }
@@ -3097,11 +3109,21 @@
         $('#prev_ft_txt').html($(e).val().replaceAll("\n", "<br/>"));
     }
 
-    function addRejectText(){
-        const txtbox = $('#sms_txt_area');
-        if($('#rejectText').val() != ''){
-            $(txtbox).val($(txtbox).val()+"\n\n"+$('#rejectText').val());
-            onchangePrevSmsTxt(txtbox);
+    function addRejectText(type){
+        const rejectText = $('input[name="rejectText"]:visible');
+
+        if(type == "sms"){
+            const txtbox = $('#sms_txt_area');
+            if($(rejectText).val() != ''){
+                $(txtbox).val($(txtbox).val()+"\n\n"+$(rejectText).val());
+                onchangePrevSmsTxt(txtbox);
+            }
+        }else if(type == "kko_ft"){
+            const txtbox = $('textarea.kakao_txt');
+            if($(rejectText).val() != ''){
+                $(txtbox).val($(txtbox).val()+"\n\n"+$(rejectText).val());
+                onchangePrevKkoTxt(txtbox);
+            }
         }
     }
 

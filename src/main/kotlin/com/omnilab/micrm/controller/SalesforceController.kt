@@ -170,7 +170,15 @@ class SalesforceController {
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         val cntMap = salesforceService.isCheckSender(usr_cd)
 
+        val rejDto = SetLst_searchDto()
+        rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        rejDto.list_tp_id = "CH04"
+        rejDto.list_dt_id = "REJT01"
+        rejDto.def_yn = "Y"
+        val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
+
         view.addObject("list" , listMap["list"])
+        view.addObject("rejectText",smsRejectTextMap["list"])
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
