@@ -24,6 +24,7 @@ interface SalesforceDao {
     fun upd_tblmicp_cont_mst_pub(dto: Tblmicp_cont_mstDto): Int
     fun upd_tblmicp_program_sales(dto: Tblmicp_programDto): Int
     fun upd_tblmicp_campaign(dto: Tblmicp_campaignDto): Int
+    fun upd_tblmicp_program_total_cnt(tblmicpProgramdto: Tblmicp_programDto):Int
 
     fun del_tblmicp_cont_lst(cont_cd: String): Int
     fun del_tblmicp_cont_url_lst(cont_cd: String): Int
