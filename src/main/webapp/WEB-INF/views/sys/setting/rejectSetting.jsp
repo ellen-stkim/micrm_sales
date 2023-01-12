@@ -94,7 +94,7 @@
                 <tr>
                     <th>수신거부 문구</th>
                     <td>
-                        <textarea id ="sendDefaultAddress" cols="30" rows="10" style="width: 100%;height: 80px; padding: 0 15px; resize: none;"><c:if test = "${list[0].def_yn == 'Y'}">${cutil:numberToPhone(list[0].list_val)}</c:if></textarea>
+                        <textarea id ="sendDefaultAddress" cols="30" rows="10" style="width: 100%;height: 80px; padding: 0 15px; resize: none;" readonly><c:if test = "${list[0].def_yn == 'Y'}">${cutil:numberToPhone(list[0].list_val)}</c:if></textarea>
                     </td>
                 </tr>
                 </tbody>
