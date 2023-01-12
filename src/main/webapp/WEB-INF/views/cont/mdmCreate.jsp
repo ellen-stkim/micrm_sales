@@ -1085,8 +1085,8 @@
                     $(txtContents).val(txt + data);
                 }
             } else {
-                let txt = $(this).parents('.block[name="textBlock"]').find('.rcsContents').val();
-                let textContents = $(this).parents('.block[name="textBlock"]').find('.rcsContents');
+                let txt = $(this).parents('.row').siblings().find('.rcsContents').val();
+                let textContents = $(this).parents('.row').siblings().find('.rcsContents');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(textContents).val(txt + data);
@@ -2792,7 +2792,6 @@
         } else {
             $('input[name="rcs_msg_tp"]').val("medium");
         }
-
         getDBValue();
         adTypeCheck();
 
