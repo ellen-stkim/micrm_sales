@@ -46,6 +46,13 @@ open class Tblmicp_campaignDto {
         this.seq = seq
     }
 
+    constructor(seq: Int?, pro_id: String?, tar_cnt: Int?, reg_id: String?) {
+        this.seq = seq
+        this.pro_id = pro_id
+        this.tar_cnt = tar_cnt
+        this.reg_id = reg_id
+    }
+
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

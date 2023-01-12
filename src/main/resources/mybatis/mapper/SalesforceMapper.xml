@@ -372,10 +372,19 @@
     </update>
 
     <update id="upd_tblmicp_campaign" parameterType="Tblmicp_campaignDto">
-        update tblmicp_campaign set
-            camp_st = #{camp_st}
+        update tblmicp_campaign
+        set pro_id = #{pro_id}
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_st)">
+            , camp_st = #{camp_st}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tar_cnt)">
+            , tar_cnt = #{tar_cnt}
+        </if>
         <where>
             pro_id = #{pro_id}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+                and seq = #{seq}
+            </if>
         </where>
     </update>
 
