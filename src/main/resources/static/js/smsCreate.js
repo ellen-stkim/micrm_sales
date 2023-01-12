@@ -398,6 +398,7 @@ let rcsCreate = {
 
     }
     , rcsContents : function(text, number){
+        console.log(text)
         let textValue = text.value;
         let newText = new String(textValue);
         let txtLength = newText.length;
