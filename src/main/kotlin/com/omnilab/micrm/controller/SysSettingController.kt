@@ -532,6 +532,24 @@ class SysSettingController {
         return view;
     }
 
+    /**
+     * @Method Name  : isExistKkoAddress
+     * @Since    : 2023. 01. 12
+     * @author   : Grayson
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 프로필키 중복 여부 확인하기
+     * @title : 카카오 프로필키 중복 확인
+     */
+
+    @ResponseBody
+    @PostMapping("/isExistKkoAddress.ajax")
+    fun isExistKkoAddress(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.isExistKkoAddress(lstDto)
+    }
 
     /**
      * @Method Name  : insertKkoSenderKey
