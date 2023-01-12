@@ -813,7 +813,6 @@
                         let tabInx1 = $('.formatType').index(this);
                         $('#js-smsTab li').eq(tabInx1).show().addClass('on').siblings().removeClass('on');
                         $('.tab_contents').eq(tabInx1).addClass('active').siblings().removeClass('active');
-
                     } else {
                         let tabInx2 = $('.formatType').index(this);
                         $('#js-smsTab li').eq(tabInx2).hide().removeClass('on');
@@ -1019,7 +1018,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다. ");
                 $('.kakao_txt').val(txt + data);
-                onchangePrevKkoTxt($('.kakao_txt'));
+                $('.kakao_txt').keyup();
             }
         });
 
