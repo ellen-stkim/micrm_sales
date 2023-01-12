@@ -385,7 +385,7 @@
                 '</tbody>' +
                 '</table>' +
                 '<div class="btn_row">' +
-                '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="modifyDefaultAddress(\''+changeNumber+'\',\''+changeSendNumber+'\',\''+changeSender+'\')" value="확인" />' +
+                '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="modifyDefaultAddress(\''+changeNumber+'\')" value="확인" />' +
                 '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
                 '</div>' +
                 '</div>' +
@@ -475,7 +475,7 @@
 
 
     // 기본 메일 값 변경 하기
-    function modifyDefaultAddress(changeSendNo,changerejectText,changeSender){
+    function modifyDefaultAddress(changeSendNo){
 
         let nowPage = $("#nowPageNo").val();
         //let changeFormatNumber = phoneFormatter(changerejectText)
@@ -486,6 +486,9 @@
             if(response.status == true){
                 popup.popAlert("기본 수신거부 문구 변경 완료 되었습니다");
                 // 메일 값 설정해 주기
+                let changerejectText = $('input[name="callingNumber"]:checked').parents('label').find('input[name="changeSendNumber"]').val();  // 바꿀 발신 번호
+                let changeSender = $('input[name="callingNumber"]:checked').parents('label').find('input[name="changeSender"]').val();  // 바꿀 발신자 명
+
                 $("#sendDefaultNo").val(changeSendNo)
                 $("#sendDefaultNm").text(changeSender)
                 $("#sendDefaultAddress").text(changerejectText)

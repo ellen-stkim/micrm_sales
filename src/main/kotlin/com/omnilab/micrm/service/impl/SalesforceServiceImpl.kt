@@ -43,8 +43,12 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
+import java.util.*
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -2327,7 +2331,10 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
-        val inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        val inArguments = mutableMapOf<String,Any>()
+        val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
+
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
@@ -2349,17 +2356,31 @@ class SalesforceServiceImpl : SalesforceService {
             val cDto = Tblmicp_campaignDto()
             cDto.cont_id = contMst.seq
             val campLst = campaignDao.sel_tblmicp_campaign(cDto)
+            var totalProgramCnt =0;
 
             if(campLst.isEmpty()){
                 return false
             }else{
+                logger.error("=========================")
+                logger.error("{}",campLst)
                 for(campaignDto in campLst){
+                    logger.error("---------------------------------------------------")
+                    logger.error("{}",campaignDto)
+                    logger.error("{}",!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"]))
+                    logger.error("---------------------------------------------------")
+
                     // 타겟수 업데이트
-                    if(CommonUtils.isEmptyObject(campaignDto.tar_cnt) || campaignDto.tar_cnt == 0){
-                        val targetCnt = inArguments.get("extentionCnt").toString().toDouble().toInt()
-                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
+                    if((campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0)
+                                && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+
+
+                        val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
+                        salesforceDao.upd_tblmicp_campaign(Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,targetCnt,campaignDto.reg_id))
+                        // 프로그램 tarcnt 수정
+                        totalProgramCnt += targetCnt
+                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,totalProgramCnt,null,campaignDto.reg_id))
                     }
-                    inArguments.remove("extentionCnt")
+                    inArguments.remove("§extention_cnt§")
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
@@ -2494,18 +2515,17 @@ class SalesforceServiceImpl : SalesforceService {
         exp.operator = ETExpression.Operator.EQUALS
         exp.addValue(extentionId)
 
-
         filter.expression = exp
 
         val response = client.retrieve(ETDataExtension::class.java, filter)
 
         val dataExtension = response.result.getObject()
         val reList =  dataExtension.retrieveColumns()
-                                        .stream().map {column->column.name}.toList()
+                                        .stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
 
         val reMap = HashMap<String, Any>()
-        reMap.put("list",reList)
-        reMap.put("totalCnt",dataExtension.select().totalCount)
+        reMap["list"] = reList
+        reMap["totalCnt"] = dataExtension.select().totalCount
 
         return reMap
     }

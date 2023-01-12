@@ -128,6 +128,7 @@
                                     <div class="th">문자 제목</div>
                                     <div class="column_1">
                                         <input type="text" class="title kakaoTitle" name="cont_sub_list"
+                                               value="(광고)"
                                                placeholder="문자 제목을 입력하세요."/>
                                         <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                     </div>
@@ -281,11 +282,11 @@
                                 <div class="at_inner template_body">
                                     <div class="text">
                                         <div class="row_body">
-                                            <div class="round_box" >
+                                            <div class="round_box">
                                                 <div class="round_box head">
                                                     <p>알림톡 도착</p>
                                                 </div>
-                                                <div class="sms_txt at_tmpl_data" ></div>
+                                                <div class="at_tmpl_data" ></div>
                                                 <input type="hidden" class="kakao_txt" name="kakao_body" value="">
                                                 <a href="" class="sms_btn">버튼</a>
                                             </div>
@@ -310,6 +311,7 @@
                                                        onkeyup="smsCreate.titleCount(this);" placeholder="문자 제목을 입력하세요." />--%>
                                             <input type="text" class="title type1 smsTitle" name="cont_sub_list" id="sms_title"
                                                    onkeyup="onchangePrevSmsTitle(this)"
+                                                   value="(광고)"
                                                    placeholder="문자 제목을 입력하세요."/>
                                             <span class="title_byte en_font">(40byte)</span>
                                         </div>
@@ -336,19 +338,16 @@
                                         <div class="row">
                                             <div class="th">문자 종류</div>
                                             <div class="td">
-                                                <label class="custom_radio">LMS
-                                                    <input class="smsType" name="sms_msg_tp" type="radio" value="LMS"
-                                                           checked/>
-                                                    <span></span>
-                                                </label>
-                                                <label class="custom_radio">MMS
-                                                    <input class="smsType" name="sms_msg_tp" type="radio" value="MMS"/>
-                                                    <span></span>
-                                                </label>
-                                                <label class="custom_radio">SMS
-                                                    <input class="smsType" name="sms_msg_tp" type="radio" value="SMS"/>
-                                                    <span></span>
-                                                </label>
+                                                <label class="custom_radio">LMS<input class="smsType" name="sms_msg_tp"
+                                                                                      type="radio"
+                                                                                      value="LMS"
+                                                                                      checked/><span></span></label>
+                                                <label class="custom_radio">MMS<input class="smsType" name="sms_msg_tp"
+                                                                                      type="radio"
+                                                                                      value="MMS"/><span></span></label>
+                                                <label class="custom_radio">SMS<input class="smsType" name="sms_msg_tp"
+                                                                                      type="radio"
+                                                                                      value="SMS"/><span></span></label>
                                             </div>
                                             <input type="hidden" name="mms_imgurl"/>
                                         </div>
@@ -465,15 +464,15 @@
                                     <div class="row body">
                                         <div class="th">카드 양식</div>
                                         <div class="column_1">
-                                            <label class="custom_radio en_font">SMS
-                                                <input name="rcs_msg_tp" class="lowType" type="radio" value="sms"
-                                                       checked/>
-                                                <span></span>
-                                            </label>
-                                            <label class="custom_radio en_font">LMS
-                                                <input name="rcs_msg_tp" class="lowType" type="radio" value="lms"/>
-                                                <span></span>
-                                            </label>
+                                            <label class="custom_radio en_font">SMS<input name="rcs_msg_tp"
+                                                                                          class="lowType"
+                                                                                          type="radio" value="sms"
+                                                                                          checked
+                                            /><span></span></label>
+                                            <label class="custom_radio en_font">LMS<input name="rcs_msg_tp"
+                                                                                          class="lowType"
+                                                                                          type="radio" value="lms"
+                                            /><span></span></label>
                                         </div>
                                     </div>
                                     <span id="js-title-area"></span>
@@ -678,7 +677,7 @@
                 </div>
                 <div class="pop_error_txt blue_point_color"></div>
                 <div class="btn_row">
-                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장"
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="불러오기"
                            onclick="mobileListSave();"/>
                 </div>
             </div>
@@ -1029,7 +1028,7 @@
 
         //RCS 제목 개인화 변수 option click event
         $(document).on('click', '.rcsTitleVal ul li', function () {
-            let type = $('.type_check input:checked').val();
+            let type = $('.type_check input[name="rcs_format_type"]:checked').val();
             let data = $(this).attr('data');
             if (type != 'slide') {
                 let txt = $('.rcsTitle').val();
@@ -1299,8 +1298,6 @@
             event.stopPropagation();
             typeValue = $(this).attr('data');
 
-            // console.log("slideData: " + slideData);
-
             if (slideData != typeValue) {
                 let message = "카드양식을 이동하시면 내용이 초기화됩니다. 이동하시겠습니까?";
                 let html = '';
@@ -1359,6 +1356,7 @@
                     $("input[name='mms_imgurl']").val('');
                     $("input[name='mds_img_cd']").val('');
                     $("#js-sms-img").empty();
+                    $('#sms_img_box').empty();
                 }
                 imgElement.remove();
             } else {
@@ -1378,6 +1376,7 @@
                 $("input[name='kko_view_img_url']").val('');
                 // $("input[name='kko_img_url']").val(''); // 이미지 삭제시 링크 주소 삭제
                 $("#js-kakao-img").empty();
+                $('#prev_ft_img').empty();
             } else {
                 return false;
             }
@@ -1465,12 +1464,25 @@
                 }
             });
 
-
             $('.mobileLstPopup').removeClass('active');
+            mappingLst();
+
+            var mySwiper = new Swiper('.slideSwiper', {
+                direction: 'horizontal',
+                pagination: {
+                    el: '.rcs_paging',
+                    type: 'fraction',
+                },
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.rcs_next',
+                    prevEl: '.rcs_prev',
+                },
+            });
         }
 
         let param = {seq: seq}
-        com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}',true)
 
     }
 
@@ -1488,7 +1500,7 @@
         let kakaoSenderNo = $('.smsNumber_kko');
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
-            popup.popAlert("카카오톡 발신 프로필을 선택입력해주세요");
+            popup.popAlert("카카오톡 발신 프로필을 선택해주세요");
             //kakaoSenderNo.parent('.column_2').addClass('outline');
             return false;
         }
@@ -1592,7 +1604,7 @@
     function smsValidate() {
         let smsOption = $('input[name="sms_option"]').val();
         let smsTitle = $('.smsTitle');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('#sms_txt_area');
         let smsNumber = $('.smsNumber')
         let smsNumberValue = $('#sms_send_to').val().trim();
 
@@ -1652,7 +1664,7 @@
         let smsType = $('.smsType:checked').val();
         let smsByte = Number($('.sms_byte').html());
         let smsImage = $('#smsImage');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('#sms_txt_area');
 
         if (smsType == 'LMS') {
             //$("#mds_img_cd").val('');
@@ -2149,13 +2161,16 @@
             // 타입이 SMS 라면 (모바일)
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP02'});
+            param.push({name: 'use_yn', value: 'Y'});
         } else if (type == 'kko') {
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP03'});
+            param.push({name: 'use_yn', value: 'Y'});
         } else {
             // 타입이 RCS 라면
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP04'});
+            param.push({name: 'use_yn', value: 'Y'});
         }
 
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()})
@@ -2229,7 +2244,6 @@
         $('#imgType').val(type);
         imageListPaging(nowPage);
     }
-
     // 이미지 리스트 팝업
     function imageListPaging(nowPage) {
 
@@ -2613,11 +2627,32 @@
             kakao.val('ad');
             sms.val('ad');
             rcs.val('ad');
+
+            let kakaoTitle = $('.kakaoTitle[name="cont_sub_list"]');
+            if($(kakaoTitle).val().indexOf('(광고)') != 0){
+                $(kakaoTitle).val('(광고)' + $(kakaoTitle).val());
+            }
+            let smsTitle = $('.smsTitle[name="cont_sub_list"]');
+            if($(smsTitle).val().indexOf('(광고)') != 0){
+                $(smsTitle).val('(광고)' + $(smsTitle).val());
+                onchangePrevSmsTitle(smsTitle);
+            }
+
             $('.rcs_head').html('[WEB발신]광고');
         } else {
             kakao.val('guide');
             sms.val('guide');
             rcs.val('guide');
+
+            let kakaoTitle = $('.kakaoTitle[name="cont_sub_list"]');
+            if($(kakaoTitle).val().indexOf('(광고)') == 0){
+                $(kakaoTitle).val($(kakaoTitle).val().substr(4));
+            }
+            let smsTitle = $('.smsTitle[name="cont_sub_list"]');
+            if($(smsTitle).val().indexOf('(광고)') == 0){
+                $(smsTitle).val($(smsTitle).val().substr(4));
+                onchangePrevSmsTitle(smsTitle);
+            }
             $('.rcs_head').html('[WEB발신]');
         }
     }
@@ -2814,7 +2849,6 @@
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
         $('#tmplSetForm input').val('');
         $('.tmplPopUp').removeClass('active');
-
     }
 
 
@@ -3153,6 +3187,9 @@
         let check = $('input[name="list"]:checked').val();
         if (len > 0) {
             mobileInfo(check);
+
+            $('#recv_phone_to .value').attr('data','').html('개인화변수');
+            $('#recv_phone').val('');
         } else {
             return false;
         }
@@ -3201,14 +3238,19 @@
             $('.kakao_txt').val("");
             $('.kakao_byte').html('0');
             $('#kko_ft input[type="text"]').val('');
+            $('#prev_ft_img').html('');
+            $('#prev_ft_txt').html('');
+
             $('#js-kakao-img').html('');
             $('.kakao_link').remove()
 
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
-            $('.at_tmpl_data').val('');
-            $('.at_tmpl_data').html('');
+            $('#kakao_at_viewer .at_tmpl_data').val('');
+            $('#kakao_at_viewer .at_tmpl_data').html('');
+            $('#tmplNm').val('');
+            $('#templateCode').val('');
         }
     }
 

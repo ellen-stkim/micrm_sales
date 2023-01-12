@@ -57,6 +57,11 @@
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
 	</logger>
+
+	<logger name="org.apache.cxf" additivity="false">
+		<level value="WARN"/>
+		<appender-ref ref="CONSOLE"/>
+	</logger>
 	
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>

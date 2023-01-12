@@ -22,7 +22,7 @@ $(function () {
         let ex = fileName.slice(fileName.lastIndexOf('.') + 1).toLowerCase();
         let type = $('input[name="ch_tp"]:checked').val();
 
-        if (type == 'IMGTP02' || type =='IMGTP03') {
+        if (type == 'IMGTP02') {
             if (!(ex == "jpg" || ex == "png")) {
                 popup.popAlert('모바일에 경우 jpg, png 파일만 업로드 가능 합니다.');
                 $(this).val('');

@@ -43,10 +43,10 @@ variable:
   tableau-url: "http://t.tableau-report.com/trusted"
 
 
-  biz-url: https://stg-web.bizmsg.kakaoenterprise.com/mng
-  biz-msg-url: https://stg-web.bizmsg.kakaoenterprise.com
+  biz-url: https://bizmsg-web.kakaoenterprise.com/mng
+  biz-msg-url: https://bizmsg-web.kakaoenterprise.com
   biz-version: v1
-  biz-Auth: ENC(GDaXkEIOePI8UF3TWrvkF6M1h89wUxi4KjedlrIsrmq4CYSG64Z5iW8P3Ov+rw4sHufwDXtS2Njccl6Uj+g2pcyoyYxFMxM0CJ9bbsO8bIWFsBq+sXdY77spuAE4R0wV)
+  biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
 
 upload:
   src : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"

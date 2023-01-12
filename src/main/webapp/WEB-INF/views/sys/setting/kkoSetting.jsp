@@ -136,19 +136,57 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>발신자명</th>
-                        <td><input type="text" name="list_nm" id="list_nm" placeholder="발신자명을 입력해주세요." class="input_type1" /></td>
+                        <th>채널명</th>
+                        <td><input type="text" name="list_nm" id="list_nm" placeholder="'@'+채널명을 입력해주세요." class="input_type1" /></td>
                     </tr>
                     <tr>
-                        <th>발신번호</th>
-                        <td><input type="text" name="list_val" id="list_val" placeholder="발신번호를 입력해주세요." class="input_type1" /></td>
+                        <th rowspan="2">카테고리</th>
+                        <td style="padding: 0"><div class="select" id="sendCateSel">
+                            <!-- selected value -->
+                            <div class="value" data="">카테고리를 선택해주세요</div>
+                            <ol class="option" style="display: none;">
+                                <c:forEach var="cate" items="${cateLst}">
+                                <li data_value="${cate.cd_val}" >${cate.cd_desc}</li>
+                                </c:forEach>
+                            </ol>
+                        </div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0"><div class="select" id="sendMidCateSel" style="width: 50%">
+                            <!-- selected value -->
+                            <div class="value" data="">중분류</div>
+                            <ol class="option" style="display: none;">
+                                <c:forEach var="cateMid" items="${cateMidLst}">
+                                    <li data_value="${cateMid.cd_val}" data_par_val="${cateMid.par_nm}" style="display: none">${cateMid.cd_desc}</li>
+                                </c:forEach>
+                            </ol>
+                        </div>
+                            <div class="select" id="sendSubCateSel" style="width: 50%">
+                                <!-- selected value -->
+                                <div class="value" data="">소분류</div>
+                                <ol class="option" style="display: none;">
+                                    <c:forEach var="cateSub" items="${cateSubLst}">
+                                        <li data="${cateSub.cd_val}" data_par_val="${cateSub.par_nm}" style="display: none" >${cateSub.cd_desc}</li>
+                                    </c:forEach>
+                                </ol>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>휴대폰 번호</th>
+                        <td><input type="text" name="list_val" id="list_val" style="width: 87%;display: inline-block;" placeholder="채널 관리자 휴대폰 번호를 입력해주세요." class="input_type1" />
+                            <input type="button" class="btn_sm_line btn_inline size" value="인증" onclick="checkToken()"></td>
+                    </tr>
+                    <tr class="check_token_tr">
+                        <th>인증번호</th>
+                        <td><input type="text" id="senderkey_token" class="input_type1" placeholder="인증번호를 입력해주세요."></td>
                     </tr>
                     </tbody>
                 </table>
             </form>
             <div class="pop_error_txt blue_point_color" id="errorArea1"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkSmsAddress();" value="저장" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkKkoAddress();" value="저장" />
             </div>
         </div>
     </div>
@@ -182,13 +220,12 @@
             </form>
             <div class="pop_error_txt blue_point_color" id="errorArea2"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkSmsAddressModify($('#seq_mod').val());" value="저장" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkKkoAddressModify($('#seq_mod').val());" value="저장" />
             </div>
         </div>
     </div>
 </div>
 <script>
-
     $(document).ready(function () {
 
         $('#searchItems ul li').on('click',function(){
@@ -216,13 +253,34 @@
                 $('#typeArea').children().remove();
             }
         });
+
+
+        $(document).on('click','#sendCateSel .option',(e)=>{
+            const val = $(e.target).attr('data_value');
+            $('#sendMidCateSel .option li').hide();
+            $('#sendSubCateSel .option li').hide();
+            $('#sendMidCateSel .option li[data_par_val="'+val+'"]').show();
+            $('#sendMidCateSel .value').attr("data","").css('color','#cccccc').html('중분류');
+            $('#sendSubCateSel .value').attr("data","").css('color','#cccccc').html('소분류');
+        });
+
+        $(document).on('click','#sendMidCateSel .option',(e)=>{
+            const val = $(e.target).attr('data_value');
+            $('#sendSubCateSel .option li').hide();
+            $('#sendSubCateSel .option li[data_par_val="'+val+'"]').show();
+            $('#sendSubCateSel .value').attr("data","").css('color','#cccccc').html('소분류');
+        });
     });
 
     getSmsSettingList('1');
 
     // 문자 저장 팝업 띄우기
     function numberAddPopup() {
+
         $('.numberAddPopup').addClass('active');
+        $('.check_token_tr').addClass("disnone");
+        $('#senderkey_token').val('');
+        hasRequstToken=false;  // 인증요청 초기화
     }
 
     // 문자 수정 팝업 띄우기
@@ -245,46 +303,85 @@
         return !regExp.test(number);
     }
 
+    let hasRequstToken;
+    function checkToken(){
+        const res = function(response){
+            if(response.status == 200){
+                $('#senderkey_token').val('').focus();
+                $('.check_token_tr').removeClass("disnone");
+                hasRequstToken = true;
+            }else {
+                $('.check_token_tr').addClass("disnone");
+                alert(response.msg)
+                hasRequstToken = false;
+            }
+        }
+
+        let data = {
+            "channelId": $("#list_nm").val().trim()
+            , "phoneNum": $("#list_val").val().trim()
+        }
+
+        com_ajax.ajax_json('post', '${baseURL}/sys/setting/requestKkoToken.ajax', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}');
+
+    }
 
     // SMS 저장하기
     function saveSms() {
 
         const res = function(response){
-            let nowPageNo = $("#nowPageNo").val();
-            $("#list_nm").val('');
-            $("#list_val").val('');
-            $("#errorArea1").html('');
-            $('.numberAddPopup').removeClass('active')
-            getSmsSettingList(nowPageNo);
+
+            if(response.status == 200){
+                alert("등록되었습니다.");
+                let nowPageNo = $("#nowPageNo").val();
+                $("#list_nm").val('');
+                $("#list_val").val('');
+                $("#errorArea1").html('');
+                $('.numberAddPopup').removeClass('active')
+                getSmsSettingList(nowPageNo);
+                hasRequstToken=false;
+            }else {
+                alert(response.msg);
+                hasRequstToken=false;
+            }
         }
 
         let data = []
         data.push({name : "list_nm" , value : $("#list_nm").val().trim()})
         data.push({name : "list_val" , value : $("#list_val").val().trim()})
+        data.push({name : "kko_token",value:$('#senderkey_token').val().trim()})
+        data.push({name : "kko_cate",value:$('#sendSubCateSel .value').attr('data').trim()})
 
-        com_ajax.ajax('post', '${baseURL}/sys/setting/insertSms.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        console.log(data)
+        com_ajax.ajax('post', '${baseURL}/sys/setting/insertKkoSenderKey.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 중복 메일 체크하기
-    function checkSmsAddress() {
+    function checkKkoAddress() {
 
         let senderName = $("#list_nm").val().trim();
         let senderNumber = $("#list_val").val().trim();
 
         if(senderName == '') {
-            $("#errorArea1").html("발신자명을 입력해 주세요.")
+            $("#errorArea1").html("채널명을 입력해 주세요.")
             return false;
         }
         if(senderNumber == '') {
-            $("#errorArea1").html('발신번호를 입력해 주세요.')
+            $("#errorArea1").html('휴대번호를 입력해 주세요.')
             return false;
         }
         if(!chkNumber(senderNumber)){
             $("#errorArea1").html("숫자만 입력해 주세요");
             return false;
         }
-        if(senderNumber.length < 10 || senderNumber.length > 12 ){
-            $("#errorArea1").html("핸드폰 번호는 10 ~ 11자리 이내로 입력해 주세요.");
+
+        if(!hasRequstToken || $('#senderkey_token').val() == ""){
+            alert("인증번호를 입력해주세요.");
+            return false;
+        }
+
+        if($('#sendSubCateSel .value').attr('data') == ''){
+            alert("카테고리를 선택해주세요.");
             return false;
         }
 
@@ -292,18 +389,18 @@
             if(response.status == true){
                 saveSms();
             }  else {
-                $("#errorArea1").html('중복된 발신주소 입니다.')
+                $("#errorArea1").html('중복된 채널 입니다.')
                 return false;
             }
         }
 
         let data = []
-        data.push({name : "list_val" , value : senderNumber})
+        data.push({name : "list_nm" , value : senderName})
         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 중복 메일 수정 체크하기
-    function checkSmsAddressModify(seq) {
+    function checkKkoAddressModify(seq) {
 
         let senderName = $("#list_nm_mod").val().trim();
         let senderNumber = $("#list_val_mod").val().trim();
@@ -420,7 +517,7 @@
         data.push({name: 'pageNo', value: page});
         data.push({name: 'searchType', value: $("#searchType").val()});
         data.push({name: 'searchValue', value: $("#searchValue").val()});
-        com_ajax.ajax('post', '${baseURL}/sys/setting/getSmsSettingList.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sys/setting/getKkoSettingList.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     function enterSearch() {
