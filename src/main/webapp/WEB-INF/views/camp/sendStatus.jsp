@@ -103,6 +103,7 @@
                                     <th>캠페인 명</th>
                                     <th>발송일시</th>
                                     <th>타겟 수</th>
+                                    <th>실 발송 수</th>
                                     <th>보기</th>
                                 </tr>
                                 </thead>
@@ -122,7 +123,8 @@
                                             <td>${item.pro_tg_tp_nm}</td>
                                             <td><span class="ellipsis">${item.pro_nm}</span></td>
                                             <td class="en_font">${item.start_dt}</td>
-                                            <td><span class="en_font"><fmt:formatNumber value="${item.send_cnt}" pattern="#,###" /></span>명</td>
+                                            <td><span class="en_font"><fmt:formatNumber value="${item.tar_cnt}" pattern="#,###" />명</span></td>
+                                            <td><span tooltip="발송일 기준 1일 이후 집계" class="en_font"><fmt:formatNumber value="${item.send_cnt}" pattern="#,###" />명</span></td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${item.pro_tg_tp eq 'TEST'}">
@@ -158,6 +160,7 @@
                                 <th>발송일시</th>
                                 <th>발송 타겟</th>
                                 <th>타겟 수</th>
+                                <th>실 발송 수</th>
                                 <th>보기</th>
                             </tr>
                             </thead>
