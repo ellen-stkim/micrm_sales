@@ -146,7 +146,7 @@
                             <div class="value" data="">카테고리를 선택해주세요</div>
                             <ol class="option" style="display: none;">
                                 <c:forEach var="cate" items="${cateLst}">
-                                <li data_value="${cate.cd_val}" >${cate.cd_desc}</li>
+                                <li data="${cate.cd_val}" >${cate.cd_desc}</li>
                                 </c:forEach>
                             </ol>
                         </div></td>
@@ -157,7 +157,7 @@
                             <div class="value" data="">중분류</div>
                             <ol class="option" style="display: none;">
                                 <c:forEach var="cateMid" items="${cateMidLst}">
-                                    <li data_value="${cateMid.cd_val}" data_par_val="${cateMid.par_nm}" style="display: none">${cateMid.cd_desc}</li>
+                                    <li data="${cateMid.cd_val}" data_par_val="${cateMid.par_nm}" style="display: none">${cateMid.cd_desc}</li>
                                 </c:forEach>
                             </ol>
                         </div>
@@ -256,19 +256,34 @@
 
 
         $(document).on('click','#sendCateSel .option',(e)=>{
-            const val = $(e.target).attr('data_value');
+            const val = $(e.target).attr('data');
             $('#sendMidCateSel .option li').hide();
             $('#sendSubCateSel .option li').hide();
             $('#sendMidCateSel .option li[data_par_val="'+val+'"]').show();
             $('#sendMidCateSel .value').attr("data","").css('color','#cccccc').html('중분류');
             $('#sendSubCateSel .value').attr("data","").css('color','#cccccc').html('소분류');
+            $("#errorArea1").html('');
+            $('.layer_pop .select.on').removeClass('on');
         });
 
         $(document).on('click','#sendMidCateSel .option',(e)=>{
-            const val = $(e.target).attr('data_value');
+            if($('#sendCateSel .value').attr('data') ==''){
+                $("#errorArea1").html("카테고리 대분류를 먼저 선택해주세요.");
+                return false;
+            }
+            $("#errorArea1").html('');
+            const val = $(e.target).attr('data');
             $('#sendSubCateSel .option li').hide();
             $('#sendSubCateSel .option li[data_par_val="'+val+'"]').show();
             $('#sendSubCateSel .value').attr("data","").css('color','#cccccc').html('소분류');
+            $('.layer_pop .select.on').removeClass('on');
+        });
+        $(document).on('click','#sendSubCateSel',(e)=>{
+            if($('#sendMidCateSel .value').attr('data') ==''){
+                $("#errorArea1").html("카테고리 대/중분류를 먼저 선택해주세요.")
+                return false;
+            }
+            $("#errorArea1").html('');
         });
     });
 
