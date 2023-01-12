@@ -391,13 +391,12 @@
 
     <update id="upd_tblmicp_program_total_cnt" parameterType="Tblmicp_campaignDto">
         UPDATE tblmicp_program as a ,
-            SELECT SUM(TAR_CNT) AS total_tar_cnt
-                FROM tblmicp_campaign as b
-                WHERE pro_id = #{pro_id}
+            (SELECT SUM(TAR_CNT) AS total_tar_cnt
+                FROM tblmicp_campaign
+                WHERE pro_id = #{pro_id} ) as b
         SET a.tar_cnt = b.total_tar_cnt
         <where>
-            a.pro_id = b.pro_id
-            and a.pro_id = #{pro_id}
+            a.pro_id = #{pro_id}
         </where>
     </update>
 
