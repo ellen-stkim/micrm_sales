@@ -18,6 +18,7 @@ open class Tblmicp_programDto {
     var camp_cnt: Int? = null
     var cont_cnt: Int? = null
     var tar_cnt: Int = 0
+    var send_cnt: Int = 0
     var resp_cnt: Int = 0
     var plan_cost: BigDecimal? = null
     var off_cost: BigDecimal? = null

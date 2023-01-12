@@ -186,7 +186,7 @@
             </form>
             <div class="pop_error_txt blue_point_color" id="errorArea1"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkSmsAddress();" value="저장" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkKkoAddress();" value="저장" />
             </div>
         </div>
     </div>
@@ -220,7 +220,7 @@
             </form>
             <div class="pop_error_txt blue_point_color" id="errorArea2"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkSmsAddressModify($('#seq_mod').val());" value="저장" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkKkoAddressModify($('#seq_mod').val());" value="저장" />
             </div>
         </div>
     </div>
@@ -357,7 +357,7 @@
     }
 
     // 중복 메일 체크하기
-    function checkSmsAddress() {
+    function checkKkoAddress() {
 
         let senderName = $("#list_nm").val().trim();
         let senderNumber = $("#list_val").val().trim();
@@ -389,18 +389,18 @@
             if(response.status == true){
                 saveSms();
             }  else {
-                $("#errorArea1").html('중복된 발신주소 입니다.')
+                $("#errorArea1").html('중복된 채널 입니다.')
                 return false;
             }
         }
 
         let data = []
-        data.push({name : "list_val" , value : senderNumber})
+        data.push({name : "list_nm" , value : senderName})
         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 중복 메일 수정 체크하기
-    function checkSmsAddressModify(seq) {
+    function checkKkoAddressModify(seq) {
 
         let senderName = $("#list_nm_mod").val().trim();
         let senderNumber = $("#list_val_mod").val().trim();

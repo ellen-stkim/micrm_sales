@@ -122,7 +122,7 @@
                                             <td>${item.pro_tg_tp_nm}</td>
                                             <td><span class="ellipsis">${item.pro_nm}</span></td>
                                             <td class="en_font">${item.start_dt}</td>
-                                            <td><span class="en_font"><fmt:formatNumber value="${item.tar_cnt}" pattern="#,###" /></span>명</td>
+                                            <td><span class="en_font"><fmt:formatNumber value="${item.send_cnt}" pattern="#,###" /></span>명</td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${item.pro_tg_tp eq 'TEST'}">
