@@ -2375,6 +2375,7 @@ class SalesforceServiceImpl : SalesforceService {
             val cDto = Tblmicp_campaignDto()
             cDto.cont_id = contMst.seq
             val campLst = campaignDao.sel_tblmicp_campaign(cDto)
+            var totalProgramCnt =0;
 
             if(campLst.isEmpty()){
                 return false
@@ -2385,7 +2386,10 @@ class SalesforceServiceImpl : SalesforceService {
                                 && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
 
                         val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
-                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
+                        salesforceDao.upd_tblmicp_campaign(Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,targetCnt,campaignDto.reg_id))
+                        // 프로그램 tarcnt 수정
+                        totalProgramCnt += targetCnt
+                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,totalProgramCnt,null,campaignDto.reg_id))
                     }
                     inArguments.remove("§extention_cnt§")
 
