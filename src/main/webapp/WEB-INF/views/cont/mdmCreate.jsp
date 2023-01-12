@@ -166,7 +166,7 @@
                                                 </c:if>
                                         />
                                         <input type="hidden" name="send_key" id="send_key" value="${list[0].list_val}"/>
-                                        <input type="hidden" name="send_to_list" value="${list[0].seq}"/>
+                                        <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].seq}"/>
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                     </div>
                                 </div>
@@ -178,7 +178,7 @@
                                                 <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png" alt="삭제">
                                                 </div>
                                                 <input type="text" class="txt_input en_font" name="" id="kakaoImage"
-                                                       placeholder="이미지를 선택해 주세요." readonly="">
+                                                       placeholder="이미지를 선택해 주세요." readonly>
                                                 <span class="btn_sm_line" data="kakaoImage"
                                                       onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
@@ -551,7 +551,7 @@
                                                     <div class="select rcsContsVal" name="edmDB">
                                                         <!-- selected value -->
                                                         <div class="value" data="0">개인화 변수</div>
-                                                        <ul class="option">
+                                                        <ul class="option mappingLst">
                                                             <c:forEach var="item" items="${column}"
                                                                        varStatus="status">
                                                                 <li data="{{${item.list_val}}}">${item.list_nm}</li>
@@ -1056,7 +1056,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms .title').val(txt + data);
-                onchangePrevSmsTitle($('#sms .title'));
+                $('#sms .title').keyup();
             }
         });
 
@@ -1066,13 +1066,13 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms_txt_area').val(txt + data);
-                onchangePrevSmsTxt($('#sms_txt_area'));
+                $('#sms_txt_area').keyup();
             }
         });
 
         //RCS 제목 개인화 변수 option click event
         $(document).on('click', '.rcsTitleVal ul li', function () {
-            let type = $('.type_check input:checked').val();
+            let type = $('.type_check input[name="rcs_format_type"]:checked').val();
             let data = $(this).attr('data');
             if (type != 'slide') {
                 let txt = $('.rcsTitle').val();
@@ -1080,6 +1080,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(inputTitle).val(txt + data);
+                    $(inputTitle).keyup();
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsTitle').val();
@@ -1087,6 +1088,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(inputTitle).val(txt + data);
+                    $(inputTitle).keyup();
                 }
             }
         });
@@ -1101,6 +1103,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(txtContents).val(txt + data);
+                    $(txtContents).keyup();
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsContents').val();
@@ -1806,7 +1809,7 @@
     function smsValidate() {
         let smsOption = $('input[name="sms_option"]').val();
         let smsTitle = $('.smsTitle');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('#sms_txt_area');
         let smsNumber = $('.smsNumber')
         let smsNumberValue = $('#sms_send_to').val().trim();
 
@@ -1866,7 +1869,7 @@
         let smsType = $('.smsType:checked').val();
         let smsByte = Number($('.sms_byte').html());
         let smsImage = $('#smsImage');
-        let smsTxt = $('.sms_txt');
+        let smsTxt = $('#sms_txt_area');
 
         if (smsType == 'LMS') {
             //$("#mds_img_cd").val('');
@@ -2363,13 +2366,16 @@
             // 타입이 SMS 라면 (모바일)
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP02'});
+            param.push({name: 'use_yn', value: 'Y'});
         } else if (type == 'kko') {
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP03'});
+            param.push({name: 'use_yn', value: 'Y'});
         } else {
             // 타입이 RCS 라면
             param.push({name: 'list_tp_id', value: 'CH02'});
             param.push({name: 'list_dt_id', value: 'DMTP04'});
+            param.push({name: 'use_yn', value: 'Y'});
         }
 
         param.push({name: 'pageNo', value: nowPage})
@@ -2688,12 +2694,12 @@
                 + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
                 + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option"></ul>'
+                + '<ul class="option mappingLst"></ul>'
                 + '</div>'
-                + '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
+                /*+ '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
                 + '<div class="value" data="0">개인화 변수</div>'
                 + '<ul class="option" id=""></ul>'
-                + '</div>'
+                + '</div>'*/
                 + '</div>'
                 + '</div>'
             );
@@ -2832,11 +2838,32 @@
             kakao.val('ad');
             sms.val('ad');
             rcs.val('ad');
+
+            let kakaoTitle = $('.kakaoTitle[name="cont_sub_list"]');
+            if($(kakaoTitle).val().indexOf('(광고)') != 0){
+                $(kakaoTitle).val('(광고)' + $(kakaoTitle).val());
+            }
+            let smsTitle = $('.smsTitle[name="cont_sub_list"]');
+            if($(smsTitle).val().indexOf('(광고)') != 0){
+                $(smsTitle).val('(광고)' + $(smsTitle).val());
+                onchangePrevSmsTitle(smsTitle);
+            }
+
             $('.rcs_head').html('[WEB발신]광고');
         } else {
             kakao.val('guide');
             sms.val('guide');
             rcs.val('guide');
+
+            let kakaoTitle = $('.kakaoTitle[name="cont_sub_list"]');
+            if($(kakaoTitle).val().indexOf('(광고)') == 0){
+                $(kakaoTitle).val($(kakaoTitle).val().substr(4));
+            }
+            let smsTitle = $('.smsTitle[name="cont_sub_list"]');
+            if($(smsTitle).val().indexOf('(광고)') == 0){
+                $(smsTitle).val($(smsTitle).val().substr(4));
+                onchangePrevSmsTitle(smsTitle);
+            }
             $('.rcs_head').html('[WEB발신]');
         }
     }
@@ -2861,10 +2888,11 @@
             '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>' +
             '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
             '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>' +
-            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" ><span></span></label>' +
-            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label><br>' +
+            '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
+            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02"><span></span></label>' +
+            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label>' +
             '</td>' +
-            '</br>' +
+            '</tr>' +
             '<tr class="rcsImgForm rcs_option">' +
             '<th>양식</th>' +
             '<td>' +
