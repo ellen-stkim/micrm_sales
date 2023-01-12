@@ -31,8 +31,8 @@ $(function () {
     // select
     $(document).on('click', '.select', function () {
         $('.select').removeClass('on');
-        $('.select').children('.option').stop().slideUp();
         if ($(this).children('.option').css('display') == 'none') {
+            $('.select.on').removeClass('on');
             $(this).addClass('on');
             $(this).children('.option').stop().slideDown();
         } else {
