@@ -813,7 +813,6 @@
                         let tabInx1 = $('.formatType').index(this);
                         $('#js-smsTab li').eq(tabInx1).show().addClass('on').siblings().removeClass('on');
                         $('.tab_contents').eq(tabInx1).addClass('active').siblings().removeClass('active');
-
                     } else {
                         let tabInx2 = $('.formatType').index(this);
                         $('#js-smsTab li').eq(tabInx2).hide().removeClass('on');
@@ -1019,7 +1018,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다. ");
                 $('.kakao_txt').val(txt + data);
-                onchangePrevKkoTxt($('.kakao_txt'));
+                $('.kakao_txt').keyup();
             }
         });
 
@@ -1030,7 +1029,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms .title').val(txt + '{{' + data + '}}');
-                onchangePrevSmsTitle($('#sms .title'));
+                $('#sms .title').keyup();
             }
         });
 
@@ -1040,7 +1039,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms_txt_area').val(txt + data);
-                onchangePrevSmsTxt($('#sms_txt_area'));
+                $('#sms_txt_area').keyup();
             }
         });
 
@@ -1054,6 +1053,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(inputTitle).val(txt + '{{' + data + '}}');
+                    $(inputTitle).keyup();
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsTitle').val();
@@ -1061,13 +1061,14 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(inputTitle).val(txt + '{{' + data + '}}');
+                    $(inputTitle).keyup();
                 }
             }
         });
 
         //RCS 내용 개인화 변수 option click event
         $(document).on('click', '.rcsContsVal ul li', function () {
-            let type = $('.type_check .input[name="rcs_format_type"]:checked').val();
+            let type = $('.type_check input[name="rcs_format_type"]:checked').val();
             let data = $(this).attr('data');
             if (type != 'slide') {
                 let txt = $('.rcsContents').val();
@@ -1075,6 +1076,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(txtContents).val(txt + '{{' + data + '}}');
+                    $(txtContents).keyup();
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsContents').val();
@@ -2468,6 +2470,7 @@
     function rcsLowTypeChange(type) {
         let checkType = $(type)[0];
         let radioVal = checkType.value;
+        console.log(radioVal)
         $(type).prop('checked', true);
         beforeSub = radioVal;
         $('.layer_pop').removeClass('active');
