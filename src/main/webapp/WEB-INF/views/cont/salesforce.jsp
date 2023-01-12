@@ -1068,7 +1068,7 @@
 
         //RCS 내용 개인화 변수 option click event
         $(document).on('click', '.rcsContsVal ul li', function () {
-            let type = $('.type_check .input[name="rcs_format_type"]:checked').val();
+            let type = $('.type_check input[name="rcs_format_type"]:checked').val();
             let data = $(this).attr('data');
             if (type != 'slide') {
                 let txt = $('.rcsContents').val();
@@ -2470,6 +2470,7 @@
     function rcsLowTypeChange(type) {
         let checkType = $(type)[0];
         let radioVal = checkType.value;
+        console.log(radioVal)
         $(type).prop('checked', true);
         beforeSub = radioVal;
         $('.layer_pop').removeClass('active');
