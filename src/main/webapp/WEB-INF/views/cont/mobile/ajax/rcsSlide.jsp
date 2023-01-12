@@ -86,7 +86,7 @@
                                                           placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,0);"></div>
                      </div>
                   </div>
-                  <div class="block">
+                  <div class="block" name="textBlock">
                      <div class="row">
                         <div class="th">개인화 변수</div>
                         <div class="td">
@@ -196,7 +196,7 @@
                                                        placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,1);"></div>
                   </div>
                </div>
-               <div class="block">
+               <div class="block" name="textBlock">
                   <div class="row">
                      <div class="th">개인화 변수</div>
                      <div class="td">
@@ -281,7 +281,7 @@
                      <div class="th">이미지 선택</div>
                      <div class="td">
                         <div class="delete_img"><img src="/image/btn_delete1.png" alt="삭제"></div>
-                           <input type="text" name="" lass="txt_input en_font rcsImage" id="slide2" placeholder="이미지를 선택해 주세요." readonly="">
+                           <input type="text" name="" class="txt_input en_font rcsImage" id="slide2" placeholder="이미지를 선택해 주세요." readonly="">
                            <input type="hidden" name="rcs_img_cd_3" class="txt_input en_font rcsImage">
                            <span class="btn_sm_line" data="slide2" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
                      </div>
@@ -307,7 +307,7 @@
                         <input type="text" name="slide_cont_sub" class="txt_input width rcsTitle" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,2);"></div>
                   </div>
                </div>
-               <div class="block">
+               <div class="block" name="textBlock">
                   <div class="row">
                      <div class="th">개인화 변수</div>
                      <div class="td">

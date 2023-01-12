@@ -1075,7 +1075,7 @@
 
         //RCS 내용 개인화 변수 option click event
         $(document).on('click', '.rcsContsVal ul li', function () {
-            let type = $('.type_check input:checked').val();
+            let type = $('.type_check input[name="rcs_format_type"]:checked').val();
             let data = $(this).attr('data');
             if (type != 'slide') {
                 let txt = $('.rcsContents').val();
@@ -1090,6 +1090,8 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(textContents).val(txt + data);
+
+                    $(textContents).keyup();
                 }
             }
         });
@@ -2790,7 +2792,6 @@
         } else {
             $('input[name="rcs_msg_tp"]').val("medium");
         }
-
         getDBValue();
         adTypeCheck();
 
