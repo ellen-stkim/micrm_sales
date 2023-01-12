@@ -1030,7 +1030,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms .title').val(txt + '{{' + data + '}}');
-                onchangePrevSmsTitle($('#sms .title'));
+                $('#sms .title').keyup();
             }
         });
 
@@ -1040,7 +1040,7 @@
             if (data != 0) {
                 popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                 $('#sms_txt_area').val(txt + data);
-                onchangePrevSmsTxt($('#sms_txt_area'));
+                $('#sms_txt_area').keyup();
             }
         });
 
@@ -1054,6 +1054,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(inputTitle).val(txt + '{{' + data + '}}');
+                    $(inputTitle).keyup();
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsTitle').val();
@@ -1061,6 +1062,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(inputTitle).val(txt + '{{' + data + '}}');
+                    $(inputTitle).keyup();
                 }
             }
         });
@@ -1075,6 +1077,7 @@
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
                     $(txtContents).val(txt + '{{' + data + '}}');
+                    $(txtContents).keyup();
                 }
             } else {
                 let txt = $(this).parents('.row').siblings().find('.rcsContents').val();
