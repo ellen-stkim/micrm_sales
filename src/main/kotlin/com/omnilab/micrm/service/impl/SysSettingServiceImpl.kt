@@ -635,4 +635,18 @@ class SysSettingServiceImpl : SysSettingService {
 
         return result
     }
+
+    override fun isExistKkoAddress(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val statusMap: MutableMap<String, Any> = HashMap();
+
+        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        lstDto.list_tp_id = "CH02"
+        lstDto.list_dt_id = "DMTP03"
+
+        val cntResult = sysSettingDao.isExistAddress(lstDto)
+
+        statusMap["status"] = cntResult <= 0
+
+        return statusMap
+    }
 }

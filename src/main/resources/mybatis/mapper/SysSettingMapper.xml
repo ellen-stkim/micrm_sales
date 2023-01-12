@@ -154,7 +154,7 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and usr_grp_cd = #{usr_grp_cd}
 			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
 				and list_nm = #{list_nm}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
