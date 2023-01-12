@@ -712,6 +712,7 @@
                                                         </div>
                                                     </div>
                                                 </c:if>
+                                                <span id="js-title-area"></span>
                                                 <div class="row body">
                                                     <div class="th">발신 번호</div>
                                                     <div class="column_1" id="send_text_column">
