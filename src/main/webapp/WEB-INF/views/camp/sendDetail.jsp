@@ -103,7 +103,7 @@
                                 <span class="number en_font">${st.count}</span>
                                 <div class="info_row">
                                     <h3 class="ellipsis">${g.camp_nm}</h3>
-                                    <span class="en_font">(<fmt:formatNumber value="${g.tar_cnt}" pattern="#,###" />명)</span>
+                                    <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span>
                                     <span class="bar">|</span>
                                     <div class="icon">
                                         <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
@@ -147,7 +147,7 @@
                                         <span class="number en_font">${st.count}</span>
                                         <div class="info_row">
                                             <h3 class="ellipsis">${g.camp_nm}</h3>
-                                            <span class="en_font">(<fmt:formatNumber value="${g.tar_cnt}" pattern="#,###" />명)</span>
+                                            <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span>
                                             <span class="bar">|</span>
                                             <div class="icon">
                                                 <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
@@ -267,7 +267,7 @@
                                     <span class="number en_font">${st.count}</span>
                                     <div class="info_row">
                                         <h3 class="ellipsis">${g.camp_nm}</h3>
-                                        <span class="en_font">(<fmt:formatNumber value="${g.tar_cnt}" pattern="#,###" />명)</span>
+                                        <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span>
                                         <span class="bar">|</span>
                                         <div class="icon">
                                             <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
@@ -303,7 +303,7 @@
                                            <div class="th">오픈</div>
                                            <div class="td cf">
                                                <!-- progress 영역 -->
-                                               <div class="chart" name="progress4" data="${openCnt[camp_id].cnt/g.tar_cnt}"></div>
+                                               <div class="chart" name="progress4" data="${openCnt[camp_id].cnt/g.send_cnt}"></div>
                                                <div class="detail">
                                                    <span class="number en_font">
                                                    <c:choose>
@@ -311,14 +311,14 @@
                                                         <c:otherwise><fmt:formatNumber value="${openCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
                                                     </c:choose>
                                                    </span>
-                                                   <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${openCnt[camp_id].cnt/g.tar_cnt}" />)</span>
+                                                   <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${openCnt[camp_id].cnt/g.send_cnt}" />)</span>
                                                </div>
                                            </div>
                                        </div>
                                         <div class="row_graph cf">
                                              <div class="th">클릭</div>
                                              <div class="td cf">
-                                                 <div class="chart" name="progress5" data="${trackCnt[camp_id].cnt/g.tar_cnt}"></div>
+                                                 <div class="chart" name="progress5" data="${trackCnt[camp_id].cnt/g.send_cnt}"></div>
                                                  <div class="detail">
                                                      <span class="number en_font">
                                                      <c:choose>
@@ -326,7 +326,7 @@
                                                          <c:otherwise><fmt:formatNumber value="${trackCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
                                                      </c:choose>
                                                      </span>
-                                                     <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${trackCnt[camp_id].cnt/g.tar_cnt}" />)</span>
+                                                     <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${trackCnt[camp_id].cnt/g.send_cnt}" />)</span>
                                                  </div>
                                              </div>
                                          </div>
@@ -394,7 +394,7 @@
                             <tr>
                                 <td class="en_font">${st.count}</td>
                                 <td>
-                                    <div><span class="ellipsis name">${g.camp_nm}</span> <span>(<fmt:formatNumber value="${g.tar_cnt}" pattern="#,###" />명)</span></div>
+                                    <div><span class="ellipsis name">${g.camp_nm}</span> <span>(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span></div>
                                     <c:choose>
                                         <c:when test="${empty targetDto}"><div><span class="th">계산일 : </span><span class="en_font">${cutil:getDateTimeNow()}</span></div></c:when>
                                         <c:otherwise><div><span class="th">계산일 : </span><span class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span></div></c:otherwise>

@@ -48,6 +48,7 @@ import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -251,26 +252,6 @@ class SalesforceServiceImpl : SalesforceService {
                     }else{
                         returnMap["status"] = "false"
                     }
-                    // 사용자 정보 조회 -- 현재 토큰으로는 지원 안됨
-                    /*
-                    val commDto = Tblmi_comm_cdDto()
-                    commDto.cd_id = userInfo!!.usr_grp_cd
-                    commDto.par_id = "SALESFORCE"
-                    val urlInfo = systemDao.getCommCDLst(commDto)
-
-                    val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
-                    val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
-                    val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
-
-                    val headers = HttpHeaders()
-                    headers.contentType = MediaType.APPLICATION_JSON
-                    val acceptableMediaType: MutableList<MediaType> = ArrayList()
-                    acceptableMediaType.add(MediaType.APPLICATION_JSON)
-                    headers.accept = acceptableMediaType
-
-                    headers.set("Authorization", "Bearer $token")
-                    val result: ResponseEntity<String> = restTemplate.exchange("${restUrl!!.cd_val}/v2/userinfo", HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-                    */
                 }
             } else {
                 logger.error("tokenContext fail: $responseBody")
@@ -2375,17 +2356,29 @@ class SalesforceServiceImpl : SalesforceService {
             val cDto = Tblmicp_campaignDto()
             cDto.cont_id = contMst.seq
             val campLst = campaignDao.sel_tblmicp_campaign(cDto)
+            var totalProgramCnt =0;
 
             if(campLst.isEmpty()){
                 return false
             }else{
+                logger.error("=========================")
+                logger.error("{}",campLst)
                 for(campaignDto in campLst){
+                    logger.error("---------------------------------------------------")
+                    logger.error("{}",campaignDto)
+                    logger.error("{}",!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"]))
+                    logger.error("---------------------------------------------------")
+
                     // 타겟수 업데이트
                     if((campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0)
                                 && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
 
+
                         val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
-                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,targetCnt,null,campaignDto.reg_id))
+                        salesforceDao.upd_tblmicp_campaign(Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,targetCnt,campaignDto.reg_id))
+                        // 프로그램 tarcnt 수정
+                        totalProgramCnt += targetCnt
+                        campaignDao.upd_tblmicp_program(Tblmicp_programDto(campaignDto.pro_id,totalProgramCnt,null,campaignDto.reg_id))
                     }
                     inArguments.remove("§extention_cnt§")
 

@@ -254,7 +254,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
         val re_map: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(bodyMap), headers))
         val data = re_map["data"] as MutableMap<String, Any>
-        logger.error("re_map: {}",re_map)
+        logger.error("bodyMap: {}",map)
 
         if ("API_200" == data["code"]) {
             result["status"] = 200

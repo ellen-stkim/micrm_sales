@@ -22,7 +22,7 @@
 		<li>
 			<span>리포트</span>
 			<ul class="sub_menu">
-				<li<c:if test="${fn:contains(urlPath,'/report/main.mi')}"> class='on'</c:if>><a href="/report/main.mi">리포트</a></li>
+				<%--<li<c:if test="${fn:contains(urlPath,'/report/main.mi')}"> class='on'</c:if>><a href="/report/main.mi">리포트</a></li>--%>
 				<li<c:if test="${fn:contains(urlPath,'/camp/st/')}"> class='on'</c:if>><a href="/camp/st/sendStatus.mi">발송 현황</a></li>
 				<%--<li><a href="javascript:void(0);" onclick="popup.popAlert('페이지 준비중입니다.')">리포트</a></li>--%>
 				<li <c:if test="${fn:contains(urlPath,'/report/all.mi') ||fn:contains(urlPath,'/report/singleDt.mi')||fn:contains(urlPath,'/report/dt.mi') ||fn:contains(urlPath,'/report/proDt.mi')}"> class='on'</c:if>><a href="/report/all.mi">캠페인 통합</a></li>

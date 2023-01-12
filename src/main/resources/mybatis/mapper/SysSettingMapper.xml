@@ -155,6 +155,9 @@
 				and usr_grp_cd = #{usr_grp_cd}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+				and list_nm = #{list_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
 				and list_val = #{list_val}
 			</if>
 			and del_dt = 'N'

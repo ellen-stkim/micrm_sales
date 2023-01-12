@@ -725,6 +725,7 @@
 		, a.PRO_nm
 		, a.min_start_dt as start_dt
 		, a.tar_cnt
+		, a.send_cnt
 		, a.reg_id
 		, a.pro_tg_tp
 		, e.cd_nm AS pro_tg_tp_nm
