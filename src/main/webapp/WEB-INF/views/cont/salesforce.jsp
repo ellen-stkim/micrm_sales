@@ -1427,6 +1427,7 @@
             $(".container").html($(".container", $doc).html());
 
             beforeKkoType = $('.kko_format_type:checked').val();
+            mstSeq = seq;
 
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
