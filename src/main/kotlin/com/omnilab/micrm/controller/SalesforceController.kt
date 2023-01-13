@@ -169,13 +169,9 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        logger.error("----------------------------------------")
-        logger.error("{}",listMap)
 
         val list = listMap["list"] as List<Content_view_Dto>
-        logger.error("{}",list.size > 0)
-        logger.error("----------------------------------------")
-        if(list.size > 0){
+        if(list.isNotEmpty()){
             val cntMap = salesforceService.isCheckSender(usr_cd)
 
             val rejDto = SetLst_searchDto()
