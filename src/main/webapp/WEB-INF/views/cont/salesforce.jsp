@@ -1423,6 +1423,13 @@
     // 정보 조회
     function mobileInfo(seq) {
         const res = function (response) {
+
+            if(response.msg != "" && response.msg != null){
+                alert(response);
+                connection.trigger("destroy");
+                return false;
+            }
+
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $(".container").html($(".container", $doc).html());
 
