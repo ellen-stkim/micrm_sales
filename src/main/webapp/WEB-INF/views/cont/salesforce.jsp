@@ -2471,7 +2471,6 @@
     function rcsLowTypeChange(type) {
         let checkType = $(type)[0];
         let radioVal = checkType.value;
-        console.log(radioVal)
         $(type).prop('checked', true);
         beforeSub = radioVal;
         $('.layer_pop').removeClass('active');
