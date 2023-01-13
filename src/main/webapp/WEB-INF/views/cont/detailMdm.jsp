@@ -4025,7 +4025,6 @@
     });
 
     function mdmLoad() {
-        console.log("mdmLoad")
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');
