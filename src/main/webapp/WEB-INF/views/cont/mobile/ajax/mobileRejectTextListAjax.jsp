@@ -135,8 +135,7 @@
 
          let data = []
          data.push({name : "list_val" , value : rejectText})
-         const usr_grp_cd = $('#usr_grp_cd').val();
-         com_ajax.ajax('post', '${baseURL}/sf/${usr_grp_cd}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
       }
 
       // 수신거부 문구 저장하기
@@ -150,8 +149,7 @@
          data.push({name : "list_nm" , value : $("#list_nm").val().trim()})
          data.push({name : "list_val" , value : $("#list_val").val().trim()})
 
-         const usr_grp_cd = $('#usr_grp_cd').val();
-         com_ajax.ajax('post', '${baseURL}/sf/${usr_grp_cd}/sys/setting/insertRejectText.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/sys/setting/insertRejectText.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
       }
    </script>
 </div>
