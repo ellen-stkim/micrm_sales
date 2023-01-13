@@ -3653,8 +3653,9 @@
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
+    console.log("${isError}")
     // 에러가
-    if(${isError}){
+    if("${isError}" == "true"){
         alert("사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요.");
         _connection.trigger("destroy");
     }

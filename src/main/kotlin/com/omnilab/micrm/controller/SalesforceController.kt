@@ -171,9 +171,9 @@ class SalesforceController {
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         logger.error("----------------------------------------")
         logger.error("{}",listMap)
-        logger.error("{}",listMap["list"] as List<Content_view_Dto>)
 
         val list = listMap["list"] as List<Content_view_Dto>
+        logger.error("{}",list.size > 0)
         logger.error("----------------------------------------")
         if(list.size > 0){
             val cntMap = salesforceService.isCheckSender(usr_cd)
