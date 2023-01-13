@@ -168,26 +168,30 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = salesforceService.isCheckSender(usr_cd)
+        if(!CommonUtils.isEmptyObject(listMap)){
+            val cntMap = salesforceService.isCheckSender(usr_cd)
 
-        val rejDto = SetLst_searchDto()
-        rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        rejDto.list_tp_id = "CH04"
-        rejDto.list_dt_id = "REJT01"
-        rejDto.def_yn = "Y"
-        val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
+            val rejDto = SetLst_searchDto()
+            rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            rejDto.list_tp_id = "CH04"
+            rejDto.list_dt_id = "REJT01"
+            rejDto.def_yn = "Y"
+            val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
 
-        view.addObject("list" , listMap["list"])
-        view.addObject("rejectText",smsRejectTextMap["list"])
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
+            view.addObject("list" , listMap["list"])
+            view.addObject("rejectText",smsRejectTextMap["list"])
+            view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+            view.addObject("smsCnt", cntMap["smsCnt"])
+            view.addObject("rcsCnt", cntMap["rcsCnt"])
 
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
-        view.addObject("filePath", uploadPrefix?.cd_val)
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "COMMON"
+            commonCDDto.cd_id = "UPURL01"
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+            view.addObject("filePath", uploadPrefix?.cd_val)
+        } else {
+            view.addObject("msg", "사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요." )
+        }
 
         return view
     }
