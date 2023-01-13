@@ -1509,33 +1509,6 @@
 
     }
 
-
-    function rcsSlideInit() {
-
-        let rcsLength = $('.rcsContents').length;
-
-        for (let c = 0; c < rcsLength; c++) {
-            rcsObject = $('.rcsContents').eq(c)[0];
-            rcsCreate.rcsContents(rcsObject, c);
-        }
-
-        let swiperEl = $('.slideSwiper').length;
-        if (swiperEl > 0) {
-            var mySwiper = new Swiper('.slideSwiper', {
-                direction: 'horizontal',
-                pagination: {
-                    el: '.rcs_paging',
-                    type: 'fraction',
-                },
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.rcs_next',
-                    prevEl: '.rcs_prev',
-                },
-            });
-        }
-    }
-
     // 카카오, SMS 유효성 검사
     function kakaoValidate() {
         let kakaoOption = $('input[name="kko_option"]').val();
