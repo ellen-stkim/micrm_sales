@@ -1390,14 +1390,13 @@ class SalesforceServiceImpl : SalesforceService {
     private fun isCheckByte(dto: Content_list_CreateDto): Boolean {
         // 카카오의 본문 body byte를 체크한다
         if (!CommonUtils.isEmptyObject(dto.kakao_body)) {
-
             if (!CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 400)) {
                     logger.error("KaKao 400Byte Error")
                     return false;
                 }
             } else if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
-                logger.error("비어있음");
+                logger.error("비어있음")
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
                     logger.error("KaKao 2000Byte Error")
                     return false;

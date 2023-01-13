@@ -168,6 +168,10 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+        logger.error("----------------------------------------")
+        logger.error("{}",listMap)
+        logger.error("{}",!CommonUtils.isEmptyObject(listMap))
+        logger.error("----------------------------------------")
         if(!CommonUtils.isEmptyObject(listMap)){
             val cntMap = salesforceService.isCheckSender(usr_cd)
 
@@ -667,17 +671,21 @@ class SalesforceController {
     fun stop(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
         logger.info("/stop.service data: $data")
         val dto = Tblmicp_programDto()
-        dto.inten_id = data["interactionId"].toString()
-        dto.orig_id = data["originalDefinitionId"].toString()
-        dto.inta_key = data["interactionKey"].toString()
-        dto.inta_ve = data["interactionVersion"].toString()
-        dto.pro_st = "04"
-        salesforceDao.upd_tblmicp_program_sales(dto)
-        if(dto.pro_id != null){
-            val campDto = Tblmicp_campaignDto()
-            campDto.pro_id = dto.pro_id
-            campDto.camp_st = "04"
-            salesforceDao.upd_tblmicp_campaign(campDto)
+        try{
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pro_st = "04"
+            salesforceDao.upd_tblmicp_program_sales(dto)
+            if(dto.pro_id != null){
+                val campDto = Tblmicp_campaignDto()
+                campDto.pro_id = dto.pro_id
+                campDto.camp_st = "04"
+                salesforceDao.upd_tblmicp_campaign(campDto)
+            }
+        }catch (e: Exception){
+            logger.error("stop Service error : {}", dto)
         }
     }
 
