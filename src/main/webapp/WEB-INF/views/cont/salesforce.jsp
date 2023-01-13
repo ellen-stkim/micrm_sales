@@ -750,7 +750,6 @@
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
     let firstLoad = true;
-    let mstSeq = null;
     let dropTarget = null;
     let bindList = [];
 
@@ -2067,6 +2066,7 @@
     // 템플릿 명 유효성 검사
     function isCheckTemplateName() {
         let cont_nm = $("input[name='cont_nm']").val();
+        let seq = $("input[name='mst_seq']").val();
         let rcsType = $("input[name='rcs_format_type']:checked").val();
         const res = function (response) {
             if (response.status == "true") {
@@ -2083,7 +2083,7 @@
                 popup.popAlert(response.message)
             }
         }
-        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: mstSeq}
+        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: seq}
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
