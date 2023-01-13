@@ -168,6 +168,10 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+        logger.error("----------------------------------------")
+        logger.error("{}",listMap)
+        logger.error("{}",!CommonUtils.isEmptyObject(listMap))
+        logger.error("----------------------------------------")
         if(!CommonUtils.isEmptyObject(listMap)){
             val cntMap = salesforceService.isCheckSender(usr_cd)
 
