@@ -1425,8 +1425,6 @@
         const res = function (response) {
 
             const $doc = new DOMParser().parseFromString(response, "text/html");
-           console.log($(".nodataCheck", $doc).html())
-            console.log($(".nodataCheck", $doc).html() == "NULL")
             if($(".nodataCheck", $doc).html() == "NULL"){
                 alert("사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요.");
                 _connection.trigger("destroy");
