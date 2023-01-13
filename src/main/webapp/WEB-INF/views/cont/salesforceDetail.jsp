@@ -13,6 +13,9 @@
 <!-- image upload js -->
 <script src="/js/imageUpload.js"></script>
 <!-- container 영역 시작 -->
+<c:if test="${list.length < 0 }">
+<section class="nodataCheck">NULL</section>
+</c:if>
 <section class="container">
     <!-- 컨텐츠 영역 시작 -->
     <div class="contents">
@@ -3653,14 +3656,6 @@
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
-    mdmLoad()
-    /*
-    console.log("${isError}" == "true")
-    if("${isError}" == "true"){
-        alert("사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요.");
-        _connection.trigger("destroy");
-    }
-    */
     function mdmLoad() {
         console.log("ewaewaeaeaweawewaeawewe");
         //load 시 byte 계산
@@ -3750,6 +3745,7 @@
 
 
     $(function () {
+
         // 포맷 Tab
         $('#js-smsTab > li').on('click', function () {
             let tab = $('#js-smsTab > li').index(this);

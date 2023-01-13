@@ -181,7 +181,6 @@ class SalesforceController {
             rejDto.def_yn = "Y"
             val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
 
-            view.addObject("list" , listMap["list"])
             view.addObject("rejectText",smsRejectTextMap["list"])
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
@@ -192,9 +191,8 @@ class SalesforceController {
             commonCDDto.cd_id = "UPURL01"
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
             view.addObject("filePath", uploadPrefix?.cd_val)
-        } else {
-            view.addObject("isError", true )
         }
+        view.addObject("list" , listMap["list"])
 
         return view
     }
