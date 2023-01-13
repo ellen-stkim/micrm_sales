@@ -165,6 +165,7 @@ class SalesforceController {
                             , @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
+        tblmiContMstdto.cont_grp_cd = usr_cd
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)

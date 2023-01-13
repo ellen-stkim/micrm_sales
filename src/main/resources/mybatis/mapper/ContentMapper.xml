@@ -1213,7 +1213,7 @@
 		   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
 		   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
 		   LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
-		WHERE  m.seq = #{seq}
+		WHERE  m.seq = #{seq} and m.cont_grp_cd = #{cont_grp_cd}
 		ORDER  BY l.seq;
 	</select>
 
