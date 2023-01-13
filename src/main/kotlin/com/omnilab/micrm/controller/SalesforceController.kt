@@ -171,9 +171,11 @@ class SalesforceController {
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
         logger.error("----------------------------------------")
         logger.error("{}",listMap)
-        logger.error("{}",!CommonUtils.isEmptyObject(listMap))
+        logger.error("{}",listMap["list"] as List<Content_view_Dto>)
+
+        val list = listMap["list"] as List<Content_view_Dto>
         logger.error("----------------------------------------")
-        if(!CommonUtils.isEmptyObject(listMap)){
+        if(list.size > 0){
             val cntMap = salesforceService.isCheckSender(usr_cd)
 
             val rejDto = SetLst_searchDto()
@@ -195,7 +197,7 @@ class SalesforceController {
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
             view.addObject("filePath", uploadPrefix?.cd_val)
         } else {
-            view.addObject("msg", "사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요." )
+            view.addObject("isError", true )
         }
 
         return view
