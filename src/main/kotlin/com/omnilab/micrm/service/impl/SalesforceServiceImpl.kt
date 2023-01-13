@@ -149,7 +149,44 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
+                val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+
+                val auth = customAuthenticationProvider.authenticate(token)
+                if (auth.isAuthenticated) {
+                    session.setAttribute("MID", userId)
+                    SecurityContextHolder.getContext().authentication = auth
+                    val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
+                    returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
+                    returnMap["msg"] = msg
+                    returnMap["status"] = "true"
+
+                    val kkoDto = SetLst_searchDto()
+                    kkoDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                    kkoDto.list_tp_id = "CH02"
+                    kkoDto.list_dt_id = "DMTP03"
+                    kkoDto.def_yn = "Y"
+                    returnMap["kko"] = mobileContentService.selectSenderList(kkoDto)
+
+                    val smsDto = SetLst_searchDto()
+                    smsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                    smsDto.list_tp_id = "CH02"
+                    smsDto.list_dt_id = "DMTP02"
+                    smsDto.def_yn = "Y"
+                    returnMap["mdm"] = mobileContentService.selectSenderList(smsDto)
+
+                    val rcsDto = SetLst_searchDto()
+                    rcsDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                    rcsDto.list_tp_id = "CH02"
+                    rcsDto.list_dt_id = "DMTP04"
+                    rcsDto.def_yn = "Y"
+                    returnMap["rcs"] = mobileContentService.selectSenderList(rcsDto)
+                }else{
+                    returnMap["status"] = "false"
+                }
+
+                /*
                 val check: Authentication = SecurityContextHolder.getContext().authentication
+                //로그인되있음
                 if(check !is AnonymousAuthenticationToken){
                     val loginDto: Tblmi_usrDto = check.details as Tblmi_usrDto
                     if(session.getAttribute("MID") != null && session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
@@ -253,6 +290,7 @@ class SalesforceServiceImpl : SalesforceService {
                         returnMap["status"] = "false"
                     }
                 }
+                 */
             } else {
                 logger.error("tokenContext fail: $responseBody")
             }

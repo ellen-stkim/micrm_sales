@@ -621,6 +621,8 @@ class SysSettingServiceImpl : SysSettingService {
                     lstDto.list_val = sendKey
 
                     sysSettingDao.insertSetLst(lstDto)
+
+                    result = getTodaySendProfileResult
                 }else{
                     logger.error("", e)
                     result["status"] = 302
