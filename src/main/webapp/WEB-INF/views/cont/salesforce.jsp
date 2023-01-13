@@ -1427,7 +1427,6 @@
             $(".container").html($(".container", $doc).html());
 
             beforeKkoType = $('.kko_format_type:checked').val();
-            mstSeq = seq;
 
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
@@ -2065,11 +2064,19 @@
     }
 
 
-    // 템플릿 명 유효성 검사
+    // 템플릿 명 유효성 검사 //salesforce에서는 이름 중복확인 안함
     function isCheckTemplateName() {
         let cont_nm = $("input[name='cont_nm']").val();
         let rcsType = $("input[name='rcs_format_type']:checked").val();
-        const res = function (response) {
+
+        if (rcsType === 'slide') {
+            btnHiddenRcsSlide()
+        } else {
+            buttonHiddenAdd()
+        }
+        preview();
+
+        /*const res = function (response) {
             if (response.status == "true") {
                 // buttonHiddenAdd()
                 if (rcsType === 'slide') {
@@ -2085,7 +2092,7 @@
             }
         }
         let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: mstSeq}
-        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')*/
     }
 
     // 버튼 타입 Hidden 값 추가
