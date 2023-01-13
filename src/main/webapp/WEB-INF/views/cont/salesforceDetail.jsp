@@ -13,7 +13,7 @@
 <!-- image upload js -->
 <script src="/js/imageUpload.js"></script>
 <!-- container 영역 시작 -->
-<c:if test="${list.length < 0 }">
+<c:if test="${fn:length(list) < 0 }">
 <section class="nodataCheck">NULL</section>
 </c:if>
 <section class="container">
