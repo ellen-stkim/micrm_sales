@@ -3656,6 +3656,7 @@
     // 에러가
     if(${isError}){
         alert("사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요.");
+        _connection.trigger("destroy");
     }
 
     function mdmLoad() {
