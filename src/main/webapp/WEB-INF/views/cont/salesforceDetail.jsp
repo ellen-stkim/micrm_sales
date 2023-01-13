@@ -3747,7 +3747,6 @@
 
 
     $(function () {
-
         // 포맷 Tab
         $('#js-smsTab > li').on('click', function () {
             let tab = $('#js-smsTab > li').index(this);
