@@ -102,7 +102,7 @@
             <div class="count border-bottom cf">
                 <div class="total left">수신거부 문구 리스트</div>
                 <div class="btn_col right">
-                    <input type="button" value="추가" class="btn_sm_line" onclick="numberAddPopup();" />
+                    <input type="button" value="추가" class="btn_sm_line" onclick="rejectTextAddPopup();" />
                     <input type="button" value="기본 문구 지정" class="btn_sm_line" onclick="callingNumPopup();" />
                 </div>
             </div>
@@ -119,7 +119,7 @@
 </section>
 
 <!-- 수신거부 문구 추가 팝업 영역 시작 -->
-<div class="layer_pop numberAddPopup">
+<div class="layer_pop rejectTextAddPopup">
     <div class="pop_container popup_size1">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
         <div class="pop_title">수신거부 문구 추가</div>
@@ -218,8 +218,8 @@
     getSmsSettingList('1');
 
     // 문자 저장 팝업 띄우기
-    function numberAddPopup() {
-        $('.numberAddPopup').addClass('active');
+    function rejectTextAddPopup() {
+        $('.rejectTextAddPopup').addClass('active');
     }
 
     // 문자 수정 팝업 띄우기
@@ -244,14 +244,14 @@
 
 
     // 수신거부 문구 저장하기
-    function saveSms() {
+    function saveText() {
 
         const res = function(response){
             let nowPageNo = $("#nowPageNo").val();
             $("#list_nm").val('');
             $("#list_val").val('');
             $("#errorArea1").html('');
-            $('.numberAddPopup').removeClass('active')
+            $('.rejectTextAddPopup').removeClass('active')
             getSmsSettingList(nowPageNo);
         }
 
@@ -276,16 +276,12 @@
             $("#errorArea1").html('수신거부 문구를 입력해 주세요.')
             return false;
         }
-        if(!chkNumber(rejectText)){
-            $("#errorArea1").html("숫자만 입력해 주세요");
-            return false;
-        }
 
         const res = function(response) {
             if(response.status == true){
-                saveSms();
+                saveText();
             }  else {
-                $("#errorArea1").html('중복된 발신주소 입니다.')
+                $("#errorArea1").html('중복된 문구 입니다.')
                 return false;
             }
         }

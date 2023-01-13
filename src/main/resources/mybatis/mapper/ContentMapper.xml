@@ -770,6 +770,9 @@
 					on lst.send_tp = cd.cd_id
 		<where>
 			mst.DEL_YN = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+				and mst.cont_grp_cd = #{cont_grp_cd}
+			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 				and mst.use_yn = #{use_yn}
 			</if>
@@ -1210,7 +1213,7 @@
 		   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
 		   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
 		   LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
-		WHERE  m.seq = #{seq}
+		WHERE  m.seq = #{seq} and m.cont_grp_cd = #{cont_grp_cd}
 		ORDER  BY l.seq;
 	</select>
 

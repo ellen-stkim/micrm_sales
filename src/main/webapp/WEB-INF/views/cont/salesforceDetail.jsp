@@ -13,6 +13,9 @@
 <!-- image upload js -->
 <script src="/js/imageUpload.js"></script>
 <!-- container 영역 시작 -->
+<c:if test="${fn:length(list) == 0 }">
+<section class="nodataCheck">NULL</section>
+</c:if>
 <section class="container">
     <!-- 컨텐츠 영역 시작 -->
     <div class="contents">
@@ -3654,6 +3657,7 @@
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 
     function mdmLoad() {
+        console.log("ewaewaeaeaweawewaeawewe");
         //load 시 byte 계산
         let kakaoTxt = $('#kakao .textarea');
         let smsTxt = $('#sms .textarea');
@@ -3941,156 +3945,8 @@
             beforeType = nowVal;
         });
 
-
-        $("#previewBtn").on('click', function () {
-
-            let tamplate = $('.template_name');
-            let smsFormat = $('.formatType:checked').val();
-            let smsFormatLength = $('.formatType:checked').length;
-
-            $('.create_sms').find('.outline').removeClass('outline');
-
-            //console.log("previeBtn click");
-            //console.log("tamplate : " + tamplate.val());
-            //console.log("smsFormat : " + smsFormat);
-            //console.log("smsFormatLength : " + smsFormatLength);
-
-            if (tamplate.val() != '') {
-                if (smsFormatLength == 1) {
-                    if (smsFormat == 'kakao') {
-                        let kakaoSubmit = kakaoValidate();
-                        if (kakaoSubmit == true) {
-                            isCheckTemplateName();
-                        } else {
-                            return false;
-                        }
-                    } //kakao end
-                    if (smsFormat == 'sms') {
-                        let smsSubmit = smsValidate();
-                        if (smsSubmit == true) {
-                            isCheckTemplateName();
-                        } else {
-                            return false;
-                        }
-                    }
-                    if (smsFormat == 'rcs') {
-                        let rcsSubmit = rcsValidate();
-                        if (rcsSubmit == true) {
-                            isCheckTemplateName();
-                        } else {
-                            return false;
-                        }
-                    }
-                } else if (smsFormatLength > 1) {
-                    for (let a = 0; a < smsFormatLength; a++) {
-
-                        let checkVal = $('.formatType:checked').eq(a).val();
-                        if (checkVal == 'kakao') {
-                            let kakaoSubmit = kakaoValidate();
-                            if (kakaoSubmit == false) {
-                                return false;
-                            }
-                        }
-                        if (checkVal == 'sms') {
-                            let smsSubmit = smsValidate();
-                            if (smsSubmit == false) {
-                                return false;
-                            }
-                        }
-                        if (checkVal == 'rcs') {
-                            let rcsSubmit = rcsValidate();
-                            if (rcsSubmit == false) {
-                                return false;
-                            }
-                        }
-                    }
-                    isCheckTemplateName();
-                } else {
-                    popup.popAlert('컨텐츠 포맷을 선택해주세요.');
-                    return false;
-                }
-            } else {
-                tamplate.focus().addClass('outline');
-                popup.popAlert('템플릿 명을 입력해주세요.');
-                return false;
-            }
-        });
     });
 
-
-    /*$('.btn_save').on('click', function () {
-            let tamplate = $('.template_name');
-            let smsFormat = $('.formatType:checked').val();
-            let smsFormatLength = $('.formatType:checked').length;
-
-            $('.create_sms').find('.outline').removeClass('outline');
-
-            if (tamplate.val() != '') {
-                if (smsFormatLength == 1) {
-                    if (smsFormat == 'kakao') {
-                        let kakaoSubmit = kakaoValidate();
-                        if (kakaoSubmit == true) {
-                            //$('#form').submit();
-                            isCheckTemplateName();
-                        } else {
-                            return false;
-                        }
-                    } //kakao end
-                    if (smsFormat == 'sms') {
-                        let smsSubmit = smsValidate();
-                        if (smsSubmit == true) {
-                            //$('#form').submit();
-                            isCheckTemplateName()
-                        } else {
-                            return false;
-                        }
-                    }
-                    if (smsFormat == 'rcs') {
-                        let rcsSubmit = rcsValidate();
-                        if (rcsSubmit == true) {
-                            //$('#form').submit();
-                            isCheckTemplateName()
-                        } else {
-                            return false;
-                        }
-                    }
-                } else if (smsFormatLength > 1) {
-                    for (let a = 0; a < smsFormatLength; a++) {
-                        let checkVal = $('.formatType:checked').eq(a).val();
-                        if (checkVal == 'kakao') {
-                            let kakaoSubmit = kakaoValidate();
-                            if (kakaoSubmit == false) {
-                                return false;
-                            }
-                        }
-                        if (checkVal == 'sms') {
-                            let smsSubmit = smsValidate();
-                            if (smsSubmit == false) {
-                                return false;
-                            }
-                        }
-                        if (checkVal == 'rcs') {
-                            let rcsSubmit = rcsValidate();
-                            if (rcsSubmit == false) {
-                                return false;
-                            }
-                        }
-                    }
-                    isCheckTemplateName()
-                    // $("#form").submit()
-                } else {
-                    popup.popAlert('컨텐츠 포맷을 선택해주세요.');
-                    return false;
-                }
-            } else {
-                tamplate.focus().addClass('outline');
-                popup.popAlert('템플릿 명을 입력해주세요.');
-                return false;
-            }
-        });
-
-    });
-*/
 
     // RCS 포맷카드 변경
     function rcsChangeFormat(type) {
@@ -4108,23 +3964,6 @@
         rcsCreate.rcsAdCheck();
     }
 
-    // RCS 카드양식 변경
-    /*function rcsLowTypeChange(type) {
-        let checkType = $(type)[0];
-        let radioVal = checkType.value;
-        $(type).prop('checked', true);
-        beforeSub = radioVal;
-        $('.layer_pop').removeClass('active');
-        if (radioVal == 'sms' || radioVal == 'lms') {
-            rcsCreate.text(checkType);
-        } else if (radioVal == 'left' || radioVal == 'right') {
-            rcsCreate.horizontal(checkType);
-        } else if (radioVal == 'tall' || radioVal == 'medium') {
-            rcsCreate.vertical(checkType);
-        }
-        rcsCreate.rcsLowTypeCheck();
-        rcsCreate.rcsAdCheck();
-    }*/
 
     // RCS 카드 양식 변경
     function rcsLowTypeChange(type) {
@@ -4660,203 +4499,6 @@
         adTypeCheck();
     }
 
-    //RCS 버튼 Replace
-    function buttonReplace(type, length, textCount) {
-        let html = '';
-
-        for (let a = 0; a < length; a++) {
-            html += '<div class="block">'
-                + '<div class="row">'
-                + '<div class="th bottom-border">버튼 액션 선택</div>'
-                + '<div class="td bottom-border">'
-                + '<div class="select action_select" data="' + (a + 1) + '">'
-                + '<div class="value" data="0">액션선택</div>'
-                + '<ul class="option">'
-                + '<li data="0">액션선택</li>'
-                + '<li data="RBTN01">복사하기</li>'
-                + '<li data="RBTN02">URL연결</li>'
-                + '<li data="RBTN03">전화걸기</li>'
-                + '<li data="RBTN04">지보보여주기(좌표)</li>'
-                + '<li data="RBTN05">지도보여주기(쿼리)</li>'
-                + '<li data="RBTN06">현재위치공유</li>'
-                + '<li data="RBTN07">캘린더등록</li>'
-                + '<li data="RBTN08">메시지전송</li>'
-                + '</ul>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '<div class="row">'
-                + '<div class="th">버튼 명</div>'
-                + '<div class="td button-name">'
-                + '<input type="text" name="rcs_btn_' + Number(a + 1) + '" class="txt_input action_name" data="' + Number(a + 1) + '"'
-                + 'placeholder="버튼 명을 입력해주세요." onkeyup="rcsCreate.buttonCount(this,' + '\'' + type + '\'' + ');">'
-                + '<span class="text-count en_font"><span>0</span>/' + textCount + '</span>'
-                + '</div>'
-                + '</div>'
-                + '<div class="custom_box"></div>'
-                + '</div>';
-        }
-        $('#btn-action-area').html(html);
-    }
-
-    // RCS 슬라이드형 카드 양식 변경
-    function rcsSlideChange(type) {
-
-        $('.layer_pop').removeClass('active');
-        slideData = type;
-        let layout = slideLayout(type);
-        $('#js-rcs-area').html(layout);
-
-        if (typeValue <= 3) {
-            $('input[name="rcs_msg_tp"]').val("small");
-        } else {
-            $('input[name="rcs_msg_tp"]').val("medium");
-        }
-
-        mappingLst();
-        adTypeCheck();
-
-        new Swiper('.slideSwiper', {
-            direction: 'horizontal',
-            pagination: {
-                el: '.rcs_paging',
-                type: 'fraction',
-            },
-            // Navigation arrows
-            navigation: {
-                nextEl: '.rcs_next',
-                prevEl: '.rcs_prev',
-            },
-        });
-    }
-
-    // 광고/안내 체크
-    function adTypeCheck() {
-        let adType = $('.js-ad').filter(':checked').val();
-        let kakao = $('input[name="kko_option"]');
-        let sms = $('input[name="sms_option"]');
-        let rcs = $('input[name="rcs_option"]');
-
-        if (adType == 'ad') {
-            kakao.val('ad');
-            sms.val('ad');
-            rcs.val('ad');
-            $('.rcs_head').html('[WEB발신]광고');
-        } else {
-            kakao.val('guide');
-            sms.val('guide');
-            rcs.val('guide');
-            $('.rcs_head').html('[WEB발신]');
-        }
-    }
-
-    // 이미지 Upload popup
-    function imgUploadPop() {
-        var html = '<div class="layer_pop uploadPopup active" style="z-index:960;">' +
-            '<div class="pop_container popup_size1">' +
-            '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />' +
-            '<div class="pop_title">새 이미지 파일 업로드</div>' +
-            '<div class="pop_inner">' +
-            '<table class="pop_table_type1">' +
-            '<colgroup>' +
-            '<col width="103" />' +
-            '<col width="*" />' +
-            '</colgroup>' +
-            '<tbody>' +
-            '<tr>' +
-            '<th>채널</th>' +
-            '<td>' +
-            '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" checked><span></span></label>' +
-            '<label class="custom_radio">카카오<input name="ch_tp" type="radio" value="IMGTP03"><span></span></label>' +
-            '<label class="custom_radio">RCS<input name="ch_tp" type="radio" value="RCS"><span></span></label>' +
-            '</td>' +
-            '</tr>' +
-            '<tr class="rcsImgForm rcs_option">' +
-            '<th>양식</th>' +
-            '<td>' +
-            '<div class="select style1 rcs_select">' +
-            '<div class="value" data="">RCS 양식 선택</div>' +
-            '<ul class="option">' +
-            '<li data="0">RCS 양식 선택</li>' +
-            '<li data="IMGTP05">세로형 / Tall</li>' +
-            '<li data="IMGTP06">세로형 / Medium</li>' +
-            '<li data="IMGTP07">슬라이드형 / Small</li>' +
-            '<li data="IMGTP08">슬라이드형 / Medium</li>' +
-            '</ul>' +
-            '</div>' +
-            '</td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th>이미지 명</th>' +
-            '<td>' +
-            '<input type="text" placeholder="이미지 명을 입력해주세요." id="img_nmCk" name="img_nm" class="input_type1" />' +
-            '</td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th>이미지 파일</th>' +
-            '<td>' +
-            '<input type="text" id="fileName" name="fileName" class="input_file" placeholder="이미지 파일을 선택해주세요." readonly />' +
-            '<span class="btn_file">파일 선택<input type="file" class="file" id="file"/></span>' +
-            '</td>' +
-            '</tr>' +
-            '</tbody>' +
-            '</table>' +
-            '<ul class="guide_txt">' +
-            '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>' +
-            '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>' +
-            '</ul>' +
-            '<div class="left pop_error_txt other_guide">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>' +
-            '<div class="right pop_error_txt blue_point_color"></div>' +
-            '<div class="img_viewer noImg"></div>' +
-            '<div class="btn_row">' +
-            '<input type="button" class="btn_bg btn_size2 btn_center uploadSave" onclick="saveContentImg();" value="저장" />' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>';
-        $("#imgListHtml").html(html);
-    }
-
-    // 이미지 컨텐츠 저장하기
-    function saveContentImg() {
-        var imgNm = $("#img_nmCk").val();
-        if (imgNm == "" || imgNm == null) {
-            popup.popAlert("이미지명을 입력해주세요.");
-            return false;
-        }
-        if ($("#file").val() == "" || $("#file").val() == null) {
-            popup.popAlert("업로드된 파일이 없습니다.");
-            return false;
-        }
-
-        var res = function (response) {
-            //TO-DO
-            //리스트 새로 불러오기
-            if (response.imgCheck == 0) {
-                popup.popAlert(response.imgCheckErr);
-                return false;
-            }
-            popup.popAlert(response.message);
-            $('.uploadPopup').removeClass('active');
-            $("#form")[0].reset();
-            $("#file").val();
-            $(".img_viewer").children().remove();
-            $(".img_view").addClass('noImg');
-            imageListPaging('1');
-        };
-
-        var data = new FormData();
-        data.append("file", $("#file")[0].files[0]);
-        var ch_tp = $("input[name=ch_tp]:checked").val();
-        if (ch_tp == 'RCS') {
-            data.append("ch_tp", $('.rcs_select .value').attr('data'));
-        } else {
-            data.append("ch_tp", ch_tp);
-        }
-        data.append("img_nm", imgNm);
-
-        com_ajax.ajax_file('${baseURL}/cont/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
 
     // 프리뷰 서비스 랜딩 하기
     function preview() {
@@ -4869,26 +4511,6 @@
         }
         let data = $("#form").serializeArray();
         com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
-    }
-
-    // 프리뷰 슬라이드 랜딩 하기
-    function previewSlideLoad() {
-
-        let swiperEl = $('.previewSlide').length;
-        if (swiperEl > 0) {
-            var mySwiper = new Swiper('.previewSlide', {
-                direction: 'horizontal',
-                pagination: {
-                    el: '.rcs_paging',
-                    type: 'fraction',
-                },
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.rcs_next',
-                    prevEl: '.rcs_prev',
-                },
-            });
-        }
     }
 
     // 프리뷰에서 저장 버튼 누르기

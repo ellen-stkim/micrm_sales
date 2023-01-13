@@ -165,29 +165,34 @@ class SalesforceController {
                             , @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
+        tblmiContMstdto.cont_grp_cd = usr_cd
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = salesforceService.isCheckSender(usr_cd)
 
-        val rejDto = SetLst_searchDto()
-        rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        rejDto.list_tp_id = "CH04"
-        rejDto.list_dt_id = "REJT01"
-        rejDto.def_yn = "Y"
-        val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
+        val list = listMap["list"] as List<Content_view_Dto>
+        if(list.isNotEmpty()){
+            val cntMap = salesforceService.isCheckSender(usr_cd)
 
+            val rejDto = SetLst_searchDto()
+            rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            rejDto.list_tp_id = "CH04"
+            rejDto.list_dt_id = "REJT01"
+            rejDto.def_yn = "Y"
+            val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
+
+            view.addObject("rejectText",smsRejectTextMap["list"])
+            view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+            view.addObject("smsCnt", cntMap["smsCnt"])
+            view.addObject("rcsCnt", cntMap["rcsCnt"])
+
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "COMMON"
+            commonCDDto.cd_id = "UPURL01"
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+            view.addObject("filePath", uploadPrefix?.cd_val)
+        }
         view.addObject("list" , listMap["list"])
-        view.addObject("rejectText",smsRejectTextMap["list"])
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
-
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
-        view.addObject("filePath", uploadPrefix?.cd_val)
 
         return view
     }
@@ -663,17 +668,21 @@ class SalesforceController {
     fun stop(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
         logger.info("/stop.service data: $data")
         val dto = Tblmicp_programDto()
-        dto.inten_id = data["interactionId"].toString()
-        dto.orig_id = data["originalDefinitionId"].toString()
-        dto.inta_key = data["interactionKey"].toString()
-        dto.inta_ve = data["interactionVersion"].toString()
-        dto.pro_st = "04"
-        salesforceDao.upd_tblmicp_program_sales(dto)
-        if(dto.pro_id != null){
-            val campDto = Tblmicp_campaignDto()
-            campDto.pro_id = dto.pro_id
-            campDto.camp_st = "04"
-            salesforceDao.upd_tblmicp_campaign(campDto)
+        try{
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pro_st = "04"
+            salesforceDao.upd_tblmicp_program_sales(dto)
+            if(dto.pro_id != null){
+                val campDto = Tblmicp_campaignDto()
+                campDto.pro_id = dto.pro_id
+                campDto.camp_st = "04"
+                salesforceDao.upd_tblmicp_campaign(campDto)
+            }
+        }catch (e: Exception){
+            logger.error("stop Service error : {}", dto)
         }
     }
 

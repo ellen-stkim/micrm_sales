@@ -10,8 +10,8 @@ class SetLst_searchDto: Tblmi_set_lstDto {
 
 
     var pageNo: Int = 1
-    var firstIndex: Int = 0
-    var recordCountPerPage: Int = 0
+    var firstIndex: Int? = 0
+    var recordCountPerPage: Int? = 0
     var searchType : String?= null
     var searchValue : String ?= null
 

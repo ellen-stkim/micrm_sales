@@ -16,6 +16,7 @@
       <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
       <div class="pop_title">수신거부 문구 선택</div>
       <div class="pop_inner">
+         <span class="btn_sm_line right" style="margin-bottom: 10px;" onclick="rejectTextAddPopup()" >추가</span>
          <table class="pop_table">
             <colgroup>
                <col width="35" />
@@ -57,7 +58,7 @@
          </table>
          <div class="btn_row bottom-border">
             <ul class="pager">
-               <ui:pagination paginationInfo="${page}" type="image" jsFunction="mobileSenderPopup"/>
+               <ui:pagination paginationInfo="${page}" type="image" jsFunction="mobileRejectTextPopup"/>
             </ul>
          </div>
          <input type="hidden" id="nowPageNo" name="nowPageNo" value="${pageNo}"/>
@@ -69,4 +70,86 @@
          </div>
       </div>
    </div>
+   <!-- 수신거부 문구 추가 팝업 영역 시작 -->
+   <div class="layer_pop rejectTextAddPopup">
+      <div class="pop_container popup_size1">
+         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+         <div class="pop_title">수신거부 문구 추가</div>
+         <div class="pop_inner">
+            <form action="" id="postForm1">
+               <table class="pop_table_type1">
+                  <colgroup>
+                     <col width="103" />
+                     <col width="*" />
+                  </colgroup>
+                  <tbody>
+                  <tr>
+                     <th>문구명</th>
+                     <td><input type="text" name="list_nm" id="list_nm" placeholder="문구명을 입력해주세요." class="input_type1" /></td>
+                  </tr>
+                  <tr>
+                     <th>수신거부 문구</th>
+                     <td><textarea name="list_val" id ="list_val" cols="30" rows="10" placeholder="수신거부 문구를 입력해주세요." style="width: 100%;height: 80px; padding: 0 15px; resize: none;"></textarea>
+                     </td>
+                  </tr>
+                  </tbody>
+               </table>
+            </form>
+            <div class="pop_error_txt blue_point_color" id="errorArea1"></div>
+            <div class="btn_row">
+               <input type="button" class="btn_bg btn_size2 btn_inline" onclick="checkRejectText();" value="저장" />
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- 수신거부 문구 추가 팝업 영역 끝 -->
+   <script>
+      // 문자 저장 팝업 띄우기
+      function rejectTextAddPopup() {
+         $('.rejectTextAddPopup').addClass('active');
+      }
+
+      // 중복 체크하기
+      function checkRejectText() {
+
+         let textName = $("#list_nm").val().trim();
+         let rejectText = $("#list_val").val().trim();
+
+         if(textName == '') {
+            $("#errorArea1").html("문구명을 입력해 주세요.")
+            return false;
+         }
+         if(rejectText == '') {
+            $("#errorArea1").html('수신거부 문구를 입력해 주세요.')
+            return false;
+         }
+
+         const res = function(response) {
+            if(response.status == true){
+               saveText();
+            }  else {
+               $("#errorArea1").html('중복된 문구 입니다.')
+               return false;
+            }
+         }
+
+         let data = []
+         data.push({name : "list_val" , value : rejectText})
+         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/sys/setting/isExistSmsAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+      }
+
+      // 수신거부 문구 저장하기
+      function saveText() {
+
+         const res = function(response){
+            mobileRejectTextPopup(1);
+         }
+
+         let data = []
+         data.push({name : "list_nm" , value : $("#list_nm").val().trim()})
+         data.push({name : "list_val" , value : $("#list_val").val().trim()})
+
+         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/sys/setting/insertRejectText.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+      }
+   </script>
 </div>
