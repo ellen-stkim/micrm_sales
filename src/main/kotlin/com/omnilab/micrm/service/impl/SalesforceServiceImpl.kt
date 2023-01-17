@@ -2261,8 +2261,8 @@ class SalesforceServiceImpl : SalesforceService {
                             val cpMstDto = Tblmicp_cont_mstDto(contDto)
                             cpMstDto.cont_seq = seq.toInt()
                             cpMstDto.sales_nm = sales_nm
-                            cpMstDto.camp_nm = mstDto.camp_nm
-                            cpMstDto.team_cd = mstDto.team_cd
+                            cpMstDto.camp_nm = contDto.camp_nm
+                            cpMstDto.team_cd = contDto.team_cd
                             cpMstDto.avo_nm = avo_nm
                             cpMstDto.avo_id = avo_id
                             cpMstDto.inten_id = dto.inten_id
@@ -2273,7 +2273,7 @@ class SalesforceServiceImpl : SalesforceService {
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
                             logger.error("===========================================================================")
-                            logger.error("{}",mstDto)
+                            logger.error("{}",contDto)
                             logger.error("{}",cpMstDto)
                             logger.error("===========================================================================")
 
