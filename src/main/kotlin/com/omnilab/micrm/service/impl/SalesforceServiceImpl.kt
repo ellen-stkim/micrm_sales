@@ -885,6 +885,7 @@ class SalesforceServiceImpl : SalesforceService {
             return statusMap
         }
 
+        logger.error("{}",contentListCreatedto)
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
         tblmiContMstDto.ch_tp = "CH03"
         tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm

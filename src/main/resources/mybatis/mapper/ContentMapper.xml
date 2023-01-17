@@ -880,6 +880,12 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
 			, SALES_NM = #{sales_nm}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+			, PRO_NM = #{pro_nm}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_cd)">
+			, TEAM_CD = #{team_cd}
+		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
 			, avo_id = #{avo_id}
 		</if>
@@ -967,12 +973,6 @@
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 			USE_YN = #{use_yn},
-		</if>
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(PRO_NM)">
-			PRO_NM = #{pro_nm},
-		</if>
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_cd)">
-			TEAM_CD = #{team_cd},
 		</if>
 		cont_sub = #{cont_sub},
 		cont_body = #{cont_body},
