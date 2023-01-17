@@ -422,7 +422,7 @@
     padding:0 20px; border-right:1px solid #dddddd; background:#fafafa;}
 /*.create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}*/
 .create_sms .head .td {float:left; width:calc(20% - 145px); height:100%;}
-.create_sms .head .td:last-child {float:left; width:calc(50% - 190px); height:100%;}
+.create_sms .head .td:last-child {float:left; width:calc(50% - 210px); height:100%;}
 .create_sms .head .td .txt_input {width:100%; padding:0 20px; font-size:11px;
     line-height:35px; height:35px;}
 .flex_row {display:flex; flex-direction:row;}
