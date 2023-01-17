@@ -2272,6 +2272,11 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.pub_yn = dto.pub_yn
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
+                            logger.error("===========================================================================")
+                            logger.error("{}",mstDto)
+                            logger.error("{}",cpMstDto)
+                            logger.error("===========================================================================")
+
                             //기존 데이터가 있을 경우 삭제
                             salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
                             salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
