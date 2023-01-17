@@ -111,6 +111,12 @@ class SalesforceController {
         val view =  ModelAndView("cont/salesforce")
         view.addObject("usr_cd", usr_cd)
 
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "GRP_TEAM"
+        commonCDDto.cd_id = "TEAM01"
+        commonCDDto.par_id = usr_cd
+        view.addObject("teamLst", sysSettingService.getCommCDLst(commonCDDto))
+
         return view
     }
 
@@ -191,6 +197,13 @@ class SalesforceController {
             commonCDDto.cd_id = "UPURL01"
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
             view.addObject("filePath", uploadPrefix?.cd_val)
+
+            val teamCDDto = Tblmi_comm_cdDto()
+            teamCDDto.grp_id = "GRP_TEAM"
+            teamCDDto.cd_id = "TEAM01"
+            teamCDDto.par_id = usr_cd
+            view.addObject("teamLst", sysSettingService.getCommCDLst(teamCDDto))
+
         }
         view.addObject("list" , listMap["list"])
 
