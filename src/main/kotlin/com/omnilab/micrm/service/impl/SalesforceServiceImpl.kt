@@ -2261,6 +2261,8 @@ class SalesforceServiceImpl : SalesforceService {
                             val cpMstDto = Tblmicp_cont_mstDto(contDto)
                             cpMstDto.cont_seq = seq.toInt()
                             cpMstDto.sales_nm = sales_nm
+                            cpMstDto.camp_nm = mstDto.camp_nm
+                            cpMstDto.team_cd = mstDto.team_cd
                             cpMstDto.avo_nm = avo_nm
                             cpMstDto.avo_id = avo_id
                             cpMstDto.inten_id = dto.inten_id
@@ -2350,6 +2352,8 @@ class SalesforceServiceImpl : SalesforceService {
                     proDto = temp
                 }
                 for(i in contLst){
+                    logger.error("******************************************************************")
+                    logger.error("{}",i)
                     val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
                     campaignDto.cont_id = i.seq
                     campaignDto.send_tg_tp = "TG01"
