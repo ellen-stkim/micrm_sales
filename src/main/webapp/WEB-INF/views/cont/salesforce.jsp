@@ -56,13 +56,12 @@
                     <div class="td right-border" style="width: 190px;">
                         <div class="select">
                             <!-- selected value -->
-                            <div class="value" id="team_cd_to" data="">팀명</div>
+                            <div class="value" id="team_cd_sel" data="">팀명</div>
                             <ul class="option">
                                 <c:forEach var="team" items="${teamLst}">
                                     <li data="${team.cd_val}">${team.cd_desc}</li>
                                 </c:forEach>
                             </ul>
-                            <input type="hidden" id="team_cd" name="team_cd"/>
                         </div>
                     </div>
 

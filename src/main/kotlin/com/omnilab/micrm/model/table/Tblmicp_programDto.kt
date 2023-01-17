@@ -24,6 +24,7 @@ open class Tblmicp_programDto {
     var off_cost: BigDecimal? = null
     var dev_cost: BigDecimal? = null
     var des_cost: BigDecimal? = null
+    var team_cd: String? = null
     var usr_grp_cd: String? = null
     var appr_id: String? = null
     var reg_id: String? = null
