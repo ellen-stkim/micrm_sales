@@ -352,6 +352,8 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.orig_id = contentListCreatedto.orig_id
             tblmiContMstDto.inta_key = contentListCreatedto.inta_key
             tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
+            tblmiContMstDto.pro_nm = contentListCreatedto.pro_nm
+            tblmiContMstDto.team_cd = contentListCreatedto.team_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
@@ -2332,7 +2334,8 @@ class SalesforceServiceImpl : SalesforceService {
                 temp.pro_tg_id = "SALES"
                 temp.cont_cnt = contLst.size
                 temp.camp_cnt = contLst.size
-                temp.pro_nm = contLst[0].sales_nm
+                temp.pro_nm = contLst[0].pro_nm
+                temp.team_cd = contLst[0].team_cd
                 temp.usr_grp_cd = contLst[0].cont_grp_cd
                 temp.reg_id = usrId
                 temp.upd_id = usrId
