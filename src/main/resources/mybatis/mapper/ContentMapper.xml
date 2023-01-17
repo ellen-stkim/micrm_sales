@@ -968,6 +968,12 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 			USE_YN = #{use_yn},
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(PRO_NM)">
+			PRO_NM = #{pro_nm},
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_cd)">
+			TEAM_CD = #{team_cd},
+		</if>
 		cont_sub = #{cont_sub},
 		cont_body = #{cont_body},
 		img_cd_1 = #{img_cd_1},
