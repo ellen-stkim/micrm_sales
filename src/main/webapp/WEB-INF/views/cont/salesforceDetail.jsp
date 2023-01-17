@@ -45,22 +45,23 @@
                     <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
                     <div class="th">프로그램 명</div>
                     <div class="td right-border">
-                        <input type="text" name="pro_nm" class="txt_input " placeholder="프로그램 명을 입력하세요.">
+                        <input type="text" name="pro_nm" class="txt_input " value="${list[0].pro_nm}" placeholder="프로그램 명을 입력하세요.">
                     </div>
                     <div class="th">캠페인 명</div>
                     <div class="td right-border">
-                        <input type="text" class="txt_input template_name" name="cont_nm" placeholder="템플릿 명을 입력하세요."/>
+                        <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
                     </div>
                     <div class="th">팀 명</div>
                     <div class="td right-border" style="width: 190px;">
                         <div class="select">
                             <!-- selected value -->
-                            <div class="value" name="team_cd" data="">팀명</div>
+                            <div class="value" id="team_cd_to" data="${list[0].team_cd}">팀명</div>
                             <ul class="option">
                                 <c:forEach var="team" items="${teamLst}">
                                     <li data="${team.cd_val}">${team.cd_desc}</li>
                                 </c:forEach>
                             </ul>
+                            <input type="hidden" id="team_cd" name="team_cd" value="${list[0].team_cd}"/>
                         </div>
                     </div>
                     <div class="th">컨텐츠 포맷</div>

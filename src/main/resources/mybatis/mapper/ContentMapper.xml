@@ -1156,6 +1156,8 @@
 	<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
 		SELECT m.seq
 			, m.ch_tp
+			, m.pro_nm
+			, m.team_cd
 			, m.cont_nm
 			, l.seq                                                                                                AS list_seq
 			, l.cont_cd                                                                                            AS cont_cd

@@ -922,6 +922,8 @@ class MobileContentServiceImpl : ContentService {
         tblmiContMstDto.reg_id = userInfo.usr_id
         tblmiContMstDto.upd_id = userInfo.usr_id
         tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
+        tblmiContMstDto.upd_id = userInfo.usr_id
+        tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
