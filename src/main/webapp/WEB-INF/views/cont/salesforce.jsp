@@ -44,13 +44,13 @@
             <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
             <div class="create_sms cf">
                 <div class="row head bottom-border">
-                    <div class="th">프로그램 명</div>
+                    <div class="th">템플릿 명</div>
                     <div class="td right-border">
-                        <input type="text" name="pro_nm" class="txt_input " placeholder="프로그램 명을 입력하세요.">
+                        <input type="text" class="txt_input template_name" name="cont_nm" placeholder="템플릿 명을 입력하세요."/>
                     </div>
                     <div class="th">캠페인 명</div>
                     <div class="td right-border">
-                        <input type="text" class="txt_input template_name" name="cont_nm" placeholder="템플릿 명을 입력하세요."/>
+                        <input type="text" name="camp_nm" class="txt_input " placeholder="프로그램 명을 입력하세요.">
                     </div>
                     <div class="th">팀 명</div>
                     <div class="td right-border" style="width: 190px;">

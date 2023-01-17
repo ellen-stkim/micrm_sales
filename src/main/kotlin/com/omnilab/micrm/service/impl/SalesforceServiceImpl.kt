@@ -352,7 +352,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.orig_id = contentListCreatedto.orig_id
             tblmiContMstDto.inta_key = contentListCreatedto.inta_key
             tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
-            tblmiContMstDto.pro_nm = contentListCreatedto.pro_nm
+            tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
             tblmiContMstDto.team_cd = contentListCreatedto.team_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
@@ -900,7 +900,7 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.orig_id = contentListCreatedto.orig_id
         tblmiContMstDto.inta_key = contentListCreatedto.inta_key
         tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
-        tblmiContMstDto.pro_nm = contentListCreatedto.pro_nm
+        tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
         tblmiContMstDto.team_cd = contentListCreatedto.team_cd
 
         contentDao.updateMobileMst(tblmiContMstDto);
@@ -2334,7 +2334,7 @@ class SalesforceServiceImpl : SalesforceService {
                 temp.pro_tg_id = "SALES"
                 temp.cont_cnt = contLst.size
                 temp.camp_cnt = contLst.size
-                temp.pro_nm = contLst[0].pro_nm
+                temp.pro_nm = contLst[0].sales_nm
                 temp.team_cd = contLst[0].team_cd
                 temp.usr_grp_cd = contLst[0].cont_grp_cd
                 temp.reg_id = usrId
@@ -2355,7 +2355,7 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDto.send_tg_tp = "TG01"
                     campaignDto.send_tg_id = "SALES"
                     campaignDto.camp_st = "03"
-                    campaignDto.camp_nm = i.cont_nm
+                    campaignDto.camp_nm = contLst[0].camp_nm
                     campaignDto.camp_ch = i.ch_tp
                     campaignDto.sto = "01"
                     campaignDto.usr_grp_cd = proDto.usr_grp_cd
