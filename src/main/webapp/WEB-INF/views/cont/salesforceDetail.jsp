@@ -55,7 +55,7 @@
                     <div class="td right-border" style="width: 190px;">
                         <div class="select">
                             <!-- selected value -->
-                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">팀명</div>
+                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${list[0].team_nm}</div>
                             <ul class="option">
                                 <c:forEach var="team" items="${teamLst}">
                                     <li data="${team.cd_val}">${team.cd_desc}</li>
