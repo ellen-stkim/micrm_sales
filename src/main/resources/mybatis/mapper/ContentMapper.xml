@@ -9,6 +9,8 @@
 		INSERT INTO tblmi_cont_mst (
 			ch_tp,
 		 	cont_nm,
+			pro_nm,
+			team_cd,
 			sales_nm,
 			avo_id,
 			inten_id,
@@ -23,6 +25,8 @@
 		values (
 			#{ch_tp},
 			#{cont_nm},
+			#{pro_nm},
+			#{team_cd},
 			#{sales_nm},
 			#{avo_id},
 			#{inten_id},
@@ -1156,7 +1160,7 @@
 	<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
 		SELECT m.seq
 			, m.ch_tp
-			, m.pro_nm
+			, m.camp_nm
 			, m.team_cd
 			, m.cont_nm
 			, l.seq                                                                                                AS list_seq
