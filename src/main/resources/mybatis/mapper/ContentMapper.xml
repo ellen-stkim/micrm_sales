@@ -9,7 +9,7 @@
 		INSERT INTO tblmi_cont_mst (
 			ch_tp,
 		 	cont_nm,
-			pro_nm,
+			camp_nm,
 			team_cd,
 			sales_nm,
 			avo_id,
@@ -25,7 +25,7 @@
 		values (
 			#{ch_tp},
 			#{cont_nm},
-			#{pro_nm},
+			#{camp_nm},
 			#{team_cd},
 			#{sales_nm},
 			#{avo_id},
@@ -884,8 +884,8 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
 			, SALES_NM = #{sales_nm}
 		</if>
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
-			, PRO_NM = #{pro_nm}
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_nm)">
+			, CAMP_NM = #{camp_nm}
 		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_cd)">
 			, TEAM_CD = #{team_cd}
