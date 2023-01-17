@@ -877,6 +877,8 @@ class SalesforceServiceImpl : SalesforceService {
         val usr_grp_cd = contentListCreatedto.cont_grp_cd
         val statusMap: MutableMap<String, Any> = HashMap()
         val tblmiContMstDto = Tblmi_cont_mstDto()
+        val proNm = contentListCreatedto.pro_nm
+        val teamCd = contentListCreatedto.team_cd
 
         val isByte = isCheckByte(contentListCreatedto);
 
@@ -935,6 +937,8 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContLstdto.reg_id = usr_id
             tblmiContLstdto.upd_id = usr_id
             tblmiContLstdto.cont_grp_cd = usr_grp_cd
+            tblmiContLstdto.pro_nm = proNm
+            tblmiContLstdto.team_cd = teamCd
 
             val formatList = contentListCreatedto.formatType
 

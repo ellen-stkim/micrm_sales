@@ -11,6 +11,8 @@ open class Tblmi_cont_lstDto {
     var cont_cd : Int?= null    // 컨텐츠 마스터 번호
     var cont_tp : String?= null // 컨텐츠 타입 (친구톡 / 문자 / RCS / 이메일 )
     var cont_sub : String?= null    // 제목
+    var pro_nm : String?= null    // 프로그램명
+    var team_cd : String?= null    // 팀 코드
     var cont_top_body : String?= null    // 제목
     var cont_body : String ?= null  // 내용
     var from_to: String? = null
