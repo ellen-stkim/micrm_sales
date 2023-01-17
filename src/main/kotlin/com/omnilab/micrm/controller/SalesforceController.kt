@@ -161,6 +161,7 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String, response: HttpServletResponse): Map<String, Any> {
         content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        logger.error("{}",content_list_dto)
         val statusMap = salesforceService.updateContentList(content_list_dto)
         return statusMap;
     }
