@@ -4,7 +4,7 @@ import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.Contents_lstDto
-import com.omnilab.micrm.model.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.model.table.rcs.LgRcs_msgDto

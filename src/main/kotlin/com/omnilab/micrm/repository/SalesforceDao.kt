@@ -1,7 +1,7 @@
 package com.omnilab.micrm.repository
 
 import com.omnilab.micrm.model.SalesforceDto
-import com.omnilab.micrm.model.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 
 interface SalesforceDao {

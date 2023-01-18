@@ -3,7 +3,7 @@ package com.omnilab.micrm.task.Impl
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.GroupUsr_SearchDto
-import com.omnilab.micrm.model.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CommonDao

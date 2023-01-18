@@ -1,4 +1,4 @@
-package com.omnilab.micrm.model
+package com.omnilab.micrm.model.table
 
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
