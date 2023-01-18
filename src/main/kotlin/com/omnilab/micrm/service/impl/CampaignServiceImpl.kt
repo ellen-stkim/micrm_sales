@@ -1,32 +1,24 @@
 package com.omnilab.micrm.service.impl
 
-import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.*
+import com.omnilab.micrm.model.Contents_searchDto
+import com.omnilab.micrm.model.Program_SearchDto
+import com.omnilab.micrm.model.SendResult_lstDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CampaignSendDao
 import com.omnilab.micrm.repository.CommonDao
 import com.omnilab.micrm.repository.SysSettingDao
-import com.omnilab.micrm.service.CampaignService
-import com.omnilab.micrm.service.CommonService
 import com.omnilab.micrm.task.ThreadPool
-import io.minio.MinioClient
-import io.minio.UploadObjectArgs
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.util.LinkedMultiValueMap
-import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 
 @Service("CampaignServiceImpl")
 class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
@@ -306,7 +298,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
                 map["targetDto"] = campaignDao.sel_tblmi_traget_grp(Tblmi_target_grpDto(programDto.pro_tg_id?.toInt(), usr_grp_cd, null))
             }
 
-            val campLSt = campaignDao.sel_tblmicp_campaign(Tblmicp_campaignDto(pro_id))
+            val campLSt = campaignDao.sel_campaign_data(Tblmicp_campaignDto(pro_id))
             map["campaignLst"] = campLSt
 
             val contMap = HashMap<String, Any>()

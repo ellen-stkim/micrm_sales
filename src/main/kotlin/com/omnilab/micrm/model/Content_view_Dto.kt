@@ -65,6 +65,9 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
 
     var cardSize: String? = null
 
+    var team_nm: String? = null
+
+
     // 수정을 위한 버튼 뷰 뿌리기
 
     // 버튼명

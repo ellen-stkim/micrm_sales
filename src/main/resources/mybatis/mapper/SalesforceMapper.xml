@@ -167,6 +167,8 @@
             cont_seq
             , ch_tp
             , cont_nm
+            , camp_nm
+            , team_cd
             , sales_nm
             , avo_nm
             , avo_id
@@ -183,6 +185,8 @@
             #{cont_seq}
             , #{ch_tp}
             , #{cont_nm}
+            , #{camp_nm}
+            , #{team_cd}
             , #{sales_nm}
             , #{avo_nm}
             , #{avo_id}

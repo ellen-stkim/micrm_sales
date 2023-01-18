@@ -1,8 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
-import com.omnilab.micrm.model.Contents_lstDto
-import com.omnilab.micrm.model.Contents_searchDto
-import com.omnilab.micrm.model.SendResult_lstDto
+import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import org.apache.ibatis.session.ResultContext
@@ -32,6 +30,10 @@ class CampaignDaoImpl : CampaignDao {
 
     override fun sel_tblmicp_campaign(dto: Tblmicp_campaignDto): MutableList<Tblmicp_campaignDto> {
         return sqlSession.selectList("sel_tblmicp_campaign", dto)
+    }
+
+    override fun sel_campaign_data(dto: Tblmicp_campaignDto): MutableList<Campaign_searchDto> {
+        return sqlSession.selectList("sel_campaign_data", dto)
     }
 
     override fun sel_tblmicp_cont_lst(dto: Tblmicp_cont_lstDto): MutableList<Contents_lstDto> {

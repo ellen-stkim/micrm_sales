@@ -9,6 +9,8 @@
 		INSERT INTO tblmi_cont_mst (
 			ch_tp,
 		 	cont_nm,
+			camp_nm,
+			team_cd,
 			sales_nm,
 			avo_id,
 			inten_id,
@@ -23,6 +25,8 @@
 		values (
 			#{ch_tp},
 			#{cont_nm},
+			#{camp_nm},
+			#{team_cd},
 			#{sales_nm},
 			#{avo_id},
 			#{inten_id},
@@ -880,6 +884,12 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(sales_nm)">
 			, SALES_NM = #{sales_nm}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_nm)">
+			, CAMP_NM = #{camp_nm}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_cd)">
+			, TEAM_CD = #{team_cd}
+		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(avo_id)">
 			, avo_id = #{avo_id}
 		</if>
@@ -1150,6 +1160,9 @@
 	<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
 		SELECT m.seq
 			, m.ch_tp
+			, m.camp_nm
+			, m.team_cd
+			, comm.cd_val 																						   AS team_nm
 			, m.cont_nm
 			, l.seq                                                                                                AS list_seq
 			, l.cont_cd                                                                                            AS cont_cd
@@ -1213,6 +1226,10 @@
 		   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
 		   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
 		   LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
+		   LEFT JOIN tblmi_comm_cd AS comm ON  comm.GRP_ID = 'GRP_TEAM'
+											AND comm.cd_id = 'TEAM01'
+											AND comm.par_id = #{cont_grp_cd}
+											AND comm.CD_VAL = m.TEAM_CD
 		WHERE  m.seq = #{seq} and m.cont_grp_cd = #{cont_grp_cd}
 		ORDER  BY l.seq;
 	</select>

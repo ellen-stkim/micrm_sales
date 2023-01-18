@@ -4,13 +4,12 @@ import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.Contents_lstDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.CjMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgSc_tranDto
 import com.omnilab.micrm.repository.CampaignSendDao
-import org.apache.ibatis.session.ResultContext
-import org.apache.ibatis.session.ResultHandler
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

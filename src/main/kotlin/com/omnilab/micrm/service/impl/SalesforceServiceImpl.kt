@@ -35,7 +35,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -48,7 +47,6 @@ import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -352,6 +350,8 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.orig_id = contentListCreatedto.orig_id
             tblmiContMstDto.inta_key = contentListCreatedto.inta_key
             tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
+            tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
+            tblmiContMstDto.team_cd = contentListCreatedto.team_cd
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
@@ -885,6 +885,7 @@ class SalesforceServiceImpl : SalesforceService {
             return statusMap
         }
 
+        logger.error("{}",contentListCreatedto)
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
         tblmiContMstDto.ch_tp = "CH03"
         tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
@@ -897,6 +898,8 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.orig_id = contentListCreatedto.orig_id
         tblmiContMstDto.inta_key = contentListCreatedto.inta_key
         tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
+        tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
+        tblmiContMstDto.team_cd = contentListCreatedto.team_cd
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
@@ -2256,6 +2259,8 @@ class SalesforceServiceImpl : SalesforceService {
                             val cpMstDto = Tblmicp_cont_mstDto(contDto)
                             cpMstDto.cont_seq = seq.toInt()
                             cpMstDto.sales_nm = sales_nm
+                            cpMstDto.camp_nm = contDto.camp_nm
+                            cpMstDto.team_cd = contDto.team_cd
                             cpMstDto.avo_nm = avo_nm
                             cpMstDto.avo_id = avo_id
                             cpMstDto.inten_id = dto.inten_id
@@ -2330,6 +2335,7 @@ class SalesforceServiceImpl : SalesforceService {
                 temp.cont_cnt = contLst.size
                 temp.camp_cnt = contLst.size
                 temp.pro_nm = contLst[0].sales_nm
+                temp.team_cd = contLst[0].team_cd
                 temp.usr_grp_cd = contLst[0].cont_grp_cd
                 temp.reg_id = usrId
                 temp.upd_id = usrId
@@ -2344,12 +2350,14 @@ class SalesforceServiceImpl : SalesforceService {
                     proDto = temp
                 }
                 for(i in contLst){
+                    logger.error("******************************************************************")
+                    logger.error("{}",i)
                     val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
                     campaignDto.cont_id = i.seq
                     campaignDto.send_tg_tp = "TG01"
                     campaignDto.send_tg_id = "SALES"
                     campaignDto.camp_st = "03"
-                    campaignDto.camp_nm = i.cont_nm
+                    campaignDto.camp_nm = contLst[0].camp_nm
                     campaignDto.camp_ch = i.ch_tp
                     campaignDto.sto = "01"
                     campaignDto.usr_grp_cd = proDto.usr_grp_cd

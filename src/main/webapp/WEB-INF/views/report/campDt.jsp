@@ -940,6 +940,44 @@
         for (let i = 0; i < data.length; i++) {
             let cd_val = data[i].cd_val === undefined || data[i].cd_val === "" ? "알 수 없음" : data[i].cd_val;
             let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" ? "알 수 없음" : data[i].cd_desc;
+            if (data[i].bounce_cate == 'U') {
+                data1.push(data[i].send_cnt);
+                softTotal += data[i].send_cnt;
+                let color = colorPicker(1, [70, 70, 90], 50, 150);
+
+                bgColor1.push(color);
+                column1.push(cd_val);
+                html1 += '<li>'
+                    + '<label class="icon"><div class="pointer" style="background-color: ' + color + ';"></div><div class="cd_val">' + cd_val + '</div></label>'
+                    + '<div class="info">'
+                    + '<span class="txt"  name="info-btn">?</span>'
+                    + '<div class="info-box">'
+                    + '<h6>' + cd_val + '</h6>'
+                    + '<p>' + cd_desc + '</p>'
+                    + '</div>'
+                    + '</div>'
+                    + '</li>';
+            } else if (data[i].bounce_cate == 'S') {  //hard bounce
+                data2.push(data[i].send_cnt);
+                hardTotal += data[i].send_cnt;
+                let color = colorPicker(1, [70, 70, 90], 30, 150);
+                bgColor2.push(color);
+                column2.push(cd_val);
+                html2 += '<li>'
+                    + '<label class="icon"><div class="pointer" style="background-color: ' + color + ';"></div><div class="cd_val">' + cd_val + '</div></label>'
+                    + '<div class="info">'
+                    + '<span class="txt" name="info-btn">?</span>'
+                    + '<div class="info-box">'
+                    + '<h6>' + cd_val + '</h6>'
+                    + '<p>' + cd_desc + '</p>'
+                    + '</div>'
+                    + '</div>'
+                    + '</li>';
+            }
+        }
+        /*for (let i = 0; i < data.length; i++) {
+            let cd_val = data[i].cd_val === undefined || data[i].cd_val === "" ? "알 수 없음" : data[i].cd_val;
+            let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" ? "알 수 없음" : data[i].cd_desc;
             if (data[i].bounce_category == 'SOFT') {
                 data1.push(data[i].total_tg);
                 softTotal += data[i].total_tg;
@@ -974,7 +1012,7 @@
                     + '</div>'
                     + '</li>';
             }
-        }
+        }*/
         dataSet1.data = data1;
         dataSet1.backgroundColor = bgColor1;
         dataSet1.label = "DataSet 1";

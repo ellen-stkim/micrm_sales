@@ -2,13 +2,12 @@ package com.omnilab.micrm.task.Impl
 
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
-import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.GroupUsr_SearchDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CommonDao
 import com.omnilab.micrm.repository.MemberDao
-import com.omnilab.micrm.repository.SysUserDao
 import com.omnilab.micrm.service.*
 import com.omnilab.micrm.task.ThreadPool
 import org.slf4j.LoggerFactory
@@ -17,8 +16,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import java.io.ByteArrayInputStream
-import java.io.InputStream
 
 @Component("ThreadPoolImpl")
 class ThreadPoolImpl : ThreadPool {

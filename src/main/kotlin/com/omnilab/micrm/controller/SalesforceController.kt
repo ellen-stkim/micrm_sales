@@ -111,6 +111,12 @@ class SalesforceController {
         val view =  ModelAndView("cont/salesforce")
         view.addObject("usr_cd", usr_cd)
 
+        val commonCDDto = Tblmi_comm_cdDto()
+        commonCDDto.grp_id = "GRP_TEAM"
+        commonCDDto.cd_id = "TEAM01"
+        commonCDDto.par_id = usr_cd
+        view.addObject("teamLst", sysSettingService.getCommCDLst(commonCDDto))
+
         return view
     }
 
@@ -155,6 +161,7 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String, response: HttpServletResponse): Map<String, Any> {
         content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        logger.error("{}",content_list_dto)
         val statusMap = salesforceService.updateContentList(content_list_dto)
         return statusMap;
     }
@@ -191,6 +198,13 @@ class SalesforceController {
             commonCDDto.cd_id = "UPURL01"
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
             view.addObject("filePath", uploadPrefix?.cd_val)
+
+            val teamCDDto = Tblmi_comm_cdDto()
+            teamCDDto.grp_id = "GRP_TEAM"
+            teamCDDto.cd_id = "TEAM01"
+            teamCDDto.par_id = usr_cd
+            view.addObject("teamLst", sysSettingService.getCommCDLst(teamCDDto))
+
         }
         view.addObject("list" , listMap["list"])
 

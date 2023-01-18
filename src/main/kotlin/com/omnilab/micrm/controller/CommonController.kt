@@ -2,7 +2,6 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.MemberService
 import com.omnilab.micrm.service.SysSettingService
 import org.slf4j.LoggerFactory

@@ -45,7 +45,23 @@
                     <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
                     <div class="th">템플릿 명</div>
                     <div class="td right-border">
-                        <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}"/>
+                        <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
+                    </div>
+                    <div class="th">캠페인 명</div>
+                    <div class="td right-border">
+                        <input type="text" name="camp_nm" class="txt_input " value="${list[0].camp_nm}" placeholder="프로그램 명을 입력하세요.">
+                    </div>
+                    <div class="th">팀 명</div>
+                    <div class="td right-border" style="width: 190px;">
+                        <div class="select">
+                            <!-- selected value -->
+                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${list[0].team_nm}</div>
+                            <ul class="option">
+                                <c:forEach var="team" items="${teamLst}">
+                                    <li data="${team.cd_val}">${team.cd_desc}</li>
+                                </c:forEach>
+                            </ul>
+                        </div>
                     </div>
                     <div class="th">컨텐츠 포맷</div>
                     <div class="td flex_row">
