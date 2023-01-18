@@ -5,7 +5,7 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmicp_campaignDto
+import com.omnilab.micrm.model.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.Tblmicp_cont_url_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_send_callback_msgDto
 import com.omnilab.micrm.model.table.kakao.Kko_msgDto

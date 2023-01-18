@@ -4,18 +4,17 @@ import com.google.gson.JsonParser
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.Program_SearchDto
+import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CampaignReportDao
 import com.omnilab.micrm.repository.SysSettingDao
-import com.omnilab.micrm.service.CommonService
 import com.omnilab.micrm.service.ReportService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.collections.Map as Map1
 
 
@@ -111,14 +110,15 @@ class ReportServiceImpl : ReportService {
 
     }
 
-    override fun getSucTab(contSeqs: Array<String>): List<kotlin.collections.Map<String, Any>> {
+    override fun getSucTab(contSeqs: Array<String>): List<SendReportDto> {
 
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
         val temp = HashMap<String, Any>()
         userInfo.usr_grp_cd?.let { temp.put("usr_grp_cd", it) }
-        temp.put("list", contSeqs)
+        temp["seq_list"] = contSeqs
+        temp["send_rst"] = 1
 
-        return campaignReportDao.getSnedResultDetail(temp)
+        return campaignReportDao.getSendHstDetail(temp)
     }
 
     override fun getDetOpenDet(seqs: Array<String>): List<Any> {

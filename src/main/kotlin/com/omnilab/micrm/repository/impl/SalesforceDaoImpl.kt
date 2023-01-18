@@ -1,6 +1,7 @@
 package com.omnilab.micrm.repository.impl
 
 import com.omnilab.micrm.model.SalesforceDto
+import com.omnilab.micrm.model.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
 import org.apache.ibatis.session.SqlSession
