@@ -204,7 +204,6 @@ class SalesforceController {
             teamCDDto.cd_id = "TEAM01"
             teamCDDto.par_id = usr_cd
             view.addObject("teamLst", sysSettingService.getCommCDLst(teamCDDto))
-
         }
         view.addObject("list" , listMap["list"])
 
