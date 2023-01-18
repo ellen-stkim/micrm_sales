@@ -938,8 +938,8 @@
         let softTotal = 0;
         let hardTotal = 0;
         for (let i = 0; i < data.length; i++) {
-            let cd_val = data[i].cd_val === undefined || data[i].cd_val === "" ? "알 수 없음" : data[i].cd_val;
-            let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" ? "알 수 없음" : data[i].cd_desc;
+            let cd_val = data[i].cd_val === undefined || data[i].cd_val === ""|| data[i].cd_val === null  ? "알 수 없음" : data[i].cd_val;
+            let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" || data[i].cd_desc === null ? "알 수 없음" : data[i].cd_desc;
             if (data[i].bounce_cate == 'U') {
                 data1.push(data[i].send_cnt);
                 softTotal += data[i].send_cnt;
@@ -957,7 +957,7 @@
                     + '</div>'
                     + '</div>'
                     + '</li>';
-            } else if (data[i].bounce_cate == 'S') {  //hard bounce
+            } else if (data[i].bounce_cate == 'S' || data[i].bounce_cate == null) {  //hard bounce  이거나 일치하는 코드값 없음
                 data2.push(data[i].send_cnt);
                 hardTotal += data[i].send_cnt;
                 let color = colorPicker(1, [70, 70, 90], 30, 150);
