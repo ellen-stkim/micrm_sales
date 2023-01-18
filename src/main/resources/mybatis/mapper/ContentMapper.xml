@@ -1162,7 +1162,7 @@
 			, m.ch_tp
 			, m.camp_nm
 			, m.team_cd
-			, comm.cd_val 																						   AS team_nm
+			, comm.cd_desc 																						   AS team_nm
 			, m.cont_nm
 			, l.seq                                                                                                AS list_seq
 			, l.cont_cd                                                                                            AS cont_cd
