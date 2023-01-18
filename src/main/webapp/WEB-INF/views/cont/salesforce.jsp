@@ -50,7 +50,7 @@
                     </div>
                     <div class="th">캠페인 명</div>
                     <div class="td right-border">
-                        <input type="text" name="camp_nm" class="txt_input " placeholder="프로그램 명을 입력하세요.">
+                        <input type="text" name="camp_nm" class="txt_input " placeholder="캠페인 명을 입력하세요.">
                     </div>
                     <div class="th">팀 명</div>
                     <div class="td right-border" style="width: 190px;">

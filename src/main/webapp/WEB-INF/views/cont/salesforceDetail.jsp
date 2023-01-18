@@ -49,13 +49,13 @@
                     </div>
                     <div class="th">캠페인 명</div>
                     <div class="td right-border">
-                        <input type="text" name="camp_nm" class="txt_input " value="${list[0].camp_nm}" placeholder="프로그램 명을 입력하세요.">
+                        <input type="text" name="camp_nm" class="txt_input " value="${list[0].camp_nm}" placeholder="캠페인 명을 입력하세요.">
                     </div>
                     <div class="th">팀 명</div>
-                    <div class="td right-border" style="width: 190px;">
+                    <div class="td right-border" style="width: 190px; ">
                         <div class="select">
                             <!-- selected value -->
-                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${list[0].team_nm}</div>
+                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${!empty list[0].team_nm ? list[0].team_nm : '팀명'}</div>
                             <ul class="option">
                                 <c:forEach var="team" items="${teamLst}">
                                     <li data="${team.cd_val}">${team.cd_desc}</li>

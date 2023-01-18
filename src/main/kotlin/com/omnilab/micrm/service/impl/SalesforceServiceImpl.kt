@@ -293,7 +293,7 @@ class SalesforceServiceImpl : SalesforceService {
                 logger.error("tokenContext fail: $responseBody")
             }
         } catch(e: Exception) {
-            logger.error("salesforce getUser :", e)
+            logger.error("salesforce getUser {} :", dto, e)
         }
         return returnMap
     }
