@@ -167,18 +167,19 @@
 
     <select id="getSendHstDetail" resultType="SendReportDto" parameterType="HashMap">
         SELECT hst.*
-            ,comm.CD_VAL AS cd_val
-            ,comm.CD_DESC AS cd_desc
-            ,comm.CD_DESC AS cd_desc
-            ,comm.PAR_NM AS bounce_cate
+            ,comm.cd_val AS cd_val
+            ,comm.cd_desc AS cd_desc
+            ,comm.cd_desc AS cd_desc
+            ,comm.par_nm AS bounce_cate
         FROM tblmire_send_hst AS hst
             LEFT JOIN tblmire_camp_mst AS m
                 ON m.pro_id = hst.pro_id
                     AND m.camp_id = hst.camp_id
             LEFT JOIN tblmi_comm_cd AS comm
-                ON comm.GRP_ID = 'SENDRESULT'
+                ON comm.grp_id = 'SENDRESULT'
                     AND comm.CD_NM = hst.m_server
-                    AND comm.cd_id = hst.SEND_RST_DET
+                    AND comm.cd_id = hst.send_rst_det
+                    AND comm.par_id = hst.send_rst_tp
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq_list)">
                 and m.seq IN

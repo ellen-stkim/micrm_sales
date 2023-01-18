@@ -2350,8 +2350,6 @@ class SalesforceServiceImpl : SalesforceService {
                     proDto = temp
                 }
                 for(i in contLst){
-                    logger.error("******************************************************************")
-                    logger.error("{}",i)
                     val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
                     campaignDto.cont_id = i.seq
                     campaignDto.send_tg_tp = "TG01"
