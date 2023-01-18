@@ -2,6 +2,7 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Program_SearchDto
+import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.service.ReportService
 import com.omnilab.micrm.service.SysSettingService
@@ -126,7 +127,7 @@ class ReportController {
 
     @ResponseBody
     @PostMapping("/report/getSucTabAjax.ajax")
-    fun DetSuc(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_seq[]") cont_seq : Array<String>): List<Map<String, Any>> {
+    fun DetSuc(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_seq[]") cont_seq : Array<String>): List<SendReportDto> {
         return  reportService.getSucTab(cont_seq)
     }
 

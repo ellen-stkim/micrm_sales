@@ -164,35 +164,37 @@
             ORDER BY a.REG_DT DESC
     </select>
 
-    <select id="getSnedResultDetail" resultType="Map">
-        SELECT
-            count(b.send_rst_det) AS total_tg -- 상세결과코드
-            , b.send_rst_det AS send_rst_det
-            , b.send_rst AS send_rst
-            , c.cd_val AS cd_val -- 코드
-            , c.cd_desc AS cd_desc -- 코드 설명
-            , CASE
-                    WHEN LEFT(send_rst_det, 1) IN ( '1', '4', '6', '9', 'A', 'B','C','D','E','f','J','k','L','M','o','t','U','V' ) THEN 'SOFT'
-                    WHEN LEFT(send_rst_det, 1) IN ( '2','3', '5', '7', '8', 'H','I','S' ) THEN 'HARD'
-                    ELSE 'XX'
-                END AS bounce_category
-        FROM tblmire_camp_mst AS a
-            LEFT JOIN tblmicp_send_hst AS b
-                ON b.camp_id = a.camp_id
-                    AND a.PRO_ID =b.PRO_ID
-            LEFT JOIN tblmi_comm_cd AS c
-                ON c.grp_id = 'SENDRESULT'  AND b.send_rst_det = c.CD_ID
-                    AND b.SEND_RST_TP = c.PAR_ID AND b.M_SERVER = c.cd_nm
-        WHERE  b.send_rst = '1'  -- 발송 실패
-                AND a.usr_grp_cd =#{usr_grp_cd}
-                AND a.seq IN
-                    <foreach item="item" index="index" collection="list"
-                             open="(" separator="," close=")">
-                        #{item}
-                    </foreach>
-        GROUP BY b.send_rst_det
-    </select>
 
+    <select id="getSendHstDetail" resultType="SendReportDto" parameterType="HashMap">
+        SELECT hst.*
+            ,comm.CD_VAL AS cd_val
+            ,comm.CD_DESC AS cd_desc
+            ,comm.CD_DESC AS cd_desc
+            ,comm.PAR_NM AS bounce_cate
+        FROM tblmire_send_hst AS hst
+            LEFT JOIN tblmire_camp_mst AS m
+                ON m.pro_id = hst.pro_id
+                    AND m.camp_id = hst.camp_id
+            LEFT JOIN tblmi_comm_cd AS comm
+                ON comm.GRP_ID = 'SENDRESULT'
+                    AND comm.CD_NM = hst.m_server
+                    AND comm.cd_id = hst.SEND_RST_DET
+        <where>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq_list)">
+                and m.seq IN
+                <foreach item="item" index="index" collection="seq_list"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_rst)">
+                and hst.send_rst =#{send_rst}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+                and hst.usr_grp_cd =#{usr_grp_cd}
+            </if>
+        </where>
+    </select>
     <select id="openTimingResult" resultType="HashMap">
         SELECT
             b.CAMP_NM

@@ -35,7 +35,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -48,7 +47,6 @@ import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -2271,11 +2269,6 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.inta_ve = dto.inta_ve
                             cpMstDto.pub_yn = dto.pub_yn
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
-
-                            logger.error("===========================================================================")
-                            logger.error("{}",contDto)
-                            logger.error("{}",cpMstDto)
-                            logger.error("===========================================================================")
 
                             //기존 데이터가 있을 경우 삭제
                             salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())

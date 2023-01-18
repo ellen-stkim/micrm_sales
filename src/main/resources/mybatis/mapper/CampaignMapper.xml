@@ -344,7 +344,36 @@
 				and start_dt <![CDATA[ <#{end_dt} ]]>
 			</if>
 		</where>
+	</select>
 
+	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
+		SELECT camp.* , comm.CD_DESC AS team_nm
+		FROM tblmicp_campaign AS camp
+			LEFT JOIN tblmicp_cont_mst AS cont ON cont.cont_seq = camp.CONT_ID
+			LEFT JOIN tblmi_comm_cd AS comm
+				ON comm.GRP_ID = 'GRP_TEAM'
+				    AND CD_ID = 'TEAM01'
+					AND cont.TEAM_CD = comm.CD_VAL
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and camp.seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
+				and camp.pro_id = #{pro_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_id)">
+				and camp.cont_id = #{cont_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and camp.usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+				and camp.start_dt <![CDATA[ >= #{start_dt} ]]>
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				and camp.start_dt <![CDATA[ <#{end_dt} ]]>
+			</if>
+		</where>
 	</select>
 
 	<select id="sel_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" resultType="Contents_lstDto">

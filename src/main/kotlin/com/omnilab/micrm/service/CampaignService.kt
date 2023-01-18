@@ -1,6 +1,6 @@
 package com.omnilab.micrm.service
 
-import com.omnilab.micrm.model.SendAuthLstDto
+import com.omnilab.micrm.model.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 
 

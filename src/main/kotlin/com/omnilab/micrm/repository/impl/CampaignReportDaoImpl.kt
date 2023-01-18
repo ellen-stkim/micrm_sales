@@ -1,8 +1,9 @@
 package com.omnilab.micrm.repository.impl
 
 import com.omnilab.micrm.model.Content_view_Dto
-import com.omnilab.micrm.model.Contents_lstDto
-import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.SendReportDto
+import com.omnilab.micrm.model.table.Tblmicp_programDto
+import com.omnilab.micrm.model.table.Tblmire_camp_mstDto
 import com.omnilab.micrm.repository.CampaignReportDao
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
@@ -43,8 +44,8 @@ class CampaignReportDaoImpl : CampaignReportDao {
         return sqlSession.selectList("getCampMstTotalList", map)
     }
 
-    override fun getSnedResultDetail(map: HashMap<String, Any>): List<Map<String,Any>>{
-        return sqlSession.selectList("getSnedResultDetail", map)
+    override fun getSendHstDetail(searchMap: HashMap<String, Any>): List<SendReportDto> {
+        return sqlSession.selectList("getSendHstDetail", searchMap)
     }
 
     override fun openTimingResult(map: HashMap<String, Any>): List<HashMap<String, Any>> {
@@ -62,6 +63,7 @@ class CampaignReportDaoImpl : CampaignReportDao {
     override fun getContentsLst(seq: Int?): Content_view_Dto {
         return sqlSession.selectOne("getContentsLst", seq)
     }
+
 
 
 }

@@ -2,7 +2,6 @@
 
 [tooltip] {
     position: absolute; /* opinion 1 */
-    z-index: 1000;
     line-height: 0;
 }
 
