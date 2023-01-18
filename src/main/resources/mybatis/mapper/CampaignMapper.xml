@@ -347,13 +347,14 @@
 	</select>
 
 	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
-		SELECT camp.* , comm.CD_DESC AS team_nm
+		SELECT camp.* , comm.cd_desc AS team_nm
 		FROM tblmicp_campaign AS camp
 			LEFT JOIN tblmicp_cont_mst AS cont ON cont.cont_seq = camp.CONT_ID
 			LEFT JOIN tblmi_comm_cd AS comm
-				ON comm.GRP_ID = 'GRP_TEAM'
-				    AND CD_ID = 'TEAM01'
-					AND cont.TEAM_CD = comm.CD_VAL
+				ON comm.grp_id = 'GRP_TEAM'
+				    AND cd_id = 'TEAM01'
+					AND cont.team_cd = comm.cd_val
+					AND camp.usr_grp_cd = comm.par_id
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				and camp.seq = #{seq}
