@@ -5,7 +5,7 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Contents_searchDto
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendResult_lstDto
-import com.omnilab.micrm.model.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CampaignSendDao
