@@ -2303,11 +2303,11 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                     return true
                 }else{
-                    logger.error("result {}", result["result"])
-                    logger.error("connection Error : {}", tokenResult)
+                    logger.error("connection Error : {}", result)
                     return false
                 }
              }else {
+                logger.error("connection Error : {}", tokenResult)
                 return false
             }
         }catch (e: Exception){
