@@ -543,6 +543,7 @@
 .viewer_area .inner .sms_img_box img{width: 100%}
 .viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 500px; word-break: break-all; overflow-y: auto;}
 .viewer_area .inner .kakao_link{ width: 90%;}
+.viewer_area .inner img{width: 100%;}
 
 
 .sms_box {width:270px; margin:0 auto;}
