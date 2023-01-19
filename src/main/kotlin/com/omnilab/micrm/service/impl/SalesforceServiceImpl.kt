@@ -2303,7 +2303,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                     return true
                 }else{
-                    logger.error("connection Error : {}", result)
+                    logger.error("connection Error : {} / {}", "${restUrl.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}",result)
                     return false
                 }
              }else {
