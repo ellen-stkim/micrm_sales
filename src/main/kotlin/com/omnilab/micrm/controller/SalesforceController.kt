@@ -196,7 +196,7 @@ class SalesforceController {
             val commonCDDto = Tblmi_comm_cdDto()
             commonCDDto.grp_id = "COMMON"
             commonCDDto.cd_id = "UPURL01"
-            val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
             view.addObject("filePath", uploadPrefix?.cd_val)
 
             val teamCDDto = Tblmi_comm_cdDto()

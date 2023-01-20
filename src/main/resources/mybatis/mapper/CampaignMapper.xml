@@ -644,7 +644,7 @@
 
 	<insert id="ins_tblmicp_campaign" parameterType="Tblmicp_campaignDto" useGeneratedKeys="true" keyProperty="seq">
 		insert into Tblmicp_campaign (
-			 pro_id, cont_id, send_tg_tp, send_tg_id, camp_st, camp_nm, camp_ch, test_tp, test_sampling, cont_cnt, test_cnt, real_cnt, usr_grp_cd, reg_id, sto, tar_cnt
+			 pro_id, cont_id, send_tg_tp, send_tg_id, camp_st, camp_nm, team_cd, camp_ch, test_tp, test_sampling, cont_cnt, test_cnt, real_cnt, usr_grp_cd, reg_id, sto, tar_cnt
 			, start_dt
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, send_st_tp</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, end_dt</if>
@@ -656,7 +656,7 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">, seq</if>
 		)
 		values (
-			#{pro_id}, #{cont_id}, #{send_tg_tp}, #{send_tg_id}, #{camp_st}, #{camp_nm}, #{camp_ch}, #{test_tp}, #{test_sampling}, #{cont_cnt}, #{test_cnt}, #{real_cnt}, #{usr_grp_cd}, #{reg_id}, #{sto}, #{tar_cnt}
+			#{pro_id}, #{cont_id}, #{send_tg_tp}, #{send_tg_id}, #{camp_st}, #{camp_nm}, #{team_cd}, #{camp_ch}, #{test_tp}, #{test_sampling}, #{cont_cnt}, #{test_cnt}, #{real_cnt}, #{usr_grp_cd}, #{reg_id}, #{sto}, #{tar_cnt}
 			, #{start_dt}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, #{send_st_tp}</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, #{end_dt}</if>

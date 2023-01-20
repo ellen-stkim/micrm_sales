@@ -2358,6 +2358,7 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDto.send_tg_id = "SALES"
                     campaignDto.camp_st = "03"
                     campaignDto.camp_nm = contLst[0].camp_nm
+                    campaignDto.team_cd = contLst[0].team_cd
                     campaignDto.camp_ch = i.ch_tp
                     campaignDto.sto = "01"
                     campaignDto.usr_grp_cd = proDto.usr_grp_cd

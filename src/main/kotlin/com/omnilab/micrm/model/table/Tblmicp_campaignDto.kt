@@ -13,6 +13,7 @@ open class Tblmicp_campaignDto {
     var send_tg_id: String? = null
     var camp_st: String? = null
     var camp_nm: String? = null
+    var team_cd: String? = null
     var camp_ch: String? = null
     var sto: String? = null
     var send_st_tp: String? = null
