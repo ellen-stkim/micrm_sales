@@ -7,11 +7,13 @@ import org.apache.ibatis.type.Alias
 @Alias("Tblmi_cont_mstDto")
 open class Tblmi_cont_mstDto: Cloneable {
 
+ 
     var seq: Int ?= null
     var ch_tp : String ?= null  // 채널 타입
     var cont_nm : String ?= null    // 콘텐츠 명
     var camp_nm : String ?= null    // 캠페인 명
     var team_cd : String ?= null    // 팀코드
+    var usr_key: String?= null       // 회원번호 매핑키
     var sales_nm: String? = null
     var avo_id: String? = null
     var inten_id: String? = null
