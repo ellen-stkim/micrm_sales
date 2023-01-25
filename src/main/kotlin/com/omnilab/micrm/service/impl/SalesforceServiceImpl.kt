@@ -2382,9 +2382,6 @@ class SalesforceServiceImpl : SalesforceService {
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
-        logger.error("------------------------------------------------------")
-        logger.error("{}",inArguments)
-        logger.error("------------------------------------------------------")
 
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
@@ -2439,8 +2436,6 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
                     sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
-                    logger.error("------------------------------inArguments[contMst.usr_key]--------------")
-                    logger.error("{}",inArguments[contMst.usr_key])
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
