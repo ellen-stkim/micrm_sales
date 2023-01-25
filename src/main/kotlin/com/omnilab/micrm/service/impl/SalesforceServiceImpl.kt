@@ -2571,8 +2571,7 @@ class SalesforceServiceImpl : SalesforceService {
         reMap["list"] = reList
         reMap["totalCnt"] = dataExtension.select().totalCount
         logger.error("-----------------------------------------------------------------------------")
-        logger.error("select: {}",dataExtension.description)
-
+        logger.error("select: {}",dataExtension.select(0,100000,ETFilter()))
 
 
         return reMap
