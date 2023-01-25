@@ -352,6 +352,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
             tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
             tblmiContMstDto.team_cd = contentListCreatedto.team_cd
+            tblmiContMstDto.usr_key = contentListCreatedto.usr_key
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
@@ -2381,6 +2382,8 @@ class SalesforceServiceImpl : SalesforceService {
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
+        logger.error("{}",inArguments)
+
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
@@ -2433,6 +2436,7 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
+//                    sendHstDto.usr_key = contMst.usr_key // 회원 정보 추가
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
@@ -2478,7 +2482,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                                 inArguments["SEND_TO"] = send_to.toString()
-                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
                             }
                         }
                         // 카카오 알림톡

@@ -48,23 +48,6 @@
                     <div class="td right-border">
                         <input type="text" class="txt_input template_name" name="cont_nm" placeholder="템플릿 명을 입력하세요."/>
                     </div>
-                    <div class="th">캠페인 명</div>
-                    <div class="td right-border">
-                        <input type="text" name="camp_nm" class="txt_input " placeholder="캠페인 명을 입력하세요.">
-                    </div>
-                    <div class="th">팀 명</div>
-                    <div class="td right-border" style="width: 190px;">
-                        <div class="select">
-                            <!-- selected value -->
-                            <div class="value" id="team_cd_sel" data="">팀명</div>
-                            <ul class="option">
-                                <c:forEach var="team" items="${teamLst}">
-                                    <li data="${team.cd_val}">${team.cd_desc}</li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </div>
-
                     <div class="th">컨텐츠 포맷</div>
                     <div class="td flex_row">
                         <div class="sms_option cf">
@@ -112,19 +95,45 @@
                                 <input type="hidden" name="rcs_option" class="radioAd" value="ad"/>
                             </div>
                         </div>
-                        <div class="th left-border">수신 번호</div>
-                        <div class="inner_option area2">
-                            <div class="td cf" style="width: 100%;">
-                                <div class="select" id="recv_phone_to" name="edmDB">
-                                    <!-- selected value -->
-                                    <div class="value" data="0">개인화 변수</div>
-                                    <ul class="option mappingLst"></ul>
-                                </div>
-                                <input type="hidden" id="recv_phone" name="from_to"/>
-                            </div>
-                        </div>
                     </div>
                 </div><!-- //row end -->
+                <div class="row head bottom-border">
+                    <div class="th">캠페인 명</div>
+                    <div class="td right-border">
+                        <input type="text" name="camp_nm" class="txt_input " placeholder="캠페인 명을 입력하세요.">
+                    </div>
+                    <div class="left_flex">
+                        <div class="th">팀 명</div>
+                        <div class="td">
+                            <div class="select">
+                                <!-- selected value -->
+                                <div class="value" id="team_cd_sel" data="">팀명</div>
+                                <ul class="option">
+                                    <c:forEach var="team" items="${teamLst}">
+                                        <li data="${team.cd_val}">${team.cd_desc}</li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="th left-border">회원 번호</div>
+                        <div class="td cf" style="width: 100%;">
+                            <div class="select" id="recv_usr_cd" name="edmDB">
+                                <!-- selected value -->
+                                <div class="value" data="">개인화 변수</div>
+                                <ul class="option mappingLst"></ul>
+                            </div>
+                        </div>
+                        <div class="th left-border">수신 번호</div>
+                        <div class="td cf" style="width: 100%;">
+                            <div class="select" id="recv_phone_to" name="edmDB">
+                                <!-- selected value -->
+                                <div class="value" data="">개인화 변수</div>
+                                <ul class="option mappingLst"></ul>
+                            </div>
+                            <input type="hidden" id="recv_phone" name="from_to"/>
+                        </div>
+                    </div>
+                </div>
                 <!-- no-data -->
                 <div class="no_data" id="sms_no_data">
                     컨텐츠 포맷을 선택해 주세요.
