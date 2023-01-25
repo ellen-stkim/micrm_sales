@@ -169,6 +169,7 @@
             , cont_nm
             , camp_nm
             , team_cd
+            , usr_key
             , sales_nm
             , avo_nm
             , avo_id
@@ -187,6 +188,7 @@
             , #{cont_nm}
             , #{camp_nm}
             , #{team_cd}
+            , #{usr_key}
             , #{sales_nm}
             , #{avo_nm}
             , #{avo_id}
