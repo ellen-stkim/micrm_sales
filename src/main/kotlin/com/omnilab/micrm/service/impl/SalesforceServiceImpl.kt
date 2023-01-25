@@ -2439,6 +2439,8 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
                     sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
+                    logger.error("------------------------------inArguments[contMst.usr_key]--------------")
+                    logger.error("{}",inArguments[contMst.usr_key])
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
@@ -2571,8 +2573,8 @@ class SalesforceServiceImpl : SalesforceService {
         val reMap = HashMap<String, Any>()
         reMap["list"] = reList
         reMap["totalCnt"] = dataExtension.select().totalCount
-        logger.error("-----------------------------------------------------------------------------")
-        logger.error("select: {}",dataExtension.select(0,100000,ETFilter()))
+/*        logger.error("-----------------------------------------------------------------------------")
+        logger.error("select: {}",dataExtension.select(1,10000,ETFilter()))*/
 
 
         return reMap
