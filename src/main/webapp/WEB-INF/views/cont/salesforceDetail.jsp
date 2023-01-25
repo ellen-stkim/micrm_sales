@@ -47,22 +47,6 @@
                     <div class="td right-border">
                         <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
                     </div>
-                    <div class="th">캠페인 명</div>
-                    <div class="td right-border">
-                        <input type="text" name="camp_nm" class="txt_input " value="${list[0].camp_nm}" placeholder="캠페인 명을 입력하세요.">
-                    </div>
-                    <div class="th">팀 명</div>
-                    <div class="td right-border" style="width: 190px; ">
-                        <div class="select">
-                            <!-- selected value -->
-                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${!empty list[0].team_nm ? list[0].team_nm : '팀 명'}</div>
-                            <ul class="option">
-                                <c:forEach var="team" items="${teamLst}">
-                                    <li data="${team.cd_val}">${team.cd_desc}</li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </div>
                     <div class="th">컨텐츠 포맷</div>
                     <div class="td flex_row">
                         <div class="sms_option cf">
@@ -110,19 +94,47 @@
                                 <input type="hidden" name="rcs_option" class="radioAd" value="${list[0].send_tp eq 'SENDTP01' ? 'ad' : 'guide'}"/>
                             </div>
                         </div>
-                        <div class="th left-border">수신 번호</div>
-                        <div class="inner_option area2">
-                            <div class="td cf" style="width: 100%;">
-                                <div class="select" id="recv_phone_to" name="edmDB">
-                                    <!-- selected value -->
-                                    <div class="value" data="${list[0].from_to}">${list[0].from_to}</div>
-                                    <ul class="option mappingLst"></ul>
-                                </div>
-                                <input type="hidden" id="recv_phone" name="from_to" value="${list[0].from_to}"/>
-                            </div>
-                        </div>
+
                     </div>
                 </div><!-- //row end -->
+                <div class="row head bottom-border">
+
+                    <div class="th">캠페인 명</div>
+                    <div class="td right-border">
+                        <input type="text" name="camp_nm" class="txt_input " value="${list[0].camp_nm}" placeholder="캠페인 명을 입력하세요.">
+                    </div>
+                    <div class="left_flex">
+                    <div class="th">팀 명</div>
+                    <div class="td" style="width: 190px; ">
+                        <div class="select">
+                            <!-- selected value -->
+                            <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${!empty list[0].team_nm ? list[0].team_nm : '팀 명'}</div>
+                            <ul class="option">
+                                <c:forEach var="team" items="${teamLst}">
+                                    <li data="${team.cd_val}">${team.cd_desc}</li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="th left-border">회원 번호</div>
+                    <div class="td cf" style="width: 100%;">
+                        <div class="select" id="recv_usr_cd" name="edmDB">
+                            <!-- selected value -->
+                            <div class="value" data="${list[0].usr_key}">${!empty list[0].usr_key ? list[0].usr_key : '회원번호'}</div>
+                            <ul class="option mappingLst"></ul>
+                        </div>
+                    </div>
+                    <div class="th left-border">수신 번호</div>
+                    <div class="td cf" style="width: 100%;">
+                        <div class="select" id="recv_phone_to" name="edmDB">
+                            <!-- selected value -->
+                            <div class="value" data="${list[0].from_to}">${list[0].from_to}</div>
+                            <ul class="option mappingLst"></ul>
+                        </div>
+                        <input type="hidden" id="recv_phone" name="from_to" value="${list[0].from_to}"/>
+                    </div>
+                    </div>
+                </div>
                 <!-- no data -->
                 <div class="no_data" id="sms_no_data">
                     컨텐츠 포맷을 선택해 주세요.
@@ -249,7 +261,7 @@
                                             <div class="row" style="height:150px;">
                                                 <div class="th bottom-border">내용</div>
                                                 <div class="td bottom-border">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                            onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' ? list[0].cont_body :''}</textarea></div>
+                                                                            onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea></div>
                                             </div>
                                             <div class="row">
                                                 <div class="th">수신거부 문구</div>

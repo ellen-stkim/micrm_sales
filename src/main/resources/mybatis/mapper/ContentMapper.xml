@@ -11,6 +11,7 @@
 		 	cont_nm,
 			camp_nm,
 			team_cd,
+			usr_key,
 			sales_nm,
 			avo_id,
 			inten_id,
@@ -27,6 +28,7 @@
 			#{cont_nm},
 			#{camp_nm},
 			#{team_cd},
+			#{usr_key},
 			#{sales_nm},
 			#{avo_id},
 			#{inten_id},
@@ -1163,6 +1165,7 @@
 			, m.camp_nm
 			, m.team_cd
 			, comm.cd_desc 																						   AS team_nm
+			, m.usr_key
 			, m.cont_nm
 			, l.seq                                                                                                AS list_seq
 			, l.cont_cd                                                                                            AS cont_cd

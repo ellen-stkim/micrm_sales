@@ -626,25 +626,25 @@
 
 	<insert id="ins_programSendHstOne" parameterType="Tblmicp_send_hstDto" useGeneratedKeys="true" keyProperty="seq">
 		insert into tblmicp_send_hst (
-	    	pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch
+	    	pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch
 	    )
 		values (
-			#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch}
+			#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{usr_key}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch}
 		)
 	</insert>
 
 	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto" >
 		insert into tblmicp_send_hst
-		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
+		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
 		values
 		<foreach collection="list" item="list" separator=" , " >
-			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch})
+			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{usr_key}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch})
 		</foreach>
 	</insert>
 
 	<insert id="ins_tblmicp_campaign" parameterType="Tblmicp_campaignDto" useGeneratedKeys="true" keyProperty="seq">
 		insert into Tblmicp_campaign (
-			 pro_id, cont_id, send_tg_tp, send_tg_id, camp_st, camp_nm, camp_ch, test_tp, test_sampling, cont_cnt, test_cnt, real_cnt, usr_grp_cd, reg_id, sto, tar_cnt
+			 pro_id, cont_id, send_tg_tp, send_tg_id, camp_st, camp_nm, team_cd, camp_ch, test_tp, test_sampling, cont_cnt, test_cnt, real_cnt, usr_grp_cd, reg_id, sto, tar_cnt
 			, start_dt
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, send_st_tp</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, end_dt</if>
@@ -656,7 +656,7 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">, seq</if>
 		)
 		values (
-			#{pro_id}, #{cont_id}, #{send_tg_tp}, #{send_tg_id}, #{camp_st}, #{camp_nm}, #{camp_ch}, #{test_tp}, #{test_sampling}, #{cont_cnt}, #{test_cnt}, #{real_cnt}, #{usr_grp_cd}, #{reg_id}, #{sto}, #{tar_cnt}
+			#{pro_id}, #{cont_id}, #{send_tg_tp}, #{send_tg_id}, #{camp_st}, #{camp_nm}, #{team_cd}, #{camp_ch}, #{test_tp}, #{test_sampling}, #{cont_cnt}, #{test_cnt}, #{real_cnt}, #{usr_grp_cd}, #{reg_id}, #{sto}, #{tar_cnt}
 			, #{start_dt}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_st_tp)">, #{send_st_tp}</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">, #{end_dt}</if>

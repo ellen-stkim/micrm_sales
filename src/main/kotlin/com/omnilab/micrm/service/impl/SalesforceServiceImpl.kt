@@ -352,6 +352,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
             tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
             tblmiContMstDto.team_cd = contentListCreatedto.team_cd
+            tblmiContMstDto.usr_key = contentListCreatedto.usr_key
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
@@ -885,7 +886,6 @@ class SalesforceServiceImpl : SalesforceService {
             return statusMap
         }
 
-        logger.error("{}",contentListCreatedto)
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
         tblmiContMstDto.ch_tp = "CH03"
         tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
@@ -2261,6 +2261,7 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.sales_nm = sales_nm
                             cpMstDto.camp_nm = contDto.camp_nm
                             cpMstDto.team_cd = contDto.team_cd
+                            cpMstDto.usr_key = contDto.usr_key
                             cpMstDto.avo_nm = avo_nm
                             cpMstDto.avo_id = avo_id
                             cpMstDto.inten_id = dto.inten_id
@@ -2303,9 +2304,11 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                     return true
                 }else{
+                    logger.error("connection Error : {} / {}", "${restUrl.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}",result)
                     return false
                 }
              }else {
+                logger.error("connection Error : {}", tokenResult)
                 return false
             }
         }catch (e: Exception){
@@ -2356,6 +2359,7 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDto.send_tg_id = "SALES"
                     campaignDto.camp_st = "03"
                     campaignDto.camp_nm = contLst[0].camp_nm
+                    campaignDto.team_cd = contLst[0].team_cd
                     campaignDto.camp_ch = i.ch_tp
                     campaignDto.sto = "01"
                     campaignDto.usr_grp_cd = proDto.usr_grp_cd
@@ -2377,6 +2381,7 @@ class SalesforceServiceImpl : SalesforceService {
         val inArguments = mutableMapOf<String,Any>()
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
+
 
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
@@ -2430,6 +2435,7 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
+                    sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
@@ -2475,7 +2481,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                                 inArguments["SEND_TO"] = send_to.toString()
-                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
                             }
                         }
                         // 카카오 알림톡
@@ -2556,12 +2562,16 @@ class SalesforceServiceImpl : SalesforceService {
         val response = client.retrieve(ETDataExtension::class.java, filter)
 
         val dataExtension = response.result.getObject()
-        val reList =  dataExtension.retrieveColumns()
-                                        .stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
+        val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
 
         val reMap = HashMap<String, Any>()
         reMap["list"] = reList
         reMap["totalCnt"] = dataExtension.select().totalCount
+//        logger.error("-----------------------------------------------------------------------------")
+        //logger.error("select: {}",dataExtension.select())
+
+//        logger.error("select: {}",dataExtension.select(1,10000,ETFilter()))
+
 
         return reMap
     }

@@ -131,6 +131,7 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
 
     var camp_nm : String?= null    // 캠페인명
     var team_cd : String?= null    // 팀 코드
+    var usr_key : String?= null    // 회원 번호 매핑키
 
     // 알림톡 템플릿
     var tmpl_nm: String? = null

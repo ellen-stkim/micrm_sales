@@ -421,12 +421,15 @@
 .create_sms .head .th {float:left; width:120px; height:35px; line-height:35px;
     padding:0 20px; border-right:1px solid #dddddd; background:#fafafa;}
 /*.create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}*/
-.create_sms .head .td {float:left; width:calc(20% - 145px); height:100%;}
+.create_sms .head .td {float:left; width:calc(50% - 145px); height:100%;}
 .create_sms .head .td:last-child {float:left; width:calc(50% - 210px); height:100%;}
 .create_sms .head .td .txt_input {width:100%; padding:0 20px; font-size:11px;
     line-height:35px; height:35px;}
+.create_sms .head .left_flex{ display: flex;}
+.create_sms .head .left_flex .td{flex: 1 0 30px;}
+
 .flex_row {display:flex; flex-direction:row;}
-.flex_row .sms_option {flex: 2 0 30px;}
+.flex_row .sms_option {    flex: 2 0 241px;}
 .flex_row .area1 {flex:1 0 225px;}
 .flex_row .area2 {flex:1 0 65px;}
 .flex_row .area3 {flex:0 0 175px;}
@@ -543,6 +546,8 @@
 .viewer_area .inner .sms_img_box img{width: 100%}
 .viewer_area .inner .kakao_txt{ width: 100%; height: auto; font-size: 12px; line-height: 1.6; padding: 15px; background: #FFFFFF; border-radius: 0; max-height: 500px; word-break: break-all; overflow-y: auto;}
 .viewer_area .inner .kakao_link{ width: 90%;}
+.viewer_area .inner img{width: 100%;}
+#preview .row_body img{width: 100%;}
 
 
 .sms_box {width:270px; margin:0 auto;}

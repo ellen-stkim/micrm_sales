@@ -32,6 +32,9 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
+
+		/*dataExtensionId ="fc33d0fb-8998-ed11-ba43-5cba2c19aa40"
+		mappingLst();*/
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -212,6 +215,7 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
 		data.push({name: 'team_cd', value: $('#team_cd_sel').attr("data")});
+		data.push({name: 'usr_key', value: $('#recv_usr_cd .value').attr("data")});
 
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
     }
@@ -232,6 +236,7 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'inta_key', value: model.key});
 		data.push({name: 'inta_ve', value: model.version});
 		data.push({name: 'team_cd', value: $('#team_cd_sel').attr("data")});
+		data.push({name: 'usr_key', value: $('#recv_usr_cd .value').attr("data")});
 		data.find(function(input) {
 			return input.name == 'mst_seq';
 		}).value = mstSeq

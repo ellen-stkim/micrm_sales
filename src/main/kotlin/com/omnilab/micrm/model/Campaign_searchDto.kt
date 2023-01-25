@@ -7,7 +7,6 @@ import org.apache.ibatis.type.Alias
 
 @Alias("Campaign_searchDto")
 class Campaign_searchDto : Tblmicp_campaignDto() {
-    var team_cd: String? = null
     var team_nm: String? = null
 
     override fun toString(): String {
