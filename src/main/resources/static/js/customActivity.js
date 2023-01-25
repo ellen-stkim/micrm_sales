@@ -256,7 +256,6 @@ function mappingLst() {
 
 	const res = function(e) {
 		if(e.check){
-			console.log(e.totalCnt)
 			dataExtensionCnt = e.totalCnt;
 
 			const set = new Set();
