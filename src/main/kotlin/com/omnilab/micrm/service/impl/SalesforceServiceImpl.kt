@@ -2438,7 +2438,7 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
-//                    sendHstDto.usr_key = contMst.usr_key // 회원 정보 추가
+                    sendHstDto.usr_key = inArguments[contMst.usr_key].toString() // 회원 정보 추가
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
