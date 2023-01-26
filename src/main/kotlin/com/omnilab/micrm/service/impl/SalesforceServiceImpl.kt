@@ -2564,30 +2564,37 @@ class SalesforceServiceImpl : SalesforceService {
         val dataExtension = response.result.getObject()
         val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
 
+
+        var totalCnt = 0
+        try {
+            // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
+            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
+            if (!CommonUtils.isEmptyObject(data)) {
+                totalCnt = data!!["rowCount"].toString().toInt()
+            } else {
+                totalCnt = dataExtension.select().totalCount
+            }
+        } catch (e: Exception) {
+            logger.error("{}", e)
+        }
+
         val reMap = HashMap<String, Any>()
         reMap["list"] = reList
-
-        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-        try {
-            val data : MutableMap<String, Any> = getTotalcnt(usr_cd,dataExtension.name)["data"] as MutableMap<String, Any>
-            reMap["totalCnt"] = data["rowCount"].toString()
-        } catch (e:Exception){
-            try {
-                reMap["totalCnt"] = dataExtension.select().totalCount
-            }catch (e:Exception){
-                logger.error("{}",e)
-                reMap["totalCnt"] = 0
-            }
-        }
+        reMap["totalCnt"] = totalCnt
 
         return reMap
     }
 
     @Throws
-    private fun getTotalcnt(usr_cd: String, key : String): MutableMap<String, Any> {
+    private fun getTotalcnt(usr_cd: String, key : String): MutableMap<String, Any>? {
         val tempComm = Tblmi_comm_cdDto("SALES_TOTAL",usr_cd)
         tempComm.use_yn ="Y"
-        val totalCntUrl  = systemDao.getCommCDList(tempComm)[0].cd_val
+        val commCd  = systemDao.getCommCDList(tempComm)
+        if(CommonUtils.isEmptyObject(commCd)){
+            return null
+        }
+
+        val totalCntUrl  = commCd[0].cd_val
 
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
@@ -2596,15 +2603,13 @@ class SalesforceServiceImpl : SalesforceService {
         val urlString = "$totalCntUrl?key=$key"
 
         val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-        val re_map: MutableMap<String, Any> = HashMap()
-        if (result.statusCodeValue == HttpStatus.SC_OK) {
-            val body = result.body!!
-            val bodyMap: Map<String, Any> = GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
-            re_map["data"] = bodyMap
-        }else{
-            throw Exception("CloudPages DE totalCount error")
+        if (result.statusCodeValue != HttpStatus.SC_OK) {
+            return null
         }
-        return re_map
+
+        val body = result.body!!
+        return GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+
     }
 
 
