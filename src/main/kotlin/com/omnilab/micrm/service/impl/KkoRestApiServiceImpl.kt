@@ -136,7 +136,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     }
 
     override fun cancleKepReq(tmplCd: String?, sendKey: String?): MutableMap<String, Any>? {
-        val token = getToken(url);
+        val token = getToken(url)
 
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON

@@ -119,7 +119,7 @@
                         <div class="td cf" style="width: 100%;">
                             <div class="select" id="recv_usr_cd" name="edmDB">
                                 <!-- selected value -->
-                                <div class="value" data="">개인화 변수</div>
+                                <div class="value" data="">회원 번호</div>
                                 <ul class="option mappingLst"></ul>
                             </div>
                         </div>
@@ -3374,6 +3374,4 @@
     }
 
 </script>
-
-
 

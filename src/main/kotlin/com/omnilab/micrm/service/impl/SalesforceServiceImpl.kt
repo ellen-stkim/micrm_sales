@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
@@ -2566,15 +2567,47 @@ class SalesforceServiceImpl : SalesforceService {
 
         val reMap = HashMap<String, Any>()
         reMap["list"] = reList
-        reMap["totalCnt"] = dataExtension.select().totalCount
-//        logger.error("-----------------------------------------------------------------------------")
-        //logger.error("select: {}",dataExtension.select())
 
-//        logger.error("select: {}",dataExtension.select(1,10000,ETFilter()))
-
+        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
+        try {
+            val data : MutableMap<String, Any> = getTotalcnt(usr_cd,dataExtension.name)["data"] as MutableMap<String, Any>
+            reMap["totalCnt"] = data["rowCount"].toString()
+        } catch (e:Exception){
+            try {
+                reMap["totalCnt"] = dataExtension.select().totalCount
+            }catch (e:Exception){
+                logger.error("{}",e)
+                reMap["totalCnt"] = 0
+            }
+        }
 
         return reMap
     }
+
+    @Throws
+    private fun getTotalcnt(usr_cd: String, key : String): MutableMap<String, Any> {
+        val tempComm = Tblmi_comm_cdDto("SALES_TOTAL",usr_cd)
+        tempComm.use_yn ="Y"
+        val totalCntUrl  = systemDao.getCommCDList(tempComm)[0].cd_val
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        val urlString = "$totalCntUrl?key=$key"
+
+        val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+        val re_map: MutableMap<String, Any> = HashMap()
+        if (result.statusCodeValue == HttpStatus.SC_OK) {
+            val body = result.body!!
+            val bodyMap: Map<String, Any> = GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+            re_map["data"] = bodyMap
+        }else{
+            throw Exception("CloudPages DE totalCount error")
+        }
+        return re_map
+    }
+
 
     /**
      * @Method Name  : isCheckSender

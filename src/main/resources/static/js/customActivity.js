@@ -33,8 +33,6 @@ define(["postmonger"], function (Postmonger) {
 		}, 1000);
 		 */
 
-		/*dataExtensionId ="fc33d0fb-8998-ed11-ba43-5cba2c19aa40"
-		mappingLst();*/
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
