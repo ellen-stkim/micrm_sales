@@ -2568,22 +2568,18 @@ class SalesforceServiceImpl : SalesforceService {
         reMap["list"] = reList
 
         // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-//        try {
+        try {
             val data : MutableMap<String, Any> = getTotalcnt(usr_cd,dataExtension.name)["data"] as MutableMap<String, Any>
-            logger.error("------------cloudPage 성공-------------------------------------------------")
-            logger.error("{}",data)
             reMap["totalCnt"] = data["rowCount"].toString()
-        /*} catch (e:Exception){
+        } catch (e:Exception){
             try {
-                logger.error("------------cloudPage 실패-------------------------------------------------")
                 reMap["totalCnt"] = dataExtension.select().totalCount
             }catch (e:Exception){
                 logger.error("{}",e)
                 reMap["totalCnt"] = 0
             }
-        }*/
+        }
 
-        logger.error("")
         return reMap
     }
 
