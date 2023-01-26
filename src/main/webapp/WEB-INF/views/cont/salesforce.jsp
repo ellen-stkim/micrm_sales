@@ -3375,10 +3375,3 @@
 
 </script>
 
-%%[
-
-var @statusTier
-set @statusTier = "Gold"
-
-]%%
-
