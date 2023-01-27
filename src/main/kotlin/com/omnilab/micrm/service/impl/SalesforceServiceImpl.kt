@@ -2564,18 +2564,13 @@ class SalesforceServiceImpl : SalesforceService {
         val dataExtension = response.result.getObject()
         val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
 
-
         var totalCnt = 0
-        try {
-            // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
-            if (!CommonUtils.isEmptyObject(data)) {
-                totalCnt = data!!["rowCount"].toString().toInt()
-            } else {
-                totalCnt = dataExtension.select().totalCount
-            }
-        } catch (e: Exception) {
-            logger.error("{}", e)
+        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
+        val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
+        if (!CommonUtils.isEmptyObject(data)) {
+            totalCnt = data!!["rowCount"].toString().toInt()
+        } else {
+            totalCnt = dataExtension.select().totalCount
         }
 
         val reMap = HashMap<String, Any>()
@@ -2606,10 +2601,11 @@ class SalesforceServiceImpl : SalesforceService {
         if (result.statusCodeValue != HttpStatus.SC_OK) {
             return null
         }
-
+        if(CommonUtils.isEmptyObject(result.body)){
+            logger.error("getTotalCnt url : {}",urlString)
+        }
         val body = result.body!!
         return GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
-
     }
 
 
