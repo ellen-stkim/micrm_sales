@@ -2569,10 +2569,15 @@ class SalesforceServiceImpl : SalesforceService {
 
         var totalCnt = 0
         // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-        val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
-        if (!CommonUtils.isEmptyObject(data)) {
-            totalCnt = data!!["rowCount"].toString().toInt()
-        } else {
+        try {
+            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
+            if (!CommonUtils.isEmptyObject(data)) {
+                totalCnt = data!!["rowCount"].toString().toInt()
+            }else{
+                totalCnt = dataExtension.select().totalCount
+            }
+        }catch (e:Exception){
+            logger.error("{}",e)
             totalCnt = dataExtension.select().totalCount
         }
 
