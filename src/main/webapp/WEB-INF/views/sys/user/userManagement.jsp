@@ -139,23 +139,6 @@
                             <!-- select 영역 끝 -->
                         </td>
                     </tr>
-                     <tr>
-                        <th>승인 담당자</th>
-                        <td class="pd_none">
-                            <!-- select 영역 시작 -->
-                            <div class="select">
-                                <!-- selected value -->
-                                <div class="value" id="manager" data="">선택</div>
-                                <!-- option -->
-                                <ul class="option">
-                                    <c:forEach var="n" items="${uslist}" varStatus="status">
-                                        <li data="${n.usr_id}">${n.usr_nm}(${n.usr_log_id}</li>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                            <!-- select 영역 끝 -->
-                        </td>
-                    </tr>
                     <tr>
                         <th>비밀번호</th>
                         <td>
@@ -280,7 +263,6 @@
         let phone = document.getElementById('userPhone').value;
         let authority = document.getElementById('authority').getAttribute('data');
         $("#usr_st").val(1);
-        let manager = document.getElementById('manager').getAttribute('data');
         let password = document.getElementById('password').value;
         let comfirm = document.getElementById('comfirmPsw').value;
         let regPhone = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
@@ -325,10 +307,6 @@
             error2.innerHTML = '권한을 선택해주세요.';
             return false;
         }
-         if (manager == '') {
-           error2.innerHTML = '승인 담당자를 선택해주세요.';
-           return false;
-        }
         if (password == '') {
             error2.innerHTML = '비밀번호를 입력해주세요.';
             return false;
@@ -355,7 +333,6 @@
                 }
             };
             var param = $("#saveUserForm").serializeArray();
-            param.push({name: 'appr_id', value: manager});
             param.push({name: 'role_cd', value: authority});
             com_ajax.ajax('post', '${baseURL}/sys/user/saveUser.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
 
