@@ -349,7 +349,7 @@
 	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
 		SELECT camp.* , comm.cd_desc AS team_nm
 		FROM tblmicp_campaign AS camp
-			LEFT JOIN tblmicp_cont_mst AS cont ON cont.cont_seq = camp.CONT_ID
+			LEFT JOIN tblmicp_cont_mst AS cont ON cont.seq = camp.CONT_ID
 			LEFT JOIN tblmi_comm_cd AS comm
 				ON comm.grp_id = 'GRP_TEAM'
 				    AND cd_id = 'TEAM01'
