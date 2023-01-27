@@ -2245,6 +2245,8 @@ class SalesforceServiceImpl : SalesforceService {
                 if(result["result"] as Boolean){
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
+                    logger.error("------------------------------------activities--------------------------")
+                    logger.error("{}",activities)
                     for(activity in activities){
                         val type = activity["type"].toString()
                         if(type == "REST"){
@@ -2271,6 +2273,7 @@ class SalesforceServiceImpl : SalesforceService {
                             cpMstDto.inta_ve = dto.inta_ve
                             cpMstDto.pub_yn = dto.pub_yn
                             salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+                            logger.error("{}",cpMstDto)
 
                             //기존 데이터가 있을 경우 삭제
                             salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
@@ -2567,10 +2570,15 @@ class SalesforceServiceImpl : SalesforceService {
 
         var totalCnt = 0
         // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-        val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
-        if (!CommonUtils.isEmptyObject(data)) {
-            totalCnt = data!!["rowCount"].toString().toInt()
-        } else {
+        try {
+            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
+            if (!CommonUtils.isEmptyObject(data)) {
+                totalCnt = data!!["rowCount"].toString().toInt()
+            }else{
+                totalCnt = dataExtension.select().totalCount
+            }
+        }catch (e:Exception){
+            logger.error("{}",e)
             totalCnt = dataExtension.select().totalCount
         }
 
