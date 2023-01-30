@@ -48,6 +48,7 @@ import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -2413,18 +2414,27 @@ class SalesforceServiceImpl : SalesforceService {
             }else{
                 for(campaignDto in campLst){
 
-                    // 타겟수 업데이트
-                    if((campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0)
-                                && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+                    var campDto = Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,null,campaignDto.reg_id)
 
-                        val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
-                        salesforceDao.upd_tblmicp_campaign(Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,targetCnt,campaignDto.reg_id))
+                    // 타겟수 업데이트
+                    if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
+
+                        var targetCnt: Int? = null
+                        if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+                            targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
+                        }
+                        campDto.tar_cnt = targetCnt
+
+                        campDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
+                        salesforceDao.upd_tblmicp_campaign(campDto)
+
                         // 프로그램 total target cnt 수정
                         val program = Tblmicp_programDto(campaignDto.pro_id)
                         program.pro_id = campaignDto.pro_id
                         salesforceDao.upd_tblmicp_program_total_cnt(program)
                     }
                     inArguments.remove("§extention_cnt§")
+
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
@@ -2609,6 +2619,10 @@ class SalesforceServiceImpl : SalesforceService {
         if (result.statusCodeValue != HttpStatus.SC_OK) {
             return null
         }
+
+        logger.error("+----------------------------------------------------")
+        logger.error("{}",result.body)
+        logger.error("{}",urlString)
         if(CommonUtils.isEmptyObject(result.body)){
             logger.error("getTotalCnt url : {}",urlString)
         }
