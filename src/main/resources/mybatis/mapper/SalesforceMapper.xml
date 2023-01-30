@@ -386,6 +386,9 @@
         <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tar_cnt)">
             , tar_cnt = #{tar_cnt}
         </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+            , start_dt = #{start_dt}
+        </if>
         <where>
             pro_id = #{pro_id}
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
