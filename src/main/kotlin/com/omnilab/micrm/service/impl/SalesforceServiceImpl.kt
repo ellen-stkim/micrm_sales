@@ -2414,27 +2414,24 @@ class SalesforceServiceImpl : SalesforceService {
             }else{
                 for(campaignDto in campLst){
 
-                    var campDto = Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,null,campaignDto.reg_id)
-
                     // 타겟수 업데이트
                     if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
 
                         var targetCnt: Int? = null
                         if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
                             targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
+                            inArguments.remove("§extention_cnt§")
                         }
-                        campDto.tar_cnt = targetCnt
+                        campaignDto.tar_cnt = targetCnt
 
-                        campDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
-                        salesforceDao.upd_tblmicp_campaign(campDto)
+                        campaignDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
+                        salesforceDao.upd_tblmicp_campaign(campaignDto)
 
                         // 프로그램 total target cnt 수정
                         val program = Tblmicp_programDto(campaignDto.pro_id)
                         program.pro_id = campaignDto.pro_id
                         salesforceDao.upd_tblmicp_program_total_cnt(program)
                     }
-                    inArguments.remove("§extention_cnt§")
-
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
