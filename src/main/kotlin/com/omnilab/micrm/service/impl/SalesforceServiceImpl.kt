@@ -902,6 +902,7 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
         tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
         tblmiContMstDto.team_cd = contentListCreatedto.team_cd
+        tblmiContMstDto.usr_key = contentListCreatedto.usr_key
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
