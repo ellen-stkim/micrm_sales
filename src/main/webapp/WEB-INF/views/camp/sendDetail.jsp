@@ -103,12 +103,14 @@
                                 <span class="number en_font">${st.count}</span>
                                 <div class="info_row">
                                     <h3 class="ellipsis">${g.camp_nm}</h3>
-                                    <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span>
+                                    <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span><br>
+                                    <span class="half-ellipsis">(${g.avo_nm})</span>
                                     <span class="bar">|</span>
                                     <div class="icon">
                                         <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
                                         <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
                                     </div>
+                                    <span>팀 명 : ${g.team_nm}</span>
                                 </div>
                             </dt>
                             <dd>
@@ -148,7 +150,8 @@
                                         <span class="number en_font">${st.count}</span>
                                         <div class="info_row">
                                             <h3 class="ellipsis">${g.camp_nm}</h3>
-                                            <span class="en_font">(<fmt:formatNumber value="${dto.pro_st eq '03' ? tar_cnt : g.send_cnt}" pattern="#,###" />명)</span>
+                                            <span class="en_font">(<fmt:formatNumber value="${dto.pro_st eq '03' ? tar_cnt : g.send_cnt}" pattern="#,###" />명)</span><br>
+                                            <span class="half-ellipsis">(${g.avo_nm})</span>
                                             <span class="bar">|</span>
                                             <div class="icon">
                                                 <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
@@ -269,12 +272,14 @@
                                     <span class="number en_font">${st.count}</span>
                                     <div class="info_row">
                                         <h3 class="ellipsis">${g.camp_nm}</h3>
-                                        <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span>
+                                        <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span><br>
+                                        <span class="half-ellipsis">(${g.avo_nm})</span>
                                         <span class="bar">|</span>
                                         <div class="icon">
                                             <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
                                             <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
                                         </div>
+                                        <span>팀 명 : ${g.team_nm}</span>
                                     </div>
                                 </dt>
                                 <dd>
