@@ -117,13 +117,13 @@
                         </div>
                         <div class="th left-border">회원 번호</div>
                         <div class="td cf" style="width: 100%;">
-                            <c:if test="${empty usrKeyLst}">
+                            <c:if test="${fn:length(usrKeyLst) <= 0}">
                                 <div class="select" id="recv_usr_cd" name="edmDB">
                                     <!-- selected value -->
                                     <div class="value" data="">회원 번호</div>
                                 </div>
                             </c:if>
-                            <c:if test="${!empty usrKeyLst}">
+                            <c:if test="${fn:length(usrKeyLst) > 0}">
                                 <div class="select" id="recv_usr_cd">
                                     <!-- selected value -->
                                     <div class="value" data="${usrKeyLst[0].list_val}">${usrKeyLst[0].list_val}</div>
@@ -132,7 +132,7 @@
                         </div>
                         <div class="th left-border">수신 번호</div>
                         <div class="td cf" style="width: 100%;">
-                            <c:if test="${empty fromToLst}">
+                            <c:if test="${fn:length(fromToLst) <= 0}">
                                 <div class="select" id="recv_phone_to" name="edmDB">
                                     <!-- selected value -->
                                     <div class="value" data="">개인화 변수</div>
@@ -140,7 +140,7 @@
                                 </div>
                                 <input type="hidden" id="recv_phone" name="from_to"/>
                             </c:if>
-                            <c:if test="${!empty fromToLst}">
+                            <c:if test="${fn:length(fromToLst) > 0}">
                                 <div class="select" id="recv_phone_to">
                                     <!-- selected value -->
                                     <div class="value" data="${fromToLst[0].list_val}">${fromToLst[0].list_val}</div>
