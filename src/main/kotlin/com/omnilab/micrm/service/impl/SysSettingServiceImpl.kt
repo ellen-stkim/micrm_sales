@@ -239,7 +239,7 @@ class SysSettingServiceImpl : SysSettingService {
         defaultLstDto.usr_grp_cd = userInfo.usr_grp_cd
         defaultLstDto.def_yn = "N"
 
-        sysSettingDao.updateDefultSender(defaultLstDto)
+        sysSettingDao.updateSetDefultYn(defaultLstDto)
 
         // 새로운 Lst 값 def_yn 설정
         val changeLstDto = Tblmi_set_lstDto()
@@ -247,7 +247,7 @@ class SysSettingServiceImpl : SysSettingService {
         changeLstDto.usr_grp_cd = userInfo.usr_grp_cd
         changeLstDto.def_yn = "Y"
 
-        sysSettingDao.updateDefultSender(changeLstDto)
+        sysSettingDao.updateSetDefultYn(changeLstDto)
 
         statusMap["status"] = true
         return statusMap
@@ -370,8 +370,8 @@ class SysSettingServiceImpl : SysSettingService {
             searchDto.list_nm = searchDto.searchValue
         } else if (searchDto.searchType == "list_val") {
             searchDto.list_val = searchDto.searchValue
-        } else if (searchDto.searchType == "use_yn") {
-            searchDto.use_yn = searchDto.searchValue
+        } else if (searchDto.searchType == "def_yn") {
+            searchDto.def_yn = searchDto.searchValue
         }
 
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -387,7 +387,7 @@ class SysSettingServiceImpl : SysSettingService {
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getMappingSettingList(searchDto);
+        map["list"] = sysSettingDao.getMappingSettingList(searchDto)
 
         return map;
     }
@@ -409,6 +409,7 @@ class SysSettingServiceImpl : SysSettingService {
 
     override fun isExistMapping(lstDto: Tblmi_set_lstDto): Map<String, Any> {
         val statusMap: MutableMap<String, Any> = HashMap();
+        logger.error("{}",lstDto)
 
         lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         lstDto.list_tp_id = "CH03"
@@ -649,6 +650,26 @@ class SysSettingServiceImpl : SysSettingService {
 
         statusMap["status"] = cntResult <= 0
 
+        return statusMap
+    }
+
+    override fun updateSetTypeYn(dto: Tblmi_set_lstDto): Map<String, Any> {
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        if (dto.def_yn == "Y") {
+            dto.def_yn = "N"
+        } else if (dto.def_yn == "N") {
+            val temp = Tblmi_set_lstDto()
+            temp.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            temp.list_nm = dto.list_nm
+            temp.def_yn = "N"
+            sysSettingDao.updateSetLstYn(temp)  // 기존 기본값 해제
+            
+            dto.def_yn = "Y"
+        }
+
+        val result = sysSettingDao.updateSetLstYn(dto)
+        statusMap["status"] = result >= 1
         return statusMap
     }
 }

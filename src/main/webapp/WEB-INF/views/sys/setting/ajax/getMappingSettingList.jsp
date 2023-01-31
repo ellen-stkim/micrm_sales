@@ -25,33 +25,37 @@
             <thead>
             <tr>
                 <th></th>
+                <th>Type</th>
                 <th>Key</th>
-                <th>Value</th>
                 <th>생성일</th>
-                <th>사용여부</th>
+                <th>기본값 설정</th>
                 <th>수정/삭제</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="n" items="${list}" varStatus="status">
                 <tr>
-                    <td><label class="custom_radio"><input name="callingNumber" type="radio" value="${n.seq}"><span></span>
+                    <%--<td><label class="custom_radio"><input name="callingNumber" type="radio" value="${n.seq}"><span></span>
                         <input type="hidden" name="changeSendNumber" value="${n.list_val}"/>
                         <input type="hidden" name="changeSender" value="${n.list_nm}"/>
                         </label>
+                    </td>--%>
+                    <td>
+                        <input type="hidden" name="changeSendNumber" value="${n.list_val}"/>
+                        <input type="hidden" name="changeSender" value="${n.list_nm}"/>
                     </td>
-                    <td class="en_font">${n.list_nm}</td>
+                    <td class="en_font">${n.list_nm eq "USR_KEY" ? '회원번호' :'' }${n.list_nm eq "FROM_TO" ? '수신번호' :'' }</td>
                     <td class="en_font">${cutil:numberToPhone(n.list_val)}</td>
                     <td class="en_font">${n.reg_dt}</td>
                     <td class="en_font">
-                        <c:if test = "${fn:trim(n.use_yn) == 'Y'}">
+                        <c:if test = "${fn:trim(n.def_yn) == 'Y'}">
                             <input type="button" class="use_state en_font btn_state" value="Y"
-                                   onclick="updateMappingLstYn('${n.seq}','${n.use_yn}')"
+                                   onclick="updateYnCheck('${n.seq}','${n.list_nm}','${n.def_yn}')"
                             />
                         </c:if>
-                        <c:if test = "${fn:trim(n.use_yn) == 'N'}">
+                        <c:if test = "${fn:trim(n.def_yn) == 'N'}">
                             <input type="button" class="use_state en_font btn_state" value="N"
-                                   onclick="updateMappingLstYn('${n.seq}','${n.use_yn}')"
+                                   onclick="updateYnCheck('${n.seq}','${n.list_nm}','${n.def_yn}')"
                             />
                         </c:if>
                     </td>
@@ -83,10 +87,10 @@
             <thead>
             <tr>
                 <th></th>
+                <th>Type</th>
                 <th>Key</th>
-                <th>Value</th>
                 <th>생성일</th>
-                <th>사용여부</th>
+                <th>기본값 설정</th>
                 <th>수정/삭제</th>
             </tr>
             </thead>
