@@ -3267,8 +3267,8 @@
         if (len > 0) {
             mobileInfo(check);
 
-            $('#recv_usr_cd .value').attr('data','').html('회원번호');
-            $('#recv_phone_to .value').attr('data','').html('개인화변수');
+            $('#recv_usr_cd[name="edmDB"]  .value').attr('data','').html('회원 번호');
+            $('#recv_phone_to[name="edmDB"]  .value').attr('data','').html('개인화 변수');
             $('#recv_phone').val('');
         } else {
             return false;
