@@ -919,6 +919,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
 			, cont_nm = #{cont_nm}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_key)">
+			, usr_key = #{usr_key}
+		</if>
 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				seq = #{seq}
