@@ -311,7 +311,17 @@
 		</dependency>
 
 
-    </dependencies>
+		<!--	log	-->
+		<!--<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>jaxrs-api</artifactId>
+			<version>3.0.4.Final</version>
+		</dependency>-->
+		<!-- Thanks for using https://jar-download.com -->
+
+
+
+	</dependencies>
 
 	<build>
 		<plugins>
