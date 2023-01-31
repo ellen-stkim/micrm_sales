@@ -45,9 +45,9 @@
                     <div class="value searchSelect" data="">기준선택</div>
                     <!-- option -->
                     <ul class="option">
-                        <li data="list_nm">Key</li>
-                        <li data="list_val">Value</li>
-                        <li data="use_yn">사용여부</li>
+                        <li data="list_nm">Type</li>
+                        <li data="list_val">Key</li>
+                        <li data="def_yn">기본설정여부</li>
                     </ul>
                 </div>
                 <div class="left" id="typeArea"></div>
@@ -102,11 +102,22 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>Key</th>
-                        <td><input type="text" name="list_nm" id="list_nm" placeholder="Key를 입력해주세요." class="input_type1" /></td>
+                        <th>Type</th>
+                        <td>
+                            <div class="select" id="list_nm">
+                                <!-- selected value -->
+                                <div class="value searchSelect" data="" style="line-height: 24px;">기준선택</div>
+                                <!-- option -->
+                                <ul class="option" style="top: 31px;">
+                                    <li data="USR_KEY">회원정보</li>
+                                    <li data="FROM_TO">수신번호</li>
+                                </ul>
+                            </div>
+<%--                            <input type="text" name="list_nm" id="list_nm" placeholder="Key를 입력해주세요." class="input_type1" />--%>
+                        </td>
                     </tr>
                     <tr>
-                        <th>Value</th>
+                        <th>Key</th>
                         <td><input type="text" name="list_val" id="list_val" placeholder="Value를 입력해주세요." class="input_type1" /></td>
                     </tr>
                     </tbody>
@@ -136,11 +147,22 @@
                     <tbody>
                     <input type ="hidden" name="seq_mod" id="seq_mod"/>
                     <tr>
-                        <th>Key</th>
-                        <td><input type="text" name="list_nm_mod" id="list_nm_mod" placeholder="Key를 입력해주세요." class="input_type1" /></td>
+                        <th>Type</th>
+                        <td>
+                            <div class="select" id="list_nm_mod">
+                                <!-- selected value -->
+                                <div class="value searchSelect" data="" style="line-height: 24px;">기준선택</div>
+                                <!-- option -->
+                                <ul class="option" style="top: 31px;">
+                                    <li data="USR_KEY">회원정보</li>
+                                    <li data="FROM_TO">수신번호</li>
+                                </ul>
+                            </div>
+<%--                            <input type="text" name="list_nm_mod" id="list_nm_mod" placeholder="Key를 입력해주세요." class="input_type1" />--%>
+                        </td>
                     </tr>
                     <tr>
-                        <th>Value</th>
+                        <th>Key</th>
                         <td><input type="text" name="list_val_mod" id ="list_val_mod" placeholder="Value를 입력해주세요." class="input_type1" /></td>
                     </tr>
                     </tbody>
@@ -162,9 +184,9 @@
 
             if(searchItem == "list_nm" || searchItem == "list_val"){
                 $("#searchValue").val('');
-            }
-
-            if(searchItem == "use_yn"){
+                $('#searchValue').show();
+                $('#typeArea').children().remove();
+            } else if(searchItem == "def_yn"){
                 $('#searchValue').hide();
                 $('#typeArea').html(
                     '<div class="select style1 right-border left-border">' +
@@ -175,11 +197,6 @@
                     '</ul>' +
                     '</div> '
                 );
-            }
-
-            if(searchItem != 'use_yn'){
-                $('#searchValue').show();
-                $('#typeArea').children().remove();
             }
         });
     });
@@ -194,7 +211,8 @@
     // 매핑정보 수정 팝업 띄우기
     function mappingRePopup(seq) {
         const res = function(response){
-            $("#list_nm_mod").val(response.data.list_nm);
+            let type = response.data.list_nm == "USR_KEY" ? '회원번호' : '수신번호'
+            $("#list_nm_mod .value").html(type).attr("data",response.data.list_nm);
             $("#list_etc_mod").val(response.data.list_etc);
             $("#list_val_mod").val(response.data.list_val);
             $("#seq_mod").val(response.data.seq);
@@ -218,7 +236,7 @@
         }
 
         let data = []
-        data.push({name : "list_nm" , value : $("#list_nm").val().trim()})
+        data.push({name : "list_nm" , value : $("#list_nm .value").attr("data").trim()})
         data.push({name : "list_val" , value : $("#list_val").val().trim()})
 
         com_ajax.ajax('post', '${baseURL}/sys/setting/insertMapping.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -227,7 +245,7 @@
     // 중복 매핑정보 체크하기
     function checkMappingAddress() {
 
-        let senderName = $("#list_nm").val().trim();
+        let senderName = $("#list_nm .value").attr("data").trim();
         let senderNumber = $("#list_val").val().trim();
 
         if(senderName == '') {
@@ -248,23 +266,23 @@
             }
         }
 
-        let data = []
-        data.push({name : "list_val" , value : senderNumber})
+        let data = {list_nm : senderName , list_val : senderNumber}
+        console.log(data)
         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistMapping.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     // 중복 매핑정보 수정 체크하기
     function checkMappingAddressModify(seq) {
 
-        let senderName = $("#list_nm_mod").val().trim();
+        let senderName = $("#list_nm_mod .value").attr("data").trim();
         let senderNumber = $("#list_val_mod").val().trim();
 
         if(senderName == '') {
-            $("#errorArea2").html("Key를 입력해 주세요.")
+            $("#errorArea2").html("Type을 선택해 주세요.")
             return false;
         }
         if(senderNumber == '') {
-            $("#errorArea2").html('Value를 입력해 주세요.')
+            $("#errorArea2").html('Key를 입력해 주세요.')
             return false;
         }
 
@@ -278,6 +296,7 @@
         }
 
         let data = []
+        data.push({name : "list_nm" , value : senderName} )
         data.push({name : "list_val" , value : senderNumber} )
         data.push({name : "seq" , value : seq} )
         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistMappingModify.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -331,7 +350,7 @@
         let standard = $('.searchSelect').attr('data');
         let searchValue = $("#searchValue").val().trim();
 
-        if(standard == 'use_yn') {
+        if(standard == 'def_yn') {
             let yn_data = $("#yn_select").attr('data');
             $("#searchValue").val(yn_data)
         }
@@ -350,19 +369,22 @@
     }
 
     // 문자 리스트 Y,N 값 변경하기
-    function updateMappingLstYn(seq,use_yn) {
-
+    function updateYnCheck(seq,list_nm,def_yn){
         const res = function(response){
             let pageNo = $("#nowPageNo").val();
             getMappingSettingList(pageNo)
+            popup.searchAlert("변경되었습니다.");
         }
 
         let data = []
         data.push({name : "seq" , value : seq })
-        data.push({name : "use_yn" , value : use_yn} )
+        data.push({name : "list_nm" , value : list_nm })
+        data.push({name : "def_yn" , value : def_yn} )
 
-        com_ajax.ajax('post', '${baseURL}/sys/setting/updateSetLstYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sys/setting/changeTypeDefYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+
     }
+
 
     // 삭제 처리
     function deleteMappingAddress(seq){
@@ -387,7 +409,7 @@
 
     function modifyMapping(seq){
 
-        let senderNm = $("#list_nm_mod").val().trim();
+        let senderNm = $("#list_nm_mod .value").attr("data").trim();
         let senderNumber = $("#list_val_mod").val().trim();
         const pageNo = $("#nowPageNo").val();
 

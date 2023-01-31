@@ -162,6 +162,25 @@ class SysSettingController {
     }
 
     /**
+     * @Method Name  : updateSetLstYn
+     * @Since    : 2021. 03. 26
+     * @author   : Grayson
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 메일 Use_YN 변경하기
+     * @title : 메일 Use_YN 변경하기
+     */
+
+    @ResponseBody
+    @PostMapping("/changeTypeDefYn.ajax")
+    fun changeTypeDefYn(lstDto: Tblmi_set_lstDto) : Map<String,Any>  {
+        return sysSettingService.updateSetTypeYn(lstDto)
+    }
+
+    /**
      * @Method Name  : insertMail
      * @Since    : 2021. 03. 29
      * @author   : Grayson
@@ -451,7 +470,7 @@ class SysSettingController {
 
     @ResponseBody
     @PostMapping("/isExistMapping.ajax")
-    fun isExistMappingAddress(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+    fun isExistMappingAddress(@ModelAttribute lstDto : Tblmi_set_lstDto) : Map<String,Any> {
         return sysSettingService.isExistMapping(lstDto)
     }
 

@@ -7,6 +7,7 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
+import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.*
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
@@ -67,6 +68,10 @@ class SalesforceController {
     lateinit var salesforceDao : SalesforceDao
 
     @Autowired
+    @Qualifier("SysSettingDaoImpl")
+    lateinit var sysSettingDao : SysSettingDao
+
+    @Autowired
     @Qualifier("KkoRestApiServiceImpl")
     lateinit var kkoRestApiService: KkoRestApiService
 
@@ -117,6 +122,13 @@ class SalesforceController {
         commonCDDto.par_id = usr_cd
         view.addObject("teamLst", sysSettingService.getCommCDLst(commonCDDto))
 
+        val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
+        temp.list_nm = "USR_KEY"
+        view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
+
+        temp.list_nm = "from_to"
+        view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
+
         return view
     }
 
@@ -161,7 +173,6 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String, response: HttpServletResponse): Map<String, Any> {
         content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        logger.error("{}",content_list_dto)
         val statusMap = salesforceService.updateContentList(content_list_dto)
         return statusMap;
     }
@@ -204,6 +215,13 @@ class SalesforceController {
             teamCDDto.cd_id = "TEAM01"
             teamCDDto.par_id = usr_cd
             view.addObject("teamLst", sysSettingService.getCommCDLst(teamCDDto))
+
+            val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
+            temp.list_nm = "USR_KEY"
+            view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
+
+            temp.list_nm = "from_to"
+            view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
         }
         view.addObject("list" , listMap["list"])
 

@@ -103,13 +103,23 @@
 
 	<update id ="updateSetLstYn" parameterType="Tblmi_set_lst">
 		UPDATE tblmi_set_lst
-		SET use_yn = #{use_yn}
+		<set>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(def_yn)">
+				def_yn = #{def_yn}
+			</if>
+		</set>
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-				seq = #{seq}
+				and seq = #{seq}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
 				and list_tp_id = #{list_tp_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
+				and list_nm = #{list_nm}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and usr_grp_cd = #{usr_grp_cd}
@@ -208,7 +218,7 @@
 		</where>
 	</update>
 
-	<update id ="updateDefaultSender" parameterType="Tblmi_set_lst">
+	<update id ="updateDefaultYn" parameterType="Tblmi_set_lst">
 		UPDATE tblmi_set_lst
 		SET DEF_YN = #{def_yn}
 		   ,upd_id = #{upd_id}
@@ -293,6 +303,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 			and use_yn = #{use_yn}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(def_yn)">
+			and def_yn = #{def_yn}
+		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
 			and list_val like concat ('%',#{list_val},'%')
 		</if>
@@ -317,6 +330,12 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 			and use_yn = #{use_yn}
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			and use_yn = #{use_yn}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(def_yn)">
+			and def_yn = #{def_yn}
+		</if>
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
 			and list_val like concat ('%',#{list_val},'%')
 		</if>
@@ -333,17 +352,20 @@
 		SELECT COUNT(*)
 		FROM tblmi_set_lst
 		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
+				and list_nm = #{list_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+				and list_val = #{list_val}
+			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
-				list_tp_id = #{list_tp_id}
+				and list_tp_id = #{list_tp_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
 				and list_dt_id = #{list_dt_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and usr_grp_cd = #{usr_grp_cd}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
-				and list_val = #{list_val}
 			</if>
 			and del_dt = 'N'
 		</where>
@@ -364,6 +386,9 @@
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
+				and list_nm = #{list_nm}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
 				and list_val = #{list_val}
