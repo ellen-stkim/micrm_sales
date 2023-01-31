@@ -29,7 +29,7 @@ interface SysSettingDao {
 
     fun deleteSetLst(dto : Tblmi_set_lstDto) : Int
 
-    fun updateDefultSender(dto : Tblmi_set_lstDto) : Int
+    fun updateSetDefultYn(dto : Tblmi_set_lstDto) : Int
 
     fun getSettingList(dto : Tblmi_set_lstDto) : List<Tblmi_set_lstDto>
 

@@ -66,8 +66,8 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.update("deleteSetLst",dto)
     }
 
-    override fun updateDefultSender(dto: Tblmi_set_lstDto): Int {
-        return sqlSession.update("updateDefaultSender",dto)
+    override fun updateSetDefultYn(dto: Tblmi_set_lstDto): Int {
+        return sqlSession.update("updateDefaultYn",dto)
     }
 
     override fun getSettingList(dto: Tblmi_set_lstDto): List<Tblmi_set_lstDto> {
