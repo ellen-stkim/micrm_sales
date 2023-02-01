@@ -125,14 +125,14 @@
                                     <ul class="option mappingLst"></ul>
                                 </div>
                             </c:if>
-                            <c:if test="${fn:length(usrKeyLst) > 0 and list[0].cont_grp_cd ne '05'}">
+                            <c:if test="${fn:length(usrKeyLst) > 0 and usr_cd ne '05'}">
                                 <div class="select" id="recv_usr_cd" name="edmDB">
                                     <!-- selected value -->
                                     <div class="value" data="${usrKeyLst[0].list_val}">${usrKeyLst[0].list_val}</div>
                                     <ul class="option mappingLst"></ul>
                                 </div>
                             </c:if>
-                            <c:if test="${fn:length(usrKeyLst) > 0 and list[0].cont_grp_cd eq '05'}">
+                            <c:if test="${fn:length(usrKeyLst) > 0 and usr_cd eq '05'}">
                                 <div class="select" id="recv_usr_cd">
                                     <!-- selected value -->
                                     <div class="value hidden-drop" data="${usrKeyLst[0].list_val}">${usrKeyLst[0].list_val}</div>
@@ -149,7 +149,7 @@
                                 </div>
                                 <input type="hidden" id="recv_phone" class="sel_value" name="from_to"/>
                             </c:if>
-                            <c:if test="${fn:length(fromToLst) > 0 and list[0].cont_grp_cd ne '05'}">
+                            <c:if test="${fn:length(fromToLst) > 0 and usr_cd ne '05'}">
                                 <div class="select" id="recv_phone_to" name="edmDB">
                                     <!-- selected value -->
                                     <div class="value" data="${fromToLst[0].list_val}">${fromToLst[0].list_val}</div>
@@ -157,7 +157,7 @@
                                 </div>
                                 <input type="hidden" id="recv_phone" name="from_to" value="${fromToLst[0].list_val}"/>
                             </c:if>
-                            <c:if test="${fn:length(fromToLst) > 0 and list[0].cont_grp_cd eq '05'}">
+                            <c:if test="${fn:length(fromToLst) > 0 and usr_cd eq '05'}">
                                 <div class="select" id="recv_phone_to">
                                     <!-- selected value -->
                                     <div class="value hidden-drop" data="${fromToLst[0].list_val}">${fromToLst[0].list_val}</div>
