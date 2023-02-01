@@ -27,7 +27,7 @@
                     <img src="../../image/ico_tooltip.png" alt="Tooltip" />
                 </div>
                 <!-- tooltip box 영역 시작 -->
-                <div class="tooltip_box">
+               <%-- <div class="tooltip_box">
                     <!-- tooltip bullet 영역 -->
                     <div class="bullet"></div>
                     <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />
@@ -35,7 +35,7 @@
                                 차지합니다.</span>
                     스타일론 직장인이 26.69억(29.1%), <br />
                     스타일론 자영업자가 4.1억(4.47%)입니다.<br />
-                </div>
+                </div>--%>
                 <!-- tooltip box 영역 끝 -->
             </div>
             <form:form id="searchBlockList" method="post"  onsubmit="return false">
