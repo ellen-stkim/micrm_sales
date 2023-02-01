@@ -141,14 +141,14 @@
                                 <div class="value" data="${list[0].from_to}">${list[0].from_to}</div>
                                 <ul class="option mappingLst"></ul>
                             </div>
-                            <input type="hidden" id="recv_phone" name="from_to" value="${list[0].from_to}"/>
+                            <input type="hidden" id="recv_phone" class="sel_value" name="from_to" value="${list[0].from_to}"/>
                         </c:if>
                         <c:if test="${fn:length(fromToLst) > 0}">
                             <div class="select" id="recv_phone_to">
                                 <!-- selected value -->
                                 <div class="value hidden-drop" data="${fromToLst[0].list_val}">${fromToLst[0].list_val}</div>
                             </div>
-                            <input type="hidden" id="recv_phone" name="from_to" value="${fromToLst[0].list_val}"/>
+                            <input type="hidden" id="recv_phone"  name="from_to" value="${fromToLst[0].list_val}"/>
                         </c:if>
                     </div>
                     </div>
