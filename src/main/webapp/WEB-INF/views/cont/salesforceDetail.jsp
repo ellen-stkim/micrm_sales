@@ -155,6 +155,7 @@
                             <div class="select" id="recv_phone_to" name="edmDB">
                                 <!-- selected value -->
                                 <div class="value" data="${fromToLst[0].list_val}">${fromToLst[0].list_val}</div>
+                                <ul class="option mappingLst"></ul>
                             </div>
                             <input type="hidden" id="recv_phone"  name="from_to" value="${fromToLst[0].list_val}"/>
                         </c:if>
