@@ -255,7 +255,7 @@
                     <div id="sucTab" class="report-tab-contents disnone">
                         <c:set var="total" value="${totalResult}"/>
                         <div class="half-grid">
-                            <table class="report-tab-table blue">
+                            <table class="report-tab-table blue" style="display: inline-block">
                                 <tr>
                                     <th>발송성공</th>
                                     <td>
@@ -274,6 +274,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <div class="wait_txt"><span>발송 대기 : </span><span id="wait_cnt">0</span>명</div>
                             <div class="grid-space"></div>
                             <table class="report-tab-table max yellow">
                                 <tr>
@@ -939,12 +940,13 @@
         let html2 = '';
         let softTotal = 0;
         let hardTotal = 0;
+        let waitTotal = 0;
         for (let i = 0; i < data.length; i++) {
             let cd_val = data[i].cd_val === undefined || data[i].cd_val === ""|| data[i].cd_val === null  ? "알 수 없음" : data[i].cd_val;
             let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" || data[i].cd_desc === null ? "알 수 없음" : data[i].cd_desc;
             if (data[i].bounce_cate == 'U') {
                 data1.push(data[i].send_cnt);
-                softTotal += data[i].send_cnt;
+                softTotal += Number(data[i].send_cnt);
                 let color = colorPicker(1, [70, 70, 90], 50, 150);
 
                 bgColor1.push(color);
@@ -961,7 +963,7 @@
                     + '</li>';
             } else if (data[i].bounce_cate == 'S' || data[i].bounce_cate == null) {  //hard bounce  이거나 일치하는 코드값 없음
                 data2.push(data[i].send_cnt);
-                hardTotal += data[i].send_cnt;
+                hardTotal += Number(data[i].send_cnt);
                 let color = colorPicker(1, [70, 70, 90], 30, 150);
                 bgColor2.push(color);
                 column2.push(cd_val);
@@ -977,44 +979,6 @@
                     + '</li>';
             }
         }
-        /*for (let i = 0; i < data.length; i++) {
-            let cd_val = data[i].cd_val === undefined || data[i].cd_val === "" ? "알 수 없음" : data[i].cd_val;
-            let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" ? "알 수 없음" : data[i].cd_desc;
-            if (data[i].bounce_category == 'SOFT') {
-                data1.push(data[i].total_tg);
-                softTotal += data[i].total_tg;
-                let color = colorPicker(1, [70, 70, 90], 50, 150);
-
-                bgColor1.push(color);
-                column1.push(cd_val);
-                html1 += '<li>'
-                    + '<label class="icon"><div class="pointer" style="background-color: ' + color + ';"></div><div class="cd_val">' + cd_val + '</div></label>'
-                    + '<div class="info">'
-                    + '<span class="txt"  name="info-btn">?</span>'
-                    + '<div class="info-box">'
-                    + '<h6>' + cd_val + '</h6>'
-                    + '<p>' + cd_desc + '</p>'
-                    + '</div>'
-                    + '</div>'
-                    + '</li>';
-            } else if (data[i].bounce_category == 'HARD') {
-                data2.push(data[i].total_tg);
-                hardTotal += data[i].total_tg;
-                let color = colorPicker(1, [70, 70, 90], 30, 150);
-                bgColor2.push(color);
-                column2.push(cd_val);
-                html2 += '<li>'
-                    + '<label class="icon"><div class="pointer" style="background-color: ' + color + ';"></div><div class="cd_val">' + cd_val + '</div></label>'
-                    + '<div class="info">'
-                    + '<span class="txt" name="info-btn">?</span>'
-                    + '<div class="info-box">'
-                    + '<h6>' + cd_val + '</h6>'
-                    + '<p>' + cd_desc + '</p>'
-                    + '</div>'
-                    + '</div>'
-                    + '</li>';
-            }
-        }*/
         dataSet1.data = data1;
         dataSet1.backgroundColor = bgColor1;
         dataSet1.label = "DataSet 1";
@@ -1045,10 +1009,13 @@
         } else {
             $('#hardTotalPortion').html("0%");
         }
+        waitTotal = ${totalResult.total_cnt - totalResult.suc_cnt} - (softTotal + hardTotal);
         softTotal = "(" + common.comma(softTotal) + ")";
         $('#softTotalSpan').html(softTotal);
         hardTotal = "(" + common.comma(hardTotal) + ")";
         $('#hardTotalSpan').html(hardTotal);
+
+        $('#wait_cnt').html(common.comma(waitTotal));
     }
 
     $(document).on("mouseenter", "span[name='info-btn']", (e) => {
