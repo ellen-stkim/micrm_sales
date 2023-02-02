@@ -2559,9 +2559,7 @@ class SalesforceServiceImpl : SalesforceService {
         val response = client.retrieve(ETDataExtension::class.java, filter)
 
         val dataExtension = response.result.getObject()
-        val reList =  dataExtension.retrieveColumns()
-                                        .stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
-
+        val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
         val reMap = HashMap<String, Any>()
         reMap["list"] = reList
         reMap["totalCnt"] = dataExtension.select().totalCount
