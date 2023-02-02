@@ -16,6 +16,7 @@ class Program_SearchDto: Tblmicp_programDto() {
     var usr_nm : String? = null
     var usr_email : String? = null
     var start_dt : String? = null
+    var last_send_dt : String? = null
     var camp_nm : String? = null
     var camp_ch : String? = null
 

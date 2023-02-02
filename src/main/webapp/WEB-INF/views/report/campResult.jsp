@@ -31,6 +31,7 @@
                         <!-- selected value -->
                         <div class="value searchSelect" id="searchStandard" data="${searchType}">
                             <c:choose>
+                                <c:when test="${searchType == 'pro_st'}">상태</c:when>
                                 <c:when test="${searchType == 'pro_nm'}">프로그램명</c:when>
                                 <c:when test="${searchType == 'camp_nm'}">캠페인명</c:when>
                                 <c:when test="${searchType == 'camp_ch'}">캠페인채널</c:when>
@@ -41,6 +42,7 @@
                         <!-- option -->
                         <ul class="option">
                             <li data="">기준선택</li>
+                            <li data="pro_st">상태</li>
                             <li data="pro_nm">프로그램명</li>
                             <li data="camp_nm">캠페인명</li>
                             <li data="camp_ch">캠페인채널</li>
@@ -65,8 +67,25 @@
                             </div>
                         </c:if>
                     </span>
+                    <span name="st_area" class="left">
+                        <c:if test="${searchType == 'pro_st'}">
+                            <div class="select style1 left-border right-border" id="stOption" style="width: 326px;"><div
+                                    class="value searchSelect searchTarget" data="${searchValue}">
+                                  <c:choose>
+                                      <c:when test="${searchValue == '03'}">발송중</c:when>
+                                      <c:when test="${searchValue == '04'}">완료</c:when>
+                                      <c:otherwise>상태 선택</c:otherwise>
+                                  </c:choose>
+                            </div>
+                                <ul class="option">
+                                    <li data="03">발송중</li>
+                                    <li data="04">완료</li>
+                                </ul>
+                            </div>
+                        </c:if>
+                    </span>
                     <input type="text" class="searchInp left-border " id="searchValue" name="searchValue"
-                           style="${searchType != 'camp_ch' && param.pro_tg_tp != 'TG01' ? '' :'display:none'}"
+                           style="${(searchType != 'camp_ch' && param.pro_tg_tp != 'TG01') and searchType != 'pro_st' ? '' :'display:none'}"
                            placeholder="검색어입력" value="${searchValue}"
                            onkeypress="if(event.keyCode==13) {searchCampList(); return false; }"/>
                     <input type="hidden" name="searchType" id="searchType" value="${searchType}"/>
@@ -242,6 +261,7 @@
                                 <!-- option -->
                                 <ul class="option">
                                     <li data="">기준선택</li>
+                                    <li data="pro_st">상태</li>
                                     <li data="pro_nm">프로그램명</li>
                                     <li data="camp_nm">캠페인명</li>
                                     <li data="camp_ch">캠페인채널</li>
@@ -250,6 +270,7 @@
                             </div>
                             <div class="input_txt left-border-none" style="width: 325px;">
                                 <span id="ch_area" class="left"></span>
+                                <span name="st_area" class="left"></span>
                                 <input type="text" class="full" id="searchValue" name="searchValue"
                                        placeholder="검색어 입력"
                                        onkeypress="if(event.keyCode==13) {popupSearch(); return false; }"/>
@@ -387,7 +408,8 @@
         $(div).find('#searchValue').val("")
         if (thisData === "camp_ch") {
             $(div).find('#searchValue').hide();
-            $(div).find('.target_select').removeClass("target_select")
+            $(div).find('span[name="st_area"]').html('');
+            $(div).find('.target_select').removeClass("target_select");
             $(div).find('#ch_area').html(
                 '<div class="select style1 left-border right-border" id="chOption" style="width: 326px;">' +
                 '<div class="value searchSelect searchTarget" data="CH01">이메일</div>' +
@@ -398,10 +420,24 @@
                 '</ul>' +
                 '</div>'
             );
+        } else if (thisData === "pro_st") {
+            $(div).find('#searchValue').hide();
+            $(div).find('.target_select').removeClass("target_select")
+            $(div).find('#chOption').remove();
+            $(div).find('span[name="st_area"]').html(
+                '<div class="select style1 left-border right-border" id="stOption" style="width: 326px;">' +
+                '<div class="value searchSelect searchTarget" data="03">발송중</div>' +
+                '<ul class="option">' +
+                '<li data="03">발송중</li>' +
+                '<li data="04">완료</li>' +
+                '</ul>' +
+                '</div>'
+            );
         } else {
             $(div).find('#searchValue').show();
             $(div).find('#chOption').remove();
             $(div).find('.target_select').removeClass("target_select")
+            $(div).find('span[name="st_area"]').html('');
         }
     }
 
@@ -431,8 +467,9 @@
 
         if (standard === "target_nm") {
             $('input[name="pro_tg_tp"]').val($('.searchTarget').attr('data'));
-        }
-        if (standard === "camp_ch") {
+        } else if (standard === "camp_ch") {
+            $('#searchValue').val($('.searchTarget').attr('data'));
+        } else if (standard === "pro_st") {
             $('#searchValue').val($('.searchTarget').attr('data'));
         }
 
@@ -514,7 +551,8 @@
         }
         let standard = $('#popUp-searchStandard').attr('data');
 
-        if (standard === "camp_ch") {
+        if (standard === "camp_ch" || standard === "pro_st") {
+            console.log($('#camp-report-form .searchTarget').attr('data'))
             $('#camp-report-form #searchValue').val($('#camp-report-form .searchTarget').attr('data'));
         }
 
