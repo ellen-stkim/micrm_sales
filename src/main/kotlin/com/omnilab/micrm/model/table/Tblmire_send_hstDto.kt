@@ -17,6 +17,7 @@ open class Tblmire_send_hstDto {
     var m_server: String? = null
     var send_rst: String? = null
     var send_rst_det: String? = null
+    var last_send_dt: String? = null
     var usr_grp_cd: String? = null
     var reg_id: String? = null
     var reg_dt: String? = null
