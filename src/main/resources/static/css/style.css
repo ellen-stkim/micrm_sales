@@ -1826,6 +1826,7 @@ span.ellipsis {display:block; line-height:1.5;}
 #campDt table.report-tab-table th { position: relative; padding: 20px 40px; text-align: center; font-family: 'NanumBarunGothic'; font-size: 16px; font-weight: 600; color: #4f5f6f; }
 #campDt table.report-tab-table.max { width: calc(100% - 10px); }
 #campDt table.report-tab-table { position: relative; border-collapse: collapse;}
+#campDt .wait_txt {position: relative; display: inline-block; top: -6px; left: 8px; font-size: 13px; color: #93a2b0; font-weight: 500;}
 #campDt #sucTab table.report-tab-table div.chart-cover { position: relative; width: 70%; float: left;  padding: 20px 15px; }
 #campDt table.report-tab-table.blue th { border: 1px #6475de solid; background-color: #f6f7f9; }
 #campDt table.report-tab-table.blue td { border: 1px #6475de solid; }

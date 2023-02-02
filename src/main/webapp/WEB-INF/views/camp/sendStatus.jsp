@@ -319,7 +319,6 @@
         //발송타겟 검색 상세 옵션 select 체크 값 구분
         $(document).on('click','#stOption ul li',function(){
             let data = $(this).html();
-            console.log(data)
             $('#searchValue').val(data);
         });
 
