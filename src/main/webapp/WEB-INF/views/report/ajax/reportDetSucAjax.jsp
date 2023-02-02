@@ -322,13 +322,11 @@
 <!-- 도달 리포트 ------------------------------------------------------------------------- ajax -->
 <div id="sucTab" class="report-tab-contents">
     <div class="half-grid">
-        <table class="report-tab-table blue">
+        <table class="report-tab-table blue" style="display: inline-block">
             <tr>
                 <th>발송성공</th>
                 <td>
-										<span class="pointMid">
-											90%
-										</span>
+                    <span class="pointMid"> 90% </span>
                     <span class="text">(9,000)</span>
                 </td>
                 <%--<td>
@@ -347,6 +345,7 @@
                 </td>--%>
             </tr>
         </table>
+        <div class="wait_txt"><span>발송 대기 : </span><span id="wait_cnt">0</span>명</div>
         <div class="grid-space"></div>
         <table class="report-tab-table max yellow">
             <tr>
@@ -751,10 +750,11 @@
         var html2 = '';
         var softTotal = 0;
         var hardTotal = 0;
+        let waitTotal = 0;
         for (var i = 0; i < data.length; i++) {
             if (data[i].bounce_category == 'SOFT') {
                 data1.push(data[i].total_tg);
-                softTotal += data[i].total_tg;
+                softTotal += Number(data[i].total_tg);
                 var color = colorPicker(1, [70, 70, 90], 50, 150);
                 bgColor1.push(color);
                 column1.push(data[i].code_value);
@@ -770,7 +770,7 @@
                     + '</li>'
             } else if (data[i].bounce_category == 'HARD') {
                 data2.push(data[i].total_tg);
-                hardTotal += data[i].total_tg;
+                hardTotal += Number(data[i].total_tg);
                 var color = colorPicker(1, [70, 70, 90], 30, 150);
                 bgColor2.push(color);
                 column2.push(data[i].code_value);
@@ -816,10 +816,13 @@
         } else {
             $('#hardTotalPortion').html("0%");
         }
+        waitTotal = ${totalResult.total_cnt - totalResult.suc_cnt} - (softTotal + hardTotal);
         softTotal = "(" + setComma(softTotal) + ")";
         $('#softTotalSpan').html(softTotal)
         hardTotal = "(" + setComma(hardTotal) + ")";
-        $('#hardTotalSpan').html(hardTotal)
+        $('#hardTotalSpan').html(hardTotal);
+
+        $('#wait_cnt').html(common.comma(waitTotal));
     }
 
     /* 그래프 처리 모듬 ---------------------------------------------------------------- */
