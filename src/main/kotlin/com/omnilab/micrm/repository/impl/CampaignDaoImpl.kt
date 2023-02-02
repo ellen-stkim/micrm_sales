@@ -106,6 +106,7 @@ class CampaignDaoImpl : CampaignDao {
             sendHstDto.reg_id = dto.reg_id
             sendHstDto.camp_ch = campDto.camp_ch
             sendHstDto.send_mdm = contDto.send_tp
+            sendHstDto.usr_key = mstDto.usr_key
 
             val insLst = ArrayList<Tblmicp_send_hstDto>()
 

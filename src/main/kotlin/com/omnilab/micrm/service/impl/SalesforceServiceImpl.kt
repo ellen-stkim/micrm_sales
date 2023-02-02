@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
@@ -47,6 +48,7 @@ import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -352,6 +354,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
             tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
             tblmiContMstDto.team_cd = contentListCreatedto.team_cd
+            tblmiContMstDto.usr_key = contentListCreatedto.usr_key
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
@@ -885,7 +888,6 @@ class SalesforceServiceImpl : SalesforceService {
             return statusMap
         }
 
-        logger.error("{}",contentListCreatedto)
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
         tblmiContMstDto.ch_tp = "CH03"
         tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
@@ -900,6 +902,7 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
         tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
         tblmiContMstDto.team_cd = contentListCreatedto.team_cd
+        tblmiContMstDto.usr_key = contentListCreatedto.usr_key
 
         contentDao.updateMobileMst(tblmiContMstDto);
 
@@ -2089,9 +2092,9 @@ class SalesforceServiceImpl : SalesforceService {
             }
         }
     }
-    
+
     // 컨텐츠 등록 끝
-    
+
     /**
      * @Method Name  : isCheckMoblieContentNm
      * @Since    : 2021. 03. 07.
@@ -2244,61 +2247,77 @@ class SalesforceServiceImpl : SalesforceService {
                 if(result["result"] as Boolean){
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
-                    for(activity in activities){
+                    logger.error("------------------------------------activities--------------------------")
+                    logger.error("{}",result["result"])
+                    for(activity in activities) {
                         val type = activity["type"].toString()
-                        if(type == "REST"){
+                        if (type == "REST") {
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
                             val avo_id = activity["id"].toString()
-                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
+                            val seq =
+                                (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
+                                    .split(".")[0]
 
-                            val temp = Tblmi_cont_mstDto(seq.toInt())
-                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
+                            // 중복 등록 체크
+                            /*val cpTemp = Tblmicp_cont_mstDto()
+                            cpTemp.cont_seq = seq.toInt()
+                            cpTemp.inten_id = dto.inten_id
+                            cpTemp.orig_id = dto.orig_id
+                            cpTemp.inta_key = dto.inta_key
+                            val cpM: MutableList<Tblmicp_cont_mstDto> = salesforceDao.sel_tblmicp_cont_mst(cpTemp)
+                            if (cpM.size <= 0) {*/
 
-                            val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
-                            val cpMstDto = Tblmicp_cont_mstDto(contDto)
-                            cpMstDto.cont_seq = seq.toInt()
-                            cpMstDto.sales_nm = sales_nm
-                            cpMstDto.camp_nm = contDto.camp_nm
-                            cpMstDto.team_cd = contDto.team_cd
-                            cpMstDto.avo_nm = avo_nm
-                            cpMstDto.avo_id = avo_id
-                            cpMstDto.inten_id = dto.inten_id
-                            cpMstDto.orig_id = dto.orig_id
-                            cpMstDto.inta_key = dto.inta_key
-                            cpMstDto.inta_ve = dto.inta_ve
-                            cpMstDto.pub_yn = dto.pub_yn
-                            salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+                                val temp = Tblmi_cont_mstDto(seq.toInt())
+                                val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
 
-                            //기존 데이터가 있을 경우 삭제
-                            salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
-                            salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
+                                val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
+                                val cpMstDto = Tblmicp_cont_mstDto(contDto)
+                                cpMstDto.cont_seq = seq.toInt()
+                                cpMstDto.sales_nm = sales_nm
+                                cpMstDto.camp_nm = contDto.camp_nm
+                                cpMstDto.team_cd = contDto.team_cd
+                                cpMstDto.usr_key = contDto.usr_key
+                                cpMstDto.avo_nm = avo_nm
+                                cpMstDto.avo_id = avo_id
+                                cpMstDto.inten_id = dto.inten_id
+                                cpMstDto.orig_id = dto.orig_id
+                                cpMstDto.inta_key = dto.inta_key
+                                cpMstDto.inta_ve = dto.inta_ve
+                                cpMstDto.pub_yn = dto.pub_yn
+                                salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+                                logger.error("{}", cpMstDto)
 
-                            //신규 데이터 삽입
-                            val contListDto = Tblmi_cont_lstDto()
-                            contListDto.cont_cd = seq.toInt()
-                            contListDto.reg_id = usrId
-                            contListDto.upd_id = usrId
-                            contListDto.use_yn = "Y"
-                            val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+                                //기존 데이터가 있을 경우 삭제
+                                salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
+                                salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
 
-                            for(i in contLst){
-                                val oriSeq = i.seq.toString()
+                                //신규 데이터 삽입
+                                val contListDto = Tblmi_cont_lstDto()
+                                contListDto.cont_cd = seq.toInt()
+                                contListDto.reg_id = usrId
+                                contListDto.upd_id = usrId
+                                contListDto.use_yn = "Y"
+                                val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
 
-                                // 리스트 삽입
-                                val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
-                                tblmicp_cont_lstDto.seq = null
-                                tblmicp_cont_lstDto.cont_cd = cpMstDto.seq
-                                tblmicp_cont_lstDto.reg_id = usrId
-                                tblmicp_cont_lstDto.upd_id = usrId
-                                salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
+                                for (i in contLst) {
+                                    val oriSeq = i.seq.toString()
 
-                                //신규 url 리스트 삽입
-                                val map = HashMap<String, Any>()
-                                map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
-                                map["list_seq"] = oriSeq
-                                salesforceDao.ins_tblmicp_cont_url_lst(map)
-                            }
+                                    // 리스트 삽입
+                                    val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
+                                    tblmicp_cont_lstDto.seq = null
+                                    tblmicp_cont_lstDto.cont_cd = cpMstDto.seq
+                                    tblmicp_cont_lstDto.reg_id = usrId
+                                    tblmicp_cont_lstDto.upd_id = usrId
+                                    salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
+
+                                    //신규 url 리스트 삽입
+                                    val map = HashMap<String, Any>()
+                                    map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
+                                    map["list_seq"] = oriSeq
+                                    salesforceDao.ins_tblmicp_cont_url_lst(map)
+                                }
+//                            }
                         }
                     }
                     return true
@@ -2381,6 +2400,7 @@ class SalesforceServiceImpl : SalesforceService {
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
+
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
@@ -2407,19 +2427,26 @@ class SalesforceServiceImpl : SalesforceService {
                 return false
             }else{
                 for(campaignDto in campLst){
+                    campaignDto.start_dt = CommonUtils.getDateTimeNow()
 
                     // 타겟수 업데이트
-                    if((campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0)
-                                && !CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+                    if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
 
-                        val targetCnt:Int = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
-                        salesforceDao.upd_tblmicp_campaign(Tblmicp_campaignDto(campaignDto.seq,campaignDto.pro_id,targetCnt,campaignDto.reg_id))
+                        var targetCnt: Int? = null
+                        if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+                            targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
+                            inArguments.remove("§extention_cnt§")
+                        }
+                        campaignDto.tar_cnt = targetCnt
+
+                        campaignDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
+                        salesforceDao.upd_tblmicp_campaign(campaignDto)
+
                         // 프로그램 total target cnt 수정
                         val program = Tblmicp_programDto(campaignDto.pro_id)
                         program.pro_id = campaignDto.pro_id
                         salesforceDao.upd_tblmicp_program_total_cnt(program)
                     }
-                    inArguments.remove("§extention_cnt§")
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
@@ -2433,6 +2460,7 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
+                    sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
@@ -2478,7 +2506,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                                 inArguments["SEND_TO"] = send_to.toString()
-                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
                             }
                         }
                         // 카카오 알림톡
@@ -2560,12 +2588,60 @@ class SalesforceServiceImpl : SalesforceService {
 
         val dataExtension = response.result.getObject()
         val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
+
+        var totalCnt = 0
+        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
+        try {
+            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
+            if (!CommonUtils.isEmptyObject(data)) {
+                totalCnt = data!!["rowCount"].toString().toInt()
+            }else{
+                totalCnt = dataExtension.select().totalCount
+            }
+        }catch (e:Exception){
+            logger.error("{}",e)
+            totalCnt = dataExtension.select().totalCount
+        }
+
         val reMap = HashMap<String, Any>()
         reMap["list"] = reList
-        reMap["totalCnt"] = dataExtension.select().totalCount
+        reMap["totalCnt"] = totalCnt
 
         return reMap
     }
+
+    @Throws
+    private fun getTotalcnt(usr_cd: String, key : String): MutableMap<String, Any>? {
+        val tempComm = Tblmi_comm_cdDto("SALES_TOTAL",usr_cd)
+        tempComm.use_yn ="Y"
+        val commCd  = systemDao.getCommCDList(tempComm)
+        if(CommonUtils.isEmptyObject(commCd)){
+            return null
+        }
+
+        val totalCntUrl  = commCd[0].cd_val
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        val urlString = "$totalCntUrl?key=$key"
+
+        val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+        if (result.statusCodeValue != HttpStatus.SC_OK) {
+            return null
+        }
+
+        logger.error("+----------------------------------------------------")
+        logger.error("{}",result.body)
+        logger.error("{}",urlString)
+        if(CommonUtils.isEmptyObject(result.body)){
+            logger.error("getTotalCnt url : {}",urlString)
+        }
+        val body = result.body!!
+        return GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+    }
+
 
     /**
      * @Method Name  : isCheckSender

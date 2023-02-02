@@ -348,8 +348,9 @@
 
 	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
 		SELECT camp.* , comm.cd_desc AS team_nm
+		,cont.avo_nm as avo_nm
 		FROM tblmicp_campaign AS camp
-			LEFT JOIN tblmicp_cont_mst AS cont ON cont.cont_seq = camp.CONT_ID
+			LEFT JOIN tblmicp_cont_mst AS cont ON cont.seq = camp.CONT_ID
 			LEFT JOIN tblmi_comm_cd AS comm
 				ON comm.grp_id = 'GRP_TEAM'
 				    AND cd_id = 'TEAM01'
@@ -626,19 +627,19 @@
 
 	<insert id="ins_programSendHstOne" parameterType="Tblmicp_send_hstDto" useGeneratedKeys="true" keyProperty="seq">
 		insert into tblmicp_send_hst (
-	    	pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch
+	    	pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch
 	    )
 		values (
-			#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch}
+			#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{usr_key}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch}
 		)
 	</insert>
 
 	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto" >
 		insert into tblmicp_send_hst
-		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
+		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
 		values
 		<foreach collection="list" item="list" separator=" , " >
-			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch})
+			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{usr_key}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch})
 		</foreach>
 	</insert>
 
@@ -747,50 +748,52 @@
 	</update>
 
 	<select id="getProgramList" parameterType="Program_SearchDto" resultType="Program_SearchDto">
-		SELECT  a.pro_id
-		, b.cd_nm as pro_st_nm
-		, a.pro_st
-		, a.pro_tp as pro_tp
-		,a.pro_tg_tp
-		, a.PRO_nm
-		, a.min_start_dt as start_dt
-		, a.tar_cnt
-		, a.send_cnt
-		, a.reg_id
-		, a.pro_tg_tp
-		, e.cd_nm AS pro_tg_tp_nm
-		, a.pro_tg_id
-		FROM tblmicp_program AS a
-		INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
-		INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
+		SELECT  prg.pro_id
+			, comm_co.cd_nm as pro_st_nm
+			, prg.pro_st
+			, prg.pro_tp as pro_tp
+			, prg.pro_tg_tp
+			, prg.PRO_nm
+			, prg.min_start_dt as start_dt
+		    , Max(hst.LAST_SEND_DT) as last_send_dt
+			, prg.tar_cnt
+			, prg.send_cnt
+			, prg.reg_id
+			, prg.pro_tg_tp
+			, comm_tg.cd_nm AS pro_tg_tp_nm
+			, prg.pro_tg_id
+		FROM tblmicp_program AS prg
+			LEFT JOIN tblmire_send_hst AS hst ON prg.pro_id = hst.pro_id
+			INNER JOIN tblmi_comm_cd AS comm_co ON comm_co.grp_id = 'COMST' and prg.PRO_ST = comm_co.CD_ID
+			INNER JOIN tblmi_comm_cd AS comm_tg ON comm_tg.grp_id = 'TGTP' and prg.PRO_TG_TP = comm_tg.cd_id
 		<where>
-			a.usr_grp_cd = #{usr_grp_cd}
-			and a.del_yn = 'N'
+			prg.usr_grp_cd = #{usr_grp_cd}
+			and prg.del_yn = 'N'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
-				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+				and prg.pro_nm like CONCAT('%',  #{pro_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_nm)">
-				and b.cd_nm like CONCAT('%',  #{cd_nm},'%')
+				and comm_co.cd_nm like CONCAT('%',  #{cd_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
-				and a.pro_tg_tp = #{pro_tg_tp}
+				and prg.pro_tg_tp = #{pro_tg_tp}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
-				and a.pro_tp = #{pro_tp}
+				and prg.pro_tp = #{pro_tp}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
-				and a.pro_st = #{pro_st}
+				and prg.pro_st = #{pro_st}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
-				and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+				and prg.min_start_dt <![CDATA[ >= #{st_dt} ]]>
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
-				and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+				and prg.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
 			</if>
 		</where>
-		group by pro_id
-		order by  FIELD(a.pro_st, '98') DESC
-		, a.min_start_dt desc
+		group by prg.pro_id
+		order by  FIELD(prg.pro_st, '98') DESC
+		, prg.min_start_dt desc
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
 			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
 		</if>

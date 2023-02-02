@@ -85,10 +85,6 @@
                             <td><span id="usrAuth">${list[0].cd_nm}</span></td>
                         </tr>
                         <tr>
-                            <th>승인 담당자</th>
-                            <td><span class="en_font" id="usrApprEmail">${list[0].appr_email}</span></td>
-                        </tr>
-                        <tr>
                             <th>비밀번호</th>
                             <td><span>비밀번호는 수정 시 변경 가능합니다.</span></td>
                         </tr>
@@ -173,23 +169,6 @@
                         </td>
                     </tr>
                     </sec:authorize>
-                    <tr>
-                        <th>승인 담당자</th>
-                        <td class="pd_none" id="managerList">
-                            <!-- select 영역 시작 -->
-                            <div class="select fix">
-                                <!-- selected value -->
-                                <div class="value" id="manager" data="${list[0].appr_id}">${list[0].appr_email}</div>
-                                <!-- option -->
-                                <ul class="option">
-                                    <c:forEach var="n" items="${uslist}" varStatus="status">
-                                        <li data="${n.usr_id}">${n.usr_email}</li>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                            <!-- select 영역 끝 -->
-                        </td>
-                    </tr>
                     <tr>
                         <th>새 비밀번호</th>
                         <td>
@@ -288,8 +267,6 @@
         let authorityNm = $('#authority').html();
         $("#usr_st").val(authority);
         //let regPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$/;
-        let manager = document.getElementById('manager').getAttribute('data');
-        let managerEmail = $('#manager').html();
         let password = document.getElementById('password').value;
         let comfirm = document.getElementById('comfirmPsw').value;
         let regPhone = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
@@ -324,10 +301,6 @@
             error2.innerHTML = '권한을 선택해주세요.';
             return false;
         }
-        if (manager == '') {
-           error2.innerHTML = '승인 담당자를 선택해주세요.';
-           return false;
-        }
         if(password != ''){
            /* if (!regPwd.test(password)) {
                 error2.innerHTML = '8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.';
@@ -349,7 +322,6 @@
                 $('#usrEmail').html(email);
                 $('#usrPhone').html(phone);
                 $('#usrAuth').html(authorityNm);
-                $('#usrApprEmail').html(managerEmail);
                 popup.popAlert(response.message);
                 popupClose(el);
             }else{
@@ -358,7 +330,6 @@
             }
         };
         var param = $("#saveUserForm").serializeArray();
-        param.push({name: 'appr_id', value: manager});
         param.push({name: 'role_cd', value: authority});
         com_ajax.ajax('post', '${baseURL}/sys/user/saveUser.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }

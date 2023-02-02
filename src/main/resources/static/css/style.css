@@ -421,12 +421,15 @@
 .create_sms .head .th {float:left; width:120px; height:35px; line-height:35px;
     padding:0 20px; border-right:1px solid #dddddd; background:#fafafa;}
 /*.create_sms .head .td {float:left; width:calc(50% - 154px); height:100%;}*/
-.create_sms .head .td {float:left; width:calc(20% - 145px); height:100%;}
+.create_sms .head .td {float:left; width:calc(50% - 145px); height:100%;}
 .create_sms .head .td:last-child {float:left; width:calc(50% - 210px); height:100%;}
 .create_sms .head .td .txt_input {width:100%; padding:0 20px; font-size:11px;
     line-height:35px; height:35px;}
+.create_sms .head .left_flex{ display: flex;}
+.create_sms .head .left_flex .td{flex: 1 0 30px;}
+
 .flex_row {display:flex; flex-direction:row;}
-.flex_row .sms_option {flex: 2 0 30px;}
+.flex_row .sms_option {    flex: 2 0 241px;}
 .flex_row .area1 {flex:1 0 225px;}
 .flex_row .area2 {flex:1 0 65px;}
 .flex_row .area3 {flex:0 0 175px;}
@@ -1227,10 +1230,10 @@ span.ellipsis {display:block; line-height:1.5;}
     background:rgba(255,255,255,0.9); position:absolute; z-index:10;}
 .status_wrap .article .area dl {width:calc(100% - 40px); min-height:110px; border:1px solid #dddddd;
     background:#FFFFFF; margin-bottom:10px;}
-.status_wrap .article .area dl dt {width:100%; height:35px;}
-.status_wrap .article .area dl dt .number {float:left; width:35px; height:35px; line-height:35px;
+.status_wrap .article .area dl dt {width:100%; height:50px;}
+.status_wrap .article .area dl dt .number {float:left; width:50px; height:50px; line-height:50px;
     background:#618cd3; text-align:center; color:#FFFFFF; font-size:13px;}
-.status_wrap .article .area dl dt .info_row {float:left; padding:0 20px; width:calc(100% - 35px); line-height:35px;}
+.status_wrap .article .area dl dt .info_row {float:left; padding:0 20px; width:calc(100% - 50px); line-height:25px;}
 .status_wrap .article .area dl dt .info_row h3 {float:left; font-size:13px; font-weight:700; margin-right:5px;
     max-width:calc(100% - 125px);}
 .status_wrap .article .area dl dt .info_row span {float:left;}
@@ -1258,6 +1261,7 @@ span.ellipsis {display:block; line-height:1.5;}
 .bottom_notice .close {position:absolute; right:20px; top:50%; width:12px; height:12px; cursor: pointer;
     margin-top:-6px; text-indent:-9999px; overflow:hidden; background:url('../image/btn_close2.png') no-repeat;}
 .bottom_notice .btn_bg {width:auto; padding:0 15px; margin-top:19px;}
+.half-ellipsis{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 50%;}
 
 #sendTable.dynamic_tbl tbody tr td:first-child,
 #sendTable.dynamic_tbl tbody tr td:nth-child(2),

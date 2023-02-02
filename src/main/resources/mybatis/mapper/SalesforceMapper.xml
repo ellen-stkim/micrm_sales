@@ -169,6 +169,7 @@
             , cont_nm
             , camp_nm
             , team_cd
+            , usr_key
             , sales_nm
             , avo_nm
             , avo_id
@@ -187,6 +188,7 @@
             , #{cont_nm}
             , #{camp_nm}
             , #{team_cd}
+            , #{usr_key}
             , #{sales_nm}
             , #{avo_nm}
             , #{avo_id}
@@ -383,6 +385,9 @@
         </if>
         <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tar_cnt)">
             , tar_cnt = #{tar_cnt}
+        </if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+            , start_dt = #{start_dt}
         </if>
         <where>
             pro_id = #{pro_id}
