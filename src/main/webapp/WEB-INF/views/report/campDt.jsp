@@ -396,6 +396,7 @@
                                 <!-- option -->
                                 <ul class="option">
                                     <li data="">기준선택</li>
+                                    <li data="pro_st">상태</li>
                                     <li data="pro_nm">프로그램명</li>
                                     <li data="camp_nm">캠페인명</li>
                                     <li data="camp_ch">캠페인채널</li>
@@ -405,6 +406,7 @@
                             <div class="input_txt left-border-none" style="width: 325px;">
                                 <span id="target_area" class="left"></span>
                                 <span id="ch_area" class="left"></span>
+                                <span name="st_area" class="left"></span>
                                 <input type="text" class="full" id="searchValue" name="searchValue"
                                        placeholder="검색어 입력" onkeypress="if(event.keyCode==13) {popupSearch(); return false; }"/>
                             </div>
@@ -1103,6 +1105,7 @@
         $(div).find('#searchValue').val("")
         if (thisData === "camp_ch") {
             $(div).find('#searchValue').hide();
+            $(div).find('span[name="st_area"]').html('');
             $(div).find('#target_area').empty();
             $(div).find('.target_select').removeClass("target_select")
             $(div).find('#ch_area').html(
@@ -1115,10 +1118,24 @@
                 '</ul>' +
                 '</div>'
             );
-        } else {
+        } else if (thisData === "pro_st") {
+            $(div).find('#searchValue').hide();
+            $(div).find('.target_select').removeClass("target_select")
+            $(div).find('#chOption').remove();
+            $(div).find('span[name="st_area"]').html(
+                '<div class="select style1 left-border right-border" id="stOption" style="width: 326px;">' +
+                '<div class="value searchSelect searchTarget" data="03">발송중</div>' +
+                '<ul class="option">' +
+                '<li data="03">발송중</li>' +
+                '<li data="04">완료</li>' +
+                '</ul>' +
+                '</div>'
+            );
+        }  else {
             $(div).find('#searchValue').show();
             $(div).find('#chOption').remove();
             $(div).find('.target_select').removeClass("target_select")
+            $(div).find('span[name="st_area"]').html('');
         }
     }
 
@@ -1178,7 +1195,6 @@
     });
 
     function popupSearch() {
-
         let searchType = $("#popUp-searchStandard").attr("data")
         let searchValue = $("#searchValue").val().trim();
 
@@ -1187,7 +1203,7 @@
             return
         }
         let standard = $('#popUp-searchStandard').attr('data');
-        if (standard === "camp_ch") {
+        if (standard === "camp_ch" || standard === "pro_st") {
             $('#camp-report-form #searchValue').val($('.searchTarget').attr('data'));
         }
 

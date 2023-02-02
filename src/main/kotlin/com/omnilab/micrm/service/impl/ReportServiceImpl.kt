@@ -88,6 +88,7 @@ class ReportServiceImpl : ReportService {
             "pro_nm" -> dto.pro_nm = dto.searchValue
             "camp_nm" -> dto.camp_nm = dto.searchValue
             "camp_ch" -> dto.camp_ch = dto.searchValue
+            "pro_st" -> dto.pro_st = dto.searchValue
         }
 
         val paginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 5)

@@ -17,8 +17,11 @@
                     ON e.grp_id = 'TGTP' and b.PRO_TG_TP = e.cd_id
             <where>
                 a.usr_grp_cd = #{usr_grp_cd}
-                AND b.pro_st = '04'
+                -- AND b.pro_st = '04'
                 AND b.pro_tg_tp NOT LIKE 'TEST%'
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+                    AND b.pro_st = #{pro_st}
+                </if>
                 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
                     and b.pro_nm like CONCAT('%', #{pro_nm},'%')
                 </if>
@@ -48,7 +51,7 @@
                 , a.camp_nm as camp_nm
                 , b.PRO_ST AS pro_st
                 , b.min_start_dt AS start_dt
-                ,a.cont_id AS cont_id
+                , a.cont_id AS cont_id
                 , c.cd_nm AS pro_st_nm
                 , a.CAMP_CH AS camp_ch -- 채널
                 , a.TOTAL_CNT AS total_cnt
@@ -64,8 +67,11 @@
                     ON e.grp_id = 'TGTP' and b.PRO_TG_TP = e.cd_id
             <where>
                 a.usr_grp_cd = #{usr_grp_cd}
-                AND b.pro_st = '04'
+                -- AND b.pro_st = '04'
                 AND b.pro_tg_tp NOT LIKE 'TEST%'
+                <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+                    AND b.pro_st = #{pro_st}
+                </if>
                 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
                     and b.pro_nm like CONCAT('%', #{pro_nm},'%')
                 </if>
