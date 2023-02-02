@@ -101,7 +101,8 @@
                                     <th>상태</th>
                                     <th>구분</th>
                                     <th>캠페인 명</th>
-                                    <th>발송일시</th>
+                                    <th>시작 일시</th>
+                                    <th>최근 발송 일시</th>
                                     <th>타겟 수</th>
                                     <th>실 발송 수<br>
                                     <p style="font-size: 5px;padding: 2px 0">※발송 1일 이후 집계</p></th>
@@ -124,6 +125,7 @@
                                             <td>${item.pro_tg_tp_nm}</td>
                                             <td><span class="ellipsis">${item.pro_nm}</span></td>
                                             <td class="en_font">${item.start_dt}</td>
+                                            <td class="en_font">${item.last_send_dt}</td>
                                             <td><span class="en_font"><fmt:formatNumber value="${item.tar_cnt}" pattern="#,###" />명</span></td>
                                             <td><span tooltip="발송일 기준 1일 이후 집계" class="en_font"><fmt:formatNumber value="${item.send_cnt}" pattern="#,###" />명</span></td>
                                             <td>
@@ -157,8 +159,10 @@
                             <thead>
                             <tr>
                                 <th>상태</th>
+                                <th>구분</th>
                                 <th>캠페인 명</th>
-                                <th>발송일시</th>
+                                <th>시작 일시</th>
+                                <th>최근 발송 일시</th>
                                 <th>발송 타겟</th>
                                 <th>타겟 수</th>
                                 <th>실 발송 수</th>
