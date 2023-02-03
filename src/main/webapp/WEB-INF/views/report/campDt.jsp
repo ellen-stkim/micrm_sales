@@ -301,21 +301,9 @@
                                 <tr>
                                     <th>발송실패</th>
                                     <td>
-											<span class="pointMid yellow">
-												<c:choose>
-                                                    <c:when test="${total.total_cnt eq '' }">0%</c:when>
-                                                    <c:otherwise>
-                                                        <fmt:formatNumber
-                                                                value="${1 - total.suc_cnt / total.total_cnt }"
-                                                                pattern="#,##0%"></fmt:formatNumber>
-                                                    </c:otherwise>
-                                                </c:choose>
+											<span class="pointMid yellow" id="totalFailPct">
 											</span>
-                                        (<c:choose><c:when
-                                            test="${total.total_cnt eq '' }">0</c:when><c:otherwise><span
-                                            class="text"><fmt:formatNumber
-                                            value="${total.total_cnt - total.suc_cnt }"
-                                            pattern="#,##0"></fmt:formatNumber></span></c:otherwise></c:choose>)
+                                        (<span class="text" id="totalFailCnt"></span>)
                                     </td>
                                 </tr>
                             </table>
@@ -1009,21 +997,33 @@
         } else {
             $('#hardTotalPortion').html("0%");
         }
-        waitTotal = ${totalResult.total_cnt - totalResult.suc_cnt} - (softTotal + hardTotal);
+
+        let totalCnt = ${empty totalResult.total_cnt ? 0 : totalResult.total_cnt};
+        let sucCnt = ${empty totalResult.suc_cnt ? 0 : totalResult.suc_cnt};
+
+        waitTotal = totalCnt - sucCnt - (softTotal + hardTotal);
         softTotal = "(" + common.comma(softTotal) + ")";
         $('#softTotalSpan').html(softTotal);
         hardTotal = "(" + common.comma(hardTotal) + ")";
         $('#hardTotalSpan').html(hardTotal);
+
+
+        let totalFailPer = 1 - (sucCnt + waitTotal) / totalCnt;
+        $('#totalFailPct').html(totalFailPer.toFixed(2)+'%');
+
+        let totalFailCnt = common.comma(totalCnt - sucCnt - waitTotal);
+        $('#totalFailCnt').html(totalFailCnt);
 
         $('#wait_cnt').html(common.comma(waitTotal));
     }
 
     $(document).on("mouseenter", "span[name='info-btn']", (e) => {
         $(e.target).siblings('.info-box').show();
-    })
+    });
+
     $(document).on("mouseleave", "span[name='info-btn']", (e) => {
         $(e.target).siblings('.info-box').hide();
-    })
+    });
 
     //click  컨텐츠 분석 테이블 도움말
     $(document).on("mouseenter", "span[name=click-help]", (e) => {

@@ -159,8 +159,8 @@
                     ON c.grp_id = 'COMST' and b.PRO_ST = c.CD_ID
                 LEFT JOIN tblmicp_cont_lst AS lst
                     ON a.cont_id = lst.cont_cd
-            WHERE b.pro_st = '04'
-                AND a.usr_grp_cd =#{usr_grp_cd}
+            WHERE -- b.pro_st = '04' AND
+                a.usr_grp_cd =#{usr_grp_cd}
                 AND a.seq IN
                     <foreach item="item" index="index" collection="list"
                              open="(" separator="," close=")">
