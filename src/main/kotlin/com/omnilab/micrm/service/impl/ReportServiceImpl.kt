@@ -58,12 +58,10 @@ class ReportServiceImpl : ReportService {
 
 
     override fun getCampMstTotalDetail(contSeqs: Array<String>): kotlin.collections.MutableMap<String, Any> {
-
         val map = HashMap<String, Any>()
-
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
-
         val temp = HashMap<String, Any>()
+
         userInfo.usr_grp_cd?.let { temp.put("usr_grp_cd", it) }
         contSeqs?.let { temp.put("list", it) }
 
