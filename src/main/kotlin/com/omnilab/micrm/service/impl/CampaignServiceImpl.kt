@@ -281,7 +281,6 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     }
 
 
-
     override fun getProgramInfo(pro_id: String, usr_grp_cd: String, check: Boolean): MutableMap<String, Any> {
         val map = HashMap<String, Any>()
         val searchDto = Tblmicp_programDto(pro_id)
@@ -311,14 +310,17 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             }
             map["contDto"] = contMap
 
-            if (programDto.pro_st == "03") {
-                map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
-            }
-            if (programDto.pro_st == "04") {
-                map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
-                map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
-                map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)
-            }
+            map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+            map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+            map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
+            map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)
+
+            val cdDto = Tblmi_comm_cdDto()
+            cdDto.cd_id = usr_grp_cd
+            cdDto.grp_id = "API_PRICE"
+            val priceLst = sysSettingDao.getCommCDLst(cdDto)
+
+            map["priceLst"] = priceLst
         }
         return map
     }

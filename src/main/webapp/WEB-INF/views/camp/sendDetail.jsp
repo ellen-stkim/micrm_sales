@@ -22,59 +22,15 @@
                     <li>발송 현황</li>
                     <li>${dto.pro_nm}</li>
                 </ul>
-                <!-- tooltip 버튼 영역  -->
-<%--                <div class="tooltip_icon">--%>
-<%--                    <img src="/image/ico_tooltip.png" alt="Tooltip" />--%>
-<%--                </div>--%>
-                <!-- tooltip box 영역 시작 -->
-<%--                <div class="tooltip_box">--%>
-<%--                    <!-- tooltip bullet 영역 -->--%>
-<%--                    <div class="bullet"></div>--%>
-<%--                    <span class="bold">2019년 12월 신규 취급액은 91.6억 중,<br />--%>
-<%--                                나오론이 52.4억(57.2%)으로 가장 많은 비중을--%>
-<%--                                차지합니다.</span>--%>
-<%--                    스타일론 직장인이 26.69억(29.1%), <br />--%>
-<%--                    스타일론 자영업자가 4.1억(4.47%)입니다.<br />--%>
-<%--                </div>--%>
-                <!-- tooltip box 영역 끝 -->
             </div>
         </div>
         <!-- row 영역 끝 -->
         <!-- row 영역 시작 -->
         <div class="row bottom-border cf">
             <div class="left">
-                <c:if test="${dto.pro_st eq '98'}">
-                    <a href="#" class="btn_basic delete left right-border" onclick="campDel('${dto.pro_id}');"> 캠페인 삭제</a>
-                    <a href="/camp/sendSetting.mi?pid=${dto.pro_id}" class="btn_basic ico_remove left right-border"> 캠페인 수정</a>
-                </c:if>
-                <c:if test="${dto.pro_st eq '00'}">
-                    <a href="#" class="btn_basic ico_remove left right-border" onclick="chagneCamp('${dto.pro_id}')"> 캠페인 변경</a>
-                    <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                    <c:if test="${user.usr_id eq dto.appr_id}">
-                        <a href="#" class="btn_basic ico_apply left right-border" onclick="approved('${dto.pro_id}');"> 승인</a>
-                        <a href="#" class="btn_basic ico_cancle left right-border" onclick="failPopup();"> 승인반려</a>
-                    </c:if>
-                </c:if>
-                <c:if test="${dto.pro_st eq '01'}">
-                    <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                    <a href="#" class="btn_basic ico_cancle left right-border" onclick="campCancel('${dto.pro_id}')"> 승인취소</a>
-                </c:if>
-                <c:if test="${dto.pro_st eq '02'}">
-                    <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                </c:if>
-                <c:if test="${dto.pro_st eq '03'}">
-                    <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                    <a href="#" class="btn_basic ico_cancle left right-border" onclick="campCancel('${dto.pro_id}')"> 발송취소</a>
-                    <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 발송리스트 다운로드</a>
-                </c:if>
-                <c:if test="${dto.pro_st eq '04'}">
-                    <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                    <a href="#" class="btn_basic ico_result left right-border" onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
-                    <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 결과 다운로드</a>
-                </c:if>
-                <c:if test="${dto.pro_st eq '99'}">
-                    <a href="#" class="btn_basic ico_term left right-border" onclick="detailPopup();"> 조건보기</a>
-                </c:if>
+                <a href="#" class="btn_basic ico_result left right-border"
+                   onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
+                <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 결과 다운로드</a>
             </div>
         </div>
         <!-- row 영역 끝 -->
@@ -89,119 +45,91 @@
         <!-- section 영역 시작 -->
         <div class="section">
             <div class="status_wrap">
-                <div class="article <c:if test="${dto.pro_st eq '98' or dto.pro_st eq '00'}">active</c:if>">
-                    <div class="top">
-                        <span <c:if test="${dto.pro_st eq '98'}">class="on"</c:if>>임시저장</span>
-                        <span class="slash">/</span>
-                        <span <c:if test="${dto.pro_st eq '00'}">class="on"</c:if>>승인대기</span>
-                    </div>
-                    <div class="area">
-                    <c:if test="${dto.pro_st eq '98' or dto.pro_st eq '00'}">
-                        <c:forEach var="g" items="${campLst}" varStatus="st">
-                        <dl>
-                            <dt class="bottom-border">
-                                <span class="number en_font">${st.count}</span>
-                                <div class="info_row">
-                                    <h3 class="ellipsis">${g.camp_nm}</h3>
-                                    <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span><br>
-                                    <c:if test="${!empty g.avo_nm}">
-                                        <span class="half-ellipsis">(${g.avo_nm})</span>
-                                        <span class="bar">|</span>
-                                    </c:if>
-                                    <div class="icon">
-                                        <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
-                                        <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
-                                    </div>
-                                    <c:if test="${!empty g.team_nm}">
-                                        <span>팀 명 : ${g.team_nm}</span>
-                                    </c:if>
-                                </div>
-                            </dt>
-                            <dd>
-                                <div class="text">
-                                <c:choose>
-                                    <c:when test="${g.sto eq '02'}">시간 최적화</c:when>
-                                    <c:when test="${g.sto eq '03'}">요일 최적화</c:when>
-                                    <c:otherwise>일괄 발송
-                                    </c:otherwise>
-                                </c:choose>
-                                </div>
-                                <div class="date en_font">${cutil:stringDatetimeParse(g.start_dt)}</div>
-                            </dd>
-                        </dl>
-                        </c:forEach>
-                    </c:if>
-                    </div>
-                </div>
-
-                <div class="article <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '02' or dto.pro_st eq '03'}">active</c:if>">
+                <div class="article active">
                     <div class="top">
                         <span <c:if test="${dto.pro_st eq '01'}">class="on"</c:if>>발송대기</span>
                         <span class="slash">/</span>
-                        <span <c:if test="${dto.pro_st eq '02'}">class="on"</c:if>>타겟추출</span>
-                        <span class="slash">/</span>
                         <span <c:if test="${dto.pro_st eq '03'}">class="on"</c:if>>발송중</span>
+                        <span class="slash">/</span>
+                        <span <c:if test="${dto.pro_st eq '04'}">class="on"</c:if>>발송완료</span>
+                        <span class="slash">/</span>
+                        <span <c:if test="${dto.pro_st eq '99'}">class="fail on"</c:if>>발송실패</span>
                     </div>
                     <div class="area">
                         <!-- 리스트 1단위 영역 시작 -->
-                        <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '02' or dto.pro_st eq '03'}">
-                            <c:forEach var="g" items="${campLst}" varStatus="st">
-                                <c:set var="camp_id">${g.seq}</c:set>
-                                <c:set var="startDt">${g.start_dt}</c:set>
-                                <c:set var="tar_cnt">${!empty g.tar_cnt ? g.tar_cnt :'0' }</c:set>
-                                <dl>
-                                    <dt class="bottom-border">
-                                        <span class="number en_font">${st.count}</span>
-                                        <div class="info_row">
-                                            <h3 class="ellipsis">${g.camp_nm}</h3>
-                                            <span class="en_font">(<fmt:formatNumber value="${dto.pro_st eq '03' ? tar_cnt : g.send_cnt}" pattern="#,###" />명)</span><br>
-                                            <c:if test="${!empty g.avo_nm}">
-                                                <span class="half-ellipsis">(${g.avo_nm})</span>
-                                                <span class="bar">|</span>
-                                            </c:if>
-                                            <div class="icon">
-                                                <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
-                                                <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
-                                            </div>
-                                            <c:if test="${!empty g.team_nm}">
-                                                <span>팀 명 : ${g.team_nm}</span>
-                                            </c:if>
+                        <c:forEach var="g" items="${campLst}" varStatus="st">
+                            <c:set var="camp_id">${g.seq}</c:set>
+                            <c:set var="startDt">${g.start_dt}</c:set>
+                            <c:set var="tar_cnt">${!empty g.tar_cnt ? g.tar_cnt :'0' }</c:set>
+                            <dl>
+                                <dt class="bottom-border">
+                                    <span class="number en_font">${st.count}</span>
+                                    <div class="info_row">
+                                        <h3 class="ellipsis">${g.camp_nm}</h3>
+                                        <span class="en_font">(<fmt:formatNumber
+                                                value="${dto.pro_st eq '03' ? tar_cnt : g.send_cnt}"
+                                                pattern="#,###"/>명)</span><br>
+                                        <c:if test="${!empty g.avo_nm}">
+                                            <span class="half-ellipsis">(${g.avo_nm})</span>
+                                            <span class="bar">|</span>
+                                        </c:if>
+                                        <div class="icon">
+                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png"
+                                                                                     alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png"
+                                                                                     alt=""/></c:if>
                                         </div>
-                                    </dt>
-                                    <dd>
-                                        <div class="cf">
-                                            <div class="row_graph cf">
-                                                <div class="th">대기</div>
-                                                <div class="td cf">
+                                        <c:if test="${!empty g.team_nm}">
+                                            <span>팀 명 : ${g.team_nm}</span>
+                                        </c:if>
+                                    </div>
+                                </dt>
+                                <dd>
+                                    <div class="cf">
+                                        <div class="row_graph cf">
+                                            <div class="th">대기</div>
+                                            <div class="td cf">
                                                 <c:choose>
-                                                    <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" name="progress1" data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                    <c:when test="${dto.pro_st eq '03' or dto.pro_st eq '04'}">
+                                                        <div class="chart" name="progress1"
+                                                             data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                         <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].w_cnt}" pattern="#,###" /></span>
-                                                            <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}" />)</span>
+                                                            <span class="number en_font"><fmt:formatNumber
+                                                                    value="${sendCnt[camp_id].w_cnt}"
+                                                                    pattern="#,###"/></span>
+                                                            <span class="percents en_font">(<fmt:formatNumber
+                                                                    type="percent" pattern="0.00%"
+                                                                    value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <div class="chart" name="progress1" data="1"></div>
                                                         <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].w_cnt}" pattern="#,###" /></span>
+                                                            <span class="number en_font"><fmt:formatNumber
+                                                                    value="${sendCnt[camp_id].w_cnt}"
+                                                                    pattern="#,###"/></span>
                                                             <span class="percents en_font">(100%)</span>
                                                         </div>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="cf">
-                                            <div class="row_graph cf">
-                                                <div class="th">성공</div>
-                                                <div class="td cf">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="row_graph cf">
+                                            <div class="th">성공</div>
+                                            <div class="td cf">
                                                 <c:choose>
                                                     <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" name="progress2" data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                        <div class="chart" name="progress2"
+                                                             data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                         <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].s_cnt}" pattern="#,###" /></span>
-                                                            <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}" />)</span>
+                                                            <span class="number en_font"><fmt:formatNumber
+                                                                    value="${sendCnt[camp_id].s_cnt}"
+                                                                    pattern="#,###"/></span>
+                                                            <span class="percents en_font">(<fmt:formatNumber
+                                                                    type="percent" pattern="0.00%"
+                                                                    value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
@@ -212,17 +140,22 @@
                                                         </div>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                </div>
                                             </div>
-                                            <div class="row_graph cf">
-                                                <div class="th">실패</div>
-                                                <div class="td cf">
+                                        </div>
+                                        <div class="row_graph cf">
+                                            <div class="th">실패</div>
+                                            <div class="td cf">
                                                 <c:choose>
                                                     <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" name="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                        <div class="chart" name="progress3"
+                                                             data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                         <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].f_cnt}" pattern="#,###" /></span>
-                                                            <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}" />)</span>
+                                                            <span class="number en_font"><fmt:formatNumber
+                                                                    value="${sendCnt[camp_id].f_cnt}"
+                                                                    pattern="#,###"/></span>
+                                                            <span class="percents en_font">(<fmt:formatNumber
+                                                                    type="percent" pattern="0.00%"
+                                                                    value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
@@ -233,138 +166,213 @@
                                                         </div>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </c:forEach>
-                        </c:if>
-                        <div class="bottom">
-                            <c:if test="${dto.pro_st eq '01'}">
-                            <div class="bottom_notice on cf" id="timerNotice">
-                                <p>*타겟추출 시작 전까지만 취소가 가능합니다.</p>
-                                <div class="timer en_font" id="timer"></div>
-                                <div class="close">닫기</div>
-                            </div>
-                            </c:if>
-                            <c:if test="${dto.pro_st eq '02'}">
-                            <div class="bottom_notice on cf" id="cancleNotice">
-                                <p>*타겟추출 진행 중으로 발송 취소가 불가합니다.</p>
-                                <div class="close">닫기</div>
-                            </div>
-                            </c:if>
-                            <c:if test="${dto.pro_st eq '03'}">
-                            <div class="bottom_notice on cf" id="timerNotice">
-                                <p>*발송 시작 시간 전까지만 취소가 가능합니다.</p>
-                                <div class="timer en_font" id="timer"></div>
-                                <div class="close">닫기</div>
-                            </div>
-                            </c:if>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="article <c:if test="${dto.pro_st eq '04' or dto.pro_st eq '99'}">active</c:if>">
-                    <div class="top">
-                        <span <c:if test="${dto.pro_st eq '04'}">class="on"</c:if>>발송완료</span>
-                        <span class="slash">/</span>
-                        <span  <c:if test="${dto.pro_st eq '99'}">class="fail on"</c:if>>발송실패</span>
-                    </div>
-                    <div class="area <c:if test="${dto.pro_st eq '99'}">block</c:if>">
-                        <c:if test="${dto.pro_st eq '04' or dto.pro_st eq '99'}">
-                            <c:forEach var="g" items="${campLst}" varStatus="st">
-                            <c:set var="camp_id">${g.seq}</c:set>
-                            <dl>
-                                <dt class="bottom-border">
-                                    <span class="number en_font">${st.count}</span>
-                                    <div class="info_row">
-                                        <h3 class="ellipsis">${g.camp_nm}</h3>
-                                        <span class="en_font">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span><br>
-                                        <c:if test="${!empty g.avo_nm}">
-                                            <span class="half-ellipsis">(${g.avo_nm})</span>
-                                            <span class="bar">|</span>
-                                        </c:if>
-                                        <div class="icon">
-                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
-                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
-                                        </div>
-                                        <c:if test="${!empty g.team_nm}">
-                                            <span>팀 명 : ${g.team_nm}</span>
-                                        </c:if>
-                                    </div>
-                                </dt>
-                                <dd>
-                                    <div class="cf">
-                                        <div class="row_graph cf">
-                                            <div class="th">성공</div>
-                                            <div class="td cf">
-                                                <div class="chart" name="progress2" data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
-                                                <div class="detail">
-                                                    <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].s_cnt}" pattern="#,###" /></span>
-                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}" />)</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row_graph cf">
-                                            <div class="th">실패</div>
-                                            <div class="td cf">
-                                                <div class="chart" name="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
-                                                <div class="detail">
-                                                    <span class="number en_font"><fmt:formatNumber value="${sendCnt[camp_id].f_cnt}" pattern="#,###" /></span>
-                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}" />)</span>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="cf">
                                         <div class="row_graph cf">
-                                           <div class="th">오픈</div>
-                                           <div class="td cf">
-                                               <!-- progress 영역 -->
-                                               <div class="chart" name="progress4" data="${openCnt[camp_id].cnt/g.send_cnt}"></div>
-                                               <div class="detail">
+                                            <div class="th">오픈</div>
+                                            <div class="td cf">
+                                                <!-- progress 영역 -->
+                                                <div class="chart" name="progress4" data="${openCnt[camp_id].cnt/g.send_cnt}"></div>
+                                                <div class="detail">
                                                    <span class="number en_font">
                                                    <c:choose>
-                                                        <c:when test="${empty openCnt[camp_id]}">0</c:when>
-                                                        <c:otherwise><fmt:formatNumber value="${openCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
-                                                    </c:choose>
+                                                       <c:when test="${empty openCnt[camp_id]}">0</c:when>
+                                                       <c:otherwise><fmt:formatNumber value="${openCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
+                                                   </c:choose>
                                                    </span>
-                                                   <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${openCnt[camp_id].cnt/g.send_cnt}" />)</span>
-                                               </div>
-                                           </div>
-                                       </div>
+                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${openCnt[camp_id].cnt/g.send_cnt}" />)</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row_graph cf">
-                                             <div class="th">클릭</div>
-                                             <div class="td cf">
-                                                 <div class="chart" name="progress5" data="${trackCnt[camp_id].cnt/g.send_cnt}"></div>
-                                                 <div class="detail">
+                                            <div class="th">클릭</div>
+                                            <div class="td cf">
+                                                <div class="chart" name="progress5" data="${trackCnt[camp_id].cnt/g.send_cnt}"></div>
+                                                <div class="detail">
                                                      <span class="number en_font">
                                                      <c:choose>
                                                          <c:when test="${empty trackCnt[camp_id]}">0</c:when>
                                                          <c:otherwise><fmt:formatNumber value="${trackCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
                                                      </c:choose>
                                                      </span>
-                                                     <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${trackCnt[camp_id].cnt/g.send_cnt}" />)</span>
-                                                 </div>
-                                             </div>
-                                         </div>
+                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${trackCnt[camp_id].cnt/g.send_cnt}" />)</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </dd>
                             </dl>
-                            </c:forEach>
-                        </c:if>
+                        </c:forEach>
                         <div class="bottom">
-                            <c:if test="${dto.pro_st eq '99'}">
-                            <div class="bottom_notice on cf" id="failNotice">
-                                <p>*발송실패 원인은 시스템관리자에게 문의해주세요.</p>
-                                <input type="button" value="관리자 문의" class="btn_bg btn_size2 right" onclick="sendFailPopup();">
-                                <div class="close">닫기</div>
-                            </div>
+                            <c:if test="${dto.pro_st eq '03'}">
+                                <div class="bottom_notice on cf" id="timerNotice">
+                                    <p>*발송 시작 시간 전까지만 취소가 가능합니다.</p>
+                                    <div class="timer en_font" id="timer"></div>
+                                    <div class="close">닫기</div>
+                                </div>
                             </c:if>
                         </div>
                     </div>
                 </div>
+
+                <div class="article">
+                    <div class="top">
+                        <span class="slash">캠페인 상세 정보</span>
+                    </div>
+                    <div class="area">
+                        <div class="left" style="width: 95%">
+                            <!-- 발송단가 영역 시작 -->
+                            <div class="price">
+                                <input type="button" class="btn_sm_line size" value="발송단가 확인하기" onclick="isShowPrice(true)">
+                                <div class="price_detail" id="price_detail_div" hidden>
+                                    <input type="button" value="닫기" class="btn_pop_close sm" onclick="isShowPrice(false)">
+                                    <div class="cf">
+                                        <table class="pop_table_type2 width1 margin">
+                                            <thead>
+                                            <tr>
+                                                <th class="en_font">Email</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><span class="en_font">${priceLst[0].cd_desc}</span>원</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="pop_table_type2 width2 margin">
+                                            <thead>
+                                            <tr>
+                                                <th class="en_font">알림톡</th>
+                                                <th class="en_font">친구톡(txt)</th>
+                                                <th class="en_font">친구톡(img)</th>
+                                                <th class="en_font">친구톡(wid)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><span class="en_font">${priceLst[1].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceLst[2].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceLst[3].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceLst[4].cd_desc}</span>원</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="pop_table_type2">
+                                            <colgroup>
+                                                <col width="25%"/>
+                                                <col width="25%"/>
+                                                <col width="25%"/>
+                                                <col width="25%"/>
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th class="en_font">SMS/RCS SMS</th>
+                                                <th class="en_font">LMS/RCS LMS</th>
+                                                <th class="en_font">MMS/RCS MMS</th>
+                                                <th><span class="en_font">RCS</span> 템플릿</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><span class="en_font">${priceLst[5].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceLst[7].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceLst[9].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceLst[11].cd_desc}</span>원</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="sub_text">
+                                        ※ RCS/카카오/문자 비용은 타겟 수의 1:3:6 비율로 측정됩니다.<br/>
+                                        ※ 실제 발송 비용과 다를 수 있습니다.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 발송단가 영역 끝 -->
+
+                            <table class="pop_table_type3">
+                                <colgroup>
+                                    <col width="1"/>
+                                    <col width="80"/>
+                                    <col width="100"/>
+                                    <col width="100"/>
+                                    <col width="*"/>
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th class="en_font">NO</th>
+                                    <th>타겟 설정</th>
+                                    <th>컨텐츠 설정</th>
+                                    <th>시간 설정</th>
+                                    <th>예상 발송 비용</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="g" items="${campLst}" varStatus="st">
+                                    <c:set var="camp_id">${g.seq}</c:set>
+                                    <c:set var="cont_id">${g.cont_id}</c:set>
+                                    <tr>
+                                        <td class="en_font">${st.count}</td>
+                                        <td>
+                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span style="text-align: center; display: block;">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span></div>
+                                            <c:choose>
+                                                <c:when test="${empty targetDto}"><div><span class="th">계산일 : </span><span class="en_font">${cutil:getDateTimeNow()}</span></div></c:when>
+                                                <c:otherwise><div><span class="th">계산일 : </span><span class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span></div></c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <span class="ellipsis conts_name bar">${contLst[cont_id].cont_nm}</span>
+                                                <span>
+                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
+                                        </span>
+                                            </div>
+                                            <div>
+                                                <input type="button" value="컨텐츠 미리보기" class="btn_sm_line size" onclick="preView('${g.cont_id}')"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="width: 130px;">
+                                        <span class="bar">
+                                        <c:choose>
+                                            <c:when test="${g.sto eq '02'}">시간 최적화</c:when>
+                                            <c:when test="${g.sto eq '03'}">요일 최적화</c:when>
+                                            <c:otherwise>일괄 발송
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </span>
+                                                <c:choose>
+                                                    <c:when test="${g.send_st_tp eq '0'}"><span class="bar">예약발송</span></c:when>
+                                                    <c:otherwise><span class="bar">즉시발송</span></c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                            <div>
+                                                <span class="en_font">${cutil:stringDatetimeParse(g.start_dt)}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="en_font">0</span>원
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="article">
+                    <div class="top">
+                        <span class="slash">컨텐츠 미리보기</span>
+                    </div>
+                    <div class="area">
+                        <div class="view" id="tpreview"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <!-- section 영역 끝 -->
@@ -381,7 +389,7 @@
 <!-- wrap end -->
 
 <!-- 상세 조건 보기 팝업 영역 시작 -->
-<div class="layer_pop" id="detailPopup">
+<%--<div class="layer_pop" id="detailPopup">
     <div class="pop_container popup_size8">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
         <div class="pop_title">캠페인 상세 조건 보기 <span class="bar">|</span>
@@ -549,32 +557,9 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 <!-- 상세 조건 보기 팝업 영역 끝 -->
-<!-- 승인반려 팝업 영역 시작 -->
-<div class="layer_pop" id="failPopup">
-    <div class="pop_container popup_size1">
-        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
-        <div class="pop_title">승인반려</div>
-        <form:form id="rejectForm" method="post" action="/camp/rejectSend.service">
-        <input type="hidden" name="pro_id" value="${dto.pro_id}">
-        <div class="pop_inner">
-            <h3 class="popup_title">승인반려 사유</h3>
-            <p class="message blue_point_color">
-                *승인반려 시 캠페인 담당자에게 임시저장 상태로 변경 안내 메일이 발송 됩니다.<br/>
-                승인반려 사유를 함께 작성하여 확인을 눌러주세요.
-            </p>
-            <div class="border margin-bottom">
-                <textarea id="message" name="message" cols="30" rows="10" class="reason" placeholder="사유를 입력해주세요."></textarea>
-            </div>
-            <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" id="rejectSend" value="확인"/>
-            </div>
-        </div>
-        </form:form>
-    </div>
-</div>
-<!-- 승인반려 팝업 영역 끝 -->
+
 <!-- 캠페인 발송실패 문의 팝업 영역 시작 -->
 <div class="layer_pop" id="sendFailPopup">
     <div class="pop_container popup_size1">
@@ -658,7 +643,7 @@
     barArr[index] = new Array();
     curArr = barArr[index];
 
-    <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '02' or dto.pro_st eq '03'}">
+
     // 대기 progress.js
     prg1 = $(`[name="progress1"]`)[index]
     curArr[0] = new ProgressBar.Line(prg1, {
@@ -671,33 +656,6 @@
         svgStyle: { width: '100%', height: '7px' }
     });
 
-    // 성공 progress.js
-    prg2 = $(`[name="progress2"]`)[index]
-    curArr[1] = new ProgressBar.Line(prg2, {
-        strokeWidth: 4,
-        easing: 'easeInOut',
-        duration: 1400,
-        color: '#87a8e1',
-        trailColor: '#f4f4f4',
-        trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
-    });
-
-    // 실패 progress.js
-    prg3 = $(`[name="progress3"]`)[index]
-    curArr[2]  = new ProgressBar.Line(prg3, {
-        strokeWidth: 4,
-        easing: 'easeInOut',
-        duration: 1400,
-        color: '#eda7b3',
-        trailColor: '#f4f4f4',
-        trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
-    });
-
-    </c:if>
-
-    <c:if test="${dto.pro_st eq '04' or dto.pro_st eq '99'}">
     // 성공 progress.js
     prg2 = $(`[name="progress2"]`)[index]
     curArr[1] = new ProgressBar.Line(prg2, {
@@ -743,7 +701,6 @@
         trailWidth: 4,
         svgStyle: { width: '100%', height: '7px' }
     });
-    </c:if>
     </c:forEach>
 
     <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '03'}">
@@ -983,5 +940,13 @@
         $("#failMsg").val("");
         popupClose(e);
         $("#sendFailPopup").removeClass('active');
+    }
+
+    function isShowPrice(show){
+        if(show){
+            $('#price_detail_div').show();
+        } else {
+            $('#price_detail_div').hide();
+        }
     }
 </script>
