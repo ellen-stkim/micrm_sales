@@ -1210,16 +1210,11 @@ span.ellipsis {display:block; line-height:1.5;}
 #testDetailPopup .vertical_wrap {height:215px; overflow-y:auto;}
 #testDetailPopup .list_down {width:69px; margin-top:10px;}
 
-.status_wrap {width:100%; display:flex; flex-direction:row; justify-content:space-between;
-    padding-top:35px;}
-.status_wrap .article {width:33.33%; border-right:1px solid #dddddd; border-top:1px solid #dddddd;
-    border-bottom:1px solid #dddddd; background:#FFFFFF;}
-.status_wrap .article:nth-child(2){
-    width:50%;
-}
+.status_wrap {width:100%; display:flex; flex-direction:row; justify-content:space-between; padding-top:35px;}
+.status_wrap .article {width:33.33%; border-right:1px solid #dddddd; border-top:1px solid #dddddd; border-bottom:1px solid #dddddd; background:#FFFFFF;}
+.status_wrap .article:nth-child(2){ width:50%; }
 .status_wrap .article.active {background:#fafafa;}
-.status_wrap .article .top {line-height:35px; text-align:center; color:#999999; border-bottom:1px solid #dddddd;
-    position:relative;}
+.status_wrap .article .top {line-height:35px; text-align:center; color:#999999; border-bottom:1px solid #dddddd; position:relative;}
 .status_wrap .article .top::after {content:''; display:block; width:19px; height:19px;
     background:url('../image/ico_step.png') no-repeat; position:absolute; right:-8.5px; top:50%;
     margin-top:-8.5px; z-index:10;}
@@ -1246,7 +1241,9 @@ span.ellipsis {display:block; line-height:1.5;}
 .status_wrap .article .area dl dd {padding:20px 20px 10px 20px;}
 .status_wrap .article .area dl dd .text {color:#999999; font-weight:500; line-height:1.6;}
 .status_wrap .article .area dl dd .date {color:#999999; font-weight:600; font-size:11px; line-height:1.6;}
-span.ellipsis.name, span.ellipsis.conts_name {width:180px;}
+.status_wrap .article span.ellipsis.name, span.ellipsis.conts_name {width:180px;}
+
+
 .status_wrap .article .pop_table_type3 tbody tr{height: 90px;}
 .status_wrap .article .area .price .btn_sm_line{height: 32px; float: right; margin-bottom: 10px;}
 .status_wrap .article .area .price .price_detail{position: absolute; right: 19px; top: 51px; width: 333px; background-color: #ffffff; box-shadow: 0 5px 20px rgb(0 0 0 / 20%);}
@@ -1254,6 +1251,9 @@ span.ellipsis.name, span.ellipsis.conts_name {width:180px;}
 .status_wrap .article .area .price .price_detail .pop_table_type2.margin { margin-right: 10px; }
 .status_wrap .article .area .price.price_detail .width1 { width: 80px; margin-bottom: 10px; }
 .status_wrap .article .area .price .price_detail .pop_table_type2 { float: left; }
+.status_wrap .article .area .view{padding-bottom: 20px;}
+.status_wrap .article .area .view>div{width: 270px;}
+.status_wrap .article .area .view .sms_box .sms_txt{ overflow-y: auto;}
 
 
 .row_graph {float:left; width:50%; margin-bottom:10px;}

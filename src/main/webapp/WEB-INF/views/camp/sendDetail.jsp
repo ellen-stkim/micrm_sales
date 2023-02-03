@@ -316,7 +316,7 @@
                                     <tr>
                                         <td class="en_font">${st.count}</td>
                                         <td>
-                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span>(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span></div>
+                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span style="text-align: center; display: block;">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span></div>
                                             <c:choose>
                                                 <c:when test="${empty targetDto}"><div><span class="th">계산일 : </span><span class="en_font">${cutil:getDateTimeNow()}</span></div></c:when>
                                                 <c:otherwise><div><span class="th">계산일 : </span><span class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span></div></c:otherwise>
