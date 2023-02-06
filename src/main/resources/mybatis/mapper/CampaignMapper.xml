@@ -382,6 +382,7 @@
 		select a.*
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, CONCAT_WS(',', img_1.IMG_FILE_NM, img_2.IMG_FILE_NM, img_3.IMG_FILE_NM, img_4.IMG_FILE_NM, img_5.IMG_FILE_NM, img_6.IMG_FILE_NM) AS IMG_NM_LST
+			, e.CH_TP AS ch_tp
 			, e.IMG_URL as kko_image_url
 			, e.IMG_FILE_NM as kko_image_file_nm
 			, e.KKO_IMG_URL as kko_server_image_url
