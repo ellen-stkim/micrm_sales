@@ -290,7 +290,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                 kkoMsgdto.button_json = "[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]"
             }
             if(kakaoCont.kko_server_image_url != null){
-                if(kakaoCont.ch_tp == "IMGTP12"){  // 와이드 이미지
+                if(kakaoCont.ch_tp == "IMGTP11"){  // 와이드 이미지
                     kkoMsgdto.type = "FW"
                 }else{
                     kkoMsgdto.type = "FI"
