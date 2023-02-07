@@ -33,7 +33,7 @@
 			<ul class="sub_menu">
 				<sec:authorize access="hasRole('R10')">
 					<li<c:if test="${fn:contains(urlPath,'/sys/user')}"> class='on'</c:if>><a href="/sys/user/userManagement.mi">사용자</a></li>
-					<li<c:if test="${fn:contains(urlPath, '/sys/setting')}"> class='on'</c:if>><a href="/sys/setting/mappingSetting.mi">환경</a></li>
+					<li<c:if test="${fn:contains(urlPath, '/sys/setting')}"> class='on'</c:if>><a href="/sys/setting/teamSetting.mi">환경</a></li>
 				</sec:authorize>
 				<sec:authorize access="hasAnyRole('R1','R2')">
 					<li<c:if test="${fn:contains(urlPath,'/sys/user')}"> class='on'</c:if>><a href="/sys/user/myInfo.mi">사용자</a></li>

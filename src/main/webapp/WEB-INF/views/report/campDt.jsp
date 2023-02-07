@@ -265,7 +265,7 @@
                                                     <c:otherwise>
                                                         <fmt:formatNumber
                                                                 value="${total.suc_cnt / total.total_cnt}"
-                                                                pattern="#,##0%"></fmt:formatNumber>
+                                                                pattern="###.##%"></fmt:formatNumber>
                                                     </c:otherwise>
                                                 </c:choose>
 											</span>

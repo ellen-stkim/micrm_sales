@@ -159,7 +159,7 @@
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <div class="chart" id="progress3" data="0"></div>
+                                                        <div class="chart" name="progress3" data="0"></div>
                                                         <div class="detail">
                                                             <span class="number en_font">0</span>
                                                             <span class="percents en_font">(0.00%)</span>
@@ -642,7 +642,6 @@
     index = ${st.index}
     barArr[index] = new Array();
     curArr = barArr[index];
-
 
     // 대기 progress.js
     prg1 = $(`[name="progress1"]`)[index]
