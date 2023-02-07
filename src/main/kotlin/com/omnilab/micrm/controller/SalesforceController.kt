@@ -211,11 +211,12 @@ class SalesforceController {
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
             view.addObject("filePath", uploadPrefix?.cd_val)
 
-            val teamCDDto = Tblmi_comm_cdDto()
-            teamCDDto.grp_id = "GRP_TEAM"
-            teamCDDto.cd_id = "TEAM01"
-            teamCDDto.par_id = usr_cd
-            view.addObject("teamLst", sysSettingService.getCommCDLst(teamCDDto))
+            val searchDto = SetLst_searchDto()
+            searchDto.usr_grp_cd = usr_cd
+            searchDto.list_tp_id = "CH05"
+            searchDto.list_dt_id = "TEAM01"
+            searchDto.use_yn = "Y"
+            view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
             val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
             temp.list_nm = "USR_KEY"
