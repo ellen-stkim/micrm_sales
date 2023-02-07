@@ -117,7 +117,7 @@ class SalesforceController {
         view.addObject("usr_cd", usr_cd)
 
         val searchDto = SetLst_searchDto()
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.usr_grp_cd = usr_cd
         searchDto.list_tp_id = "CH05"
         searchDto.list_dt_id = "TEAM01"
         searchDto.use_yn = "Y"
