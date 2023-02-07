@@ -738,7 +738,7 @@ class SysSettingServiceImpl : SysSettingService {
             commDto.cd_id = userInfo.usr_grp_cd
             commDto = sysSettingDao.getCommCD(commDto)!!
             val preId = commDto.cd_val
-            lstDto.list_val = preId+"_"+"001"
+            lstDto.list_val = preId+"_TM_"+"001"
             lstDto.list_etc = "1"
         }else{
             val maxId = maxTeamDto!!.list_val!!
