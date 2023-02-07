@@ -265,7 +265,7 @@
                                                     <c:otherwise>
                                                         <fmt:formatNumber
                                                                 value="${total.suc_cnt / total.total_cnt}"
-                                                                pattern="#,##0%"></fmt:formatNumber>
+                                                                pattern="###.##%"></fmt:formatNumber>
                                                     </c:otherwise>
                                                 </c:choose>
 											</span>
@@ -1008,7 +1008,7 @@
         $('#hardTotalSpan').html(hardTotal);
 
 
-        let totalFailPer = 1 - (sucCnt + waitTotal) / totalCnt;
+        let totalFailPer = (1 - (sucCnt + waitTotal) / totalCnt) * 100;
         $('#totalFailPct').html(totalFailPer.toFixed(2)+'%');
 
         let totalFailCnt = common.comma(totalCnt - sucCnt - waitTotal);

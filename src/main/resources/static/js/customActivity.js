@@ -219,14 +219,15 @@ define(["postmonger"], function (Postmonger) {
     }
 
     // 수정
-    function mobileEdit() {
-        const res = function(response) {
-            if(response.status) {
-                save();
-            } else {
-                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
-            }
-        }
+
+	function mobileEdit() {
+		const res = function(response) {
+			if(response.status) {
+				save();
+			} else {
+				popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+			}
+		}
 		let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
@@ -240,8 +241,7 @@ define(["postmonger"], function (Postmonger) {
 		}).value = mstSeq
 
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
-    }
-
+	}
 });
 
 

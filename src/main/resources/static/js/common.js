@@ -173,7 +173,7 @@ const com_ajax = {
             }
         });
     }
-    , ajax_json: function (c_method, c_url, c_data, c_callback, header, token) {
+    , ajax_json: function (c_method, c_url, c_data, c_callback, header, token, isNotLoading) {
         $.ajax({
             name: "form",
             type: c_method,
@@ -188,13 +188,16 @@ const com_ajax = {
                     window.location.reload();
                 }
             }, beforeSend: function (e) {
-                $('#commonLoading').addClass('active');
+                if(!isNotLoading) {
+                    $('#commonLoading').addClass('active');
+                }
                 if (header != null) {
                     e.setRequestHeader(header, token);
                 }
             }, complete: function () {
-                $('#commonLoading').removeClass('active');
-
+                if (!isNotLoading) {
+                    $('#commonLoading').removeClass('active');
+                }
             }
         });
     }

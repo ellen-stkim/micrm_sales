@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Service("SysSettingServiceImpl")
@@ -192,7 +193,7 @@ class SysSettingServiceImpl : SysSettingService {
         lstDto.list_tp_id = "CH01"
         lstDto.list_dt_id = "DMTP01"
 
-        val cntResult = sysSettingDao.isExistAddress(lstDto)
+        val cntResult = sysSettingDao.isExistSelLst(lstDto)
 
         statusMap["status"] = cntResult <= 0
 
@@ -321,7 +322,7 @@ class SysSettingServiceImpl : SysSettingService {
         lstDto.list_tp_id = "CH02"
         lstDto.list_dt_id = "DMTP02"
 
-        val cntResult = sysSettingDao.isExistAddress(lstDto)
+        val cntResult = sysSettingDao.isExistSelLst(lstDto)
 
         statusMap["status"] = cntResult <= 0
 
@@ -646,7 +647,7 @@ class SysSettingServiceImpl : SysSettingService {
         lstDto.list_tp_id = "CH02"
         lstDto.list_dt_id = "DMTP03"
 
-        val cntResult = sysSettingDao.isExistAddress(lstDto)
+        val cntResult = sysSettingDao.isExistSelLst(lstDto)
 
         statusMap["status"] = cntResult <= 0
 
@@ -672,4 +673,113 @@ class SysSettingServiceImpl : SysSettingService {
         statusMap["status"] = result >= 1
         return statusMap
     }
+
+    override fun getTeamSettingList(dto: SetLst_searchDto): Map<String, Any?> {
+        val map: MutableMap<String, Any> = HashMap()
+        val searchDto = dto as SetLst_searchDto
+
+        val pageNo = if (searchDto.pageNo == null) {
+            1
+        } else {
+            searchDto.pageNo!!
+        }
+
+        if (searchDto.searchType == "list_nm") {
+            searchDto.list_nm = searchDto.searchValue
+        } else if (searchDto.searchType == "list_val") {
+            searchDto.list_val = searchDto.searchValue
+        } else if (searchDto.searchType == "use_yn") {
+            searchDto.use_yn = searchDto.searchValue
+        } else if (searchDto.searchType == "def_yn") {
+            searchDto.def_yn = searchDto.searchValue
+        }
+
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.list_tp_id = "CH05"
+        searchDto.list_dt_id = "TEAM01"
+
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getMappingSettingListCnt(searchDto)
+
+        map["page"] = paginationInfo
+        map["pageNo"] = paginationInfo.currentPageNo
+        map["cnt"] = paginationInfo.totalRecordCount
+        map["list"] = sysSettingDao.getMappingSettingListSort(searchDto)
+
+        return map
+    }
+
+    override fun isExistTeam(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val statusMap: MutableMap<String, Any> = HashMap();
+
+        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        lstDto.list_tp_id = "CH05"
+        lstDto.list_dt_id = "TEAM01"
+
+        val cntResult = sysSettingDao.isExistSelLst(lstDto)
+
+        statusMap["status"] = cntResult <= 0
+
+        return statusMap
+    }
+
+    override fun insertTeam(lstDto: Tblmi_set_lstDto): Int {
+
+        val tempDt = Tblmi_set_lstDto("CH05","TEAM01",null,UsefulUtils.sessionUser().usr_grp_cd)
+        val maxTeamDto = sysSettingDao.getMaxDtIdByDto(tempDt)
+
+        val userInfo = UsefulUtils.sessionUser()
+        if (CommonUtils.isEmptyObject(maxTeamDto)){
+            var commDto = Tblmi_comm_cdDto()
+            commDto.grp_id = "USR_GRP_CD"
+            commDto.cd_id = userInfo.usr_grp_cd
+            commDto = sysSettingDao.getCommCD(commDto)!!
+            val preId = commDto.cd_val
+            lstDto.list_val = preId+"001"
+            lstDto.list_etc = "1"
+        }else{
+            val maxId = maxTeamDto!!.list_val!!
+            val lengthId = maxId.length
+            val preId = maxId.substring(0,lengthId-3)
+            var surId = maxId.substring(lengthId-3)
+            val parseId = (surId.toInt()+1).toString()
+            surId = surId.substring(0,surId.length-parseId.length)
+            lstDto.list_val = preId + surId + parseId
+            lstDto.list_etc = parseId
+        }
+
+        lstDto.list_tp_id = "CH05"
+        lstDto.list_dt_id = "TEAM01"
+        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+        lstDto.reg_id = userInfo.usr_id
+
+        return sysSettingDao.insertSetLst(lstDto)
+    }
+
+    override fun isExistTeamModify(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val statusMap: MutableMap<String, Any> = HashMap();
+
+        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        lstDto.list_tp_id = "CH05"
+        lstDto.list_dt_id = "TEAM01"
+
+        val cntResult = sysSettingDao.isExistModifyAddress(lstDto)
+
+        statusMap["status"] = cntResult <= 0
+
+        return statusMap
+    }
+
+    override fun updateLsts(list: List<Tblmi_set_lstDto>) {
+        val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        list.stream().forEach() { dto -> dto.usr_grp_cd = usr_grp_cd
+                            dto.list_dt_id = "CH05"
+                            dto.list_dt_id = "TEAM01"
+                            sysSettingDao.updateSetLst(dto)
+        }
+    }
+
 }

@@ -79,4 +79,12 @@ interface SysSettingService {
     fun isExistKkoAddress(lstDto: Tblmi_set_lstDto): Map<String, Any>
     fun updateSetTypeYn(lstDto: Tblmi_set_lstDto): Map<String, Any>
 
+    fun getTeamSettingList(dto: SetLst_searchDto): Map<String, Any?>
+
+    fun isExistTeam(lstDto: Tblmi_set_lstDto): Map<String, Any>
+
+    fun insertTeam(lstDto: Tblmi_set_lstDto): Int
+    fun isExistTeamModify(lstDto: Tblmi_set_lstDto): Map<String, Any>
+    fun updateLsts(list: List<Tblmi_set_lstDto>)
+
 }

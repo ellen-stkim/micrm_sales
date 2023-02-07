@@ -116,11 +116,12 @@ class SalesforceController {
         val view =  ModelAndView("cont/salesforce")
         view.addObject("usr_cd", usr_cd)
 
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "GRP_TEAM"
-        commonCDDto.cd_id = "TEAM01"
-        commonCDDto.par_id = usr_cd
-        view.addObject("teamLst", sysSettingService.getCommCDLst(commonCDDto))
+        val searchDto = SetLst_searchDto()
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        searchDto.list_tp_id = "CH05"
+        searchDto.list_dt_id = "TEAM01"
+        searchDto.use_yn = "Y"
+        view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
         val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
         temp.list_nm = "USR_KEY"
