@@ -347,15 +347,15 @@
 	</select>
 
 	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
-		SELECT camp.* , comm.cd_desc AS team_nm
+		SELECT camp.* , set_cd.list_nm AS team_nm
 		,cont.avo_nm as avo_nm
 		FROM tblmicp_campaign AS camp
 			LEFT JOIN tblmicp_cont_mst AS cont ON cont.seq = camp.CONT_ID
-			LEFT JOIN tblmi_comm_cd AS comm
-				ON comm.grp_id = 'GRP_TEAM'
-				    AND cd_id = 'TEAM01'
-					AND cont.team_cd = comm.cd_val
-					AND camp.usr_grp_cd = comm.par_id
+			LEFT JOIN tblmi_set_lst AS set_cd
+				ON set_cd.list_tp_id = 'CH05'
+				AND set_cd.list_dt_id = 'TEAM01'
+				AND cont.team_cd = set_cd.list_val
+				AND camp.usr_grp_cd = set_cd.usr_grp_cd
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				and camp.seq = #{seq}
