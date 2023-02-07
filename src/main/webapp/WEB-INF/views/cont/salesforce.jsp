@@ -110,7 +110,7 @@
                                 <div class="value" id="team_cd_sel" data="">팀명</div>
                                 <ul class="option">
                                     <c:forEach var="team" items="${teamLst}">
-                                        <li data="${team.cd_val}">${team.cd_desc}</li>
+                                        <li data="${team.list_val}">${team.list_nm}</li>
                                     </c:forEach>
                                 </ul>
                             </div>
