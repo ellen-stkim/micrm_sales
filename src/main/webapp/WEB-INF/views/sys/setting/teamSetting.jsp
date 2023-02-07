@@ -350,7 +350,7 @@
         let data = []
         data.push({name : "seq" , value : seq })
         data.push({name : "list_nm" , value : list_nm })
-        data.push({name : "def_yn" , value : def_yn} )
+        data.push({name : "use_yn" , value : def_yn} )
 
         com_ajax.ajax('post', '${baseURL}/sys/setting/changeTypeDefYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
 

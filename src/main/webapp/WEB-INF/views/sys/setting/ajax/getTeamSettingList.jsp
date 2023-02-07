@@ -49,14 +49,14 @@
                     <td class="en_font" style="min-width:300px;" >${status.index + 1}</td>
                     <td class="en_font" style="min-width:300px;" >${n.reg_dt}</td>
                     <td class="en_font" style="min-width:250px;" >
-                        <c:if test = "${fn:trim(n.def_yn) == 'Y'}">
+                        <c:if test = "${fn:trim(n.use_yn) == 'Y'}">
                             <input type="button" class="use_state en_font btn_state" value="Y"
-                                   onclick="updateYnCheck('${n.seq}','${n.list_nm}','${n.def_yn}')"
+                                   onclick="updateYnCheck('${n.seq}','${n.list_nm}','${n.use_yn}')"
                             />
                         </c:if>
-                        <c:if test = "${fn:trim(n.def_yn) == 'N'}">
+                        <c:if test = "${fn:trim(n.use_yn) == 'N'}">
                             <input type="button" class="use_state en_font btn_state" value="N"
-                                   onclick="updateYnCheck('${n.seq}','${n.list_nm}','${n.def_yn}')"
+                                   onclick="updateYnCheck('${n.seq}','${n.list_nm}','${n.use_yn}')"
                             />
                         </c:if>
                     </td>
