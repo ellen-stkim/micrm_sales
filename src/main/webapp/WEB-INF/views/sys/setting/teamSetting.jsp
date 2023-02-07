@@ -340,7 +340,7 @@
     }
 
     // 문자 리스트 Y,N 값 변경하기
-    function updateYnCheck(seq,list_nm,def_yn){
+    function updateYnCheck(seq,list_nm,use_yn){
         const res = function(response){
             let pageNo = $("#nowPageNo").val();
             getMappingSettingList(pageNo)
@@ -349,10 +349,9 @@
 
         let data = []
         data.push({name : "seq" , value : seq })
-        data.push({name : "list_nm" , value : list_nm })
-        data.push({name : "use_yn" , value : def_yn} )
+        data.push({name : "use_yn" , value : use_yn} )
 
-        com_ajax.ajax('post', '${baseURL}/sys/setting/changeTypeDefYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sys/setting/updateSetLstYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
 
     }
 
