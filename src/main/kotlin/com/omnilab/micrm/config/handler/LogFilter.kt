@@ -14,5 +14,6 @@ class LogFilter  : OncePerRequestFilter() {
     override fun doFilterInternal(req: HttpServletRequest, res: HttpServletResponse, filterChain: FilterChain) {
         MDC.put("REQSEQ",RandomStringUtils.randomAlphanumeric(10))
         filterChain.doFilter(req, res)
+        MDC.clear();
     }
 }
