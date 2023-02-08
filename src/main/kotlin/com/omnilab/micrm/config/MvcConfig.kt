@@ -5,13 +5,11 @@ import com.omnilab.micrm.config.handler.InterceptorHandler
 import com.omnilab.micrm.config.view.DownloadView
 import com.omnilab.micrm.config.view.ExcelDownloadView
 import com.omnilab.micrm.config.view.PrintView
-import com.omnilab.micrm.repository.impl.CampaignDaoImpl
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
-
 import org.springframework.core.io.FileSystemResource
 import org.springframework.http.MediaType
 import org.springframework.http.converter.ByteArrayHttpMessageConverter
@@ -25,12 +23,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver
 import org.springframework.web.servlet.DispatcherServlet
 import org.springframework.web.servlet.LocaleResolver
 import org.springframework.web.servlet.config.annotation.*
-
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 import org.springframework.web.servlet.resource.EncodedResourceResolver
 import org.springframework.web.servlet.resource.PathResourceResolver
-
 import org.springframework.web.servlet.view.BeanNameViewResolver
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
@@ -42,8 +38,7 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-import kotlin.jvm.Throws
+
 
 @Configuration
 @EnableWebMvc
