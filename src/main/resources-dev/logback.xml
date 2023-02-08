@@ -5,9 +5,9 @@
 	<property name="LOGS_PATH" value="./logs"/>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<charset>UTF-8</charset>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] : %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] : %msg %n</pattern>
 		</encoder>
 	</appender>
 	<!-- 
