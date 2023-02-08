@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-	
+
+<!--	<property name="LOGS_PATH" value="./logs"/>-->
+
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<charset>UTF-8</charset>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] : %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] : %msg %n</pattern>
 		</encoder>
 	</appender>
+
 	<!-- 
 		# log4jdbc settings development production
 		jdbc.connection     :     WARN       WARN
@@ -17,7 +20,23 @@
 		jdbc.resultset      :     WARN       WARN
 		jdbc.resultsettable :     INFO       WARN
 	-->
-	
+
+	<!--<appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS_PATH}/catalina.out</file>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] : %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS_PATH}/appLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				&lt;!&ndash; or whenever the file size reaches 100MB &ndash;&gt;
+				<maxFileSize>100MB</maxFileSize>
+				&lt;!&ndash; kb, mb, gb &ndash;&gt;
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>-->
+
 	<logger name="jdbc.connection" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
