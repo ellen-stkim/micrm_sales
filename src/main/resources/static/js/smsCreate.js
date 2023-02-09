@@ -16,9 +16,9 @@ let smsCreate = {
             }
         }
         if(type == 'kakao'){
-            $('.kakao_byte').innerHTML = count;
+            $('.kakao_byte').html(count);
         }else{
-            $('.sms_byte').innerHTML = count;
+            $('.sms_byte').html(count);
         }
     }
     , imageCreate : function(type, image){

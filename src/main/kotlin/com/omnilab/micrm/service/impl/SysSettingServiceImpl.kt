@@ -678,12 +678,6 @@ class SysSettingServiceImpl : SysSettingService {
         val map: MutableMap<String, Any> = HashMap()
         val searchDto = dto as SetLst_searchDto
 
-        val pageNo = if (searchDto.pageNo == null) {
-            1
-        } else {
-            searchDto.pageNo!!
-        }
-
         if (searchDto.searchType == "list_nm") {
             searchDto.list_nm = searchDto.searchValue
         } else if (searchDto.searchType == "list_val") {
@@ -698,15 +692,6 @@ class SysSettingServiceImpl : SysSettingService {
         searchDto.list_tp_id = "CH05"
         searchDto.list_dt_id = "TEAM01"
 
-        val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
-
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getMappingSettingListCnt(searchDto)
-
-        map["page"] = paginationInfo
-        map["pageNo"] = paginationInfo.currentPageNo
-        map["cnt"] = paginationInfo.totalRecordCount
         map["list"] = sysSettingDao.getMappingSettingListSort(searchDto)
 
         return map
