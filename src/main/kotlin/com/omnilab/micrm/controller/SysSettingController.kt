@@ -60,8 +60,6 @@ class SysSettingController {
         val dto = SetLst_searchDto()
         val map = sysSettingService.getTeamSettingList(dto)
         view.addObject("list",map["list"])
-        view.addObject("page",map["page"])
-        view.addObject("pageNo",map["pageNo"])
 
         return view;
     }
@@ -152,8 +150,6 @@ class SysSettingController {
         val map = sysSettingService.getTeamSettingList(lstStDto)
         view.addObject("list",map["list"])
         view.addObject("teamCd",map["teamCd"])
-        view.addObject("page",map["page"])
-        view.addObject("pageNo",map["pageNo"])
         return view;
     }
 

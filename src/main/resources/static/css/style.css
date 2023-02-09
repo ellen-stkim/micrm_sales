@@ -577,9 +577,9 @@
 .viewer_area .scroll_txt_area {min-height:120px; overflow-y:auto; max-height: 260px; word-wrap: break-word;
     overflow-y: auto;}
 
-.row.body .column_5 .title.type1 {float:left; width:calc(100% - 60px); font-weight:700; height:100%;
+.row.body .column_5 .title.type1 {float:left; width:calc(100% - 78px); font-weight:700; height:100%;
     padding:0 20px; font-size:13px;}
-.row.body .column_5 .title_byte {float:left; width:60px; font-size:11px; color:#cccccc; line-height:35px;}
+.row.body .column_5 .title_byte {float:left; width:78px; font-size:11px; color:#cccccc; line-height:35px;}
 .input-img {display:none;}
 .input-img.on {display:block;}
 .input-img.flex_row.on {display:flex;}
@@ -1243,6 +1243,7 @@ span.ellipsis {display:block; line-height:1.5;}
 .status_wrap .article .area dl dd .date {color:#999999; font-weight:600; font-size:11px; line-height:1.6;}
 .status_wrap .article span.ellipsis.name, span.ellipsis.conts_name {width:180px;}
 
+.status_wrap .article .area .view img{width: 100%}
 
 .status_wrap .article .pop_table_type3 tbody tr{height: 90px;}
 .status_wrap .article .area .price .btn_sm_line{height: 32px; float: right; margin-bottom: 10px;}
