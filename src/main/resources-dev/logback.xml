@@ -21,9 +21,9 @@
 	-->
 
 	<appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS_PATH}/salesTest.out</file>
+		<file>${LOGS_PATH}/catalina.out</file>
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] : %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] : %msg%n</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOGS_PATH}/appLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>

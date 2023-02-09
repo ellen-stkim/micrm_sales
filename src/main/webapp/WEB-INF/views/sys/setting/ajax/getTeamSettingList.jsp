@@ -68,14 +68,8 @@
             </c:forEach>
             </tbody>
         </table>
-        <div class="btn_row bottom-border">
-            <ul class="pager">
-                <ui:pagination paginationInfo="${page}" type="image" jsFunction="getMappingSettingList"/>
-            </ul>
-        </div>
-        <input type ="hidden" id ="nowPageNo" value ="${pageNo}"/>
     </c:when>
-    <c:otherwise> .
+    <c:otherwise>
         <table class="table mail_tbl">
             <colgroup>
                 <col width="3%" />
@@ -102,7 +96,6 @@
             </tr>
             </tbody>
         </table>
-        <input type ="hidden" id ="nowPageNo" value ="${pageNo}"/>
     </c:otherwise>
 </c:choose>
 <!-- section 영역 끝 -->

@@ -351,7 +351,9 @@
                                     </div>
                                 </div>
                                 <div class="byte">
-                                    <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
+                                    <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)<br><br>
+                                    <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
+                                    <span class="en_font">※ 이미지 유형 최대 400자</span>
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_at_viewer" hidden>
@@ -390,7 +392,7 @@
                                                    onkeyup="onchangePrevSmsTitle(this)"
                                                    value="(광고)"
                                                    placeholder="문자 제목을 입력하세요."/>
-                                            <span class="title_byte en_font">(40byte)</span>
+                                            <span class="title_byte en_font">(최대 40byte)</span>
                                         </div>
                                         <!-- select 영역 시작 -->
                                         <div class="select column_4 left-border" id="smsTitleVal" name="edmDB">
@@ -3378,7 +3380,7 @@
         $('#prev_sms_title').html($(e).val());
     }
     function onchangePrevSmsTxt(e){
-        smsCreate.byteCount(e, 'kakao');
+        smsCreate.byteCount(e, 'sms');
         let txt = $(e).val().replaceAll("\n", "<br/>");
         $('#smsTextArea').html(txt);
     }

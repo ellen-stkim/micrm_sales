@@ -415,7 +415,9 @@
                                             </div>
                                         </div>
                                         <div class="byte">
-                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
+                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)<br><br>
+                                            <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
+                                            <span class="en_font">※ 이미지 유형 최대 400자</span>
                                         </div>
                                     </div>
                                     <div class="viewer_area" id="kakao_at_viewer" hidden>
@@ -564,7 +566,7 @@
                                             <div class="column_1">
                                                 <div class="column_5">
                                                     <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="onchangePrevSmsTitle(this)" value="${list[1].cont_sub}"/>
-                                                    <span class="title_byte en_font">(40byte)</span>
+                                                    <span class="title_byte en_font">(최대 40byte)</span>
                                                 </div>
                                                 <!-- select 영역 시작 -->
                                                 <div class="select column_4 left-border" id="smsTitleVal" name="edmDB">
