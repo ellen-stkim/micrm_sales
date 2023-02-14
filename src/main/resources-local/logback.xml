@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-	
+
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] [%X{USER}] : %msg %n</pattern>
+		</encoder>
+	</appender>
+
+	<property name="LOGS_PATH" value="./logs"/>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${LOGS_PATH}/catalina.out</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<charset>UTF-8</charset>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] : %msg %n</pattern>
 		</encoder>
 	</appender>
-	<!-- 
+	<!--
 		# log4jdbc settings development production
 		jdbc.connection     :     WARN       WARN
 		jdbc.audit          :     WARN       WARN
@@ -21,50 +31,60 @@
 	<logger name="jdbc.connection" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<logger name="jdbc.audit" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<logger name="jdbc.sqlonly" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<logger name="jdbc.sqltiming" additivity="false">
     	<level value="INFO"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<logger name="jdbc.resultset" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<logger name="jdbc.resultsettable" additivity="false">
     	<level value="INFO"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger> 
 	
 	<logger name="jdbc.sqlonly" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 	
 	<logger name="org.apache.catalina.core.StandardWrapperValve" additivity="false">
     	<level value="WARN"/>
     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<logger name="org.apache.cxf" additivity="false">
 		<level value="WARN"/>
 		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</logger>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</root>
 
 </configuration>
