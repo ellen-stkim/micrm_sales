@@ -674,13 +674,34 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/unpublish.service")
     fun unpublish(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/unpublish.service data: $data")
+
         val dto = Tblmicp_cont_mstDto()
-        dto.inten_id = data["interactionId"].toString()
-        dto.orig_id = data["originalDefinitionId"].toString()
-        dto.inta_key = data["interactionKey"].toString()
-        dto.inta_ve = data["interactionVersion"].toString()
-        dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-        val save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+        var save = 0
+        try{
+            val prgDto = Tblmicp_programDto()
+            prgDto.inten_id = data["interactionId"].toString()
+            prgDto.orig_id = data["originalDefinitionId"].toString()
+            prgDto.inta_key = data["interactionKey"].toString()
+            prgDto.inta_ve = data["interactionVersion"].toString()
+            prgDto.pro_st = "04"
+            salesforceDao.upd_tblmicp_program_sales(prgDto)
+            if(prgDto.pro_id != null){
+                val campDto = Tblmicp_campaignDto()
+                campDto.pro_id = prgDto.pro_id
+                campDto.camp_st = "04"
+                salesforceDao.upd_tblmicp_campaign(campDto)
+            }
+
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
+            save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+        }catch (e: Exception){
+            logger.error("unpublish Service error : {}", dto)
+        }
+
         return if(save > 0){
             ResponseEntity(null, HttpStatus.OK)
         }else{
@@ -714,6 +735,15 @@ class SalesforceController {
                 campDto.camp_st = "04"
                 salesforceDao.upd_tblmicp_campaign(campDto)
             }
+
+            val dto = Tblmicp_cont_mstDto()
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pub_yn = "Y"
+            salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+
         }catch (e: Exception){
             logger.error("stop Service error : {}", dto)
         }
