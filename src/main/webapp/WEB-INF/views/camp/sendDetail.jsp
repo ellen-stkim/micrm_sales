@@ -7,8 +7,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
-<%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
-<sec:authentication var="user" property="details" />
+<%@ taglib uri="tld/Commonutils.tld" prefix="cutil" %>
+<sec:authentication var="user" property="details"/>
 <section class="container">
     <!-- 컨텐츠 영역 시작 -->
     <div class="contents">
@@ -89,29 +89,16 @@
                                         <div class="row_graph cf">
                                             <div class="th">대기</div>
                                             <div class="td cf">
-                                                <c:choose>
-                                                    <c:when test="${dto.pro_st eq '03' or dto.pro_st eq '04'}">
-                                                        <div class="chart" name="progress1"
-                                                             data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
-                                                        <div class="detail">
+                                                <div class="chart" name="progress1"
+                                                     data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber
                                                                     value="${sendCnt[camp_id].w_cnt}"
                                                                     pattern="#,###"/></span>
-                                                            <span class="percents en_font">(<fmt:formatNumber
-                                                                    type="percent" pattern="0.00%"
-                                                                    value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="chart" name="progress1" data="1"></div>
-                                                        <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber
-                                                                    value="${sendCnt[camp_id].w_cnt}"
-                                                                    pattern="#,###"/></span>
-                                                            <span class="percents en_font">(100%)</span>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                    <span class="percents en_font">(<fmt:formatNumber
+                                                            type="percent" pattern="0.00%"
+                                                            value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -119,53 +106,31 @@
                                         <div class="row_graph cf">
                                             <div class="th">성공</div>
                                             <div class="td cf">
-                                                <c:choose>
-                                                    <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" name="progress2"
-                                                             data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
-                                                        <div class="detail">
+                                                <div class="chart" name="progress2"
+                                                     data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber
                                                                     value="${sendCnt[camp_id].s_cnt}"
                                                                     pattern="#,###"/></span>
-                                                            <span class="percents en_font">(<fmt:formatNumber
-                                                                    type="percent" pattern="0.00%"
-                                                                    value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="chart" name="progress2" data="0"></div>
-                                                        <div class="detail">
-                                                            <span class="number en_font">0</span>
-                                                            <span class="percents en_font">(0.00%)</span>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                    <span class="percents en_font">(<fmt:formatNumber
+                                                            type="percent" pattern="0.00%"
+                                                            value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row_graph cf">
                                             <div class="th">실패</div>
                                             <div class="td cf">
-                                                <c:choose>
-                                                    <c:when test="${dto.pro_st eq '03'}">
-                                                        <div class="chart" name="progress3"
-                                                             data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
-                                                        <div class="detail">
+                                                <div class="chart" name="progress3"
+                                                     data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                <div class="detail">
                                                             <span class="number en_font"><fmt:formatNumber
                                                                     value="${sendCnt[camp_id].f_cnt}"
                                                                     pattern="#,###"/></span>
-                                                            <span class="percents en_font">(<fmt:formatNumber
-                                                                    type="percent" pattern="0.00%"
-                                                                    value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="chart" name="progress3" data="0"></div>
-                                                        <div class="detail">
-                                                            <span class="number en_font">0</span>
-                                                            <span class="percents en_font">(0.00%)</span>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                    <span class="percents en_font">(<fmt:formatNumber
+                                                            type="percent" pattern="0.00%"
+                                                            value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -174,30 +139,38 @@
                                             <div class="th">오픈</div>
                                             <div class="td cf">
                                                 <!-- progress 영역 -->
-                                                <div class="chart" name="progress4" data="${openCnt[camp_id].cnt/g.send_cnt}"></div>
+                                                <div class="chart" name="progress4"
+                                                     data="${openCnt[camp_id].cnt/g.send_cnt}"></div>
                                                 <div class="detail">
                                                    <span class="number en_font">
                                                    <c:choose>
                                                        <c:when test="${empty openCnt[camp_id]}">0</c:when>
-                                                       <c:otherwise><fmt:formatNumber value="${openCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
+                                                       <c:otherwise><fmt:formatNumber value="${openCnt[camp_id].cnt}"
+                                                                                      pattern="#,###"/></c:otherwise>
                                                    </c:choose>
                                                    </span>
-                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${openCnt[camp_id].cnt/g.send_cnt}" />)</span>
+                                                    <span class="percents en_font">(<fmt:formatNumber type="percent"
+                                                                                                      pattern="0.00%"
+                                                                                                      value="${openCnt[camp_id].cnt/g.send_cnt}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row_graph cf">
                                             <div class="th">클릭</div>
                                             <div class="td cf">
-                                                <div class="chart" name="progress5" data="${trackCnt[camp_id].cnt/g.send_cnt}"></div>
+                                                <div class="chart" name="progress5"
+                                                     data="${trackCnt[camp_id].cnt/g.send_cnt}"></div>
                                                 <div class="detail">
                                                      <span class="number en_font">
                                                      <c:choose>
                                                          <c:when test="${empty trackCnt[camp_id]}">0</c:when>
-                                                         <c:otherwise><fmt:formatNumber value="${trackCnt[camp_id].cnt}" pattern="#,###" /></c:otherwise>
+                                                         <c:otherwise><fmt:formatNumber value="${trackCnt[camp_id].cnt}"
+                                                                                        pattern="#,###"/></c:otherwise>
                                                      </c:choose>
                                                      </span>
-                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${trackCnt[camp_id].cnt/g.send_cnt}" />)</span>
+                                                    <span class="percents en_font">(<fmt:formatNumber type="percent"
+                                                                                                      pattern="0.00%"
+                                                                                                      value="${trackCnt[camp_id].cnt/g.send_cnt}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,9 +198,11 @@
                         <div class="left" style="width: 95%">
                             <!-- 발송단가 영역 시작 -->
                             <div class="price">
-                                <input type="button" class="btn_sm_line size" value="발송단가 확인하기" onclick="isShowPrice(true)">
+                                <input type="button" class="btn_sm_line size" value="발송단가 확인하기"
+                                       onclick="isShowPrice(true)">
                                 <div class="price_detail" id="price_detail_div" hidden>
-                                    <input type="button" value="닫기" class="btn_pop_close sm" onclick="isShowPrice(false)">
+                                    <input type="button" value="닫기" class="btn_pop_close sm"
+                                           onclick="isShowPrice(false)">
                                     <div class="cf">
                                         <table class="pop_table_type2 width1 margin">
                                             <thead>
@@ -316,22 +291,34 @@
                                     <tr>
                                         <td class="en_font">${st.count}</td>
                                         <td>
-                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span style="text-align: center; display: block;">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span></div>
+                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span
+                                                    style="text-align: center; display: block;">(<fmt:formatNumber
+                                                    value="${g.send_cnt}" pattern="#,###"/>명)</span></div>
                                             <c:choose>
-                                                <c:when test="${empty targetDto}"><div><span class="th">계산일 : </span><span class="en_font">${cutil:getDateTimeNow()}</span></div></c:when>
-                                                <c:otherwise><div><span class="th">계산일 : </span><span class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span></div></c:otherwise>
+                                                <c:when test="${empty targetDto}">
+                                                    <div><span class="th">계산일 : </span><span
+                                                            class="en_font">${cutil:getDateTimeNow()}</span></div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div><span class="th">계산일 : </span><span
+                                                            class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span>
+                                                    </div>
+                                                </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td>
                                             <div>
                                                 <span class="ellipsis conts_name bar">${contLst[cont_id].cont_nm}</span>
                                                 <span>
-                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
-                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png"
+                                                                                     alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png"
+                                                                                     alt=""/></c:if>
                                         </span>
                                             </div>
                                             <div>
-                                                <input type="button" value="컨텐츠 미리보기" class="btn_sm_line size" onclick="preView('${g.cont_id}')"/>
+                                                <input type="button" value="컨텐츠 미리보기" class="btn_sm_line size"
+                                                       onclick="preView('${g.cont_id}')"/>
                                             </div>
                                         </td>
                                         <td>
@@ -345,7 +332,8 @@
                                         </c:choose>
                                         </span>
                                                 <c:choose>
-                                                    <c:when test="${g.send_st_tp eq '0'}"><span class="bar">예약발송</span></c:when>
+                                                    <c:when test="${g.send_st_tp eq '0'}"><span
+                                                            class="bar">예약발송</span></c:when>
                                                     <c:otherwise><span class="bar">즉시발송</span></c:otherwise>
                                                 </c:choose>
                                             </div>
@@ -563,36 +551,36 @@
 <!-- 캠페인 발송실패 문의 팝업 영역 시작 -->
 <div class="layer_pop" id="sendFailPopup">
     <div class="pop_container popup_size1">
-        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">캠페인 발송실패 문의</div>
         <form:form id="mailForm" method="post" action="/camp/inquirySend.service">
-        <input type="hidden" name="pro_id" value="${dto.pro_id}"/>
-        <div class="pop_inner">
-            <table class="pop_table_type1">
-                <colgroup>
-                    <col width="102"/>
-                    <col width="*"/>
-                </colgroup>
-                <tbody>
-                <tr>
-                    <th>캠페인명</th>
-                    <td>${dto.pro_nm}</td>
-                </tr>
-                <tr>
-                    <th>제목</th>
-                    <td><input type="text" id="failSubject" name="subject"/></td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td><textarea id="failMsg" name="msg" cols="30" rows="10"></textarea></td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" id="mailSend" value="보내기"/>
-                <input type="button" class="btn_bg2 btn_size2 btn_inline" id="mailCancel" value="취소"/>
+            <input type="hidden" name="pro_id" value="${dto.pro_id}"/>
+            <div class="pop_inner">
+                <table class="pop_table_type1">
+                    <colgroup>
+                        <col width="102"/>
+                        <col width="*"/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>캠페인명</th>
+                        <td>${dto.pro_nm}</td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" id="failSubject" name="subject"/></td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td><textarea id="failMsg" name="msg" cols="30" rows="10"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="btn_row">
+                    <input type="button" class="btn_bg btn_size2 btn_inline" id="mailSend" value="보내기"/>
+                    <input type="button" class="btn_bg2 btn_size2 btn_inline" id="mailCancel" value="취소"/>
+                </div>
             </div>
-        </div>
         </form:form>
     </div>
 </div>
@@ -608,7 +596,7 @@
                 문구 영역
             </div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_center" onclick="popupClose(this);" value="확인" />
+                <input type="button" class="btn_bg btn_size2 btn_center" onclick="popupClose(this);" value="확인"/>
             </div>
         </div>
     </div>
@@ -624,8 +612,8 @@
                 문구 영역
             </div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="확인" />
-                <input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />
+                <input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="확인"/>
+                <input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소"/>
             </div>
         </div>
     </div>
@@ -637,10 +625,10 @@
     let isDelProcess = true;
     let barArr = new Array();
     let curArr;
-    let index,prg1,prg2,prg3,prg4,prg5;
+    let index, prg1, prg2, prg3, prg4, prg5;
     <c:forEach var="cammp" items="${campLst}" varStatus="st">
     index = ${st.index}
-    barArr[index] = new Array();
+        barArr[index] = new Array();
     curArr = barArr[index];
 
     // 대기 progress.js
@@ -652,7 +640,7 @@
         color: '#b0e1dc',
         trailColor: '#f4f4f4',
         trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
+        svgStyle: {width: '100%', height: '7px'}
     });
 
     // 성공 progress.js
@@ -664,30 +652,30 @@
         color: '#87a8e1',
         trailColor: '#f4f4f4',
         trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
+        svgStyle: {width: '100%', height: '7px'}
     });
 
     // 실패 progress.js
     prg3 = $(`[name="progress3"]`)[index]
-    curArr[2]  = new ProgressBar.Line(prg3, {
+    curArr[2] = new ProgressBar.Line(prg3, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
         color: '#eda7b3',
         trailColor: '#f4f4f4',
         trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
+        svgStyle: {width: '100%', height: '7px'}
     });
     // 오픈 progress.js
     prg4 = $(`[name="progress4"]`)[index]
-    curArr[3]  = new ProgressBar.Line(prg4, {
+    curArr[3] = new ProgressBar.Line(prg4, {
         strokeWidth: 4,
         easing: 'easeInOut',
         duration: 1400,
         color: '#b7d9a7',
         trailColor: '#f4f4f4',
         trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
+        svgStyle: {width: '100%', height: '7px'}
     });
     // 클릭 progress.js
     prg5 = $(`[name="progress5"]`)[index]
@@ -698,15 +686,15 @@
         color: '#aecff1',
         trailColor: '#f4f4f4',
         trailWidth: 4,
-        svgStyle: { width: '100%', height: '7px' }
+        svgStyle: {width: '100%', height: '7px'}
     });
     </c:forEach>
 
     <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '03'}">
     <c:set var="tt" value="${cutil:stringDatetimeMap(startDt)}" />
     //발송 취소 가능 시간 Timer
-        let countDate = new Date(${tt['year']}, ${tt['month']}, ${tt['day']}, ${tt['h']}, ${tt['m']}, ${tt['s']}).getTime();
-        let x = setInterval(function() {
+    let countDate = new Date(${tt['year']}, ${tt['month']}, ${tt['day']}, ${tt['h']}, ${tt['m']}, ${tt['s']}).getTime();
+    let x = setInterval(function () {
         // 오늘 날짜
         let now = new Date().getTime();
         // 종료일자에서 현재일자를 뺀 시간
@@ -717,96 +705,84 @@
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let s = Math.floor((distance % (1000 * 60)) / 1000);
         //HTML코드에 내용 삽입
-        if(distance <= 0){
+        if (distance <= 0) {
             document.getElementById("timer").innerHTML = "00:00:00";
-        } else{
-            if(d != 0){
-                document.getElementById("timer").innerHTML = d + "일&nbsp;" + h +":"+ m +":"+ s;
-            }else{
-                document.getElementById("timer").innerHTML = h +":"+ m +":"+ s;
+        } else {
+            if (d != 0) {
+                document.getElementById("timer").innerHTML = d + "일&nbsp;" + h + ":" + m + ":" + s;
+            } else {
+                document.getElementById("timer").innerHTML = h + ":" + m + ":" + s;
             }
         }
-    },1000);
+    }, 1000);
     </c:if>
 
-    $(function(){
+    $(function () {
         // 발송대기, 타겟추출 안내 영역 닫기 동작
-        $('.bottom_notice .close').on('click',function(){
+        $('.bottom_notice .close').on('click', function () {
             $(this).parents().removeClass('on');
         });
         // 발송 단가 확인 버튼
-        $('#btn_price').on('click',function(){
+        $('#btn_price').on('click', function () {
             $('.price_detail').toggleClass('on');
         });
 
-        $("#rejectSend").click(function(){
-            if($('#message').val().trim().length > 0){
+        $("#rejectSend").click(function () {
+            if ($('#message').val().trim().length > 0) {
                 $("#rejectForm").submit();
-            }else {
+            } else {
                 popup.popAlert("승인반려 사유를 작성해 주세요.");
             }
         });
 
-        $("#mailSend").click(function(){
-            if(!$("#failSubject").val()){
+        $("#mailSend").click(function () {
+            if (!$("#failSubject").val()) {
                 popup.popAlert("문의 메일 제목을 입력해주세요.");
                 return;
             }
-            if($("#failMsg").val().trim().length < 1){
+            if ($("#failMsg").val().trim().length < 1) {
                 popup.popAlert("문의 메일 내용을 입력해주세요.");
                 return;
             }
             $("#mailForm").submit();
         });
 
-        $("#mailCancel").click(function(){
+        $("#mailCancel").click(function () {
             popup.confirmAlertCallback("입력하신 문의 내용이 관리자에게 전송되지 않으며, 입력하신 내용은 저장되지 않습니다.", "mailCancelOk(this)");
         });
 
 
-        <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '02' or dto.pro_st eq '03'}">
-        for(tempIdx in barArr){
+        for (tempIdx in barArr) {
             campBarArr = barArr[tempIdx];
-            for(idx in campBarArr){
-                idx =parseInt(idx);
-                let bar = $(`[name='progress`+(idx+1)+`']`)[tempIdx]
-                campBarArr[idx].animate(Number($(bar).attr('data')));
-            }
-        }
-        </c:if>
+            for (idx in campBarArr) {
+                idx = parseInt(idx);
+                let bar = $(`[name='progress` + (idx + 1) + `']`)[tempIdx]
 
-        <c:if test="${dto.pro_st eq '04' or dto.pro_st eq '99'}">
-
-        for(tempIdx in barArr){
-            campBarArr = barArr[tempIdx];
-            for(idx in campBarArr){
-                idx =parseInt(idx);
-                let bar = $(`[name='progress`+(idx+1)+`']`)[tempIdx]
+                console.log(bar)
                 campBarArr[idx].animate(Number($(bar).attr('data')));
             }
         }
 
-        </c:if>
     });
 
     //조건보기 팝업 open
-    function detailPopup(){
+    function detailPopup() {
         check = true;
         $('#detailPopup').addClass('active');
     }
 
     //승인반려 팝업 open
-    function failPopup(){
+    function failPopup() {
         $('#failPopup').addClass('active');
     }
 
     //캠페인 발송실패 문의 팝업
-    function sendFailPopup(){
+    function sendFailPopup() {
         $('#sendFailPopup').addClass('active');
     }
 
-    function preView(cont_id){
-        const res = function(response){
+    function preView(cont_id) {
+        const res = function (response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $("#tpreview").html($("#preview", $doc).html());
             new Swiper("#preview_slideSwiper", {
@@ -822,107 +798,112 @@
             });
         };
         let data = [];
-        data.push({name : "cont_id" , value : cont_id});
+        data.push({name: "cont_id", value: cont_id});
         com_ajax.ajax('post', '/camp/sendCampContPreview.ajax', data, res);
     }
 
-    function chagneCamp(pro_id){
-        popup.confirmAlertCallback("승인요청 상태의 캠페인을 변경하시겠습니까?<br/>요청 시 승인 담당자에게 캠페인 변경으로 인한 승인요청 취소 안내 메일이 발송됩니다.", "chagneCampOk('"+ pro_id +"')");
+    function chagneCamp(pro_id) {
+        popup.confirmAlertCallback("승인요청 상태의 캠페인을 변경하시겠습니까?<br/>요청 시 승인 담당자에게 캠페인 변경으로 인한 승인요청 취소 안내 메일이 발송됩니다.", "chagneCampOk('" + pro_id + "')");
     }
 
-    function chagneCampOk(pro_id){
-        if(isProcess){
+    function chagneCampOk(pro_id) {
+        if (isProcess) {
             isProcess = false;
-            const res = function(response){
-                if(response){
+            const res = function (response) {
+                if (response) {
                     location.href = '/camp/sendSetting.mi?pid=' + pro_id;
-                }else{
+                } else {
                     popup.popAlert("시스템 오류로 인해 캠페인 변경이 불가 합니다.<br/>관리자에게 문의 바랍니다.");
                     isProcess = true;
                 }
             };
             let data = [];
-            data.push({name : "pro_id" , value : pro_id});
+            data.push({name: "pro_id", value: pro_id});
             com_ajax.ajax('post', '/camp/changeCamp.ajax', data, res);
         }
     }
 
-    function approved(pro_id){
-        if(check){
-            popup.confirmAlertCallback("캠페인 발송 조건을 모두 확인하셨습니까?<br/>승인 시 캠페인이 발송대기 상태로 변경됩니다", "approvedOk('"+ pro_id +"')");
-        }else{
+    function approved(pro_id) {
+        if (check) {
+            popup.confirmAlertCallback("캠페인 발송 조건을 모두 확인하셨습니까?<br/>승인 시 캠페인이 발송대기 상태로 변경됩니다", "approvedOk('" + pro_id + "')");
+        } else {
             popup.popAlert("캠페인 발송 조건보기 후 승인이 가능합니다.");
         }
     }
 
-    function approvedOk(pro_id){
-        if(isProcess){
+    function approvedOk(pro_id) {
+        if (isProcess) {
             isProcess = false;
-            const res = function(response){
-                if(response){
+            const res = function (response) {
+                if (response) {
                     popup.popAlertCallback("승인 되었습니다.", "window.location.reload();");
-                }else{
+                } else {
                     popup.popAlert("시스템 오류로 인해 캠페인 승인 불가 합니다.<br/>관리자에게 문의 바랍니다.");
                     isProcess = true;
                 }
             };
             let data = [];
-            data.push({name : "pro_id" , value : pro_id});
+            data.push({name: "pro_id", value: pro_id});
             com_ajax.ajax('post', '/camp/apprCamp.ajax', data, res);
         }
     }
 
     <c:if test="${dto.reg_id eq user.usr_id or dto.appr_id eq user.usr_id}">
-    function campCancel(pro_id){
+
+    function campCancel(pro_id) {
         <c:if test="${dto.reg_id eq user.usr_id}">
-        popup.confirmAlertCallback("승인 완료된 캠페인을 승인 취소 하시겠습니까?<br/>취소 시 승인 담당자에게 승인 취소 이메일이 발송되며, 승인대기 상태로 전환됩니다.", "campCancelOk('"+ pro_id +"', '0', this)");
+        popup.confirmAlertCallback("승인 완료된 캠페인을 승인 취소 하시겠습니까?<br/>취소 시 승인 담당자에게 승인 취소 이메일이 발송되며, 승인대기 상태로 전환됩니다.", "campCancelOk('" + pro_id + "', '0', this)");
         </c:if>
         <c:if test="${dto.appr_id eq user.usr_id}">
-        popup.confirmAlertCallback("승인 완료된 캠페인을 승인 취소 하시겠습니까?<br/>취소 시 캠페인 담당자에게 승인 취소 이메일이 발송되며, 승인대기 상태로 전환됩니다.", "campCancelOk('"+ pro_id +"', '1', this)");
+        popup.confirmAlertCallback("승인 완료된 캠페인을 승인 취소 하시겠습니까?<br/>취소 시 캠페인 담당자에게 승인 취소 이메일이 발송되며, 승인대기 상태로 전환됩니다.", "campCancelOk('" + pro_id + "', '1', this)");
         </c:if>
     }
 
-    function campCancelOk(pro_id, gbn, e){
-        if(isProcess){
+    function campCancelOk(pro_id, gbn, e) {
+        if (isProcess) {
             isProcess = false;
-            const res = function(response){
-                if(response.status){
+            const res = function (response) {
+                if (response.status) {
                     popup.popAlertCallback("캠페인이 취소 되었습니다.", "window.location.reload();");
-                }else{
+                } else {
                     popup.popAlert(response.message);
                     isProcess = true;
                 }
             };
             let data = [];
-            data.push({name : "pro_id" , value : pro_id});
-            data.push({name : "gbn" , value : gbn});
+            data.push({name: "pro_id", value: pro_id});
+            data.push({name: "gbn", value: gbn});
             com_ajax.ajax('post', '/camp/cancelCamp.ajax', data, res);
             popupClose(e);
         }
     }
+
     </c:if>
 
     <c:if test="${dto.pro_st eq '98'}">
-    function campDel(pro_id){
-        popup.confirmAlertCallback("해당 캠페인을 삭제 하시겠습니까?<br/>삭제 시 다시 복구가 불가능 합니다.", "campDelOk('"+ pro_id +"', this)");
+
+    function campDel(pro_id) {
+        popup.confirmAlertCallback("해당 캠페인을 삭제 하시겠습니까?<br/>삭제 시 다시 복구가 불가능 합니다.", "campDelOk('" + pro_id + "', this)");
     }
 
-    function campDelOk(pro_id){
-        if(isDelProcess){
+    function campDelOk(pro_id) {
+        if (isDelProcess) {
             isDelProcess = false;
-            const res = function(response){
-                if(response.status){
+            const res = function (response) {
+                if (response.status) {
                     popup.popAlertCallback("캠페인이 삭제 되었습니다.", "location.href = '/camp/st/sendStatus.mi';");
                 }
             }
             let data = [];
-            data.push({name : "pro_id" , value : pro_id});
+            data.push({name: "pro_id", value: pro_id});
             com_ajax.ajax('post', '/camp/delCamp.ajax', data, res);
         }
     }
+
     </c:if>
 
     <c:if test="${dto.pro_st eq '03' or dto.pro_st eq '04'}">
+
     function detailDown() {
         let frm = common.create_form('dummy', 'POST', '/camp/getSendHstDown.service', 'popup_down');
         common.add_input(frm, "pid", '${dto.pro_id}');
@@ -932,17 +913,18 @@
         frm.submit();
         frm.remove();
     }
-     </c:if>
 
-    function mailCancelOk(e){
+    </c:if>
+
+    function mailCancelOk(e) {
         $("#failSubject").val("");
         $("#failMsg").val("");
         popupClose(e);
         $("#sendFailPopup").removeClass('active');
     }
 
-    function isShowPrice(show){
-        if(show){
+    function isShowPrice(show) {
+        if (show) {
             $('#price_detail_div').show();
         } else {
             $('#price_detail_div').hide();
