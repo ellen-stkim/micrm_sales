@@ -24,7 +24,7 @@ class ReportServiceImpl : ReportService {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
-    private lateinit var sysSettingDao: SysSettingDao;
+    private lateinit var sysSettingDao: SysSettingDao
 
     @Autowired
     private lateinit var campaignDao: CampaignDao

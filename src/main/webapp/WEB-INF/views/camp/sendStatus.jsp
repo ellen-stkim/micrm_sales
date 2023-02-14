@@ -102,7 +102,8 @@
                                     <th>구분</th>
                                     <th>캠페인 명</th>
                                     <th>시작 일시</th>
-                                    <th>최근 발송 일시</th>
+                                    <th>최근 발송 일시<br>
+                                        <p style="font-size: 5px;padding: 2px 0">※발송 1일 이후 반영</p></th>
                                     <th>타겟 수</th>
                                     <th>실 발송 수<br>
                                     <p style="font-size: 5px;padding: 2px 0">※발송 1일 이후 집계</p></th>
