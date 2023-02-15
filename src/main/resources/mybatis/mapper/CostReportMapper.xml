@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.CostReportMapper">
+	<cache />
+
+	<select id="selSendCostLst" parameterType="SendCostDto"  resultType="SendCostDto">
+		/*SELECT hst.MSG_TP
+			, date_format(hst.send_req_day, '%m') AS mon
+			, Sum(hst.send_cnt) AS total_cnt
+			, Sum(cd.cd_desc * hst.send_cnt) AS total_cost
+		FROM   tblmire_send_hst AS hst
+			LEFT JOIN tblmi_comm_cd AS cd
+				ON cd.grp_id = 'API_PRICE'
+					AND cd.cd_id = hst.usr_grp_cd
+					AND cd.cd_val = hst.msg_tp
+		WHERE  hst.send_rst = 0
+			AND hst.usr_grp_cd = '05'
+			AND hst.send_req_day <![CDATA[ > ]]> '2023-01-20'
+			AND hst.send_req_day <![CDATA[ < ]]> '2023-02-20'
+		GROUP BY mon , hst.msg_tp*/
+		SELECT prg.PRO_ID
+			 , prg.PRO_NM
+			 , prg.MIN_START_DT
+			 , prg.REG_ID
+			 , hst.MSG_TP
+			 , date_format(hst.send_req_day, '%m') AS send_mon
+			 , Sum(hst.send_cnt) AS total_cnt
+			 , Sum(cd.cd_desc * hst.send_cnt) AS total_cost
+		FROM   tblmire_send_hst AS hst
+				   LEFT JOIN tblmicp_program AS prg
+							 ON prg.PRO_ID = hst.PRO_ID
+				   LEFT JOIN tblmi_comm_cd AS cd
+							 ON cd.grp_id = 'API_PRICE'
+								 AND cd.cd_id = hst.usr_grp_cd
+								 AND cd.cd_val = hst.msg_tp
+		WHERE  hst.send_rst = 0
+		  AND hst.usr_grp_cd = '05'
+		  AND hst.send_req_day <![CDATA[ > ]]> '2023-01-20'
+		  AND hst.send_req_day <![CDATA[ < ]]> '2023-02-20'
+		GROUP  BY pro_id,send_mon , hst.msg_tp
+	</select>
+
+
+	<!-- <select id="selPrgSendCostLst" parameterType="SendCostDto"  resultType="SendCostDto">
+		SELECT prg.PRO_ID
+			 , prg.PRO_NM
+			 , prg.MIN_START_DT
+			 , prg.REG_ID
+			 , hst.MSG_TP
+			 , date_format(hst.send_req_day, '%m') AS mon
+			 , Sum(hst.send_cnt) AS total_cnt
+			 , Sum(cd.cd_desc * hst.send_cnt) AS total_cost
+		FROM   tblmire_send_hst AS hst
+				   LEFT JOIN tblmicp_program AS prg
+							 ON prg.PRO_ID = hst.PRO_ID
+				   LEFT JOIN tblmi_comm_cd AS cd
+							 ON cd.grp_id = 'API_PRICE'
+								 AND cd.cd_id = hst.usr_grp_cd
+								 AND cd.cd_val = hst.msg_tp
+		WHERE  hst.send_rst = 0
+		  AND hst.usr_grp_cd = '05'
+		  AND hst.send_req_day <![CDATA[ > ]]> '2023-01-20'
+		  AND hst.send_req_day <![CDATA[ < ]]> '2023-02-20'
+		GROUP  BY pro_id,mon , hst.msg_tp
+	</select>-->
+
+
+</mapper>
+
+
+
+
+

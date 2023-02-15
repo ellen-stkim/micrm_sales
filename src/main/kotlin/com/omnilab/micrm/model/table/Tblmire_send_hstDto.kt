@@ -26,6 +26,10 @@ open class Tblmire_send_hstDto {
 
     constructor()
 
+    constructor(usr_grp_cd: String?) {
+        this.usr_grp_cd = usr_grp_cd
+    }
+
     constructor(seq: Int?, usr_grp_cd: String?) {
         this.seq = seq
         this.usr_grp_cd = usr_grp_cd

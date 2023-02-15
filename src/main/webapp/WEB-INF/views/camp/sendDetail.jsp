@@ -343,7 +343,7 @@
                                         </td>
                                         <td>
                                             <span class="en_font"><fmt:formatNumber
-                                                    value="${g.send_cost}" pattern="#,###,###,##0"/> </span>원
+                                                    value="${g.send_cost}" pattern="#,###,###,##0.0"/> </span>원
                                         </td>
                                     </tr>
                                 </c:forEach>

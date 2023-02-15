@@ -13,7 +13,6 @@ function drawChart(targetDiv, chartType, inputData, column, options) {
 		case '03' : chartType = 'line'; break;
 
 	}
-	//console.log(options);
 	/* default Options*/
 	var defaultOptions = {
 			events: ['click', 'mousemove'],
