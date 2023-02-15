@@ -10,6 +10,7 @@ class Campaign_searchDto : Tblmicp_campaignDto() {
     var team_nm: String? = null
 
     var avo_nm: String? = null
+    var send_cost: Int? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
