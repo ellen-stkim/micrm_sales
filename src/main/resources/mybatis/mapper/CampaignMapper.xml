@@ -347,15 +347,26 @@
 	</select>
 
 	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
-		SELECT camp.* , set_cd.list_nm AS team_nm
-		,cont.avo_nm as avo_nm
+		SELECT camp.*
+			, set_cd.list_nm 	AS team_nm
+			, cont.avo_nm 		AS avo_nm
+			, sum(cd.CD_DESC * hst.send_cnt) AS send_cost
 		FROM tblmicp_campaign AS camp
-			LEFT JOIN tblmicp_cont_mst AS cont ON cont.seq = camp.CONT_ID
+			LEFT JOIN tblmicp_cont_mst AS cont
+			    ON cont.seq = camp.CONT_ID
 			LEFT JOIN tblmi_set_lst AS set_cd
 				ON set_cd.list_tp_id = 'CH05'
 				AND set_cd.list_dt_id = 'TEAM01'
 				AND cont.team_cd = set_cd.list_val
 				AND camp.usr_grp_cd = set_cd.usr_grp_cd
+			LEFT JOIN tblmire_send_hst AS hst
+				ON camp.SEQ = hst.CAMP_ID
+					AND camp.PRO_ID = hst.PRO_ID
+					AND send_rst = '0'
+			LEFT JOIN tblmi_comm_cd AS cd
+				ON cd.GRP_ID = 'API_PRICE'
+					AND cd.CD_ID = hst.USR_GRP_CD
+					AND cd.cd_val = hst.msg_tp
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				and camp.seq = #{seq}
@@ -376,6 +387,7 @@
 				and camp.start_dt <![CDATA[ <#{end_dt} ]]>
 			</if>
 		</where>
+		group by camp.seq
 	</select>
 
 	<select id="sel_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" resultType="Contents_lstDto">

@@ -98,6 +98,7 @@
 				and PAR_ID = #{par_id}
 			</if>
 		</where>
+		order by cd_sn
 	</select>
 
 
