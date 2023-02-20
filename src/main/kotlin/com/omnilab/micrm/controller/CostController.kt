@@ -1,17 +1,10 @@
 package com.omnilab.micrm.controller
 
-import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SearchSendCostDto
-import com.omnilab.micrm.model.SendCostDto
-import com.omnilab.micrm.repository.ContentDao
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.CostReportService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
@@ -52,6 +45,15 @@ class CostController {
 
         view.addObject("programMap",map["programMap"])
         view.addObject("page",map["page"])
+        return view
+    }
+
+    @PostMapping("/costReportDown.service")
+    fun costReportDown(@ModelAttribute dto: SearchSendCostDto): ModelAndView {
+        val map = costReportService.costReportDownloadExcel(dto)
+        val view = ModelAndView("ExcelDownView")
+        view.addObject("name", map["name"])
+        view.addObject("book", map["book"])
         return view
     }
 
