@@ -32,7 +32,7 @@ class CostReportServiceImpl : CostReportService {
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val searchDto = setDateDefault(dto)   // 조회 날짜 체크 후 기본값 설정
 
-        val totalLst :List<SendCostDto>  = costReportDao.selSendCostLst(searchDto)
+        val totalLst : List<SendCostDto> = costReportDao.selSendCostLst(searchDto)
 
         // 발송 건수, 비용 월별 합계
         val groupMap = totalLst.stream().collect(groupingBy(SendCostDto::send_mon))

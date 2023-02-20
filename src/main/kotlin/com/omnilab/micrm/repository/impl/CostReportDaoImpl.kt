@@ -26,7 +26,7 @@ class CostReportDaoImpl : CostReportDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun selSendCostLst(hstDto: SendCostDto?): MutableList<SendCostDto> {
+    override fun selSendCostLst(hstDto: SearchSendCostDto?): MutableList<SendCostDto> {
 
         return sqlSession.selectList("selSendCostLst", hstDto)
     }
