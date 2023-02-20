@@ -10,7 +10,7 @@ open class SendCostDto : Tblmire_send_hstDto {
     var pro_nm : String? = null
     var prg_start_dt : String? = null
     var req_id : String? = null
-    var total_cnt : Int?= null
+    var total_cnt : Long?= null
     var total_cost : BigDecimal?= null
     var send_mon : String?= null
 

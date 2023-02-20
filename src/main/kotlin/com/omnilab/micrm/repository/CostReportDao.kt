@@ -7,4 +7,6 @@ interface CostReportDao {
     fun selSendCostLst(hstDto: SearchSendCostDto?): List<SendCostDto>
     fun selPrgSendCostLst(hstDto: SendCostDto?): List<SendCostDto>
     fun selPrgSendCostLstCnt(searchDto: SearchSendCostDto?): Int
+    fun selDailySendCostLst(searchDto: SearchSendCostDto): List<SendCostDto>
+    fun selTotalSendCost(searchDto: SearchSendCostDto): List<SendCostDto>
 }
