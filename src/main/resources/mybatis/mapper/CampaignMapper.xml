@@ -852,13 +852,13 @@
 
 	<select id="getProgramCnt" resultType="Map" parameterType="Program_SearchDto">
 		SELECT COUNT(*)	 AS cnt 			-- 토탈
-		, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
-		, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
-		, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
-		, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
-		, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
-		, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
-		, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
+			, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
+			, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
+			, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
+			, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
+			, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
+			, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
+			, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
 		FROM tblmicp_program as prg
 		LEFT JOIN tblmi_comm_cd AS proStCd ON (proStCd.cd_id = prg.pro_st and proStCd.grp_id = 'COMST')
 		LEFT JOIN tblmi_comm_cd AS proTpCd ON (proTpCd.cd_id = prg.pro_tp and proTpCd.grp_id = 'PROTP')
