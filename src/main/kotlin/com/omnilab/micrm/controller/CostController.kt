@@ -1,6 +1,8 @@
 package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.model.Program_SearchDto
+import com.omnilab.micrm.model.SearchSendCostDto
+import com.omnilab.micrm.model.SendCostDto
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.CostReportService
@@ -28,18 +30,28 @@ class CostController {
     private lateinit var costReportService: CostReportService
 
     @GetMapping("/costDetail.mi")
-    fun costDetail(@ModelAttribute dto: Program_SearchDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun costDetail(@ModelAttribute dto: SearchSendCostDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cost/costDetail")
-        val map = costReportService.getCostReport()
+
+        val map = costReportService.getCostReport(dto)
+        view.addObject("startDt",map["startDt"])
+        view.addObject("endDt",map["endDt"])
+        view.addObject("jsonMap",map["jsonMap"])
+        view.addObject("sendMap",map["sendMap"])
         view.addObject("totalMap",map["totalMap"])
+        view.addObject("typeTotalMap",map["typeTotalMap"])
         view.addObject("programMap",map["programMap"])
+        view.addObject("page",map["page"])
         return view
     }
 
-    @ResponseBody
-    @GetMapping("/costDetail.ajax")
-    fun costDetailAjax(@ModelAttribute dto: Program_SearchDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    @GetMapping("/programList.ajax")
+    fun costDetailAjax(@ModelAttribute dto: SearchSendCostDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cost/costDetail")
+        val map = costReportService.getPrgCostReport(dto)
+
+        view.addObject("programMap",map["programMap"])
+        view.addObject("page",map["page"])
         return view
     }
 

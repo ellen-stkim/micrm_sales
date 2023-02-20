@@ -5,6 +5,7 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.table.edm.Camp_send_edm_tableDto
 import com.omnilab.micrm.model.Contents_lstDto
+import com.omnilab.micrm.model.SearchSendCostDto
 import com.omnilab.micrm.model.SendCostDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
@@ -28,6 +29,14 @@ class CostReportDaoImpl : CostReportDao {
     override fun selSendCostLst(hstDto: SendCostDto?): MutableList<SendCostDto> {
 
         return sqlSession.selectList("selSendCostLst", hstDto)
+    }
+
+    override fun selPrgSendCostLst(hstDto: SendCostDto?): MutableList<SendCostDto> {
+        return sqlSession.selectList("selPrgSendCostLst", hstDto)
+    }
+
+    override fun selPrgSendCostLstCnt(searchDto: SearchSendCostDto?): Int {
+        return sqlSession.selectOne("selPrgSendCostLstCnt", searchDto)
     }
 
 

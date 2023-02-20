@@ -151,7 +151,7 @@
                                                    </span>
                                                     <span class="percents en_font">(<fmt:formatNumber type="percent"
                                                                                                       pattern="0.00%"
-                                                                                                      value="${openCnt[camp_id].cnt/g.send_cnt}"/>)</span>
+                                                                                                      value="${!empty openCnt[camp_id].cnt ? openCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                                                      </span>
                                                     <span class="percents en_font">(<fmt:formatNumber type="percent"
                                                                                                       pattern="0.00%"
-                                                                                                      value="${trackCnt[camp_id].cnt/g.send_cnt}"/>)</span>
+                                                                                                      value="${!empty trackCnt[camp_id].cnt ? trackCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>

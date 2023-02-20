@@ -5,67 +5,163 @@
 <mapper namespace="mybatis.mapper.CostReportMapper">
 	<cache />
 
-	<select id="selSendCostLst" parameterType="SendCostDto"  resultType="SendCostDto">
-		/*SELECT hst.MSG_TP
-			, date_format(hst.send_req_day, '%m') AS mon
+	<select id="selSendCostLst" parameterType="SearchSendCostDto"  resultType="SendCostDto">
+		SELECT hst.MSG_TP
+			, date_format(hst.send_req_day, '%Y-%m') AS send_mon
 			, Sum(hst.send_cnt) AS total_cnt
-			, Sum(cd.cd_desc * hst.send_cnt) AS total_cost
+			, SUM( CAST((cd.cd_desc * hst.send_cnt) AS DECIMAL(12,1))) AS total_cost
+			, team.LIST_NM
 		FROM   tblmire_send_hst AS hst
+			LEFT JOIN tblmicp_program AS prg
+				ON prg.PRO_ID = hst.PRO_ID
+			LEFT JOIN tblmicp_campaign AS camp
+				ON camp.PRO_ID = hst.PRO_ID
+					AND camp.seq = hst.camp_id
+			LEFT JOIN tblmi_set_lst AS team
+				ON team.LIST_TP_ID = 'CH05'
+					AND team.LIST_DT_ID = 'TEAM01'
+					AND team.LIST_VAL = camp.TEAM_CD
+					AND team.USR_GRP_CD = camp.USR_GRP_CD
 			LEFT JOIN tblmi_comm_cd AS cd
 				ON cd.grp_id = 'API_PRICE'
 					AND cd.cd_id = hst.usr_grp_cd
 					AND cd.cd_val = hst.msg_tp
-		WHERE  hst.send_rst = 0
-			AND hst.usr_grp_cd = '05'
-			AND hst.send_req_day <![CDATA[ > ]]> '2023-01-20'
-			AND hst.send_req_day <![CDATA[ < ]]> '2023-02-20'
-		GROUP BY mon , hst.msg_tp*/
-		SELECT prg.PRO_ID
-			 , prg.PRO_NM
-			 , prg.MIN_START_DT
-			 , prg.REG_ID
-			 , hst.MSG_TP
-			 , date_format(hst.send_req_day, '%m') AS send_mon
-			 , Sum(hst.send_cnt) AS total_cnt
-			 , Sum(cd.cd_desc * hst.send_cnt) AS total_cost
-		FROM   tblmire_send_hst AS hst
-				   LEFT JOIN tblmicp_program AS prg
-							 ON prg.PRO_ID = hst.PRO_ID
-				   LEFT JOIN tblmi_comm_cd AS cd
-							 ON cd.grp_id = 'API_PRICE'
-								 AND cd.cd_id = hst.usr_grp_cd
-								 AND cd.cd_val = hst.msg_tp
-		WHERE  hst.send_rst = 0
-		  AND hst.usr_grp_cd = '05'
-		  AND hst.send_req_day <![CDATA[ > ]]> '2023-01-20'
-		  AND hst.send_req_day <![CDATA[ < ]]> '2023-02-20'
-		GROUP  BY pro_id,send_mon , hst.msg_tp
+		<where>
+			hst.send_rst = 0
+			AND hst.usr_grp_cd = #{usr_grp_cd}
+			AND hst.send_req_day IS NOT null
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+				AND prg.pro_nm like concat('%', #{pro_nm}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_nm)">
+				AND team.LIST_NM like concat('%', #{team_nm}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+				AND hst.send_req_day <![CDATA[ >= ]]> #{start_dt}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
+			</if>
+		</where>
+		GROUP BY send_mon , hst.msg_tp
+		ORDER BY hst.send_req_day,hst.pro_id
 	</select>
 
 
-	<!-- <select id="selPrgSendCostLst" parameterType="SendCostDto"  resultType="SendCostDto">
-		SELECT prg.PRO_ID
+	 <select id="selPrgSendCostLst" parameterType="SearchSendCostDto"  resultType="SendCostDto">
+		 WITH T(pro_id) AS (
+			 SELECT
+			     distinct prg.pro_id AS pro_id
+			 FROM tblmire_send_hst AS hst
+			 	 LEFT JOIN tblmicp_program AS prg
+			 		ON prg.PRO_ID = hst.PRO_ID
+				 LEFT JOIN tblmicp_campaign AS camp
+					 ON camp.PRO_ID = hst.PRO_ID
+						 AND camp.seq = hst.camp_id
+				 LEFT JOIN tblmi_set_lst AS team
+					 ON team.LIST_TP_ID = 'CH05'
+						 AND team.LIST_DT_ID = 'TEAM01'
+						 AND team.LIST_VAL = camp.TEAM_CD
+						 AND team.USR_GRP_CD = camp.USR_GRP_CD
+			 <where>
+				 hst.send_rst = 0
+				 AND hst.usr_grp_cd = #{usr_grp_cd}
+				 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+					 AND prg.pro_nm like concat('%', #{pro_nm}, '%')
+				 </if>
+				 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_nm)">
+					 AND team.LIST_NM like concat('%', #{team_nm}, '%')
+				 </if>
+				 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+					 AND hst.send_req_day <![CDATA[ >= ]]> #{start_dt}
+				 </if>
+				 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+					 AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
+				 </if>
+			 </where>
+			 GROUP BY prg.pro_id, hst.msg_tp
+		 	 ORDER BY hst.send_req_day,hst.pro_id
+			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+				 LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+			 </if>
+		 )
+		 SELECT prg.PRO_ID
 			 , prg.PRO_NM
-			 , prg.MIN_START_DT
-			 , prg.REG_ID
+			 , prg.MIN_START_DT as prg_start_dt
+			 , prg.REG_ID as req_id
 			 , hst.MSG_TP
-			 , date_format(hst.send_req_day, '%m') AS mon
 			 , Sum(hst.send_cnt) AS total_cnt
-			 , Sum(cd.cd_desc * hst.send_cnt) AS total_cost
-		FROM   tblmire_send_hst AS hst
-				   LEFT JOIN tblmicp_program AS prg
-							 ON prg.PRO_ID = hst.PRO_ID
-				   LEFT JOIN tblmi_comm_cd AS cd
-							 ON cd.grp_id = 'API_PRICE'
-								 AND cd.cd_id = hst.usr_grp_cd
-								 AND cd.cd_val = hst.msg_tp
-		WHERE  hst.send_rst = 0
-		  AND hst.usr_grp_cd = '05'
-		  AND hst.send_req_day <![CDATA[ > ]]> '2023-01-20'
-		  AND hst.send_req_day <![CDATA[ < ]]> '2023-02-20'
-		GROUP  BY pro_id,mon , hst.msg_tp
-	</select>-->
+			 , SUM( CAST((cd.cd_desc * hst.send_cnt) AS DECIMAL(12,1))) AS total_cost
+			 , team.LIST_NM as  team_nm
+		 FROM T
+			 INNER JOIN tblmire_send_hst AS hst
+			 	ON hst.pro_id =T.pro_id
+		 	 LEFT JOIN tblmicp_program AS prg
+		         ON prg.PRO_ID = hst.PRO_ID
+		     LEFT JOIN tblmi_comm_cd AS cd
+		         ON cd.grp_id = 'API_PRICE'
+		                AND cd.cd_id = hst.usr_grp_cd
+		                AND cd.cd_val = hst.msg_tp
+		     LEFT JOIN tblmicp_campaign AS camp
+		         ON camp.PRO_ID = hst.PRO_ID
+		                AND camp.seq = hst.camp_id
+		     LEFT JOIN tblmi_set_lst AS team
+		         ON team.LIST_TP_ID = 'CH05'
+		                AND team.LIST_DT_ID = 'TEAM01'
+		                AND team.LIST_VAL = camp.TEAM_CD
+						 AND team.USR_GRP_CD = camp.USR_GRP_CD
+		 <where>
+		 	 hst.send_rst = 0
+		 	 AND hst.usr_grp_cd = #{usr_grp_cd}
+			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+				AND prg.pro_nm like concat('%', #{pro_nm}, '%')
+			 </if>
+			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_nm)">
+				AND team.LIST_NM like concat('%', #{team_nm}, '%')
+			 </if>
+			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+				 AND hst.send_req_day <![CDATA[ >= ]]> #{start_dt}
+			 </if>
+			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				 AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
+			 </if>
+		</where>
+		GROUP BY prg.pro_id, hst.msg_tp
+	</select>
 
+	<select id="selPrgSendCostLstCnt" parameterType="SearchSendCostDto"  resultType="Integer">
+		SELECT COUNT(a.pro_id)
+		FROM   (SELECT hst.pro_id
+			FROM tblmire_send_hst AS hst
+				LEFT JOIN tblmicp_program AS prg
+					ON prg.PRO_ID = hst.PRO_ID
+				LEFT JOIN tblmicp_campaign AS camp
+					ON camp.PRO_ID = hst.PRO_ID
+						AND camp.seq = hst.camp_id
+				LEFT JOIN tblmi_set_lst AS team
+					ON team.LIST_TP_ID = 'CH05'
+						AND team.LIST_DT_ID = 'TEAM01'
+						AND team.LIST_VAL = camp.TEAM_CD
+						AND team.USR_GRP_CD = camp.USR_GRP_CD
+			<where>
+				hst.send_rst = 0
+				AND hst.usr_grp_cd = #{usr_grp_cd}
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+					AND prg.pro_nm like concat('%', #{pro_nm}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(team_nm)">
+					AND team.LIST_NM like concat('%', #{team_nm}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(start_dt)">
+					AND hst.send_req_day <![CDATA[ >= ]]> #{start_dt}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+					AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
+				</if>
+			</where>
+			GROUP BY prg.pro_id
+		) as a
+	</select>
 
 </mapper>
 
