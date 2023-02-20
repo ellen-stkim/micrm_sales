@@ -1,0 +1,493 @@
+<html>
+	<head>
+		<title>title</title>
+		<link rel="stylesheet" href="../../css/style.css">
+		<link rel="stylesheet" href="../../css/jquery-ui.css">
+		<script src="../../js/jquery-3.6.0.min.js"></script>
+		<script src="../../js/jquery-ui.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	</head>
+	<body>
+		<div class="contents">
+			<div class="contentsDet">
+				<div class="settingDet">
+					<div class="chart-cover">
+						<canvas id="chartCover" style="width:100%; height:100%;"></canvas>
+					</div>
+					
+					<!-- 발송건수 테이블 -->
+					<div class="display-table float-clear active" id="graph-table">
+						<div class="thead">
+							<div class="title1">기간</div>
+							<div class="cont-wrap float-clear">
+								<div class="title2">발송건수</div>
+								<div class="sub-title-wrap">
+									<div class="li">알림톡</div>
+									<div class="li">친구톡(txt)</div>
+									<div class="li">친구톡(img)</div>
+									<div class="li">친구톡(wid)</div>
+									<div class="li">RCS SMS</div>
+									<div class="li">RCS LMS</div>
+									<div class="li">RCS MMS</div>
+									<div class="li">RCS 템플릿</div>
+									<div class="li">SMS</div>
+									<div class="li">LMS</div>
+									<div class="li">MMS</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tbody float-clear">
+							<div class="data">
+								<div class="title">Jan</div>
+								<div class="data-wrap">
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+								</div>
+							</div>
+							<div class="data">
+								<div class="title">Jan</div>
+								<div class="data-wrap">
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tfoot">
+							<div class="title">Total</div>
+							<div class="total-wrap">
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+							</div>
+						</div>
+
+						<div class="bfoot float-clear">
+							<div class="title1">Total</div>
+							<div class="bTotal-wrap float-clear">
+								<div class="li">110</div>
+								<div class="li">110</div>
+							</div>
+							<div class="all-sum">-</div>
+						</div>
+					</div>
+
+					<!-- 발송금액 테이블 -->
+					<div class="display-table float-clear no-top-b active" id="graph-table2">
+						<div class="thead">
+							<div class="cont-wrap float-clear">
+								<div class="title2">발송금액</div>
+								<div class="sub-title-wrap">
+									<div class="li">알림톡</div>
+									<div class="li">친구톡(txt)</div>
+									<div class="li">친구톡(img)</div>
+									<div class="li">친구톡(wid)</div>
+									<div class="li">RCS SMS</div>
+									<div class="li">RCS LMS</div>
+									<div class="li">RCS MMS</div>
+									<div class="li">RCS 템플릿</div>
+									<div class="li">SMS</div>
+									<div class="li">LMS</div>
+									<div class="li">MMS</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tbody float-clear">
+							<div class="data">
+								<div class="data-wrap">
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+								</div>
+							</div>
+							<div class="data">
+								<div class="data-wrap">
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+									<div class="li">10</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tfoot">
+							<div class="total-wrap">
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+								<div class="li">20</div>
+							</div>
+						</div>
+
+						<div class="bfoot float-clear">
+							<div class="title1">Total</div>
+							<div class="bTotal-wrap float-clear">
+								<div class="li">110</div>
+								<div class="li">110</div>
+							</div>
+							<div class="all-sum">-</div>
+						</div>
+					</div>
+
+					<div class="table-tab" id="table-tab">
+						<div class="open none">
+							<span>표 열기</span>
+							<img src="./image/ico_pager_next1.png" alt="">
+						</div>
+						<div class="close">
+							<span>표 닫기</span>
+							<img src="./image/ico_pager_next1.png" alt="">
+						</div>
+					</div>
+					<!-- SEARCH AREA START-->
+					<div class="simple-search-wrap">
+						<input type="text" class="date-pick-box" id="from" placeholder="시작날짜" autocomplete="off"/>
+						<span class="hyphen">-</span>
+						<input type="text" class="date-pick-box" id="to" placeholder="종료날짜" autocomplete="off"/>
+						<div class="select-wrap" id="customSelectWrap">
+							<div class="customSelect" id="customSelect">
+								<div class="value">기준선택</div>
+							</div>
+							<ul class="option">
+								<li data="data1">캠페인명</li>
+								<li data="data2">발송자</li>
+							</ul>
+						</div>
+						<input type="text" class="search-text-box" placeholder="검색어입력"/>
+						<button class="gray-search-btn"></button>
+					</div>
+					<!-- SEARCH AREA END-->
+					<div class="single-table-cover">
+						<table class="single-table">
+							<colgroup>
+								<col style="width:10%;" span="3">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>캠페인 명</th>
+									<th>발송일</th>
+									<th>발송자</th>
+									<th>발송건수</th>
+									<th>발송비용</th>
+								</tr>
+							</thead>
+							<tbody id="listBody">
+								<tr>
+									<td>프로그램명</td>
+									<td>2023-02-03</td>
+									<td>Lucas</td>
+									<td class="table-inner">
+										<table class="table-inner-count">
+											<colgroup>
+												<col style="width:25%;" span="4">
+											</colgroup>
+											<thead>
+												<tr>
+													<th>알림톡</th>
+													<th>친구톡(txt)</th>
+													<th>친구톡(img)</th>
+													<th>친구톡(wid)</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+												</tr>
+											</tbody>
+										</table>
+										<table class="table-inner-count">
+											<colgroup>
+												<col style="width:25%;" span="4">
+											</colgroup>
+											<thead>
+												<tr>
+													<th>SMS/RCS<br>SMS</th>
+													<th>LMS/RCS<br>LMS</th>
+													<th>MMS/RCS<br>MMS</th>
+													<th>RCS 템플릿</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+												</tr>
+											</tbody>
+										</table>
+										<p class="sms-result total" >Total : 1110</p>
+									</td>
+									<td class="table-inner">
+										<table class="table-inner-count">
+											<colgroup>
+												<col style="width:25%;" span="4">
+											</colgroup>
+											<thead>
+												<tr>
+													<th>알림톡</th>
+													<th>친구톡(txt)</th>
+													<th>친구톡(img)</th>
+													<th>친구톡(wid)</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+												</tr>
+											</tbody>
+										</table>
+										<table class="table-inner-count">
+											<colgroup>
+												<col style="width:25%;" span="4">
+											</colgroup>
+											<thead>
+												<tr>
+													<th>SMS/RCS<br>SMS</th>
+													<th>LMS/RCS<br>LMS</th>
+													<th>MMS/RCS<br>MMS</th>
+													<th>RCS 템플릿</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+													<td>10</td>
+												</tr>
+											</tbody>
+										</table>
+										<p class="sms-result total" >Total : 1110</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<content tag="script">
+	<script type="text/javascript">
+		$(function(){
+			/* 테이블 크기 동적 구성 */
+			let table = document.getElementById('graph-table');
+			let table2 = document.getElementById('graph-table2');
+			
+			// 테이블 높이
+			let liLen = table.querySelectorAll(".sub-title-wrap .li").length;
+			table.style.height = 72 + (36 * liLen) + 'px';
+			
+			let liLen2 = table2.querySelectorAll(".sub-title-wrap .li").length;
+			table2.style.height = 36 + (36 * liLen2) + 'px';
+
+			// 발송건수/발송금액 타이틀 높이
+			let ttl = table.querySelector(".title2");
+			let ttl2 = table2.querySelector(".title2");
+			
+			ttl.style.height = (36 * liLen) + 'px';
+			ttl.style.lineHeight = (36 * liLen) + 'px';
+			ttl2.style.height = (36 * liLen2) + 'px';
+			ttl2.style.lineHeight = (36 * liLen2) + 'px';
+
+			// 라벨 개수만큼 데이터 칸 넓이
+			let dtWrap = table.querySelectorAll(".tbody .data");
+			let ttList = table.querySelectorAll(".bfoot .li");
+			for(let i = 0; i < dtWrap.length; i++){
+				dtWrap[i].style.width = (100 / dtWrap.length) + '%';
+				ttList[i].style.width = (100 / dtWrap.length) + '%';
+			}
+
+			let dtWrap2 = table2.querySelectorAll(".tbody .data");
+			let ttList2 = table2.querySelectorAll(".bfoot .li");
+			for(let i = 0; i < dtWrap2.length; i++){
+				dtWrap2[i].style.width = (100 / dtWrap2.length) + '%';
+				ttList2[i].style.width = (100 / dtWrap2.length) + '%';
+			}
+
+			
+			$.datepicker.setDefaults({
+				dateFormat: 'yy-mm-dd'
+				, monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+				, showMonthAfterYear: true
+				, yearSuffix: "."
+			});
+
+			//기간 검색 시작일
+			$('#from').datepicker({
+				onSelect: function (selected) {
+					$('#to').datepicker("option", "minDate", selected);
+				}
+			});
+			//기간 검색 종료일
+			$('#to').datepicker({
+				onSelect: function (selected) {
+					$('#from').datepicker("option", "maxDate", selected);
+				}
+			});
+
+			// custom Select Box
+			$("#customSelect").on('click', function(){
+				$("#customSelectWrap ul").slideDown();
+			});
+
+			$("#customSelectWrap ul li").on('click',function(){
+				let thisData = $(this).attr('data');
+				let thisVal = $(this).text();
+				$("#customSelect .value").text(thisVal);
+				$("#customSelect .value").css("color", "#222");
+				$("#customSelectWrap ul").slideUp();
+			});
+
+			// hide table
+			let tab = document.getElementById('table-tab').children;
+			Array.from(tab).forEach((item, idx) => {
+				item.addEventListener('click', () => {
+					for(let i = 0; i < tab.length; i++){
+						tab[i].classList.remove('none');
+					}
+					tab[idx].classList.add('none');
+
+					if(idx == 0){
+						table.classList.add('active');
+						table2.classList.add('active');
+					} else if(idx == 1){
+						table.classList.remove('active');
+						table2.classList.remove('active');
+					}
+				})
+			})
+
+
+			// 그래프 설정
+			var chartArea = document.getElementById('chartCover').getContext('2d');
+			var myChart = new Chart(chartArea, {
+				type: 'bar',
+				data: {
+					labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
+					datasets: [
+						{
+						label: '알림톡',
+						data: [50, 60, 50, 40, 50, 70, 80, 60],
+						backgroundColor: 'rgba(62, 98, 156, 1)'
+						},
+						{
+						label: '친구톡(txt)',
+						data: [40, 60, 50, 30, 40, 50, 50, 40],
+						backgroundColor: 'rgba(97, 140, 211, 1)'
+						},
+						{
+						label: '친구톡(img)',
+						data: [10, 60, 30, 40, 50, 10, 20, 10],
+						backgroundColor: 'rgba(118, 174, 221, 1)'
+						},
+						{
+						label: '친구톡(wid)',
+						data: [10, 60, 30, 40, 50, 10, 20, 10],
+						backgroundColor: 'rgba(118, 204, 221, 1)'
+						},
+						{
+						label: 'SMS/RCS SMS',
+						data: [10, 60, 30, 40, 50, 10, 20, 10],
+						backgroundColor: 'rgba(75, 179, 198, 1)'
+						},
+						{
+						label: 'LMS/RCS LMS',
+						data: [10, 60, 30, 40, 50, 10, 20, 10],
+						backgroundColor: 'rgba(85, 218, 172, 1)'
+						},
+						{
+						label: 'MMS/RCS MMS',
+						data: [10, 60, 30, 40, 50, 10, 20, 10],
+						backgroundColor: 'rgba(243, 137, 66, 1)'
+						},
+						{
+						label: 'RCS 템플릿',
+						data: [20, 80, 60, 10, 20, 20, 30, 10],
+						backgroundColor: 'rgba(255, 164, 68, 1)'
+						},
+					]
+				},
+				options: {
+					responsive: false,
+					scales: {
+						x: {
+							stacked: true,
+							grid: {
+								color: 'rgba(244, 244, 244, 1)'
+							}
+						},
+						y: {
+							stacked: true,
+							beginAtZero: true,
+							grid: {
+								display: false
+							}
+						}
+					}
+				}
+			});
+
+		});
+		
+	</script>
+	</content>
+</html>

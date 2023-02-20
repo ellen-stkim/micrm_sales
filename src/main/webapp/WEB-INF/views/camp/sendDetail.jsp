@@ -151,7 +151,7 @@
                                                    </span>
                                                     <span class="percents en_font">(<fmt:formatNumber type="percent"
                                                                                                       pattern="0.00%"
-                                                                                                      value="${openCnt[camp_id].cnt/g.send_cnt}"/>)</span>
+                                                                                                      value="${!empty openCnt[camp_id].cnt ? openCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                                                      </span>
                                                     <span class="percents en_font">(<fmt:formatNumber type="percent"
                                                                                                       pattern="0.00%"
-                                                                                                      value="${trackCnt[camp_id].cnt/g.send_cnt}"/>)</span>
+                                                                                                      value="${!empty trackCnt[camp_id].cnt ? trackCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -343,7 +343,7 @@
                                         </td>
                                         <td>
                                             <span class="en_font"><fmt:formatNumber
-                                                    value="${g.send_cost}" pattern="#,###,###,##0"/> </span>원
+                                                    value="${g.send_cost}" pattern="#,###,###,##0.0"/> </span>원
                                         </td>
                                     </tr>
                                 </c:forEach>
