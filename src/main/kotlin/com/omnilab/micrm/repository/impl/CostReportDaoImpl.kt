@@ -31,6 +31,14 @@ class CostReportDaoImpl : CostReportDao {
         return sqlSession.selectList("selSendCostLst", hstDto)
     }
 
+    override fun selDailySendCostLst(searchDto: SearchSendCostDto): List<SendCostDto> {
+        return sqlSession.selectList("selDailySendCostLst", searchDto)
+    }
+
+    override fun selTotalSendCost(searchDto: SearchSendCostDto): List<SendCostDto> {
+        return sqlSession.selectList("selTotalSendCost", searchDto)
+    }
+
     override fun selPrgSendCostLst(hstDto: SendCostDto?): MutableList<SendCostDto> {
         return sqlSession.selectList("selPrgSendCostLst", hstDto)
     }
@@ -38,6 +46,7 @@ class CostReportDaoImpl : CostReportDao {
     override fun selPrgSendCostLstCnt(searchDto: SearchSendCostDto?): Int {
         return sqlSession.selectOne("selPrgSendCostLstCnt", searchDto)
     }
+
 
 
 }
