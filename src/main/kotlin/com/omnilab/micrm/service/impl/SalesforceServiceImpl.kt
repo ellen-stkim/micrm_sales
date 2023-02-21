@@ -2326,41 +2326,6 @@ class SalesforceServiceImpl : SalesforceService {
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
 
-                                    if(i.cont_tp == "DMTP04"){
-                                        logger.error("--------------------RCS--------------------")
-                                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", mstDto.cont_grp_cd!!))!!.cd_val
-                                        // 이미지 저장 경로
-                                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", mstDto.cont_grp_cd!!))!!.cd_val
-
-                                        // RCS 발송 서버 정보
-                                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", mstDto.cont_grp_cd!!))!!.cd_val
-
-
-                                        val searchContDto = Tblmicp_cont_lstDto(cpMstDto.seq, cpMstDto.reg_id, mstDto.cont_grp_cd)
-                                        searchContDto.cont_tp = "DMTP04"
-                                        val contDto = campaignDao.sel_tblmicp_cont_lst(searchContDto)[0]
-                                        val urlLst = contDto.img_nm_lst!!.split(",")
-
-
-                                        // 이미지 리스트
-                                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
-
-                                        val urlSize = urlLst.size.toString()
-                                        for (i in urlLst.indices) {
-                                            val imgDto = LgRcs_imgDto()
-                                            imgDto.group_key = "GR_${dto.seq.toString()}"
-                                            imgDto.group_cnt = urlSize
-                                            imgDto.status = "0"
-                                            imgDto.sendable = "N"
-                                            imgDto.brand_id = rcsBrnID
-                                            imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
-                                            imgDto.template_yn = "N"
-                                            imgDto.m_server = rcsDb
-                                            rcsImgLst.add(imgDto)
-                                        }
-                                        logger.error("{}",rcsImgLst)
-                                        salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
-                                    }
                                 }
 //                            }
                         }
@@ -2430,6 +2395,48 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDto.start_dt = CommonUtils.getDateTimeNow()
                     campaignDto.send_st_tp = "1"
                     campaignDao.ins_campaign(campaignDto)
+
+                    // RCS img
+                    val contListDto = Tblmicp_cont_lstDto()
+                    contListDto.cont_cd = i.seq
+                    contListDto.reg_id = usrId
+                    contListDto.upd_id = usrId
+                    contListDto.cont_grp_cd = proDto.usr_grp_cd
+                    contListDto.cont_tp ="DMTP04"
+                    contListDto.use_yn = "Y"
+                    val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
+                    for (cont in contLst) {
+                        val rcsBrnID =
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
+                        // 이미지 저장 경로
+                        val imgPath =
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
+
+                        // RCS 발송 서버 정보
+                        val rcsDb =
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
+
+                        val urlLst = cont.img_nm_lst!!.split(",")
+
+                        // 이미지 리스트
+                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
+
+                        val urlSize = urlLst.size.toString()
+                        for (i in urlLst.indices) {
+                            val imgDto = LgRcs_imgDto()
+                            imgDto.group_key = "GR_${dto.seq.toString()}"
+                            imgDto.group_cnt = urlSize
+                            imgDto.status = "0"
+                            imgDto.sendable = "N"
+                            imgDto.brand_id = rcsBrnID
+                            imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
+                            imgDto.template_yn = "N"
+                            imgDto.m_server = rcsDb
+                            rcsImgLst.add(imgDto)
+                        }
+                        logger.error("{}", rcsImgLst)
+                        salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                    }
                 }
                 true
             }else{
