@@ -2329,12 +2329,12 @@ class SalesforceServiceImpl : SalesforceService {
                                     if(i.cont_tp == "DMTP04"){
                                         logger.error("--------------------RCS--------------------")
                                         logger.error("{}",map)
-                                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", dto.cont_grp_cd!!))!!.cd_val
+                                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", mstDto.cont_grp_cd!!))!!.cd_val
                                         // 이미지 저장 경로
-                                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", dto.cont_grp_cd!!))!!.cd_val
+                                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", mstDto.cont_grp_cd!!))!!.cd_val
 
                                         // RCS 발송 서버 정보
-                                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", dto.cont_grp_cd!!))!!.cd_val
+                                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", mstDto.cont_grp_cd!!))!!.cd_val
 
 
                                         val urlDtoList = contentDao.sel_tblmicp_cont_url_lst(Tblmicp_cont_url_lstDto())
@@ -2359,6 +2359,7 @@ class SalesforceServiceImpl : SalesforceService {
                                             imgDto.m_server = rcsDb
                                             rcsImgLst.add(imgDto)
                                         }
+                                        logger.error("{}",rcsImgLst)
 //                                        sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
                                     }
                                 }
