@@ -2398,7 +2398,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // RCS img
                     val contListDto = Tblmi_cont_lstDto()
-                    contListDto.cont_cd = i.cont_seq
+                    contListDto.cont_cd = i.seq
                     contListDto.reg_id = usrId
                     contListDto.upd_id = usrId
                     contListDto.cont_tp ="DMTP04"
