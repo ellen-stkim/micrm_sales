@@ -10,6 +10,7 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
@@ -2316,6 +2317,31 @@ class SalesforceServiceImpl : SalesforceService {
                                     map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
+
+                                    if(i.cont_tp == "DMTP04"){
+                                        logger.error("--------------------RCS--------------------")
+                                        logger.error("{}",map)
+                                        /*if (!rcsCont.img_nm_lst.isNullOrBlank()) {
+                                            val list = rcsCont.img_nm_lst!!.split(",")
+                                            sendDto.img_group_cnt = list.size.toString()
+                                            sendDto.img_group_key = "GR_${dto.seq.toString()}"
+                                            if(cnt == 0){
+                                                for (i in list.indices) {
+                                                    val imgDto = LgRcs_imgDto()
+                                                    imgDto.group_key = "GR_${dto.seq.toString()}"
+                                                    imgDto.group_cnt = list.size.toString()
+                                                    imgDto.status = "0"
+                                                    imgDto.sendable = "N"
+                                                    imgDto.brand_id = rcsBrnID
+                                                    imgDto.img_path = imgPath?.trim() + list[i].trim()
+                                                    imgDto.template_yn = "N"
+                                                    imgDto.m_server = rcsDb
+                                                    rcsImgLst.add(imgDto)
+                                                }
+                                            }
+                                            sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
+                                        }*/
+                                    }
                                 }
 //                            }
                         }
