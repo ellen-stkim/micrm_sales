@@ -2396,6 +2396,11 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDao.ins_campaign(campaignDto)
 
 
+                    logger.error("--------------------------------------")
+                    logger.error("{}",dto)
+                    logger.error("{}",i)
+                    logger.error("{}",campaignDto)
+
                     // RCS img
                     val contListDto = Tblmicp_cont_lstDto()
                     contListDto.cont_cd = i.cont_seq
