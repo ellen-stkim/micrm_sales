@@ -2328,7 +2328,6 @@ class SalesforceServiceImpl : SalesforceService {
 
                                     if(i.cont_tp == "DMTP04"){
                                         logger.error("--------------------RCS--------------------")
-                                        logger.error("{}",map)
                                         val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", mstDto.cont_grp_cd!!))!!.cd_val
                                         // 이미지 저장 경로
                                         val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", mstDto.cont_grp_cd!!))!!.cd_val
@@ -2336,16 +2335,13 @@ class SalesforceServiceImpl : SalesforceService {
                                         // RCS 발송 서버 정보
                                         val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", mstDto.cont_grp_cd!!))!!.cd_val
 
-
                                         val urlDtoList = contentDao.sel_tblmicp_cont_url_lst(Tblmicp_cont_url_lstDto())
 
-                                        logger.error("{}",urlDtoList)
                                         val urlLst = urlDtoList.stream().map {it.url}.collect(toList())
 
                                         // 이미지 리스트
                                         val rcsImgLst = ArrayList<LgRcs_imgDto>()
 
-//                                        val list = rcsCont.img_nm_lst!!.split(",")
                                         val urlSize = urlLst.size.toString()
                                         for (i in urlLst.indices) {
                                             val imgDto = LgRcs_imgDto()
@@ -2360,7 +2356,7 @@ class SalesforceServiceImpl : SalesforceService {
                                             rcsImgLst.add(imgDto)
                                         }
                                         logger.error("{}",rcsImgLst)
-//                                        sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
+                                        salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
                                     }
                                 }
 //                            }
