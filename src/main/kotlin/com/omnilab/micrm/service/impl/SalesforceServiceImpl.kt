@@ -2399,7 +2399,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // RCS img
                     val contListDto = Tblmicp_cont_lstDto()
-                    contListDto.cont_cd = i.seq
+                    contListDto.cont_cd = i.cont_seq
                     contListDto.reg_id = usrId
                     contListDto.upd_id = usrId
                     contListDto.cont_grp_cd = proDto.usr_grp_cd
@@ -2417,12 +2417,7 @@ class SalesforceServiceImpl : SalesforceService {
                         val rcsDb =
                             sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
 
-
-                        val searchContDto = Tblmicp_cont_lstDto(i.cont_seq, contListDto.reg_id, contListDto.cont_grp_cd)
-                        searchContDto.cont_tp = "DMTP04"
-                        val contDto = campaignDao.sel_tblmicp_cont_lst(searchContDto)[0]
-                        val urlLst = contDto.img_nm_lst!!.split(",")
-
+                        val urlLst = cont.img_nm_lst!!.split(",")
 
                         // 이미지 리스트
                         val rcsImgLst = ArrayList<LgRcs_imgDto>()
