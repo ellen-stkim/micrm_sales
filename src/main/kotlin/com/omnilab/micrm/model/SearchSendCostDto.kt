@@ -10,6 +10,8 @@ class SearchSendCostDto : SendCostDto {
     var pageNo : Int = 1
     var pageSize : Int = 10
 
+    var monthly_dt : String? = null
+
     var firstIndex : Int? = 0
     var recordCountPerPage : Int = 10
 

@@ -45,7 +45,7 @@ class CostReportServiceImpl : CostReportService {
         val totalLst : List<SendCostDto> = costReportDao.selSendCostLst(searchDto)
 
         // 발송 건수, 비용 월별 합계
-        val groupMap = totalLst.stream().collect(groupingBy(SendCostDto::send_mon))
+        val groupMap = totalLst.stream().collect(groupingBy(SendCostDto::send_mon, { TreeMap() }, toList()))
 
         val sendMap = mutableMapOf<String,Any>()
         val totalMap = mutableMapOf<String,Any>()
@@ -100,9 +100,18 @@ class CostReportServiceImpl : CostReportService {
 //        프로그램 당 발송 디테일
         val prgMap = getProgramCostLst(searchDto)
 
+
+        val cal = Calendar.getInstance()
+        val format = SimpleDateFormat("yyyy-MM")
+        if(!CommonUtils.isEmptyObject(searchDto.monthly_dt)){
+            cal.time =  format.parse(searchDto.monthly_dt)
+            format.format(cal.time)
+        }
+
         return hashMapOf( "jsonMap" to jsonMap
                         ,"startDt" to searchDto.start_dt
                         ,"endDt" to searchDto.end_dt
+                        ,"monthlyDt" to  cal.time
                         ,"sendMap" to sendMap
                         ,"totalMap" to totalMap
                         ,"typeTotalMap" to typeTotalMap
@@ -267,13 +276,16 @@ class CostReportServiceImpl : CostReportService {
         val cal = Calendar.getInstance()
         val format = SimpleDateFormat("yyyy-MM-dd")
 
+        if(!CommonUtils.isEmptyObject(searchDto.monthly_dt)){
+            searchDto.monthly_dt = searchDto.monthly_dt + "-01"
+            return searchDto
+        }
+
         if (CommonUtils.isEmptyObject(searchDto.start_dt)) {
             if (CommonUtils.isEmptyObject(searchDto.end_dt)) {
                 cal.time = Date() // 오늘 날짜
-                searchDto.end_dt = format.format(cal.time)
-
                 cal.add(Calendar.MONTH, -1)
-                searchDto.start_dt = format.format(cal.time)
+                searchDto.monthly_dt = format.format(cal.time)   // 전월 데이터 조회
             } else {
                 cal.time =  format.parse(searchDto.end_dt) //end 기준
                 cal.add(Calendar.MONTH, -1)
@@ -287,7 +299,6 @@ class CostReportServiceImpl : CostReportService {
 
         return searchDto
     }
-
 
 }
 
