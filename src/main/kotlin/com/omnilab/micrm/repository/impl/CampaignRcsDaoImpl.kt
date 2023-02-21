@@ -96,7 +96,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
         val callbackLst = ArrayList<Tblmicp_send_callback_msgDto>()
 
         // 이미지 리스트
-        val rcsImgLst = ArrayList<LgRcs_imgDto>()
+//        val rcsImgLst = ArrayList<LgRcs_imgDto>()
 
         try {
             var targetSubject = rcsCont.cont_sub
@@ -269,9 +269,40 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             sendDto.callback = rcsCont.send_to
             sendDto.type = rcsCont.msg_tp_val
             sendDto.msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0"
+
+            var isSendable = "Y"
+            if (!rcsCont.img_nm_lst.isNullOrBlank()) {
+                val list = rcsCont.img_nm_lst!!.split(",")
+                sendDto.img_group_cnt = list.size.toString()
+                sendDto.img_group_key = "GR_${dto.seq.toString()}"
+
+                val imgDto = LgRcs_imgDto("GR_${dto.seq.toString()}",rcsDb)
+                val imgDtoLst :List<LgRcs_imgDto> =  sqlSession.selectList("sel_camp_send_rcs_img_lg", imgDto)
+                for(imgDto in imgDtoLst){
+                    if(imgDto.sendable == "N"){
+                        isSendable = "N"
+                    }
+                }
+                /*if(cnt == 0){
+                    for (i in list.indices) {
+                        val imgDto = LgRcs_imgDto()
+                        imgDto.group_key = "GR_${dto.seq.toString()}"
+                        imgDto.group_cnt = list.size.toString()
+                        imgDto.status = "0"
+                        imgDto.sendable = "N"
+                        imgDto.brand_id = rcsBrnID
+                        imgDto.img_path = imgPath?.trim() + list[i].trim()
+                        imgDto.template_yn = "N"
+                        imgDto.m_server = rcsDb
+                        rcsImgLst.add(imgDto)
+                    }
+                }
+                sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)*/
+            }
+
             if(sendDto.type == "12"){
                 sendDto.rcs_object = targetBody
-                sendDto.sendable = "N" //  (이미지 등록 전 : N, 이미지 등록 완료: Y, 이미지 없을 경우: Y)
+                sendDto.sendable = isSendable //  (이미지 등록 전 : N, 이미지 등록 완료: Y, 이미지 없을 경우: Y)
             }else{
                 if(sendDto.type == "11"){
                     sendDto.msg_title = rcsCont.cont_sub
@@ -305,26 +336,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             sendDto.etc5 = kakaoDb
             sendDto.etc6 = "MICRM_SALES"
 
-            if (!rcsCont.img_nm_lst.isNullOrBlank()) {
-                val list = rcsCont.img_nm_lst!!.split(",")
-                sendDto.img_group_cnt = list.size.toString()
-                sendDto.img_group_key = "GR_${dto.seq.toString()}"
-                /*if(cnt == 0){
-                    for (i in list.indices) {
-                        val imgDto = LgRcs_imgDto()
-                        imgDto.group_key = "GR_${dto.seq.toString()}"
-                        imgDto.group_cnt = list.size.toString()
-                        imgDto.status = "0"
-                        imgDto.sendable = "N"
-                        imgDto.brand_id = rcsBrnID
-                        imgDto.img_path = imgPath?.trim() + list[i].trim()
-                        imgDto.template_yn = "N"
-                        imgDto.m_server = rcsDb
-                        rcsImgLst.add(imgDto)
-                    }
-                }
-                sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)*/
-            }
+
             sendDto.m_server = rcsDb
 
             if(kakaoCont != null || mdmCont != null){
