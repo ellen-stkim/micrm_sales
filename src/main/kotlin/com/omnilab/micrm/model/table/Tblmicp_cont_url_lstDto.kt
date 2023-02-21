@@ -15,6 +15,11 @@ class Tblmicp_cont_url_lstDto: Tblmi_cont_url_lstDto {
     constructor(cont_cd: Int?){
         this.cont_cd = cont_cd
     }
+    constructor(cont_lst_cd: Int?,url_tag:String?){
+        this.cont_lst_cd = cont_lst_cd
+        this.url_tag = url_tag
+    }
+
     constructor(tbl_cont_url_lstDto: Tblmi_cont_url_lstDto){
         this.seq = tbl_cont_url_lstDto.seq
         this.cont_lst_cd = tbl_cont_url_lstDto.cont_lst_cd
