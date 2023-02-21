@@ -193,11 +193,33 @@
                     <!-- SEARCH AREA START-->
                     <form:form id="searchForm" method="get" action="./costDetail.mi">
                         <div class="simple-search-wrap">
-                            <input type="text" name="start_dt" class="date-pick-box date" id="from" placeholder="발송시작일"
-                                   value="${startDt}" autocomplete="off"/>
-                            <span class="hyphen">-</span>
-                            <input type="text" name="end_dt" class="date-pick-box date" id="to" placeholder="발송종료일"
-                                   value="${endDt}" autocomplete="off"/>
+                            <div>
+                                <div class="option_month2">
+                                    <input type="button" class="btn_basic3 left border right-border-none ${empty startDt and empty endDt ? '' : 'clickBtn'}" value="Period" onclick="selPeriodOption('D',this)">
+                                    <input type="button" class="btn_basic3 left border ${empty startDt and empty endDt ? 'clickBtn' : ''}" value="Monthly" onclick="selPeriodOption('M', this)">
+                                </div>
+                            </div>
+                            <div id="dailyOption" name="day-option" ${empty startDt and empty endDt ? "style=\"display:none;\"" : ''}>
+                                <input type="text" name="start_dt" class="date-pick-box date" id="from" placeholder="발송시작일"
+                                       value="${startDt}" autocomplete="off"/>
+                                <span class="hyphen">-</span>
+                                <input type="text" name="end_dt" class="date-pick-box date" id="to" placeholder="발송종료일"
+                                       value="${endDt}" autocomplete="off"/>
+                            </div>
+                            <div class="control-block center" id="monthlyOption"  name="day-option" style="line-height: 1.2; ${empty startDt and empty endDt ? '' : 'display:none;'}">
+                                <div class="month_prev" onclick="prePeriodControl()">
+                                    <img src="${baseURL}/image/ico_rcs_prev.png" alt="">
+                                </div>
+                                <span class="curentDate"><fmt:formatDate value="${monthlyDt}" pattern="yyyy-MM"/></span>
+                                <input type="hidden" name="monthly_dt" id="monthlyDt" value="<fmt:formatDate value="${monthlyDt}" pattern="yyyy-MM"/>">
+<%--                                <input type="button" class="report-icon-btn calendar" onclick="dateOptionCall(this)">--%>
+                                <div class="month_next" onclick="nextPeriodControl()">
+                                    <img src="${baseURL}/image/ico_rcs_next.png" alt="">
+                                </div>
+                                <%--<div class="dateOption" style="display: none">
+                                    <input type="button" class="dateOptionBtn" value="2017.08" onclick="periodControl('201708')">
+                                </div>--%>
+                            </div>
                             <div class="select-wrap" id="customSelectWrap">
                                 <div class="customSelect" id="customSelect">
                                     <div class="value">
@@ -613,6 +635,38 @@
             document.body.insertBefore(frm, null);
             frm.submit();
             frm.remove();
+        }
+
+        function selPeriodOption(type ,el){
+            $('.clickBtn').removeClass("clickBtn")
+            $(el).addClass("clickBtn");
+
+            $('div[name="day-option"]').hide();
+            if(type == 'D'){
+                $('#monthlyOption input').val('');
+                $('#dailyOption').show();
+            } else if ('M'){
+                // 현재 날짜 기준 지난달 한달 적용
+                $('#dailyOption input').val('');
+                $('#monthlyOption').show();
+            }
+        }
+
+        function prePeriodControl(){
+            const monDt = $('#monthlyDt').val();
+
+            const date = new Date(monDt)
+            $('#monthlyDt').val(date.getFullYear()+"-"+ date.getMonth());
+
+            searchCostReport();
+        }
+
+        function nextPeriodControl(){
+            const monDt = $('#monthlyDt').val();
+            const date = new Date(monDt)
+            date.setMonth(date.getMonth()+2)
+            $('#monthlyDt').val(date.getFullYear()+"-"+date.getMonth());
+            searchCostReport();
         }
 
     </script>

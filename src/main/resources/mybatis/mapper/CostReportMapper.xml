@@ -42,6 +42,9 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
 				AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
+					AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
+			</if>
 		</where>
 		GROUP BY send_mon , hst.msg_tp
 		ORDER BY hst.send_req_day,hst.pro_id
@@ -84,6 +87,9 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
 				AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
+				AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
+			</if>
 		</where>
 		GROUP BY send_mon , hst.msg_tp
 		ORDER BY hst.send_req_day, hst.pro_id
@@ -124,6 +130,9 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
 				AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
+					AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
+			</if>
 		</where>
 		GROUP BY hst.msg_tp
 	</select>
@@ -158,6 +167,9 @@
 				 </if>
 				 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
 					 AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
+				 </if>
+				 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
+					 	AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
 				 </if>
 			 </where>
 			 GROUP BY prg.pro_id, hst.msg_tp
@@ -206,6 +218,9 @@
 			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
 				 AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
 			 </if>
+			 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
+				 	AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
+			 </if>
 		</where>
 		GROUP BY prg.pro_id, hst.msg_tp
 	</select>
@@ -238,6 +253,9 @@
 				</if>
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
 					AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
+						AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
 				</if>
 			</where>
 			GROUP BY prg.pro_id
