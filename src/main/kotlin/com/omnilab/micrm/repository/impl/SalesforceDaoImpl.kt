@@ -3,11 +3,13 @@ package com.omnilab.micrm.repository.impl
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.SalesforceDao
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.ArrayList
 
 @Repository("SalesforceDaoImpl")
 class SalesforceDaoImpl: SalesforceDao {
@@ -104,5 +106,9 @@ class SalesforceDaoImpl: SalesforceDao {
 
     override fun del_tblmicp_cont_url_lst(cont_cd: String): Int {
         return sqlSession.delete("del_tblmicp_cont_url_lst", cont_cd)
+    }
+
+    override fun ins_camp_send_rcs_img_lg(rcsImgLst: ArrayList<LgRcs_imgDto>): Int {
+        return sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
     }
 }

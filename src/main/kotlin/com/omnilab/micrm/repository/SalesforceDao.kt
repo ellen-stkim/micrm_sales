@@ -3,6 +3,8 @@ package com.omnilab.micrm.repository
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
+import java.util.ArrayList
 
 interface SalesforceDao {
 
@@ -29,4 +31,7 @@ interface SalesforceDao {
 
     fun del_tblmicp_cont_lst(cont_cd: String): Int
     fun del_tblmicp_cont_url_lst(cont_cd: String): Int
+
+
+    fun ins_camp_send_rcs_img_lg(rcsImgLst: ArrayList<LgRcs_imgDto>):Int
 }

@@ -75,4 +75,6 @@ interface ContentDao {
     fun selectLstSeq(dto : Tblmi_cont_lstDto) : List<Tblmi_cont_lstDto>
 
     fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int
+
+    fun sel_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto>
 }

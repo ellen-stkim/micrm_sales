@@ -10,9 +10,11 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
+import com.omnilab.micrm.service.SysSettingService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import io.minio.MinioClient
 import io.minio.UploadObjectArgs
@@ -45,6 +47,9 @@ import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.*
 import java.util.regex.Pattern
+import java.util.stream.Collectors
+import java.util.stream.Collectors.joining
+import java.util.stream.Collectors.toList
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -108,6 +113,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Qualifier("CampaignRcsDaoImpl")
     private lateinit var rcsSend: CampaignSendDao
 
+
+    @Autowired
+    @Qualifier("SysSettingServiceImpl")
+    private lateinit var sysSettingService: SysSettingService
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -2316,6 +2325,42 @@ class SalesforceServiceImpl : SalesforceService {
                                     map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
+
+                                    if(i.cont_tp == "DMTP04"){
+                                        logger.error("--------------------RCS--------------------")
+                                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", mstDto.cont_grp_cd!!))!!.cd_val
+                                        // 이미지 저장 경로
+                                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", mstDto.cont_grp_cd!!))!!.cd_val
+
+                                        // RCS 발송 서버 정보
+                                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", mstDto.cont_grp_cd!!))!!.cd_val
+
+
+                                        val searchContDto = Tblmicp_cont_lstDto(cpMstDto.seq, cpMstDto.reg_id, mstDto.cont_grp_cd)
+                                        searchContDto.cont_tp = "DMTP04"
+                                        val contDto = campaignDao.sel_tblmicp_cont_lst(searchContDto)[0]
+                                        val urlLst = contDto.img_nm_lst!!.split(",")
+
+
+                                        // 이미지 리스트
+                                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
+
+                                        val urlSize = urlLst.size.toString()
+                                        for (i in urlLst.indices) {
+                                            val imgDto = LgRcs_imgDto()
+                                            imgDto.group_key = "GR_${dto.seq.toString()}"
+                                            imgDto.group_cnt = urlSize
+                                            imgDto.status = "0"
+                                            imgDto.sendable = "N"
+                                            imgDto.brand_id = rcsBrnID
+                                            imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
+                                            imgDto.template_yn = "N"
+                                            imgDto.m_server = rcsDb
+                                            rcsImgLst.add(imgDto)
+                                        }
+                                        logger.error("{}",rcsImgLst)
+                                        salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                                    }
                                 }
 //                            }
                         }
