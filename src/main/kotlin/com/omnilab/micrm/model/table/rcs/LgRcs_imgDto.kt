@@ -22,6 +22,16 @@ class LgRcs_imgDto {
     var template_yn: String? = null
     var m_server: String? = null
 
+
+    constructor()
+
+
+    constructor(group_key: String?, m_server: String?) {
+        this.group_key = group_key
+        this.m_server = m_server
+    }
+
+
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }

@@ -2434,7 +2434,6 @@ class SalesforceServiceImpl : SalesforceService {
                             imgDto.m_server = rcsDb
                             rcsImgLst.add(imgDto)
                         }
-                        logger.error("{}", rcsImgLst)
                         salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
                     }
                 }
