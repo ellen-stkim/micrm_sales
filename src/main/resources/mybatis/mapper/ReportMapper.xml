@@ -172,11 +172,15 @@
 
 
     <select id="getSendHstDetail" resultType="SendReportDto" parameterType="HashMap">
-        SELECT hst.*
-            ,comm.cd_val AS cd_val
-            ,comm.cd_desc AS cd_desc
-            ,comm.cd_desc AS cd_desc
-            ,comm.par_nm AS bounce_cate
+        SELECT hst.pro_id
+            , hst.camp_id
+            , send_rst_tp
+            , send_rst_det
+            , sum(hst.SEND_CNT) AS send_cnt
+            , comm.cd_val AS cd_val
+            , comm.cd_desc AS cd_desc
+            , comm.cd_desc AS cd_desc
+            , comm.par_nm AS bounce_cate
         FROM tblmire_send_hst AS hst
             LEFT JOIN tblmire_camp_mst AS m
                 ON m.pro_id = hst.pro_id
@@ -201,6 +205,7 @@
                 and hst.usr_grp_cd =#{usr_grp_cd}
             </if>
         </where>
+        GROUP BY MSG_TP,SEND_RST_DET
     </select>
     <select id="openTimingResult" resultType="HashMap">
         SELECT
