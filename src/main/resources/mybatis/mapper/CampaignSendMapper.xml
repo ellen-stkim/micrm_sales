@@ -280,6 +280,13 @@
 	</update>
 	<!-- ================================================================= delete ================================================================= -->
 
+	<select id="sel_camp_send_rcs_img_lg" parameterType="LgRcs_imgDto" resultType="LgRcs_imgDto">
+		select * from ${m_server}.RCS_IMG
+		<where>
+			GROUP_KEY = #{group_key}
+		</where>
+	</select>
+
 </mapper>
 
 
