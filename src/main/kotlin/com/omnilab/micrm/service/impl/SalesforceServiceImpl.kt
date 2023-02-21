@@ -2424,7 +2424,7 @@ class SalesforceServiceImpl : SalesforceService {
                         val urlSize = urlLst.size.toString()
                         for (i in urlLst.indices) {
                             val imgDto = LgRcs_imgDto()
-                            imgDto.group_key = "GR_${dto.seq.toString()}"
+                            imgDto.group_key = "GR_${campaignDto.seq.toString()}"
                             imgDto.group_cnt = urlSize
                             imgDto.status = "0"
                             imgDto.sendable = "N"
