@@ -29,6 +29,7 @@ class CostController {
         val map = costReportService.getCostReport(dto)
         view.addObject("startDt",map["startDt"])
         view.addObject("endDt",map["endDt"])
+        view.addObject("monthlyDt",map["monthlyDt"])
         view.addObject("jsonMap",map["jsonMap"])
         view.addObject("sendMap",map["sendMap"])
         view.addObject("totalMap",map["totalMap"])
@@ -56,6 +57,5 @@ class CostController {
         view.addObject("book", map["book"])
         return view
     }
-
 
 }

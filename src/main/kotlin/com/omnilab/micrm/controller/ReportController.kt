@@ -1,5 +1,6 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendReportDto
@@ -100,9 +101,13 @@ class ReportController {
     }
 
     @GetMapping("/report/proDt.mi")
-    fun proDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam pro_id : String): ModelAndView {
-        val view = ModelAndView("report/campDt")
+    fun proDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam(required = true) pro_id : String): ModelAndView {
 
+        if(CommonUtils.isEmptyObject(pro_id)){
+            return ModelAndView("redirect:./all.mi")
+        }
+
+        val view = ModelAndView("report/campDt")
         val campIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()
         val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(campIds)
         view.addObject("cont_seq", campIds)
@@ -114,6 +119,11 @@ class ReportController {
 
     @GetMapping("/report/singleDt.mi")
     fun singleDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam seq : String): ModelAndView {
+
+        if(CommonUtils.isEmptyObject(seq)){
+            return ModelAndView("redirect:./all.mi")
+        }
+
         val view = ModelAndView("report/campDt")
         var seqs: Array<String> = arrayOf(seq)
 
