@@ -45,7 +45,7 @@ class CostReportServiceImpl : CostReportService {
         val totalLst : List<SendCostDto> = costReportDao.selSendCostLst(searchDto)
 
         // 발송 건수, 비용 월별 합계
-        val groupMap = totalLst.stream().collect(groupingBy(SendCostDto::send_mon))
+        val groupMap = totalLst.stream().collect(groupingBy(SendCostDto::send_mon, { TreeMap() }, toList()))
 
         val sendMap = mutableMapOf<String,Any>()
         val totalMap = mutableMapOf<String,Any>()
