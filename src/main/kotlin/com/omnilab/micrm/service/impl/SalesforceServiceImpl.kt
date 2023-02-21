@@ -2396,15 +2396,9 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDto.send_st_tp = "1"
                     campaignDao.ins_campaign(campaignDto)
 
-
-                    logger.error("--------------------------------------")
-                    logger.error("{}",dto)
-                    logger.error("{}",i)
-                    logger.error("{}",campaignDto)
-
                     // RCS img
                     val contListDto = Tblmicp_cont_lstDto()
-                    contListDto.cont_cd = i.cont_seq
+                    contListDto.cont_cd = i.seq
                     contListDto.reg_id = usrId
                     contListDto.upd_id = usrId
                     contListDto.cont_grp_cd = proDto.usr_grp_cd
