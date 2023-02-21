@@ -2335,9 +2335,12 @@ class SalesforceServiceImpl : SalesforceService {
                                         // RCS 발송 서버 정보
                                         val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", mstDto.cont_grp_cd!!))!!.cd_val
 
-                                        val urlDtoList = contentDao.sel_tblmicp_cont_url_lst(Tblmicp_cont_url_lstDto(tblmicp_cont_lstDto.seq,"img"))
 
-                                        val urlLst = urlDtoList.stream().map {it.url}.collect(toList())
+                                        val searchContDto = Tblmicp_cont_lstDto(cpMstDto.seq, cpMstDto.reg_id, mstDto.cont_grp_cd)
+                                        searchContDto.cont_tp = "DMTP04"
+                                        val contDto = campaignDao.sel_tblmicp_cont_lst(searchContDto)[0]
+                                        val urlLst = contDto.img_nm_lst!!.split(",")
+
 
                                         // 이미지 리스트
                                         val rcsImgLst = ArrayList<LgRcs_imgDto>()
