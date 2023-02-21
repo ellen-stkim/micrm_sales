@@ -305,11 +305,11 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             sendDto.etc5 = kakaoDb
             sendDto.etc6 = "MICRM_SALES"
 
-            /*if (!rcsCont.img_nm_lst.isNullOrBlank()) {
+            if (!rcsCont.img_nm_lst.isNullOrBlank()) {
                 val list = rcsCont.img_nm_lst!!.split(",")
                 sendDto.img_group_cnt = list.size.toString()
                 sendDto.img_group_key = "GR_${dto.seq.toString()}"
-                if(cnt == 0){
+                /*if(cnt == 0){
                     for (i in list.indices) {
                         val imgDto = LgRcs_imgDto()
                         imgDto.group_key = "GR_${dto.seq.toString()}"
@@ -323,8 +323,8 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                         rcsImgLst.add(imgDto)
                     }
                 }
-                sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
-            }*/
+                sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)*/
+            }
             sendDto.m_server = rcsDb
 
             if(kakaoCont != null || mdmCont != null){
