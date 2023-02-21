@@ -14,6 +14,7 @@ import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
+import com.omnilab.micrm.service.SysSettingService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import io.minio.MinioClient
 import io.minio.UploadObjectArgs
@@ -46,6 +47,9 @@ import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.*
 import java.util.regex.Pattern
+import java.util.stream.Collectors
+import java.util.stream.Collectors.joining
+import java.util.stream.Collectors.toList
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -109,6 +113,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Qualifier("CampaignRcsDaoImpl")
     private lateinit var rcsSend: CampaignSendDao
 
+
+    @Autowired
+    @Qualifier("SysSettingServiceImpl")
+    private lateinit var sysSettingService: SysSettingService
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -2321,26 +2329,37 @@ class SalesforceServiceImpl : SalesforceService {
                                     if(i.cont_tp == "DMTP04"){
                                         logger.error("--------------------RCS--------------------")
                                         logger.error("{}",map)
-                                        /*if (!rcsCont.img_nm_lst.isNullOrBlank()) {
-                                            val list = rcsCont.img_nm_lst!!.split(",")
-                                            sendDto.img_group_cnt = list.size.toString()
-                                            sendDto.img_group_key = "GR_${dto.seq.toString()}"
-                                            if(cnt == 0){
-                                                for (i in list.indices) {
-                                                    val imgDto = LgRcs_imgDto()
-                                                    imgDto.group_key = "GR_${dto.seq.toString()}"
-                                                    imgDto.group_cnt = list.size.toString()
-                                                    imgDto.status = "0"
-                                                    imgDto.sendable = "N"
-                                                    imgDto.brand_id = rcsBrnID
-                                                    imgDto.img_path = imgPath?.trim() + list[i].trim()
-                                                    imgDto.template_yn = "N"
-                                                    imgDto.m_server = rcsDb
-                                                    rcsImgLst.add(imgDto)
-                                                }
-                                            }
-                                            sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
-                                        }*/
+                                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", dto.cont_grp_cd!!))!!.cd_val
+                                        // 이미지 저장 경로
+                                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", dto.cont_grp_cd!!))!!.cd_val
+
+                                        // RCS 발송 서버 정보
+                                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", dto.cont_grp_cd!!))!!.cd_val
+
+
+                                        val urlDtoList = contentDao.sel_tblmicp_cont_url_lst(Tblmicp_cont_url_lstDto())
+
+                                        logger.error("{}",urlDtoList)
+                                        val urlLst = urlDtoList.stream().map {it.url}.collect(toList())
+
+                                        // 이미지 리스트
+                                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
+
+//                                        val list = rcsCont.img_nm_lst!!.split(",")
+                                        val urlSize = urlLst.size.toString()
+                                        for (i in urlLst.indices) {
+                                            val imgDto = LgRcs_imgDto()
+                                            imgDto.group_key = "GR_${dto.seq.toString()}"
+                                            imgDto.group_cnt = urlSize
+                                            imgDto.status = "0"
+                                            imgDto.sendable = "N"
+                                            imgDto.brand_id = rcsBrnID
+                                            imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
+                                            imgDto.template_yn = "N"
+                                            imgDto.m_server = rcsDb
+                                            rcsImgLst.add(imgDto)
+                                        }
+//                                        sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
                                     }
                                 }
 //                            }
