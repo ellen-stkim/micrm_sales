@@ -2532,6 +2532,9 @@ input::placeholder {
     border-right: 1px #f4f4f4 solid;
     box-sizing: border-box;
 }
+.display-table .title {
+    background-color: #fafafa;
+}
 
 .display-table .thead .title2 {
     float: left;
