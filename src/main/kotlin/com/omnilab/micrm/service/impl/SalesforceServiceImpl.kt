@@ -2397,26 +2397,27 @@ class SalesforceServiceImpl : SalesforceService {
 
 
                     // RCS img
-                    val contListDto = Tblmi_cont_lstDto()
+                    val contListDto = Tblmicp_cont_lstDto()
                     contListDto.cont_cd = i.seq
                     contListDto.reg_id = usrId
                     contListDto.upd_id = usrId
+                    contListDto.cont_grp_cd = proDto.usr_grp_cd
                     contListDto.cont_tp ="DMTP04"
                     contListDto.use_yn = "Y"
-                    val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+                    val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
                     for (cont in contLst) {
                         val rcsBrnID =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", i.cont_grp_cd!!))!!.cd_val
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
                         // 이미지 저장 경로
                         val imgPath =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", i.cont_grp_cd!!))!!.cd_val
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
 
                         // RCS 발송 서버 정보
                         val rcsDb =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", i.cont_grp_cd!!))!!.cd_val
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
 
 
-                        val searchContDto = Tblmicp_cont_lstDto(i.cont_seq, i.reg_id, i.cont_grp_cd)
+                        val searchContDto = Tblmicp_cont_lstDto(i.cont_seq, contListDto.reg_id, contListDto.cont_grp_cd)
                         searchContDto.cont_tp = "DMTP04"
                         val contDto = campaignDao.sel_tblmicp_cont_lst(searchContDto)[0]
                         val urlLst = contDto.img_nm_lst!!.split(",")
