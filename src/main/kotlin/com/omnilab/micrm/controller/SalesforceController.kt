@@ -131,7 +131,7 @@ class SalesforceController {
         temp.list_nm = "from_to"
         view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
-        val cntMap = mobileContentService.isCheckSender()
+        val cntMap = salesforceService.isCheckSender(usr_cd)
 
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
