@@ -2423,18 +2423,22 @@ class SalesforceServiceImpl : SalesforceService {
 
                         val urlSize = urlLst.size.toString()
                         for (i in urlLst.indices) {
-                            val imgDto = LgRcs_imgDto()
-                            imgDto.group_key = "GR_${campaignDto.seq.toString()}"
-                            imgDto.group_cnt = urlSize
-                            imgDto.status = "0"
-                            imgDto.sendable = "N"
-                            imgDto.brand_id = rcsBrnID
-                            imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
-                            imgDto.template_yn = "N"
-                            imgDto.m_server = rcsDb
-                            rcsImgLst.add(imgDto)
+                            if(!CommonUtils.isEmptyObject(urlLst[i]!!.trim())){
+                                val imgDto = LgRcs_imgDto()
+                                imgDto.group_key = "GR_${campaignDto.seq.toString()}"
+                                imgDto.group_cnt = urlSize
+                                imgDto.status = "0"
+                                imgDto.sendable = "N"
+                                imgDto.brand_id = rcsBrnID
+                                imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
+                                imgDto.template_yn = "N"
+                                imgDto.m_server = rcsDb
+                                rcsImgLst.add(imgDto)
+                            }
                         }
-                        salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                        if(rcsImgLst.size > 0){
+                            salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                        }
                     }
                 }
                 true
@@ -2450,7 +2454,6 @@ class SalesforceServiceImpl : SalesforceService {
         val inArguments = mutableMapOf<String,Any>()
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
-
 
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
