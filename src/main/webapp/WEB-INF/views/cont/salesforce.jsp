@@ -1144,7 +1144,7 @@
                 let textContents = $(this).parents('.row').siblings().find('.rcsContents');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                    $(textContents).val(txt + data);
+                    $(textContents).val(txt + '{{' + data + '}}');
 
                     $(textContents).keyup();
                 }
