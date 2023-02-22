@@ -26,10 +26,6 @@ class CampaignRcsDaoImpl : CampaignSendDao {
     override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Int {
         var cnt = 0
 
-        logger.error("------------------------contTpLst-----------------------------")
-        logger.error("{}",contTpLst)
-        logger.error("------------------------contTpLst-----------------------------")
-
         val mdmCont = contTpLst["DMTP02"]
         val kakaoCont = contTpLst["DMTP03"]
         val rcsCont = contTpLst["DMTP04"]!!
@@ -392,9 +388,6 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 sqlSession.insert("ins_tblmicp_send_callback_msg", callbackLst)
             }
             sendLst.add(sendDto)
-            logger.error("------------------------sendLst-----------------------------")
-            logger.error("{}",sendLst)
-            logger.error("------------------------sendLst-----------------------------")
 
             sqlSession.insert("ins_camp_send_rcs_lg", sendLst)
             cnt++

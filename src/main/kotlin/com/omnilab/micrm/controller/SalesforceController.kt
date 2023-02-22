@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Controller
@@ -129,6 +130,12 @@ class SalesforceController {
 
         temp.list_nm = "from_to"
         view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
+
+        val cntMap = salesforceService.isCheckSender(usr_cd)
+
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
 
         return view
     }
@@ -226,6 +233,12 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
         }
         view.addObject("list" , listMap["list"])
+
+        val cntMap = mobileContentService.isCheckSender()
+
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
 
         return view
     }
