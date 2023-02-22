@@ -2435,7 +2435,9 @@ class SalesforceServiceImpl : SalesforceService {
                                 rcsImgLst.add(imgDto)
                             }
                         }
-                        salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                        if(rcsImgLst.size > 0){
+                            salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                        }
                     }
                 }
                 true
