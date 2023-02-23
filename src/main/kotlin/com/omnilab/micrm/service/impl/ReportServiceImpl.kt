@@ -1,8 +1,6 @@
 package com.omnilab.micrm.service.impl
 
-import com.google.gson.JsonParser
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.*
@@ -205,10 +203,10 @@ class ReportServiceImpl : ReportService {
         for (contentDto in contentDtoLst) {
 
             var map = HashMap<String, Any?>()
-            val dto = campaignReportDao.getContentsLst(contentDto.seq)
-            dto.cardSize = '1'.toString();
+            val dto = campaignReportDao.getContentsView(contentDto.seq)
+            dto.cardSize = '1'.toString()
             if (dto.cont_tp.equals("DMTP04")) {
-                jsonOneContentsParsing(dto)
+                commonService.jsonOneContentsParsing(dto)
             }
             map["dto"] = dto
             map["url"] = campaignReportDao.getLinkClickCnt(contentDto.seq)
@@ -216,49 +214,6 @@ class ReportServiceImpl : ReportService {
 
         }
         return mapLst
-    }
-
-    private fun jsonOneContentsParsing(dto: Content_view_Dto) {
-        // 수정 페이지 json 파싱하기
-
-        val jsonParser = JsonParser()
-        val rcsMsgTp = dto.msg_tp
-
-        if (rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH210")) {
-            // 가로, 세로형 이라면 cont_body Json 형태 파싱
-            if (dto.cont_body != null) {
-                val jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
-                dto.cont_body = jsonObject.get("description").toString()
-                    .replace("\\\\r\\\\n", "<br/>")
-                    .replace("\\r\\n", "<br/>")
-                    .replace("\"", "")
-            }
-        }
-        if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
-
-            val slideJsonObject = jsonParser.parse(dto.cont_body).asJsonObject
-            val len = slideJsonObject.size() / 2  // title과 description이 하나의 쌍이 되기에 나눠준다
-            dto.cardSize = len.toString()
-
-            var idx = 0
-            for (i in 0 until len) {
-                idx++
-
-                val title = "title" + idx
-                val description = "description" + idx
-
-                dto.slideTitle.add(slideJsonObject.get(title).toString()
-                    .replace("\\\\r\\\\n", "<br/>")
-                    .replace("\\r\\n", "<br/>")
-                    .replace("\"", ""))
-
-                dto.slideBody.add(slideJsonObject.get(description).toString()
-                    .replace("\\\\r\\\\n", "<br/>")
-                    .replace("\\r\\n", "<br/>")
-                    .replace("\"", ""))
-
-            }
-        }
     }
 
 

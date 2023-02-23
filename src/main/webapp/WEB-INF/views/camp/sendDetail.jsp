@@ -785,23 +785,50 @@
     function preView(cont_id) {
         const res = function (response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
-            $("#tpreview").html($("#preview", $doc).html());
-            new Swiper("#preview_slideSwiper", {
+            $("#tpreview").html($("#content-analysis", $doc).html());
+
+            // RCS일 경우 제목 넣어주기
+            if($('#rcs_prev').length >0){
+                let title =$('#titleArea0').html();
+                $('#tab-title').html(title)
+            }
+
+            var mySwiper = new Swiper('.slideSwiper', {
                 direction: 'horizontal',
                 pagination: {
-                    el: '#preview_rcs_paging',
+                    el: '.rcs_paging',
                     type: 'fraction',
                 },
+                // Navigation arrows
                 navigation: {
-                    nextEl: '#preview_rcs_next',
-                    prevEl: '#preview_rcs_prev',
+                    nextEl: '.rcs_next',
+                    prevEl: '.rcs_prev',
                 },
             });
         };
         let data = [];
         data.push({name: "cont_id", value: cont_id});
-        com_ajax.ajax('post', '/camp/sendCampContPreview.ajax', data, res);
+        com_ajax.ajax('post', '/camp/sendContcpPreview.ajax', data, res);
     }
+
+    $(document).on("click", "#smsTab li span", (e) => {
+        let li = $(e.target).parents("li");
+        let type = $(li).prop("id");
+        if (!$('#prev_' + type).length) {
+            return;
+        }
+
+        $(li).siblings().removeClass("on");
+        $(li).addClass("on");
+
+        //preview
+        $('.prev_box').addClass("disnone");
+        $('#prev_' + type).removeClass("disnone");
+
+        //링크 테이블
+        $('#click-data-table tbody').addClass("disnone");
+        $('#click-data-table #tbody_' + type).removeClass("disnone");
+    })
 
     function chagneCamp(pro_id) {
         popup.confirmAlertCallback("승인요청 상태의 캠페인을 변경하시겠습니까?<br/>요청 시 승인 담당자에게 캠페인 변경으로 인한 승인요청 취소 안내 메일이 발송됩니다.", "chagneCampOk('" + pro_id + "')");

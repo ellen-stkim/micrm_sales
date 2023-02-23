@@ -646,7 +646,7 @@
 .rcs_slide_conts.on {display:block;}
 .slide_area {width:100%; position:relative; padding-top:64px;}
 .slide_area .rcs_prev,
-.slide_area .rcs_next {outline:none; cursor:pointer; position:absolute; top:40%;}
+.slide_area .rcs_next {outline:none; cursor:pointer; position:absolute; top:40%; display: inline-block;}
 .slide_area .rcs_prev {left:35px;}
 .slide_area .rcs_next {right:35px;}
 .slide_area .small {width:210px; margin:0 auto;}
@@ -1224,6 +1224,7 @@ span.ellipsis {display:block; line-height:1.5;}
 .status_wrap .article .top .on.fail {color:#eea7b5;}
 .status_wrap .article .area {width:100%; min-height:459px; padding-top:20px; display:flex;
     align-content: space-between;  flex-wrap: wrap; justify-content: center; position:relative;}
+.status_wrap .article .area:last-child {padding-top:0px;}
 .status_wrap .article .area.block::before {content:''; display:block; width:100%; height:100%;
     background:rgba(255,255,255,0.9); position:absolute; z-index:10;}
 .status_wrap .article .area dl {width:calc(100% - 40px); min-height:110px; border:1px solid #dddddd;
@@ -1252,8 +1253,11 @@ span.ellipsis {display:block; line-height:1.5;}
 .status_wrap .article .area .price .price_detail .pop_table_type2.margin { margin-right: 10px; }
 .status_wrap .article .area .price.price_detail .width1 { width: 80px; margin-bottom: 10px; }
 .status_wrap .article .area .price .price_detail .pop_table_type2 { float: left; }
-.status_wrap .article .area .view{padding-bottom: 20px;}
-.status_wrap .article .area .view>div{width: 270px;}
+.status_wrap .article .area .view{padding-bottom: 20px;    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;}
+.status_wrap .article .area .view>div{ width: 100%;}
 .status_wrap .article .area .view .sms_box .sms_txt{ overflow-y: auto;}
 
 
@@ -2607,3 +2611,8 @@ input::placeholder {
     width: 185px;
     border-top: 1px #f4f4f4 solid;
 }
+#tpreview .rcs_inner{
+    width: 440px;
+}
+#tpreview .prev_box {    margin-top: 20px;}
+#tpreview .prev_box .slide_area .rcs_paging{    text-align: center;}

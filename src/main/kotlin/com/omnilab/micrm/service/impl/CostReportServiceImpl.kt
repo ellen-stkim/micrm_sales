@@ -263,7 +263,7 @@ class CostReportServiceImpl : CostReportService {
         val programLst: List<SendCostDto> = costReportDao.selPrgSendCostLst(searchDto)
         val programMap = programLst.stream().collect(
             groupingBy(
-                SendCostDto::pro_id, toMap(SendCostDto::msg_tp, Function.identity())
+                SendCostDto::pro_id, { TreeMap() }, toMap(SendCostDto::msg_tp, Function.identity())
             )
         )
 
