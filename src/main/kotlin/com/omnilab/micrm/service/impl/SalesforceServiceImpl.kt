@@ -884,9 +884,6 @@ class SalesforceServiceImpl : SalesforceService {
      */
     override fun updateContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
         val contentListCreatedto = dto as Content_list_CreateDto
-
-        logger.error("----------------------------------------updateContentList-----------------------------------------------------")
-        logger.error("{}",contentListCreatedto)
         val userInfo = UsefulUtils.sessionUser()
         val usr_id: String = userInfo.usr_id!!
         val usr_grp_cd = contentListCreatedto.cont_grp_cd
@@ -942,6 +939,12 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP04" }.findFirst().orElse(null).seq
                 }
             }
+
+            logger.error("-----------------------updateContentList---------------------------------------------------------------------------------")
+            logger.error("{}",contentListCreatedto)
+            logger.error("{}",contentListCreatedto.cont_sub_list)
+            logger.error("-----------------------updateContentList---------------------------------------------------------------------------------")
+
             tblmiContLstdto.cont_cd = tblmiContMstDto.seq
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
             tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
