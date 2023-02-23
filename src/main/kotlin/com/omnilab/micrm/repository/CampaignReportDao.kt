@@ -14,6 +14,6 @@ interface CampaignReportDao {
     fun openTimingResult(temp: HashMap<String, Any>): List<HashMap<String, Any>>
     fun getCampMstContIdByProId(proId: String): MutableList<String>?
     fun getLinkClickCnt(seq: Int?): MutableList<java.util.HashMap<String, Any?>>
-    fun getContentsLst(seq: Int?): Content_view_Dto
+    fun getContentsView(seq: Int?): Content_view_Dto
     fun getSendHstDetail(sendDto: HashMap<String, Any>): List<SendReportDto>
 }

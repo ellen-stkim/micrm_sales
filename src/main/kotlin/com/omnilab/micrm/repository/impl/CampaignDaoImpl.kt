@@ -185,4 +185,8 @@ class CampaignDaoImpl : CampaignDao {
         })
     }
 
+    override fun getContentsViewList(mstDto: Tblmicp_cont_mstDto): List<Content_view_Dto> {
+        return sqlSession.selectList("getContentsViewList",mstDto)
+    }
+
 }

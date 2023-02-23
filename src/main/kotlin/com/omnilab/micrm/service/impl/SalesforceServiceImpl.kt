@@ -2256,8 +2256,7 @@ class SalesforceServiceImpl : SalesforceService {
                 if(result["result"] as Boolean){
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
-                    logger.error("------------------------------------activities--------------------------")
-                    logger.error("{}",result["result"])
+
                     for(activity in activities) {
                         val type = activity["type"].toString()
                         if (type == "REST") {
@@ -2327,7 +2326,6 @@ class SalesforceServiceImpl : SalesforceService {
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
 
                                 }
-//                            }
                         }
                     }
                     return true
