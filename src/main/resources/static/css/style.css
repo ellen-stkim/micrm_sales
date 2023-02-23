@@ -1224,7 +1224,7 @@ span.ellipsis {display:block; line-height:1.5;}
 .status_wrap .article .top .on.fail {color:#eea7b5;}
 .status_wrap .article .area {width:100%; min-height:459px; padding-top:20px; display:flex;
     align-content: space-between;  flex-wrap: wrap; justify-content: center; position:relative;}
-.status_wrap .article .area:last-child {padding-top:0px;}
+.status_wrap .article:last-child .area {padding-top:0px;}
 .status_wrap .article .area.block::before {content:''; display:block; width:100%; height:100%;
     background:rgba(255,255,255,0.9); position:absolute; z-index:10;}
 .status_wrap .article .area dl {width:calc(100% - 40px); min-height:110px; border:1px solid #dddddd;

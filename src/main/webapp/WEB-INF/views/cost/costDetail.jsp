@@ -210,8 +210,9 @@
                                 <div class="month_prev" onclick="prePeriodControl()">
                                     <img src="${baseURL}/image/ico_rcs_prev.png" alt="">
                                 </div>
-                                <span class="curentDate"><fmt:formatDate value="${monthlyDt}" pattern="yyyy-MM"/></span>
-                                <input type="hidden" name="monthly_dt" id="monthlyDt" value="<fmt:formatDate value="${monthlyDt}" pattern="yyyy-MM"/>">
+                                <c:set var="monthDt" value="${empty startDt and empty endDt ? monthlyDt : ''}"/>
+                                <span class="curentDate"><fmt:formatDate value="${monthDt}" pattern="yyyy-MM"/></span>
+                                <input type="hidden" name="monthly_dt" id="monthlyDt" value="<fmt:formatDate value="${monthDt}" pattern="yyyy-MM"/>">
 <%--                                <input type="button" class="report-icon-btn calendar" onclick="dateOptionCall(this)">--%>
                                 <div class="month_next" onclick="nextPeriodControl()">
                                     <img src="${baseURL}/image/ico_rcs_next.png" alt="">
