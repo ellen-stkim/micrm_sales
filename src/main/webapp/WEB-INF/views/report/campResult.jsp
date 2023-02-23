@@ -299,7 +299,7 @@
                     <div class="btn_size3 btn_bg3" onclick="popupSearch()"><span>검색</span></div>
 
                 </form:form>
-                <div id="list_table_box" style="width: 588px; height:210px;">
+                <div id="list_table_box" style="width: 588px; min-height:210px;">
                     <table class="pop_table table_fixed" id="pop_list_table">
                         <colgroup>
                             <col width="40"/>

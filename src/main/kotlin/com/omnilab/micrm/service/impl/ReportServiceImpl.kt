@@ -196,22 +196,19 @@ class ReportServiceImpl : ReportService {
             return mapLst
         }
 
-        val searchCont = Tblmicp_cont_lstDto()
-        searchCont.cont_cd = cont_id
-        val contentDtoLst = campaignDao.sel_tblmicp_cont_lst(searchCont)
+        val searchCont = Tblmicp_cont_mstDto(cont_id)
+        val contentDtoLst = campaignDao.getContentsViewList(searchCont)
 
-        for (contentDto in contentDtoLst) {
+        for (dto in contentDtoLst) {
 
             var map = HashMap<String, Any?>()
-            val dto = campaignReportDao.getContentsView(contentDto.seq)
             dto.cardSize = '1'.toString()
             if (dto.cont_tp.equals("DMTP04")) {
                 commonService.jsonOneContentsParsing(dto)
             }
             map["dto"] = dto
-            map["url"] = campaignReportDao.getLinkClickCnt(contentDto.seq)
+            map["url"] = campaignReportDao.getLinkClickCnt(dto.seq)
             mapLst.add(map)
-
         }
         return mapLst
     }

@@ -759,7 +759,6 @@
                 idx = parseInt(idx);
                 let bar = $(`[name='progress` + (idx + 1) + `']`)[tempIdx]
 
-                console.log(bar)
                 campBarArr[idx].animate(Number($(bar).attr('data')));
             }
         }
