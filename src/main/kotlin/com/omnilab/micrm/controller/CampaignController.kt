@@ -135,6 +135,31 @@ class CampaignController {
         return view
     }
 
+
+    /**
+     * @Method Name  : sendContcpPreview
+     * @Since    : 2023. 02. 23.
+     * @author   : Belisa
+     * @param    : req - HttpServletRequest
+     * @param    : rep - HttpServletResponse
+     * @param    : sessoin - HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @serial   :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 발송된 콘텐츠 미리보기
+     * @title : 발송된 콘텐츠 미리보기
+     */
+    @PostMapping("/sendContcpPreview.ajax")
+    fun sendContcpPreview(@RequestParam("cont_id") cont_id: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val dto = Tblmicp_cont_mstDto(cont_id.toInt(), UsefulUtils.sessionUser().usr_grp_cd!!, "Y")
+        val view = ModelAndView("camp/ajax/sendPreview")
+        view.addObject("list", campaignServiceImpl.getContentPreview(dto))
+        view.addObject("filePath", sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val)
+        return view
+    }
+
     /**
      * @Method Name  : getSendHst
      * @Since    : 2021. 03. 03.

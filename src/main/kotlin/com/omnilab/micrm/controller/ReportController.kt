@@ -152,7 +152,7 @@ class ReportController {
                  , @RequestParam( required = false,   value="camp_nm") camp_nm : String ): ModelAndView {
 
         val view= ModelAndView("report/ajax/reportSendPreview")
-        val mapLst  =reportService.getClickList(cont_id)
+        val mapLst = reportService.getClickList(cont_id)
         val filePath= sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val
         view.addObject("cont_seq", cont_id)
         view.addObject("camp_nm", camp_nm)

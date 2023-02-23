@@ -1,6 +1,7 @@
 package com.omnilab.micrm.repository
 
 import com.omnilab.micrm.model.Campaign_searchDto
+import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
@@ -38,5 +39,6 @@ interface CampaignDao {
     fun getProgramCnt(dto: Tblmicp_programDto): MutableMap<String, Any>
 
     fun sel_send_program_rstLstExcel(book : Workbook, dto : Tblmicp_send_hstDto)
+    fun getContentsViewList(searchCont: Tblmicp_cont_mstDto): List<Content_view_Dto>
 
 }

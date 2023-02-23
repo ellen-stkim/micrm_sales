@@ -411,7 +411,7 @@
         WHERE  cont_lst_cd = #{cont_id} AND a.URL_ID != 'mmsIMG001'
     </select>
 
-    <select id="getContentsLst" resultType="Content_view_Dto">
+    <select id="getContentsView" resultType="Content_view_Dto">
         SELECT m.seq
             ,m.ch_tp
             ,m.cont_nm

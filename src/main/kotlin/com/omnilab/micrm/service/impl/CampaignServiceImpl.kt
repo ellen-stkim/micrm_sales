@@ -7,10 +7,7 @@ import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendResult_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.repository.CampaignDao
-import com.omnilab.micrm.repository.CampaignSendDao
-import com.omnilab.micrm.repository.CommonDao
-import com.omnilab.micrm.repository.SysSettingDao
+import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.task.ThreadPool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,7 +66,10 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     private lateinit var commonDao: CommonDao
 
     @Autowired
-    private lateinit var sysSettingDao: SysSettingDao;
+    private lateinit var sysSettingDao: SysSettingDao
+
+    @Autowired
+    private lateinit var campaignReportDao: CampaignReportDao
 
     @Autowired
     private lateinit var commonService: com.omnilab.micrm.service.CommonService
@@ -334,6 +334,29 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         }
     }
 
+
+    override fun getContentPreview(searchCont: Tblmicp_cont_mstDto): MutableList<HashMap<String, Any?>> {
+        var mapLst = mutableListOf<HashMap<String, Any?>>()
+
+        val contentDtoLst = campaignDao.getContentsViewList(searchCont)
+
+        for (contentDto in contentDtoLst) {
+
+            var map = HashMap<String, Any?>()
+            contentDto.cardSize = '1'.toString()
+            if (contentDto.cont_tp.equals("DMTP04")) {
+                commonService.jsonOneContentsParsing(contentDto)
+            }
+            map["dto"] = contentDto
+            mapLst.add(map)
+            logger.error("{}",contentDto)
+
+        }
+
+
+        return mapLst
+    }
+
     override fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any> {
         val re_map = HashMap<String, Any>()
         val labelList = mutableListOf<String>();
@@ -359,4 +382,5 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         campaignDao.sel_send_program_rstLstExcel(book, lstDto)
         return re_map
     }
+
 }
