@@ -226,8 +226,7 @@
 	</select>
 
 	<select id="selPrgSendCostLstCnt" parameterType="SearchSendCostDto"  resultType="Integer">
-		SELECT COUNT(a.pro_id)
-		FROM   (SELECT hst.pro_id
+		SELECT COUNT(DISTINCT hst.pro_id)
 			FROM tblmire_send_hst AS hst
 				LEFT JOIN tblmicp_program AS prg
 					ON prg.PRO_ID = hst.PRO_ID
@@ -258,8 +257,6 @@
 						AND hst.send_req_day between #{monthly_dt} and last_day(#{monthly_dt})
 				</if>
 			</where>
-			GROUP BY prg.pro_id
-		) as a
 	</select>
 
 </mapper>

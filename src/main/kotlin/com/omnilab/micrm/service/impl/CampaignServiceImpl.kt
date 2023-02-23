@@ -349,10 +349,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             }
             map["dto"] = contentDto
             mapLst.add(map)
-            logger.error("{}",contentDto)
-
         }
-
 
         return mapLst
     }
