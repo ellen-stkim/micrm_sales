@@ -25,27 +25,7 @@
          </div>
       </div>
        <span id="js-title-area">
-      <div class="row body">
-         <div class="th">문자 제목</div>
-         <div class="column_1">
-            <div class="column_5">
-               <%--<input type="text" class="title type1 smsTitle" name="cont_sub"
-                      onkeyup="smsCreate.titleCount(this);" placeholder="문자 제목을 입력하세요." />--%>
-               <input type="text" class="title type1 smsTitle" name="cont_sub_list" id="sms_title"
-                      onkeyup="onchangePrevSmsTitle(this)"
-                      value="(광고)"
-                      placeholder="문자 제목을 입력하세요."/>
-               <span class="title_byte en_font">(최대 40byte)</span>
-            </div>
-            <!-- select 영역 시작 -->
-            <div class="select column_4 left-border" id="smsTitleVal" name="edmDB">
-               <!-- selected value -->
-               <div class="value" data="0">제목 개인화 변수</div>
-               <ul class="option mappingLst">
-               </ul>
-            </div>
-         </div>
-      </div>
+          <input type="hidden" class="title rcsTitle" name="cont_sub_list" readonly >
        </span>
       <div class="row body">
          <div class="th">발신 번호</div>
