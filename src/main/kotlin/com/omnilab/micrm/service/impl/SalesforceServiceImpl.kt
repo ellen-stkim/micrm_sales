@@ -940,12 +940,6 @@ class SalesforceServiceImpl : SalesforceService {
                 }
             }
 
-            logger.error("-----------------------updateContentList---------------------------------------------------------------------------------")
-            logger.error("{}",len)
-            logger.error("{}",i)
-            logger.error("{}",contentListCreatedto.cont_sub_list)
-            logger.error("{}",contentListCreatedto.cont_sub_list!![i])
-            logger.error("-----------------------updateContentList---------------------------------------------------------------------------------")
 
             tblmiContLstdto.cont_cd = tblmiContMstDto.seq
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
