@@ -554,7 +554,8 @@
                                             /><span></span></label>
                                         </div>
                                     </div>
-                                    <span id="js-title-area"></span>
+                                    <span id="js-title-area">
+                                        <input type="hidden" class="title rcsTitle" name="cont_sub_list" readonly ></span>
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1" id="send_text_column">
