@@ -454,11 +454,11 @@ let rcsCreate = {
         let typeEl = $('input[name="rcs_msg_tp"]:checked');
         let limit = 30;
 
-        if(typeEl == null || typeEl == undefined){  // 슬라이드형
+        if(typeEl.length == 0 ){  // 슬라이드형
             let data = $('.slide_type .value').attr('data');
 
-            console.log(data)
-            console.log(text)
+            console.log(data);
+            console.log(text);
 
         } else {
             let type = $(typeEl).val();
