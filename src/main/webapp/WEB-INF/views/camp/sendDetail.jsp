@@ -957,4 +957,5 @@
             $('#price_detail_div').hide();
         }
     }
+
 </script>
