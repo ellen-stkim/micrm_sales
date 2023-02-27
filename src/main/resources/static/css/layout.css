@@ -252,6 +252,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 
 /* tooltip */
 .tooltip_area {position:relative;}
+.tooltip_area .right span{display: inline-block;}
 .tooltip_icon {float:left; line-height:34px;}
 .tooltip_icon img {vertical-align:middle;}
 .tooltip_icon:hover ~ .tooltip_box {display:block;}

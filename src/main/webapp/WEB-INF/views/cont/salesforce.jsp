@@ -774,6 +774,9 @@
     <div class="pop_container popup_size2">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">템플릿 선택</div>
+        <div class="right">
+            <span class="btn_sm_line" id="createAt">알림톡 템플릿 생성</span>
+        </div>
         <div class="pop_inner">
             <form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
             <div class="form_search">
@@ -1430,6 +1433,13 @@
                 $('.mobileLstPopup').addClass('active');
             }
         });
+
+
+        // 알림톡 템플릿 생성
+        $(document).on("click", "#createAt", function () {
+            window.open('/cont/kko/tmplCreate.mi', '_blank');
+        });
+
 
         // sms_delete_img
         $(document).on("click", ".sms_delete_img", function () {

@@ -456,10 +456,9 @@ let rcsCreate = {
 
         if(typeEl.length == 0 ){  // 슬라이드형
             let data = $('.slide_type .value').attr('data');
-
-            console.log(data);
-            console.log(text);
-            console.log(number);
+            if(data>3){    // 0~3 = smail   4~ = medium
+                limit = 60
+            }
 
             let textDiv = $("#textByte" + number).parents('.text_count');
             $(text).removeClass("red_border");
