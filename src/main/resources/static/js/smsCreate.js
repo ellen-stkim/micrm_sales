@@ -455,25 +455,35 @@ let rcsCreate = {
         let type = $('input[name="rcs_msg_tp"]:checked').val();
         let limit = 30;
 
-        switch (type){
-            case "sms":
-                limit = 100;
-                break;
-            case "lms":
-            case "tall":
-            case "medium":
-                limit = 100;
-                break;
+
+        if(type){
+            switch (type){
+                case "sms":
+                    limit = 100;
+                    break;
+                case "lms":
+                case "tall":
+                case "medium":
+                    limit = 1300;
+                    break;
+            }
+
+            $(text).removeClass("red_border");
+            $('.text_count').removeClass("red_color");
+
+            if(count > limit){
+                $(text).addClass("red_border");
+                $('.text_count').addClass("red_color");
+            }
+        } else { // 슬라이드형
+            let data = $('.slide_type .value').attr('data');
+
+            console.log(data)
+            console.log(text)
+
         }
 
-        $(text).removeClass("red_border");
-        $('.text_count').removeClass("red_color");
 
-        if(count > limit){
-            $(text).addClass("red_border");
-            $('.text_count').addClass("red_color");
-
-        }
     }
     , rejection : function(number){
         number.value = number.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
