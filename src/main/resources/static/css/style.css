@@ -353,6 +353,7 @@
 .sms_type img {vertical-align:middle;}
 .column .sms_head .remove_info {position:absolute; right:7px; top:7px; z-index:20;}
 .column .sms_head .remove_info .useState,
+.column .sms_head .remove_info .upd_btn,
 .column .sms_head .remove_info a {float:left; display:block; padding:5px 13px; border:1px solid #dddddd;
     font-size:11px; line-height:1; background:#FFFFFF; color:#888888; cursor:pointer;}
 .column .sms_head .remove_info .useState {border-right:none;}

@@ -775,7 +775,7 @@
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">템플릿 선택</div>
         <div class="right">
-            <span class="btn_sm_line" id="createAt">알림톡 템플릿 생성</span>
+            <span class="btn_sm_line" onclick="openCreateAt()">알림톡 템플릿 생성</span>
         </div>
         <div class="pop_inner">
             <form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
@@ -813,6 +813,11 @@
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
+
+<form:form id="extentionForm" method="post" target="_blank">
+    <input type="hidden" id="extId" name="extId" value="" />
+</form:form>
+
 <script>
     let usr_cd = '${usr_cd}';
     let _connection;
@@ -1434,11 +1439,6 @@
             }
         });
 
-
-        // 알림톡 템플릿 생성
-        $(document).on("click", "#createAt", function () {
-            window.open('/cont/kko/tmplCreate.mi?extId=' + dataExtensionId, '_blank');
-        });
 
 
         // sms_delete_img
@@ -2946,7 +2946,7 @@
     }
 
     $(document).on('click', '.delete_tmpl', (e) => {
-        $('.at_tmpl_data').val(''); // 템플릿 관련 데이터 삭제
+        $('.at_tmpl_data').val('');  // 템플릿 관련 데이터 삭제
         $('.at_tmpl_data').html('');
         $('.kakao_txt').val('');
     })
@@ -3422,6 +3422,19 @@
                 onchangePrevKkoTxt(txtbox);
             }
         }
+    }
+
+
+    function openCreateAt(){
+        $('#extId').val(dataExtensionId)
+        $("#extentionForm").attr("action", "/cont/kko/tmplCreate.mi");
+        $('#extentionForm').submit();
+    }
+
+    function updAtTmpl(seq){
+        $('#extId').val(dataExtensionId)
+        $("#extentionForm").attr("action", "/cont/kko/tmplDetail.mi?seq="+seq);
+        $('#extentionForm').submit();
     }
 
 </script>
