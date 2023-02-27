@@ -459,6 +459,25 @@ let rcsCreate = {
 
             console.log(data);
             console.log(text);
+            console.log(number);
+
+            let textDiv = $("#textByte" + number).parents('.text_count');
+            $(text).removeClass("red_border");
+            $(textDiv).removeClass("red_color");
+
+            if(count > limit){
+                $(text).addClass("red_border");
+                $(textDiv).addClass("red_color");
+            }
+
+            let limitOverCnt =  $('.rcs_slide .swiper-slide .text_count.red_color').length;
+
+            let limitText = $('.swiper-container > .text_count');
+            if(limitOverCnt > 0){
+                limitText.addClass('red_color');
+            }else {
+                limitText.removeClass('red_color');
+            }
 
         } else {
             let type = $(typeEl).val();
