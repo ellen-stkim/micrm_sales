@@ -507,6 +507,10 @@
                                 </div>
                                 <div class="byte"  style="width: 270px">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
+                                    <br> <br>
+                                    <span class="en_font">※ LMS 유형 최대 2000자</span> <br>
+                                    <span class="en_font">※ MMS 유형 최대 1000자</span> <br>
+                                    <span class="en_font">※ SMS 유형 최대 90자</span>
                                 </div>
                             </div>
                         </div>
@@ -770,6 +774,9 @@
     <div class="pop_container popup_size2">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">템플릿 선택</div>
+        <div class="right">
+            <span class="btn_sm_line" onclick="openCreateAt()">알림톡 템플릿 생성</span>
+        </div>
         <div class="pop_inner">
             <form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
             <div class="form_search">
@@ -806,6 +813,11 @@
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
+
+<form:form id="extentionForm" method="post" target="_blank">
+    <input type="hidden" id="extId" name="extId" value="" />
+</form:form>
+
 <script>
     let usr_cd = '${usr_cd}';
     let _connection;
@@ -949,6 +961,7 @@
             } else {
                 $(this).parents('.row').siblings('.input-img').addClass('on');
             }
+            onchangePrevSmsTxt($('#sms_txt_area'));
         });
 
         // MMS, 카카오 이미지 삭제
@@ -1425,6 +1438,8 @@
                 $('.mobileLstPopup').addClass('active');
             }
         });
+
+
 
         // sms_delete_img
         $(document).on("click", ".sms_delete_img", function () {
@@ -2931,7 +2946,7 @@
     }
 
     $(document).on('click', '.delete_tmpl', (e) => {
-        $('.at_tmpl_data').val(''); // 템플릿 관련 데이터 삭제
+        $('.at_tmpl_data').val('');  // 템플릿 관련 데이터 삭제
         $('.at_tmpl_data').html('');
         $('.kakao_txt').val('');
     })
@@ -3407,6 +3422,19 @@
                 onchangePrevKkoTxt(txtbox);
             }
         }
+    }
+
+
+    function openCreateAt(){
+        $('#extId').val(dataExtensionId)
+        $("#extentionForm").attr("action", "/cont/kko/tmplCreate.mi");
+        $('#extentionForm').submit();
+    }
+
+    function updAtTmpl(seq){
+        $('#extId').val(dataExtensionId)
+        $("#extentionForm").attr("action", "/cont/kko/tmplDetail.mi?seq="+seq);
+        $('#extentionForm').submit();
     }
 
 </script>

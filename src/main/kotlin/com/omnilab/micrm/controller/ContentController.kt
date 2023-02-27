@@ -66,6 +66,9 @@ class ContentController  {
     @Qualifier("KkoRestApiServiceImpl")
     lateinit var kkoRestApiService: KkoRestApiService
 
+    @Autowired
+    lateinit var salesforceService: SalesforceService;
+
     @Value("\${upload.content}")
     private val filePath: String? = null
 
@@ -1162,8 +1165,8 @@ class ContentController  {
      * @Method Decription : 알림톡 탬플릿 생성 뷰 페이지 조회
      * @title : 알림톡 탬플릿 생성 뷰 페이지
      */
-    @GetMapping("/kko/tmplCreate.mi")
-    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    @PostMapping("/kko/tmplCreate.mi")
+    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,@ModelAttribute("extId") extId :String): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
         val map = kkoMsgService.tmplCreateLst();
 
@@ -1175,7 +1178,13 @@ class ContentController  {
         view.addObject("btnLinkLst", map["btnLinkLst"])
         view.addObject("btnLst", map["btnLst"])
 
-        view.addObject("column",sysSettingService.getDBValue())
+        if(CommonUtils.isEmptyObject(extId)){
+            view.addObject("column", sysSettingService.getDBValue())
+        } else {
+            val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usr_grp_cd!!,extId)
+            view.addObject("extention",reMap["list"])
+        }
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
@@ -1326,8 +1335,8 @@ class ContentController  {
      * @title : 템플릿 수정 페이지
      */
 
-    @GetMapping("/kko/tmplDetail.mi")
-    fun detailTmplContent(@RequestParam("seq") seq : Int) : ModelAndView {
+    @PostMapping("/kko/tmplDetail.mi")
+    fun detailTmplContent(@RequestParam("seq") seq : Int, @ModelAttribute("extId") extId: String) : ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         val view = ModelAndView("cont/kko/detailTmpl")
@@ -1343,7 +1352,13 @@ class ContentController  {
         view.addObject("btnLinkLst", map["btnLinkLst"])
         view.addObject("btnLst", map["btnLst"])
 
-        view.addObject("column",sysSettingService.getDBValue())
+        if(CommonUtils.isEmptyObject(extId)){
+            view.addObject("column", sysSettingService.getDBValue())
+        } else {
+            val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usr_grp_cd!!,extId)
+            view.addObject("extention",reMap["list"])
+        }
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"

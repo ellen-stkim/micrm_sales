@@ -82,7 +82,9 @@
         <!-- row 영역 시작 -->
         <div class="row bottom-border cf">
             <div class="left">
-                <a href="/cont/kko/tmplCreate.mi" class="btn_basic smsCreate left right-border">알림톡 템플릿 생성</a>
+                <form:form action="./kko/tmplCreate.mi" method="post" style="float: left;">
+                <input type="submit" class="btn_basic smsCreate left right-border" value="알림톡 템플릿 생성"/>
+                </form:form>
                 <input type="button" class="btn_basic delete left right-border"
                        onclick="deleteMobileList('campaign','');" value="삭제"/>
             </div>
@@ -115,6 +117,10 @@
 </section>
 <!-- container 영역 끝 -->
 </div>
+
+<form:form id="extentionForm" method="post" target="_blank">
+    <input type="hidden" id="extId" name="extId" value="" />
+</form:form>
 
 <script>
     $(function () {
@@ -319,4 +325,9 @@
 
     let type = ['kakao', 'MMS', 'SMS', 'rcsText', 'rcsHorizontalLeft', 'rcsHorizontalRight', 'rcsVerticalTall', 'rcsVerticalMedium', 'rcsSlideSmall', 'rcsSlideMedium'];
 
+
+    function updAtTmpl(seq){
+        $("#extentionForm").attr("action", "/cont/kko/tmplDetail.mi?seq="+seq);
+        $('#extentionForm').submit();
+    }
 </script>

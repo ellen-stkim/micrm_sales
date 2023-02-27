@@ -252,6 +252,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 
 /* tooltip */
 .tooltip_area {position:relative;}
+.tooltip_area .right span{display: inline-block;}
 .tooltip_icon {float:left; line-height:34px;}
 .tooltip_icon img {vertical-align:middle;}
 .tooltip_icon:hover ~ .tooltip_box {display:block;}
@@ -677,3 +678,6 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 
 
 .cus_pointer {cursor: pointer}
+.red_border{border: solid 1px #ff7a7a;}
+.red_color{color: #ff7a7a!important;}
+.red_color p{color: #ff7a7a!important;}
