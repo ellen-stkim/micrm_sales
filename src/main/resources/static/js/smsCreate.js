@@ -450,13 +450,19 @@ let rcsCreate = {
         $("#textByte" + number).html(count);
         $('#textArea' + number).html(textValue);
 
-
         // 제한글자 초과
-        let type = $('input[name="rcs_msg_tp"]:checked').val();
+        let typeEl = $('input[name="rcs_msg_tp"]:checked');
         let limit = 30;
 
+        if(typeEl == null || typeEl == undefined){  // 슬라이드형
+            let data = $('.slide_type .value').attr('data');
 
-        if(type){
+            console.log(data)
+            console.log(text)
+
+        } else {
+            let type = $(typeEl).val();
+
             switch (type){
                 case "sms":
                     limit = 100;
@@ -475,15 +481,7 @@ let rcsCreate = {
                 $(text).addClass("red_border");
                 $('.text_count').addClass("red_color");
             }
-        } else { // 슬라이드형
-            let data = $('.slide_type .value').attr('data');
-
-            console.log(data)
-            console.log(text)
-
         }
-
-
     }
     , rejection : function(number){
         number.value = number.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
