@@ -507,6 +507,10 @@
                                 </div>
                                 <div class="byte"  style="width: 270px">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
+                                    <br> <br>
+                                    <span class="en_font">※ LMS 유형 최대 2000자</span> <br>
+                                    <span class="en_font">※ MMS 유형 최대 1000자</span> <br>
+                                    <span class="en_font">※ SMS 유형 최대 90자</span>
                                 </div>
                             </div>
                         </div>
@@ -949,6 +953,7 @@
             } else {
                 $(this).parents('.row').siblings('.input-img').addClass('on');
             }
+            onchangePrevSmsTxt($('#sms_txt_area'));
         });
 
         // MMS, 카카오 이미지 삭제

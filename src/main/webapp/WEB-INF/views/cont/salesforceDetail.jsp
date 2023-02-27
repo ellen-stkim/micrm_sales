@@ -3939,6 +3939,7 @@
             } else {
                 $(this).parents('.row').siblings('.input-img').addClass('on');
             }
+
         });
 
 

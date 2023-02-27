@@ -648,6 +648,11 @@
                 $('#dailyOption').show();
             } else if ('M'){
                 // 현재 날짜 기준 지난달 한달 적용
+                const date = new Date();
+                const monthly = date.getFullYear() +"-"+date.getMonth();
+
+                $('#monthlyOption .curentDate').html(monthly);
+                $('#monthlyDt').val(monthly);
                 $('#dailyOption input').val('');
                 $('#monthlyOption').show();
             }

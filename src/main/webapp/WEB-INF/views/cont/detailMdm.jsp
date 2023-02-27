@@ -5170,6 +5170,7 @@
         $('.rcsContsVal[name="defaultDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
         $('.rcsTitle[name="edmDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
         $('.rcsTitle[name="defaultDB"] .value').attr('data','0').text('개인화 변수').css('color','#cccccc');
+        // $('.rcsContents').removeClass("red_border");
 
         if(radioVal == 'sms'){
             buttonReplace('text', 1, 17);
