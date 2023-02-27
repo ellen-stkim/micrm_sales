@@ -1437,7 +1437,7 @@
 
         // 알림톡 템플릿 생성
         $(document).on("click", "#createAt", function () {
-            window.open('/cont/kko/tmplCreate.mi', '_blank');
+            window.open('/cont/kko/tmplCreate.mi?extId=' + dataExtensionId, '_blank');
         });
 
 

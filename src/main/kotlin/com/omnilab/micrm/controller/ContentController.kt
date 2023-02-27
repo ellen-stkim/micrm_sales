@@ -66,6 +66,9 @@ class ContentController  {
     @Qualifier("KkoRestApiServiceImpl")
     lateinit var kkoRestApiService: KkoRestApiService
 
+    @Autowired
+    lateinit var salesforceService: SalesforceService;
+
     @Value("\${upload.content}")
     private val filePath: String? = null
 
@@ -1163,7 +1166,7 @@ class ContentController  {
      * @title : 알림톡 탬플릿 생성 뷰 페이지
      */
     @GetMapping("/kko/tmplCreate.mi")
-    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,@RequestParam extId :String): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
         val map = kkoMsgService.tmplCreateLst();
 
@@ -1175,7 +1178,17 @@ class ContentController  {
         view.addObject("btnLinkLst", map["btnLinkLst"])
         view.addObject("btnLst", map["btnLst"])
 
-        view.addObject("column",sysSettingService.getDBValue())
+        // key를 넘겨줄 경우 -> 개인화 변수 salesforce에서 가져오기
+        // key가 없을 경우 -> 개인화 변수
+        logger.error("{}",extId)
+        if(CommonUtils.isEmptyObject(extId)){
+            view.addObject("column", sysSettingService.getDBValue())
+        } else {
+            val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usr_grp_cd!!,extId)
+            view.addObject("extention",reMap["list"])
+        }
+
 
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"

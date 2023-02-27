@@ -2652,7 +2652,7 @@ class SalesforceServiceImpl : SalesforceService {
             }else{
                 totalCnt = dataExtension.select().totalCount
             }
-        }catch (e:Exception){
+        } catch (e:Exception){
             logger.error("{}",e)
             totalCnt = dataExtension.select().totalCount
         }
