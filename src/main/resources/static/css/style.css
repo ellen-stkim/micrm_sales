@@ -2622,4 +2622,5 @@ input::placeholder {
     width: 440px;
 }
 #tpreview .prev_box {    margin-top: 20px;}
-#tpreview .prev_box .slide_area .rcs_paging{    text-align: center;}
+#tpreview .prev_box .slide_area .rcs_paging,
+.viewer_area .slide_area .rcs_paging {text-align: center;}
