@@ -149,6 +149,10 @@
                                                                    varStatus="status">
                                                             <input type="button" data="\#{${item.list_val}}" value="${item.list_nm}" class="drag-button" draggable="true">
                                                         </c:forEach>
+                                                        <c:forEach var="item" items="${extention}"
+                                                                   varStatus="status">
+                                                            <input type="button" data="\#{${item}}" value="${item}" class="drag-button" draggable="true">
+                                                        </c:forEach>
                                                     </div>
                                                 </div>
                                             </div>
