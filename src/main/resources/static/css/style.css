@@ -2627,3 +2627,4 @@ input::placeholder {
 .viewer_area .slide_area .rcs_paging {text-align: center;}
 #tmplPopUp .right{padding: 10px}
 #tmplPopUp .right .btn_sm_line{width: 115px; margin: 7px 7px 0 0; padding: 7px; height: 37px;}
+#tmplPopUp .right span{display: inline-block;}

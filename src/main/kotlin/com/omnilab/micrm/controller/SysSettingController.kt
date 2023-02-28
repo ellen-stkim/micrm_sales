@@ -5,6 +5,7 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
+import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.KkoRestApiService
 import com.omnilab.micrm.service.SysSettingService
 import org.slf4j.LoggerFactory
@@ -33,7 +34,7 @@ class SysSettingController {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
+    private lateinit var campaignService : CampaignService
 
 
     @Autowired

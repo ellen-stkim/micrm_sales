@@ -148,9 +148,6 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_cd)">
                 and a.tmpl_cd = #{tmpl_cd}
             </if>
-            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
-                and a.tmpl_nm = #{tmpl_nm}
-            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ex_tmpl_nm)">
                 and a.tmpl_nm like CONCAT('%', #{ex_tmpl_nm},'%')
             </if>
@@ -236,9 +233,6 @@
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
                 and a.send_key = #{send_key}
-            </if>
-            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
-                and a.tmpl_nm = #{tmpl_nm}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ex_tmpl_nm)">
                 and a.tmpl_nm like CONCAT('%', #{ex_tmpl_nm},'%')
