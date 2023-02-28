@@ -946,9 +946,10 @@
     $(document).on('click','#updTmplBtn',()=>{
         const seq = $("#tmplSeq").val();
         const res = function (response) {
-            popup.popAlert(response.msg)
             if (response.status == 200) {
-                location.reload()
+                popup.popAlertCallback(response.msg, "window.location.reload();");
+            }else {
+                popup.popAlert(response.msg)
             }
         }
         let param = {seq :seq}

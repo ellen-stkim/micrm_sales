@@ -58,5 +58,37 @@
         <url-rule>
             <url disable="true">/cont/mobileUpdate.service</url>
         </url-rule>
+
+<!-- lucy 필터 와이드카드 등록 안됨 -->
+        <url-rule>
+            <url disable="true">/sf/01/mdmCreate.mi</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/01/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/02/mdmCreate.mi</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/02/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/03/mdmCreate.mi</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/03/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/04/mdmCreate.mi</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/04/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/05/mdmCreate.mi</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/05/mobileUpdate.service</url>
+        </url-rule>
     </url-rule-set>
 </config>
