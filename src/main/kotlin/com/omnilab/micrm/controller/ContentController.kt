@@ -1323,8 +1323,8 @@ class ContentController  {
     }
 
     /**
-     * @Method Name  : updateMoblieContent
-     * @Since    : 2022. 10. 05.
+     * @Method Name  : tmplDetail
+     * @Since    : 2022. 09. 22.
      * @author   : Belisa
      * @param    : seq: Int
      * @return   : ModelAndView

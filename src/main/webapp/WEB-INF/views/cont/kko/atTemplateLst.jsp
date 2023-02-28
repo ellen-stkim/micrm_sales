@@ -85,8 +85,6 @@
                 <form:form action="./kko/tmplCreate.mi" method="post" style="float: left;">
                 <input type="submit" class="btn_basic smsCreate left right-border" value="알림톡 템플릿 생성"/>
                 </form:form>
-                <input type="button" class="btn_basic delete left right-border"
-                       onclick="deleteMobileList('campaign','');" value="삭제"/>
             </div>
         </div>
         <!-- row 영역 끝 -->
@@ -267,7 +265,7 @@
     function deleteMobile() {
         var nowPage = $("#nowPageNo").val();
         var checkList = [];
-        var checkLength = $('.custom_check1 input[name=list]:checked').length;
+        var checkLength = $('.custom_check1 input[name="tmpl_cd"]:checked').length;
 
         var res = function (response) {
             if (response.status == "true") {
@@ -279,7 +277,7 @@
             selectMobileList(nowPage)
         }
         for (var i = 0; i < checkLength; i++) {
-            checkList.push($('.custom_check1 input[name=list]:checked').eq(i).val());
+            checkList.push($('.custom_check1 input[name="tmpl_cd"]:checked').eq(i).val());
         }
         var param = {checkList: checkList};
         com_ajax.ajax('post', '${baseURL}/cont/deleteMobileContent.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');

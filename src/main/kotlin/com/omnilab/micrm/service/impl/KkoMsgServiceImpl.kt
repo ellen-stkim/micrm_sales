@@ -9,6 +9,7 @@ import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.AtButtonDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.service.KkoMsgService
@@ -547,6 +548,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.categoryCode =  curDto.cate_cd
         dto.templateHeader =  curDto.tmpl_header
 
+        dto.buttons = gson.fromJson(curDto.button_json, object : TypeToken<MutableList<AtButtonDto>>() {}.type)
         dto.templateItem = gson.fromJson(curDto.item_json, object : TypeToken<HashMap<String, Any>>() {}.type)
         dto.templateItemHighlight =  gson.fromJson(curDto.item_highlight_json, object : TypeToken<HashMap<String, Any>>() {}.type)
 
