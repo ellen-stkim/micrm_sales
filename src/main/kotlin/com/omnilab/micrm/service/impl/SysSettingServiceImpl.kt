@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 
 @Service("SysSettingServiceImpl")
@@ -491,72 +490,78 @@ class SysSettingServiceImpl : SysSettingService {
 
     override fun getRejectSettingList(dto: SetLst_searchDto): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
-        val searchDto = dto as SetLst_searchDto
 
-        val pageNo = if (searchDto.pageNo == null) {
+        val pageNo = if (dto.pageNo == null) {
             1
         } else {
-            searchDto.pageNo!!
+            dto.pageNo!!
         }
 
-        if (searchDto.searchType == "list_nm") {
-            searchDto.list_nm = searchDto.searchValue
-        } else if (searchDto.searchType == "list_val") {
-            searchDto.list_val = searchDto.searchValue
-        } else if (searchDto.searchType == "use_yn") {
-            searchDto.use_yn = searchDto.searchValue
+        when (dto.searchType) {
+            "list_nm" -> {
+                dto.list_nm = dto.searchValue
+            }
+            "list_val" -> {
+                dto.list_val = dto.searchValue
+            }
+            "use_yn" -> {
+                dto.use_yn = dto.searchValue
+            }
         }
 
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        searchDto.list_tp_id = "CH04"
-        searchDto.list_dt_id = "REJT01"
+        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        dto.list_tp_id = "CH04"
+        dto.list_dt_id = "REJT01"
 
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
 
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
+        dto.firstIndex = paginationInfo.firstRecordIndex
+        dto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(dto)
 
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getSettingList(searchDto);
+        map["list"] = sysSettingDao.getSettingList(dto);
 
         return map;
     }
 
     override fun getRejtSettingList(dto: SetLst_searchDto): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
-        val searchDto = dto as SetLst_searchDto
 
-        val pageNo = if (searchDto.pageNo == null) {
+        val pageNo = if (dto.pageNo == null) {
             1
         } else {
-            searchDto.pageNo!!
+            dto.pageNo!!
         }
 
-        if (searchDto.searchType == "list_nm") {
-            searchDto.list_nm = searchDto.searchValue
-        } else if (searchDto.searchType == "list_val") {
-            searchDto.list_val = searchDto.searchValue
-        } else if (searchDto.searchType == "use_yn") {
-            searchDto.use_yn = searchDto.searchValue
+        when (dto.searchType) {
+            "list_nm" -> {
+                dto.list_nm = dto.searchValue
+            }
+            "list_val" -> {
+                dto.list_val = dto.searchValue
+            }
+            "use_yn" -> {
+                dto.use_yn = dto.searchValue
+            }
         }
 
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        searchDto.list_tp_id = "CH04"
-        searchDto.list_dt_id = "REJT01"
+        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        dto.list_tp_id = "CH04"
+        dto.list_dt_id = "REJT01"
 
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
 
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
+        dto.firstIndex = paginationInfo.firstRecordIndex
+        dto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(dto)
 
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getSettingList(searchDto);
+        map["list"] = sysSettingDao.getSettingList(dto);
 
         return map;
     }
@@ -587,7 +592,6 @@ class SysSettingServiceImpl : SysSettingService {
 
                 val tempData = result["data"] as MutableMap<String, Any>
                 val data = tempData["data"] as MutableMap<String, Any>
-                logger.error("{}", data)
 
                 val userInfo = UsefulUtils.sessionUser()
 

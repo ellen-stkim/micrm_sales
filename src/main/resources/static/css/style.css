@@ -365,7 +365,8 @@
 .column .row_body .sms + .sms_txt  ,.scroll-box .sms + .sms_txt{max-height:110px; overflow:hidden;}
 .column .row_body .sms + .sms_txt:hover , .scroll-box .sms_txt:hover {overflow-y:auto;}
 .column .row_body .sms_txt ,.scroll-box .sms_txt , .at_inner .sms_txt{width:100%; height:auto; font-size:12px; line-height:1.6; padding:15px;
-    max-height:449px; overflow:hidden; background:#FFFFFF; border-radius:0;}
+    max-height:449px; overflow:hidden; background:#FFFFFF; border-radius:0;
+    overflow-wrap: break-word;}
 .column .row_body .sms_txt:hover {overflow-y:auto;}
 .column .row_body .sms_title + .sms_txt {max-height:401px;}
 .column .row_body .sms_btn ,.scroll-box .sms_btn , .at_inner .sms_btn  {display:block; width:calc(100% - 30px); border-radius:4px; margin:15px auto;
@@ -568,9 +569,7 @@
 .sms_title + .sms_img {border-radius:10px; overflow:hidden; margin-bottom:5px;}
 .sms_txt {width:100%; height:370px; padding:15px; border-radius:10px;
     background:#f2f2f2;}
-.sms_body {
 
-}
 
 .viewer_area .sms_img_box {width:100%; border-radius:10px; background:#f2f2f2; overflow:hidden;}
 .viewer_area .text_box {width:100%; border-radius:10px; background:#f2f2f2; padding:15px; overflow:hidden; max-height: 300px;}
