@@ -711,7 +711,6 @@ class MobileContentServiceImpl : ContentService {
      */
 
     override fun selectContentView(dto: Tblmi_cont_mstDto): Map<String, Any> {
-
         val paramMap: MutableMap<String, Any> = HashMap()
         val searchDto = dto as Contents_searchDto
 
