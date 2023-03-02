@@ -577,6 +577,7 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileList.ajax")
     fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
         dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        dto.use_yn = "Y"
         val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
         val paramMap = mobileContentService.selectContentView(dto)
 

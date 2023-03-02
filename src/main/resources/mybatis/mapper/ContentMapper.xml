@@ -443,6 +443,9 @@
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 					AND m.use_yn = #{use_yn}
 				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+					AND m.del_yn = #{del_yn}
+				</if>
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
 					AND l.cont_sub like concat ('%',#{cont_sub},'%')
 				</if>

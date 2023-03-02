@@ -69,12 +69,10 @@
                 <div class="sms_head cf">
                     <!-- 템플릿명 -->
                     <h3>${content.cont_nm}</h3>
-                    <%--
                     <div class="remove_info">
-                        <input type="button" value="${content.use_yn}" class="en_font useState" onclick="updateUseState('${content.seq}', this);"/>
-                        <a href="/cont/mdmDetail/${content.seq}.mi">수정</a>
+                        <input type="button" value="${content.use_yn}" class="en_font useState right-border" onclick="updateUseState('${content.seq}', this);"/>
+<%--                        <a href="/cont/mdmDetail/${content.seq}.mi">수정</a>--%>
                     </div>
-                    --%>
                 </div>
                 <div class="row_top cf">
                     <!-- 컨텐츠 type -->
