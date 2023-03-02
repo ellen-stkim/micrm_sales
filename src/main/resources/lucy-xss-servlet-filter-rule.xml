@@ -59,7 +59,7 @@
             <url disable="true">/cont/mobileUpdate.service</url>
         </url-rule>
 
-<!-- lucy 필터 와이드카드 등록 안됨 -->
+        <!-- lucy 필터 와이드카드 등록 안됨 -->
         <url-rule>
             <url disable="true">/sf/01/mobileInsert.service</url>
         </url-rule>

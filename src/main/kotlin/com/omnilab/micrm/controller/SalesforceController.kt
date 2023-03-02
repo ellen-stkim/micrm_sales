@@ -195,10 +195,10 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+        val cntMap = salesforceService.isCheckSender(usr_cd)
 
         val list = listMap["list"] as List<Content_view_Dto>
         if(list.isNotEmpty()){
-            val cntMap = salesforceService.isCheckSender(usr_cd)
 
             val rejDto = SetLst_searchDto()
             rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -233,8 +233,6 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
         }
         view.addObject("list" , listMap["list"])
-
-        val cntMap = mobileContentService.isCheckSender()
 
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])

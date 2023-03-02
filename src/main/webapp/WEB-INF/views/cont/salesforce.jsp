@@ -367,7 +367,7 @@
                                                 </div>
                                                 <div class="at_tmpl_data" ></div>
                                                 <input type="hidden" class="kakao_txt" name="kakao_body" value="">
-                                                <a href="" class="sms_btn">버튼</a>
+                                                <a href="#" class="sms_btn">버튼</a>
                                             </div>
                                         </div>
                                     </div>
