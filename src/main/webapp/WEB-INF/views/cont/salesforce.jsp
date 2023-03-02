@@ -367,7 +367,7 @@
                                                 </div>
                                                 <div class="at_tmpl_data" ></div>
                                                 <input type="hidden" class="kakao_txt" name="kakao_body" value="">
-                                                <a href="" class="sms_btn">버튼</a>
+                                                <a href="#" class="sms_btn">버튼</a>
                                             </div>
                                         </div>
                                     </div>
@@ -751,7 +751,8 @@
                     <!-- 검색 영역 시작 -->
                     <div class="input_txt">
                         <input type="text" name='cont_nm' id="moblieLstSearch" placeholder="검색어 입력"/>
-                        <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
+                        <input type="button" class="btn_search" onclick="mobileListPage('1')" value="검색"/>
+                        <input type="hidden" name="pageNo" id="pageNo" value="1"/>
                     </div>
                     <!-- 검색 영역 끝 -->
                 </div>
@@ -1433,7 +1434,7 @@
         $(document).on("click", "#contLoad", function () {
             if (firstLoad) {
                 firstLoad = false;
-                mobileListPaging("1");
+                mobileListPage("1");
             } else {
                 $('.mobileLstPopup').addClass('active');
             }
@@ -3282,7 +3283,12 @@
     }
 
     // 모바일 리스트 팝업
-    function mobileListPaging(nowPage) {
+    function mobileListPage(nowPage) {
+       $('#pageNo').val(nowPage);
+        mobileListPaging();
+    }
+
+    function mobileListPaging() {
         const res = function (response) {
             $('.mobileLstPopup').addClass('active');
             let $doc = new DOMParser().parseFromString(response, "text/html");
@@ -3290,7 +3296,7 @@
             $("#mobileLstpagingDom").html($("#mobileLstpagingDom", $doc).html());
         };
         let param = $("#mobileLst").serializeArray();
-        param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
+        param.push({usr_grp_cd: $('#usr_grp_cd').val()});
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
@@ -3436,6 +3442,25 @@
         $("#extentionForm").attr("action", "/cont/kko/tmplDetail.mi?seq="+seq);
         $('#extentionForm').submit();
     }
+
+    // 컨텐츠 사용여부 변경 event
+    function updateUseState(seq, thisVal){
+        var state = $(thisVal).val();
+        var useValue = "";
+        if(state == "Y"){
+            useValue = "N";
+        }else{
+            useValue = "Y";
+        }
+        let res = function (response) {
+            if(response.result == "success"){
+                mobileListPaging();
+            }
+        };
+        var param = {seq : seq, use_yn : useValue};
+        com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
 
 </script>
 
