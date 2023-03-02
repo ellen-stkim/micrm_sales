@@ -389,7 +389,7 @@
 </span>
 
 <span id="mobileLstpagingDom">
-     <ui:pagination paginationInfo="${page}" type="image" jsFunction="mobileListPaging"/>
+     <ui:pagination paginationInfo="${page}" type="image" jsFunction="mobileListPage"/>
     <input type="hidden" id="nowPageNo" name="nowPageNo" value="${pageNo}"/>
     <input type="hidden" id="totCnt" name="totCnt" value="${listCnt}"/>
 </span>
