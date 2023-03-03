@@ -3029,8 +3029,8 @@
         const tmplbody =$(tmpl).parents('.template_div').find('.template_body').html();
 
         $('#kakao_at_viewer .at_inner .row_body').html(tmplbody)
-        $('#tmplNm').val($(tmpl).val());
-        $('#templateCode').val($(tmpl).attr('data'));
+        $('#tmplNm').val($(tmpl).attr('data'));
+        $('#templateCode').val($(tmpl).val());
 
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
         $('#tmplSetForm input').val('');

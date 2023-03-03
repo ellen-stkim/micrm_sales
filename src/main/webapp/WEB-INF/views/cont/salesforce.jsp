@@ -268,7 +268,7 @@
                                             <div class="td">
                                                 <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                         </c:if>
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                             placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -470,7 +470,7 @@
                                             <div class="td">
                                                 <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                         </c:if>
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                             placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -959,8 +959,10 @@
             let smsType = $(this).val();
             if (smsType != 'MMS') {
                 $(this).parents('.row').siblings('.input-img').removeClass('on');
+                $('#sms_img_box').hide();
             } else {
                 $(this).parents('.row').siblings('.input-img').addClass('on');
+                $('#sms_img_box').show();
             }
             onchangePrevSmsTxt($('#sms_txt_area'));
         });
@@ -2957,8 +2959,8 @@
         const tmplbody =$(tmpl).parents('.template_div').find('.template_body').html();
 
         $('#kakao_at_viewer .at_inner .row_body').html(tmplbody)
-        $('#tmplNm').val($(tmpl).val());
-        $('#templateCode').val($(tmpl).attr('data'));
+        $('#tmplNm').val($(tmpl).attr('data'));
+        $('#templateCode').val($(tmpl).val());
 
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
         $('#tmplSetForm input').val('');
