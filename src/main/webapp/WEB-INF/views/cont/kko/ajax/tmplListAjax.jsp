@@ -25,7 +25,7 @@
                 <div class="sms_head bg_color cf">
                     <!-- 체크박스 -->
                     <label class="custom_check1">
-                        <input type="checkbox" name="tmpl_cd" value="${tmpl.seq}" data="${tmpl.tmpl_cd}"/>
+                        <input type="checkbox" name="tmpl_cd" value="${tmpl.tmpl_cd}" data="${tmpl.tmpl_nm}"/>
                         <span></span>
                     </label>
                     <ul class="sms_type cf">

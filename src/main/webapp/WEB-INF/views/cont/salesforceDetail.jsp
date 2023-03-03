@@ -303,7 +303,7 @@
                                                 <div class="td">
                                                     <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                             <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                                value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                                value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                             </c:if>
                                                             <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                                 placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -654,7 +654,7 @@
                                                     <div class="td">
                                                         <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                                 <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                                    value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                                    value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                                 </c:if>
                                                                 <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                                     placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -695,6 +695,10 @@
                                         </div>
                                         <div class="byte"  style="width: 270px">
                                             <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
+                                            <br> <br>
+                                            <span class="en_font">※ LMS 유형 최대 2000자</span> <br>
+                                            <span class="en_font">※ MMS 유형 최대 1000자</span> <br>
+                                            <span class="en_font">※ SMS 유형 최대 90자</span>
                                         </div>
                                     </div>
                                 </div>
