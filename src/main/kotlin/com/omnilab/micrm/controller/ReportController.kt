@@ -102,13 +102,16 @@ class ReportController {
 
     @GetMapping("/report/proDt.mi")
     fun proDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam(required = true) pro_id : String): ModelAndView {
-
         if(CommonUtils.isEmptyObject(pro_id)){
             return ModelAndView("redirect:./all.mi")
         }
 
-        val view = ModelAndView("report/campDt")
         val campIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()
+        if(campIds.size < 1){
+            return ModelAndView("redirect:./all.mi")
+        }
+
+        val view = ModelAndView("report/campDt")
         val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(campIds)
         view.addObject("cont_seq", campIds)
         view.addObject("totalResult", map["totalResult"])
