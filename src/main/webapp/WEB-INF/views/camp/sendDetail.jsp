@@ -28,8 +28,10 @@
         <!-- row 영역 시작 -->
         <div class="row bottom-border cf">
             <div class="left">
-                <a href="#" class="btn_basic ico_result left right-border"
-                   onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
+                <c:if test="${reportSize > 0}">
+                    <a href="#" class="btn_basic ico_result left right-border"
+                       onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
+                </c:if>
                 <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 결과 다운로드</a>
             </div>
         </div>
