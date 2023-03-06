@@ -106,7 +106,7 @@
                             <div class="title1">Total</div>
                             <div class="bTotal-wrap float-clear">
                                 <c:forEach var="send" items="${sendMap}">
-                                    <div class="li">${totalMap[send.key].totalCnt}</div>
+                                    <div class="li"><fmt:formatNumber value="${totalMap[send.key].totalCnt}" pattern="#,###" /></div>
                                 </c:forEach>
                             </div>
                             <div class="all-sum"><fmt:formatNumber value="${typeTotalMap.ALL.total_cnt}" pattern="#,###" /></div>
