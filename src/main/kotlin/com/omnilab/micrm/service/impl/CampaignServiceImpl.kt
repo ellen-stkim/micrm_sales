@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.stream.Collectors
 
 @Service("CampaignServiceImpl")
 class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
@@ -319,8 +320,10 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             cdDto.cd_id = usr_grp_cd
             cdDto.grp_id = "API_PRICE"
             val priceLst = sysSettingDao.getCommCDLst(cdDto)
+            val priceMap = priceLst.stream().collect(
+                Collectors.toMap(Tblmi_comm_cdDto::cd_val, Tblmi_comm_cdDto::cd_desc))
 
-            map["priceLst"] = priceLst
+            map["priceMap"] = priceMap
         }
         return map
     }

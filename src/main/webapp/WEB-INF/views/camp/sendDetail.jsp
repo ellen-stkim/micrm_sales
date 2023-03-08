@@ -214,7 +214,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td><span class="en_font">${priceLst[0].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceMap.EMAIL}</span>원</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -229,10 +229,10 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td><span class="en_font">${priceLst[1].cd_desc}</span>원</td>
-                                                <td><span class="en_font">${priceLst[2].cd_desc}</span>원</td>
-                                                <td><span class="en_font">${priceLst[3].cd_desc}</span>원</td>
-                                                <td><span class="en_font">${priceLst[4].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceMap.KKO_AT}</span>원</td>
+                                                <td><span class="en_font">${priceMap.KKO_FT_TXT}</span>원</td>
+                                                <td><span class="en_font">${priceMap.KKO_FT_IMG}</span>원</td>
+                                                <td><span class="en_font">${priceMap.KKO_FT_WID}</span>원</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -253,10 +253,10 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td><span class="en_font">${priceLst[5].cd_desc}</span>원</td>
-                                                <td><span class="en_font">${priceLst[7].cd_desc}</span>원</td>
-                                                <td><span class="en_font">${priceLst[9].cd_desc}</span>원</td>
-                                                <td><span class="en_font">${priceLst[11].cd_desc}</span>원</td>
+                                                <td><span class="en_font">${priceMap.SMS}</span>원</td>
+                                                <td><span class="en_font">${priceMap.LMS}</span>원</td>
+                                                <td><span class="en_font">${priceMap.MMS}</span>원</td>
+                                                <td><span class="en_font">${priceMap.RCS_TEPLATE}</span>원</td>
                                             </tr>
                                             </tbody>
                                         </table>

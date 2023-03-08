@@ -111,7 +111,7 @@ class CampaignController {
         view.addObject("sendCnt", map["sendCnt"])
         view.addObject("openCnt", map["openCnt"])
         view.addObject("trackCnt", map["trackCnt"])
-        view.addObject("priceLst", map["priceLst"])
+        view.addObject("priceMap", map["priceMap"])
         return view
     }
 
