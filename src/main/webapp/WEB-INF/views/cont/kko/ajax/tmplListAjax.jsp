@@ -111,7 +111,7 @@
                                         </div>
                                         </c:if>
                                     </c:if>
-                                     <div class="cont">${tmpl.tmpl_cont}</div>
+                                     <div class="cont">${cutil:replaceBr(tmpl.tmpl_cont)}</div>
 <%--                                         부가 정보--%>
                                         <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
                                             <div class="etx">${tmpl.tmpl_ext}</div>
