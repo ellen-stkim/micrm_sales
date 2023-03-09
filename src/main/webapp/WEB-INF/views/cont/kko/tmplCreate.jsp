@@ -1711,7 +1711,7 @@
     }
 
     function regChange(tmplTxt){
-        $(tmplTxt).val($(tmplTxt).val().replace('{{', '\#{').replace('}}','}'));
+        $(tmplTxt).val($(tmplTxt).val().replaceAll('{{', '\#{').replaceAll('}}','}'));
         $('.layer_pop ').removeClass('active');
     }
 

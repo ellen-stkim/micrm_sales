@@ -223,7 +223,7 @@
     font-size:11px; color:#bbbbbb; margin-top:5px; margin-right:10px;}
 .column .row_top h4 {float:left; width:calc(100% - 60px); font-size:13px; text-overflow:ellipsis; white-space: nowrap;
     overflow:hidden; line-height:33px;}
-.column .row_body {height:523px; padding:35px 0; border-bottom:1px solid #f4f4f4; overflow:hidden;}
+.column .row_body {height:523px; padding:35px 0; border-bottom:1px solid #f4f4f4; overflow-y:scroll;}
 .column .row_body .edm {max-width:280px; height:100%; overflow:hidden; margin:0 auto;}
 .column .row_body .edm img {width:100%;}
 .column .row_footer {text-align:center;}
@@ -561,8 +561,8 @@
 .sms_box .sms_txt {height:380px; border-radius: 10px !important; background: #f2f2f2 !important;
     padding: 15px;}
 /*.column .row_body .sms_box .sms_txt {height:380px;}*/
-.sms_box .sms_img + .sms_txt {height:170px;}
-.column .row_body .sms_box .sms_img + .sms_txt {height:126px;}
+/*.sms_box .sms_img + .sms_txt {height:170px;}*/
+/*.column .row_body .sms_box .sms_img + .sms_txt {height:126px;}*/
 
 .sms_title {width:100%; margin-top:35px; padding:15px; border-radius:10px;
     background:#f2f2f2; margin-bottom:5px;}
@@ -2174,15 +2174,14 @@ select option[value=""][disabled] {
 
 /*.template_body{font-family: 'Spoqa Han Sans' }*/
 .template_body{ height: 523px!important;}
-.template_body .round_box{ max-height: 100%;}
+/*.template_body .round_box{ max-height: 100%;}*/
 .template_body .at_tmpl_data{width:100%;  padding:0 0 5px 0!important;
     font-size: 12px;
     line-height: 1.6;
-    max-height: 449px;
     background: #FFFFFF;
     border-radius: 0;}
-.template_body .at_tmpl_data .at_msg_cont{width:98.3%; max-height: 225px; padding:5px 15px!important; word-break: break-all; overflow-y: hidden}
-.template_body .at_tmpl_data .at_msg_cont:hover{width:100%; overflow-y: scroll;}
+.template_body .at_tmpl_data .at_msg_cont{padding:5px 15px!important; word-break: break-all;}
+/*.template_body .at_tmpl_data .at_msg_cont:hover{width:100%; overflow-y: scroll;}*/
 .template_body .tmpl_subtit{font-size: 10px; color: #cccccc;}
 .template_body .tmpl_tit{padding-bottom: 15px; font-size: 13px;}
 .template_body .tmpl_high{display: inline-block; padding-bottom: 15px; font-size: 13px;}
