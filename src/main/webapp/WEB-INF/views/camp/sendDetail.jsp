@@ -788,6 +788,8 @@
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $("#tpreview").html($("#content-analysis", $doc).html());
 
+            checkSmsTap();
+
             // RCS일 경우 제목 넣어주기
             if($('#rcs_prev').length >0){
                 let title =$('#titleArea0').html();
@@ -830,6 +832,18 @@
         $('#click-data-table tbody').addClass("disnone");
         $('#click-data-table #tbody_' + type).removeClass("disnone");
     })
+
+    // 컨텐츠 분석 문자 tap
+    function checkSmsTap() {
+        let taps = $('#smsTab li');
+        $(taps).each((idx, tap) => {
+            let type = tap.id;
+            if (!$('#prev_' + type).length) {
+                $(tap).addClass("disnone");
+                return;
+            }
+        })
+    }
 
     function chagneCamp(pro_id) {
         popup.confirmAlertCallback("승인요청 상태의 캠페인을 변경하시겠습니까?<br/>요청 시 승인 담당자에게 캠페인 변경으로 인한 승인요청 취소 안내 메일이 발송됩니다.", "chagneCampOk('" + pro_id + "')");
