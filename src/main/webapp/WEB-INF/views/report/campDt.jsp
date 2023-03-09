@@ -886,7 +886,6 @@
                 return;
             }
         })
-        $('#smsTab li')
     }
 
     $(document).on("click", "#smsTab li span", (e) => {

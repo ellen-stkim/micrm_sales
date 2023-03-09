@@ -191,7 +191,7 @@
                                             <div class="th">템플릿내용 <span class="color_red">*</span></div>
                                             <div class="td">
                                                 <textarea name="newTemplateContent"  cols="30"
-                                                          rows="10">${dto.tmpl_cont}</textarea>
+                                                          rows="10">${cutil:replaceBr(dto.tmpl_cont)}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1912,14 +1912,20 @@
 
         if (tmplName.val() == '' || tmplName.val() == null) {
             tmplName.focus().addClass('outline');
-            popup.popAlert("템플릿명을 입력해주세요.");
+            popup.popAlert("템플릿 명을 입력해주세요.");
             return false;
         }
 
         if (tmplTxt.val() == '' || tmplTxt.val() == null) {
             tmplTxt.focus().addClass('outline');
-            popup.popAlert("템플릿내용을 입력해주세요.");
+            popup.popAlert("템플릿 내용을 입력해주세요.");
             return false;
+        } else {
+            let regExp = /\{{(.*?)\}}/g
+            if(regExp.test(tmplTxt.val())){
+                popup.confirmAlertCallback("알림톡 개인화변수는 '\#{변수명}' 형식입니다.","regChange($(`textarea[name='newTemplateContent']`))");
+                return false;
+            }
         }
 
         //부가정보형, 복합형인 경우 부가정보
@@ -1973,6 +1979,11 @@
         return true;
     }
 
+
+    function regChange(tmplTxt){
+        $(tmplTxt).val($(tmplTxt).val().replace('{{', '\#{').replace('}}','}'));
+        $('.layer_pop ').removeClass('active');
+    }
 
     // blur 유효성 체크
     $(function () {

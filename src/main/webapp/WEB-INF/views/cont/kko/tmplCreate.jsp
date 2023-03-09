@@ -1643,14 +1643,20 @@
 
         if (tmplName.val() == '' || tmplName.val() == null) {
             tmplName.focus().addClass('outline');
-            popup.popAlert("템플릿명을 입력해주세요.");
+            popup.popAlert("템플릿 명을 입력해주세요.");
             return false;
         }
 
         if (tmplTxt.val() == '' || tmplTxt.val() == null) {
             tmplTxt.focus().addClass('outline');
-            popup.popAlert("템플릿내용을 입력해주세요.");
+            popup.popAlert("템플릿 내용을 입력해주세요.");
             return false;
+        } else {
+            let regExp = /\{{(.*?)\}}/g
+            if(regExp.test(tmplTxt.val())){
+                popup.confirmAlertCallback("알림톡 개인화변수는 '\#{변수명}' 형식입니다.","regChange($(`textarea[name='templateContent']`))");
+                return false;
+            }
         }
 
         //부가정보형, 복합형인 경우 부가정보
@@ -1704,6 +1710,10 @@
         return true;
     }
 
+    function regChange(tmplTxt){
+        $(tmplTxt).val($(tmplTxt).val().replace('{{', '\#{').replace('}}','}'));
+        $('.layer_pop ').removeClass('active');
+    }
 
     // blur 유효성 체크
     $(function () {
@@ -2243,7 +2253,7 @@
                 }
                 const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
                 const itemSummaryYn = $('#itemInfo_check').is(":checked");
-                console.log(itemSummaryYn)
+
                 if(selItemTrLst.length > 0 || itemSummaryYn ){
                     contHtml += ` <div class="item_div">`
                     if(selItemTrLst.length > 0){
@@ -2270,7 +2280,7 @@
                 break;
         }
 
-        contHtml += `<div class="cont">`+$('textarea[name="templateContent"]').val()+`</div>`
+        contHtml += `<div class="cont">`+$('textarea[name="templateContent"]').val().replaceAll("\n", "<br/>")+`</div>`
 
         switch (msgTp) {
             case 'BA':
