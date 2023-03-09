@@ -168,7 +168,7 @@
         });
     });
 
-    getMappingSettingList('1');
+    getMappingSettingList();
 
     // 매핑정보 저장 팝업 띄우기
     function mappingAddPopup() {
@@ -185,6 +185,7 @@
         }
         let data = []
         data.push({name: 'seq', value: seq });
+        data.push({name : "list_nm" , value : $("#list_nm_mod").val()})
         com_ajax.ajax('post', '${baseURL}/sys/setting/detailLst.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
@@ -192,11 +193,10 @@
     function saveMapping() {
 
         const res = function(response){
-            let nowPageNo = $("#nowPageNo").val();
             $("#list_nm").val('');
             $("#errorArea1").html('');
             $('.mappingAddPopup').removeClass('active')
-            getMappingSettingList(nowPageNo);
+            getMappingSettingList();
         }
 
         let data = []
@@ -278,7 +278,7 @@
     }
 
     // 매핑정보 리스트 가져오기
-    function getMappingSettingList(page) {
+    function getMappingSettingList() {
         const res = function (response) {
             $("#mappingSettingList").html(response);
 
@@ -303,7 +303,6 @@
             });
         };
         let data = [];
-        data.push({name: 'pageNo', value: page});
         data.push({name: 'searchType', value: $("#searchType").val()});
         data.push({name: 'searchValue', value: $("#searchValue").val()});
         com_ajax.ajax('post', '${baseURL}/sys/setting/getTeamSettingList.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');

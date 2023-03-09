@@ -8,10 +8,7 @@ import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.Group_SearchDto
 import com.omnilab.micrm.model.SendTarget_lstDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.service.CampaignService
-import com.omnilab.micrm.service.CommonService
-import com.omnilab.micrm.service.MemberService
-import com.omnilab.micrm.service.SysSettingService
+import com.omnilab.micrm.service.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -44,6 +41,10 @@ class CampaignController {
 
     @Autowired
     private lateinit var commonService: CommonService
+
+    @Autowired
+    @Qualifier("ReportServiceImpl")
+    private lateinit var reportService: ReportService
 
 
     /**
@@ -99,6 +100,10 @@ class CampaignController {
         val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd!!
         val view = ModelAndView("camp/sendDetail")
         val map = campaignServiceImpl.getProgramInfo(pro_id, usr_grp_cd, false)
+
+        val reportCampIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()  // 결과 페이지 연결
+        view.addObject("reportSize",reportCampIds.size)
+        
         view.addObject("dto", map["programDto"])
         view.addObject("targetDto", map["targetDto"])
         view.addObject("campLst", map["campaignLst"])
@@ -106,7 +111,7 @@ class CampaignController {
         view.addObject("sendCnt", map["sendCnt"])
         view.addObject("openCnt", map["openCnt"])
         view.addObject("trackCnt", map["trackCnt"])
-        view.addObject("priceLst", map["priceLst"])
+        view.addObject("priceMap", map["priceMap"])
         return view
     }
 

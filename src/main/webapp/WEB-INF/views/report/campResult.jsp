@@ -184,8 +184,10 @@
                                     <td class="total">
                                             ${total.ch_total}
                                     </td>
-                                    <td class="total"><span>${total.t_cnt}</span></td>
-                                    <td class="total"><span>${total.s_cnt}</span></td>
+                                    <td class="total"><span><fmt:formatNumber value="${total.t_cnt}"
+                                                                              pattern="#,##0"/></span></td>
+                                    <td class="total"><span><fmt:formatNumber value="${total.s_cnt}"
+                                                                              pattern="#,##0"/></span></td>
                                     <td class="total"><span>${total.o_cnt}</span></td>
                                     <td class="total"><span>${total.c_cnt}</span></td>
                                     <td class="total"><a href="./proDt.mi?pro_id=${total.pro_id}"

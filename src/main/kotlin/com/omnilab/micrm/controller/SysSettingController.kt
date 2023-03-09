@@ -174,16 +174,16 @@ class SysSettingController {
     }
 
     /**
-     * @Method Name  : insertMappingLst
-     * @Since    : 2022. 08. 02
-     * @author   : SSW
+     * @Method Name  : insertTeam
+     * @Since    :  2023.02.06
+     * @author   : Belisa
      * @param    : lstDto: Tblmi_set_lstDto
      * @return   : Map<String,Any>
      * @excetion :
      * @see      :
      * @version  : 0.01
-     * @Method Decription : 매핑정보 INSERT 하기
-     * @title : 매핑정보 INSERT 하기
+     * @Method Decription : 팀 정보 INSERT 하기
+     * @title : 팀 정보 INSERT 하기
      */
 
     @ResponseBody
