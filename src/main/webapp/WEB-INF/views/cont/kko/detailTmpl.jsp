@@ -191,7 +191,7 @@
                                             <div class="th">템플릿내용 <span class="color_red">*</span></div>
                                             <div class="td">
                                                 <textarea name="newTemplateContent"  cols="30"
-                                                          rows="10">${cutil:replaceBr(dto.tmpl_cont)}</textarea>
+                                                          rows="10">${dto.tmpl_cont}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -2548,7 +2548,7 @@ function prevAtTmplImg(){
             break;
     }
 
-    contHtml += `<div class="cont">`+$('textarea[name="newTemplateContent"]').val()+`</div>`
+    contHtml += `<div class="cont">`+$('textarea[name="newTemplateContent"]').val().replaceAll("\n", "<br/>")+`</div>`
 
     switch (msgTp) {
         case 'BA':
