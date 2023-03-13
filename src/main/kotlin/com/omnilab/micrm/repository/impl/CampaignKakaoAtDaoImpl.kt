@@ -302,9 +302,9 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                 }
             }
             if(kakaoCont.kko_img_cd != null){
-                kkoMsgdto.type = "AT"
-            }else{
                 kkoMsgdto.type = "AI"
+            }else{
+                kkoMsgdto.type = "AT"
             }
             if(kakaoCont.kko_price != null){
                 kkoMsgdto.price = kakaoCont.kko_price.toString()
