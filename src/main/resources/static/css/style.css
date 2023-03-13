@@ -223,7 +223,7 @@
     font-size:11px; color:#bbbbbb; margin-top:5px; margin-right:10px;}
 .column .row_top h4 {float:left; width:calc(100% - 60px); font-size:13px; text-overflow:ellipsis; white-space: nowrap;
     overflow:hidden; line-height:33px;}
-.column .row_body {height:523px; padding:35px 0; border-bottom:1px solid #f4f4f4; overflow-y:scroll;}
+.column .row_body {height:523px; padding:35px 0; border-bottom:1px solid #f4f4f4; overflow-y:auto;}
 .column .row_body .edm {max-width:280px; height:100%; overflow:hidden; margin:0 auto;}
 .column .row_body .edm img {width:100%;}
 .column .row_footer {text-align:center;}
