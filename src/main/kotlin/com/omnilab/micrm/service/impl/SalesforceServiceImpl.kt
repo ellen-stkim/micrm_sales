@@ -987,6 +987,13 @@ class SalesforceServiceImpl : SalesforceService {
                         val g = GsonBuilder().create()
                         val obj = JsonObject()
 
+                        logger.error("----------------------------------------------------")
+                        logger.error("----------------------------------------------------")
+                        logger.error("----------------------------------------------------")
+                        logger.error("----------------------------------------------------")
+                        logger.error("----------------------------------------------------")
+                        logger.error("{}",resultDto.button_json)
+                        logger.error("{}",g.fromJson(resultDto.button_json, JsonObject::class.java))
                         val btnLst = JsonArray()
                         val butonMap = g.fromJson(resultDto.button_json, JsonObject::class.java)
                         var buttonLst = butonMap["button"] as JsonArray
@@ -1001,7 +1008,7 @@ class SalesforceServiceImpl : SalesforceService {
                             btnObj.add("scheme_ios",btn["linkIos"])
                             btnObj.add("plugin_id",btn["pluginId"])
                             btnObj.add("target",btn["target"])
-                            btnLst.add(btnObj);
+                            btnLst.add(btnObj)
                         }
 
                         obj.add("button",btnLst)
