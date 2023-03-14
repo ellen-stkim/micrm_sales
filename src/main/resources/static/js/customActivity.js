@@ -157,6 +157,7 @@ define(["postmonger"], function (Postmonger) {
 		}
 		data.seq = mstSeq;
 		data["§extention_cnt§"] = dataExtensionCnt;
+		data["§data_extension_id§"] = dataExtensionId;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;

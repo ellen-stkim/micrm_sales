@@ -2489,6 +2489,7 @@ class SalesforceServiceImpl : SalesforceService {
                         if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
                             targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
                             inArguments.remove("§extention_cnt§")
+                            inArguments.remove("§data_extension_id§")
                         }
                         campaignDto.tar_cnt = targetCnt
 
