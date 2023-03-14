@@ -521,7 +521,7 @@
                                                                         </div>
                                                                     </c:if>
                                                                 </c:if>
-                                                                <div class="cont">${tmpl.cont_body}</div>
+                                                                <div class="cont">${cutil:replaceBr(tmpl.cont_body)}</div>
                                                                     <%--     부가 정보--%>
                                                                 <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
                                                                     <div class="etx">${tmpl.tmpl_ext}</div>
@@ -539,7 +539,7 @@
                                                                         <a href="${btn.linkPc}" target="_blank" class="sms_btn">${btn.name}</a></c:if>
                                                                 </c:forEach>
                                                             </c:if>
-                                                            <input type="hidden" class="kakao_txt" name="kakao_body" value="${cutil:replaceBr(list[0].cont_body)}">
+                                                            <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
                                                         </div>
                                                     </div>
                                                 </div>

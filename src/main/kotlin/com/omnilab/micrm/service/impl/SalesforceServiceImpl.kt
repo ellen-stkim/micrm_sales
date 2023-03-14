@@ -993,6 +993,9 @@ class SalesforceServiceImpl : SalesforceService {
                                                             ?.replace("\"linkAnd\"","\"scheme_android\"")
                                                             ?.replace("\"linkIos\"","\"scheme_ios\"")
                                                             ?.replace("\"pluginId\"","\"plugin_id\"")
+                        logger.error("--------------------------------------------------------")
+                        logger.error("--------------------------------------------------------")
+                        logger.error("{}",btnJson)
 
                         obj.add("button",g.fromJson(btnJson, JsonArray::class.java))
                         obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
