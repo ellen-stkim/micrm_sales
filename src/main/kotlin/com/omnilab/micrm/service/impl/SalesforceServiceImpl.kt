@@ -993,10 +993,8 @@ class SalesforceServiceImpl : SalesforceService {
                         logger.error("----------------------------------------------------")
                         logger.error("----------------------------------------------------")
                         logger.error("{}",resultDto.button_json)
-                        logger.error("{}",g.fromJson(resultDto.button_json, JsonObject::class.java))
                         val btnLst = JsonArray()
-                        val butonMap = g.fromJson(resultDto.button_json, JsonObject::class.java)
-                        var buttonLst = butonMap["button"] as JsonArray
+                        val buttonLst = g.fromJson(resultDto.button_json, JsonArray::class.java)
                         for(btn in buttonLst){
                             btn as JsonObject
                             val btnObj = JsonObject()
