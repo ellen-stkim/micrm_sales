@@ -690,7 +690,7 @@
                                                     <c:forEach var="button" items="${buttons}" varStatus="st">
                                                         <c:if test="${((dto.tmpl_msg_tp eq 'MI'|| dto.tmpl_msg_tp eq 'AD')  && st.index ne 0)
                                                          or (dto.tmpl_msg_tp ne 'MI' and dto.tmpl_msg_tp ne 'AD')}">
-                                                            <tr>
+                                                            <tr class="use_btn">
                                                                 <td>${st.index +1}</td>
                                                                 <td><select class="border btn_type" id="table_btn_type"
                                                                             onchange="selectType(this, this)">
@@ -2091,6 +2091,9 @@ function updateTmpl() {
                 obj.linkType = $(button).find('.btn_type option:selected').val();
                 obj.linkTypeName = $(button).find('.btn_type option:selected').html();
                 obj.name = $(button).find(`[name='name']`).val();
+                if(obj.linkType == "WL"){  //링크 버튼 / "target":"out" 속성 추가시 아웃링크
+                    obj.target = "out"
+                }
 
                 // 버튼 링크
                 const btnInpLst1 = $(button).find(".webLink-on input:visible");
@@ -2189,7 +2192,6 @@ function updateTmpl() {
         let img_seq = $('#tmplImgSeq').val();
         let item_img_seq = $('#itemImgSeq').val();
 
-        console.log(data)
         com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplUpate.service?seq='+$('#tmplSeq').val()+'&img_seq='+img_seq+"&item_img_seq="+item_img_seq, JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
