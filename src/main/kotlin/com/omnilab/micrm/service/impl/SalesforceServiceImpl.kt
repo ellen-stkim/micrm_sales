@@ -986,7 +986,14 @@ class SalesforceServiceImpl : SalesforceService {
 
                         val g = GsonBuilder().create()
                         val obj = JsonObject()
-                        obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+
+                        var btnJson = resultDto.button_json
+                        btnJson?.replace("^\"linkType\"$","\"type\"")
+                            ?.replace("^\"linkPc\"$","\"url_pc\"")
+                            ?.replace("^\"linkMo\"$","\"url_mobile\"")
+                            ?.replace("^\"linkAnd\"$","\"scheme_android\"")
+                            ?.replace("^\"linkIos\"$","\"scheme_ios\"")
+                        obj.add("button",g.fromJson(btnJson, JsonArray::class.java))
                         obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
                         obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
                         obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
@@ -2490,6 +2497,7 @@ class SalesforceServiceImpl : SalesforceService {
                         if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
                             targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
                             inArguments.remove("§extention_cnt§")
+                            inArguments.remove("§data_extension_id§")
                         }
                         campaignDto.tar_cnt = targetCnt
 

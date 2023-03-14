@@ -687,64 +687,83 @@
                                                         </td>
                                                         <td></td>
                                                     </tr>
-
                                                     <c:forEach var="button" items="${buttons}" varStatus="st">
-                                                        <c:if test="${(dto.tmpl_msg_tp eq 'MI'|| dto.tmpl_msg_tp eq 'AD')  && st.index ne 0}">
-                                                    <tr>
-                                                        <td>${st.index +1}</td>
-                                                        <td><select class="border btn_type" id="table_btn_type"
-                                                                    onchange="selectType(this, this)">
-                                                            <option value="" selected="" disabled="">버튼타입 선택</option>
-                                                            <c:forEach var="btn" items="${btnLst}">
-                                                                <option value="${btn.cd_val}" data_sn="${btn.cd_sn}"
-                                                                    ${button.linkType eq btn.cd_val ? 'selected' : ''}>${btn.cd_desc}</option>
-                                                            </c:forEach>
-                                                        </select></td>
-                                                        <td><input class="border" type="text" name="name" value="${button.name}"
-                                                                   placeholder="버튼명 입력 (14자 이내)"></td>
-                                                        <td>
-                                                            <div class="webLink-on ${button.linkType ne 'WL'? 'display-none': ''}"><p
-                                                                    class="btn_link_title_first">Moblie</p><input
-                                                                    type="text" class="border" name="linkMo" value="${button.linkMo}"
-                                                                    placeholder="http:// 또는 https:// 가 포함된 URL">
-                                                                <p class="btn_link_title">PC(선택)</p><input type="text"
-                                                                                                           class="border"
-                                                                                                           name="linkPc"  value="${button.linkPc}"
-                                                                                                           placeholder="http:// 또는 https:// 가 포함된 URL">
-                                                            </div>
-                                                            <div class="appLink-on ${button.linkType ne 'AL'? 'display-none': ''}"><p class="color_red">*
-                                                                Android, iOS, Mobile 중 2가지 이상 입력 필수</p>
-                                                                <p class="btn_link_title">Android</p><input type="text"
-                                                                                                            class="border"
-                                                                                                            name="linkAnd" value="${button.linkAnd}"
-                                                                                                            placeholder="scheme android 링크">
-                                                                <p class="btn_link_title">iOS</p><input type="text"
-                                                                                                        class="border"
-                                                                                                        name="linkIos" value="${button.linkIos}"
-                                                                                                        placeholder="scheme iOS 링크">
-                                                                <p class="btn_link_title">Moblie</p><input type="text"
-                                                                                                           class="border"
-                                                                                                           name="linkMo" value="${button.linkMo}"
-                                                                                                           placeholder="http:// 또는 https:// 가 포함된 URL">
-                                                                <p class="btn_link_title">PC(선택)</p><input type="text"
-                                                                                                           class="border"
-                                                                                                           name="linkPc" value="${button.linkPc}"
-                                                                                                           placeholder="http:// 또는 https:// 가 포함된 URL">
-                                                            </div>
-                                                            <div class="plugin-on display-none"><input type="text"
-                                                                                                       class="border"
-                                                                                                       name="pluginId" value="${button.pluginId}"
-                                                                                                       placeholder="플러그인 ID">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="table_btn">
-                                                                <div class="up" onclick="upRow(this)"><i class="fa-solid fa-square-caret-up"></i></div>
-                                                                <div class="down" onclick="downRow(this)"><i class="fa-solid fa-square-caret-down"></i></div>
-                                                                <div class="del" onclick="deleteRow(this)"><i class="fa-solid fa-square-xmark"></i></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                        <c:if test="${((dto.tmpl_msg_tp eq 'MI'|| dto.tmpl_msg_tp eq 'AD')  && st.index ne 0)
+                                                         or (dto.tmpl_msg_tp ne 'MI' and dto.tmpl_msg_tp ne 'AD')}">
+                                                            <tr class="use_btn">
+                                                                <td>${st.index +1}</td>
+                                                                <td><select class="border btn_type" id="table_btn_type"
+                                                                            onchange="selectType(this, this)">
+                                                                    <option value="" selected="" disabled="">버튼타입 선택
+                                                                    </option>
+                                                                    <c:forEach var="btn" items="${btnLst}">
+                                                                        <option value="${btn.cd_val}"
+                                                                                data_sn="${btn.cd_sn}"
+                                                                            ${button.linkType eq btn.cd_val ? 'selected' : ''}>${btn.cd_desc}</option>
+                                                                    </c:forEach>
+                                                                </select></td>
+                                                                <td><input class="border" type="text" name="name"
+                                                                           value="${button.name}"
+                                                                           placeholder="버튼명 입력 (14자 이내)"></td>
+                                                                <td>
+                                                                    <div class="webLink-on ${button.linkType ne 'WL'? 'display-none': ''}">
+                                                                        <p
+                                                                                class="btn_link_title_first">Moblie</p>
+                                                                        <input
+                                                                                type="text" class="border" name="linkMo"
+                                                                                value="${button.linkMo}"
+                                                                                placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                                        <p class="btn_link_title">PC(선택)</p><input
+                                                                            type="text"
+                                                                            class="border"
+                                                                            name="linkPc" value="${button.linkPc}"
+                                                                            placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                                    </div>
+                                                                    <div class="appLink-on ${button.linkType ne 'AL'? 'display-none': ''}">
+                                                                        <p class="color_red">*
+                                                                            Android, iOS, Mobile 중 2가지 이상 입력 필수</p>
+                                                                        <p class="btn_link_title">Android</p><input
+                                                                            type="text"
+                                                                            class="border"
+                                                                            name="linkAnd" value="${button.linkAnd}"
+                                                                            placeholder="scheme android 링크">
+                                                                        <p class="btn_link_title">iOS</p><input
+                                                                            type="text"
+                                                                            class="border"
+                                                                            name="linkIos" value="${button.linkIos}"
+                                                                            placeholder="scheme iOS 링크">
+                                                                        <p class="btn_link_title">Moblie</p><input
+                                                                            type="text"
+                                                                            class="border"
+                                                                            name="linkMo" value="${button.linkMo}"
+                                                                            placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                                        <p class="btn_link_title">PC(선택)</p><input
+                                                                            type="text"
+                                                                            class="border"
+                                                                            name="linkPc" value="${button.linkPc}"
+                                                                            placeholder="http:// 또는 https:// 가 포함된 URL">
+                                                                    </div>
+                                                                    <div class="plugin-on display-none"><input
+                                                                            type="text"
+                                                                            class="border"
+                                                                            name="pluginId" value="${button.pluginId}"
+                                                                            placeholder="플러그인 ID">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="table_btn">
+                                                                        <div class="up" onclick="upRow(this)"><i
+                                                                                class="fa-solid fa-square-caret-up"></i>
+                                                                        </div>
+                                                                        <div class="down" onclick="downRow(this)"><i
+                                                                                class="fa-solid fa-square-caret-down"></i>
+                                                                        </div>
+                                                                        <div class="del" onclick="deleteRow(this)"><i
+                                                                                class="fa-solid fa-square-xmark"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                         </c:if>
                                                     </c:forEach>
                                                     </tbody>
@@ -2072,6 +2091,9 @@ function updateTmpl() {
                 obj.linkType = $(button).find('.btn_type option:selected').val();
                 obj.linkTypeName = $(button).find('.btn_type option:selected').html();
                 obj.name = $(button).find(`[name='name']`).val();
+                if(obj.linkType == "WL"){  //링크 버튼 / "target":"out" 속성 추가시 아웃링크
+                    obj.target = "out"
+                }
 
                 // 버튼 링크
                 const btnInpLst1 = $(button).find(".webLink-on input:visible");
@@ -2170,7 +2192,6 @@ function updateTmpl() {
         let img_seq = $('#tmplImgSeq').val();
         let item_img_seq = $('#itemImgSeq').val();
 
-        console.log(data)
         com_ajax.ajax_json('post', '${baseURL}/cont/kko/tmplUpate.service?seq='+$('#tmplSeq').val()+'&img_seq='+img_seq+"&item_img_seq="+item_img_seq, JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}')
     }
 
