@@ -987,17 +987,24 @@ class SalesforceServiceImpl : SalesforceService {
                         val g = GsonBuilder().create()
                         val obj = JsonObject()
 
-                        var btnJson = resultDto.button_json?.replace( "\"linkType\"","\"type\"")
-                                                            ?.replace("\"linkPc\"","\"url_pc\"")
-                                                            ?.replace("\"linkMo\"","\"url_mobile\"")
-                                                            ?.replace("\"linkAnd\"","\"scheme_android\"")
-                                                            ?.replace("\"linkIos\"","\"scheme_ios\"")
-                                                            ?.replace("\"pluginId\"","\"plugin_id\"")
-                        logger.error("--------------------------------------------------------")
-                        logger.error("--------------------------------------------------------")
-                        logger.error("{}",btnJson)
+                        val btnLst = JsonArray()
+                        val butonMap = g.fromJson(resultDto.button_json, JsonObject::class.java)
+                        var buttonLst = butonMap["button"] as JsonArray
+                        for(btn in buttonLst){
+                            btn as JsonObject
+                            val btnObj = JsonObject()
+                            btnObj.add("name",btn["name"])
+                            btnObj.add("type",btn["linkType"])
+                            btnObj.add("url_pc",btn["linkPc"])
+                            btnObj.add("url_mobile",btn["linkMo"])
+                            btnObj.add("scheme_android",btn["linkAnd"])
+                            btnObj.add("scheme_ios",btn["linkIos"])
+                            btnObj.add("plugin_id",btn["pluginId"])
+                            btnObj.add("target",btn["target"])
+                            btnLst.add(btnObj);
+                        }
 
-                        obj.add("button",g.fromJson(btnJson, JsonArray::class.java))
+                        obj.add("button",btnLst)
                         obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
                         obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
                         obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
