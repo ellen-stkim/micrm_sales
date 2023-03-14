@@ -308,6 +308,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.header = kakaoCont.kko_header
 
             kkoMsgdto.failed_type = "NO"
+
             if(rcsCont != null || mdmCont != null){
                 val callbackDto = Tblmicp_send_callback_msgDto()
                 callbackDto.hst_seq = HstSeq.toInt()
