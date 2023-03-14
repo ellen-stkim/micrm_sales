@@ -14,6 +14,7 @@ class AtButtonDto  {
     var linkPc:String? = null
     var linkAnd: String? = null
     var linkIos: String? = null
+    var target: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

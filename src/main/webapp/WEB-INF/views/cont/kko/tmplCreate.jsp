@@ -1800,6 +1800,11 @@
                 obj.linkType = $(button).find('.btn_type option:selected').val();
                 obj.linkTypeName = $(button).find('.btn_type option:selected').html();
                 obj.name = $(button).find(`[name='name']`).val();
+                console.log(obj.linkType)
+                console.log(obj.linkType == "WL")
+                if(obj.linkType == "WL"){  //링크 버튼 / "target":"out" 속성 추가시 아웃링크
+                    obj.target = "out"
+                }
 
                 // 버튼 링크
                 const btnInpLst1 = $(button).find(".webLink-on input:visible");
