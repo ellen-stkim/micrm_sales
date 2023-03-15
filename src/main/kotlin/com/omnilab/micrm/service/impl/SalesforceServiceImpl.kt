@@ -986,15 +986,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                         val g = GsonBuilder().create()
                         val obj = JsonObject()
-
-                        var btnJson = resultDto.button_json?.replace( "\"linkType\"","\"type\"")
-                                                            ?.replace("\"linkPc\"","\"url_pc\"")
-                                                            ?.replace("\"linkMo\"","\"url_mobile\"")
-                                                            ?.replace("\"linkAnd\"","\"scheme_android\"")
-                                                            ?.replace("\"linkIos\"","\"scheme_ios\"")
-                                                            ?.replace("\"pluginId\"","\"plugin_id\"")
-
-                        obj.add("button",g.fromJson(btnJson, JsonArray::class.java))
+                        obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
                         obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
                         obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
                         obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
