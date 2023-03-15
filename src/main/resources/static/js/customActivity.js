@@ -168,40 +168,28 @@ define(["postmonger"], function (Postmonger) {
 
 	// $(window).ready(onRender);
 
-	connection.on("initActivity", initialize);
-	connection.on("requestedTokens", onGetTokens);
-	connection.on("requestedEndpoints", onGetEndpoints);
+	connection.on("initActivity", consoleLog("initialize"));
+	connection.on("requestedEndpoints", consoleLog("onGetEndpoints"));
+	connection.on("nextStep", consoleLog("nextStep"));
+	connection.on("prevStep", consoleLog("prevStep"));
+	connection.on("requestCulture", consoleLog("requestCulture"));
+	connection.on("updateSteps", consoleLog("updateSteps"));
+	connection.on("updateButton", consoleLog("updateButton"));
+	connection.on("updateActivity", consoleLog("updateActivity"));
+	connection.on("destroy", consoleLog("destroy"));
+	connection.on("requestInteractionDefaults", consoleLog("requestInteractionDefaults"));
+	connection.on("requestInteraction", consoleLog("requestInteraction"));
+	connection.on("requestTriggerEventDefinition", consoleLog("requestTriggerEventDefinition"));
+	connection.on("requestedCulture", consoleLog("requestedCulture"));
+	connection.on("requestedInteractionDefaults", consoleLog("requestedInteractionDefaults"));
+	connection.on("requestedInteraction", consoleLog("requestedInteraction"));
+	connection.on("requestedTriggerEventDefinition", consoleLog("requestedTriggerEventDefinition"));
+	connection.on("clickedNext", consoleLog("onClickedNext"));
+	connection.on("clickedBack", consoleLog("onClickedBack"));
+	connection.on("gotoStep", consoleLog("onGotoStep"));
 
-	connection.on("clickedNext", onClickedNext);
-	connection.on("clickedBack", onClickedBack);
-	connection.on("gotoStep", onGotoStep);
-	/*function onRender() {
-		console.log("---------------onRender---------------")
-		connection.trigger("ready");
-
-		connection.trigger("requestTokens");
-		connection.trigger("requestEndpoints");
-	}*/
-	function initialize(data) {
-		console.log("---------------initialize---------------")
-	}
-	/*function onGetTokens(tokens) {
-		console.log("---------------onGetTokens---------------")
-	}*/
-	function onGetEndpoints(endpoints) {
-		console.log("---------------onGetEndpoints---------------")
-	}
-	function onClickedNext() {
-		console.log("---------------onClickedNext---------------")
-	}
-	function onClickedBack() {
-		console.log("---------------onClickedNext---------------")
-	}
-	function onGotoStep(step) {
-		console.log("---------------onClickedNext---------------")
-	}
-	function showStep(step, stepIndex) {
-		console.log("---------------onClickedNext---------------")
+	function consoleLog(name){
+		console.log("---------------" + name + "---------------")
 	}
 
 
