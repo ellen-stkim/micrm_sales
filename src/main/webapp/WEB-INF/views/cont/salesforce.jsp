@@ -828,9 +828,6 @@
     let mstSeq = null;
     let dropTarget = null;
     let bindList = [];
-    let valid = $(function(e){
-       console.log("not init")
-    });
 
     $(function () {
         $('input[name="dbInfo"]').on('change', function () {

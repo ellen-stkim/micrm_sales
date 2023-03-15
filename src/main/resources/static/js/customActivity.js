@@ -32,23 +32,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-
-		valid = $(function(e){
-			let dataList = [];
-			let data = {};
-			for(let i=0; i< bindList.length; i++) {
-				let temp = bindList[i];
-				data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
-			}
-			data.seq = mstSeq;
-			data["§extention_cnt§"] = dataExtensionCnt;
-			data["§data_extension_id§"] = dataExtensionId;
-			dataList.push(data);
-			payload["arguments"].execute.inArguments = dataList;
-			payload["metaData"].isConfigured = false;
-
-			connection.trigger("updateEvent", payload);
-		});
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -69,6 +52,22 @@ define(["postmonger"], function (Postmonger) {
 				}
 			});
 		});
+
+		//test
+		let dataList = [];
+		let _data = {};
+		for(let i=0; i< bindList.length; i++) {
+			let temp = bindList[i];
+			_data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+		}
+		_data.seq = mstSeq;
+		_data["§extention_cnt§"] = dataExtensionCnt;
+		_data["§data_extension_id§"] = dataExtensionId;
+		dataList.push(_data);
+		payload["arguments"].execute.inArguments = dataList;
+		payload["metaData"].isConfigured = false;
+
+		connection.trigger("updateEvent", payload);
 	});
 
 	connection.on("requestedTokens", function (tokens){
@@ -286,7 +285,6 @@ function mappingLst() {
 			});
 			const uniqueArr = [...set];
 			bindList = uniqueArr;
-			valid();
 			$('#commonLoading').removeClass('active');
 		}else{
 			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
