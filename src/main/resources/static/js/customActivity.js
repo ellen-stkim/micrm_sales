@@ -33,6 +33,22 @@ define(["postmonger"], function (Postmonger) {
 		}, 1000);
 		 */
 
+		valid = $(function(e){
+			let dataList = [];
+			let data = {};
+			for(let i=0; i< bindList.length; i++) {
+				let temp = bindList[i];
+				data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+			}
+			data.seq = mstSeq;
+			data["§extention_cnt§"] = dataExtensionCnt;
+			data["§data_extension_id§"] = dataExtensionId;
+			dataList.push(data);
+			payload["arguments"].execute.inArguments = dataList;
+			payload["metaData"].isConfigured = false;
+
+			connection.trigger("updateEvent", payload);
+		});
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -164,27 +180,6 @@ define(["postmonger"], function (Postmonger) {
 		payload["metaData"].isConfigured = true;
 
         connection.trigger("updateActivity", payload);
-	}
-
-	valid = $(function(e){
-		let dataList = [];
-		let data = {};
-		for(let i=0; i< bindList.length; i++) {
-			let temp = bindList[i];
-			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
-		}
-		data.seq = mstSeq;
-		data["§extention_cnt§"] = dataExtensionCnt;
-		data["§data_extension_id§"] = dataExtensionId;
-		dataList.push(data);
-		payload["arguments"].execute.inArguments = dataList;
-		payload["metaData"].isConfigured = false;
-
-		connection.trigger("updateEvent", payload);
-	});
-
-	function consoleLog(name){
-		console.log("---------------" + name + "---------------")
 	}
 
 
