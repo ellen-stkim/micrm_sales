@@ -166,7 +166,7 @@ define(["postmonger"], function (Postmonger) {
 
 	}
 
-	$(window).ready(onRender);
+	// $(window).ready(onRender);
 
 	connection.on("initActivity", initialize);
 	connection.on("requestedTokens", onGetTokens);
@@ -175,19 +175,19 @@ define(["postmonger"], function (Postmonger) {
 	connection.on("clickedNext", onClickedNext);
 	connection.on("clickedBack", onClickedBack);
 	connection.on("gotoStep", onGotoStep);
-	function onRender() {
+	/*function onRender() {
 		console.log("---------------onRender---------------")
 		connection.trigger("ready");
 
 		connection.trigger("requestTokens");
 		connection.trigger("requestEndpoints");
-	}
+	}*/
 	function initialize(data) {
 		console.log("---------------initialize---------------")
 	}
-	function onGetTokens(tokens) {
+	/*function onGetTokens(tokens) {
 		console.log("---------------onGetTokens---------------")
-	}
+	}*/
 	function onGetEndpoints(endpoints) {
 		console.log("---------------onGetEndpoints---------------")
 	}
