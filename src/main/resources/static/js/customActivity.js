@@ -54,7 +54,7 @@ define(["postmonger"], function (Postmonger) {
 		});
 
 		//test
-		console.log("--------------------updateActivity-----------------------")
+		console.log("--------------------updateEvent-----------------------")
 		let dataList = [];
 		let _data = {};
 		for(let i=0; i< bindList.length; i++) {
@@ -66,11 +66,11 @@ define(["postmonger"], function (Postmonger) {
 		_data["§data_extension_id§"] = dataExtensionId;
 		dataList.push(_data);
 		payload["arguments"].execute.inArguments = dataList;
-		payload["metaData"].isConfigured = false;
+		payload["metaData"].isConfigured = true;
 
-		connection.trigger("updateActivity", payload);
+		connection.trigger("updateEvent", payload);
 
-		console.log("-------------------updateActivity end------------------------")
+		console.log("-------------------updateEvent end------------------------")
 	});
 
 	connection.on("requestedTokens", function (tokens){
