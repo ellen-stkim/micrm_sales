@@ -166,16 +166,29 @@ define(["postmonger"], function (Postmonger) {
 
 	}
 
+	$(window).ready(onRender);
+
+	connection.on("initActivity", initialize);
+	connection.on("requestedTokens", onGetTokens);
+	connection.on("requestedEndpoints", onGetEndpoints);
+
+	connection.on("clickedNext", onClickedNext);
+	connection.on("clickedBack", onClickedBack);
+	connection.on("gotoStep", onGotoStep);
 	function onRender() {
 		console.log("---------------onRender---------------")
+		connection.trigger("ready");
+
+		connection.trigger("requestTokens");
+		connection.trigger("requestEndpoints");
 	}
-	function initialize() {
+	function initialize(data) {
 		console.log("---------------initialize---------------")
 	}
-	function onGetTokens() {
+	function onGetTokens(tokens) {
 		console.log("---------------onGetTokens---------------")
 	}
-	function onGetEndpoints() {
+	function onGetEndpoints(endpoints) {
 		console.log("---------------onGetEndpoints---------------")
 	}
 	function onClickedNext() {
@@ -184,10 +197,10 @@ define(["postmonger"], function (Postmonger) {
 	function onClickedBack() {
 		console.log("---------------onClickedNext---------------")
 	}
-	function onGotoStep() {
+	function onGotoStep(step) {
 		console.log("---------------onClickedNext---------------")
 	}
-	function showStep() {
+	function showStep(step, stepIndex) {
 		console.log("---------------onClickedNext---------------")
 	}
 
