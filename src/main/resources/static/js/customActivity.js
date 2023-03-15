@@ -166,6 +166,32 @@ define(["postmonger"], function (Postmonger) {
 
 	}
 
+	function onRender() {
+		console.log("---------------onRender---------------")
+	}
+	function initialize() {
+		console.log("---------------initialize---------------")
+	}
+	function onGetTokens() {
+		console.log("---------------onGetTokens---------------")
+	}
+	function onGetEndpoints() {
+		console.log("---------------onGetEndpoints---------------")
+	}
+	function onClickedNext() {
+		console.log("---------------onClickedNext---------------")
+	}
+	function onClickedBack() {
+		console.log("---------------onClickedNext---------------")
+	}
+	function onGotoStep() {
+		console.log("---------------onClickedNext---------------")
+	}
+	function showStep() {
+		console.log("---------------onClickedNext---------------")
+	}
+
+
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {
         if(!mstSeq) {
