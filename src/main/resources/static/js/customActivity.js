@@ -110,6 +110,7 @@ define(["postmonger"], function (Postmonger) {
 		$('#previewBtn').trigger('click');
 	});
 
+
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
@@ -163,30 +164,24 @@ define(["postmonger"], function (Postmonger) {
 		payload["metaData"].isConfigured = true;
 
         connection.trigger("updateActivity", payload);
-
 	}
 
-	// $(window).ready(onRender);
+	valid = $(function(e){
+		let dataList = [];
+		let data = {};
+		for(let i=0; i< bindList.length; i++) {
+			let temp = bindList[i];
+			data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+		}
+		data.seq = mstSeq;
+		data["§extention_cnt§"] = dataExtensionCnt;
+		data["§data_extension_id§"] = dataExtensionId;
+		dataList.push(data);
+		payload["arguments"].execute.inArguments = dataList;
+		payload["metaData"].isConfigured = false;
 
-	connection.on("initActivity", consoleLog("initialize"));
-	connection.on("requestedEndpoints", consoleLog("onGetEndpoints"));
-	connection.on("nextStep", consoleLog("nextStep"));
-	connection.on("prevStep", consoleLog("prevStep"));
-	connection.on("requestCulture", consoleLog("requestCulture"));
-	connection.on("updateSteps", consoleLog("updateSteps"));
-	connection.on("updateButton", consoleLog("updateButton"));
-	connection.on("updateActivity", consoleLog("updateActivity"));
-	connection.on("destroy", consoleLog("destroy"));
-	connection.on("requestInteractionDefaults", consoleLog("requestInteractionDefaults"));
-	connection.on("requestInteraction", consoleLog("requestInteraction"));
-	connection.on("requestTriggerEventDefinition", consoleLog("requestTriggerEventDefinition"));
-	connection.on("requestedCulture", consoleLog("requestedCulture"));
-	connection.on("requestedInteractionDefaults", consoleLog("requestedInteractionDefaults"));
-	connection.on("requestedInteraction", consoleLog("requestedInteraction"));
-	connection.on("requestedTriggerEventDefinition", consoleLog("requestedTriggerEventDefinition"));
-	connection.on("clickedNext", consoleLog("onClickedNext"));
-	connection.on("clickedBack", consoleLog("onClickedBack"));
-	connection.on("gotoStep", consoleLog("onGotoStep"));
+		connection.trigger("updateEvent", payload);
+	});
 
 	function consoleLog(name){
 		console.log("---------------" + name + "---------------")
@@ -296,6 +291,7 @@ function mappingLst() {
 			});
 			const uniqueArr = [...set];
 			bindList = uniqueArr;
+			valid();
 			$('#commonLoading').removeClass('active');
 		}else{
 			alert("DataExtention 이 선택되지 않았거나 데이터가 없습니다.\n확인 후 다시 시도하세요");
