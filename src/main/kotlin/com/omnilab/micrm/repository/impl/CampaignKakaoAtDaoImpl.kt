@@ -302,11 +302,12 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                     kkoMsgdto.item = gson.toJson(objMap["item"])
                 }
             }
-            if(kakaoCont.kko_img_cd != null){
+            kkoMsgdto.type = "AT"
+            /*if(kakaoCont.kko_img_cd != null){
                 kkoMsgdto.type = "AI"
             }else{
                 kkoMsgdto.type = "AT"
-            }
+            }*/
             if(kakaoCont.kko_price != null){
                 kkoMsgdto.price = kakaoCont.kko_price.toString()
             }
