@@ -8,10 +8,7 @@ import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.Group_SearchDto
 import com.omnilab.micrm.model.SendTarget_lstDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.service.CampaignService
-import com.omnilab.micrm.service.CommonService
-import com.omnilab.micrm.service.MemberService
-import com.omnilab.micrm.service.SysSettingService
+import com.omnilab.micrm.service.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -44,6 +41,10 @@ class CampaignController {
 
     @Autowired
     private lateinit var commonService: CommonService
+
+    @Autowired
+    @Qualifier("ReportServiceImpl")
+    private lateinit var reportService: ReportService
 
 
     /**
@@ -99,6 +100,10 @@ class CampaignController {
         val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd!!
         val view = ModelAndView("camp/sendDetail")
         val map = campaignServiceImpl.getProgramInfo(pro_id, usr_grp_cd, false)
+
+        val reportCampIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()  // 결과 페이지 연결
+        view.addObject("reportSize",reportCampIds.size)
+        
         view.addObject("dto", map["programDto"])
         view.addObject("targetDto", map["targetDto"])
         view.addObject("campLst", map["campaignLst"])
@@ -106,6 +111,7 @@ class CampaignController {
         view.addObject("sendCnt", map["sendCnt"])
         view.addObject("openCnt", map["openCnt"])
         view.addObject("trackCnt", map["trackCnt"])
+        view.addObject("priceMap", map["priceMap"])
         return view
     }
 
@@ -130,6 +136,31 @@ class CampaignController {
         val dto = Contents_searchDto(cont_id.toInt(), UsefulUtils.sessionUser().usr_grp_cd!!, "Y")
         val view = ModelAndView("camp/ajax/sendSettingPreview")
         view.addObject("dto", campaignServiceImpl.getCampContentPreview(dto))
+        view.addObject("filePath", sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val)
+        return view
+    }
+
+
+    /**
+     * @Method Name  : sendContcpPreview
+     * @Since    : 2023. 02. 23.
+     * @author   : Belisa
+     * @param    : req - HttpServletRequest
+     * @param    : rep - HttpServletResponse
+     * @param    : sessoin - HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @serial   :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 발송된 콘텐츠 미리보기
+     * @title : 발송된 콘텐츠 미리보기
+     */
+    @PostMapping("/sendContcpPreview.ajax")
+    fun sendContcpPreview(@RequestParam("cont_id") cont_id: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val dto = Tblmicp_cont_mstDto(cont_id.toInt(), UsefulUtils.sessionUser().usr_grp_cd!!, "Y")
+        val view = ModelAndView("camp/ajax/sendPreview")
+        view.addObject("list", campaignServiceImpl.getContentPreview(dto))
         view.addObject("filePath", sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val)
         return view
     }

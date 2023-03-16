@@ -10,9 +10,11 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
+import com.omnilab.micrm.service.SysSettingService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import io.minio.MinioClient
 import io.minio.UploadObjectArgs
@@ -45,6 +47,9 @@ import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.*
 import java.util.regex.Pattern
+import java.util.stream.Collectors
+import java.util.stream.Collectors.joining
+import java.util.stream.Collectors.toList
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -108,6 +113,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Qualifier("CampaignRcsDaoImpl")
     private lateinit var rcsSend: CampaignSendDao
 
+
+    @Autowired
+    @Qualifier("SysSettingServiceImpl")
+    private lateinit var sysSettingService: SysSettingService
 
     @Autowired(required = true)
     @Qualifier("MobileContentServiceImpl")
@@ -930,6 +939,8 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP04" }.findFirst().orElse(null).seq
                 }
             }
+
+
             tblmiContLstdto.cont_cd = tblmiContMstDto.seq
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
             tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
@@ -2247,8 +2258,7 @@ class SalesforceServiceImpl : SalesforceService {
                 if(result["result"] as Boolean){
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
-                    logger.error("------------------------------------activities--------------------------")
-                    logger.error("{}",result["result"])
+
                     for(activity in activities) {
                         val type = activity["type"].toString()
                         if (type == "REST") {
@@ -2316,8 +2326,8 @@ class SalesforceServiceImpl : SalesforceService {
                                     map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
+
                                 }
-//                            }
                         }
                     }
                     return true
@@ -2385,6 +2395,51 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDto.start_dt = CommonUtils.getDateTimeNow()
                     campaignDto.send_st_tp = "1"
                     campaignDao.ins_campaign(campaignDto)
+
+                    // RCS img
+                    val contListDto = Tblmicp_cont_lstDto()
+                    contListDto.cont_cd = i.seq
+                    contListDto.reg_id = usrId
+                    contListDto.upd_id = usrId
+                    contListDto.cont_grp_cd = proDto.usr_grp_cd
+                    contListDto.cont_tp ="DMTP04"
+                    contListDto.use_yn = "Y"
+                    val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
+                    for (cont in contLst) {
+                        val rcsBrnID =
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
+                        // 이미지 저장 경로
+                        val imgPath =
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
+
+                        // RCS 발송 서버 정보
+                        val rcsDb =
+                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
+
+                        val urlLst = cont.img_nm_lst!!.split(",")
+
+                        // 이미지 리스트
+                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
+
+                        val urlSize = urlLst.size.toString()
+                        for (i in urlLst.indices) {
+                            if(!CommonUtils.isEmptyObject(urlLst[i]!!.trim())){
+                                val imgDto = LgRcs_imgDto()
+                                imgDto.group_key = "GR_${campaignDto.seq.toString()}"
+                                imgDto.group_cnt = urlSize
+                                imgDto.status = "0"
+                                imgDto.sendable = "N"
+                                imgDto.brand_id = rcsBrnID
+                                imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
+                                imgDto.template_yn = "N"
+                                imgDto.m_server = rcsDb
+                                rcsImgLst.add(imgDto)
+                            }
+                        }
+                        if(rcsImgLst.size > 0){
+                            salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                        }
+                    }
                 }
                 true
             }else{
@@ -2399,7 +2454,6 @@ class SalesforceServiceImpl : SalesforceService {
         val inArguments = mutableMapOf<String,Any>()
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
-
 
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
@@ -2436,6 +2490,7 @@ class SalesforceServiceImpl : SalesforceService {
                         if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
                             targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
                             inArguments.remove("§extention_cnt§")
+                            inArguments.remove("§data_extension_id§")
                         }
                         campaignDto.tar_cnt = targetCnt
 
@@ -2598,7 +2653,7 @@ class SalesforceServiceImpl : SalesforceService {
             }else{
                 totalCnt = dataExtension.select().totalCount
             }
-        }catch (e:Exception){
+        } catch (e:Exception){
             logger.error("{}",e)
             totalCnt = dataExtension.select().totalCount
         }

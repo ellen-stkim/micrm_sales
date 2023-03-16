@@ -1,8 +1,6 @@
 package com.omnilab.micrm.service.impl
 
-import com.google.gson.JsonParser
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.*
@@ -24,7 +22,7 @@ class ReportServiceImpl : ReportService {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
-    private lateinit var sysSettingDao: SysSettingDao;
+    private lateinit var sysSettingDao: SysSettingDao
 
     @Autowired
     private lateinit var campaignDao: CampaignDao
@@ -58,12 +56,10 @@ class ReportServiceImpl : ReportService {
 
 
     override fun getCampMstTotalDetail(contSeqs: Array<String>): kotlin.collections.MutableMap<String, Any> {
-
         val map = HashMap<String, Any>()
-
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
-
         val temp = HashMap<String, Any>()
+
         userInfo.usr_grp_cd?.let { temp.put("usr_grp_cd", it) }
         contSeqs?.let { temp.put("list", it) }
 
@@ -88,6 +84,7 @@ class ReportServiceImpl : ReportService {
             "pro_nm" -> dto.pro_nm = dto.searchValue
             "camp_nm" -> dto.camp_nm = dto.searchValue
             "camp_ch" -> dto.camp_ch = dto.searchValue
+            "pro_st" -> dto.pro_st = dto.searchValue
         }
 
         val paginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 5)
@@ -199,67 +196,21 @@ class ReportServiceImpl : ReportService {
             return mapLst
         }
 
-        val searchCont = Tblmicp_cont_lstDto()
-        searchCont.cont_cd = cont_id
-        val contentDtoLst = campaignDao.sel_tblmicp_cont_lst(searchCont)
+        val searchCont = Tblmicp_cont_mstDto(cont_id)
+        val contentDtoLst = campaignDao.getContentsViewList(searchCont)
 
-        for (contentDto in contentDtoLst) {
+        for (dto in contentDtoLst) {
 
             var map = HashMap<String, Any?>()
-            val dto = campaignReportDao.getContentsLst(contentDto.seq)
-            dto.cardSize = '1'.toString();
+            dto.cardSize = '1'.toString()
             if (dto.cont_tp.equals("DMTP04")) {
-                jsonOneContentsParsing(dto)
+                commonService.jsonOneContentsParsing(dto)
             }
             map["dto"] = dto
-            map["url"] = campaignReportDao.getLinkClickCnt(contentDto.seq)
+            map["url"] = campaignReportDao.getLinkClickCnt(dto.seq)
             mapLst.add(map)
-
         }
         return mapLst
-    }
-
-    private fun jsonOneContentsParsing(dto: Content_view_Dto) {
-        // 수정 페이지 json 파싱하기
-
-        val jsonParser = JsonParser()
-        val rcsMsgTp = dto.msg_tp
-
-        if (rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH210")) {
-            // 가로, 세로형 이라면 cont_body Json 형태 파싱
-            if (dto.cont_body != null) {
-                val jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
-                dto.cont_body = jsonObject.get("description").toString()
-                    .replace("\\\\r\\\\n", "<br/>")
-                    .replace("\\r\\n", "<br/>")
-                    .replace("\"", "")
-            }
-        }
-        if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
-
-            val slideJsonObject = jsonParser.parse(dto.cont_body).asJsonObject
-            val len = slideJsonObject.size() / 2  // title과 description이 하나의 쌍이 되기에 나눠준다
-            dto.cardSize = len.toString()
-
-            var idx = 0
-            for (i in 0 until len) {
-                idx++
-
-                val title = "title" + idx
-                val description = "description" + idx
-
-                dto.slideTitle.add(slideJsonObject.get(title).toString()
-                    .replace("\\\\r\\\\n", "<br/>")
-                    .replace("\\r\\n", "<br/>")
-                    .replace("\"", ""))
-
-                dto.slideBody.add(slideJsonObject.get(description).toString()
-                    .replace("\\\\r\\\\n", "<br/>")
-                    .replace("\\r\\n", "<br/>")
-                    .replace("\"", ""))
-
-            }
-        }
     }
 
 

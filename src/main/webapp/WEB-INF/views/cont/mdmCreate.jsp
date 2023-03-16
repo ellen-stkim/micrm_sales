@@ -2886,7 +2886,7 @@
             '<th>채널</th>' +
             '<td>' +
             '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>' +
-            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
+            // '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
             '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>' +
             '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
             '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02"><span></span></label>' +
@@ -3029,8 +3029,8 @@
         const tmplbody =$(tmpl).parents('.template_div').find('.template_body').html();
 
         $('#kakao_at_viewer .at_inner .row_body').html(tmplbody)
-        $('#tmplNm').val($(tmpl).val());
-        $('#templateCode').val($(tmpl).attr('data'));
+        $('#tmplNm').val($(tmpl).attr('data'));
+        $('#templateCode').val($(tmpl).val());
 
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
         $('#tmplSetForm input').val('');

@@ -110,7 +110,7 @@
                                 <div class="value" id="team_cd_sel" data="">팀명</div>
                                 <ul class="option">
                                     <c:forEach var="team" items="${teamLst}">
-                                        <li data="${team.cd_val}">${team.cd_desc}</li>
+                                        <li data="${team.list_val}">${team.list_nm}</li>
                                     </c:forEach>
                                 </ul>
                             </div>
@@ -268,7 +268,7 @@
                                             <div class="td">
                                                 <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                         </c:if>
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                             placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -351,7 +351,9 @@
                                     </div>
                                 </div>
                                 <div class="byte">
-                                    <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
+                                    <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)<br><br>
+                                    <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
+                                    <span class="en_font">※ 이미지 유형 최대 400자</span>
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_at_viewer" hidden>
@@ -365,7 +367,7 @@
                                                 </div>
                                                 <div class="at_tmpl_data" ></div>
                                                 <input type="hidden" class="kakao_txt" name="kakao_body" value="">
-                                                <a href="" class="sms_btn">버튼</a>
+                                                <a href="#" class="sms_btn">버튼</a>
                                             </div>
                                         </div>
                                     </div>
@@ -390,7 +392,7 @@
                                                    onkeyup="onchangePrevSmsTitle(this)"
                                                    value="(광고)"
                                                    placeholder="문자 제목을 입력하세요."/>
-                                            <span class="title_byte en_font">(40byte)</span>
+                                            <span class="title_byte en_font">(최대 40byte)</span>
                                         </div>
                                         <!-- select 영역 시작 -->
                                         <div class="select column_4 left-border" id="smsTitleVal" name="edmDB">
@@ -468,7 +470,7 @@
                                             <div class="td">
                                                 <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                         </c:if>
                                                         <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                             placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -505,6 +507,10 @@
                                 </div>
                                 <div class="byte"  style="width: 270px">
                                     <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
+                                    <br> <br>
+                                    <span class="en_font">※ LMS 유형 최대 2000자</span> <br>
+                                    <span class="en_font">※ MMS 유형 최대 1000자</span> <br>
+                                    <span class="en_font">※ SMS 유형 최대 90자</span>
                                 </div>
                             </div>
                         </div>
@@ -552,7 +558,8 @@
                                             /><span></span></label>
                                         </div>
                                     </div>
-                                    <span id="js-title-area"></span>
+                                    <span id="js-title-area">
+                                        <input type="hidden" class="title rcsTitle" name="cont_sub_list" readonly ></span>
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1" id="send_text_column">
@@ -744,7 +751,8 @@
                     <!-- 검색 영역 시작 -->
                     <div class="input_txt">
                         <input type="text" name='cont_nm' id="moblieLstSearch" placeholder="검색어 입력"/>
-                        <input type="button" class="btn_search" onclick="mobileListPaging('1')" value="검색"/>
+                        <input type="button" class="btn_search" onclick="mobileListPage('1')" value="검색"/>
+                        <input type="hidden" name="pageNo" id="pageNo" value="1"/>
                     </div>
                     <!-- 검색 영역 끝 -->
                 </div>
@@ -767,6 +775,9 @@
     <div class="pop_container popup_size2">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
         <div class="pop_title">템플릿 선택</div>
+        <div class="right">
+            <span class="btn_sm_line" onclick="openCreateAt()">알림톡 템플릿 생성</span>
+        </div>
         <div class="pop_inner">
             <form:form id="tmplSetForm" name="tmplSetForm" onsubmit="return false">
             <div class="form_search">
@@ -803,6 +814,11 @@
 <form:form id="saveForm" name="saveForm" onsubmit="return false">
     <span id="preview"></span>
 </form:form>
+
+<form:form id="extentionForm" method="post" target="_blank">
+    <input type="hidden" id="extId" name="extId" value="" />
+</form:form>
+
 <script>
     let usr_cd = '${usr_cd}';
     let _connection;
@@ -943,9 +959,12 @@
             let smsType = $(this).val();
             if (smsType != 'MMS') {
                 $(this).parents('.row').siblings('.input-img').removeClass('on');
+                $('#sms_img_box').hide();
             } else {
                 $(this).parents('.row').siblings('.input-img').addClass('on');
+                $('#sms_img_box').show();
             }
+            onchangePrevSmsTxt($('#sms_txt_area'));
         });
 
         // MMS, 카카오 이미지 삭제
@@ -1142,7 +1161,7 @@
                 let textContents = $(this).parents('.row').siblings().find('.rcsContents');
                 if (data != 0) {
                     popup.popAlert("개인화 변수 입력 후 Byte 초과시 데이터가 미반영 될 수 있습니다.");
-                    $(textContents).val(txt + data);
+                    $(textContents).val(txt + '{{' + data + '}}');
 
                     $(textContents).keyup();
                 }
@@ -1417,11 +1436,13 @@
         $(document).on("click", "#contLoad", function () {
             if (firstLoad) {
                 firstLoad = false;
-                mobileListPaging("1");
+                mobileListPage("1");
             } else {
                 $('.mobileLstPopup').addClass('active');
             }
         });
+
+
 
         // sms_delete_img
         $(document).on("click", ".sms_delete_img", function () {
@@ -2770,7 +2791,7 @@
             '<th>채널</th>' +
             '<td>' +
             '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>' +
-            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
+            // '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
             '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>' +
             '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
             '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02"><span></span></label>' +
@@ -2928,7 +2949,7 @@
     }
 
     $(document).on('click', '.delete_tmpl', (e) => {
-        $('.at_tmpl_data').val(''); // 템플릿 관련 데이터 삭제
+        $('.at_tmpl_data').val('');  // 템플릿 관련 데이터 삭제
         $('.at_tmpl_data').html('');
         $('.kakao_txt').val('');
     })
@@ -2938,8 +2959,8 @@
         const tmplbody =$(tmpl).parents('.template_div').find('.template_body').html();
 
         $('#kakao_at_viewer .at_inner .row_body').html(tmplbody)
-        $('#tmplNm').val($(tmpl).val());
-        $('#templateCode').val($(tmpl).attr('data'));
+        $('#tmplNm').val($(tmpl).attr('data'));
+        $('#templateCode').val($(tmpl).val());
 
         $('#tmplPopUp').siblings('.pop_error_txt').html('');
         $('#tmplSetForm input').val('');
@@ -3264,7 +3285,12 @@
     }
 
     // 모바일 리스트 팝업
-    function mobileListPaging(nowPage) {
+    function mobileListPage(nowPage) {
+       $('#pageNo').val(nowPage);
+        mobileListPaging();
+    }
+
+    function mobileListPaging() {
         const res = function (response) {
             $('.mobileLstPopup').addClass('active');
             let $doc = new DOMParser().parseFromString(response, "text/html");
@@ -3272,7 +3298,7 @@
             $("#mobileLstpagingDom").html($("#mobileLstpagingDom", $doc).html());
         };
         let param = $("#mobileLst").serializeArray();
-        param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
+        param.push({usr_grp_cd: $('#usr_grp_cd').val()});
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
@@ -3378,7 +3404,7 @@
         $('#prev_sms_title').html($(e).val());
     }
     function onchangePrevSmsTxt(e){
-        smsCreate.byteCount(e, 'kakao');
+        smsCreate.byteCount(e, 'sms');
         let txt = $(e).val().replaceAll("\n", "<br/>");
         $('#smsTextArea').html(txt);
     }
@@ -3405,6 +3431,38 @@
             }
         }
     }
+
+
+    function openCreateAt(){
+        $('#extId').val(dataExtensionId)
+        $("#extentionForm").attr("action", "/cont/kko/tmplCreate.mi");
+        $('#extentionForm').submit();
+    }
+
+    function updAtTmpl(seq){
+        $('#extId').val(dataExtensionId)
+        $("#extentionForm").attr("action", "/cont/kko/tmplDetail.mi?seq="+seq);
+        $('#extentionForm').submit();
+    }
+
+    // 컨텐츠 사용여부 변경 event
+    function updateUseState(seq, thisVal){
+        var state = $(thisVal).val();
+        var useValue = "";
+        if(state == "Y"){
+            useValue = "N";
+        }else{
+            useValue = "Y";
+        }
+        let res = function (response) {
+            if(response.result == "success"){
+                mobileListPaging();
+            }
+        };
+        var param = {seq : seq, use_yn : useValue};
+        com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
 
 </script>
 

@@ -50,6 +50,12 @@
                             <c:if test="${title eq 'DMCH204'}">
                                 <li>친구톡</li>
                             </c:if>
+                            <c:if test="${title eq 'DMCH217'}">
+                                <li>친구톡 이미지</li>
+                            </c:if>
+                            <c:if test="${title eq 'DMCH218'}">
+                                <li>친구톡 와이드 이미지</li>
+                            </c:if>
                             <c:if test="${title eq 'DMCH216'}">
                                 <li>알림톡</li>
                             </c:if>
@@ -62,12 +68,10 @@
                 <div class="sms_head cf">
                     <!-- 템플릿명 -->
                     <h3>${content.cont_nm}</h3>
-                    <%--
                     <div class="remove_info">
-                        <input type="button" value="${content.use_yn}" class="en_font useState" onclick="updateUseState('${content.seq}', this);"/>
-                        <a href="/cont/mdmDetail/${content.seq}.mi">수정</a>
+                        <input type="button" value="${content.use_yn}" class="en_font useState right-border" onclick="updateUseState('${content.seq}', this);"/>
+<%--                        <a href="/cont/mdmDetail/${content.seq}.mi">수정</a>--%>
                     </div>
-                    --%>
                 </div>
                 <div class="row_top cf">
                     <!-- 컨텐츠 type -->
@@ -171,7 +175,7 @@
                                             </div>
                                             </c:if>
                                         </c:if>
-                                         <div class="cont">${content.cont_body}</div>
+                                         <div class="cont">${cutil:replaceBr(content.cont_body)}</div>
                                         <%--     부가 정보--%>
                                             <c:if test="${content.tmpl_msg_tp eq 'EX'}">
                                                 <div class="etx">${content.tmpl_ext}</div>

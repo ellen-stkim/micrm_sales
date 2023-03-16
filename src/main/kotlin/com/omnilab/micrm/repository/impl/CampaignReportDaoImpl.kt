@@ -60,10 +60,4 @@ class CampaignReportDaoImpl : CampaignReportDao {
         return sqlSession.selectList("getLinkClickCnt", seq)
     }
 
-    override fun getContentsLst(seq: Int?): Content_view_Dto {
-        return sqlSession.selectOne("getContentsLst", seq)
-    }
-
-
-
 }

@@ -32,7 +32,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -53,6 +52,25 @@ define(["postmonger"], function (Postmonger) {
 				}
 			});
 		});
+
+		//test
+		console.log("--------------------updateEvent-----------------------")
+		let dataList = [];
+		let _data = {};
+		for(let i=0; i< bindList.length; i++) {
+			let temp = bindList[i];
+			_data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
+		}
+		_data.seq = mstSeq;
+		_data["§extention_cnt§"] = dataExtensionCnt;
+		_data["§data_extension_id§"] = dataExtensionId;
+		dataList.push(_data);
+		payload["arguments"].execute.inArguments = dataList;
+		payload["metaData"].isConfigured = true;
+
+		connection.trigger("updateEvent", payload);
+
+		console.log("-------------------updateEvent end------------------------")
 	});
 
 	connection.on("requestedTokens", function (tokens){
@@ -110,6 +128,7 @@ define(["postmonger"], function (Postmonger) {
 		$('#previewBtn').trigger('click');
 	});
 
+
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
@@ -157,13 +176,14 @@ define(["postmonger"], function (Postmonger) {
 		}
 		data.seq = mstSeq;
 		data["§extention_cnt§"] = dataExtensionCnt;
+		data["§data_extension_id§"] = dataExtensionId;
 		dataList.push(data);
 		payload["arguments"].execute.inArguments = dataList;
 		payload["metaData"].isConfigured = true;
 
         connection.trigger("updateActivity", payload);
-
 	}
+
 
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {
@@ -219,14 +239,15 @@ define(["postmonger"], function (Postmonger) {
     }
 
     // 수정
-    function mobileEdit() {
-        const res = function(response) {
-            if(response.status) {
-                save();
-            } else {
-                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
-            }
-        }
+
+	function mobileEdit() {
+		const res = function(response) {
+			if(response.status) {
+				save();
+			} else {
+				popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+			}
+		}
 		let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
@@ -240,8 +261,7 @@ define(["postmonger"], function (Postmonger) {
 		}).value = mstSeq
 
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
-    }
-
+	}
 });
 
 

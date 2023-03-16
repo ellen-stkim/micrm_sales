@@ -111,7 +111,7 @@
                             <div class="value" id="team_cd_sel" data="${list[0].team_cd}">${!empty list[0].team_nm ? list[0].team_nm : '팀 명'}</div>
                             <ul class="option">
                                 <c:forEach var="team" items="${teamLst}">
-                                    <li data="${team.cd_val}">${team.cd_desc}</li>
+                                    <li data="${team.list_val}">${team.list_nm}</li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -303,7 +303,7 @@
                                                 <div class="td">
                                                     <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                             <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                                value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                                value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                             </c:if>
                                                             <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                                 placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -415,7 +415,9 @@
                                             </div>
                                         </div>
                                         <div class="byte">
-                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
+                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)<br><br>
+                                            <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
+                                            <span class="en_font">※ 이미지 유형 최대 400자</span>
                                         </div>
                                     </div>
                                     <div class="viewer_area" id="kakao_at_viewer" hidden>
@@ -519,7 +521,7 @@
                                                                         </div>
                                                                     </c:if>
                                                                 </c:if>
-                                                                <div class="cont">${tmpl.cont_body}</div>
+                                                                <div class="cont">${cutil:replaceBr(tmpl.cont_body)}</div>
                                                                     <%--     부가 정보--%>
                                                                 <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
                                                                     <div class="etx">${tmpl.tmpl_ext}</div>
@@ -564,7 +566,7 @@
                                             <div class="column_1">
                                                 <div class="column_5">
                                                     <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="onchangePrevSmsTitle(this)" value="${list[1].cont_sub}"/>
-                                                    <span class="title_byte en_font">(40byte)</span>
+                                                    <span class="title_byte en_font">(최대 40byte)</span>
                                                 </div>
                                                 <!-- select 영역 시작 -->
                                                 <div class="select column_4 left-border" id="smsTitleVal" name="edmDB">
@@ -652,7 +654,7 @@
                                                     <div class="td">
                                                         <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
                                                                 <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                                    value="${rejectText[0].list_nm}(${cutil:numberToPhone(rejectText[0].list_val)})"
+                                                                    value="${cutil:numberToPhone(rejectText[0].list_val)}"
                                                                 </c:if>
                                                                 <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
                                                                     placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
@@ -693,6 +695,10 @@
                                         </div>
                                         <div class="byte"  style="width: 270px">
                                             <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
+                                            <br> <br>
+                                            <span class="en_font">※ LMS 유형 최대 2000자</span> <br>
+                                            <span class="en_font">※ MMS 유형 최대 1000자</span> <br>
+                                            <span class="en_font">※ SMS 유형 최대 90자</span>
                                         </div>
                                     </div>
                                 </div>
@@ -3937,6 +3943,7 @@
             } else {
                 $(this).parents('.row').siblings('.input-img').addClass('on');
             }
+
         });
 
 

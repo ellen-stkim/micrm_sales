@@ -25,7 +25,7 @@
                 <div class="sms_head bg_color cf">
                     <!-- 체크박스 -->
                     <label class="custom_check1">
-                        <input type="checkbox" name="tmpl_cd" value="${tmpl.tmpl_nm}" data="${tmpl.tmpl_cd}"/>
+                        <input type="checkbox" name="tmpl_cd" value="${tmpl.tmpl_cd}" data="${tmpl.tmpl_nm}"/>
                         <span></span>
                     </label>
                     <ul class="sms_type cf">
@@ -38,7 +38,7 @@
                     <h4 style="width: 65%;">${tmpl.tmpl_nm}</h4>
                     <div class="remove_info">
                             <input type="button" value="${tmpl.use_yn}" class="en_font useState" onclick="updateUseState(${tmpl.seq}, this);">
-                        <a href="/cont/kko/tmplDetail.mi?seq=${tmpl.seq}">수정</a>
+                          <input type="button" class="upd_btn" id="updAtTmpl" onclick="updAtTmpl(${tmpl.seq})" value="수정"/>
                     </div>
                    <%-- <c:choose>
                         <c:when test="${content.msg_tp eq 'DMCH211' || content.msg_tp eq 'DMCH212'}">
@@ -111,7 +111,7 @@
                                         </div>
                                         </c:if>
                                     </c:if>
-                                     <div class="cont">${tmpl.tmpl_cont}</div>
+                                     <div class="cont">${cutil:replaceBr(tmpl.tmpl_cont)}</div>
 <%--                                         부가 정보--%>
                                         <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
                                             <div class="etx">${tmpl.tmpl_ext}</div>

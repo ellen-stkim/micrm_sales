@@ -150,7 +150,7 @@
                                         <div class="swiper-slide slide0">
                                             <div class="rcs_head">[Web발신] (${dto.send_tp_nm})</div>
                                             <section>
-                                                <c:if test="${fn:length(dto.img_lst) > st.index}">
+                                                <c:if test="${fn:length(img_lst) > st.index}">
                                                 <div class="img_area">
                                                     <img src="${filePath}${img_lst[st.index]}" onerror="this.src = '/image/bg_none.png'">
                                                 </div>

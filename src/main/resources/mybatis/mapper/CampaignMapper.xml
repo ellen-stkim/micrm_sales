@@ -347,15 +347,26 @@
 	</select>
 
 	<select id="sel_campaign_data" parameterType="Tblmicp_campaignDto" resultType="Campaign_searchDto">
-		SELECT camp.* , comm.cd_desc AS team_nm
-		,cont.avo_nm as avo_nm
+		SELECT camp.*
+			, set_cd.list_nm 	AS team_nm
+			, cont.avo_nm 		AS avo_nm
+			, sum(cd.CD_DESC * hst.send_cnt) AS send_cost
 		FROM tblmicp_campaign AS camp
-			LEFT JOIN tblmicp_cont_mst AS cont ON cont.seq = camp.CONT_ID
-			LEFT JOIN tblmi_comm_cd AS comm
-				ON comm.grp_id = 'GRP_TEAM'
-				    AND cd_id = 'TEAM01'
-					AND cont.team_cd = comm.cd_val
-					AND camp.usr_grp_cd = comm.par_id
+			LEFT JOIN tblmicp_cont_mst AS cont
+			    ON cont.seq = camp.CONT_ID
+			LEFT JOIN tblmi_set_lst AS set_cd
+				ON set_cd.list_tp_id = 'CH05'
+				AND set_cd.list_dt_id = 'TEAM01'
+				AND cont.team_cd = set_cd.list_val
+				AND camp.usr_grp_cd = set_cd.usr_grp_cd
+			LEFT JOIN tblmire_send_hst AS hst
+				ON camp.SEQ = hst.CAMP_ID
+					AND camp.PRO_ID = hst.PRO_ID
+					AND send_rst = '0'
+			LEFT JOIN tblmi_comm_cd AS cd
+				ON cd.GRP_ID = 'API_PRICE'
+					AND cd.CD_ID = hst.USR_GRP_CD
+					AND cd.cd_val = hst.msg_tp
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				and camp.seq = #{seq}
@@ -376,12 +387,14 @@
 				and camp.start_dt <![CDATA[ <#{end_dt} ]]>
 			</if>
 		</where>
+		group by camp.seq
 	</select>
 
 	<select id="sel_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" resultType="Contents_lstDto">
 		select a.*
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, CONCAT_WS(',', img_1.IMG_FILE_NM, img_2.IMG_FILE_NM, img_3.IMG_FILE_NM, img_4.IMG_FILE_NM, img_5.IMG_FILE_NM, img_6.IMG_FILE_NM) AS IMG_NM_LST
+			, e.CH_TP AS ch_tp
 			, e.IMG_URL as kko_image_url
 			, e.IMG_FILE_NM as kko_image_file_nm
 			, e.KKO_IMG_URL as kko_server_image_url
@@ -586,6 +599,65 @@
 			)
 			</if>
 		</where>
+	</select>
+
+
+	<select id="getContentsViewList" parameterType="Tblmicp_cont_mstDto" resultType="Content_view_Dto">
+		SELECT m.seq
+			 ,m.ch_tp
+			 ,m.cont_nm
+			 ,l.seq            AS list_seq
+			 ,l.cont_cd        AS cont_cd
+			 ,l.cont_tp        AS cont_tp
+			 ,l.cont_sub       AS cont_sub
+			 ,l.cont_body      AS cont_body
+			 ,l.send_to        AS send_to
+			 ,l.send_tp        AS send_tp
+			 ,sender.list_val  AS send_num
+			 ,sender.list_nm   AS sender
+			 ,l.msg_tp         AS msg_tp
+			 ,l.kko_img_cd     AS kko_img_cd
+			 ,l.kko_img_url    AS kko_img_url
+			 ,kko_img.img_nm   AS kko_img_nm
+			 ,kko_img.img_url  AS kko_img_lst
+			 ,l.kko_btn_nm     AS kko_btn_nm
+			 ,l.kko_btn_url    AS kko_btn_url
+			 ,l.img_cd_1       AS img_cd_1
+			 ,l.img_cd_2       AS img_cd_2
+			 ,l.img_cd_3       AS img_cd_3
+			 ,l.img_cd_4       AS img_cd_4
+			 ,l.img_cd_5       AS img_cd_5
+			 ,l.img_cd_6       AS img_cd_6
+			 ,Concat(Ifnull(img_1.img_url, ' '), ',', Ifnull(img_2.img_url, ' '), ',', Ifnull(img_3.img_url, '  '), ',', Ifnull(img_4.img_url, ' '), ',', Ifnull(
+				img_5.img_url, ' '), ',', Ifnull(img_6.img_url, '  '))               AS IMG_LST
+			 ,Concat(Ifnull(img_1.img_nm, ' '), ',', Ifnull(img_2.img_nm, ' '), ',', Ifnull(
+				img_3.img_nm, '  '), ',', Ifnull(img_4.img_nm, ' '), ',',
+					 Ifnull(img_5.img_nm, ' '), ',', Ifnull(img_6.img_nm, '  '))           AS IMG_NM_LST
+			 ,l.rcs_btn_obj    AS rcs_btn_obj
+			 ,l.rcs_btn_1      AS rcs_btn_1
+			 ,l.rcs_btn_tp_1   AS rcs_btn_tp_1
+			 ,l.rcs_btn_cont_1 AS rcs_btn_cont_1
+			 ,l.rcs_btn_2      AS rcs_btn_2
+			 ,l.rcs_btn_tp_2   AS rcs_btn_tp_2
+			 ,l.rcs_btn_cont_2 AS rcs_btn_cont_2
+			 ,l.rcs_btn_3      AS rcs_btn_3
+			 ,l.rcs_btn_tp_3   AS rcs_btn_tp_3
+			 ,l.rcs_btn_cont_3 AS rcs_btn_cont_3
+			 ,l.rcs_footer     AS rcs_footer
+			 , tmpl.button_json AS at_btn_obj
+		FROM   tblmicp_cont_lst l
+				   INNER JOIN tblmicp_cont_mst m ON l.cont_cd = m.seq
+				   LEFT JOIN tblmi_cont_img AS kko_img ON l.kko_img_cd = kko_img.seq
+				   LEFT JOIN tblmi_cont_img AS img_1 ON l.img_cd_1 = img_1.seq
+				   LEFT JOIN tblmi_cont_img AS img_2 ON l.img_cd_2 = img_2.seq
+				   LEFT JOIN tblmi_cont_img AS img_3 ON l.img_cd_3 = img_3.seq
+				   LEFT JOIN tblmi_cont_img AS img_4 ON l.img_cd_4 = img_4.seq
+				   LEFT JOIN tblmi_cont_img AS img_5 ON l.img_cd_5 = img_5.seq
+				   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
+				   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
+				   LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
+		WHERE  m.seq = #{seq}
+		ORDER  BY l.seq
 	</select>
 
 	<!-- ================================================================= select ================================================================= -->
@@ -839,13 +911,13 @@
 
 	<select id="getProgramCnt" resultType="Map" parameterType="Program_SearchDto">
 		SELECT COUNT(*)	 AS cnt 			-- 토탈
-		, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
-		, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
-		, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
-		, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
-		, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
-		, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
-		, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
+			, count(if(PRO_ST = '00', 1, NULL))  AS aw_cnt		-- 승인 대기
+			, count(if(PRO_ST = '01', 1, NULL))	 AS wait_cnt	-- 발송 대기
+			, count(if(PRO_ST = '02', 1, NULL))  AS tar_cnt		-- 타겟 추출
+			, count(if(PRO_ST = '03', 1, NULL))  AS send_cnt	-- 발송
+			, count(if(PRO_ST = '04', 1, NULL))  AS suc_cnt	-- 발송
+			, count(if(PRO_ST = '98', 1, NULL))  AS temp_cnt	-- 임시저장
+			, count(if(PRO_ST = '99', 1, NULL))  AS err_cnt		-- 에러
 		FROM tblmicp_program as prg
 		LEFT JOIN tblmi_comm_cd AS proStCd ON (proStCd.cd_id = prg.pro_st and proStCd.grp_id = 'COMST')
 		LEFT JOIN tblmi_comm_cd AS proTpCd ON (proTpCd.cd_id = prg.pro_tp and proTpCd.grp_id = 'PROTP')

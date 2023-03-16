@@ -23,7 +23,7 @@ interface SysSettingDao {
 
     fun insertSetLst(dto : Tblmi_set_lstDto) : Int
 
-    fun isExistAddress (dto : Tblmi_set_lstDto) : Int
+    fun isExistSelLst (dto : Tblmi_set_lstDto) : Int
 
     fun isExistModifyAddress(dto : Tblmi_set_lstDto) : Int
 
@@ -46,5 +46,9 @@ interface SysSettingDao {
     fun isExistMapping (dto : Tblmi_set_lstDto) : Int
 
     fun isExistModifyMapping(dto : Tblmi_set_lstDto) : Int
+
+    fun getMaxDtIdByDto(tempDt: Tblmi_set_lstDto) : Tblmi_set_lstDto?
+
+    fun getMappingSettingListSort(searchDto: SetLst_searchDto):  List<Tblmi_set_lstDto>
 
 }

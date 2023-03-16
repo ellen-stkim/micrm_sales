@@ -9,6 +9,7 @@ import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import com.omnilab.micrm.model.table.kakao.AtButtonDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.service.KkoMsgService
@@ -206,7 +207,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
     override fun updateTmpl( dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto, updDto: Tblmi_kko_at_tmplDto ): Map<String, Any> {
         val map :MutableMap<String,Any> = mutableMapOf()
-
+logger.error("{}",dto)
         searchTmplDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto,kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
 
@@ -547,6 +548,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.categoryCode =  curDto.cate_cd
         dto.templateHeader =  curDto.tmpl_header
 
+//        dto.buttons = gson.fromJson(curDto.button_json, object : TypeToken<MutableList<AtButtonDto>>() {}.type)
         dto.templateItem = gson.fromJson(curDto.item_json, object : TypeToken<HashMap<String, Any>>() {}.type)
         dto.templateItemHighlight =  gson.fromJson(curDto.item_highlight_json, object : TypeToken<HashMap<String, Any>>() {}.type)
 

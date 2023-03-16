@@ -7,10 +7,7 @@ import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendResult_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.repository.CampaignDao
-import com.omnilab.micrm.repository.CampaignSendDao
-import com.omnilab.micrm.repository.CommonDao
-import com.omnilab.micrm.repository.SysSettingDao
+import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.task.ThreadPool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.stream.Collectors
 
 @Service("CampaignServiceImpl")
 class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
@@ -69,7 +67,10 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     private lateinit var commonDao: CommonDao
 
     @Autowired
-    private lateinit var sysSettingDao: SysSettingDao;
+    private lateinit var sysSettingDao: SysSettingDao
+
+    @Autowired
+    private lateinit var campaignReportDao: CampaignReportDao
 
     @Autowired
     private lateinit var commonService: com.omnilab.micrm.service.CommonService
@@ -281,7 +282,6 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     }
 
 
-
     override fun getProgramInfo(pro_id: String, usr_grp_cd: String, check: Boolean): MutableMap<String, Any> {
         val map = HashMap<String, Any>()
         val searchDto = Tblmicp_programDto(pro_id)
@@ -311,14 +311,19 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             }
             map["contDto"] = contMap
 
-            if (programDto.pro_st == "03") {
-                map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
-            }
-            if (programDto.pro_st == "04") {
-                map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
-                map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
-                map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)
-            }
+            map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+            map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+            map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
+            map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)
+
+            val cdDto = Tblmi_comm_cdDto()
+            cdDto.cd_id = usr_grp_cd
+            cdDto.grp_id = "API_PRICE"
+            val priceLst = sysSettingDao.getCommCDLst(cdDto)
+            val priceMap = priceLst.stream().collect(
+                Collectors.toMap(Tblmi_comm_cdDto::cd_val, Tblmi_comm_cdDto::cd_desc))
+
+            map["priceMap"] = priceMap
         }
         return map
     }
@@ -330,6 +335,26 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         } else {
             contentLst[0]
         }
+    }
+
+
+    override fun getContentPreview(searchCont: Tblmicp_cont_mstDto): MutableList<HashMap<String, Any?>> {
+        var mapLst = mutableListOf<HashMap<String, Any?>>()
+
+        val contentDtoLst = campaignDao.getContentsViewList(searchCont)
+
+        for (contentDto in contentDtoLst) {
+
+            var map = HashMap<String, Any?>()
+            contentDto.cardSize = '1'.toString()
+            if (contentDto.cont_tp.equals("DMTP04")) {
+                commonService.jsonOneContentsParsing(contentDto)
+            }
+            map["dto"] = contentDto
+            mapLst.add(map)
+        }
+
+        return mapLst
     }
 
     override fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any> {
@@ -357,4 +382,5 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         campaignDao.sel_send_program_rstLstExcel(book, lstDto)
         return re_map
     }
+
 }

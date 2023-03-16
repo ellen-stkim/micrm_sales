@@ -16,9 +16,41 @@ let smsCreate = {
             }
         }
         if(type == 'kakao'){
-            $('.kakao_byte').innerHTML = count;
+            let limetCnt = 1000;
+            $(textCount).removeClass("red_border");
+            $('.kakao_byte').parent('.byte').removeClass("red_color");
+
+            if($('#kakao_img_cd').val()){
+                limetCnt =400;
+            }
+            if(count>limetCnt){
+                $(textCount).addClass("red_border");
+                $('.kakao_byte').parent('.byte').addClass("red_color");
+            }
+            $('.kakao_byte').html(count);
         }else{
-            $('.sms_byte').innerHTML = count;
+            let smsType = $('input[name="sms_msg_tp"]:checked').val();
+            $(textCount).removeClass("red_border");
+            $('.sms_byte').parent('.byte').removeClass("red_color");
+
+            let limetCnt;
+            switch (smsType){
+                case "LMS":
+                    limetCnt = 2000;
+                    break;
+                case "MMS":
+                    limetCnt = 1000;
+                    break;
+                case "SMS":
+                    limetCnt = 90;
+                    break;
+            }
+
+            if(count>limetCnt){
+                $(textCount).addClass("red_border");
+                $('.sms_byte').parent('.byte').addClass("red_color");
+            }
+            $('.sms_byte').html(count);
         }
     }
     , imageCreate : function(type, image){
@@ -417,6 +449,57 @@ let rcsCreate = {
 
         $("#textByte" + number).html(count);
         $('#textArea' + number).html(textValue);
+
+        // 제한글자 초과
+        let typeEl = $('input[name="rcs_msg_tp"]:checked');
+        let limit = 30;
+
+        if(typeEl.length == 0 ){  // 슬라이드형
+            let data = $('.slide_type .value').attr('data');
+            if(data>3){    // 0~3 = smail   4~ = medium
+                limit = 60
+            }
+
+            let textDiv = $("#textByte" + number).parents('.text_count');
+            $(text).removeClass("red_border");
+            $(textDiv).removeClass("red_color");
+
+            if(count > limit){
+                $(text).addClass("red_border");
+                $(textDiv).addClass("red_color");
+            }
+
+            let limitOverCnt =  $('.rcs_slide .swiper-slide .text_count.red_color').length;
+
+            let limitText = $('.swiper-container > .text_count');
+            if(limitOverCnt > 0){
+                limitText.addClass('red_color');
+            }else {
+                limitText.removeClass('red_color');
+            }
+
+        } else {
+            let type = $(typeEl).val();
+
+            switch (type){
+                case "sms":
+                    limit = 100;
+                    break;
+                case "lms":
+                case "tall":
+                case "medium":
+                    limit = 1300;
+                    break;
+            }
+
+            $(text).removeClass("red_border");
+            $('.text_count').removeClass("red_color");
+
+            if(count > limit){
+                $(text).addClass("red_border");
+                $('.text_count').addClass("red_color");
+            }
+        }
     }
     , rejection : function(number){
         number.value = number.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');

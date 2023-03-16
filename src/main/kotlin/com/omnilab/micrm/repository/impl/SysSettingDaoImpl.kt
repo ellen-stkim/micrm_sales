@@ -54,8 +54,8 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.insert("insertSetLst" , dto)
     }
 
-    override fun isExistAddress(dto: Tblmi_set_lstDto): Int {
-        return sqlSession.selectOne("isExistAddress", dto)
+    override fun isExistSelLst(dto: Tblmi_set_lstDto): Int {
+        return sqlSession.selectOne("isExistSelLst", dto)
     }
 
     override fun isExistModifyAddress(dto: Tblmi_set_lstDto): Int {
@@ -102,5 +102,12 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.selectOne("isExistModifyMapping",dto)
     }
 
+    override fun getMaxDtIdByDto(dto: Tblmi_set_lstDto):Tblmi_set_lstDto? {
+        return sqlSession.selectOne("getMaxDtIdByDto",dto)
+    }
+
+    override fun getMappingSettingListSort(dto: SetLst_searchDto): List<Tblmi_set_lstDto> {
+        return sqlSession.selectList("getMappingSettingListSort",dto)
+    }
 
 }

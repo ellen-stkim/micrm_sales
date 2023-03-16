@@ -24,6 +24,7 @@
 			<ul class="sub_menu">
 				<%--<li<c:if test="${fn:contains(urlPath,'/report/main.mi')}"> class='on'</c:if>><a href="/report/main.mi">리포트</a></li>--%>
 				<li<c:if test="${fn:contains(urlPath,'/camp/st/')}"> class='on'</c:if>><a href="/camp/st/sendStatus.mi">발송 현황</a></li>
+				<li<c:if test="${fn:contains(urlPath,'/cost/')}"> class='on'</c:if>><a href="/cost/costDetail.mi">발송 비용</a></li>
 				<%--<li><a href="javascript:void(0);" onclick="popup.popAlert('페이지 준비중입니다.')">리포트</a></li>--%>
 				<li <c:if test="${fn:contains(urlPath,'/report/all.mi') ||fn:contains(urlPath,'/report/singleDt.mi')||fn:contains(urlPath,'/report/dt.mi') ||fn:contains(urlPath,'/report/proDt.mi')}"> class='on'</c:if>><a href="/report/all.mi">캠페인 통합</a></li>
 			</ul>
@@ -33,7 +34,7 @@
 			<ul class="sub_menu">
 				<sec:authorize access="hasRole('R10')">
 					<li<c:if test="${fn:contains(urlPath,'/sys/user')}"> class='on'</c:if>><a href="/sys/user/userManagement.mi">사용자</a></li>
-					<li<c:if test="${fn:contains(urlPath, '/sys/setting')}"> class='on'</c:if>><a href="/sys/setting/mappingSetting.mi">환경</a></li>
+					<li<c:if test="${fn:contains(urlPath, '/sys/setting')}"> class='on'</c:if>><a href="/sys/setting/teamSetting.mi">환경</a></li>
 				</sec:authorize>
 				<sec:authorize access="hasAnyRole('R1','R2')">
 					<li<c:if test="${fn:contains(urlPath,'/sys/user')}"> class='on'</c:if>><a href="/sys/user/myInfo.mi">사용자</a></li>

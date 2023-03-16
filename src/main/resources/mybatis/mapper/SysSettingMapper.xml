@@ -98,6 +98,7 @@
 				and PAR_ID = #{par_id}
 			</if>
 		</where>
+		order by cd_sn
 	</select>
 
 
@@ -151,7 +152,7 @@
 			)
 	</insert>
 
-	<select id = "isExistAddress" parameterType="Tblmi_set_lst" resultType="Int">
+	<select id = "isExistSelLst" parameterType="Tblmi_set_lst" resultType="Int">
 		SELECT COUNT(*)
 		FROM tblmi_set_lst
 		<where>
@@ -180,6 +181,9 @@
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
 				list_tp_id = #{list_tp_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
+				and list_nm = #{list_nm}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				and seq != #{seq}
@@ -287,6 +291,7 @@
 		</where>
 	</update>
 
+
 	<select id="getMappingSettingListCnt" parameterType="Tblmi_set_lst"  resultType="INT">
 		SELECT COUNT(seq)
 		FROM tblmi_set_lst
@@ -348,6 +353,41 @@
 		</if>
 	</select>
 
+
+	<select id="getMappingSettingListSort" parameterType="Tblmi_set_lst"  resultType="Tblmi_set_lst">
+		SELECT *
+		FROM tblmi_set_lst
+		WHERE DEL_DT = 'N'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+			and list_tp_id = #{list_tp_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+			and list_dt_id = #{list_dt_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and usr_grp_cd = #{usr_grp_cd}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			and use_yn = #{use_yn}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			and use_yn = #{use_yn}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(def_yn)">
+			and def_yn = #{def_yn}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+			and list_val like concat ('%',#{list_val},'%')
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
+			and list_nm like concat ('%',#{list_nm},'%')
+		</if>
+		order by list_etc asc , DEF_YN ='Y' DESC , REG_DT DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
 	<select id = "isExistMapping" parameterType="Tblmi_set_lst" resultType="Int">
 		SELECT COUNT(*)
 		FROM tblmi_set_lst
@@ -397,7 +437,33 @@
 		</where>
 	</select>
 
-</mapper>
+
+	<select id="getMaxDtIdByDto" parameterType="Tblmi_set_lst" resultType="Tblmi_set_lst">
+		SELECT MAX(list_val) as list_val , MAX(list_etc) as list_etc
+		FROM tblmi_set_lst
+		<where>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+				list_tp_id = #{list_tp_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and seq != #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+				and list_dt_id = #{list_dt_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+				and usr_grp_cd = #{usr_grp_cd}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_nm)">
+				and list_nm = #{list_nm}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_val)">
+				and list_val = #{list_val}
+			</if>
+		</where>
+	</select>
+
+ </mapper>
 
 
 

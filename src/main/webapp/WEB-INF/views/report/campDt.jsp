@@ -255,7 +255,7 @@
                     <div id="sucTab" class="report-tab-contents disnone">
                         <c:set var="total" value="${totalResult}"/>
                         <div class="half-grid">
-                            <table class="report-tab-table blue">
+                            <table class="report-tab-table blue" style="display: inline-block">
                                 <tr>
                                     <th>발송성공</th>
                                     <td>
@@ -265,7 +265,7 @@
                                                     <c:otherwise>
                                                         <fmt:formatNumber
                                                                 value="${total.suc_cnt / total.total_cnt}"
-                                                                pattern="#,##0%"></fmt:formatNumber>
+                                                                pattern="###.##%"></fmt:formatNumber>
                                                     </c:otherwise>
                                                 </c:choose>
 											</span>
@@ -274,6 +274,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <div class="wait_txt"><span>발송 대기 : </span><span id="wait_cnt">0</span>명</div>
                             <div class="grid-space"></div>
                             <table class="report-tab-table max yellow">
                                 <tr>
@@ -300,21 +301,9 @@
                                 <tr>
                                     <th>발송실패</th>
                                     <td>
-											<span class="pointMid yellow">
-												<c:choose>
-                                                    <c:when test="${total.total_cnt eq '' }">0%</c:when>
-                                                    <c:otherwise>
-                                                        <fmt:formatNumber
-                                                                value="${1 - total.suc_cnt / total.total_cnt }"
-                                                                pattern="#,##0%"></fmt:formatNumber>
-                                                    </c:otherwise>
-                                                </c:choose>
+											<span class="pointMid yellow" id="totalFailPct">
 											</span>
-                                        (<c:choose><c:when
-                                            test="${total.total_cnt eq '' }">0</c:when><c:otherwise><span
-                                            class="text"><fmt:formatNumber
-                                            value="${total.total_cnt - total.suc_cnt }"
-                                            pattern="#,##0"></fmt:formatNumber></span></c:otherwise></c:choose>)
+                                        (<span class="text" id="totalFailCnt"></span>)
                                     </td>
                                 </tr>
                             </table>
@@ -396,6 +385,7 @@
                                 <!-- option -->
                                 <ul class="option">
                                     <li data="">기준선택</li>
+                                    <li data="pro_st">상태</li>
                                     <li data="pro_nm">프로그램명</li>
                                     <li data="camp_nm">캠페인명</li>
                                     <li data="camp_ch">캠페인채널</li>
@@ -405,6 +395,7 @@
                             <div class="input_txt left-border-none" style="width: 325px;">
                                 <span id="target_area" class="left"></span>
                                 <span id="ch_area" class="left"></span>
+                                <span name="st_area" class="left"></span>
                                 <input type="text" class="full" id="searchValue" name="searchValue"
                                        placeholder="검색어 입력" onkeypress="if(event.keyCode==13) {popupSearch(); return false; }"/>
                             </div>
@@ -432,7 +423,7 @@
                     <div class="btn_size3 btn_bg3" onclick="popupSearch()"><span>검색</span></div>
 
                 </form:form>
-                <div id="list_table_box" style="width: 588px; height:210px;">
+                <div id="list_table_box" style="width: 588px; min-height:210px;">
                     <table class="pop_table table_fixed" id="pop_list_table">
                         <colgroup>
                             <col width="40"/>
@@ -895,7 +886,6 @@
                 return;
             }
         })
-        $('#smsTab li')
     }
 
     $(document).on("click", "#smsTab li span", (e) => {
@@ -937,12 +927,13 @@
         let html2 = '';
         let softTotal = 0;
         let hardTotal = 0;
+        let waitTotal = 0;
         for (let i = 0; i < data.length; i++) {
             let cd_val = data[i].cd_val === undefined || data[i].cd_val === ""|| data[i].cd_val === null  ? "알 수 없음" : data[i].cd_val;
             let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" || data[i].cd_desc === null ? "알 수 없음" : data[i].cd_desc;
             if (data[i].bounce_cate == 'U') {
                 data1.push(data[i].send_cnt);
-                softTotal += data[i].send_cnt;
+                softTotal += Number(data[i].send_cnt);
                 let color = colorPicker(1, [70, 70, 90], 50, 150);
 
                 bgColor1.push(color);
@@ -959,7 +950,7 @@
                     + '</li>';
             } else if (data[i].bounce_cate == 'S' || data[i].bounce_cate == null) {  //hard bounce  이거나 일치하는 코드값 없음
                 data2.push(data[i].send_cnt);
-                hardTotal += data[i].send_cnt;
+                hardTotal += Number(data[i].send_cnt);
                 let color = colorPicker(1, [70, 70, 90], 30, 150);
                 bgColor2.push(color);
                 column2.push(cd_val);
@@ -975,44 +966,6 @@
                     + '</li>';
             }
         }
-        /*for (let i = 0; i < data.length; i++) {
-            let cd_val = data[i].cd_val === undefined || data[i].cd_val === "" ? "알 수 없음" : data[i].cd_val;
-            let cd_desc = data[i].cd_desc === undefined || data[i].cd_desc === "" ? "알 수 없음" : data[i].cd_desc;
-            if (data[i].bounce_category == 'SOFT') {
-                data1.push(data[i].total_tg);
-                softTotal += data[i].total_tg;
-                let color = colorPicker(1, [70, 70, 90], 50, 150);
-
-                bgColor1.push(color);
-                column1.push(cd_val);
-                html1 += '<li>'
-                    + '<label class="icon"><div class="pointer" style="background-color: ' + color + ';"></div><div class="cd_val">' + cd_val + '</div></label>'
-                    + '<div class="info">'
-                    + '<span class="txt"  name="info-btn">?</span>'
-                    + '<div class="info-box">'
-                    + '<h6>' + cd_val + '</h6>'
-                    + '<p>' + cd_desc + '</p>'
-                    + '</div>'
-                    + '</div>'
-                    + '</li>';
-            } else if (data[i].bounce_category == 'HARD') {
-                data2.push(data[i].total_tg);
-                hardTotal += data[i].total_tg;
-                let color = colorPicker(1, [70, 70, 90], 30, 150);
-                bgColor2.push(color);
-                column2.push(cd_val);
-                html2 += '<li>'
-                    + '<label class="icon"><div class="pointer" style="background-color: ' + color + ';"></div><div class="cd_val">' + cd_val + '</div></label>'
-                    + '<div class="info">'
-                    + '<span class="txt" name="info-btn">?</span>'
-                    + '<div class="info-box">'
-                    + '<h6>' + cd_val + '</h6>'
-                    + '<p>' + cd_desc + '</p>'
-                    + '</div>'
-                    + '</div>'
-                    + '</li>';
-            }
-        }*/
         dataSet1.data = data1;
         dataSet1.backgroundColor = bgColor1;
         dataSet1.label = "DataSet 1";
@@ -1043,18 +996,33 @@
         } else {
             $('#hardTotalPortion').html("0%");
         }
+
+        let totalCnt = ${empty totalResult.total_cnt ? 0 : totalResult.total_cnt};
+        let sucCnt = ${empty totalResult.suc_cnt ? 0 : totalResult.suc_cnt};
+
+        waitTotal = totalCnt - sucCnt - (softTotal + hardTotal);
         softTotal = "(" + common.comma(softTotal) + ")";
         $('#softTotalSpan').html(softTotal);
         hardTotal = "(" + common.comma(hardTotal) + ")";
         $('#hardTotalSpan').html(hardTotal);
+
+
+        let totalFailPer = (1 - (sucCnt + waitTotal) / totalCnt) * 100;
+        $('#totalFailPct').html(totalFailPer.toFixed(2)+'%');
+
+        let totalFailCnt = common.comma(totalCnt - sucCnt - waitTotal);
+        $('#totalFailCnt').html(totalFailCnt);
+
+        $('#wait_cnt').html(common.comma(waitTotal));
     }
 
     $(document).on("mouseenter", "span[name='info-btn']", (e) => {
         $(e.target).siblings('.info-box').show();
-    })
+    });
+
     $(document).on("mouseleave", "span[name='info-btn']", (e) => {
         $(e.target).siblings('.info-box').hide();
-    })
+    });
 
     //click  컨텐츠 분석 테이블 도움말
     $(document).on("mouseenter", "span[name=click-help]", (e) => {
@@ -1103,6 +1071,7 @@
         $(div).find('#searchValue').val("")
         if (thisData === "camp_ch") {
             $(div).find('#searchValue').hide();
+            $(div).find('span[name="st_area"]').html('');
             $(div).find('#target_area').empty();
             $(div).find('.target_select').removeClass("target_select")
             $(div).find('#ch_area').html(
@@ -1115,10 +1084,24 @@
                 '</ul>' +
                 '</div>'
             );
-        } else {
+        } else if (thisData === "pro_st") {
+            $(div).find('#searchValue').hide();
+            $(div).find('.target_select').removeClass("target_select")
+            $(div).find('#chOption').remove();
+            $(div).find('span[name="st_area"]').html(
+                '<div class="select style1 left-border right-border" id="stOption" style="width: 326px;">' +
+                '<div class="value searchSelect searchTarget" data="03">발송중</div>' +
+                '<ul class="option">' +
+                '<li data="03">발송중</li>' +
+                '<li data="04">완료</li>' +
+                '</ul>' +
+                '</div>'
+            );
+        }  else {
             $(div).find('#searchValue').show();
             $(div).find('#chOption').remove();
             $(div).find('.target_select').removeClass("target_select")
+            $(div).find('span[name="st_area"]').html('');
         }
     }
 
@@ -1178,7 +1161,6 @@
     });
 
     function popupSearch() {
-
         let searchType = $("#popUp-searchStandard").attr("data")
         let searchValue = $("#searchValue").val().trim();
 
@@ -1187,7 +1169,7 @@
             return
         }
         let standard = $('#popUp-searchStandard').attr('data');
-        if (standard === "camp_ch") {
+        if (standard === "camp_ch" || standard === "pro_st") {
             $('#camp-report-form #searchValue').val($('.searchTarget').attr('data'));
         }
 

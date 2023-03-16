@@ -149,6 +149,10 @@
                                                                    varStatus="status">
                                                             <input type="button" data="\#{${item.list_val}}" value="${item.list_nm}" class="drag-button" draggable="true">
                                                         </c:forEach>
+                                                        <c:forEach var="item" items="${extention}"
+                                                                   varStatus="status">
+                                                            <input type="button" data="\#{${item}}" value="${item}" class="drag-button" draggable="true">
+                                                        </c:forEach>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1639,14 +1643,20 @@
 
         if (tmplName.val() == '' || tmplName.val() == null) {
             tmplName.focus().addClass('outline');
-            popup.popAlert("템플릿명을 입력해주세요.");
+            popup.popAlert("템플릿 명을 입력해주세요.");
             return false;
         }
 
         if (tmplTxt.val() == '' || tmplTxt.val() == null) {
             tmplTxt.focus().addClass('outline');
-            popup.popAlert("템플릿내용을 입력해주세요.");
+            popup.popAlert("템플릿 내용을 입력해주세요.");
             return false;
+        } else {
+            let regExp = /\{{(.*?)\}}/g
+            if(regExp.test(tmplTxt.val())){
+                popup.confirmAlertCallback("알림톡 개인화변수는 '\#{변수명}' 형식입니다.","regChange($(`textarea[name='templateContent']`))");
+                return false;
+            }
         }
 
         //부가정보형, 복합형인 경우 부가정보
@@ -1700,6 +1710,10 @@
         return true;
     }
 
+    function regChange(tmplTxt){
+        $(tmplTxt).val($(tmplTxt).val().replaceAll('{{', '\#{').replaceAll('}}','}'));
+        $('.layer_pop ').removeClass('active');
+    }
 
     // blur 유효성 체크
     $(function () {
@@ -1786,6 +1800,11 @@
                 obj.linkType = $(button).find('.btn_type option:selected').val();
                 obj.linkTypeName = $(button).find('.btn_type option:selected').html();
                 obj.name = $(button).find(`[name='name']`).val();
+                console.log(obj.linkType)
+                console.log(obj.linkType == "WL")
+                if(obj.linkType == "WL"){  //링크 버튼 / "target":"out" 속성 추가시 아웃링크
+                    obj.target = "out"
+                }
 
                 // 버튼 링크
                 const btnInpLst1 = $(button).find(".webLink-on input:visible");
@@ -2030,7 +2049,7 @@
             '<th>채널</th>' +
             '<td>' +
             '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>' +
-            '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
+            // '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>' +
             '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>' +
             '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
             '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02" ><span></span></label>' +
@@ -2239,7 +2258,7 @@
                 }
                 const selItemTrLst = $('#emphItemList_list_table tbody tr:visible');
                 const itemSummaryYn = $('#itemInfo_check').is(":checked");
-                console.log(itemSummaryYn)
+
                 if(selItemTrLst.length > 0 || itemSummaryYn ){
                     contHtml += ` <div class="item_div">`
                     if(selItemTrLst.length > 0){
@@ -2266,7 +2285,7 @@
                 break;
         }
 
-        contHtml += `<div class="cont">`+$('textarea[name="templateContent"]').val()+`</div>`
+        contHtml += `<div class="cont">`+$('textarea[name="templateContent"]').val().replaceAll("\n", "<br/>")+`</div>`
 
         switch (msgTp) {
             case 'BA':

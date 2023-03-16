@@ -443,6 +443,9 @@
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 					AND m.use_yn = #{use_yn}
 				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+					AND m.del_yn = #{del_yn}
+				</if>
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
 					AND l.cont_sub like concat ('%',#{cont_sub},'%')
 				</if>
@@ -1167,7 +1170,7 @@
 			, m.ch_tp
 			, m.camp_nm
 			, m.team_cd
-			, comm.cd_desc 																						   AS team_nm
+			, set_cd.list_nm 																					   AS team_nm
 			, m.usr_key
 			, m.cont_nm
 			, l.seq                                                                                                AS list_seq
@@ -1232,10 +1235,10 @@
 		   LEFT JOIN tblmi_cont_img AS img_6 ON l.img_cd_6 = img_6.seq
 		   LEFT JOIN tblmi_set_lst AS sender ON l.send_to = sender.seq
 		   LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON l.key_id = tmpl.tmpl_cd
-		   LEFT JOIN tblmi_comm_cd AS comm ON  comm.GRP_ID = 'GRP_TEAM'
-											AND comm.cd_id = 'TEAM01'
-											AND comm.par_id = #{cont_grp_cd}
-											AND comm.CD_VAL = m.TEAM_CD
+		   LEFT JOIN tblmi_set_lst AS set_cd ON  set_cd.list_tp_id = 'CH05'
+											AND set_cd.list_dt_id = 'TEAM01'
+											AND set_cd.usr_grp_cd = #{cont_grp_cd}
+											AND set_cd.list_val = m.TEAM_CD
 		WHERE  m.seq = #{seq} and m.cont_grp_cd = #{cont_grp_cd}
 		ORDER  BY l.seq;
 	</select>

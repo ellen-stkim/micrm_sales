@@ -711,7 +711,6 @@ class MobileContentServiceImpl : ContentService {
      */
 
     override fun selectContentView(dto: Tblmi_cont_mstDto): Map<String, Any> {
-
         val paramMap: MutableMap<String, Any> = HashMap()
         val searchDto = dto as Contents_searchDto
 
@@ -922,10 +921,8 @@ class MobileContentServiceImpl : ContentService {
         tblmiContMstDto.reg_id = userInfo.usr_id
         tblmiContMstDto.upd_id = userInfo.usr_id
         tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
-        tblmiContMstDto.upd_id = userInfo.usr_id
-        tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
 
-        contentDao.updateMobileMst(tblmiContMstDto);
+        contentDao.updateMobileMst(tblmiContMstDto)
 
         val len = contentListCreatedto.send_to_list!!.size - 1;
 

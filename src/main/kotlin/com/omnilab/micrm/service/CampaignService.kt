@@ -1,7 +1,10 @@
 package com.omnilab.micrm.service
 
+import com.omnilab.micrm.model.Content_view_Dto
+import com.omnilab.micrm.model.Contents_searchDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
+import java.util.HashMap
 
 
 interface CampaignService {
@@ -25,4 +28,5 @@ interface CampaignService {
     fun getCampContentPreview(dto: Tblmi_cont_mstDto): Tblmi_cont_lstDto
 
     fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any>
+    fun getContentPreview(dto: Tblmicp_cont_mstDto): MutableList<HashMap<String, Any?>>
 }

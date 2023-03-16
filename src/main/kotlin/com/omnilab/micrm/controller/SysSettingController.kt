@@ -5,6 +5,7 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
+import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.KkoRestApiService
 import com.omnilab.micrm.service.SysSettingService
 import org.slf4j.LoggerFactory
@@ -33,7 +34,7 @@ class SysSettingController {
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : com.omnilab.micrm.service.CampaignService
+    private lateinit var campaignService : CampaignService
 
 
     @Autowired
@@ -41,12 +42,53 @@ class SysSettingController {
     lateinit var kkoRestApiService: KkoRestApiService
 
     @Autowired
-    lateinit var fileUpload: FileUploadUtils;
+    lateinit var fileUpload: FileUploadUtils
+
+    /**
+     * @Method Name  : mappingSetting
+     * @Since    : 2023. 02. 03
+     * @author   : Belisa
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑 정보 설정 페이지 조회
+     * @title : 매핑 정보 설정 페이지 조회
+     */
+    @GetMapping("/teamSetting.mi")
+    fun teamSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/teamSetting")
+        val dto = SetLst_searchDto()
+        val map = sysSettingService.getTeamSettingList(dto)
+        view.addObject("list",map["list"])
+
+        return view;
+    }
+
+
+
+    /**
+     * @Method Name  : updateSortLst
+     * @Since    : 2023. 02. 07
+     * @author   : Belisa
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 매핑 정보 설정 페이지 조회
+     * @title : 매핑 정보 설정 페이지 조회
+     */
+    @ResponseBody
+    @PostMapping("/updateSortLst.ajax")
+    fun updateSortLst(@RequestBody list : List<Tblmi_set_lstDto>) {
+        return sysSettingService.updateLsts(list)
+    }
+
 
     /**
      * @Method Name  : mappingSetting
      * @Since    : 2022. 07. 25
-     * @author   : Lisa
+     * @author   : Belisa
      * @return   : ModelAndView
      * @excetion :
      * @see      :
@@ -69,7 +111,7 @@ class SysSettingController {
     /**
      * @Method Name  : getMappingSettingList
      * @Since    : 2022. 07. 25
-     * @author   : Lisa
+     * @author   : Belisa
      * @param    : lstStDto: SetLst_searchDto
      * @return   : ModelAndView
      * @excetion :
@@ -88,6 +130,87 @@ class SysSettingController {
         view.addObject("pageNo",map["pageNo"])
         return view;
     }
+
+
+    /**
+     * @Method Name  : getTeamSettingList
+     * @Since    : 2023.02.03
+     * @author   : Belisa
+     * @param    : lstStDto: SetLst_searchDto
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 팀 정보 설정 페이지 가져오기
+     * @title : 팀 정보 설정 페이지 가져오기
+     */
+
+    @PostMapping("/getTeamSettingList.ajax")
+    fun getTeamSettingList(@ModelAttribute("form") lstStDto: SetLst_searchDto) : ModelAndView {
+        val view = ModelAndView("sys/setting/ajax/getTeamSettingList")
+        val map = sysSettingService.getTeamSettingList(lstStDto)
+        view.addObject("list",map["list"])
+        view.addObject("teamCd",map["teamCd"])
+        return view;
+    }
+
+    /**
+     * @Method Name  : isExistTeam
+     * @Since    : 2023.02.06
+     * @author   : Belisa
+     * @param    : lstStDto: SetLst_searchDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 팀 명 중복확인
+     * @title : 팀 명 중복확인
+     */
+
+    @ResponseBody
+    @PostMapping("/isExistTeam.ajax")
+    fun isExistTeam(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.isExistTeam(lstDto)
+    }
+
+    /**
+     * @Method Name  : insertTeam
+     * @Since    :  2023.02.06
+     * @author   : Belisa
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 팀 정보 INSERT 하기
+     * @title : 팀 정보 INSERT 하기
+     */
+
+    @ResponseBody
+    @PostMapping("/insertTeam.ajax")
+    fun insertTeam(lstDto : Tblmi_set_lstDto) : Int {
+        return sysSettingService.insertTeam(lstDto)
+    }
+
+    /**
+     * @Method Name  : isExistTeamModify
+     * @Since    : 2023. 02. 06
+     * @author   : Belisa
+     * @param    : lstDto: Tblmi_set_lstDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 팀 정보 수정 중복여부 확인하기
+     * @title : 팀 정보 수정 중복 확인
+     */
+
+    @ResponseBody
+    @PostMapping("/isExistTeamModify.ajax")
+    fun isExistTeamModify(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
+        return sysSettingService.isExistTeamModify(lstDto)
+    }
+
 
     /**
      * 
@@ -673,5 +796,6 @@ class SysSettingController {
     fun insertRejectText(lstDto : Tblmi_set_lstDto) : Int {
         return sysSettingService.insertRejectText(lstDto)
     }
+
 
 }

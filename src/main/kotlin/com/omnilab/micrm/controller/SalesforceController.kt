@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Controller
@@ -116,11 +117,12 @@ class SalesforceController {
         val view =  ModelAndView("cont/salesforce")
         view.addObject("usr_cd", usr_cd)
 
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "GRP_TEAM"
-        commonCDDto.cd_id = "TEAM01"
-        commonCDDto.par_id = usr_cd
-        view.addObject("teamLst", sysSettingService.getCommCDLst(commonCDDto))
+        val searchDto = SetLst_searchDto()
+        searchDto.usr_grp_cd = usr_cd
+        searchDto.list_tp_id = "CH05"
+        searchDto.list_dt_id = "TEAM01"
+        searchDto.use_yn = "Y"
+        view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
         val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
         temp.list_nm = "USR_KEY"
@@ -128,6 +130,12 @@ class SalesforceController {
 
         temp.list_nm = "from_to"
         view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
+
+        val cntMap = salesforceService.isCheckSender(usr_cd)
+
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
 
         return view
     }
@@ -187,10 +195,10 @@ class SalesforceController {
         tblmiContMstdto.reg_dt = usr_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+        val cntMap = salesforceService.isCheckSender(usr_cd)
 
         val list = listMap["list"] as List<Content_view_Dto>
         if(list.isNotEmpty()){
-            val cntMap = salesforceService.isCheckSender(usr_cd)
 
             val rejDto = SetLst_searchDto()
             rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
@@ -210,11 +218,12 @@ class SalesforceController {
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
             view.addObject("filePath", uploadPrefix?.cd_val)
 
-            val teamCDDto = Tblmi_comm_cdDto()
-            teamCDDto.grp_id = "GRP_TEAM"
-            teamCDDto.cd_id = "TEAM01"
-            teamCDDto.par_id = usr_cd
-            view.addObject("teamLst", sysSettingService.getCommCDLst(teamCDDto))
+            val searchDto = SetLst_searchDto()
+            searchDto.usr_grp_cd = usr_cd
+            searchDto.list_tp_id = "CH05"
+            searchDto.list_dt_id = "TEAM01"
+            searchDto.use_yn = "Y"
+            view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
             val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
             temp.list_nm = "USR_KEY"
@@ -224,6 +233,10 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
         }
         view.addObject("list" , listMap["list"])
+
+        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+        view.addObject("smsCnt", cntMap["smsCnt"])
+        view.addObject("rcsCnt", cntMap["rcsCnt"])
 
         return view
     }
@@ -564,6 +577,7 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileList.ajax")
     fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
         dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        dto.use_yn = "Y"
         val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
         val paramMap = mobileContentService.selectContentView(dto)
 
@@ -672,13 +686,34 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/unpublish.service")
     fun unpublish(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/unpublish.service data: $data")
+
         val dto = Tblmicp_cont_mstDto()
-        dto.inten_id = data["interactionId"].toString()
-        dto.orig_id = data["originalDefinitionId"].toString()
-        dto.inta_key = data["interactionKey"].toString()
-        dto.inta_ve = data["interactionVersion"].toString()
-        dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-        val save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+        var save = 0
+        try{
+            val prgDto = Tblmicp_programDto()
+            prgDto.inten_id = data["interactionId"].toString()
+            prgDto.orig_id = data["originalDefinitionId"].toString()
+            prgDto.inta_key = data["interactionKey"].toString()
+            prgDto.inta_ve = data["interactionVersion"].toString()
+            prgDto.pro_st = "04"
+            salesforceDao.upd_tblmicp_program_sales(prgDto)
+            if(prgDto.pro_id != null){
+                val campDto = Tblmicp_campaignDto()
+                campDto.pro_id = prgDto.pro_id
+                campDto.camp_st = "04"
+                salesforceDao.upd_tblmicp_campaign(campDto)
+            }
+
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
+            save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+        }catch (e: Exception){
+            logger.error("unpublish Service error : {}", dto)
+        }
+
         return if(save > 0){
             ResponseEntity(null, HttpStatus.OK)
         }else{
@@ -712,6 +747,15 @@ class SalesforceController {
                 campDto.camp_st = "04"
                 salesforceDao.upd_tblmicp_campaign(campDto)
             }
+
+            val dto = Tblmicp_cont_mstDto()
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pub_yn = "Y"
+            salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+
         }catch (e: Exception){
             logger.error("stop Service error : {}", dto)
         }
