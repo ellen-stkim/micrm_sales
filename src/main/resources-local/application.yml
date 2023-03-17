@@ -39,7 +39,8 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
-  static-path : "C:/work/micrm_sales/src/main/webapp/WEB-INF/classes/static"
+#  static-path : "C:/work/micrm_sales/src/main/webapp/WEB-INF/classes/static"
+  static-path : "C:/belisa/workspace/workspace4/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
 
@@ -49,9 +50,13 @@ variable:
   biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
 
 upload:
-  src : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
-  temp : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+#  src : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
+#  content : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
+#  temp : "C:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+  src: "C:/belisa/workspace/workspace4/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content: "C:/belisa/workspace/workspace4/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
+  upd_content: "/image/upload/content"
+  temp: "C:/belisa/workspace/workspace4/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
 
 
 
