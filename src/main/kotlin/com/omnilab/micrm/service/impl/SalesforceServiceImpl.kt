@@ -59,9 +59,7 @@ import kotlin.streams.toList
 
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
-
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
-
 
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
