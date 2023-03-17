@@ -32,7 +32,6 @@ define(["postmonger"], function (Postmonger) {
 			}
 		}, 1000);
 		 */
-
 	});
 	connection.on('requestedSchema', function (data) {
 		// save schema
@@ -53,6 +52,7 @@ define(["postmonger"], function (Postmonger) {
 				}
 			});
 		});
+
 	});
 
 	connection.on("requestedTokens", function (tokens){
@@ -110,6 +110,7 @@ define(["postmonger"], function (Postmonger) {
 		$('#previewBtn').trigger('click');
 	});
 
+
     // 사용자 조회
 	function getUser(host, fuel2token, token) {
 	    const res = function(response) {
@@ -163,8 +164,8 @@ define(["postmonger"], function (Postmonger) {
 		payload["metaData"].isConfigured = true;
 
         connection.trigger("updateActivity", payload);
-
 	}
+
 
     // 프리뷰에서 저장 버튼 누르기
     $(document).on('click', '#saveBtn' , function() {

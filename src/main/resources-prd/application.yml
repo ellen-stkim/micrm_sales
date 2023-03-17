@@ -40,7 +40,7 @@ variable:
   minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
   static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
-  tableau-url: "http://t.tableau-report.com/trusted"
+  tableau-url: "https://t.tableau-report.com/trusted"
 
   biz-url: ENC(d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY=)
   biz-msg-url: ENC(E61c3eAA5KnRsxfXBjTAlcsCe8QU8ws5Xq38DRBES4UW2yenht4i9bCLsOw5nRurga6Vid3k3PQGs6a85ji6bvXU/XG709kt74MrT0uDLaU=)
@@ -50,4 +50,5 @@ variable:
 upload:
   src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
   content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
+  upd_content: "/image/upload/content"
   temp : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
