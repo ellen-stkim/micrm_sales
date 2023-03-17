@@ -57,16 +57,11 @@ class FileUploadUtils {
                 fileName = "$digits.$fileExe"
 
                 if (fileupload(curFilePath,file, fileName)) {
-
-
-                    val minioClient =
-                        MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-                    logger.error("{}",curFilePath)
-                    logger.error("{}",static_path + "$updFildPath/$fileName")
+                    val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(minio_bucket)
-                            .`object`("$curFilePath/$fileName")
+                            .`object`("$usrCd/$fileName")
                             .filename(static_path + "$updFildPath/$fileName")
                             .build())
 
@@ -87,7 +82,7 @@ class FileUploadUtils {
                 map["message"] = "업로드는 jpg, jpeg, gif, bmp, png 만 가능합니다."
             }
         } catch (e: Exception) {
-            logger.info("File Upload :" + e.message)
+            logger.error("File Upload :", e)
             map["uploaded"] = 0
             map["message"] = "파일 업로드 실패"
             return map;
