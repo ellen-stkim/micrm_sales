@@ -690,7 +690,7 @@ class ContentController  {
                 map["imgCheck"] = 1
                 val userInfo = UsefulUtils.sessionUser()
                 val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-                map = fileUpload.upload(contentFilePath, file, request);
+                map = fileUpload.upload(userInfo.usr_grp_cd!!, file, request)
                 if(map["uploaded"].toString() == "0"){
                     logger.info("File Upload fail")
                 }else{
