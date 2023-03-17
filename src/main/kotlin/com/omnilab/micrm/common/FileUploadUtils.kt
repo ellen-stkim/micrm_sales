@@ -61,7 +61,8 @@ class FileUploadUtils {
 
                     val minioClient =
                         MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-logger.error("{}",curFilePath)
+                    logger.error("{}",curFilePath)
+                    logger.error("{}",static_path + "$updFildPath/$fileName")
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(minio_bucket)
