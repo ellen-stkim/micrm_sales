@@ -2518,8 +2518,10 @@ class SalesforceServiceImpl : SalesforceService {
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
                     val contTpLst = HashMap<String, Contents_lstDto>()
-
-                    // 이미지 업로드
+                    for (check in contLst) {
+                        contTpLst[check.cont_tp.toString()] = check
+                    }
+                    /*// 이미지 업로드
                     val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
                     for (check in contLst) {
                         // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
@@ -2545,7 +2547,7 @@ class SalesforceServiceImpl : SalesforceService {
                                     .filename(static_path + check.kko_image_url)
                                     .build())
                         }
-                    }
+                    }*/
                     // 발송
                     when {
                         // 카카오 친구톡

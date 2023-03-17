@@ -50,5 +50,6 @@ variable:
 upload:
   src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
   content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
+  upd_content: "/image/upload/content"
   temp : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
 

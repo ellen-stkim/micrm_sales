@@ -53,24 +53,6 @@ define(["postmonger"], function (Postmonger) {
 			});
 		});
 
-		//test
-		console.log("--------------------updateEvent-----------------------")
-		let dataList = [];
-		let _data = {};
-		for(let i=0; i< bindList.length; i++) {
-			let temp = bindList[i];
-			_data[temp] = "{{Event." + eventDefinitionKey + "." + temp + "}}"
-		}
-		_data.seq = mstSeq;
-		_data["§extention_cnt§"] = dataExtensionCnt;
-		_data["§data_extension_id§"] = dataExtensionId;
-		dataList.push(_data);
-		payload["arguments"].execute.inArguments = dataList;
-		payload["metaData"].isConfigured = true;
-
-		connection.trigger("updateEvent", payload);
-
-		console.log("-------------------updateEvent end------------------------")
 	});
 
 	connection.on("requestedTokens", function (tokens){

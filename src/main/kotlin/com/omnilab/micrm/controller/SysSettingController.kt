@@ -231,8 +231,9 @@ class SysSettingController {
     @ResponseBody
     @RequestMapping("/upload.mi")
     fun upload(@RequestParam("upload") file: MultipartFile, request: HttpServletRequest, session:HttpSession): MutableMap<String, Any> {
+        val usrCd = UsefulUtils.sessionUser().usr_grp_cd
         val filePathGrp = filePath+"/"+UsefulUtils.sessionUser().usr_grp_cd
-        val map: MutableMap<String, Any> = fileUpload.upload(filePathGrp, file, request);
+        val map: MutableMap<String, Any> = fileUpload.upload(usrCd!!, file, request);
         if(map["uploaded"].toString() == "0"){
             logger.info("File Upload fail")
         }else{
