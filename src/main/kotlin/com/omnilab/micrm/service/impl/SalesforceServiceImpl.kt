@@ -2522,6 +2522,7 @@ class SalesforceServiceImpl : SalesforceService {
                     for (check in contLst) {
                         contTpLst[check.cont_tp.toString()] = check
                     }
+                    logger.error("{}",contTpLst)
                     /*// 이미지 업로드
                     val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
                     for (check in contLst) {
