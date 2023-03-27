@@ -76,6 +76,7 @@
              , a.KKO_IMG_URL
              , a.KKO_BTN_NM
              , a.KKO_BTN_URL
+             , a.KKO_MSG_TP
              , a.KKO_BTN_OBJ
              , a.KKO_PRICE
              , a.KKO_CURRENCY_TYPE
