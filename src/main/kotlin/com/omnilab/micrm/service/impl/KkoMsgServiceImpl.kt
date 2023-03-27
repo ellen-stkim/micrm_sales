@@ -138,8 +138,8 @@ class KkoMsgServiceImpl : KkoMsgService {
         val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
 
         try {
-            if(result.get("result") as Boolean){
-                if("API_200".equals(data.get("code"))){
+            if(result["result"] as Boolean){
+                if("API_200" == data["code"]){
 
                     // tmplDto 저장
                     val tmplDto = getTmplDtoByKkoDto(dto,tmplDto)
@@ -171,27 +171,27 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     kkoAtTmplDao.insNewTmplDto(tmplDto);
 
-                    map.put("status", HttpServletResponse.SC_OK)
-                    map.put("msg", "알림톡 템플릿이 생성되었습니다.")
+                    map["status"] = HttpServletResponse.SC_OK
+                    map["msg"] = "알림톡 템플릿이 생성되었습니다."
 
                 }else{
                     logger.error("카카오 알림톡 템플릿 생성 데이터 에러 {}",result)
 
-                    val code :String = data.get("code")?.toString()!!.replace("API_","")
-                    map.put("status", code.toInt())
-                    map.put("msg", data.get("message")!!)
+                    val code :String = data["code"]?.toString()!!.replace("API_","")
+                    map["status"] = code.toInt()
+                    map["msg"] = data["message"]!!
                 }
             }else{
                 logger.error("카카오 알림톡 템플릿 생성 API 에러 {}",result)
 
-                val code :String = data.get("code")?.toString()!!.replace("API_","")
-                map.put("status", code.toInt())
-                map.put("msg", data.get("message")!!)
+                val code :String = data["code"]?.toString()!!.replace("API_","")
+                map["status"] = code.toInt()
+                map["msg"] = data.get("message")!!
             }
         }catch (e:Exception){
             logger.error("",e)
-            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            map.put("msg", "템플릿 등록에 실패했습니다. 관리자에게 문의 바랍니다.")
+            map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            map["msg"] = "템플릿 등록에 실패했습니다. 관리자에게 문의 바랍니다."
         }
 
         return map

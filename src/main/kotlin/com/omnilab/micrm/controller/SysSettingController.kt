@@ -708,9 +708,10 @@ class SysSettingController {
      */
     @ResponseBody
     @PostMapping("/insertKkoSenderKey.ajax")
-    fun insertKkoSenderKey(lstDto : Tblmi_set_lstDto,@RequestParam(value = "kko_token") token : String, @RequestParam(value = "kko_cate") cateCd :String) : Map<String,Any> {
-        return sysSettingService.insertKkoSenderKey(lstDto,token,cateCd)
+    fun insertKkoSenderKey(@RequestBody param : HashMap<String,String>) : Map<String,Any> {
+        return sysSettingService.insertKkoSenderKey(param)
     }
+
 
     /**
      * @Method Name  : rejectSetting
