@@ -25,6 +25,7 @@ open class Tblmi_cont_lstDto {
     var kko_img_url : String?= null // (친구톡) 이미지 클릭 링크 주소
     var kko_btn_nm : String?= null  // (친구톡) 버튼 내용
     var kko_btn_url : String ?= null    // (친구톡) 버튼 클릭 주소
+    var kko_msg_tp : String ?= null    // (알림톡) 메세지 타입
     var kko_btn_obj : String ?= null    // (알림톡) 버튼 내용
     var kko_price : Int ?= null    // (알림톡) message 내 포함된 가격/금액/결제금액
     var kko_currency_type : String ?= null    // (알림톡)

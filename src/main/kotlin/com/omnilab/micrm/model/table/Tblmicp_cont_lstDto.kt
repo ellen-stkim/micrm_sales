@@ -42,6 +42,7 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.kko_img_url = tblmi_cont_lstDto.kko_img_url
         this.kko_btn_nm = tblmi_cont_lstDto.kko_btn_nm
         this.kko_btn_url = tblmi_cont_lstDto.kko_btn_url
+        this.kko_msg_tp = tblmi_cont_lstDto.kko_msg_tp
         this.kko_btn_obj = tblmi_cont_lstDto.kko_btn_obj
         this.kko_price = tblmi_cont_lstDto.kko_price
         this.kko_currency_type = tblmi_cont_lstDto.kko_currency_type

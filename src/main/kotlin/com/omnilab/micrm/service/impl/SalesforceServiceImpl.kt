@@ -431,6 +431,7 @@ class SalesforceServiceImpl : SalesforceService {
                             tblmiContLstdto.kko_img_url = resultDto.kko_img_url
                             tblmiContLstdto.kko_title = resultDto.tmpl_tit
                             tblmiContLstdto.kko_header = resultDto.tmpl_header
+                            tblmiContLstdto.kko_msg_tp = if (resultDto.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
 
                             tblmiContLstdto.cont_tp = "DMTP05"
                             tblmiContLstdto.msg_tp = "DMCH216"
@@ -993,6 +994,7 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.kko_img_url = resultDto.kko_img_url
                         tblmiContLstdto.kko_title = resultDto.tmpl_tit
                         tblmiContLstdto.kko_header = resultDto.tmpl_header
+                        tblmiContLstdto.kko_msg_tp = if (resultDto.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
 
                         tblmiContLstdto.cont_tp = "DMTP05"
                         tblmiContLstdto.msg_tp = "DMCH216"
