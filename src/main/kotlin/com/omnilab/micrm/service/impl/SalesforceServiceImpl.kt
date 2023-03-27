@@ -2269,14 +2269,6 @@ class SalesforceServiceImpl : SalesforceService {
                                 (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
                                     .split(".")[0]
 
-                            // 중복 등록 체크
-                            /*val cpTemp = Tblmicp_cont_mstDto()
-                            cpTemp.cont_seq = seq.toInt()
-                            cpTemp.inten_id = dto.inten_id
-                            cpTemp.orig_id = dto.orig_id
-                            cpTemp.inta_key = dto.inta_key
-                            val cpM: MutableList<Tblmicp_cont_mstDto> = salesforceDao.sel_tblmicp_cont_mst(cpTemp)
-                            if (cpM.size <= 0) {*/
 
                                 val temp = Tblmi_cont_mstDto(seq.toInt())
                                 val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
@@ -2296,7 +2288,6 @@ class SalesforceServiceImpl : SalesforceService {
                                 cpMstDto.inta_ve = dto.inta_ve
                                 cpMstDto.pub_yn = dto.pub_yn
                                 salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
-                                logger.error("{}", cpMstDto)
 
                                 //기존 데이터가 있을 경우 삭제
                                 salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
