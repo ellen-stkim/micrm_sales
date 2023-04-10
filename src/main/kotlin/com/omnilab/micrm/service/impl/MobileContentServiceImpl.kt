@@ -141,6 +141,7 @@ class MobileContentServiceImpl : ContentService {
                             tblmiContLstdto.kko_img_url = resultDto.kko_img_url
                             tblmiContLstdto.kko_title = resultDto.tmpl_tit
                             tblmiContLstdto.kko_header = resultDto.tmpl_header
+                            tblmiContLstdto.kko_msg_tp = if (resultDto.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
 
                             tblmiContLstdto.cont_tp = "DMTP05"
                             tblmiContLstdto.msg_tp = "DMCH216"
@@ -956,9 +957,6 @@ class MobileContentServiceImpl : ContentService {
                     tblmiContLstdto.use_yn = "N"
                 }
 
-                tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
-
                 val kkoOption = contentListCreatedto.kko_option!!.trim()
                 if (kkoOption.equals("ad")) {
                     // 광고 처리
@@ -968,17 +966,63 @@ class MobileContentServiceImpl : ContentService {
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
 
-                // 카카오 이미지 처리
-                if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
-                    tblmiContLstdto.kko_img_cd = null
-                } else {
-                    tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
-                }
+                if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
+                    // 템플릿 조회
+                    val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id, contentListCreatedto.tmpl_nm,"Y")
+                    atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                    atDto.kep_status = "O"  // 승인완료
 
-                tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+                    val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
+                    if(!CommonUtils.isEmptyObject(resultDto)){
+                        tblmiContLstdto.key_id = resultDto.tmpl_cd
+
+                        val g = GsonBuilder().create()
+                        val obj = JsonObject()
+                        obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
+                        obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
+                        obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
+                        obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
+                        tblmiContLstdto.kko_btn_obj = g.toJson(obj)
+                        tblmiContLstdto.kko_img_cd = resultDto.img_seq
+                        tblmiContLstdto.kko_img_url = resultDto.kko_img_url
+                        tblmiContLstdto.kko_title = resultDto.tmpl_tit
+                        tblmiContLstdto.kko_header = resultDto.tmpl_header
+                        tblmiContLstdto.kko_msg_tp = if (resultDto.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
+
+                        tblmiContLstdto.cont_tp = "DMTP05"
+                        tblmiContLstdto.msg_tp = "DMCH216"
+
+                        tblmiContLstdto.cont_body = resultDto.tmpl_cont
+                    }
+                }else{
+                    // key_id 로 발신키 유효한지 확인
+                    val cdDto = Tblmi_comm_cdDto()
+                    cdDto.grp_id = "KAKAO_KEY"
+                    cdDto.cd_id = userInfo.usr_grp_cd
+
+                    val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
+                    kkoDto.list_val = contentListCreatedto.key_id
+                    val kkoSenderLst = contentDao.selectSenderList(kkoDto)
+
+                    if (kkoSenderLst.size > 0) {
+                        tblmiContLstdto.key_id = kkoSenderLst[0].list_val
+                    }
+
+                    tblmiContLstdto.cont_tp = "DMTP03" // 카카오
+                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+
+                    // 카카오 이미지 처리
+                    if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                        tblmiContLstdto.kko_img_cd = null
+                    } else {
+                        tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                    }
+
+                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
+                    tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
+                    tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
+                    tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+                }
             }
 
             // 인덱스 번호 1: SMS (문자 )

@@ -3696,6 +3696,7 @@
                     <!-- 새 이미지 등록 버튼 -->
                     <div class="btn_new_image" onclick="imgUploadPop();">새 이미지 등록</div>
                 </div>
+                <h1 class="pop_msg"><span></span> 양식에 맞는 이미지만 보여집니다.</h1>
                 <form action="" id="imagePop">
                     <div class="image_container" id="bodyDom">
                     </div>
@@ -4322,9 +4323,11 @@
     // 이미지 리스트 페이징
     function imageListPaging(nowPage) {
         let type = $('#imgType').val();
+        let msg;
 
         const res = function (response) {
             $('.imagePopup').addClass('active');
+            $('#imgSetForm .pop_msg span').html(msg);
             let $doc = new DOMParser().parseFromString(response, "text/html");
             $("#bodyDom").html($("#bodyDom", $doc).html());
             $("#pagingDom").html($("#pagingDom", $doc).html());
@@ -4334,28 +4337,38 @@
         let param = $("#imgSetForm").serializeArray();
 
         if (type === 'kakaoImage') {
-            param.push({name: 'ch_tp', value: 'IMGTP03'});
+            // 이미지 타입 : Kakao Image
+            param.push({name: 'ch_tp', value: 'IMGTP_FT'});
+            msg = "친구톡"
         } else if (type === 'smsImage') {
+            // 이미지 타입 : 문자(MMS)
             param.push({name: 'ch_tp', value: 'IMGTP02'});
+            msg = "모바일"
         } else if (type === 'horizontalImage') {
+            // 이미지 타입 : RCS 가로형
             param.push({name: 'ch_tp', value: 'IMGTP04'});
+            msg = "RCS 가로형"
         } else if (type === 'verticalImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
-            // console.log("rcs_msg_tp : " + rcs_msg_tp);
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
             if (rcs_msg_tp === 'tall') {
-                // 세로형 Tall
+                // 이미지 타입 : RCS 세로형 Tall
                 param.push({name: 'ch_tp', value: 'IMGTP05'});
+                msg = "RCS 세로형 Tall"
             } else if (rcs_msg_tp === 'medium') {
-                // 세로형 Medium
+                // 이미지 타입 : RCS 세로형 Medium
                 param.push({name: 'ch_tp', value: 'IMGTP06'});
+                msg = "RCS 세로형 Medium"
             }
         } else if (type === 'slideRcsImage') {
-            var rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
-            //console.log("rcs_msg_tp :" + rcs_msg_tp);
+            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
             if (rcs_msg_tp === 'small') {
+                // 이미지 타입 : RCS 슬라이드 small
                 param.push({name: 'ch_tp', value: 'IMGTP07'})
+                msg = "RCS 슬라이드 small"
             } else if (rcs_msg_tp === 'medium') {
+                // 이미지 타입 : RCS 슬라이드 medium
                 param.push({name: 'ch_tp', value: 'IMGTP08'});
+                msg = "RCS 슬라이드 medium"
             }
         }
         param.push({name: 'pageNo', value: nowPage});

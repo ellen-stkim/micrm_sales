@@ -74,7 +74,7 @@ interface SysSettingService {
 
     fun insertRejectText(lstDto: Tblmi_set_lstDto): Int
 
-    fun insertKkoSenderKey(map: Tblmi_set_lstDto, token: String, cateCd: String): Map<String, Any>
+    fun insertKkoSenderKey(param: HashMap<String, String>): Map<String, Any>
 
     fun isExistKkoAddress(lstDto: Tblmi_set_lstDto): Map<String, Any>
     fun updateSetTypeYn(lstDto: Tblmi_set_lstDto): Map<String, Any>

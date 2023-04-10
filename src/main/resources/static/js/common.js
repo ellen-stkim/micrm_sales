@@ -183,7 +183,6 @@ const com_ajax = {
             success: function (response, status, req) {
                 c_callback(response);
             }, error: function (request, xhr, error) {
-                console.log(request.responseText);
                 if (xhr.status === 403) {
                     window.location.reload();
                 }

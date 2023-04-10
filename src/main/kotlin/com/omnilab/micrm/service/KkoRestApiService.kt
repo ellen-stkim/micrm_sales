@@ -20,5 +20,6 @@ interface KkoRestApiService {
     fun sendSenderKeyToken(param: HashMap<String, String>): MutableMap<String, Any>
     fun createSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any>
     fun getSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any>
+    fun createClient(map: MutableMap<String, Any>): MutableMap<String, Any>
 
 }

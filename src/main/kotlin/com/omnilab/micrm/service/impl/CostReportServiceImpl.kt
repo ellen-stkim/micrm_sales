@@ -285,6 +285,7 @@ class CostReportServiceImpl : CostReportService {
             if (CommonUtils.isEmptyObject(searchDto.end_dt)) {
                 cal.time = Date() // 오늘 날짜
                 cal.add(Calendar.MONTH, -1)
+                cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH))
                 searchDto.monthly_dt = format.format(cal.time)   // 전월 데이터 조회
             } else {
                 cal.time =  format.parse(searchDto.end_dt) //end 기준

@@ -128,7 +128,7 @@
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
         <div class="pop_title">발신번호 추가</div>
         <div class="pop_inner">
-            <form action="" id="postForm1">
+            <form action="" id="sendKeyForm">
                 <table class="pop_table_type1">
                     <colgroup>
                         <col width="103" />
@@ -137,7 +137,7 @@
                     <tbody>
                     <tr>
                         <th>채널명</th>
-                        <td><input type="text" name="list_nm" id="list_nm" placeholder="'@'+채널명을 입력해주세요." class="input_type1" /></td>
+                        <td><input type="text" name="yellowId" id="yellowId" placeholder="'@'+채널명을 입력해주세요." class="input_type1" /></td>
                     </tr>
                     <tr>
                         <th rowspan="2">카테고리</th>
@@ -173,13 +173,29 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>고객명</th>
+                        <td><input type="text" name="bizName" id="bizName" placeholder="고객명을 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
+                        <th>사업자번호</th>
+                        <td><input type="text" name="bizNo" id="bizNo" placeholder="사업자번호를 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
+                        <th>담당자명</th>
+                        <td><input type="text" name="managerName" id="managerName" placeholder="담당자명을 입력해주세요." class="input_type1" /></td>
+                    </tr>
+                    <tr>
                         <th>휴대폰 번호</th>
-                        <td><input type="text" name="list_val" id="list_val" style="width: 87%;display: inline-block;" placeholder="채널 관리자 휴대폰 번호를 입력해주세요." class="input_type1" />
+                        <td><input type="text" name="phoneNumber" id="phoneNumber" style="width: 87%;display: inline-block;" placeholder="채널 관리자 휴대폰 번호를 입력해주세요." class="input_type1" />
                             <input type="button" class="btn_sm_line btn_inline size" value="인증" onclick="checkToken()"></td>
                     </tr>
                     <tr class="check_token_tr">
                         <th>인증번호</th>
-                        <td><input type="text" id="senderkey_token" class="input_type1" placeholder="인증번호를 입력해주세요."></td>
+                        <td><input type="text" id="senderkey_token" name="token" class="input_type1" placeholder="인증번호를 입력해주세요."></td>
+                    </tr>
+                    <tr>
+                        <th>오픈희망일</th>
+                        <td><input type="text" name="openDate" id="openDate" placeholder="오픈희망일을 입력해주세요. (ex: 2023-01-01 )" class="input_type1" /></td>
                     </tr>
                     </tbody>
                 </table>
@@ -333,8 +349,8 @@
         }
 
         let data = {
-            "channelId": $("#list_nm").val().trim()
-            , "phoneNum": $("#list_val").val().trim()
+            "channelId": $("#yellowId").val().trim()
+            , "phoneNum": $("#phoneNumber").val().trim()
         }
 
         com_ajax.ajax_json('post', '${baseURL}/sys/setting/requestKkoToken.ajax', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}');
@@ -349,8 +365,8 @@
             if(response.status == 200){
                 alert("등록되었습니다.");
                 let nowPageNo = $("#nowPageNo").val();
-                $("#list_nm").val('');
-                $("#list_val").val('');
+                $("#yellowId").val('');
+                $("#phoneNumber").val('');
                 $("#errorArea1").html('');
                 $('.numberAddPopup').removeClass('active')
                 getSmsSettingList(nowPageNo);
@@ -361,58 +377,121 @@
             }
         }
 
-        let data = []
-        data.push({name : "list_nm" , value : $("#list_nm").val().trim()})
-        data.push({name : "list_val" , value : $("#list_val").val().trim()})
-        data.push({name : "kko_token",value:$('#senderkey_token').val().trim()})
-        data.push({name : "kko_cate",value:$('#sendSubCateSel .value').attr('data').trim()})
+        let data = $('#sendKeyForm').serializeArray().map(function (x) {
+            this[x.name] = x.value;
+            return this;
+        }.bind({}))[0];
 
-        console.log(data)
-        com_ajax.ajax('post', '${baseURL}/sys/setting/insertKkoSenderKey.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        data.token = $('#senderkey_token').val().trim();
+        data.cateCd = $('#sendSubCateSel .value').attr('data').trim();
+
+        com_ajax.ajax_json('post', '${baseURL}/sys/setting/insertKkoSenderKey.ajax', JSON.stringify(data), res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
-    // 중복 메일 체크하기
+
+    // 중복 채널 체크하기
     function checkKkoAddress() {
 
-        let senderName = $("#list_nm").val().trim();
-        let senderNumber = $("#list_val").val().trim();
+         let senderName = $("#yellowId").val().trim();
+         let senderNumber = $("#phoneNumber").val().trim();
 
-        if(senderName == '') {
-            $("#errorArea1").html("채널명을 입력해 주세요.")
-            return false;
-        }
-        if(senderNumber == '') {
-            $("#errorArea1").html('휴대번호를 입력해 주세요.')
-            return false;
-        }
-        if(!chkNumber(senderNumber)){
-            $("#errorArea1").html("숫자만 입력해 주세요");
-            return false;
+        if(!$('#sendKeyForm').valid()){
+            return
         }
 
-        if(!hasRequstToken || $('#senderkey_token').val() == ""){
-            alert("인증번호를 입력해주세요.");
-            return false;
-        }
-
-        if($('#sendSubCateSel .value').attr('data') == ''){
-            alert("카테고리를 선택해주세요.");
-            return false;
-        }
+         if($('#sendSubCateSel .value').attr('data') == ''){
+             alert("카테고리를 선택해주세요.");
+             return false;
+         }
 
         const res = function(response) {
-            if(response.status == true){
-                saveSms();
-            }  else {
-                $("#errorArea1").html('중복된 채널 입니다.')
-                return false;
+             if(response.status == true){
+                 saveSms();
+             }  else {
+                 $("#errorArea1").html('중복된 채널 입니다.')
+                 return false;
+             }
+         }
+
+         let data = []
+         data.push({name : "list_nm" , value : senderName})
+         com_ajax.ajax('post', '${baseURL}/sys/setting/isExistKkoAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+
+    }
+
+
+    $('#sendKeyForm').validate({
+        onfocusout: false
+        , submitHandler: function () {
+            $('#errorArea1').html('');
+            $('.numberAddPopup').removeClass('active');
+            return false;
+        }
+        , errorPlacement: $.noop
+        , invalidHandler: function (form, validator) {
+            let errors = validator.numberOfInvalids();
+            if (errors) {
+                $('#errorArea1').html(validator.errorList[0].message);
+            }
+        }
+        , rules: {
+            yellowId: {
+                required: true
+                ,vali_chen: true
+            },bizName:{
+                required: true
+            }, bizNo: {
+                required: true
+                ,vali_biz_no: true
+            }, managerName: {
+                required: true
+            }, phoneNumber: {
+                required: true
+                , vali_phone : true
+            }, token: {
+                required: true
+            }, openDate: {
+                required: true
+                ,vali_open_dt: true
+            }
+        }
+        , messages: {
+            yellowId: {
+                required: "채널명을 입력해주세요."
+                ,vali_chen: "@ + 채널명을 입력해주세요"
+            }
+            , bizName: {
+                required: "고객명을 입력해주세요."
+            }, bizNo: {
+                required: "사업자번호를 입력해주세요."
+                ,vali_biz_no: "사업자번호 형식 오류입니다."
+            }, managerName: {
+                required: "담당자명을 입력해주세요."
+            }, phoneNumber: {
+                required: "휴대폰번호를 입력해주세요."
+                ,vali_phone : "휴대폰 번호는 00-000-0000 또는 000-0000-0000 형식으로 입력해주세요."
+            }, token: {
+                required: "인증번호를 입력해주세요."
+            }, openDate: {
+                required: "오픈희망일을 입력해주세요."
+                ,vali_open_dt: "오픈희망일을 YYYY-mm-dd 형식에 맞춰 입력해주세요."
             }
         }
 
-        let data = []
-        data.push({name : "list_nm" , value : senderName})
-        com_ajax.ajax('post', '${baseURL}/sys/setting/isExistKkoAddress.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
+    });
+
+    $.validator.addMethod("vali_chen", function (value) {
+        return /^\@/.test(value) || value === "";
+    });
+    $.validator.addMethod("vali_biz_no", function (value) {
+        return /^[0-9]{3}-[0-9]{2}-[0-9]{5}$/.test(value) || value === "";
+    });
+    $.validator.addMethod("vali_phone", function (value) {
+        return /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/.test(value) || value === "";
+    });
+    $.validator.addMethod("vali_open_dt", function (value) {
+        return /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value) || value === "";
+    });
 
     // 중복 메일 수정 체크하기
     function checkKkoAddressModify(seq) {
@@ -437,7 +516,7 @@
             return false;
         }
 
-        const res = function(response) {
+       const res = function(response) {
             if(response.status == true){
                 modifySms(seq);
             }  else {

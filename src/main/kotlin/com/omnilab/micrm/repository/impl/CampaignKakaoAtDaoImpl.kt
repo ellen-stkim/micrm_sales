@@ -283,6 +283,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             kkoMsgdto.profile_key = kakaoCont.send_to
             kkoMsgdto.template_code = kakaoCont.key_id
             kkoMsgdto.ad_flag = "N"
+            kkoMsgdto.type = kakaoCont.kko_msg_tp
 
 
             if(kakaoCont.kko_btn_obj != null){
@@ -302,12 +303,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                     kkoMsgdto.item = gson.toJson(objMap["item"])
                 }
             }
-            kkoMsgdto.type = "AT"
-            /*if(kakaoCont.kko_img_cd != null){
-                kkoMsgdto.type = "AI"
-            }else{
-                kkoMsgdto.type = "AT"
-            }*/
+
             if(kakaoCont.kko_price != null){
                 kkoMsgdto.price = kakaoCont.kko_price.toString()
             }

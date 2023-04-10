@@ -578,71 +578,31 @@ class SysSettingServiceImpl : SysSettingService {
     }
 
 
-    override fun insertKkoSenderKey(lstDto: Tblmi_set_lstDto, token: String, cateCd: String): Map<String, Any> {
-        val map = mutableMapOf<String, Any>()
-        map["token"] = token
-        map["cateCd"] = cateCd
-        map["yellowId"] = lstDto.list_nm!!
-        map["phoneNumber"] = lstDto.list_val!!
-        var result: MutableMap<String, Any>
+    override fun insertKkoSenderKey(param: HashMap<String, String>): Map<String, Any> {
+        var result: MutableMap<String, Any> = createSenderKey(param)
 
-        result = kkoRestApiService.createSendProfile(map)   // 발신프로필 키 등록 후 등록된 프로필 데이터 반환
-        try {
+        if (result["status"] == 200) {
+
+            val data : MutableMap<String,Any> = result["data"] as MutableMap<String, Any>
+            result = createClient(param, data["sendProfileKey"] as String)// 고객사 등록
+            
+            // 데이터 저장
             if (result["status"] == 200) {
-
-                val tempData = result["data"] as MutableMap<String, Any>
-                val data = tempData["data"] as MutableMap<String, Any>
-
                 val userInfo = UsefulUtils.sessionUser()
-
-                lstDto.list_tp_id = "CH02"
-                lstDto.list_dt_id = "DMTP03"
-                lstDto.usr_grp_cd = userInfo.usr_grp_cd
+                val lstDto = Tblmi_set_lstDto("CH02","DMTP03","N",userInfo.usr_grp_cd)
                 lstDto.reg_id = userInfo.usr_id
-                lstDto.list_val = data["sendProfileKey"]?.toString()
+                lstDto.list_nm = param["yellowId"]!!
+                lstDto.list_val =  data["sendProfileKey"] as String
 
                 sysSettingDao.insertSetLst(lstDto)
             }
-        } catch (e: Exception) {
-
-            // 발신 프로필 등록 후 데이터 등록 에러 발생시 프로필 리스트 조회 후 데이터 등록
-            result = mutableMapOf()
-            val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
-            if(getTodaySendProfileResult["status"] == 200){
-                val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
-
-                var sendKey:String =""
-                for(sendProfile in todaySendProfileList){
-                    if(sendProfile["channelId"] == lstDto.list_nm!!) {
-                        sendKey = sendProfile["sendProfileKey"].toString()
-                    }
-                }
-                if(!CommonUtils.isEmptyObject(sendKey)){
-                    val userInfo = UsefulUtils.sessionUser()
-
-                    lstDto.list_tp_id = "CH02"
-                    lstDto.list_dt_id = "DMTP03"
-                    lstDto.usr_grp_cd = userInfo.usr_grp_cd
-                    lstDto.reg_id = userInfo.usr_id
-                    lstDto.list_val = sendKey
-
-                    sysSettingDao.insertSetLst(lstDto)
-
-                    result = getTodaySendProfileResult
-                }else{
-                    logger.error("", e)
-                    result["status"] = 302
-                    result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
-                }
-            }else{
-                logger.error("", getTodaySendProfileResult)
-                result["status"] = 302
-                result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
-            }
+        } else {
+            result["status"] = 302
+            result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
         }
-
         return result
     }
+
 
     override fun isExistKkoAddress(lstDto: Tblmi_set_lstDto): Map<String, Any> {
         val statusMap: MutableMap<String, Any> = HashMap();
@@ -769,6 +729,67 @@ class SysSettingServiceImpl : SysSettingService {
                             dto.list_dt_id = "TEAM01"
                             sysSettingDao.updateSetLst(dto)
         }
+    }
+
+    private fun createSenderKey(param: HashMap<String, String>): MutableMap<String, Any> {
+        var result: MutableMap<String, Any>
+
+        val chanId= param["yellowId"]!!
+        val map = mutableMapOf<String, Any>(
+            "token" to param["token"]!!
+            ,"cateCd" to param["cateCd"]!!
+            ,"yellowId" to chanId
+            ,"phoneNumber" to param["phoneNumber"]!!
+        )
+
+        // 발신 프로필 키 등록
+        try {
+            result = kkoRestApiService.createSendProfile(map)   // 발신프로필 키 등록 후 등록된 프로필 데이터 반환
+
+            val tempData = result["data"] as MutableMap<String, Any>
+            result["data"] = tempData["data"] as MutableMap<String, Any>
+
+        } catch (e: Exception) {
+
+            // 발신 프로필 등록 후 데이터 등록 에러 발생시 프로필 리스트 조회 후 데이터 등록
+            result = mutableMapOf()
+            val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
+            if(getTodaySendProfileResult["status"] == 200){
+                val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
+
+                var sendKey = ""
+                for(sendProfile in todaySendProfileList){
+                    if(sendProfile["channelId"] == chanId) {
+                        sendKey = sendProfile["sendProfileKey"].toString()
+                    }
+                }
+                if(!CommonUtils.isEmptyObject(sendKey)){
+                    result["status"] = 200
+                    result["data"] = mutableMapOf("sendProfileKey" to sendKey)
+                }
+                return result
+            }else{
+                logger.error("", getTodaySendProfileResult)
+                result["status"] = 302
+                result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
+                return result
+            }
+        }
+        return result
+    }
+
+    private fun createClient(param: HashMap<String, String>, sendProfileKey: String): MutableMap<String, Any> {
+        val cliMap = mutableMapOf<String, Any>(
+            "channelId" to param["yellowId"]!!
+            ,"bizNo" to param["bizNo"]!!
+            ,"bizName" to param["bizName"]!!
+            ,"managerName" to param["managerName"]!!
+            ,"managerPhoneNo" to param["phoneNumber"]!!
+            ,"openDate" to param["openDate"]!!
+            ,"sendProfileKey" to sendProfileKey
+        )
+
+        return kkoRestApiService.createClient(cliMap)
     }
 
 }
