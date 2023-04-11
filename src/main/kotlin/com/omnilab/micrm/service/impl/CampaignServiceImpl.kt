@@ -358,10 +358,11 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     }
 
     override fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any> {
-        val re_map = HashMap<String, Any>()
+        val reMap = HashMap<String, Any>()
         val labelList = mutableListOf<String>();
         labelList.add("캠페인명")
         labelList.add("발송상세")
+        labelList.add("회원번호")
         labelList.add("이메일/모바일")
         labelList.add("원인")
         labelList.add("발송시간")
@@ -373,14 +374,14 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         val proDto = Tblmicp_programDto(pro_id)
         proDto.usr_grp_cd = usr_grp_cd
         val pro = campaignDao.sel_tblmicp_programOne(proDto)
-        re_map["name"] = "${pro.pro_nm}"
-        re_map["book"] = book
+        reMap["name"] = "${pro.pro_nm}"
+        reMap["book"] = book
 
         val lstDto = SendResult_lstDto(pro_id, usr_grp_cd)
         lstDto.send_rst = type
 
         campaignDao.sel_send_program_rstLstExcel(book, lstDto)
-        return re_map
+        return reMap
     }
 
 }

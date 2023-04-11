@@ -57,7 +57,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .csrf().ignoringAntMatchers("/rest/**", "/api/**", "/sf/**")
             .and()
                 .authorizeRequests()
-                    .antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error"
+                    .antMatchers("/", "/index.mi", "/login.service", "/logout.service", "/error", "error/error.mi"
                         ,"/mcr/check/id.ajax" ,"/mcr/find/pw.ajax", "/mcr/send/password.service", "/check.mi", "/error.mi"
                         , "/sf/*/config.json", "/sf/*/index.mi", "/sf/*/getUser.ajax", "/sf/*/save.service", "/sf/*/publish.service", "/sf/*/validate.service", "/sf/*/stop.service", "/sf/*/unpublish.service", "/sf/*/TestSave.service", "/sf/*/execute.service", "/sf/*/getDataExtension.ajax").permitAll()
                     .antMatchers("/sf/**").access("hasAnyRole('WEB', 'SALES')")
