@@ -531,21 +531,22 @@
 
 	<select id="sel_send_program_rstLst" parameterType="Tblmicp_send_hstDto" resultType="SendResult_lstDto">
 		SELECT b.camp_nm
-		, a.send_to
-		, a.send_nm
-		, a.send_rep_time
-		, a.send_log_time
-		, case
-		WHEN a.send_rst IS NULL THEN if(b.START_DT > NOW(), '발송대기', '결과대기')
-		when a.send_rst = '0' then '발송성공'
-		ELSE '발송실패'
-		END AS send_rst
-		, a.send_rst_det
-		, c.cd_desc
-		, a.send_mdm
+			, a.send_to
+			, a.send_nm
+			, a.send_rep_time
+			, a.send_log_time
+			, case
+				WHEN a.send_rst IS NULL THEN if(b.START_DT > NOW(), '발송대기', '결과대기')
+				WHEN a.send_rst = '0' then '발송성공'
+				ELSE '발송실패'
+			END AS send_rst
+			, a.send_rst_det
+			, c.cd_desc
+			, a.send_mdm
+			, a.usr_key
 		FROM tblmicp_send_hst AS a
-		INNER JOIN tblmicp_campaign AS b ON a.camp_id = b.seq
-		LEFT JOIN tblmi_comm_cd AS c ON c.grp_id = 'SENDRESULT' AND a.send_rst_det = c.CD_ID and a.M_SERVER = c.cd_nm AND a.send_rst_tp = c.par_id
+			INNER JOIN tblmicp_campaign AS b ON a.camp_id = b.seq
+			LEFT JOIN tblmi_comm_cd AS c ON c.grp_id = 'SENDRESULT' AND a.send_rst_det = c.CD_ID and a.M_SERVER = c.cd_nm AND a.send_rst_tp = c.par_id
 		<where>
 			a.pro_id = #{pro_id}
 			and a.usr_grp_cd = #{usr_grp_cd}

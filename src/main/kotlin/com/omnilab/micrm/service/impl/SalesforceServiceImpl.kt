@@ -2444,7 +2444,7 @@ class SalesforceServiceImpl : SalesforceService {
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
         val inArguments = mutableMapOf<String,Any>()
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
-        _inArguments.forEach{tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
+        _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
         val avo_id = map["activityId"].toString()
         val inten_id = map["journeyId"].toString()
