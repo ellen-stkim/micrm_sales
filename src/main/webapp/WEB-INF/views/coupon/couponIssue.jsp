@@ -206,7 +206,7 @@
         data.append("file", $(file)[0].files[0]);
 
         const res = function (response) {
-            if (response["status"] != null) {
+            if (response["status"] != null && response["status"] == "400") {
                 popup.popAlert(response["message"]);
                 return;
             }
@@ -246,6 +246,11 @@
         console.log(data);
 
         const res = function (response) {
+            if (response["status"] != null && response["status"] == "400") {
+                popup.popAlert(response["message"]);
+                return;
+            }
+
             popup.popAlertCallback(response["message"], "location.href = '/coupon/couponIssuedHistory.mi';");
         };
 
