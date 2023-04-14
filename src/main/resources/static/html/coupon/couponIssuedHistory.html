@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="../../css/font.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/Chart.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <title>쿠폰 발급내역</title>
+</head>
+<body>
+<div class="wrap mcdonald">
+  <h3 class="page_title">COUPON</h3>
+  <form action="">
+    <article class="area option bdr_bottom">
+      <section class="breadcrumb">
+        <ul>
+          <li>
+            <a href="javascript:void(0)">홈</a>
+          </li>
+          <li>
+            <span>쿠폰 발급내역</span>
+          </li>
+        </ul>
+      </section>
+      <section class="select-box">
+        <select name="" id="">
+          <option value="">카테고리 전체</option>
+          <option value="">맥도날드 앱</option>
+          <option value="">플러스 앱</option>
+          <option value="">기타</option>
+        </select>
+      </section>
+      <div class="period_wrap">
+        <section class="period">
+          <input type="text" name="" placeholder="발송 일자" class="datepicker" />
+          <button type="button" class="btn calendar"></button>
+        </section>
+        <span>-</span>
+        <section class="period">
+          <input type="text" name="" placeholder="발송 일자" class="datepicker" />
+          <button type="button" class="btn calendar"></button>
+        </section>
+      </div>
+      <section class="select-box">
+        <select name="" id="">
+          <option value="">발송상태</option>
+          <option value="">전체</option>
+          <option value="">발송대기</option>
+          <option value="">결과수신대기</option>
+          <option value="">성공</option>
+          <option value="">실패</option>
+        </select>
+      </section>
+      <section class="select-box">
+        <select name="" id="">
+          <option value="">사용 여부</option>
+          <option value="">전체</option>
+          <option value="">사용</option>
+          <option value="">미사용</option>
+        </select>
+      </section>
+      <section class="srh-box">
+        <input type="text" name="" placeholder="쿠폰명 입력" />
+        <button type="button" class="btn srh"></button>
+      </section>
+    </article>
+    <article class="area option bdr_bottom bdr_right">
+      <button type="button" class="btn del">
+        <span class="ico"></span>
+        <span class="text">삭제</span>
+      </button>
+    </article>
+  </form>
+  <article class="tbl_wrap list history">
+    <h5 class="title">쿠폰 발급내역</h5>
+    <!-- 발급 내역이 있을 경우 -->
+    <div class="tbl_inner">
+      <table class="tbl">
+        <colgroup>
+          <col width="36" />
+          <col width="206" />
+          <col width="*" />
+          <col width="208" />
+          <col width="224" />
+          <col width="243" />
+          <col width="243" />
+        </colgroup>
+        <thead>
+        <tr>
+          <th>
+            <label class="chk label">
+              <input type="checkbox" name="" id="" />
+              <span class="chk-box"></span>
+            </label>
+          </th>
+          <th>수신자 번호</th>
+          <th>쿠폰명</th>
+          <th>발송 일자</th>
+          <th>발송 상태</th>
+          <th>사용 여부</th>
+          <th>비고</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            <label class="chk label">
+              <input type="checkbox" name="" id="" />
+              <span class="chk-box"></span>
+            </label>
+          </td>
+          <td>010-1234-5678</td>
+          <td>
+            맥크리스피 LE 캠페인 - 아메리카노(M) 할인 쿠폰 (HOT/Iced) (1000원)
+            <article class="coupon_detail">
+              <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
+              <section class="modal coupon">
+                <div class="coupon_image">
+                  <img src="../../image/mcdonalds/coupon_image.png" alt="쿠폰" />
+                </div>
+              </section>
+            </article>
+          </td>
+          <td>2023.03.17</td>
+          <td>성공</td>
+          <td>사용</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <label class="chk label">
+              <input type="checkbox" name="" id="" />
+              <span class="chk-box"></span>
+            </label>
+          </td>
+          <td>010-1234-5678</td>
+          <td>
+            맥크리스피 LE 캠페인 - 아메리카노(M) 할인 쿠폰 (HOT/Iced) (1000원)
+            <article class="coupon_detail">
+              <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
+              <section class="modal coupon">
+                <div class="coupon_image">
+                  <img src="../../image/mcdonalds/coupon_image.png" alt="쿠폰" />
+                </div>
+              </section>
+            </article>
+          </td>
+          <td>2023.03.20</td>
+          <td>발송대기</td>
+          <td>미사용</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <label class="chk label">
+              <input type="checkbox" name="" id="" />
+              <span class="chk-box"></span>
+            </label>
+          </td>
+          <td>010-1234-5678</td>
+          <td>
+            맥크리스피 LE 캠페인 - 아메리카노(M) 할인 쿠폰 (HOT/Iced) (1000원)
+            <article class="coupon_detail">
+              <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
+              <section class="modal coupon">
+                <div class="coupon_image">
+                  <img src="../../image/mcdonalds/coupon_image.png" alt="쿠폰" />
+                </div>
+              </section>
+            </article>
+          </td>
+          <td>2023.03.20</td>
+          <td>실패</td>
+          <td>미사용</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <label class="chk label">
+              <input type="checkbox" name="" id="" />
+              <span class="chk-box"></span>
+            </label>
+          </td>
+          <td>010-1234-5678</td>
+          <td>
+            맥크리스피 LE 캠페인 - 아메리카노(M) 할인 쿠폰 (HOT/Iced) (1000원)
+            <article class="coupon_detail">
+              <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
+              <section class="modal coupon">
+                <div class="coupon_image">
+                  <img src="../../image/mcdonalds/coupon_image.png" alt="쿠폰" />
+                </div>
+              </section>
+            </article>
+          </td>
+          <td>2023.03.20</td>
+          <td>결과수신대기</td>
+          <td>미사용</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <label class="chk label">
+              <input type="checkbox" name="" id="" />
+              <span class="chk-box"></span>
+            </label>
+          </td>
+          <td>010-1234-5678</td>
+          <td>
+            맥크리스피 LE 캠페인 - 아메리카노(M) 할인 쿠폰 (HOT/Iced) (1000원)
+            <article class="coupon_detail">
+              <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
+              <section class="modal coupon">
+                <div class="coupon_image">
+                  <img src="../../image/mcdonalds/coupon_image.png" alt="쿠폰" />
+                </div>
+              </section>
+            </article>
+          </td>
+          <td>2023.03.17</td>
+          <td>성공</td>
+          <td>사용</td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="paging_wrap">
+      <button type="button" class="btn prev disable"></button>
+      <ul class="paging">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+      </ul>
+      <button type="button" class="btn next"></button>
+    </section>
+
+    <!-- 발급 내역이 없을 경우 -->
+    <!--
+   empty 클래스 추가
+   <div class="tbl_inner empty">
+       <table class="tbl">
+           <colgroup>
+               <col width="36" />
+               <col width="206" />
+               <col width="*" />
+               <col width="196" />
+               <col width="194" />
+               <col width="196" />
+               <col width="242" />
+           </colgroup>
+           <thead>
+               <tr>
+                   <th>
+                       <label class="chk label">
+                           <input type="checkbox" name="" id="" />
+                           <span class="chk-box"></span>
+                       </label>
+                   </th>
+                   <th>수신자 번호</th>
+                   <th>쿠폰명</th>
+                   <th>발송 일자</th>
+                   <th>발송 상태</th>
+                   <th>사용 여부</th>
+                   <th>비고</th>
+               </tr>
+           </thead>
+           <tbody>
+               <tr>
+                   <td colspan="7">조회된 결과가 없습니다.</td>
+               </tr>
+           </tbody>
+       </table>
+   </div>
+   <section class="paging_wrap">
+       <button type="button" class="btn prev disable"></button>
+       <ul class="paging">
+           <li class="active">1</li>
+       </ul>
+       <button type="button" class="btn next disable"></button>
+   </section>
+
+    -->
+  </article>
+  <footer class="footer">
+    <p class="copyright">ⓒ Milvus Corp.</p>
+  </footer>
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery-ui.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../../js/mcdonalds_coupon.js"></script>
+</div>
+</body>
+</html>
