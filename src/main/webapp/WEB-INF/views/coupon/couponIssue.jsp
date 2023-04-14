@@ -204,7 +204,7 @@
 
         var data = new FormData();
         data.append("file", $(file)[0].files[0]);
-
+        console.log("addExcelPhoneNumber=" + $(file)[0].files[0]);
         const res = function (response) {
             if (response["status"] != null && response["status"] == "400") {
                 popup.popAlert(response["message"]);
