@@ -1,0 +1,161 @@
+package com.omnilab.micrm.service.impl
+
+import com.omnilab.micrm.common.*
+import com.omnilab.micrm.config.error.CouponException
+import com.omnilab.micrm.model.coupon.CouponRegisterDto
+import com.omnilab.micrm.model.table.Tblmi_usrDto
+import com.omnilab.micrm.model.table.Tblmicou_categoryDto
+import com.omnilab.micrm.model.table.Tblmicou_img_fileDto
+import com.omnilab.micrm.repository.CouponDao
+import com.omnilab.micrm.service.CouponRegisterService
+import org.apache.commons.io.FilenameUtils
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
+import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import java.awt.Image
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
+import javax.servlet.http.HttpServletRequest
+
+@Service
+class CouponRegisterServiceImpl: CouponRegisterService {
+
+    val logger = LoggerFactory.getLogger(this::class.java)
+
+    @Value("\${upload.content}")
+    private val filePath: String? = null
+
+    @Autowired
+    private lateinit var couponDao: CouponDao
+
+    override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
+        return couponDao.selectCategory(grp_cd)
+    }
+
+
+    override fun registerCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
+
+        // 유효성
+        validationCouponDto(dto, "register")
+
+        val user = UsefulUtils.sessionUser()
+        uploadAndSaveCouponImage(dto, request, user)
+
+        // 쿠폰 정보 입력
+        dto.reg_id = user.usr_id.toString()
+        couponDao.insertCoupon(dto)
+    }
+
+
+
+    override fun deleteCoupon(deleteCouponSeq: List<String>) {
+
+        // 복호화
+        val decodedCouponSeq: MutableList<Int> = ArrayList()
+
+        deleteCouponSeq.forEach {
+            decodedCouponSeq.add(decodingSeq(it))
+        }
+
+        couponDao.deleteCoupon(decodedCouponSeq, UsefulUtils.sessionUser().usr_id!!)
+    }
+
+    override fun updateCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
+
+        validationCouponDto(dto, "update") // 이미지파일 유효성은 여기서 제외되어야 함.
+
+        val user = UsefulUtils.sessionUser()
+        dto.seq = decodingSeq(dto.encodedSeq!!)
+
+        if (!CommonUtils.isEmptyObject(dto.imgFile)) {
+            couponDao.deleteImageFile(dto.img_file_seq!!)
+
+            uploadAndSaveCouponImage(dto, request, user)
+        }
+
+        dto.upd_id = user.usr_id.toString()
+        couponDao.updateCoupon(dto)
+    }
+
+    private fun decodingSeq(encodedSeq: String) = AES256.AES_Decode(encodedSeq, GlobalValues.encKey).toInt()
+
+    private fun uploadAndSaveCouponImage(dto: CouponRegisterDto, request: HttpServletRequest, user: Tblmi_usrDto) {
+        // 이미지 로컬 저장
+        val map = FileUploadUtils().upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
+
+        // 이미지 resize
+        imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)
+
+        // 이미지 정보 DB 수정
+        val imgDto = Tblmicou_img_fileDto(
+            user.usr_id.toString(),
+            map["fileName"].toString(),
+            map["file_nm"].toString(),
+            map["url"].toString()
+        )
+        couponDao.insertCouponImage(imgDto)
+        dto.img_file_seq = imgDto.seq
+    }
+
+    private fun imageResize(file: MultipartFile, usr_grp_cd: String, map: MutableMap<String, Any>) {
+        val contentFilePath = "$filePath/$usr_grp_cd"
+        val fileName = map["file_nm"]
+        val image : BufferedImage = ImageIO.read(file.inputStream)
+        val imageWidth: Int = image.width
+        val imageHeight: Int = image.height
+
+        val newWidth = 500
+        val newHeight = 500
+        val ratio: Double
+        val w: Int
+        var h: Int
+
+        if (imageWidth > imageHeight) {
+            ratio = newWidth.toDouble() / imageWidth.toDouble()
+            w = (imageWidth * ratio).toInt()
+            h = (imageHeight * ratio).toInt()
+
+        } else if (imageHeight > imageWidth) {
+            ratio = newHeight.toDouble() / imageHeight.toDouble()
+            w = (imageWidth * ratio).toInt()
+            h = (imageHeight * ratio).toInt()
+        } else {
+            w = newWidth
+            h = newHeight
+        }
+//            if (h < 250) {
+//                h = 250
+//            }
+        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
+        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+        val g = newImage.graphics
+        g.drawImage(resizeImage, 0, 0, null)
+        g.dispose()
+
+        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
+        resizeImage.flush()
+        image.flush()
+    }
+
+    private fun validationCouponDto(dto: CouponRegisterDto, type: String) {
+        if (CommonUtils.isEmptyObject(dto.nm)) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰명을 입력해주세요")
+        if (CommonUtils.isEmptyObject(dto.category_seq)) throw CouponException(HttpStatus.BAD_REQUEST, "카테고리를 선택해주세요")
+        if (type != "update") {
+            if (CommonUtils.isEmptyObject(dto.imgFile)) throw CouponException(HttpStatus.BAD_REQUEST, "이미지를 등록해주세요")
+        }
+        if (CommonUtils.isEmptyObject(dto.title)) throw CouponException(HttpStatus.BAD_REQUEST, "Title을 입력해주세요")
+        if (CommonUtils.isEmptyObject(dto.descr)) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요")
+        if (CommonUtils.isEmptyObject(dto.notice)) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요")
+        if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST,"Expiry Date를 선택해주세요")
+        if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Time을 선택해주세요")
+        if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Start Time을 선택해주세요")
+        if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily End Time을 선택해주세요")
+        if (CommonUtils.isEmptyObject(dto.available_day)) throw CouponException(HttpStatus.BAD_REQUEST, "Available Day를 선택해주세요")
+        if (CommonUtils.isEmptyObject(dto.content)) throw CouponException(HttpStatus.BAD_REQUEST, "문자 메시지 내용을 입력해주세요")
+        if (!(dto.content ?: "").contains("{쿠폰링크}")) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰링크를 삽입해주세요")
+    }
+}
