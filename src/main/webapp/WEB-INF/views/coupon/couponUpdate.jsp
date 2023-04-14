@@ -8,6 +8,8 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
+<script src="/js/jquery-ui-timepicker.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js"></script>
 <div class="wrap mcdonald">
     <h3 class="page_title">COUPON</h3>
         <article class="area option bdr_bottom">
@@ -154,8 +156,6 @@
         <p class="copyright">ⓒ Milvus Corp.</p>
     </footer>
 </div>
-<script src="/js/jquery-ui-timepicker.js"></script>
-<script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {

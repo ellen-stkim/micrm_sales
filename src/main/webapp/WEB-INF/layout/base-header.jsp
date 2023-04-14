@@ -18,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href='/css/Chart.min.css?v=0.12' /><!-- chart css -->
 <link rel="stylesheet" type="text/css" href='/css/swiper.min.css?v=0.12' />
 <link rel="stylesheet" type="text/css" href='/css/timepicki.css?v=0.12' />
+<link rel="stylesheet" type="text/css" href='/css/jquery-ui-timepicker.css?v=0.12' />
 <script src="/js/jquery-3.6.0.min.js?v=0.12"></script>
 <script src="/js/jquery.validate.min.js?v=0.12"></script>
 <script src="/js/jquery-ui.min.js?v=0.12"></script>
@@ -31,3 +32,4 @@
 <script src="/js/swiper.min.js?v=0.12"></script>
 <script src="/js/timepicki.js?v=0.12"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+

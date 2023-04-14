@@ -8,6 +8,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
+<script src="/js/jquery-ui-timepicker.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/jquery-ui.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js"></script>
