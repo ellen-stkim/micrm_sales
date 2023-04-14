@@ -32,6 +32,9 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     @Autowired
     private lateinit var couponDao: CouponDao
 
+    @Autowired
+    private lateinit var fileUploadUtils: FileUploadUtils
+
     override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
         return couponDao.selectCategory(grp_cd)
     }
@@ -85,7 +88,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
     private fun uploadAndSaveCouponImage(dto: CouponRegisterDto, request: HttpServletRequest, user: Tblmi_usrDto) {
         // 이미지 로컬 저장
-        val map = FileUploadUtils().upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
+        val map = fileUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
 
         // 이미지 resize
         imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)
