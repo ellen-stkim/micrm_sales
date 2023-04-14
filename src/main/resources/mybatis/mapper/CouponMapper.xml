@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.CouponMapper" >
+	<cache />
+
+	<select id="select_tblmicou_category" parameterType="String" resultType="Tblmicou_categoryDto">
+		SELECT *
+		FROM tblmicou_category
+		WHERE company_grp_cd = #{grp_cd}
+	</select>
+
+	<select id="select_coupon" parameterType="Int" resultType="CouponListDto">
+		SELECT
+			A.*,
+			B.img_url
+		FROM tblmicou_coupon as A
+	 	LEFT JOIN tblmicou_img_file as B
+			ON A.img_file_seq = B.seq
+		WHERE A.seq = #{seq}
+	</select>
+
+	<select id="select_coupon_list" parameterType="SearchCouponDto" resultType="CouponListDto">
+		SELECT
+			A.seq,
+			A.nm,
+			A.expire_dt,
+			B.img_url,
+			C.nm as category_nm
+		FROM tblmicou_coupon as A
+		LEFT JOIN tblmicou_img_file as B
+			ON A.img_file_seq = B.seq
+		LEFT JOIN tblmicou_category as C
+			ON A.category_seq = C.seq
+		<where>
+			A.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
+				AND A.category_seq = #{category_seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(nm)">
+				AND A.nm LIKE CONCAT('%',#{nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(expire_dt)">
+				AND A.expire_dt >= #{expire_dt}
+			</if>
+		</where>
+		ORDER BY A.reg_dt DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="select_coupon_list_count" parameterType="SearchCouponDto" resultType="int">
+		SELECT
+			count(*)
+		FROM tblmicou_coupon as A
+		LEFT JOIN tblmicou_img_file as B
+		ON A.img_file_seq = B.seq
+		LEFT JOIN tblmicou_category as C
+		ON A.category_seq = C.seq
+		<where>
+			A.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
+				AND A.category_seq = #{category_seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(nm)">
+				AND A.nm LIKE CONCAT('%',#{nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(expire_dt)">
+				AND A.expire_dt >= #{expire_dt}
+			</if>
+		</where>
+	</select>
+
+	<select id="select_coupon_issued_log_list" parameterType="SearchCouponIssuedLogDto" resultType="CouponIssueListDto">
+		SELECT
+			A.seq,
+			A.phone,
+			C.nm as coupon_nm,
+			A.send_dt,
+			A.send_status,
+			A.use_yn,
+			D.img_url
+		FROM tblmicou_coupon_issued_log as A
+		LEFT JOIN tblmicou_coupon_issue as B
+			ON A.coupon_issue_seq = B.seq
+		LEFT JOIN tblmicou_coupon as C
+			ON B.coupon_seq = C.seq
+		LEFT JOIN tblmicou_img_file as D
+			ON C.img_file_seq = D.seq
+		<where>
+			A.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
+				AND C.category_seq = #{category_seq}
+			</if>
+		    <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_start_dt)">
+				AND A.send_dt <![CDATA[ >= ]]> #{send_start_dt}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_end_dt)">
+				AND A.send_dt <![CDATA[ <= ]]> #{send_end_dt}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
+				AND A.send_status = #{send_status}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				AND A.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(coupon_nm)">
+				AND C.nm LIKE CONCAT('%',#{coupon_nm},'%')
+			</if>
+		</where>
+		ORDER BY A.reg_dt DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="select_coupon_issued_log_list_count" parameterType="SearchCouponIssuedLogDto" resultType="int">
+		SELECT
+			count(*)
+		FROM tblmicou_coupon_issued_log as A
+		LEFT JOIN tblmicou_coupon_issue as B
+			ON A.coupon_issue_seq = B.seq
+		LEFT JOIN tblmicou_coupon as C
+			ON B.coupon_seq = C.seq
+		LEFT JOIN tblmicou_img_file as D
+			ON C.img_file_seq = D.seq
+		<where>
+		   	A.del_yn = 'N'
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
+				AND C.category_seq = #{category_seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_start_dt)">
+				AND A.send_dt <![CDATA[ >= ]]> #{send_start_dt}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_end_dt)">
+				AND A.send_dt <![CDATA[ <= ]]> #{send_end_dt}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
+				AND A.send_status = #{send_status}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+				AND A.use_yn = #{use_yn}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(coupon_nm)">
+				AND C.nm LIKE CONCAT('%',#{coupon_nm},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="select_default_send_number" parameterType="Tblmi_set_lst" resultType="String">
+		SELECT list_val
+		FROM tblmi_set_lst
+		WHERE del_dt = 'N'
+		  	and def_yn = 'Y'
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
+			and list_tp_id = #{list_tp_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
+			and list_dt_id = #{list_dt_id}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
+			and usr_grp_cd = #{usr_grp_cd}
+		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+			and use_yn = #{use_yn}
+		</if>
+	</select>
+
+	<select id="select_coupon_domain" parameterType="Tblmi_comm_cdDto" resultType="String">
+		SELECT cd_val
+		FROM tblmi_comm_cd
+		WHERE
+		    grp_id = #{grp_id}
+		AND cd_id = #{cd_id}
+	</select>
+
+	<insert id="insert_coupon_img" parameterType="Tblmicou_img_fileDto" useGeneratedKeys="true" keyProperty="seq" >
+		INSERT INTO tblmicou_img_file (
+		    img_url,
+		    img_org_name,
+		    img_file_name,
+		    del_yn,
+		    reg_id
+		)
+		value (
+		    #{img_url},
+		    #{img_org_name},
+		    #{img_file_name},
+		    'N',
+		    #{reg_id}
+		)
+	</insert>
+
+
+	<insert id="insert_coupon" parameterType="CouponRegisterDto" >
+		INSERT INTO tblmicou_coupon (
+			category_seq,
+			nm,
+			title, 
+			descr, 
+			notice,
+			expire_dt,
+			daily_start_time,
+			daily_end_time,
+			available_day,
+			img_file_seq,
+			content,
+			reg_id
+		) VALUES (
+			#{category_seq},
+			#{nm},
+			#{title},
+			#{descr},
+			#{notice},
+			#{expire_dt},
+			#{daily_start_time},
+			#{daily_end_time},
+			#{available_day},
+			#{img_file_seq},
+			#{content},
+			#{reg_id}
+	  	);
+	</insert>
+
+	<insert id="insert_coupon_issue" parameterType="Tblmicou_coupon_issueDto" useGeneratedKeys="true" keyProperty="seq" >
+		INSERT INTO tblmicou_coupon_issue (
+			coupon_seq,
+		    send_phone,
+		    nm,
+		    img_url,
+		    descr,
+		    notice,
+		    expire_dt,
+		    daily_start_time,
+		    daily_end_time,
+		    available_day,
+		    msg_title,
+		    msg_content,
+		    time_cnt,
+		    target_cnt,
+		    reg_id
+	    ) SELECT
+			#{coupon_seq},
+			#{send_phone},
+			A.nm,
+			B.img_url,
+			A.descr,
+			A.notice,
+			A.expire_dt,
+			A.daily_start_time,
+			A.daily_end_time,
+			A.available_day,
+			#{msg_title},
+			A.content,
+			'15',
+			'0',
+			#{reg_id}
+		FROM tblmicou_coupon as A
+		LEFT JOIN tblmicou_img_file as B
+			ON A.img_file_seq = B.seq
+		WHERE A.seq = #{coupon_seq}
+	</insert>
+
+	<insert id="insert_coupon_issued_log" parameterType="Tblmicou_coupon_issued_logDto">
+		INSERT INTO tblmicou_coupon_issued_log (
+			msgkey,
+			coupon_issue_seq,
+			coupon_url,
+			short_url,
+			phone,
+			reg_id
+		) VALUES (
+			#{msgkey},
+			#{coupon_issue_seq},
+			#{coupon_url},
+			#{short_url},
+			#{phone},
+			#{reg_id}
+		)
+	</insert>
+
+	<update id="delete_img_file" parameterType="Int">
+		UPDATE tblmicou_img_file
+		SET del_yn = 'Y'
+		WHERE seq = #{imageSeq}
+	</update>
+
+	<update id="update_coupon" parameterType="CouponRegisterDto">
+		UPDATE  tblmicou_coupon as A
+		SET
+		    A.category_seq = #{category_seq},
+			A.nm = #{nm},
+			A.title = #{title},
+			A.descr = #{descr},
+			A.notice = #{notice},
+			A.expire_dt = #{expire_dt},
+			A.daily_start_time = #{daily_start_time},
+			A.daily_end_time = #{daily_end_time},
+			A.available_day = #{available_day},
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_file_seq)">
+				A.img_file_seq = #{img_file_seq},
+			</if>
+			A.content = #{content},
+			A.upd_id = #{upd_id}
+		WHERE A.seq = #{seq}
+	</update>
+
+	<update id="update_coupon_issue_target_count" parameterType="Map">
+		UPDATE tblmicou_coupon_issue
+		SET
+			target_cnt = #{target_cnt}
+		WHERE
+		    seq = #{seq}
+	</update>
+
+	<update id="delete_coupon" parameterType="Map">
+		UPDATE tblmicou_coupon as A
+		LEFT JOIN tblmicou_img_file as B
+			ON A.img_file_seq = B.seq
+		SET
+			A.del_yn = 'Y',
+			A.upd_id = #{upd_id},
+			B.del_yn= 'Y',
+			B.upd_id = #{upd_id}
+		WHERE A.seq in
+		<foreach collection="coupon_seq" item="seq" separator="," open="(" close=")">
+			#{seq}
+		</foreach>
+	</update>
+
+	<update id="delete_coupon_issued_log" parameterType="Map">
+		UPDATE tblmicou_coupon_issued_log
+		SET
+			del_yn = 'Y',
+			upd_id = #{upd_id}
+		WHERE seq in
+		<foreach collection="coupon_issued_log_seq" item="seq" separator="," open="(" close=")">
+			#{seq}
+		</foreach>
+	</update>
+
+</mapper>
+
+
+
+
