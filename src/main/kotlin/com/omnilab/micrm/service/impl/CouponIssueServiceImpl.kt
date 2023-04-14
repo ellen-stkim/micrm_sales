@@ -102,7 +102,6 @@ class CouponIssueServiceImpl: CouponIssueService {
         if (!isExcelFile(file)) {
             throw CouponException(HttpStatus.BAD_REQUEST, "엑셀 형식이 맞지 않습니다.")
         }
-        logger.error("service.extractPhoneNumberToExcel={}", file.toString())
         return extractExcel(file)
     }
 
@@ -201,7 +200,6 @@ class CouponIssueServiceImpl: CouponIssueService {
         reMap["collectCnt"] = collectCnt
         reMap["duplicateCnt"] = duplicateCnt
         reMap["errorCnt"] = errorCnt
-        logger.error("service.extractExcel={}", reMap.toString())
 
         return reMap
     }

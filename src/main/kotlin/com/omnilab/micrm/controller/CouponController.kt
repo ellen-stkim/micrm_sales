@@ -168,7 +168,6 @@ class CouponController {
 
     @PostMapping("/extractExcel.ajax")
     fun extractExcel(file: MultipartFile): ModelAndView {
-        logger.error("Controller.extractExcel={}", file.toString())
         val view = ModelAndView("coupon/ajax/phoneNumberListAjax")
 
         val reMap = couponIssueService.extractPhoneNumberToExcel(file)

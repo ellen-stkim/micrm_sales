@@ -204,7 +204,6 @@
 
         var data = new FormData();
         data.append("file", $(file)[0].files[0]);
-        console.log("addExcelPhoneNumber=" + $(file)[0].files[0]);
         const res = function (response) {
             if (response["status"] != null && response["status"] == "400") {
                 popup.popAlert(response["message"]);
@@ -218,7 +217,7 @@
             setPhoneNumberList(phoneList);
 
             var cur = Number($("#current_add_number").text());
-            $("#current_add_number").text((cur + collectCnt));
+            $("#current_add_number").text((cur + Number(collectCnt)));
 
             popup.popAlert("등록되었습니다. 성공: "+collectCnt+", 중복: "+duplicateCnt+", 실패: "+errorCnt);
         }
@@ -227,7 +226,6 @@
 
     function setPhoneNumberList(phoneList) {
         for (var i = 0; i < phoneList.length; i++) {
-            console.log(phoneList[i]);
             if (phoneSet.has(String(phoneList[i]))) {
                 collectCnt --;
                 duplicateCnt ++;
@@ -239,10 +237,8 @@
 
     function issueCoupon() {
         let phoneNumberArr = divisionArr(Array.from(phoneSet));
-        console.log(phoneNumberArr);
         var data = $('#couponIssueForm').serializeArray();
         data.push({name: "phoneNumberList", value: phoneNumberArr});
-        console.log(data);
 
         const res = function (response) {
             if (response["status"] != null && response["status"] == "400") {
