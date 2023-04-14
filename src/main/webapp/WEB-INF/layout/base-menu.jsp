@@ -20,6 +20,16 @@
 			</ul>
 		</li>
 		<li>
+			<span>쿠폰</span>
+			<ul class="sub_menu">
+
+				<li<c:if test="${fn:contains(urlPath,'/coupon/couponList')}"> class='on'</c:if>><a href="/coupon/couponList.mi">리스트</a></li>
+				<li<c:if test="${fn:contains(urlPath,'/coupon/couponRegister')}"> class='on'</c:if>><a href="/coupon/couponRegister.mi">쿠폰등록</a></li>
+				<li<c:if test="${urlPath eq '/coupon/couponIssue.mi'}"> class='on'</c:if>><a href="/coupon/couponIssue.mi">쿠폰발급</a></li>
+				<li<c:if test="${fn:contains(urlPath,'/coupon/couponIssuedHistory')}"> class='on'</c:if>><a href="/coupon/couponIssuedHistory.mi">쿠폰발급내역</a></li>
+			</ul>
+		</li>
+		<li>
 			<span>리포트</span>
 			<ul class="sub_menu">
 				<%--<li<c:if test="${fn:contains(urlPath,'/report/main.mi')}"> class='on'</c:if>><a href="/report/main.mi">리포트</a></li>--%>
