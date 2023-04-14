@@ -102,7 +102,7 @@ class CouponController {
     @PostMapping("/registerCoupon.service")
     fun registerCoupon(registerDto: CouponRegisterDto, request: HttpServletRequest): MutableMap<String, Any> {
         couponRegisterService.registerCoupon(registerDto, request)
-
+        logger.error("registerCoupon={}", registerDto.imgFile.toString())
         val reMap = createResponseMap(HttpStatus.OK, "쿠폰 등록이 완료되었습니다.")
         return reMap
     }

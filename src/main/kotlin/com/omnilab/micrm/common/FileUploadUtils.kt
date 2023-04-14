@@ -55,8 +55,12 @@ class FileUploadUtils {
                 val fileExe = fileName?.substring(fileName.lastIndexOf(".") + 1)
                 val digits = CommonUtils.getRandString16()
                 fileName = "$digits.$fileExe"
-
+                logger.error("FileUploadUtils.upload={}", static_path + "$updFildPath/$fileName")
+                logger.error("FileUploadUtils.static_path={}", static_path)
+                logger.error("FileUploadUtils.updFildPath={}", updFildPath)
+                logger.error("FileUploadUtils.fileName={}", fileName)
                 if (fileupload(curFilePath,file, fileName)) {
+
                     val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()

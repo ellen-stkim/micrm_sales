@@ -97,6 +97,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
             map["file_nm"].toString(),
             map["url"].toString()
         )
+        logger.error("uploadAndSaveCouponImage={}", imgDto.img_org_name)
         couponDao.insertCouponImage(imgDto)
         dto.img_file_seq = imgDto.seq
     }
