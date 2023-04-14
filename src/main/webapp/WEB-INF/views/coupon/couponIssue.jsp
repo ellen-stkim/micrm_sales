@@ -222,8 +222,7 @@
 
             popup.popAlert("등록되었습니다. 성공: "+collectCnt+", 중복: "+duplicateCnt+", 실패: "+errorCnt);
         }
-
-        com_ajax.ajax_file('${baseURL}/coupon/couponIssue/extractExcel', data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax_file('${baseURL}/coupon/couponIssue/extractExcel.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     function setPhoneNumberList(phoneList) {
