@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest
 class FileUploadUtils {
     val logger = LoggerFactory.getLogger(this::class.java)
 
-
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
 
@@ -36,6 +35,7 @@ class FileUploadUtils {
 
     @Value("\${upload.upd_content}")
     private val updPath: String? = null
+
 
 
     fun upload(usrCd:String, file: MultipartFile, request: HttpServletRequest): MutableMap<String, Any> {
