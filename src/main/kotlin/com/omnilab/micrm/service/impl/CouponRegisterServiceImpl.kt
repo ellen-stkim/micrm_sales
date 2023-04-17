@@ -53,8 +53,6 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         couponDao.insertCoupon(dto)
     }
 
-
-
     override fun deleteCoupon(deleteCouponSeq: List<String>) {
 
         // 복호화
@@ -149,8 +147,10 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (CommonUtils.isEmptyObject(dto.category_seq)) throw CouponException(HttpStatus.BAD_REQUEST, "카테고리를 선택해주세요")
         if (type != "update") {
             if (CommonUtils.isEmptyObject(dto.imgFile)) throw CouponException(HttpStatus.BAD_REQUEST, "이미지를 등록해주세요")
+            else if (!isImageFile(dto.imgFile!!)) { throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요") }
+        } else if (CommonUtils.isEmptyObject(dto.imgFile) && !isImageFile(dto.imgFile!!)) {
+            throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요")
         }
-        if (CommonUtils.isEmptyObject(dto.title)) throw CouponException(HttpStatus.BAD_REQUEST, "Title을 입력해주세요")
         if (CommonUtils.isEmptyObject(dto.descr)) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요")
         if (CommonUtils.isEmptyObject(dto.notice)) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요")
         if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST,"Expiry Date를 선택해주세요")
@@ -161,4 +161,25 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (CommonUtils.isEmptyObject(dto.content)) throw CouponException(HttpStatus.BAD_REQUEST, "문자 메시지 내용을 입력해주세요")
         if (!(dto.content ?: "").contains("{쿠폰링크}")) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰링크를 삽입해주세요")
     }
+
+    private fun isImageFile(file: MultipartFile): Boolean {
+        // content-type 검사
+        val imageContentType = listOf("jpeg","jpg","png","bmp","gif")
+
+        // 확장자 검사
+        val extPos = file.originalFilename!!.lastIndexOf(".")
+        val ext = file.originalFilename!!.substring(extPos + 1).lowercase()
+
+        // 이미지 content-type 검사
+        val isImageContentType =  false
+        imageContentType.forEach {
+            if (file.contentType == "image/${it}") isImageContentType == true
+        }
+        // 파일 확장자 검사
+        val isImageExt = imageContentType.contains(ext)
+
+        return isImageContentType && isImageExt
+    }
+
+
 }
