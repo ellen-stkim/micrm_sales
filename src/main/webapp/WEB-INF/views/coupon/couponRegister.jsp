@@ -90,14 +90,14 @@
                         <article class="part">
                             <h6 class="label_name">Expiry Date</h6>
                             <section class="components">
-                                <input type="text" name="expire_date" class="datepicker" id="expireDateInput" placeholder="0000-00-00" value="" onkeyup="formatDate(this);" maxlength="10"/>
+                                <input type="text" name="expire_date" class="datepicker" id="expireDateInput" placeholder="0000-00-00" value="2024-01-01" maxlength="10"/>
                                 <button type="button" class="btn calendar"></button>
                             </section>
                         </article>
                         <article class="part">
                             <h6 class="label_name">Expiry Time</h6>
                             <section class="components">
-                                <input type="text" name="expire_time" class="timepicker" placeholder="00:00" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off" />
+                                <input type="text" name="expire_time" class="timepicker" placeholder="00:00" value="00:00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off" />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
@@ -106,14 +106,14 @@
                         <article class="part">
                             <h6 class="label_name">Daily Start Time</h6>
                             <section class="components">
-                                <input type="text" name="daily_start_time" class="timepicker" placeholder="00:00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off"  />
+                                <input type="text" name="daily_start_time" class="timepicker" placeholder="00:00" value="09:00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off"  />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
                         <article class="part">
                             <h6 class="label_name">Daily End Time</h6>
                             <section class="components">
-                                <input type="text" name="daily_end_time" class="timepicker" placeholder="00:00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off"  />
+                                <input type="text" name="daily_end_time" class="timepicker" placeholder="00:00" value="23:00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off"  />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
@@ -217,9 +217,6 @@
 
         // ajax
         com_ajax.ajax_file('${baseURL}/coupon/registerCoupon.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
-
-    function formatDate(date) {
     }
 
     function formatTime(time) {
