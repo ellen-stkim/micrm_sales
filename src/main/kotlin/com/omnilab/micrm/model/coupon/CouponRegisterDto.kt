@@ -29,7 +29,7 @@ class CouponRegisterDto : Tblmicou_couponDto() {
         }
     var expire_date: String? = ""
         set(value) {
-            if (value.isNullOrEmpty() || !value.contains(":")) {
+            if (value.isNullOrEmpty() ) {
                 field = ""
             } else if (expire_time.isNullOrEmpty()) {
                 field = value
