@@ -57,7 +57,7 @@
                     <li>
                         <h6 class="label_name">쿠폰 링크</h6>
                         <article class="components al_center">
-                            <input type="text" name="" id="" placeholder="URL" />
+                            <input type="text" name="" id="" placeholder="URL" value="{쿠폰링크}" readonly/>
                             <button type="button" class="btn insert" onclick="insertCouponLinkText()">삽입</button>
                         </article>
                     </li>
