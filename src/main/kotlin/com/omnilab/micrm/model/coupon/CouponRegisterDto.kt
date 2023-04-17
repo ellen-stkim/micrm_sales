@@ -18,34 +18,44 @@ class CouponRegisterDto : Tblmicou_couponDto() {
     var category: String? = null
     var expire_time: String? = ""
         set(value) {
-            if (value.isNullOrEmpty()) {
-                print("1")
+            if (value.isNullOrEmpty() || !value.contains(":")) {
                 field = ""
             } else if (expire_date.isNullOrEmpty()) {
-                print("2")
                 field = value
             } else {
-                print("3")
                 field = value
                 expire_dt = LocalDateTime.parse("$expire_date $value:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
             }
         }
     var expire_date: String? = ""
         set(value) {
-            if (value.isNullOrEmpty()) {
-                print("4")
+            if (value.isNullOrEmpty() || !value.contains(":")) {
                 field = ""
             } else if (expire_time.isNullOrEmpty()) {
-                print("5")
                 field = value
             } else {
-                print("6")
                 field = value
                 expire_dt = LocalDateTime.parse("$value $expire_time:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
             }
         }
 
-    override var expire_dt: String? = ""
+    override var daily_start_time: String? = ""
+        set(value) {
+            if (value.isNullOrEmpty() || !value.contains(":")) {
+                field = ""
+            } else {
+                field = value
+            }
+        }
+    override var daily_end_time: String? = ""
+        set(value) {
+            if (value.isNullOrEmpty() || !value.contains(":")) {
+                field = ""
+            } else {
+                field = value
+            }
+        }
+
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

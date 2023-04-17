@@ -93,14 +93,14 @@
                         <article class="part">
                             <h6 class="label_name">Expiry Date</h6>
                             <section class="components">
-                                <input type="text" name="expire_date" class="datepicker" placeholder="0000-00-00" value="${fn:split(coupon.expire_dt, ' ')[0]}"/>
+                                <input type="text" name="expire_date" class="datepicker" placeholder="0000-00-00" value="${fn:split(coupon.expire_dt, ' ')[0]}" autocomplete="off" />
                                 <button type="button" class="btn calendar"></button>
                             </section>
                         </article>
                         <article class="part">
                             <h6 class="label_name">Expiry Time</h6>
                             <section class="components">
-                                <input type="text" name="expire_time" class="timepicker" placeholder="00:00" value="${fn:split((fn:split(coupon.expire_dt, ' ')[1]), ':')[0]}:${fn:split((fn:split(coupon.expire_dt, ' ')[1]), ':')[1]}"/>
+                                <input type="text" name="expire_time" class="timepicker" placeholder="00:00" value="${fn:split((fn:split(coupon.expire_dt, ' ')[1]), ':')[0]}:${fn:split((fn:split(coupon.expire_dt, ' ')[1]), ':')[1]}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off" />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
@@ -109,14 +109,14 @@
                         <article class="part">
                             <h6 class="label_name">Daily Start Time</h6>
                             <section class="components">
-                                <input type="text" name="daily_start_time" class="timepicker" placeholder="00:00" value="${fn:split(coupon.daily_start_time, ':')[0]}:${fn:split(coupon.daily_start_time, ':')[1]}"/>
+                                <input type="text" name="daily_start_time" class="timepicker" placeholder="00:00" value="${fn:split(coupon.daily_start_time, ':')[0]}:${fn:split(coupon.daily_start_time, ':')[1]}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off" />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
                         <article class="part">
                             <h6 class="label_name">Daily End Time</h6>
                             <section class="components">
-                                <input type="text" name="daily_end_time" class="timepicker" placeholder="00:00" value="${fn:split(coupon.daily_end_time, ':')[0]}:${fn:split(coupon.daily_end_time, ':')[1]}" />
+                                <input type="text" name="daily_end_time" class="timepicker" placeholder="00:00" value="${fn:split(coupon.daily_end_time, ':')[0]}:${fn:split(coupon.daily_end_time, ':')[1]}"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off" />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
@@ -223,5 +223,34 @@
 
         // ajax
         com_ajax.ajax_file('${baseURL}/coupon/updateCoupon.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    function formatTime(time) {
+        var replaceTime = time.value.replace(/\:/g, "");
+
+        if (replaceTime.length >= 4 && replaceTime.length < 5) {
+
+            var hours = replaceTime.substring(0, 2);
+            var minute = replaceTime.substring(2, 4);
+
+            if (isFinite(hours + minute) == false) {
+                popup.popAlert("문자는 입력하실 수 없습니다.");
+                time.value = "00:00";
+                return false;
+            }
+
+            if (hours + minute > 2359) {
+                popup.popAlert("시간은 24시를 넘길 수 없습니다.");
+                time.value = "23:00";
+                return false;
+            }
+
+            if (minute > 60) {
+                popup.popAlert("분은 60분을 넘길 수 없습니다.");
+                time.value = hours + ":00";
+                return false;
+            }
+            time.value = hours + ":" + minute;
+        }
     }
 </script>

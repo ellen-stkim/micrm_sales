@@ -11,9 +11,9 @@ open class Tblmicou_couponDto {
     var title: String? = null
     var descr: String? = null
     var notice: String? = null
-    open var expire_dt: String? = null
-    var daily_start_time: String? = null
-    var daily_end_time: String? = null
+    var expire_dt: String? = null
+    open var daily_start_time: String? = null
+    open var daily_end_time: String? = null
     var available_day: String? = null // 0~6 (일요일~토요일)
     var img_file_seq: Int? = null
     var content: String? = null

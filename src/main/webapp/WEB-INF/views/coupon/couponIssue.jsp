@@ -64,7 +64,7 @@
                     <article class="components">
                         <section class="part list">
                             <div class="inner">
-                                <input type="text" id="phoneNumberInput" placeholder="직접 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+                                <input type="text" id="phoneNumberInput" placeholder="직접 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  autocomplete="off" />
                                 <button type="button" class="btn add" id="addBtn" onclick="addReceivePhoneNumber()">
                                     <span class="line"></span>
                                     <span class="line"></span>

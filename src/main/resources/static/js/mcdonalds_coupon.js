@@ -2,75 +2,75 @@ window.addEventListener("DOMContentLoaded", () => {
     const mcWarp = document.querySelector(".wrap.mcdonald");
 
     //테이블 페이징
-    const paging = mcWarp.querySelectorAll(".tbl_wrap .paging_wrap .paging li");
-    if(paging !== null) {
-        const btnPagingPrev = mcWarp.querySelector(".tbl_wrap .paging_wrap .btn.prev");
-        const btnPagingNext = mcWarp.querySelector(".tbl_wrap .paging_wrap .btn.next");
-        let pagingIdx = 0;
-        paging.forEach((item, idx) => {
-            item.addEventListener("click", () => {
-                pagingIdx = idx;
-                for (let i = 0; i < paging.length; i++) {
-                    paging[i].classList.remove("active");
-                }
-                if (pagingIdx === 0) {
-                    btnPagingPrev.classList.add("disable");
-                    btnPagingNext.classList.remove("disable");
-                } else if (pagingIdx === paging.length - 1) {
-                    btnPagingNext.classList.add("disable");
-                    btnPagingPrev.classList.remove("disable");
-                } else {
-                    btnPagingPrev.classList.remove("disable");
-                    btnPagingNext.classList.remove("disable");
-                }
-                item.classList.add("active");
-            });
-        });
-
-        btnPagingPrev.addEventListener("click", () => {
-            if (pagingIdx === 0) {
-                return false;
-            }
-            pagingIdx--;
-
-            if (pagingIdx === 0) {
-                btnPagingPrev.classList.add("disable");
-                btnPagingNext.classList.remove("disable");
-            } else if (pagingIdx === paging.length - 1) {
-                btnPagingNext.classList.add("disable");
-                btnPagingPrev.classList.remove("disable");
-            } else {
-                btnPagingPrev.classList.remove("disable");
-                btnPagingNext.classList.remove("disable");
-            }
-            for (let i = 0; i < paging.length; i++) {
-                paging[i].classList.remove("active");
-            }
-            paging[pagingIdx].classList.add("active");
-        });
-
-        btnPagingNext.addEventListener("click", () => {
-            if (pagingIdx === paging.length - 1) {
-                return false;
-            }
-            pagingIdx++;
-
-            if (pagingIdx === 0) {
-                btnPagingPrev.classList.add("disable");
-                btnPagingNext.classList.remove("disable");
-            } else if (pagingIdx === paging.length - 1) {
-                btnPagingNext.classList.add("disable");
-                btnPagingPrev.classList.remove("disable");
-            } else {
-                btnPagingPrev.classList.remove("disable");
-                btnPagingNext.classList.remove("disable");
-            }
-            for (let i = 0; i < paging.length; i++) {
-                paging[i].classList.remove("active");
-            }
-            paging[pagingIdx].classList.add("active");
-        });
-    }
+    // const paging = mcWarp.querySelectorAll(".tbl_wrap .paging_wrap .paging li");
+    // if(paging !== null) {
+    //     const btnPagingPrev = mcWarp.querySelector(".tbl_wrap .paging_wrap .btn.prev");
+    //     const btnPagingNext = mcWarp.querySelector(".tbl_wrap .paging_wrap .btn.next");
+    //     let pagingIdx = 0;
+    //     paging.forEach((item, idx) => {
+    //         item.addEventListener("click", () => {
+    //             pagingIdx = idx;
+    //             for (let i = 0; i < paging.length; i++) {
+    //                 paging[i].classList.remove("active");
+    //             }
+    //             if (pagingIdx === 0) {
+    //                 btnPagingPrev.classList.add("disable");
+    //                 btnPagingNext.classList.remove("disable");
+    //             } else if (pagingIdx === paging.length - 1) {
+    //                 btnPagingNext.classList.add("disable");
+    //                 btnPagingPrev.classList.remove("disable");
+    //             } else {
+    //                 btnPagingPrev.classList.remove("disable");
+    //                 btnPagingNext.classList.remove("disable");
+    //             }
+    //             item.classList.add("active");
+    //         });
+    //     });
+    //
+    //     btnPagingPrev.addEventListener("click", () => {
+    //         if (pagingIdx === 0) {
+    //             return false;
+    //         }
+    //         pagingIdx--;
+    //
+    //         if (pagingIdx === 0) {
+    //             btnPagingPrev.classList.add("disable");
+    //             btnPagingNext.classList.remove("disable");
+    //         } else if (pagingIdx === paging.length - 1) {
+    //             btnPagingNext.classList.add("disable");
+    //             btnPagingPrev.classList.remove("disable");
+    //         } else {
+    //             btnPagingPrev.classList.remove("disable");
+    //             btnPagingNext.classList.remove("disable");
+    //         }
+    //         for (let i = 0; i < paging.length; i++) {
+    //             paging[i].classList.remove("active");
+    //         }
+    //         paging[pagingIdx].classList.add("active");
+    //     });
+    //
+    //     btnPagingNext.addEventListener("click", () => {
+    //         if (pagingIdx === paging.length - 1) {
+    //             return false;
+    //         }
+    //         pagingIdx++;
+    //
+    //         if (pagingIdx === 0) {
+    //             btnPagingPrev.classList.add("disable");
+    //             btnPagingNext.classList.remove("disable");
+    //         } else if (pagingIdx === paging.length - 1) {
+    //             btnPagingNext.classList.add("disable");
+    //             btnPagingPrev.classList.remove("disable");
+    //         } else {
+    //             btnPagingPrev.classList.remove("disable");
+    //             btnPagingNext.classList.remove("disable");
+    //         }
+    //         for (let i = 0; i < paging.length; i++) {
+    //             paging[i].classList.remove("active");
+    //         }
+    //         paging[pagingIdx].classList.add("active");
+    //     });
+    // }
 });
 
 //제이쿼리 UI
@@ -84,7 +84,7 @@ $(function() {
             inst.dpDiv.css({
                 marginLeft:-1 +"px"
             })
-        }
+        },
     });
     //버튼을 눌려도 제이쿼리 UI datepicker 실행
     $(".period .btn.calendar").click(function() {
