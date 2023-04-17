@@ -105,6 +105,7 @@
 </div>
 <script>
     const phoneSet = new Set();
+    var currentAddNumberCount = 0;
 
     $(document).ready(function() {
 
@@ -146,8 +147,8 @@
         addAudience(document.getElementById('addBtn'));
 
         $("#phoneNumberInput").val('');
-        var cur = Number($("#current_add_number").text());
-        $("#current_add_number").text((cur + 1));
+        currentAddNumberCount ++;
+        $("#current_add_number").text(currentAddNumberCount);
 
         popup.popAlert('추가되었습니다.');
     }
@@ -214,8 +215,8 @@
             fileUpload(document.getElementById('fileInput'));
             setPhoneNumberList(phoneList);
 
-            var cur = Number($("#current_add_number").text());
-            $("#current_add_number").text((cur + Number(collectCnt)));
+            currentAddNumberCount += Number(collectCnt);
+            $("#current_add_number").text(currentAddNumberCount);
 
             popup.popAlert("등록되었습니다. 성공: "+collectCnt+", 중복: "+duplicateCnt+", 실패: "+errorCnt);
         }
