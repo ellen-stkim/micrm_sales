@@ -179,12 +179,12 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         val ext = file.originalFilename!!.substring(extPos + 1).lowercase()
 
         // 이미지 content-type 검사
-        val isImageContentType =  false
+        var isImageContentType =  false
         imageContentType.forEach {
-            if (file.contentType == "image/${it}") isImageContentType == true
+            if (file.contentType == "image/${it}") isImageContentType = true
         }
         // 파일 확장자 검사
-        val isImageExt = imageContentType.contains(ext)
+        var isImageExt = imageContentType.contains(ext)
 
         return isImageContentType && isImageExt
     }
