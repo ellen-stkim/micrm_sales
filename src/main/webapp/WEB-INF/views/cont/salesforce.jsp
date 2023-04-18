@@ -3597,7 +3597,7 @@
             layerPop.classList.add("active");
         }
         var data = {};
-        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/getCouponAtContent.ajax?seq='+ couponSeq, data, res, '${_csrf.headerName}', '${_csrf.token}');
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/getCouponAtSales.ajax?seq='+ couponSeq, data, res, '${_csrf.headerName}', '${_csrf.token}');
     };
 
     var selectedExpireMonth = 1;
