@@ -504,6 +504,12 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.msg_tp = "DMCH201"
                         tblmiContLstdto.img_cd_1 = null
                     }
+
+                    // 쿠폰 설정
+                    if (contentListCreatedto.coupon_seq != null) {
+                        tblmiContLstdto.coupon_seq = contentListCreatedto.coupon_seq
+                    }
+
                     tblmiContLstdto.cont_body = contentListCreatedto.sms_body
                 }
 
