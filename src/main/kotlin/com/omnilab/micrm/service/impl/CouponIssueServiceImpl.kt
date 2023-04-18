@@ -63,6 +63,10 @@ class CouponIssueServiceImpl: CouponIssueService {
             val sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
             val jsonObject = NaverShortUrl.shorten(sendUrl)
+            if (jsonObject["code"] != "200") {
+                logger.error("CouponIssueServiceImpl.issueCoupon={}", "네이버 URL 오류")
+                throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
+            }
 
             val resultJson: JSONObject = jsonObject["result"] as JSONObject
             val shortUrl = resultJson["url"].toString()
@@ -92,11 +96,13 @@ class CouponIssueServiceImpl: CouponIssueService {
     override fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any> {
 
         if (file.isEmpty) {
+            logger.error("CouponIssueServiceImpl.extractPhoneNumberToExcel={}", "엑셀 파일 없음")
             throw CouponException(HttpStatus.BAD_REQUEST, "엑셀 파일이 없습니다.")
         }
 
         // excel 파일 형식확인
         if (!isExcelFile(file)) {
+            logger.error("CouponIssueServiceImpl.extractPhoneNumberToExcel={}", "사용자 첨부한 엑셀 형식 아님")
             throw CouponException(HttpStatus.BAD_REQUEST, "엑셀 형식이 맞지 않습니다.")
         }
         return extractExcel(file)
@@ -185,8 +191,8 @@ class CouponIssueServiceImpl: CouponIssueService {
                 }
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-
+            logger.error("CouponIssueServiceImpl.extractExcel={}", "엑셀 추출 오류")
+            throw CouponException(HttpStatus.BAD_REQUEST, "엑셀 내용의 형식이 맞지 않습니다.")
         } finally {
             workbook?.close()
         }
