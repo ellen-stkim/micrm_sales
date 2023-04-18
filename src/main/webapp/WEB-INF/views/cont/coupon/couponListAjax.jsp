@@ -33,7 +33,7 @@
                 </td>
                 <td class="en_font">${coupon.expire_dt}</td>
                 <td>
-                    <button type="button" class="btn select" onclick="chkCoupon('${coupon.encodedSeq}')">선택</button>
+                    <button type="button" class="btn select" onclick="chkCoupon('${coupon.encodedSeq}', '${coupon.nm}')">선택</button>
                 </td>
             </tr>
         </c:forEach>
