@@ -267,14 +267,14 @@
 		INSERT INTO tblmicou_coupon_issued_log (
 			msgkey,
 			coupon_issue_seq,
-			coupon_url,
+			coupon_uuid,
 			short_url,
 			phone,
 			reg_id
 		) VALUES (
 			#{msgkey},
 			#{coupon_issue_seq},
-			#{coupon_url},
+			#{coupon_uuid},
 			#{short_url},
 			#{phone},
 			#{reg_id}

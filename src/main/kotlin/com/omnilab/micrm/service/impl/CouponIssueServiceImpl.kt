@@ -46,8 +46,6 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         // 도메인 조회
         val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(grp_id, user.usr_grp_cd!!))
-        val testDomain = "https://www.naver.com"
-        // todo 추후에 milvus 도메인으로 변경필요
 
         // Path
         val couponPath = "/mobileCoupon/"
@@ -57,12 +55,12 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.insertCouponIssue(couponIssueDto)
         for (receiveNumber in extractPhoneNumber(couponIssueDto)) {
             // uuid 생성
-            val uuidUrl = makeUuidUrl()
+            val couponUuid = makeUuidUrl()
 
             // 암호화된 uuid
-            val encodeUuidUrl = makeEncodedUuidUrl(uuidUrl)
+            val encodedUuid = makeEncodedUuidUrl(couponUuid)
 
-            val sendUrl = "${couponDomain}${couponPath}${encodeUuidUrl}"
+            val sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
             val jsonObject = NaverShortUrl.shorten(sendUrl)
 
@@ -77,7 +75,7 @@ class CouponIssueServiceImpl: CouponIssueService {
             val dto = Tblmicou_coupon_issued_logDto(
                 msgkey,
                 couponIssueDto.seq!!,
-                sendUrl,
+                couponUuid,
                 shortUrl,
                 receiveNumber,
                 user.usr_id
@@ -89,7 +87,6 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         // 쿠폰 발급 target Count 입력
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
-
     }
 
     override fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any> {
@@ -113,6 +110,27 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.deleteCouponIssuedLog(decodedSeqList, UsefulUtils.sessionUser().usr_id!!)
     }
 
+    private fun extractPhoneNumber(couponIssueDto: CouponIssueDto): MutableList<String> {
+        val receiveNumberList: MutableList<String> = ArrayList()
+
+        couponIssueDto.phoneNumberList!!.forEach {
+            val split = it.split(",")
+            split.forEach { num -> if (num.isNotEmpty()) receiveNumberList.add(num) }
+        }
+
+        return receiveNumberList
+    }
+
+    private fun makeUuidUrl(): String {
+        val uuid = UUID.randomUUID()
+
+        return CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)
+    }
+
+    private fun makeEncodedUuidUrl(uuidUrl: String) = AES256.AES_Encode(uuidUrl, GlobalValues.encKey)
+
+    private fun decodingSeq(encodedSeq: String) = AES256.AES_Decode(encodedSeq, GlobalValues.encKey).toInt()
+
     private fun isExcelFile(file: MultipartFile): Boolean {
         // content-type 검사
         val xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -127,29 +145,6 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         return result
     }
-
-    private fun extractPhoneNumber(couponIssueDto: CouponIssueDto): MutableList<String> {
-        val receiveNumberList: MutableList<String> = ArrayList()
-
-        couponIssueDto.phoneNumberList!!.forEach {
-            val split = it.split(",")
-            split.forEach { num -> if (num.isNotEmpty()) receiveNumberList.add(num) }
-        }
-
-        return receiveNumberList
-    }
-
-    private fun makeEncodedUuidUrl(uuidUrl: String): String {
-        return AES256.AES_Encode(uuidUrl, GlobalValues.encKey)
-    }
-
-    private fun makeUuidUrl(): String {
-        val uuid = UUID.randomUUID()
-
-        return CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)
-    }
-
-    private fun decodingSeq(encodedSeq: String) = AES256.AES_Decode(encodedSeq, GlobalValues.encKey).toInt()
 
     private fun extractExcel(file: MultipartFile): MutableMap<String, Any> {
         val reMap: MutableMap<String, Any> = HashMap()
