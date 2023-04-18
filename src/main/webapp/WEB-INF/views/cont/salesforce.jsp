@@ -3539,9 +3539,9 @@
 
     //20230414
     //쿠폰 리스트
-    let couponURL = "";
+    let couponNm = "";
+    let couponSelectSeq = "";
     let couponSeq = "";
-
     const couponListPop = () => {
         getCouponListAtSales('1');
     };
@@ -3563,23 +3563,27 @@
     }
 
     //쿠폰 리스트 선택 시
-    const chkCoupon = (url) => {
-        //임시 값
-        // todo url 도메인 불러오기
-        couponURL = url;
-        couponSeq = url;
+    const chkCoupon = (url, nm) => {
+        couponNm = nm;
+        couponSelectSeq = url;
     };
     //쿠폰 리스트 확인 클릭 시
     const targetCheck = () => {
         const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
-        couponURLEl.value = couponURL;
+        couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
+        couponSeq = couponSelectSeq;
     };
     //쿠폰 URL 사용(적용)
     const applyCoupon = () => {
-        const couponURL = document.querySelector(".input_area .row.send .td input[type='text']");
+        if (couponSeq == "") {
+            popup.popAlert("리스트에서 쿠폰을 먼저 선택해주세요.");
+            return false;
+        }
         const preview = document.querySelector(".viewer_area .inner .text_box .scroll_txt_area");
         //입력된 URL 미리보기에 추가
-        preview.innerHTML += `<br/>${couponURL.value}`;
+        preview.innerHTML += '<br/>' + ' 쿠폰 링크: {쿠폰링크}';
+        let smsContent = $('#sms_txt_area').val();
+        $('#sms_txt_area').val(smsContent + '\n 쿠폰 링크: {쿠폰링크}');
     };
 
     //쿠폰 미리보기
