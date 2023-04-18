@@ -38,7 +38,11 @@ class CouponListServiceImpl: CouponListService {
 
         // 페이징 설정
         paginationInfo.totalRecordCount = couponDao.selectCouponListCount(searchDto)
-        setPagination(reMap, paginationInfo, couponList)
+        setPagination(reMap, paginationInfo)
+
+        reMap["list"] = couponList
+        return reMap
+    }
 
         return reMap
     }
@@ -57,7 +61,7 @@ class CouponListServiceImpl: CouponListService {
         // 쿠폰 발급 내역 리스트 조회
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        var couponIssuedLogList = couponDao.selectCouponIssuedLogList(searchDto)
+        val couponIssuedLogList = couponDao.selectCouponIssuedLogList(searchDto)
 
         // 시퀀스 암호화
         couponIssuedLogList.forEach {
@@ -66,8 +70,9 @@ class CouponListServiceImpl: CouponListService {
 
         // 페이징
         paginationInfo.totalRecordCount = couponDao.selectCouponIssuedLogListCount(searchDto)
-        setPagination(reMap, paginationInfo, couponIssuedLogList)
+        setPagination(reMap, paginationInfo)
 
+        reMap["list"] = couponIssuedLogList
         return reMap
     }
 
@@ -85,11 +90,10 @@ class CouponListServiceImpl: CouponListService {
 
     private fun encodingSeq(seq: Int) = AES256.AES_Encode(seq.toString(), GlobalValues.encKey)
 
-    private fun setPagination(reMap: MutableMap<String, Any>, paginationInfo: PaginationInfo, list: MutableList<*>) {
+    private fun setPagination(reMap: MutableMap<String, Any>, paginationInfo: PaginationInfo) {
         reMap["page"] = paginationInfo
         reMap["pageNo"] = paginationInfo.currentPageNo
         reMap["cnt"] = paginationInfo.totalRecordCount
-        reMap["list"] = list
     }
 
 }
