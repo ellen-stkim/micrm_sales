@@ -6,7 +6,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
+import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
@@ -507,7 +509,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 쿠폰 설정
                     if (contentListCreatedto.coupon_seq != null) {
-                        tblmiContLstdto.coupon_seq = contentListCreatedto.coupon_seq
+                        tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
                     }
 
                     tblmiContLstdto.cont_body = contentListCreatedto.sms_body
