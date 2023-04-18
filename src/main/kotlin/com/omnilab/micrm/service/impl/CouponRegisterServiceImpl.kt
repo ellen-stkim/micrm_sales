@@ -50,19 +50,8 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
         // 쿠폰 정보 입력
         dto.reg_id = user.usr_id.toString()
+        dto.usr_grp_cd = user.usr_grp_cd.toString()
         couponDao.insertCoupon(dto)
-    }
-
-    override fun deleteCoupon(deleteCouponSeq: List<String>) {
-
-        // 복호화
-        val decodedCouponSeq: MutableList<Int> = ArrayList()
-
-        deleteCouponSeq.forEach {
-            decodedCouponSeq.add(decodingSeq(it))
-        }
-
-        couponDao.deleteCoupon(decodedCouponSeq, UsefulUtils.sessionUser().usr_id!!)
     }
 
     override fun updateCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
@@ -79,7 +68,20 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         }
 
         dto.upd_id = user.usr_id.toString()
+        dto.usr_grp_cd = user.usr_grp_cd.toString()
         couponDao.updateCoupon(dto)
+    }
+
+    override fun deleteCoupon(deleteCouponSeq: List<String>) {
+
+        // 복호화
+        val decodedCouponSeq: MutableList<Int> = ArrayList()
+
+        deleteCouponSeq.forEach {
+            decodedCouponSeq.add(decodingSeq(it))
+        }
+
+        couponDao.deleteCoupon(decodedCouponSeq, UsefulUtils.sessionUser().usr_id!!)
     }
 
     private fun decodingSeq(encodedSeq: String) = AES256.AES_Decode(encodedSeq, GlobalValues.encKey).toInt()
