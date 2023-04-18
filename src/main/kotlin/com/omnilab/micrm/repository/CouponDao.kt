@@ -10,6 +10,8 @@ interface CouponDao {
     fun selectCoupon(decodedSeq: Int): CouponListDto
     fun selectCouponList(searchDto: SearchCouponDto): MutableList<CouponListDto>
     fun selectCouponListCount(searchDto: SearchCouponDto): Int
+    fun selectCouponListAtSales(searchDto: SearchCouponDto): MutableList<CouponListDto>
+    fun selectCouponListCountAtSales(searchDto: SearchCouponDto): Int
     fun selectCouponIssuedLogList(searchDto: SearchCouponIssuedLogDto): MutableList<CouponIssuedListDto>
     fun selectCouponIssuedLogListCount(searchDto: SearchCouponIssuedLogDto): Int
     fun selectDefaultSendNumber(dto: Tblmi_set_lstDto): String

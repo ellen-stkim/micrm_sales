@@ -75,6 +75,63 @@
 		</where>
 	</select>
 
+	<select id="select_coupon_list_at_sales" parameterType="SearchCouponDto" resultType="CouponListDto">
+		SELECT
+		A.seq,
+		A.nm,
+		A.expire_dt,
+		B.img_url,
+		C.nm as category_nm
+		FROM tblmicou_coupon as A
+		LEFT JOIN tblmicou_img_file as B
+		ON A.img_file_seq = B.seq
+		LEFT JOIN tblmicou_category as C
+		ON A.category_seq = C.seq
+		<where>
+			A.del_yn = 'N'
+			AND A.usr_grp_cd = #{usr_grp_cd}
+			AND A.expire_dt >= NOW()
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
+				AND A.category_seq = #{category_seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(nm)">
+				AND A.nm LIKE CONCAT('%',#{nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(expire_dt)">
+				AND A.expire_dt <![CDATA[ <= ]]> #{expire_dt}
+			</if>
+
+		</where>
+		ORDER BY A.reg_dt DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
+	<select id="select_coupon_list_count_at_sales" parameterType="SearchCouponDto" resultType="int">
+		SELECT
+		count(*)
+		FROM tblmicou_coupon as A
+		LEFT JOIN tblmicou_img_file as B
+		ON A.img_file_seq = B.seq
+		LEFT JOIN tblmicou_category as C
+		ON A.category_seq = C.seq
+		<where>
+			A.del_yn = 'N'
+			AND A.usr_grp_cd = #{usr_grp_cd}
+			AND A.expire_dt >= NOW()
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
+				AND A.category_seq = #{category_seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(nm)">
+				AND A.nm LIKE CONCAT('%',#{nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(expire_dt)">
+				AND A.expire_dt <![CDATA[ <= ]]> #{expire_dt}
+			</if>
+		</where>
+	</select>
+
 	<select id="select_coupon_issued_log_list" parameterType="SearchCouponIssuedLogDto" resultType="CouponIssueListDto">
 		SELECT
 			A.seq,

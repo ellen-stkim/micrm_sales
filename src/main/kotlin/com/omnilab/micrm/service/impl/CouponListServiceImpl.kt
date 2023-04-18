@@ -45,6 +45,25 @@ class CouponListServiceImpl: CouponListService {
         return reMap
     }
 
+    override fun getCouponListAtSales(searchDto: SearchCouponDto, usr_grp_cd: String): MutableMap<String, Any> {
+        val reMap: MutableMap<String, Any> = HashMap()
+        val paginationInfo : PaginationInfo = UsefulUtils.makePage(searchDto.pageNo,10,10)
+
+        // 쿠폰 리스트 조회
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        val couponList = couponDao.selectCouponListAtSales(searchDto)
+
+        // 시퀀스 AES256 암호화 (couponListDto.encodedSeq에 암호화된 seq 저장)
+        couponList.forEach {
+            it.encodedSeq = encodingSeq(it.seq!!)
+        }
+
+        // 페이징 설정
+        paginationInfo.totalRecordCount = couponDao.selectCouponListCountAtSales(searchDto)
+        setPagination(reMap, paginationInfo)
+
+        reMap["list"] = couponList
         return reMap
     }
 

@@ -32,6 +32,14 @@ class CouponDaoImpl: CouponDao {
         return sqlSession.selectOne("select_coupon_list_count", searchDto)
     }
 
+    override fun selectCouponListAtSales(searchDto: SearchCouponDto): MutableList<CouponListDto> {
+        return sqlSession.selectList("select_coupon_list_at_sales", searchDto)
+    }
+
+    override fun selectCouponListCountAtSales(searchDto: SearchCouponDto): Int {
+        return sqlSession.selectOne("select_coupon_list_count_at_sales", searchDto)
+    }
+
     override fun selectCouponIssuedLogList(searchDto: SearchCouponIssuedLogDto): MutableList<CouponIssuedListDto> {
         return sqlSession.selectList("select_coupon_issued_log_list", searchDto)
     }

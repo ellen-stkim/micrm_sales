@@ -5,6 +5,7 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
+import com.omnilab.micrm.model.coupon.SearchCouponDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
@@ -37,7 +38,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 
 @Controller
@@ -79,6 +79,9 @@ class SalesforceController {
     @Autowired
     @Qualifier("KkoMsgServiceImpl")
     private lateinit var kkoMsgService: KkoMsgService
+
+    @Autowired
+    private lateinit var couponListService: CouponListService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -864,6 +867,31 @@ class SalesforceController {
     fun error(@PathVariable(value = "usr_cd") usr_cd: String): String {
         logger.error("error")
         return "index"
+    }
+
+    /**
+     * 쿠폰 기능
+     */
+    @PostMapping("/{usr_cd}/coupon/getCouponListAtSales.ajax")
+    fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, searchCouponDto: SearchCouponDto): ModelAndView {
+        var view = ModelAndView("cont/coupon/couponListAjax")
+        val reMap = couponListService.getCouponListAtSales(searchCouponDto, usr_cd)
+        view.addObject("couponList", reMap["list"])
+        view.addObject("page", reMap["page"])
+        view.addObject("pageNo", reMap["pageNo"])
+        view.addObject("cnt", reMap["cnt"])
+
+        return view
+    }
+
+    @PostMapping("/{usr_cd}/coupon/getCouponAtContent.ajax")
+    fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
+        var view = ModelAndView("cont/coupon/couponPreviewAjax")
+
+        val couponListDto = couponListService.getCoupon(seq)
+        view.addObject("coupon", couponListDto)
+
+        return view
     }
 
 }
