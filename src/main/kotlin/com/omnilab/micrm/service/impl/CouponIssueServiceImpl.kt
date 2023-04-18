@@ -51,6 +51,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         val couponPath = "/mobileCoupon/"
 
         // coupon issue
+        couponIssueDto.usr_grp_cd = user.usr_grp_cd
         couponIssueDto.reg_id = user.usr_id
         couponDao.insertCouponIssue(couponIssueDto)
         for (receiveNumber in refinePhoneNumber(couponIssueDto)) {
@@ -76,6 +77,9 @@ class CouponIssueServiceImpl: CouponIssueService {
             // todo mms 전송 필요
             // todo mms content {쿠폰 링크} sendUrl로 치환하기
             val msgkey = "1"
+            //            sqlSession.insert("ins_camp_send_mms_lg", sendLst)
+
+//            sendLst.add(LgMms_msgDto(msgtitle, phone, callback, "0", regdate, content , "0", "", "", "", mdmDb코드 가져오기, "MICRM_COUPON", dto.usr_grp_cd))
 
             // coupon issue log
             val dto = Tblmicou_coupon_issued_logDto(

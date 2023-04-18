@@ -14,6 +14,7 @@ class CouponRegisterDto : Tblmicou_couponDto() {
 
     var imgFile: MultipartFile? = null
     var encodedSeq: String? = null
+    var usr_grp_cd: String? = null
 
     var category: String? = null
     var expire_time: String? = ""

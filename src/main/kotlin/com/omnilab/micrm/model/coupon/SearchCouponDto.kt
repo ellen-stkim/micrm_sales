@@ -8,6 +8,7 @@ class SearchCouponDto {
     var category_seq: String? = null
     var nm: String? = null
     var expire_dt: String? = null
+    var usr_grp_cd: String? = null
 
     var pageNo: Int = 1
     var firstIndex: Int?= null

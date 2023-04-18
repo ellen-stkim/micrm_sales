@@ -146,8 +146,8 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (CommonUtils.isEmptyObject(dto.nm)) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰명을 입력해주세요")
         if (CommonUtils.isEmptyObject(dto.category_seq)) throw CouponException(HttpStatus.BAD_REQUEST, "카테고리를 선택해주세요")
         if (type != "update") {
-            if (CommonUtils.isEmptyObject(dto.imgFile)) throw CouponException(HttpStatus.BAD_REQUEST, "이미지를 등록해주세요")
-            else if (!isImageFile(dto.imgFile!!)) { throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요") }
+            if (CommonUtils.isEmptyObject(dto.imgFile)) throw CouponException(HttpStatus.BAD_REQUEST, "이미지를 등록해주세요.")
+            else if (!isImageFile(dto.imgFile!!)) { throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요.") }
         } else if (CommonUtils.isEmptyObject(dto.imgFile) && !isImageFile(dto.imgFile!!)) {
             throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요")
         }

@@ -8,5 +8,6 @@ class CouponIssueDto: Tblmicou_coupon_issueDto() {
 
     var encodedCouponSeq: String? = null
     var phoneNumberList: List<String>? = null
+    var usr_grp_cd: String? = ""
 
 }

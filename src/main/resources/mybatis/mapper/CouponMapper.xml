@@ -35,6 +35,7 @@
 			ON A.category_seq = C.seq
 		<where>
 			A.del_yn = 'N'
+			AND A.usr_grp_cd = #{usr_grp_cd}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
 				AND A.category_seq = #{category_seq}
 			</if>
@@ -61,6 +62,7 @@
 		ON A.category_seq = C.seq
 		<where>
 			A.del_yn = 'N'
+			AND A.usr_grp_cd = #{usr_grp_cd}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
 				AND A.category_seq = #{category_seq}
 			</if>
@@ -91,6 +93,7 @@
 			ON C.img_file_seq = D.seq
 		<where>
 			A.del_yn = 'N'
+			AND A.usr_grp_cd = #{usr_grp_cd}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
 				AND C.category_seq = #{category_seq}
 			</if>
@@ -128,6 +131,7 @@
 			ON C.img_file_seq = D.seq
 		<where>
 		   	A.del_yn = 'N'
+			AND A.usr_grp_cd = #{usr_grp_cd}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(category_seq)">
 				AND C.category_seq = #{category_seq}
 			</if>
@@ -207,6 +211,7 @@
 			available_day,
 			img_file_seq,
 			content,
+			usr_grp_cd,
 			reg_id
 		) VALUES (
 			#{category_seq},
@@ -220,6 +225,7 @@
 			#{available_day},
 			#{img_file_seq},
 			#{content},
+			#{usr_grp_cd},
 			#{reg_id}
 	  	);
 	</insert>
@@ -240,6 +246,7 @@
 		    msg_content,
 		    time_cnt,
 		    target_cnt,
+		    usr_grp_cd,
 		    reg_id
 	    ) SELECT
 			#{coupon_seq},
@@ -256,6 +263,7 @@
 			A.content,
 			'15',
 			'0',
+			#{usr_grp_cd},
 			#{reg_id}
 		FROM tblmicou_coupon as A
 		LEFT JOIN tblmicou_img_file as B
@@ -270,6 +278,7 @@
 			coupon_uuid,
 			short_url,
 			phone,
+			usr_grp_cd,
 			reg_id
 		) VALUES (
 			#{msgkey},
@@ -277,6 +286,7 @@
 			#{coupon_uuid},
 			#{short_url},
 			#{phone},
+			#{usr_grp_cd},
 			#{reg_id}
 		)
 	</insert>

@@ -27,6 +27,7 @@ class CouponListServiceImpl: CouponListService {
         val paginationInfo : PaginationInfo = UsefulUtils.makePage(searchDto.pageNo,10,10)
 
         // 쿠폰 리스트 조회
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
         val couponList = couponDao.selectCouponList(searchDto)
@@ -59,6 +60,7 @@ class CouponListServiceImpl: CouponListService {
         val paginationInfo : PaginationInfo = UsefulUtils.makePage(searchDto.pageNo,10,10)
 
         // 쿠폰 발급 내역 리스트 조회
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
         val couponIssuedLogList = couponDao.selectCouponIssuedLogList(searchDto)
