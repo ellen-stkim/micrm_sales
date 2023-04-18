@@ -173,11 +173,11 @@ class CouponIssueServiceImpl: CouponIssueService {
 
                     if (extractedPhoneNumber.isEmpty() ||  !UsefulUtils.isCheckPhoneNumber(extractedPhoneNumber)) {
                         errorCnt ++
-                        break
+                        continue
                     }
                     if (reSet.contains(extractedPhoneNumber)) {
                         duplicateCnt ++
-                        break
+                        continue
                     }
 
                     collectCnt ++
