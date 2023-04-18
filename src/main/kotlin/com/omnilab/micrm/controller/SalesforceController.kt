@@ -884,7 +884,7 @@ class SalesforceController {
         return view
     }
 
-    @PostMapping("/{usr_cd}/coupon/getCouponAtContent.ajax")
+    @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
     fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
         var view = ModelAndView("cont/coupon/couponPreviewAjax")
 

@@ -52,6 +52,7 @@ class CouponListServiceImpl: CouponListService {
         // 쿠폰 리스트 조회
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        searchDto.usr_grp_cd = usr_grp_cd
         val couponList = couponDao.selectCouponListAtSales(searchDto)
 
         // 시퀀스 AES256 암호화 (couponListDto.encodedSeq에 암호화된 seq 저장)
