@@ -176,6 +176,97 @@
             $("#noticeCount").html(count);
         });
 
+        $('#registerCouponForm').validate({
+            onfocusout: false
+            , submitHandler: function () {
+                return false;
+            }
+            , errorPlacement: $.noop
+            , invalidHandler: function (form, validator) {
+                let errors = validator.numberOfInvalids();
+                if (errors) {
+                    popup.popAlert(validator.errorList[0].message);
+                }
+            }
+            , rules: {
+                nm: {
+                    required: true
+                },
+                category_seq:{
+                    required: true
+                },
+                imgFile: {
+                    required: true
+                },
+                title: {
+                    required: true
+                },
+                descr: {
+                    required: true
+                },
+                notice: {
+                    required: true
+                },
+                expire_date: {
+                    required: true
+                    ,vali_expire_date: true
+                },
+                expire_time: {
+                    required: true
+                    ,vali_expire_time: true
+                },
+                daily_start_time: {
+                    required: true
+                },
+                daily_end_time: {
+                    required: true
+                }
+            }
+            , messages: {
+                nm: {
+                    required: "쿠폰명을 입력해주세요."
+                },
+                category_seq: {
+                    required: "카테고리를 선택해주세요."
+                },
+                imgFile: {
+                    required: "이미지를 등록해주세요."
+                },
+                title: {
+                    required: "Title을 입력해주세요."
+                },
+                descr: {
+                    required: "Description을 입력해주세요."
+                },
+                notice: {
+                    required: "Temps & Condition을 입력해주세요."
+                },
+                expire_date: {
+                    required: "Expiry Date를 선택해주세요."
+                    ,vali_expire_date: "Expiry Date 날짜 형식에 맞지 않습니다."
+                },
+                expire_time: {
+                    required: "Expiry Time을 선택해주세요."
+                    ,vali_expire_time: "Expiry Time 시간 형식에 맞지 않습니다."
+                },
+                daily_start_time: {
+                    required: "Daily Start Time을 선택해주세요."
+                    ,vali_expire_time: "Daily Start Time 시간 형식에 맞지 않습니다."
+                },
+                daily_end_time: {
+                    required: "Daily End Time을 선택해주세요."
+                    ,vali_expire_time: "Daily End Time 시간 형식에 맞지 않습니다."
+                }
+            }
+        });
+
+        $.validator.addMethod("vali_expire_date", function (value) {
+            return /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value) || value === "";
+        });
+        $.validator.addMethod("vali_expire_time", function (value) {
+            return /^(0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[1-5][0-9])$/.test(value) || value === "";
+        });
+
     });
 
     function insertCouponLinkText(){
@@ -195,6 +286,9 @@
     }
 
     function registerCoupon() {
+        if(!$('#registerCouponForm').valid()){
+            return
+        }
 
         var data = new FormData();
         var insertForm = $('#registerCouponForm').serializeArray();
