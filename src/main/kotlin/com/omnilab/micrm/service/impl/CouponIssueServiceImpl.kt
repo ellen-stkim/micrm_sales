@@ -53,7 +53,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         // coupon issue
         couponIssueDto.reg_id = user.usr_id
         couponDao.insertCouponIssue(couponIssueDto)
-        for (receiveNumber in extractPhoneNumber(couponIssueDto)) {
+        for (receiveNumber in refinePhoneNumber(couponIssueDto)) {
             // uuid 생성
             val couponUuid = makeUuidUrl()
 
@@ -62,6 +62,7 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             val sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
+            // Naver short Url
             val jsonObject = NaverShortUrl.shorten(sendUrl)
             if (jsonObject["code"] != "200") {
                 logger.error("CouponIssueServiceImpl.issueCoupon={}", "네이버 URL 오류")
@@ -73,6 +74,7 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             // mms 전송
             // todo mms 전송 필요
+            // todo mms content {쿠폰 링크} sendUrl로 치환하기
             val msgkey = "1"
 
             // coupon issue log
@@ -116,12 +118,11 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.deleteCouponIssuedLog(decodedSeqList, UsefulUtils.sessionUser().usr_id!!)
     }
 
-    private fun extractPhoneNumber(couponIssueDto: CouponIssueDto): MutableList<String> {
+    private fun refinePhoneNumber(couponIssueDto: CouponIssueDto): MutableList<String> {
         val receiveNumberList: MutableList<String> = ArrayList()
 
         couponIssueDto.phoneNumberList!!.forEach {
-            val split = it.split(",")
-            split.forEach { num -> if (num.isNotEmpty()) receiveNumberList.add(num) }
+            it.split(",").forEach { num -> if (num.isNotEmpty()) receiveNumberList.add(num) }
         }
 
         return receiveNumberList
@@ -146,10 +147,8 @@ class CouponIssueServiceImpl: CouponIssueService {
         val extPos = file.originalFilename!!.lastIndexOf(".")
         val ext = file.originalFilename!!.substring(extPos + 1)
 
-        val result = (xlsxContentType == file.contentType) || (xlsContentType == file.contentType) &&
+        return (xlsxContentType == file.contentType) || (xlsContentType == file.contentType) &&
                 (ext == "xlsx") || (ext == "xls")
-
-        return result
     }
 
     private fun extractExcel(file: MultipartFile): MutableMap<String, Any> {
@@ -170,17 +169,17 @@ class CouponIssueServiceImpl: CouponIssueService {
                 .open(file.inputStream)
 
             val sheet = workbook.getSheetAt(0)
-
             for (row in sheet!!) {
                 if (row != null) {
 
                     var extractedPhoneNumber = CommonUtils.Excel_cell_value(row.getCell(0))?.trim() ?: ""
                     extractedPhoneNumber = extractedPhoneNumber.replace(("[^\\d.]").toRegex(), "")
-
+                    // 핸드폰 번호, null, empty 검사
                     if (extractedPhoneNumber.isEmpty() ||  !UsefulUtils.isCheckPhoneNumber(extractedPhoneNumber)) {
                         errorCnt ++
                         continue
                     }
+                    // 중복 핸드폰 체크
                     if (reSet.contains(extractedPhoneNumber)) {
                         duplicateCnt ++
                         continue
