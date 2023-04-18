@@ -42,6 +42,7 @@
             <input type="hidden" id="seq" name="mst_seq" value=""/>
             <input type="hidden" id="usr_grp_cd" name="usr_grp_cd"/>
             <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
+            <input type="hidden" id="coupon_seq" name="coupon_seq"/>
             <div class="create_sms cf">
                 <div class="row head bottom-border">
                     <div class="th">템플릿 명</div>
@@ -3584,6 +3585,7 @@
         preview.innerHTML += '<br/>' + ' 쿠폰 링크: {쿠폰링크}';
         let smsContent = $('#sms_txt_area').val();
         $('#sms_txt_area').val(smsContent + '\n 쿠폰 링크: {쿠폰링크}');
+        $('#coupon_seq').val(couponSeq);
     };
 
     //쿠폰 미리보기
