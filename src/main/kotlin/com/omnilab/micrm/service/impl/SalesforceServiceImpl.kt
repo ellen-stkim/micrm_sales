@@ -2603,11 +2603,11 @@ class SalesforceServiceImpl : SalesforceService {
                             }else{
                                 // todo 문자 쿠폰 발송로직 필요
                                 logger.info("SalesforceServiceImpl={}", "coupon logic")
-//                                sendHstDto.send_to = send_to.toString()
-//                                campaignDao.ins_programSendHst(sendHstDto)
-//                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-//                                inArguments["SEND_TO"] = send_to.toString()
-//                                mdmSend.ins_send(campaignDto, contTpLst, inArguments)
+                                sendHstDto.send_to = send_to.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = send_to.toString()
+                                mdmSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                     }
