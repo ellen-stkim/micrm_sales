@@ -132,6 +132,13 @@
 		</where>
 	</select>
 
+	<select id="select_coupon_issue" parameterType="String" resultType="CouponIssueDto">
+		SELECT *
+		FROM tblmicou_coupon_issue
+		WHERE
+		    camp_seq = #{camp_seq}
+	</select>
+
 	<select id="select_coupon_issued_log_list" parameterType="SearchCouponIssuedLogDto" resultType="CouponIssuedListDto">
 		SELECT
 			A.seq,
@@ -302,6 +309,9 @@
 		    msg_title,
 		    msg_content,
 		    time_cnt,
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_seq)">
+				camp_seq,
+			</if>
 		    target_cnt,
 		    usr_grp_cd,
 		    reg_id
@@ -319,6 +329,9 @@
 			#{msg_title},
 			A.content,
 			'15',
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(camp_seq)">
+				#{camp_seq},
+			</if>
 			'0',
 			#{usr_grp_cd},
 			#{reg_id}
