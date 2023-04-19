@@ -89,74 +89,74 @@ class CampaignMdmDaoImpl : CampaignSendDao {
 
                 }
             }
-//            if ("DMCH202" == msgTp) { // lms
-//                if(mdmServerType == "CJ"){
-//                    val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
-//                    mdmDto.file_cnt = 1
-//                    sendLst.add(mdmDto)
-//                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
-//                }else{
-//                    sendLst.add(LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd))
-//                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
-//                }
-//            } else if ("DMCH203" == msgTp) { //mms
-//                val contentsLstDto = contDto
-//                if(mdmServerType == "CJ"){
-//                    val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
-//                    if (contentsLstDto.img_nm_lst.isNullOrBlank()) {
-//                        mdmDto.file_cnt = 1
-//                    }else{
-//                        val list = contentsLstDto.img_nm_lst!!.split(",")
-//                        mdmDto.file_cnt = list.size + 1
-//                        for (i in list.indices) {
-//                            when (i) {
-//                                0 -> {
-//                                    mdmDto.file_type1 = "I"
-//                                    mdmDto.file_path1 = imgPath + list[i]
-//                                }
-//                                1 -> {
-//                                    mdmDto.file_type2 = "I"
-//                                    mdmDto.file_path2 = imgPath + list[i]
-//                                }
-//                                2 -> {
-//                                    mdmDto.file_type3 = "I"
-//                                    mdmDto.file_path3 = imgPath + list[i]
-//                                }
-//                                3 -> {
-//                                    mdmDto.file_type4 = "I"
-//                                    mdmDto.file_path4 = imgPath + list[i]
-//                                }
-//                                4 -> {
-//                                    mdmDto.file_type5 = "I"
-//                                    mdmDto.file_path5 = imgPath + list[i]
-//                                }
-//                            }
-//                        }
-//                    }
-//                    sendLst.add(mdmDto)
-//                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
-//                }else{
-//                    val mdmDto = LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd)
-//                    if (!contentsLstDto.img_nm_lst.isNullOrBlank()) {
-//                        val list = contentsLstDto.img_nm_lst!!.split(",")
-//                        mdmDto.file_cnt = list.size
-//                        for (i in list.indices) {
-//                            when (i) {
-//                                0 -> mdmDto.file_path1 = imgPath + list[i]
-//                                1 -> mdmDto.file_path2 = imgPath + list[i]
-//                                2 -> mdmDto.file_path3 = imgPath + list[i]
-//                                3 -> mdmDto.file_path4 = imgPath + list[i]
-//                                4 -> mdmDto.file_path5 = imgPath + list[i]
-//                            }
-//                        }
-//                    }
-//                    sendLst.add(mdmDto)
-//                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
-//                }
-//            } else {  // sms
-//                sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
-//                sqlSession.insert("ins_camp_send_sms_lg", sendLst)
-//            }
+            if ("DMCH202" == msgTp) { // lms
+                if(mdmServerType == "CJ"){
+                    val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
+                    mdmDto.file_cnt = 1
+                    sendLst.add(mdmDto)
+                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
+                }else{
+                    sendLst.add(LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd))
+                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
+                }
+            } else if ("DMCH203" == msgTp) { //mms
+                val contentsLstDto = contDto
+                if(mdmServerType == "CJ"){
+                    val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
+                    if (contentsLstDto.img_nm_lst.isNullOrBlank()) {
+                        mdmDto.file_cnt = 1
+                    }else{
+                        val list = contentsLstDto.img_nm_lst!!.split(",")
+                        mdmDto.file_cnt = list.size + 1
+                        for (i in list.indices) {
+                            when (i) {
+                                0 -> {
+                                    mdmDto.file_type1 = "I"
+                                    mdmDto.file_path1 = imgPath + list[i]
+                                }
+                                1 -> {
+                                    mdmDto.file_type2 = "I"
+                                    mdmDto.file_path2 = imgPath + list[i]
+                                }
+                                2 -> {
+                                    mdmDto.file_type3 = "I"
+                                    mdmDto.file_path3 = imgPath + list[i]
+                                }
+                                3 -> {
+                                    mdmDto.file_type4 = "I"
+                                    mdmDto.file_path4 = imgPath + list[i]
+                                }
+                                4 -> {
+                                    mdmDto.file_type5 = "I"
+                                    mdmDto.file_path5 = imgPath + list[i]
+                                }
+                            }
+                        }
+                    }
+                    sendLst.add(mdmDto)
+                    sqlSession.insert("ins_camp_send_mms_cj", sendLst)
+                }else{
+                    val mdmDto = LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd)
+                    if (!contentsLstDto.img_nm_lst.isNullOrBlank()) {
+                        val list = contentsLstDto.img_nm_lst!!.split(",")
+                        mdmDto.file_cnt = list.size
+                        for (i in list.indices) {
+                            when (i) {
+                                0 -> mdmDto.file_path1 = imgPath + list[i]
+                                1 -> mdmDto.file_path2 = imgPath + list[i]
+                                2 -> mdmDto.file_path3 = imgPath + list[i]
+                                3 -> mdmDto.file_path4 = imgPath + list[i]
+                                4 -> mdmDto.file_path5 = imgPath + list[i]
+                            }
+                        }
+                    }
+                    sendLst.add(mdmDto)
+                    sqlSession.insert("ins_camp_send_mms_lg", sendLst)
+                }
+            } else {  // sms
+                sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
+                sqlSession.insert("ins_camp_send_sms_lg", sendLst)
+            }
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendMdm", e)
