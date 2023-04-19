@@ -132,7 +132,7 @@
 		</where>
 	</select>
 
-	<select id="select_coupon_issued_log_list" parameterType="SearchCouponIssuedLogDto" resultType="CouponIssueListDto">
+	<select id="select_coupon_issued_log_list" parameterType="SearchCouponIssuedLogDto" resultType="CouponIssuedListDto">
 		SELECT
 			A.seq,
 			A.phone,
