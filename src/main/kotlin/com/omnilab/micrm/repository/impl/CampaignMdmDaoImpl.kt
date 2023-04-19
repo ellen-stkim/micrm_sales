@@ -100,8 +100,11 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 // 2. Path
                 var couponPath = "/mobileCoupon/"
                 // 3. couponIssue
-                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.seq.toString())
+                var couponIssueDto: CouponIssueDto? = sqlSession.selectOne("select_coupon_issue", dto.seq.toString())
                 if (CommonUtils.isEmptyObject(couponIssueDto)) {
+                    couponIssueDto = CouponIssueDto()
+                    couponIssueDto.msg_title = targetSubject
+                    couponIssueDto.msg_contnet = targetBody
                     couponIssueDto.usr_grp_cd = dto.usr_grp_cd
                     couponIssueDto.reg_id = dto.reg_id
                     couponIssueDto.camp_seq = dto.seq
@@ -125,7 +128,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 targetBody = targetBody.replace("{쿠폰링크}", shortUrl)
 
                 couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
-                    couponIssueDto.seq!!,
+                    couponIssueDto!!.seq!!,
                     couponUuid,
                     shortUrl,
                     map["SEND_TO"].toString(),
