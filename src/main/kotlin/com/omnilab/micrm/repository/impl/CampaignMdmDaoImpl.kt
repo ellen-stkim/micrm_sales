@@ -134,7 +134,8 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     couponUuid,
                     shortUrl,
                     map["SEND_TO"].toString(),
-                    dto.reg_id
+                    dto.reg_id,
+                    dto.usr_grp_cd.toString()
                 )
 
             }

@@ -90,7 +90,8 @@ class CouponIssueServiceImpl: CouponIssueService {
                 couponUuid,
                 shortUrl,
                 receiveNumber,
-                user.usr_id
+                user.usr_id,
+                user.usr_grp_cd
             )
             couponDao.insertCouponIssuedLog(dto)
 
