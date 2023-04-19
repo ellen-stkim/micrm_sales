@@ -2601,8 +2601,6 @@ class SalesforceServiceImpl : SalesforceService {
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                // todo 문자 쿠폰 발송로직 필요
-                                logger.info("SalesforceServiceImpl={}", "coupon logic")
                                 sendHstDto.send_to = send_to.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
