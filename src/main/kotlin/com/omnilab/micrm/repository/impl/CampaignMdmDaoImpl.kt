@@ -96,7 +96,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
             var couponIssuedLogDto = Tblmicou_coupon_issued_logDto()
             if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
                 // 1. 도메인
-                var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", contDto.cont_grp_cd!!))
+                var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd!!))
                 // 2. Path
                 var couponPath = "/mobileCoupon/"
                 // 3. couponIssue
