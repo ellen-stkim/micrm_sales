@@ -89,7 +89,11 @@ class CampaignMdmDaoImpl : CampaignSendDao {
 
                 }
             }
-
+            logger.info("=================================================")
+            logger.info("=================================================")
+            logger.info("campaignMdmDaoImplTEST={}", map["SEND_TO"].toString())
+            logger.info("=================================================")
+            logger.info("=================================================")
             if ("DMCH202" == msgTp) { // lms
                 if(mdmServerType == "CJ"){
                     val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
