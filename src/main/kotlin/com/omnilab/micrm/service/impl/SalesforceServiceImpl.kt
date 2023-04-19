@@ -508,7 +508,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     // 쿠폰 설정
-                    if (contentListCreatedto.coupon_seq != null) {
+                    if (contentListCreatedto.coupon_seq.isNullOrEmpty()) {
                         tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
                     }
 
