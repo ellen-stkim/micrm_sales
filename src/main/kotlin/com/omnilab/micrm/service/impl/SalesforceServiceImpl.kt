@@ -507,15 +507,7 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.img_cd_1 = null
                     }
 
-                    // 쿠폰 설정
-                    logger.info("=============")
-                    logger.info("=============")
-                    logger.info("publish={}", contentListCreatedto.coupon_seq)
-                    logger.info("publish={}", AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey))
-                    logger.info("=============")
-                    logger.info("=============")
-
-                    if (contentListCreatedto.coupon_seq.isNullOrEmpty()) {
+                    if (!contentListCreatedto.coupon_seq.isNullOrEmpty()) {
                         tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
                     }
 
