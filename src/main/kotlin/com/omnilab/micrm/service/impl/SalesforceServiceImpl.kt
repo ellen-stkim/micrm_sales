@@ -508,6 +508,13 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     // 쿠폰 설정
+                    logger.info("=============")
+                    logger.info("=============")
+                    logger.info("publish={}", contentListCreatedto.coupon_seq)
+                    logger.info("publish={}", AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey))
+                    logger.info("=============")
+                    logger.info("=============")
+
                     if (contentListCreatedto.coupon_seq.isNullOrEmpty()) {
                         tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
                     }
