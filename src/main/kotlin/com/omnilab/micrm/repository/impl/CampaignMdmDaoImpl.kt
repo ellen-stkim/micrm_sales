@@ -3,7 +3,10 @@ package com.omnilab.micrm.repository.impl
 import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
+import com.omnilab.micrm.common.NaverShortUrl
+import com.omnilab.micrm.config.error.CouponException
 import com.omnilab.micrm.model.Contents_lstDto
+import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.CjMms_msgDto
@@ -11,9 +14,13 @@ import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgSc_tranDto
 import com.omnilab.micrm.repository.CampaignSendDao
 import org.apache.ibatis.session.SqlSession
+import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Repository
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Repository("CampaignMdmDaoImpl")
 class CampaignMdmDaoImpl : CampaignSendDao {
@@ -66,6 +73,66 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
                 targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
             }
+            /**
+             * 쿠폰 로직
+             * 1. 도메인
+             * 2. Path
+             * 3. if (!couponIssued where 캠페인seq) insertCouponIssue
+             * 4. uuid
+             * 5. encoded UUID
+             * 6. Naver short URL
+             * -------
+             * 7. 문자 발송
+             * -------
+             * 8. send tblmicp_send_hst seq으로  HstSeq와 msgTp 가지고 문자 타입과 메시지 seq 저장
+             * 9. insertCouponIssuedLog
+             * 10.updateCouponIssueTargetCount
+             *
+             * - 그냥
+             * -> log 메세지 타입,
+             * - 세일즈
+             * ->
+             */
+            var couponIssuedLogDto = Tblmicou_coupon_issued_logDto()
+            if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
+                // 1. 도메인
+                var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", contDto.cont_grp_cd!!))
+                // 2. Path
+                var couponPath = "/mobileCoupon/"
+                // 3. couponIssue
+                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.seq)
+                if (CommonUtils.isEmptyObject(couponIssueDto)) {
+                    couponIssueDto.usr_grp_cd = dto.usr_grp_cd
+                    couponIssueDto.reg_id = dto.reg_id
+                    sqlSession.insert("insert_coupon_issue", couponIssueDto)
+                }
+                // 4. uuid
+                val uuid = UUID.randomUUID()
+                val couponUuid = CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)
+                // 5. uuid 암호화
+                val encodedUuid = AES256.AES_Encode(couponUuid, GlobalValues.encKey)
+                val sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+
+                val jsonObject = NaverShortUrl.shorten(sendUrl)
+                if (jsonObject["code"] != "200") {
+                    logger.error("CampaignMdmDaoImpl.ins_send={}", "네이버 URL 오류")
+                    throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
+                }
+                val resultJson: JSONObject = jsonObject["result"] as JSONObject
+                val shortUrl = resultJson["url"].toString()
+
+                targetBody = targetBody.replace("{쿠폰링크}", shortUrl)
+
+                couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
+                    couponIssueDto.seq!!,
+                    couponUuid,
+                    shortUrl,
+                    map["SEND_TO"].toString(),
+                    dto.reg_id
+                )
+
+            }
+
 
             // URL to TrackURL
             if (!contentUrlLst.isNullOrEmpty()) {
@@ -157,6 +224,21 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
                 sqlSession.insert("ins_camp_send_sms_lg", sendLst)
             }
+
+            if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
+                var msgkey = ""
+                val map = mapOf("etc3" to HstSeq, "m_server" to mdmDb)
+
+                if ("DMCH202" == msgTp || "DMCH203" == msgTp) { // lms, mms
+                    msgkey = sqlSession.selectOne("sel_camp_send_mms_lg", map)
+                } else {  // sms
+                    msgkey = sqlSession.selectOne("sel_camp_send_sms_lg", map)
+                }
+                couponIssuedLogDto.msgkey = msgkey
+                couponIssuedLogDto.msgtp = msgTp
+                sqlSession.insert("insert_coupon_issued_log", couponIssuedLogDto)
+            }
+
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendMdm", e)

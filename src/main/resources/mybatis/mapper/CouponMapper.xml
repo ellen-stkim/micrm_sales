@@ -331,6 +331,7 @@
 	<insert id="insert_coupon_issued_log" parameterType="Tblmicou_coupon_issued_logDto">
 		INSERT INTO tblmicou_coupon_issued_log (
 			msgkey,
+			msgtp,
 			coupon_issue_seq,
 			coupon_uuid,
 			short_url,
@@ -339,6 +340,7 @@
 			reg_id
 		) VALUES (
 			#{msgkey},
+		    #{msgtp},
 			#{coupon_issue_seq},
 			#{coupon_uuid},
 			#{short_url},

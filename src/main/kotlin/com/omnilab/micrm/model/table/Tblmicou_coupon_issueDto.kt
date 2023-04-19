@@ -21,6 +21,7 @@ open class Tblmicou_coupon_issueDto {
     var msg_title: String? = null
     var msg_contnet: String? = null
     var time_cnt: Int? = null
+    var camp_seq: Int? = null
     var target_cnt: Int? = null
     var reg_id: String? = null
     var reg_dt: String? = null
