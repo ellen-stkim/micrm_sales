@@ -754,7 +754,7 @@
             <!-- 오류 메시지 영역 -->
             <div class="pop_error_txt blue_point_color" id="targetError"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_center" onclick="targetCheck(); popupClose(this)" value="확인" />
+                <input type="button" class="btn_bg btn_size2 btn_center" onclick="targetCheck(this);" value="확인" />
             </div>
         </div>
     </div>
@@ -1794,7 +1794,8 @@
                 if (smsNumber != '' || smsNumber != null) {
                     if (smsTxt.val() != '') {
                         let type = smsTypeValidate();
-                        if (type == true) {
+                        let coupon = couponValidate();
+                        if (type == true && coupon == true) {
                             return true;
                         } else {
                             return false;
@@ -1819,7 +1820,9 @@
         if (smsOption == 'guide') {
             if (smsTitle.val() != '') {
                 let type = smsTypeValidate();
-                if (type == true) {
+                let coupon = couponValidate();
+
+                if (type == true && coupon == true) {
                     return true;
                 } else {
                     return false;
@@ -1832,14 +1835,6 @@
             }
         }
 
-        if (couponSeq.length != 0) {
-            let type = couponValidate();
-            if (type == true) {
-                return true;
-            } else {
-                return false;
-            }
-        }
         return true;
     }
 
@@ -1888,8 +1883,12 @@
     }
 
     function couponValidate() {
+        if (couponSelectSeq.length == 0) {
+            return true;
+        }
         let smsTxt = $('#sms_txt_area');
-        if (smsTxt.val().indexOf("{쿠폰링크}") == -1) {
+        popup.popAlert(smsTxt.val() + "," + smsTxt.val().indexOf("{쿠폰링크}"));
+        if (smsTxt.val().indexOf("{쿠폰링크}") === -1) {
             popup.popAlert("사용 버튼을 클릭하여 {쿠폰링크}를 입력해주세요");
             return false;
         } else {
@@ -3557,7 +3556,6 @@
         com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
-    //20230414
     //쿠폰 리스트
     let couponNm = "";
     let couponSelectSeq = "";
