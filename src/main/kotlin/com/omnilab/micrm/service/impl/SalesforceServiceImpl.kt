@@ -1074,7 +1074,9 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.img_cd_1 = null
                 }
 
-                tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
+                if (!contentListCreatedto.coupon_seq.isNullOrEmpty()) {
+                    tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
+                }
 
                 tblmiContLstdto.cont_body = contentListCreatedto.sms_body
             }
