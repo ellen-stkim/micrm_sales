@@ -1831,6 +1831,15 @@
                 return false;
             }
         }
+
+        if (couponSeq.length != 0) {
+            let type = couponValidate();
+            if (type == true) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -1876,6 +1885,16 @@
             }
         }
         return true;
+    }
+
+    function couponValidate() {
+        let smsTxt = $('#sms_txt_area');
+        if (smsTxt.val().indexOf("{쿠폰링크}") == -1) {
+            popup.popAlert("사용 버튼을 클릭하여 {쿠폰링크}를 입력해주세요");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // blur 유효성 체크
@@ -3568,12 +3587,19 @@
         couponNm = nm;
         couponSelectSeq = url;
     };
+
     //쿠폰 리스트 확인 클릭 시
     const targetCheck = () => {
-        const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
-        couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
-        couponSeq = couponSelectSeq;
+        if (couponSelectSeq.length == 0) {
+            popup.popAlert("쿠폰을 선택해주세요.");
+            return false;
+        } else {
+            const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
+            couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
+            couponSeq = couponSelectSeq;
+        }
     };
+
     //쿠폰 URL 사용(적용)
     const applyCoupon = () => {
         if (couponSeq == "") {
