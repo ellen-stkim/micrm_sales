@@ -3595,6 +3595,7 @@
             const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
             couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
             couponSeq = couponSelectSeq;
+            $('#coupon_seq').val(couponSeq);
             popupClose(value);
         } else {
             popup.popAlert("쿠폰을 선택해주세요.");
@@ -3613,7 +3614,6 @@
         preview.innerHTML += '<br/>' + ' 쿠폰 링크: {쿠폰링크}';
         let smsContent = $('#sms_txt_area').val();
         $('#sms_txt_area').val(smsContent + '\n 쿠폰 링크: {쿠폰링크}');
-        $('#coupon_seq').val(couponSeq);
     };
 
     //쿠폰 미리보기
