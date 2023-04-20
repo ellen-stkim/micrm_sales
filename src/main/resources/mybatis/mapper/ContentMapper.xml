@@ -998,6 +998,7 @@
 		img_cd_4 = #{img_cd_4},
 		img_cd_5 = #{img_cd_5},
 		img_cd_6 = #{img_cd_6},
+		coupon_seq = #{coupon_seq},
 		kko_img_cd = #{kko_img_cd},
 		kko_img_url = #{kko_img_url},
 		kko_btn_nm = #{kko_btn_nm},
