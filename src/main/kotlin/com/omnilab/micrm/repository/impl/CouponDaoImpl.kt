@@ -83,7 +83,6 @@ class CouponDaoImpl: CouponDao {
     }
 
     override fun updateCoupon(registerDto: CouponRegisterDto) {
-        logger.info("zzz={}",registerDto.img_file_seq)
         sqlSession.update("update_coupon", registerDto)
     }
 

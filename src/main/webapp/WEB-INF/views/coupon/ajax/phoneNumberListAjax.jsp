@@ -25,6 +25,5 @@
     var collectCnt = ${collectCnt};
     var duplicateCnt = ${duplicateCnt};
     var errorCnt = ${errorCnt};
-    console.log("ajaxview")
 </script>
 </span>

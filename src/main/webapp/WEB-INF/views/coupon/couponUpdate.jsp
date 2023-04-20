@@ -298,8 +298,6 @@
             data.append('imgFile', img);
         }
 
-        console.log(data);
-
         const res = function (response) {
             if (response["status"] != null && response["status"] == "400") {
                 popup.popAlert(response["message"]);
