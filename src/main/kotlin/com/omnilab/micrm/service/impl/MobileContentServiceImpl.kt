@@ -2,8 +2,10 @@ package com.omnilab.micrm.service.impl
 
 
 import com.google.gson.*
+import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.BtnValueUtils
 import com.omnilab.micrm.common.CommonUtils
+import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
@@ -862,6 +864,7 @@ class MobileContentServiceImpl : ContentService {
             }
             // 이전에 선택한 쿠폰 시퀀스와 이름 조회
             if (dto.cont_tp.equals("DMTP02") && !dto.coupon_seq.isNullOrEmpty()) {
+                dto.coupon_seq = AES256.AES_Encode(dto.coupon_seq, GlobalValues.encKey);
                 val selectCoupon = couponDao.selectCoupon(dto.coupon_seq!!.toInt())
                 dto.coupon_nm = selectCoupon.nm
             }
