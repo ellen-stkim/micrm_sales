@@ -1654,6 +1654,9 @@
                     prevEl: '.rcs_prev',
                 },
             });
+
+            couponSeq = $("#savedCouponSeq").val();
+            couponSelectSeq = $("#savedCouponSeq").val();
         }
 
         let param = {seq: seq}
