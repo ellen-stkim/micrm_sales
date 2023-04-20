@@ -654,6 +654,7 @@
                                                     <div class="td bottom-border">
                                                         <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
                                                         <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
+                                                        <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
                                                         <input type="text" name="" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
                                                         <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
                                                         <!-- 쿠폰 활성화 시 -->

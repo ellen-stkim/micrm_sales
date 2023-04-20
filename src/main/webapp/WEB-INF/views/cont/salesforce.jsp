@@ -1657,6 +1657,7 @@
 
             couponSeq = $("#savedCouponSeq").val();
             couponSelectSeq = $("#savedCouponSeq").val();
+            couponNm = $("#savedCouponNm").val();
         }
 
         let param = {seq: seq}
