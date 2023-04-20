@@ -19,7 +19,7 @@ open class Tblmicou_coupon_issueDto {
     var daily_end_time: String? = null
     var available_day: String? = null
     var msg_title: String? = null
-    var msg_contnet: String? = null
+    var msg_content: String? = null
     var time_cnt: Int? = null
     var camp_seq: Int? = null
     var target_cnt: Int? = null

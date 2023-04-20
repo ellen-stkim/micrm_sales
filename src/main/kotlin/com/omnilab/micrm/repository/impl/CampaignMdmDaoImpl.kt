@@ -106,7 +106,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     couponIssueDto.coupon_seq = contTpLst["DMTP02"]!!.coupon_seq!!.toInt()
                     couponIssueDto.send_phone = contDto.send_to
                     couponIssueDto.msg_title = targetSubject
-                    couponIssueDto.msg_contnet = targetBody
+                    couponIssueDto.msg_content = targetBody
                     couponIssueDto.usr_grp_cd = dto.usr_grp_cd
                     couponIssueDto.reg_id = dto.reg_id
                     couponIssueDto.camp_seq = dto.seq

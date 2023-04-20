@@ -7,6 +7,7 @@ import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
 import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
+import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
 import org.apache.poi.ss.usermodel.Workbook
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -72,19 +74,19 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             val resultJson: JSONObject = jsonObject["result"] as JSONObject
             val shortUrl = resultJson["url"].toString()
-
             // mms 전송
-            // todo mms 전송 필요
-            // todo mms content {쿠폰 링크} sendUrl로 치환하기
-            val msgkey = "1"
-            val msgtp = "DMCH201"
-            //            sqlSession.insert("ins_camp_send_mms_lg", sendLst)
-
-//            sendLst.add(LgMms_msgDto(msgtitle, phone, callback, "0", regdate, content , "0", "", "", "", mdmDb코드 가져오기, "MICRM_COUPON", dto.usr_grp_cd))
+            val msgtp = "DMCH203"
+            val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
+            val msgDto = LgMms_msgDto(
+                couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
+                LocalDateTime.now().toString(), couponIssueDto.msg_content, "0", "", "", "",
+                mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd
+            )
+            couponDao.insertCouponIssueMsg(msgDto)
 
             // coupon issue log
             val dto = Tblmicou_coupon_issued_logDto(
-                msgkey,
+                msgDto.msgkey.toString(),
                 msgtp,
                 couponIssueDto.seq!!,
                 couponUuid,

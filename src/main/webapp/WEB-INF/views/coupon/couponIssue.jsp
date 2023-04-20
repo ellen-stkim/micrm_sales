@@ -14,6 +14,7 @@
     <h3 class="page_title">COUPON</h3>
     <form:form id="couponIssueForm" name="couponIssueForm" onsubmit="return false">
     <input type="hidden" name="encodedCouponSeq" value="${coupon.encodedSeq}">
+    <input type="hidden" name="msg_content" value="${coupon.content}">
     <article class="area option bdr_bottom">
         <section class="breadcrumb">
             <ul>
