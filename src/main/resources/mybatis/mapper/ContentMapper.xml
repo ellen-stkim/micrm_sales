@@ -1194,6 +1194,7 @@
 			, kko_img.img_url                                                                                      AS kko_img_lst
 			, l.kko_btn_nm                                                                                         AS kko_btn_nm
 			, l.kko_btn_url                                                                                        AS kko_btn_url
+			, l.coupon_seq                                                                                         AS coupon_seq
 			, l.img_cd_1                                                                                           AS img_cd_1
 			, l.img_cd_2                                                                                           AS img_cd_2
 			, l.img_cd_3                                                                                           AS img_cd_3
