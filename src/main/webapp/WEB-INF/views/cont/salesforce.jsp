@@ -3587,14 +3587,15 @@
     };
 
     //쿠폰 리스트 확인 클릭 시
-    const targetCheck = () => {
-        if (couponSelectSeq.length == 0) {
-            popup.popAlert("쿠폰을 선택해주세요.");
-            return false;
-        } else {
+    const targetCheck = (value) => {
+        if (couponSelectSeq.length != 0) {
             const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
             couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
             couponSeq = couponSelectSeq;
+            popupClose(value);
+        } else {
+            popup.popAlert("쿠폰을 선택해주세요.");
+            return false;
         }
     };
 
