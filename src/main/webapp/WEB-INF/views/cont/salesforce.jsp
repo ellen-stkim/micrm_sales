@@ -1887,7 +1887,6 @@
             return true;
         }
         let smsTxt = $('#sms_txt_area');
-        popup.popAlert(smsTxt.val() + "," + smsTxt.val().indexOf("{쿠폰링크}"));
         if (smsTxt.val().indexOf("{쿠폰링크}") === -1) {
             popup.popAlert("사용 버튼을 클릭하여 {쿠폰링크}를 입력해주세요");
             return false;
