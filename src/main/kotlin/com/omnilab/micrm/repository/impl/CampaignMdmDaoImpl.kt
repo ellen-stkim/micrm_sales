@@ -77,21 +77,15 @@ class CampaignMdmDaoImpl : CampaignSendDao {
              * 쿠폰 로직
              * 1. 도메인
              * 2. Path
-             * 3. if (!couponIssued where 캠페인seq) insertCouponIssue
+             * 3. 쿠폰 발급
              * 4. uuid
              * 5. encoded UUID
              * 6. Naver short URL
              * -------
              * 7. 문자 발송
              * -------
-             * 8. send tblmicp_send_hst seq으로  HstSeq와 msgTp 가지고 문자 타입과 메시지 seq 저장
-             * 9. insertCouponIssuedLog
-             * 10.updateCouponIssueTargetCount
-             *
-             * - 그냥
-             * -> log 메세지 타입,
-             * - 세일즈
-             * ->
+             * 8. 쿠폰 발급 내역
+             * 9. 쿠폰 발급 타겟 수
              */
             var couponIssuedLogDto = Tblmicou_coupon_issued_logDto()
             if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
@@ -99,7 +93,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
                 // 2. Path
                 var couponPath = "/mobileCoupon/"
-                // 3. couponIssue
+                // 3. 쿠폰 발급
                 var couponIssueDto: CouponIssueDto? = sqlSession.selectOne("select_coupon_issue", dto.seq.toString())
                 if (CommonUtils.isEmptyObject(couponIssueDto)) {
                     couponIssueDto = CouponIssueDto()
@@ -119,6 +113,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 val encodedUuid = AES256.AES_Encode(couponUuid, GlobalValues.encKey)
                 val sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
+                // 6. Naver Short URL
                 val jsonObject = NaverShortUrl.shorten(sendUrl)
                 if (jsonObject["code"] != "200") {
                     logger.error("CampaignMdmDaoImpl.ins_send={}", "네이버 URL 오류")
@@ -232,6 +227,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 sqlSession.insert("ins_camp_send_sms_lg", sendLst)
             }
 
+            // 8.쿠폰 발급 내역
             if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
                 var msgkey = ""
                 val map = mapOf("etc3" to HstSeq, "m_server" to mdmDb)
@@ -244,6 +240,14 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 couponIssuedLogDto.msgkey = msgkey
                 couponIssuedLogDto.msgtp = msgTp
                 sqlSession.insert("insert_coupon_issued_log", couponIssuedLogDto)
+
+
+                // 9. 쿠폰 발급 타겟 수
+                val mapUpdateTarget = mapOf(
+                    "seq" to couponIssuedLogDto.coupon_issue_seq,
+                    "target_cnt" to 1
+                )
+                sqlSession.update("update_coupon_issue_target_count", mapUpdateTarget)
             }
 
             cnt++
