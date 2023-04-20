@@ -864,9 +864,9 @@ class MobileContentServiceImpl : ContentService {
             }
             // 이전에 선택한 쿠폰 시퀀스와 이름 조회
             if (dto.cont_tp.equals("DMTP02") && !dto.coupon_seq.isNullOrEmpty()) {
-                dto.coupon_seq = AES256.AES_Encode(dto.coupon_seq, GlobalValues.encKey);
                 val selectCoupon = couponDao.selectCoupon(dto.coupon_seq!!.toInt())
                 dto.coupon_nm = selectCoupon.nm
+                dto.coupon_seq = AES256.AES_Encode(dto.coupon_seq, GlobalValues.encKey)
             }
             contentOneList.add(dto)
         }
