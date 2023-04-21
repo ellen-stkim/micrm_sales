@@ -1887,6 +1887,9 @@
     }
 
     function couponValidate() {
+        if (couponSelectSeq == undefined) {
+            return true;
+        }
         if (couponSelectSeq.length == 0) {
             return true;
         }
