@@ -33,6 +33,8 @@ class CouponIssueServiceImpl: CouponIssueService {
     private lateinit var couponDao: CouponDao
 
     override fun issueCoupon(couponIssueDto: CouponIssueDto) {
+        if (couponIssueDto.msg_title.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "메시지 제목을 입력해주세요.")
+
         val user = UsefulUtils.sessionUser()
         var sendCnt = 0
 
@@ -56,7 +58,12 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponIssueDto.usr_grp_cd = user.usr_grp_cd
         couponIssueDto.reg_id = user.usr_id
         couponDao.insertCouponIssue(couponIssueDto)
-        for (receiveNumber in refinePhoneNumber(couponIssueDto)) {
+
+        // 쿠폰 전송
+        val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
+        if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요")
+
+        for (receiveNumber in refinePhoneNumberList) {
             // uuid 생성
             val couponUuid = makeUuidUrl()
 

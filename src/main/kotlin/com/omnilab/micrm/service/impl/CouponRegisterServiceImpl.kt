@@ -145,7 +145,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     }
 
     private fun validationCouponDto(dto: CouponRegisterDto, type: String) {
-        if (CommonUtils.isEmptyObject(dto.nm)) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰명을 입력해주세요.")
+        if (dto.nm.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰명을 입력해주세요.")
         if (CommonUtils.isEmptyObject(dto.category_seq)) throw CouponException(HttpStatus.BAD_REQUEST, "카테고리를 선택해주세요.")
         if (type != "update") {
             if (CommonUtils.isEmptyObject(dto.imgFile)) throw CouponException(HttpStatus.BAD_REQUEST, "이미지를 등록해주세요.")
@@ -153,9 +153,9 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         } else if (CommonUtils.isEmptyObject(dto.imgFile) && !isImageFile(dto.imgFile!!)) {
             throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요.")
         }
-        if (CommonUtils.isEmptyObject(dto.title)) throw CouponException(HttpStatus.BAD_REQUEST, "Title을 입력해주세요.")
-        if (CommonUtils.isEmptyObject(dto.descr)) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요.")
-        if (CommonUtils.isEmptyObject(dto.notice)) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요.")
+        if (dto.title.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Title을 입력해주세요.")
+        if (dto.descr.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요.")
+        if (dto.notice.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요.")
         if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST,"Expiry Date를 선택해주세요.")
         if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Time을 선택해주세요.")
         if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Start Time을 선택해주세요.")
@@ -167,9 +167,8 @@ class CouponRegisterServiceImpl: CouponRegisterService {
             throw CouponException(HttpStatus.BAD_REQUEST, "Daily Time의 시간 간격이 없습니다.")
         }
         if (CommonUtils.isEmptyObject(dto.available_day)) throw CouponException(HttpStatus.BAD_REQUEST, "Available Day를 선택해주세요.")
-        if (CommonUtils.isEmptyObject(dto.content)) throw CouponException(HttpStatus.BAD_REQUEST, "문자 메시지 내용을 입력해주세요.")
+        if (dto.content.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "문자 메시지 내용을 입력해주세요.")
         if (!(dto.content ?: "").contains("{쿠폰링크}")) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰링크를 삽입해주세요.")
-
 
     }
 
