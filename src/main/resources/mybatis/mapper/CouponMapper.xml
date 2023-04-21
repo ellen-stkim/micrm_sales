@@ -9,6 +9,7 @@
 		SELECT *
 		FROM tblmicou_category
 		WHERE company_grp_cd = #{grp_cd}
+			AND use_yn = 'Y'
 	</select>
 
 	<select id="select_coupon" parameterType="Int" resultType="CouponListDto">
