@@ -27,7 +27,7 @@
         <article class="area option bdr_bottom regist">
             <section class="input_field">
                 <h6 class="title">쿠폰명</h6>
-                <input type="text" name="nm" placeholder="쿠폰명을 입력해주세요." />
+                <input type="text" name="nm" placeholder="쿠폰명을 입력해주세요. autocomplete="off"  />
             </section>
             <section class="select-box">
                 <select name="category_seq" id="category_seq">
@@ -90,7 +90,7 @@
                         <article class="part">
                             <h6 class="label_name">Expiry Date</h6>
                             <section class="components">
-                                <input type="text" name="expire_date" class="datepicker" id="expireDateInput" placeholder="0000-00-00" value="2024-01-01" maxlength="10"/>
+                                <input type="text" name="expire_date" class="datepicker" id="expireDateInput" placeholder="0000-00-00" value="2024-01-01" maxlength="10"  autocomplete="off"/>
                                 <button type="button" class="btn calendar"></button>
                             </section>
                         </article>

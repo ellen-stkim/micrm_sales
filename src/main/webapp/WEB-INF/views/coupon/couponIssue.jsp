@@ -30,7 +30,7 @@
     <article class="area option bdr_bottom regist">
         <section class="input_field">
             <h6 class="title">메시지 제목</h6>
-            <input type="text" name="msg_title" id="msgTitleInput" placeholder="메시지 제목을 입력해주세요." />
+            <input type="text" name="msg_title" id="msgTitleInput" placeholder="메시지 제목을 입력해주세요."  autocomplete="off" />
         </section>
     </article>
     <article class="area form_field issue">

@@ -29,11 +29,11 @@
                 </select>
             </section>
             <section class="period">
-                <input type="text" name="expire_dt" placeholder="유효 기간" class="datepicker" />
+                <input type="text" name="expire_dt" placeholder="유효 기간" class="datepicker" autocomplete="off"/>
                 <button type="button" class="btn calendar"></button>
             </section>
             <section class="srh-box">
-                <input type="text" name="nm" placeholder="쿠폰명 입력" onkeyup="if (window.event.keyCode == 13) { getCouponList('1'); } return false;" />
+                <input type="text" name="nm" placeholder="쿠폰명 입력" onkeyup="if (window.event.keyCode == 13) { getCouponList('1'); } return false;" autocomplete="off" />
                 <button type="button" class="btn srh" onclick="getCouponList('1');"></button>
             </section>
         </article>
