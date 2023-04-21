@@ -81,6 +81,10 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             val resultJson: JSONObject = jsonObject["result"] as JSONObject
             val shortUrl = resultJson["url"].toString()
+
+            // {쿠폰링크} -> shortUrl 치환
+            couponIssueDto.msg_content = couponIssueDto.msg_content!!.replace("{쿠폰링크}", shortUrl)
+
             // mms 전송
             val msgtp = "DMCH203"
             val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
