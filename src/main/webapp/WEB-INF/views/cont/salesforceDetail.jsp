@@ -43,7 +43,12 @@
                     <input type="hidden" id="seq" name="mst_seq" value="${list[0].seq}"/>
                     <input type="hidden" id="usr_grp_cd" name="usr_grp_cd" value="${list[0].cont_grp_cd}"/>
                     <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
-                    <input type="hidden" id="coupon_seq" name="coupon_seq" value="${list[1].coupon_seq}"/>
+                    <c:if test="${list[1].copon_seq != null}">
+                        <input type="hidden" id="coupon_seq" name="coupon_seq" value="${list[1].coupon_seq}"/>
+                    </c:if>
+                    <c:if test="${list[1].copon_seq == null}">
+                        <input type="hidden" id="coupon_seq" name="coupon_seq" value=""/>
+                    </c:if>
                     <div class="th">템플릿 명</div>
                     <div class="td right-border">
                         <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
@@ -654,9 +659,10 @@
                                                     <div class="th bottom-border">쿠폰 발송</div>
                                                     <div class="td bottom-border">
                                                         <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
-                                                        <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
-                                                        <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
+
                                                         <c:if test="${list[1].copon_seq != null}">
+                                                            <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
+                                                            <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
                                                             <input type="text" name="" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
                                                         </c:if>
                                                         <c:if test="${list[1].copon_seq == null}">
