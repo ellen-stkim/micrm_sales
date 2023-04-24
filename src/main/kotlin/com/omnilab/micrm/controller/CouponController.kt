@@ -187,7 +187,6 @@ class CouponController {
 
     @ExceptionHandler(CouponException::class)
     fun exceptionHandler(e: CouponException, response: HttpServletResponse): ResponseEntity<Any> {
-        logger.error("${e.location}={}", e.message)
         return ResponseEntity(mapOf("status" to "400", "message" to e.message), HttpStatus.OK)
     }
 
