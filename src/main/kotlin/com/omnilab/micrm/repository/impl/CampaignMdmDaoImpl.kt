@@ -117,7 +117,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 val jsonObject = NaverShortUrl.shorten(sendUrl)
                 if (jsonObject["code"] != "200") {
                     logger.error("CampaignMdmDaoImpl.ins_send={}", "네이버 URL 오류")
-                    throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
+                    throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "CampaignMdmDaoImpl.ins_send", "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
                 }
                 val resultJson: JSONObject = jsonObject["result"] as JSONObject
                 val shortUrl = resultJson["url"].toString()
