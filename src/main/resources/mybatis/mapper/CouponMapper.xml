@@ -253,12 +253,12 @@
 					CASE
 						WHEN A.msgtp = 'DMCH201' THEN (
 							SELECT (
-							CASE
-								WHEN tr_rsltstat is null THEN '0'
-								WHEN tr_rsltstat = '00' THEN '1'
-								WHEN tr_rsltstat = '06' THEN '2'
-								ELSE '3'
-							END
+								CASE
+									WHEN tr_rsltstat is null THEN '0'
+									WHEN tr_rsltstat = '00' THEN '1'
+									WHEN tr_rsltstat = '06' THEN '2'
+									ELSE '3'
+								END
 							)
 							FROM test_db_lgagent_micrm.sc_tran
 							WHERE tr_num = A.msgkey
@@ -271,7 +271,7 @@
 									WHEN rslt = '1000' THEN '2'
 									ELSE '3'
 								END
-								)
+							)
 							FROM test_db_lgagent_micrm.mms_msg
 							WHERE msgkey = A.msgkey
 						)
