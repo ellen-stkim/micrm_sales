@@ -27,7 +27,7 @@
         <article class="area option bdr_bottom regist">
             <section class="input_field">
                 <h6 class="title">쿠폰명</h6>
-                <input type="text" name="nm" placeholder="쿠폰명을 입력해주세요. autocomplete="off"  />
+                <input type="text" name="nm" placeholder="쿠폰명을 입력해주세요." autocomplete="off"  />
             </section>
             <section class="select-box">
                 <select name="category_seq" id="category_seq">
