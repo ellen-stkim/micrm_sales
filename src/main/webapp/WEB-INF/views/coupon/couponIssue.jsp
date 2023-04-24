@@ -246,7 +246,7 @@
                 return;
             }
 
-            popup.popAlertCallback(response["message"], "location.href = '/coupon/couponIssuedHistory.mi';");
+            popup.popAlertCallback(response["message"], "location.href = '/coupon/couponIssuedLog.mi';");
         };
 
         com_ajax.ajax('post', '${baseURL}/coupon/issueCoupon.service', data, res, '${_csrf.headerName}', '${_csrf.token}');

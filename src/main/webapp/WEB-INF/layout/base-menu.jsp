@@ -26,7 +26,7 @@
 				<li<c:if test="${fn:contains(urlPath,'/coupon/couponList')}"> class='on'</c:if>><a href="/coupon/couponList.mi">리스트</a></li>
 				<li<c:if test="${fn:contains(urlPath,'/coupon/couponRegister')}"> class='on'</c:if>><a href="/coupon/couponRegister.mi">쿠폰등록</a></li>
 				<li<c:if test="${urlPath eq '/coupon/couponIssue.mi'}"> class='on'</c:if>><a href="/coupon/couponIssue.mi">쿠폰발급</a></li>
-				<li<c:if test="${fn:contains(urlPath,'/coupon/couponIssuedHistory')}"> class='on'</c:if>><a href="/coupon/couponIssuedHistory.mi">쿠폰발급내역</a></li>
+				<li<c:if test="${fn:contains(urlPath,'/coupon/couponIssuedLog')}"> class='on'</c:if>><a href="/coupon/couponIssuedLog.mi">쿠폰발급내역</a></li>
 			</ul>
 		</li>
 		<li>

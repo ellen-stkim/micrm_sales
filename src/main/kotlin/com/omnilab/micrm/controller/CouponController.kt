@@ -80,17 +80,15 @@ class CouponController {
             view.addObject("coupon", coupon)
         }
 
-
-
         val sendNumber = couponListService.getDefaultSendNumber()
         view.addObject("sendNumber", sendNumber)
 
         return view
     }
 
-    @GetMapping("/couponIssuedHistory.mi")
-    fun couponIssuedHistory(): ModelAndView {
-        val view = ModelAndView("coupon/couponIssuedHistory")
+    @GetMapping("/couponIssuedLog.mi")
+    fun couponIssuedLog(): ModelAndView {
+        val view = ModelAndView("coupon/couponIssuedLog")
 
         val categoryList = couponRegisterService.getCategory(UsefulUtils.sessionUser().usr_grp_cd!!)
         view.addObject("categoryList", categoryList)

@@ -114,7 +114,7 @@
             "deleteCouponIssuedLogSeq" : checkArr
         };
         const res = function (response) {
-            popup.popAlertCallback(response["message"], "location.href = '/coupon/couponIssuedHistory.mi';");
+            popup.popAlertCallback(response["message"], "location.href = '/coupon/couponIssuedLog.mi';");
         };
 
         com_ajax.ajax('post', '${baseURL}/coupon/deleteCouponIssuedLog.service', data, res, '${_csrf.headerName}', '${_csrf.token}');
