@@ -95,7 +95,12 @@ class CouponListServiceImpl: CouponListService {
             it.encodedSeq = encodingSeq(it.seq!!.toInt())
         }
 
-        // 발송 상태
+        /** 문자 발송 상태
+         * "0" -> 발송 대기
+         * "1" -> 결과 수신 대기
+         * "2" -> 성공
+         * "3" -> 실패
+         */
         couponIssuedLogList.forEach {
             it.send_status =
             if (it.send_status.isNullOrBlank()) {
@@ -104,9 +109,9 @@ class CouponListServiceImpl: CouponListService {
                 // sms
                 if (it.msgtp == "DMCH201") {
                     when (it.send_status) {
-                        "00" -> "1" // 결과 수신 대기
-                        "06" -> "2" // 성공
-                        else -> "3" // 실패
+                        "00" -> "1"
+                        "06" -> "2"
+                        else -> "3"
                     }
                 // mms, lms
                 } else {
