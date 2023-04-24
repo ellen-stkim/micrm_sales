@@ -2975,3 +2975,28 @@ input::placeholder {
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue ol li span {
     font-family: "Gotham";
 }
+
+/* 20230424 miMC 쿠폰 시스템 추가 수정 사항 */
+.wrap.mcdonald .area.form_field .left .input_field.period li .part.full {
+    width: 100%;
+}
+.wrap.mcdonald .area.form_field .left .input_field.period li .part.full .components {
+    padding: 0 10px;
+}
+.wrap.mcdonald .area.form_field .left .input_field.period li .part ul.days {
+    display: flex;
+    gap: 5px;
+}
+.wrap.mcdonald .area.form_field .left .input_field.period li .part ul.days li {
+    opacity: 0.4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 47px;
+    height: 23px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+.wrap.mcdonald .area.form_field .left .input_field.period li .part ul.days li.active {
+    opacity: 1;
+}

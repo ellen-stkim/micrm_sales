@@ -119,16 +119,25 @@
                         </article>
                     </li>
                     <li>
-                        <article class="part">
-                            <h6 class="label_name">Available Day</h6>
+                        <article class="part full">
+                            <h6 class="label_name">Date</h6>
                             <section class="components">
-                                <label><input type="checkbox" value="1" name="available_day">월</label>
-                                <label><input type="checkbox" value="2" name="available_day">화</label>
-                                <label><input type="checkbox" value="3" name="available_day">수</label>
-                                <label><input type="checkbox" value="4" name="available_day">목</label>
-                                <label><input type="checkbox" value="5" name="available_day">금</label>
-                                <label><input type="checkbox" value="6" name="available_day">토</label>
-                                <label><input type="checkbox" value="0" name="available_day">일</label>
+                                <ul class="days">
+                                    <label for="chk-mon"><li>MON</li></label>
+                                    <input type="checkbox" id="chk-mon" value="1" name="available_day" style="display:none" >
+                                    <label for="chk-tue"><li>TUE</li></label>
+                                    <input type="checkbox" id="chk-tue" value="2" name="available_day" style="display:none" >
+                                    <label for="chk-tue"><li>TUE</li></label>
+                                    <input type="checkbox" id="chk-wed" value="3" name="available_day" style="display:none" >
+                                    <label for="chk-thu"><li>THU</li></label>
+                                    <input type="checkbox" id="chk-thu" value="4" name="available_day" style="display:none" >
+                                    <label for="chk-fri"><li>FRI</li></label>
+                                    <input type="checkbox" id="chk-fri" value="5" name="available_day" style="display:none" >
+                                    <label for="chk-sat"><li>SAT</li></label>
+                                    <input type="checkbox" id="chk-sat" value="6" name="available_day" style="display:none" >
+                                    <label for="chk-sun"><li>SUN</li></label>
+                                    <input type="checkbox" id="chk-sun" value="0" name="available_day" style="display:none" >
+                                </ul>
                             </section>
                         </article>
                     </li>

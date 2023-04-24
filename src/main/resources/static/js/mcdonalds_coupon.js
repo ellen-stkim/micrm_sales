@@ -71,6 +71,12 @@ window.addEventListener("DOMContentLoaded", () => {
     //         paging[pagingIdx].classList.add("active");
     //     });
     // }
+    const days = document.querySelectorAll(".input_field.period .part.full .days li");
+    days.forEach((item) => {
+        item.addEventListener("click", () => {
+            item.classList.toggle("active");
+        });
+    });
 });
 
 //제이쿼리 UI

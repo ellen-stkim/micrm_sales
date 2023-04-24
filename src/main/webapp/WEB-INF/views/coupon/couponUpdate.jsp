@@ -122,16 +122,25 @@
                         </article>
                     </li>
                     <li>
-                        <article class="part">
-                            <h6 class="label_name">Available Day</h6>
+                        <article class="part full">
+                            <h6 class="label_name">Date</h6>
                             <section class="components">
-                                <label><input type="checkbox" value="1" name="available_day" <c:if test="${fn:contains(coupon.available_day, 1)}">checked</c:if>>월</label>
-                                <label><input type="checkbox" value="2" name="available_day" <c:if test="${fn:contains(coupon.available_day, 2)}">checked</c:if>>화</label>
-                                <label><input type="checkbox" value="3" name="available_day" <c:if test="${fn:contains(coupon.available_day, 3)}">checked</c:if>>수</label>
-                                <label><input type="checkbox" value="4" name="available_day" <c:if test="${fn:contains(coupon.available_day, 4)}">checked</c:if>>목</label>
-                                <label><input type="checkbox" value="5" name="available_day" <c:if test="${fn:contains(coupon.available_day, 5)}">checked</c:if>>금</label>
-                                <label><input type="checkbox" value="6" name="available_day" <c:if test="${fn:contains(coupon.available_day, 6)}">checked</c:if>>토</label>
-                                <label><input type="checkbox" value="0" name="available_day" <c:if test="${fn:contains(coupon.available_day, 0)}">checked</c:if>>일</label>
+                                <ul class="days">
+                                    <label for="chk-mon"><li <c:if test="${fn:contains(coupon.available_day, 1)}">class="active"</c:if>>MON</li></label>
+                                    <input type="checkbox" id="chk-mon" value="1" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 1)}">checked</c:if>>
+                                    <label for="chk-tue"><li <c:if test="${fn:contains(coupon.available_day, 2)}">class="active"</c:if>>TUE</li></label>
+                                    <input type="checkbox" id="chk-tue" value="2" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 2)}">checked</c:if> >
+                                    <label for="chk-wed"><li <c:if test="${fn:contains(coupon.available_day, 3)}">class="active"</c:if>>WED</li></label>
+                                    <input type="checkbox" id="chk-wed" value="3" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 3)}">checked</c:if>>
+                                    <label for="chk-thu"><li <c:if test="${fn:contains(coupon.available_day, 4)}">class="active"</c:if>>THU</li></label>
+                                    <input type="checkbox" id="chk-thu" value="4" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 4)}">checked</c:if>>
+                                    <label for="chk-fri"><li <c:if test="${fn:contains(coupon.available_day, 5)}">class="active"</c:if>>FRI</li></label>
+                                    <input type="checkbox" id="chk-fri" value="5" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 5)}">checked</c:if>>
+                                    <label for="chk-sat"><li <c:if test="${fn:contains(coupon.available_day, 6)}">class="active"</c:if>>SAT</li></label>
+                                    <input type="checkbox" id="chk-sat" value="6" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 6)}">checked</c:if>>
+                                    <label for="chk-sun"><li <c:if test="${fn:contains(coupon.available_day, 0)}">class="active"</c:if>>SUN</li></label>
+                                    <input type="checkbox" id="chk-sun" value="0" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 0)}">checked</c:if>>
+                                </ul>
                             </section>
                         </article>
                     </li>
