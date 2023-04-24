@@ -12,6 +12,43 @@
 
 <span id="body">
 <h5 class="title">쿠폰 발급내역</h5>
+<c:if test="${fn:length(couponIssuedLogList) == 0}">
+<div class="tbl_inner empty">
+    <table class="tbl">
+        <colgroup>
+            <col width="36" />
+            <col width="206" />
+            <col width="*" />
+            <col width="196" />
+            <col width="194" />
+            <col width="196" />
+            <col width="242" />
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <label class="chk label">
+                        <input type="checkbox" name="" id="" />
+                        <span class="chk-box"></span>
+                        </label>
+                    </th>
+                    <th>수신자 번호</th>
+                    <th>쿠폰명</th>
+                    <th>발송 일자</th>
+                    <th>발송 상태</th>
+                    <th>사용 여부</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr>
+                <td colspan="7">조회된 결과가 없습니다.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</c:if>
+<c:if test="${fn:length(couponIssuedLogList) != 0}">
 <div class="tbl_inner">
     <table class="tbl">
         <colgroup>
@@ -96,51 +133,5 @@
         </ul>
     </div>
 </section>
+</c:if>
 </span>
-
-<!-- 발급 내역이 없을 경우 -->
-<!--
-empty 클래스 추가
-<div class="tbl_inner empty">
-<table class="tbl">
-<colgroup>
-<col width="36" />
-<col width="206" />
-<col width="*" />
-<col width="196" />
-<col width="194" />
-<col width="196" />
-<col width="242" />
-</colgroup>
-<thead>
-<tr>
-<th>
-<label class="chk label">
-<input type="checkbox" name="" id="" />
-<span class="chk-box"></span>
-</label>
-</th>
-<th>수신자 번호</th>
-<th>쿠폰명</th>
-<th>발송 일자</th>
-<th>발송 상태</th>
-<th>사용 여부</th>
-<th>비고</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td colspan="7">조회된 결과가 없습니다.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<section class="paging_wrap">
-<button type="button" class="btn prev disable"></button>
-<ul class="paging">
-<li class="active">1</li>
-</ul>
-<button type="button" class="btn next disable"></button>
-</section>
-
--->
