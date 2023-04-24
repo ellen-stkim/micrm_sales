@@ -6,6 +6,7 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.coupon.CouponListDto
 import com.omnilab.micrm.model.coupon.SearchCouponDto
 import com.omnilab.micrm.model.coupon.SearchCouponIssuedLogDto
+import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponListService
@@ -79,7 +80,11 @@ class CouponListServiceImpl: CouponListService {
         val reMap: MutableMap<String, Any> = HashMap()
         val paginationInfo : PaginationInfo = UsefulUtils.makePage(searchDto.pageNo,10,10)
 
+        val m_server = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", UsefulUtils.sessionUser().usr_grp_cd!!)).cd_val
+        searchDto.m_server = m_server
+
         // 쿠폰 발급 내역 리스트 조회
+
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
@@ -88,6 +93,30 @@ class CouponListServiceImpl: CouponListService {
         // 시퀀스 암호화
         couponIssuedLogList.forEach {
             it.encodedSeq = encodingSeq(it.seq!!.toInt())
+        }
+
+        // 발송 상태
+        couponIssuedLogList.forEach {
+            it.send_status =
+            if (it.send_status.isNullOrBlank()) {
+                "0" // 발송 대기
+            } else {
+                // sms
+                if (it.msgtp == "DMCH201") {
+                    when (it.send_status) {
+                        "00" -> "1" // 결과 수신 대기
+                        "06" -> "2" // 성공
+                        else -> "3" // 실패
+                    }
+                // mms, lms
+                } else {
+                    when (it.send_status) {
+                        "0" -> "1"
+                        "1000" -> "2"
+                        else -> "3"
+                    }
+                }
+            }
         }
 
         // 페이징

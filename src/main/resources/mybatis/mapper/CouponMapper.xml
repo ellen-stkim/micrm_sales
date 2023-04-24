@@ -143,10 +143,19 @@
 	<select id="select_coupon_issued_log_list" parameterType="SearchCouponIssuedLogDto" resultType="CouponIssuedListDto">
 		SELECT
 			A.seq,
+			A.msgkey,
+			A.msgtp,
+				CASE
+				WHEN A.msgtp = 'DMCH201' THEN (
+					SELECT `tr_rsltstat` FROM test_db_lgagent_micrm.sc_tran WHERE tr_num = A.msgkey
+				)
+				ELSE (
+					SELECT rslt FROM test_db_lgagent_micrm.mms_msg WHERE msgkey = A.msgkey
+				)
+			END 'send_status',
 			A.phone,
 			C.nm as coupon_nm,
 			A.send_dt,
-			A.send_status,
 			A.use_yn,
 			D.img_url
 		FROM tblmicou_coupon_issued_log as A
@@ -168,14 +177,41 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_end_dt)">
 				AND A.send_dt <![CDATA[ <= ]]> #{send_end_dt}
 			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
-				AND A.send_status = #{send_status}
-			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 				AND A.use_yn = #{use_yn}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(coupon_nm)">
 				AND C.nm LIKE CONCAT('%',#{coupon_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
+				AND (
+					CASE
+						WHEN A.msgtp = 'DMCH201' THEN (
+							SELECT (
+								CASE
+									WHEN tr_rsltstat is null THEN '0'
+									WHEN tr_rsltstat = '00' THEN '1'
+									WHEN tr_rsltstat = '06' THEN '2'
+									ELSE '3'
+								END
+							)
+							FROM test_db_lgagent_micrm.sc_tran
+							WHERE tr_num = A.msgkey
+						)
+						ELSE (
+							SELECT (
+								CASE
+									WHEN rslt is null THEN '0'
+									WHEN rslt = '0' THEN '1'
+									WHEN rslt = '1000' THEN '2'
+									ELSE '3'
+								END
+							)
+							FROM test_db_lgagent_micrm.mms_msg
+							WHERE msgkey = A.msgkey
+						)
+					END
+				) = #{send_status}
 			</if>
 		</where>
 		ORDER BY A.reg_dt DESC
@@ -206,14 +242,41 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_end_dt)">
 				AND A.send_dt <![CDATA[ <= ]]> #{send_end_dt}
 			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
-				AND A.send_status = #{send_status}
-			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 				AND A.use_yn = #{use_yn}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(coupon_nm)">
 				AND C.nm LIKE CONCAT('%',#{coupon_nm},'%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
+				AND (
+					CASE
+						WHEN A.msgtp = 'DMCH201' THEN (
+							SELECT (
+							CASE
+								WHEN tr_rsltstat is null THEN '0'
+								WHEN tr_rsltstat = '00' THEN '1'
+								WHEN tr_rsltstat = '06' THEN '2'
+								ELSE '3'
+							END
+							)
+							FROM test_db_lgagent_micrm.sc_tran
+							WHERE tr_num = A.msgkey
+						)
+						ELSE (
+							SELECT (
+								CASE
+									WHEN rslt is null THEN '0'
+									WHEN rslt = '0' THEN '1'
+									WHEN rslt = '1000' THEN '2'
+									ELSE '3'
+								END
+								)
+							FROM test_db_lgagent_micrm.mms_msg
+							WHERE msgkey = A.msgkey
+						)
+					END
+				) = #{send_status}
 			</if>
 		</where>
 	</select>
@@ -267,8 +330,8 @@
 		INSERT INTO tblmicou_coupon (
 			category_seq,
 			nm,
-			title, 
-			descr, 
+			title,
+			descr,
 			notice,
 			expire_dt,
 			daily_start_time,

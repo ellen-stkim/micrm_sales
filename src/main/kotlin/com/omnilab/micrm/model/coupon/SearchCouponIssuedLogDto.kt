@@ -13,6 +13,8 @@ class SearchCouponIssuedLogDto {
     var coupon_nm: String? = ""
     var usr_grp_cd: String? = ""
 
+    var m_server: String? = ""
+
     var pageNo: Int = 1
     var firstIndex: Int?= null
     var recordCountPerPage: Int = 0
