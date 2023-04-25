@@ -166,7 +166,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (dto.daily_start_time!!.replace(":", "") == dto.daily_end_time!!.replace(":", "")) {
             throw CouponException(HttpStatus.BAD_REQUEST, "Daily Time의 시간 간격이 없습니다.")
         }
-        if (CommonUtils.isEmptyObject(dto.available_day)) throw CouponException(HttpStatus.BAD_REQUEST, "Available Day를 선택해주세요.")
+        if (CommonUtils.isEmptyObject(dto.available_day)) throw CouponException(HttpStatus.BAD_REQUEST, "Date를 선택해주세요.")
         if (dto.content.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "문자 메시지 내용을 입력해주세요.")
         if (!(dto.content ?: "").contains("{쿠폰링크}")) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰링크를 삽입해주세요.")
 
