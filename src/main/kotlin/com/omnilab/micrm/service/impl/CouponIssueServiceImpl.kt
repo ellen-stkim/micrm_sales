@@ -10,7 +10,10 @@ import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
+import com.sun.xml.ws.api.pipe.FiberContextSwitchInterceptor.Work
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -167,8 +170,8 @@ class CouponIssueServiceImpl: CouponIssueService {
         val extPos = file.originalFilename!!.lastIndexOf(".")
         val ext = file.originalFilename!!.substring(extPos + 1)
 
-        return (xlsxContentType == file.contentType) || (xlsContentType == file.contentType) &&
-                (ext == "xlsx") || (ext == "xls")
+        return ((xlsxContentType == file.contentType) || (xlsContentType == file.contentType)) &&
+                ((ext == "xlsx") || (ext == "xls"))
     }
 
     private fun extractExcel(file: MultipartFile): MutableMap<String, Any> {
@@ -183,12 +186,16 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         try {
             // StreamingReader 사용 으로 OOM 방지
-            workbook = StreamingReader.builder()
-                .rowCacheSize(100)
+            if (file.contentType == "application/vnd.ms-excel") {
+                workbook = HSSFWorkbook(file.inputStream)
+            } else {
+                workbook = StreamingReader.builder()
+                    .rowCacheSize(100)
                 .bufferSize(4096)
-                .open(file.inputStream)
+                    .open(file.inputStream) as Workbook
+            }
 
-            val sheet = workbook.getSheetAt(0)
+            val sheet = workbook?.getSheetAt(0)
             for (row in sheet!!) {
                 if (row != null) {
 
