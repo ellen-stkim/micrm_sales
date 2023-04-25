@@ -83,14 +83,14 @@ class CouponIssueServiceImpl: CouponIssueService {
             val shortUrl = resultJson["url"].toString()
 
             // {쿠폰링크} -> shortUrl 치환
-            couponIssueDto.msg_content = couponIssueDto.msg_content!!.replace("{쿠폰링크}", shortUrl)
+            val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", shortUrl)
 
             // mms 전송
             val msgtp = "DMCH203"
             val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
             val msgDto = LgMms_msgDto(
                 couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
-                LocalDateTime.now().toString(), couponIssueDto.msg_content, "0", "", "", "",
+                LocalDateTime.now().toString(), msgContent, "0", "", "", "",
                 mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd
             )
             couponDao.insertCouponIssueMsg(msgDto)
