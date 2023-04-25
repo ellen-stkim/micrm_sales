@@ -149,7 +149,7 @@
             <section class="right">
                 <article class="preview">
                     <section class="image">
-                        <img alt="이미지 없음" src="${baseURL}${coupon.img_url}" class="noimage" />
+                        <img alt="이미지 없음" src="${baseURL}${coupon.img_url}" class="noimage modifyImg" />
                     </section>
                     <section class="contents">
                         <textarea name="content" id="content" cols="30" rows="10" placeholder="문자 메시지 내용과 쿠폰 링크를 삽입해주세요.">${coupon.content}</textarea>

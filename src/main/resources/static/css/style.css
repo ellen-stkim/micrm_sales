@@ -2734,7 +2734,7 @@ input::placeholder {
 .wrap.mcdonald .area.form_field .right .preview .image {display:flex; justify-content: center; align-items: center; height:269px; background:#fafafa;}
 .wrap.mcdonald .area.form_field .right .preview .image.add {background:#fff;}
 .wrap.mcdonald .area.form_field .right .preview .image img:not(.noimage) {width:100%;}
-.wrap.mcdonald .area.form_field .right .preview .image img {width: 268px}
+.wrap.mcdonald .area.form_field .right .preview .image img.modifyImg {width: 268px}
 .wrap.mcdonald .area.form_field .right .preview .contents {display: flex; height:227px;border-top:1px solid #f4f4f4;}
 .wrap.mcdonald .area.form_field .right .preview .contents textarea {resize:none; padding:15px; width:100% !important; height: 100% !important; font-family: 'Noto Sans KR', sans-serif; font-size:12px; font-weight: 500;}
 .wrap.mcdonald .area.button {display:flex; justify-content: center; align-items: center; height:101px; border-bottom:1px solid #ddd;}
