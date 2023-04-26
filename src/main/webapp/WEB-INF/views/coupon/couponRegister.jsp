@@ -292,10 +292,6 @@
         }
     }
 
-    function cancelDailyTime() {
-        $("#daily_end_time").val('');
-    }
-
     function confirmAlertDailyTimeCheck(alertTxt, callback) {
         let html = '';
         html +=
@@ -314,6 +310,10 @@
             '</div>';
         $('body .layer_pop.alert').remove();
         $('body').append(html);
+    }
+
+    function cancelDailyTime() {
+        $("#daily_end_time").val('');
     }
 
     function insertCouponLinkText(){
