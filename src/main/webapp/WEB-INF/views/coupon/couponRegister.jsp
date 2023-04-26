@@ -106,14 +106,14 @@
                         <article class="part">
                             <h6 class="label_name">Daily Start Time</h6>
                             <section class="components">
-                                <input type="text" name="daily_start_time" class="timepicker" placeholder="00:00" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off"  />
+                                <input type="text" name="daily_start_time" id="daily_start_time" class="timepicker" placeholder="00:00" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" onchange="dailyStartEndTimePopup()" maxlength="5" autocomplete="off"  />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
                         <article class="part">
                             <h6 class="label_name">Daily End Time</h6>
                             <section class="components">
-                                <input type="text" name="daily_end_time" class="timepicker" placeholder="00:00" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" maxlength="5" autocomplete="off"  />
+                                <input type="text" name="daily_end_time" id="daily_end_time" class="timepicker" placeholder="00:00" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onkeyup="formatTime(this);" onchange="dailyStartEndTimePopup()" maxlength="5" autocomplete="off"  />
                                 <button type="button" class="btn time"></button>
                             </section>
                         </article>
@@ -179,7 +179,7 @@
         $("#notice").keyup(function(e) {
             var content = $(this).val();
             var count = content.length+"";
-            if(content.length >= 1000) {
+            if (content.length >= 1000) {
                 count = count.substring(0, 1) + "," + count.substring(1, 4);
             }
             $("#noticeCount").html(count);
@@ -277,6 +277,44 @@
         });
 
     });
+
+    function dailyStartEndTimePopup() {
+        var dailyStartTime = $("#daily_start_time").val();
+        var dailyEndTime = $("#daily_end_time").val();
+
+        if (/^(0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[1-5][0-9])$/.test(dailyStartTime) &&
+            /^(0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[1-5][0-9])$/.test(dailyEndTime)) {
+
+            if (dailyStartTime > dailyEndTime) {
+                let msg = '쿠폰 사용 시간은 당일 '+ dailyStartTime + '부터 다음 날 ' + dailyEndTime + '까지 입니다.';
+                confirmAlertDailyTimeCheck(msg, "cancelDailyTime()");
+            }
+        }
+    }
+
+    function cancelDailyTime() {
+        $("#daily_end_time").val('');
+    }
+
+    function confirmAlertDailyTimeCheck(alertTxt, callback) {
+        let html = '';
+        html +=
+            '<div class="layer_pop alert active">' +
+            '<div class="pop_container popup_size3">' +
+            '<input type="button" value="닫기" class="btn_pop_close" onclick="' + callback + '; popupClose(this);"/>' +
+            '<div class="pop_title"></div>' +
+            '<div class="pop_inner">' +
+            '<div class="alert_txt">' + alertTxt + '</div>' +
+            '<div class="btn_row">' +
+            '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="popupClose(this);" value="적용" />' +
+            '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="' + callback + '; popupClose(this);" value="취소" />' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $('body .layer_pop.alert').remove();
+        $('body').append(html);
+    }
 
     function insertCouponLinkText(){
         var txtArea = document.getElementById('content');
