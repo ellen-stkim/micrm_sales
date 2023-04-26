@@ -157,6 +157,9 @@
     function deleteReceivePhoneNumber(btn, phoneNumber) {
 
         phoneSet.delete(phoneNumber.replace(/-/gi, ""));
+
+        currentAddNumberCount --;
+        $("#current_add_number").text(currentAddNumberCount);
         delAudience(btn);
     }
 
