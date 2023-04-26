@@ -3571,10 +3571,12 @@
     };
 
     function getCouponListAtSales(pageNo) {
-        var expireDate = moment().add(Number($('input[name="Cperiod"]:checked').val()), 'months').format('YYYY-MM-DD HH:mm:ss');
         var data = $('#searchCouponListForm').serializeArray();
         data.push({name: "pageNo", value: pageNo});
-        data.push({name: "expire_dt", value: expireDate});
+        if (selectedExpireMonth != 0) {
+            var expireDate = moment().add(Number($('input[name="Cperiod"]:checked').val()), 'months').format('YYYY-MM-DD HH:mm:ss');
+            data.push({name: "expire_dt", value: expireDate});
+        }
         const res = function (response) {
             var $doc = new DOMParser().parseFromString(response, "text/html");
             $('#couponListTable').html($("#body", $doc).html());
