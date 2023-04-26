@@ -12,12 +12,13 @@
 
 <span id="body">
 <c:forEach var="phoneNumber" items="${phoneNumberList}">
-    <li>
+    <li id="${phoneNumber}">
         <p>${cutil:numberToPhone(phoneNumber)}</p>
         <button type="button" onclick="deleteReceivePhoneNumber(this,'${cutil:numberToPhone(phoneNumber)}')" class="btn del"></button>
     </li>
 </c:forEach>
 <script>
+
     var phoneList = [];
     <c:forEach var="num" items="${phoneNumberList}">
         phoneList.push("${num}");

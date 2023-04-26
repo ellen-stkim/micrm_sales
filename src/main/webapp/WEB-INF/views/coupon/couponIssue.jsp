@@ -227,6 +227,7 @@
     function setPhoneNumberList(phoneList) {
         for (var i = 0; i < phoneList.length; i++) {
             if (phoneSet.has(String(phoneList[i]))) {
+                $('#'+String(phoneList[i])).remove();
                 collectCnt --;
                 duplicateCnt ++;
             } else {

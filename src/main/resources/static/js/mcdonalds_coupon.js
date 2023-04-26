@@ -167,6 +167,7 @@ const addAudience = (el) => {
     btnDel.setAttribute("onclick", "deleteReceivePhoneNumber(this,'"+inputValue.value+"')");
     btnDel.classList.add("btn");
     btnDel.classList.add("del");
+    listItem.setAttribute("id", inputValue.value);
     listItem.appendChild(valueText);
     listItem.appendChild(btnDel);
     list.appendChild(listItem);
