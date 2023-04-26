@@ -111,23 +111,26 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 val couponUuid = CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)
                 // 5. uuid 암호화
                 val encodedUuid = AES256.AES_Encode(couponUuid, GlobalValues.encKey)
-                val sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+                var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
                 // 6. Naver Short URL
+                // Naver short Url
                 val jsonObject = NaverShortUrl.shorten(sendUrl)
-                if (jsonObject["code"] != "200") {
-                    logger.error("CampaignMdmDaoImpl.ins_send={}", "네이버 URL 오류")
-                    throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
+                if (jsonObject["code"] != null && jsonObject["code"] == "200") {
+                    val resultJson: JSONObject = jsonObject["result"] as JSONObject
+                    sendUrl = resultJson["url"].toString()
                 }
-                val resultJson: JSONObject = jsonObject["result"] as JSONObject
-                val shortUrl = resultJson["url"].toString()
+//                else {
+//                logger.error("CouponIssueServiceImpl.issueCoupon={}", "네이버 URL 오류")
+//                throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
+//                }
 
-                targetBody = targetBody.replace("{쿠폰링크}", shortUrl)
+                targetBody = targetBody.replace("{쿠폰링크}", sendUrl)
 
                 couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
                     couponIssueDto!!.seq!!,
                     couponUuid,
-                    shortUrl,
+                    sendUrl,
                     map["SEND_TO"].toString(),
                     dto.reg_id,
                     dto.usr_grp_cd.toString()
