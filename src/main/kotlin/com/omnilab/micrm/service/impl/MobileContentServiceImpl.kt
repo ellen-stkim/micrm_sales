@@ -122,7 +122,7 @@ class MobileContentServiceImpl : ContentService {
                     if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
 
                         // 템플릿 조회
-                        var atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
+                        val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
                         atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
                         atDto.kep_status = "O"  // 승인완료
 

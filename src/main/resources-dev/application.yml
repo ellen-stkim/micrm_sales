@@ -39,6 +39,11 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
+  share-url: ENC(ndFDKBlFIVIF6O7QFjKfuRH1g7FeP1DTqA8T/V631FMR6AKpfyBBNN2RrTNqjRFkqRHTR3R8WoPfI97AB5gMNQ==)
+  share-bucket: sr.milvusapp.com
+  share-username: ENC(ysXvvktmQZPKfx6DyEVVatZat1KueviWusCJmMO0o6NQcfTfmTq77hZNN/4OH6mv)
+  share-password: ENC(DpPCIrO3zhhkShd2ciqoyktEBSpYuLITCgelA3gYWj55059S6NTh2C5Yj/NxDxnD)
+
   static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 

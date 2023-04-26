@@ -16,8 +16,6 @@ import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.SalesforceService
 import com.omnilab.micrm.service.SysSettingService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
-import io.minio.MinioClient
-import io.minio.UploadObjectArgs
 import org.apache.http.HttpEntity
 import org.apache.http.HttpStatus
 import org.apache.http.StatusLine
@@ -47,13 +45,9 @@ import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.*
 import java.util.regex.Pattern
-import java.util.stream.Collectors
-import java.util.stream.Collectors.joining
-import java.util.stream.Collectors.toList
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -2446,8 +2440,8 @@ class SalesforceServiceImpl : SalesforceService {
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
-        val avo_id = map["activityId"].toString()
-        val inten_id = map["journeyId"].toString()
+        val avoId = map["activityId"].toString()
+        val intenId = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
 
         val exMap = HashMap<String, Any>(map)
@@ -2455,8 +2449,8 @@ class SalesforceServiceImpl : SalesforceService {
 
         // 컨테츠 마스터 정보
         val contMstDto = Tblmicp_cont_mstDto()
-        contMstDto.avo_id = avo_id
-        contMstDto.inten_id = inten_id
+        contMstDto.avo_id = avoId
+        contMstDto.inten_id = intenId
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
 
         if(contMst == null){
@@ -2476,7 +2470,6 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 타겟수 업데이트
                     if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
-
                         var targetCnt: Int? = null
                         if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
                             targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
@@ -2514,89 +2507,62 @@ class SalesforceServiceImpl : SalesforceService {
                     for (check in contLst) {
                         contTpLst[check.cont_tp.toString()] = check
                     }
-                    logger.error("{}",contTpLst)
-                    /*// 이미지 업로드
-                    val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-                    for (check in contLst) {
-                        // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
-                        contTpLst[check.cont_tp.toString()] = check
-                        if (!check.img_lst.isNullOrEmpty()) {
-                            val url_list = check.img_lst!!.split(",")
-                            val nm_list = check.img_nm_lst!!.split(",")
-
-                            for (i in url_list.indices) {
-                                minioClient.uploadObject(
-                                    UploadObjectArgs.builder()
-                                        .bucket(minio_bucket)
-                                        .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
-                                        .filename(static_path + url_list[i])
-                                        .build())
-                            }
-                        }
-                        if (!check.kko_image_url.isNullOrEmpty()) {
-                            minioClient.uploadObject(
-                                UploadObjectArgs.builder()
-                                    .bucket(minio_bucket)
-                                    .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
-                                    .filename(static_path + check.kko_image_url)
-                                    .build())
-                        }
-                    }*/
+                    logger.error("{}", contTpLst)
                     // 발송
                     when {
                         // 카카오 친구톡
                         contTpLst["DMTP03"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP03"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP03"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
-                                kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
+                                inArguments["SEND_TO"] = sendTo.toString()
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // 카카오 알림톡
                         contTpLst["DMTP05"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP05"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 kkoSendAt.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // RCS
                         contTpLst["DMTP04"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP04"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP04"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 rcsSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // 문자
                         else -> {
-                            val send_to = inArguments[contTpLst["DMTP02"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP02"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 mdmSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
