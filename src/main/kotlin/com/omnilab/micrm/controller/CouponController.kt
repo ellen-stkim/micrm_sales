@@ -52,7 +52,9 @@ class CouponController {
     @GetMapping("/couponList.mi")
     fun couponList(searchCouponDto: SearchCouponDto): ModelAndView {
         val view = ModelAndView("coupon/couponList")
-
+        val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
+        val bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(share_bucket).build())
+        logger.error("couponList={}", bucketExists.toString())
         // 카테고리 리스트 조회
         val categoryList = couponRegisterService.getCategory(UsefulUtils.sessionUser().usr_grp_cd!!)
         view.addObject("categoryList", categoryList)
@@ -60,13 +62,6 @@ class CouponController {
         return view
     }
 
-    @ResponseBody
-    @GetMapping("/miniobucket")
-    fun miniobucket(): String {
-        val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
-        val bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(share_bucket).build())
-        return bucketExists.toString()
-    }
 
     @GetMapping("/couponRegister.mi")
     fun couponRegister(): ModelAndView {
