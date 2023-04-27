@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 
@@ -35,7 +33,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private lateinit var couponDao: CouponDao
 
     @Autowired
-    private lateinit var couponImageUploadUtils: CouponImageUploadUtils
+    private lateinit var fileUploadUtils: FileUploadUtils
 
     override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
         return couponDao.selectCategory(grp_cd)
@@ -109,7 +107,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private fun uploadAndSaveCouponImage(dto: CouponRegisterDto, request: HttpServletRequest, user: Tblmi_usrDto) {
 
         // 이미지 로컬 저장
-        val map = couponImageUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
+        val map = fileUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
 
         // 이미지 resize
         imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)

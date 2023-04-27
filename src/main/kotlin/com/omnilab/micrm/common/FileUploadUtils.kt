@@ -15,16 +15,16 @@ import javax.servlet.http.HttpServletRequest
 class FileUploadUtils {
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Value("\${variable.minio-url}")
+    @Value("\${variable.share-url}")
     private lateinit var minio_url: String
 
-    @Value("\${variable.minio-username}")
+    @Value("\${variable.share-username}")
     private lateinit var minio_username: String
 
-    @Value("\${variable.minio-password}")
+    @Value("\${variable.share-password}")
     private lateinit var minio_password: String
 
-    @Value("\${variable.minio-bucket}")
+    @Value("\${variable.share-bucket}")
     private lateinit var minio_bucket: String
 
     @Value("\${variable.static-path}")
