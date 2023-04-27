@@ -28,4 +28,6 @@ fun main(args: Array<String>) {
     log.error("{}", enc.encrypt("share"))
     log.error("{}", enc.encrypt("};kz;DAInpq,f(K"))
 
+    log.error("{}", enc.encrypt("https://io.milvus.co.kr:9010"))
+
 }
