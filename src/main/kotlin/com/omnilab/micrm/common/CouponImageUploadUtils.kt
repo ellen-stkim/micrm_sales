@@ -1,5 +1,6 @@
 package com.omnilab.micrm.common
 
+import io.minio.BucketExistsArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
 import io.minio.UploadObjectArgs
@@ -59,6 +60,10 @@ class CouponImageUploadUtils {
                 if (fileupload(curFilePath,file, fileName)) {
 
                     val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
+
+                    val bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(share_bucket).build())
+                    logger.error("couponUpload={}", bucketExists)
+
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(share_bucket)
