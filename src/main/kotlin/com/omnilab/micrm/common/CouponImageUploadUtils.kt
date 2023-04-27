@@ -37,6 +37,8 @@ class CouponImageUploadUtils {
     @Value("\${upload.upd_content}")
     private val updPath: String? = null
 
+    @Value("\${variable.coupon-image-path}")
+    private val couponImagePath: String? = null
 
 
     fun upload(usrCd:String, file: MultipartFile, request: HttpServletRequest): MutableMap<String, Any> {
@@ -63,7 +65,7 @@ class CouponImageUploadUtils {
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(share_bucket)
-                            .`object`("sales/dev/$usrCd/$fileName")
+                            .`object`("$couponImagePath$usrCd/$fileName")
                             .filename(static_path + "$updFildPath/$fileName")
                             .build())
 
@@ -73,7 +75,7 @@ class CouponImageUploadUtils {
                     map["file_nm"] = fileName
                     map["file_extention"] = fileExe.toString()
                     map["file_mime"] = file.getContentType().toString()
-                    map["url"] = "/sales/dev/${usrCd}/"+ fileName
+                    map["url"] = "/$couponImagePath${usrCd}/"+ fileName
 
                     fileDelete(curFilePath, fileName)
                 } else {
