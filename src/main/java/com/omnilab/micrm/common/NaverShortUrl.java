@@ -1,11 +1,9 @@
 package com.omnilab.micrm.common;
 
-import com.omnilab.micrm.config.error.CouponException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,7 +13,7 @@ import java.net.URL;
 
 public class NaverShortUrl {
 
-    public static final Logger log = LoggerFactory.getLogger(NaverShortUrl.class);
+    private static final Logger logger = LoggerFactory.getLogger("NaverShortUrl");
 
     public static JSONObject shorten(String uuid) {
         String clientId = "rfsedehh6a";//애플리케이션 클라이언트 아이디값";
@@ -58,8 +56,9 @@ public class NaverShortUrl {
                         
             return obj;
         } catch (Exception e) {
-            log.error("NaverShortUrl={}", "네이버 단축 URL 오류");
-            throw new CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.");
+
+            logger.error("NaverShortUrl={}", "네이버 단축 URL 오류");
+            return null;
         }
     }
 }
