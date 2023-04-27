@@ -74,6 +74,8 @@ class CouponImageUploadUtils {
                     map["file_extention"] = fileExe.toString()
                     map["file_mime"] = file.getContentType().toString()
                     map["url"] = "/sales/dev/${usrCd}/"+ fileName
+
+                    fileDelete(curFilePath, fileName)
                 } else {
                     map["uploaded"] = 0
                     map["message"] = "파일 업로드 실패, 다시 시도해주세요."
