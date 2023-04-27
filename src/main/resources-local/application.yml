@@ -42,6 +42,7 @@ variable:
   static-path : "C:/work/micrm_sales/src/main/webapp/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
+  coupon-image-path: "/sales/dev"
 
 # 운영 서버
 #   biz-url: https://bizmsg-web.kakaoenterprise.com/mng
