@@ -3653,6 +3653,13 @@
         }
     }
 
+    const openInnerModal = (name) => {
+        const modalName = document.querySelector('.inner_modal.' + name);
+        modalName.classList.add("open");
+    };
+    const closeInnerModal = (el) => {
+        el.closest(".inner_modal").classList.remove("open");
+    };
 
 </script>
 

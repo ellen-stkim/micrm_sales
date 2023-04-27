@@ -2874,6 +2874,7 @@ input::placeholder {
     border: 1px solid #ddd;
 }
 .layer_pop.couponPreview .pop_container {
+    position: relative;
     background: transparent;
     border: none;
 }
@@ -2888,6 +2889,7 @@ input::placeholder {
 .layer_pop.couponPreview .pop_container .pop_inner {
     overflow-x: hidden;
     overflow-y: auto;
+    position: relative;
     padding: 0;
     max-height: 800px;
     background: #fff;
@@ -2957,10 +2959,15 @@ input::placeholder {
     font-family: "Gotham";
     font-weight: 700;
 }
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .period dl dd[lang="ko"] {
+    font-family: "NotoSansCJKkr";
+}
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue {
     padding: 30px 0;
-    padding-left: 40px;
     background: #f9de91;
+}
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .inner {
+    padding-left: 40px;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue h6 {
     font-size: 16px;
@@ -2974,6 +2981,89 @@ input::placeholder {
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue ol li span {
     font-family: "Gotham";
+}
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .btn_field {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .btn.detail {
+    width: 350px;
+    height: 77px;
+    font-size: 20px;
+    font-weight: 700;
+    border: 1px solid #000;
+    border-radius: 12px;
+}
+
+.layer_pop.couponPreview .inner_modal {
+    display: none;
+    position: absolute;
+    top: calc(50% + 40px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 1px);
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+}
+.layer_pop.couponPreview .inner_modal.detail.open {
+    display: block;
+}
+.layer_pop.couponPreview .inner_modal .inner_modal_wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 442px;
+    color: #fff;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 27px;
+    height: 75px;
+    background: #c60c0f;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.top .btn.close {
+    width: 12px;
+    height: 12px;
+    background: url("../image/btn_close4.png") no-repeat;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.description {
+    overflow-y: scroll;
+    padding: 32px 26px;
+    height: 700px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    color: #000;
+    background: #fff;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.description .items {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.description .items h5 {
+    font-size: 14.5px;
+    font-weight: 700;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.description .items .list {
+    font-size: 14px;
+    font-weight: 400;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.description .items .list li {
+    position: relative;
+    padding-left: 15px;
+    line-height: 1.8em;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.description .items .list li::before {
+    content: "-";
+    position: absolute;
+    top: 0;
+    left: 1px;
 }
 
 /* 20230424 miMC 쿠폰 시스템 추가 수정 사항 */
