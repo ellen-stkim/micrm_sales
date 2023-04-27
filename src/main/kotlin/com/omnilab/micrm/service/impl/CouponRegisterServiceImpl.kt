@@ -110,7 +110,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         val map = fileUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
 
         // 이미지 resize
-        imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)
+//        imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)
 
         // 이미지 정보 DB 수정
         val imgDto = Tblmicou_img_fileDto(
