@@ -8,8 +8,6 @@ import com.omnilab.micrm.model.table.Tblmicou_categoryDto
 import com.omnilab.micrm.model.table.Tblmicou_img_fileDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponRegisterService
-import io.minio.MinioClient
-import io.minio.PutObjectArgs
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,19 +40,6 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
         return couponDao.selectCategory(grp_cd)
     }
-
-
-    @Value("\${variable.share-url}")
-    private lateinit var share_url: String
-
-    @Value("\${variable.share-username}")
-    private lateinit var share_username: String
-
-    @Value("\${variable.share-password}")
-    private lateinit var share_password: String
-
-    @Value("\${variable.share-bucket}")
-    private lateinit var share_bucket: String
 
     override fun registerCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
 //        try {
@@ -193,10 +178,12 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (dto.descr.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요.")
         if (dto.notice.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요.")
         if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST,"Expiry Date를 선택해주세요.")
-        val parse = LocalDate.parse("2023-04-26", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        if (LocalDate.now().isAfter(parse) && !LocalDate.now().isEqual(parse)) {
-            throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Date를 오늘 이후 날짜로 선택해주세요.")
-        }
+
+        // todo 테스트 필요
+//        val parse = LocalDate.parse("2023-04-26", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+//        if (LocalDate.now().isAfter(parse) && !LocalDate.now().isEqual(parse)) {
+//            throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Date를 오늘 이후 날짜로 선택해주세요.")
+//        }
         if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Time을 선택해주세요.")
         if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Start Time을 선택해주세요.")
         if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily End Time을 선택해주세요.")
