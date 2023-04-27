@@ -63,7 +63,7 @@ class CouponImageUploadUtils {
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(share_bucket)
-                            .`object`("/sales/dev/$usrCd/$fileName")
+                            .`object`("sales/dev/$usrCd/$fileName")
                             .filename(static_path + "$updFildPath/$fileName")
                             .build())
 
