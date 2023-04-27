@@ -33,7 +33,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private lateinit var couponDao: CouponDao
 
     @Autowired
-    private lateinit var fileUploadUtils: FileUploadUtils
+    private lateinit var fileUploadUtils: CouponImageUploadUtils
 
     override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
         return couponDao.selectCategory(grp_cd)
