@@ -890,7 +890,7 @@ class SalesforceController {
 
         val couponListDto = couponListService.getCoupon(seq)
         view.addObject("coupon", couponListDto)
-
+        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
     }
 
