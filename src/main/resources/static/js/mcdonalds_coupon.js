@@ -206,3 +206,18 @@ const chkNumber =  (input) => {
     }
     return false;
 }
+
+//쿠폰 발급 발행 대상자 전체 삭제
+const resetAllTarget = () => {
+    const targetList = document.querySelectorAll(".input_field.audience .components .add_list li");
+    if (targetList.length !== 0) {
+        targetList.forEach((item) => {
+            item.remove();
+        })
+        const el = document.getElementById('fileInput');
+        const valueInput = el.closest(".file.label").nextElementSibling;
+        valueInput.value = "";
+    } else {
+        return false;
+    }
+};

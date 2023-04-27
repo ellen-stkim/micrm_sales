@@ -81,6 +81,7 @@
                             </div>
                             <section class="count">총 <span class="current" id="current_add_number">0</span>건</section>
                         </section>
+                        <button type="button" class="btn reset" onclick="resetPhoneNumber();"></button>
                     </article>
                 </li>
             </ul>
@@ -105,7 +106,7 @@
     </footer>
 </div>
 <script>
-    const phoneSet = new Set();
+    var phoneSet = new Set();
     var currentAddNumberCount = 0;
 
     $(document).ready(function() {
@@ -270,6 +271,12 @@
         }
 
         return arr
+    }
+
+    function resetPhoneNumber(value) {
+        $("#fileInput").val("");
+        phoneSet = new Set();
+        resetAllTarget();
     }
 
 </script>
