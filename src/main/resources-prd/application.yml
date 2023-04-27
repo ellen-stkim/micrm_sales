@@ -47,7 +47,7 @@ variable:
   biz-version: v1
   biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
 
-  coupon-image-path: "/sales/prd"
+  coupon-image-path: "sales/prd"
 
 upload:
   src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
