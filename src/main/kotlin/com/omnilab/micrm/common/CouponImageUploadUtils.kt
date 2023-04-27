@@ -62,7 +62,7 @@ class CouponImageUploadUtils {
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(share_bucket)
-                            .`object`("/sales/dev/$usrCd/$fileName")
+                            .`object`("sales/dev/$usrCd/$fileName")
                             .filename(static_path + "$updFildPath/$fileName")
                             .build())
 
@@ -79,7 +79,7 @@ class CouponImageUploadUtils {
                     map["file_nm"] = fileName
                     map["file_extention"] = fileExe.toString()
                     map["file_mime"] = file.getContentType().toString()
-                    map["url"] = curFilePath.substring(curFilePath.lastIndexOf("image")-1)+"/"+ fileName
+                    map["url"] = "/sales/dev/${usrCd}/"+ fileName
                 } else {
                     map["uploaded"] = 0
                     map["message"] = "파일 업로드 실패, 다시 시도해주세요."

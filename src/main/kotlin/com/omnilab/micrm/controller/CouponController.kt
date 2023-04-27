@@ -10,8 +10,11 @@ import com.omnilab.micrm.model.coupon.SearchCouponIssuedLogDto
 import com.omnilab.micrm.service.CouponIssueService
 import com.omnilab.micrm.service.CouponListService
 import com.omnilab.micrm.service.CouponRegisterService
+import io.minio.BucketExistsArgs
+import io.minio.MinioClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -34,6 +37,18 @@ class CouponController {
     @Autowired
     private lateinit var couponIssueService: CouponIssueService
 
+    @Value("\${variable.share-url}")
+    private lateinit var share_url: String
+
+    @Value("\${variable.share-username}")
+    private lateinit var share_username: String
+
+    @Value("\${variable.share-password}")
+    private lateinit var share_password: String
+
+    @Value("\${variable.share-bucket}")
+    private lateinit var share_bucket: String
+
     @GetMapping("/couponList.mi")
     fun couponList(searchCouponDto: SearchCouponDto): ModelAndView {
         val view = ModelAndView("coupon/couponList")
@@ -43,6 +58,14 @@ class CouponController {
         view.addObject("categoryList", categoryList)
 
         return view
+    }
+
+    @ResponseBody
+    @GetMapping("/miniobucket")
+    fun miniobucket(): String {
+        val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
+        val bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(share_bucket).build())
+        return bucketExists.toString()
     }
 
     @GetMapping("/couponRegister.mi")
