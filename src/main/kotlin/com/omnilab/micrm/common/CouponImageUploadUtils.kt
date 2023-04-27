@@ -60,10 +60,6 @@ class CouponImageUploadUtils {
                 if (fileupload(curFilePath,file, fileName)) {
 
                     val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
-
-                    val bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(share_bucket).build())
-                    logger.error("couponUpload={}", bucketExists)
-
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(share_bucket)
@@ -71,13 +67,6 @@ class CouponImageUploadUtils {
                             .filename(static_path + "$updFildPath/$fileName")
                             .build())
 
-//                    minioClient.putObject(
-//                        PutObjectArgs.builder().bucket(share_bucket).`object`("/sales/dev/$usrCd/$fileName").stream(
-//                            file.inputStream, file.size, -1
-//                        )
-//                            .contentType("video/mp4")
-//                            .build()
-//                    )
                     map["uploaded"] = 1
                     map["message"] = "파일 업로드 성공"
                     map["fileName"] = file.originalFilename.toString()
