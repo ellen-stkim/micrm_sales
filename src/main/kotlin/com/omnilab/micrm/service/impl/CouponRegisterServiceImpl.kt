@@ -37,7 +37,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private lateinit var couponDao: CouponDao
 
     @Autowired
-    private lateinit var fileUploadUtils: FileUploadUtils
+    private lateinit var couponImageUploadUtils: CouponImageUploadUtils
 
     override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
         return couponDao.selectCategory(grp_cd)
@@ -57,35 +57,36 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private lateinit var share_bucket: String
 
     override fun registerCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
-        try {
-            val file = dto.imgFile
-            var fileName: String? = file?.originalFilename
-            val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
-
-            minioClient.putObject(
-                PutObjectArgs.builder().bucket(share_bucket).`object`("/sales/dev/${UsefulUtils.sessionUser().usr_grp_cd}/$fileName").stream(
-                    file!!.inputStream, file.size, -1
-                )
-                    .contentType("video/mp4")
-                    .build()
-            )
-        } catch (e: Exception) {
-            logger.error("image={}", e.message)
-            logger.error("image={}", e.stackTraceToString())
-        }
-
-
+//        try {
+//            val file = dto.imgFile
+//            var fileName: String? = file!!.originalFilename
+//            val fileExe = fileName?.substring(fileName.lastIndexOf(".") + 1)
+//            val digits = CommonUtils.getRandString16()
+//            fileName = "$digits.$fileExe"
+//            val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
 //
-//        // 유효성
-//        validationCouponDto(dto, "register")
-//
-//        val user = UsefulUtils.sessionUser()
-//        uploadAndSaveCouponImage(dto, request, user)
-//
-//        // 쿠폰 정보 입력
-//        dto.reg_id = user.usr_id.toString()
-//        dto.usr_grp_cd = user.usr_grp_cd.toString()
-//        couponDao.insertCoupon(dto)
+//            minioClient.putObject(
+//                PutObjectArgs.builder().bucket(share_bucket).`object`("/sales/dev/${UsefulUtils.sessionUser().usr_grp_cd}/$fileName").stream(
+//                    file!!.inputStream, file.size, -1
+//                )
+//                    .contentType("video/mp4")
+//                    .build()
+//            )
+//        } catch (e: Exception) {
+//            logger.error("image={}", e.message)
+//            logger.error("image={}", e.stackTraceToString())
+//        }
+
+        // 유효성
+        validationCouponDto(dto, "register")
+
+        val user = UsefulUtils.sessionUser()
+        uploadAndSaveCouponImage(dto, request, user)
+
+        // 쿠폰 정보 입력
+        dto.reg_id = user.usr_id.toString()
+        dto.usr_grp_cd = user.usr_grp_cd.toString()
+        couponDao.insertCoupon(dto)
     }
 
     override fun updateCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
@@ -123,7 +124,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private fun uploadAndSaveCouponImage(dto: CouponRegisterDto, request: HttpServletRequest, user: Tblmi_usrDto) {
 
         // 이미지 로컬 저장
-        val map = fileUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
+        val map = couponImageUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
 
         // 이미지 resize
         imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)
