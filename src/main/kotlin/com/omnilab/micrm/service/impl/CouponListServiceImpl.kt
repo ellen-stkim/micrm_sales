@@ -142,6 +142,10 @@ class CouponListServiceImpl: CouponListService {
         return couponDao.selectDefaultSendNumber(searchDto)
     }
 
+    override fun getCouponImageCdnDomain(): String {
+        return couponDao.selectCommCd(Tblmi_comm_cdDto("COUPON_CDN", UsefulUtils.sessionUser().usr_grp_cd!!)).cd_val ?: "https://sr.milvusapp.com"
+    }
+
     private fun decodingSeq(encodedSeq: String) = AES256.AES_Decode(encodedSeq, GlobalValues.encKey).toInt()
 
     private fun encodingSeq(seq: Int) = AES256.AES_Encode(seq.toString(), GlobalValues.encKey)

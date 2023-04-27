@@ -46,7 +46,7 @@
                             <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
                             <section class="modal coupon">
                                 <div class="coupon_image">
-                                    <img src="${baseURL}${coupon.img_url}" alt="쿠폰" />
+                                    <img src="${couponImageDomain}${coupon.img_url}" alt="쿠폰" />
                                 </div>
                             </section>
                         </article>

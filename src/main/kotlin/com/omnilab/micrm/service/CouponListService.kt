@@ -10,4 +10,5 @@ interface CouponListService {
     fun getCoupon(encodedSeq: String): CouponListDto
     fun getCouponIssuedLogList(searchDto: SearchCouponIssuedLogDto): MutableMap<String, Any>
     fun getDefaultSendNumber(): String
+    fun getCouponImageCdnDomain(): String
 }

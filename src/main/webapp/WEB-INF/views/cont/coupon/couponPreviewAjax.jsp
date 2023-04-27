@@ -18,7 +18,7 @@
             <div class="coupon_preview">
                 <!-- 쿠폰 만료시 coupon_img에 disable 클래스 추가 -->
                 <div class="coupon_img">
-                    <img src="${baseURL}${coupon.img_url}" alt="쿠폰 이미지" />
+                    <img src="${couponImageDomain}${coupon.img_url}" alt="쿠폰 이미지" />
                 </div>
                 <div class="coupon_cont">
                     <div class="info">

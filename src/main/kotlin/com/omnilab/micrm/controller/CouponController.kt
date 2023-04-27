@@ -84,7 +84,7 @@ class CouponController {
 
         view.addObject("coupon", couponDto)
         view.addObject("categoryList", categoryList)
-
+        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
     }
 
@@ -98,7 +98,7 @@ class CouponController {
 
         val sendNumber = couponListService.getDefaultSendNumber()
         view.addObject("sendNumber", sendNumber)
-
+        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
     }
 
@@ -164,7 +164,7 @@ class CouponController {
         view.addObject("page", reMap["page"])
         view.addObject("pageNo", reMap["pageNo"])
         view.addObject("cnt", reMap["cnt"])
-
+        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
     }
 
@@ -176,7 +176,7 @@ class CouponController {
         view.addObject("page", reMap["page"])
         view.addObject("pageNo", reMap["pageNo"])
         view.addObject("cnt", reMap["cnt"])
-
+        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
     }
 
