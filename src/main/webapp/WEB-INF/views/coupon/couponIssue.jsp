@@ -273,9 +273,11 @@
         return arr
     }
 
-    function resetPhoneNumber(value) {
+    function resetPhoneNumber() {
         $("#fileInput").val("");
         phoneSet = new Set();
+        currentAddNumberCount = 0;
+        $("#current_add_number").text(currentAddNumberCount);
         resetAllTarget();
     }
 
