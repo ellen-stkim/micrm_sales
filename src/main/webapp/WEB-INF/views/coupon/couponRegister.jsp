@@ -49,7 +49,7 @@
                                 <button type="button" class="btn del" onclick="delImage(this)"></button>
                             </section>
                             <label class="file label">
-                                <input type="file" name="imgFile" id="imgFile" accept="image/*" onchange="loadImage(this)" />
+                                <input type="file" name="imgFile" id="imgFile" accept=".git,.png,.jpg,.jpeg" onchange="loadImage(this)" />
                                 <span class="btn file">선택</span>
                             </label>
                         </article>

@@ -199,7 +199,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
     private fun isImageFile(file: MultipartFile): Boolean {
         // content-type 검사
-        val imageContentType = listOf("jpeg","jpg","png","bmp","gif")
+        val imageContentType = listOf("jpeg","jpg","png", "gif")
 
         // 확장자 검사
         val extPos = file.originalFilename!!.lastIndexOf(".")
