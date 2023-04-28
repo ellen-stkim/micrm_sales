@@ -44,6 +44,9 @@ class CouponIssueServiceImpl: CouponIssueService {
         // 쿠폰 seq 복호화 decode
         couponIssueDto.coupon_seq = decodingSeq(couponIssueDto.encodedCouponSeq.toString())
 
+        // 쿠폰 메시지 내용 개행
+        couponIssueDto.msg_content = couponIssueDto.msg_content!!.replace("<br/>", "\n")
+
         // 발신 번호 조회
         val searchDto = Tblmi_set_lstDto()
         searchDto.usr_grp_cd = user.usr_grp_cd
