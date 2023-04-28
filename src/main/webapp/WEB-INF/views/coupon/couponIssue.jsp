@@ -144,13 +144,12 @@
         }
 
         // 추가 및 입력 필드 초기화
-
         phoneSet.add(phoneNumberInput.replace(/-/gi, ""));
         addAudience(document.getElementById('addBtn'));
 
         $("#phoneNumberInput").val('');
         currentAddNumberCount ++;
-        $("#current_add_number").text(currentAddNumberCount);
+        showNumberCountFormatted();
 
         popup.popAlert('추가되었습니다.');
     }
@@ -160,8 +159,12 @@
         phoneSet.delete(phoneNumber.replace(/-/gi, ""));
 
         currentAddNumberCount --;
-        $("#current_add_number").text(currentAddNumberCount);
+        showNumberCountFormatted();
         delAudience(btn);
+    }
+
+    function showNumberCountFormatted() {
+        $("#current_add_number").text(currentAddNumberCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
     }
 
     function showPhoneNumberFormatted() {
@@ -221,7 +224,7 @@
             setPhoneNumberList(phoneList);
 
             currentAddNumberCount += Number(collectCnt);
-            $("#current_add_number").text(currentAddNumberCount);
+            showNumberCountFormatted();
 
             popup.popAlert("등록되었습니다. 성공: "+collectCnt+", 중복: "+duplicateCnt+", 실패: "+errorCnt);
         }
@@ -278,7 +281,7 @@
         $("#fileName").val("");
         phoneSet = new Set();
         currentAddNumberCount = 0;
-        $("#current_add_number").text(currentAddNumberCount);
+        showNumberCountFormatted();
         $('#add_list').html('');
     }
 
