@@ -185,10 +185,6 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (dto.descr.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요.")
         if (dto.notice.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요.")
         if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST,"Expiry Date를 선택해주세요.")
-        val parse = LocalDate.parse(dto.expire_date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        if (!LocalDate.now().isAfter(parse) && !LocalDate.now().equals(parse)) {
-            throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Date를 오늘 이후 날짜로 선택해주세요.")
-        }
         if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Time을 선택해주세요.")
         if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Start Time을 선택해주세요.")
         if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily End Time을 선택해주세요.")
