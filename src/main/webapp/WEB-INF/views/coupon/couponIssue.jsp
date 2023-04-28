@@ -74,7 +74,7 @@
                         <section class="part file">
                             <div class="inner">
                                 <label class="file label">
-                                    <input type="file" name="" id="fileInput" accept=".xls,.xlsx" onchange="addExcelPhoneNumber(this)" />
+                                    <input type="file" name="" id="fileInput" accept=".xls,.xlsx" onchange="addExcelPhoneNumber(this)" onclick="this.value=null;"/>
                                     <span class="btn file">파일등록</span>
                                 </label>
                                 <input type="text" name="" id="fileName" placeholder="선택된 파일 없음" readonly />
