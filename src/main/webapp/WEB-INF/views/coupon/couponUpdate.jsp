@@ -8,6 +8,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
+<% pageContext.setAttribute("newLineChar", "\n"); %>
 <script src="/js/jquery-ui-timepicker.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js?v=0.12"></script>
 <div class="wrap mcdonald">
@@ -69,21 +70,21 @@
                     <li>
                         <h6 class="label_name">Title</h6>
                         <article class="components">
-                            <textarea name="title" id="title" cols="30" rows="10" placeholder="Title을 입력해주세요.">${coupon.title}</textarea>
+                            <textarea name="title" id="title" cols="30" rows="10" placeholder="Title을 입력해주세요.">${fn:replace(coupon.title, "<br/>", newLineChar)}</textarea>
                             <section class="text_cnt"><span class="current" id="titleCount">0</span>&#47;200<i>자</i></section>
                         </article>
                     </li>
                     <li>
                         <h6 class="label_name">Description</h6>
                         <article class="components">
-                            <textarea name="descr" id="descr" cols="30" rows="10" placeholder="Description을 입력해주세요.">${coupon.descr}</textarea>
+                            <textarea name="descr" id="descr" cols="30" rows="10" placeholder="Description을 입력해주세요.">${fn:replace(coupon.descr, "<br/>", newLineChar)}</textarea>
                             <section class="text_cnt"><span class="current" id="descrCount">0</span>&#47;500<i>자</i></section>
                         </article>
                     </li>
                     <li>
                         <h6 class="label_name">Temps & Condition</h6>
                         <article class="components">
-                            <textarea name="notice" id="notice" cols="30" rows="10" placeholder="Temps & Condition을 입력해주세요.">${coupon.notice}</textarea>
+                            <textarea name="notice" id="notice" cols="30" rows="10" placeholder="Temps & Condition을 입력해주세요.">${fn:replace(coupon.notice, "<br/>", newLineChar)}</textarea>
                             <section class="text_cnt"><span class="current" id="noticeCount">0</span>&#47;4,000<i>자</i></section>
                         </article>
                     </li>
@@ -152,7 +153,7 @@
                         <img alt="이미지 없음" src="${couponImageDomain}${coupon.img_url}" class="noimage modifyImg" />
                     </section>
                     <section class="contents">
-                        <textarea name="content" id="content" cols="30" rows="10" placeholder="문자 메시지 내용과 쿠폰 링크를 삽입해주세요.">${coupon.content}</textarea>
+                        <textarea name="content" id="content" cols="30" rows="10" placeholder="문자 메시지 내용과 쿠폰 링크를 삽입해주세요.">${fn:replace(coupon.content, "<br/>", newLineChar)}</textarea>
                     </section>
                 </article>
             </section>
