@@ -64,7 +64,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
         // 유효성
         validationCouponDto(dto, "register")
-
+        replaceNewLine(dto)
         val user = UsefulUtils.sessionUser()
         uploadAndSaveCouponImage(dto, request, user)
 
@@ -77,7 +77,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     override fun updateCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
 
         validationCouponDto(dto, "update") // 이미지파일 유효성은 여기서 제외되어야 함.
-
+        replaceNewLine(dto)
         val user = UsefulUtils.sessionUser()
         dto.seq = decodingSeq(dto.encodedSeq!!)
 
@@ -163,6 +163,13 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
         resizeImage.flush()
         image.flush()
+    }
+
+    private fun replaceNewLine(dto:CouponRegisterDto) {
+        dto.title = dto.title!!.replace("\n", "<br/>")
+        dto.descr = dto.descr!!.replace("\n", "<br/>")
+        dto.notice = dto.notice!!.replace("\n", "<br/>")
+        dto.content = dto.content!!.replace("\n", "<br/>")
     }
 
     private fun validationCouponDto(dto: CouponRegisterDto, type: String) {
