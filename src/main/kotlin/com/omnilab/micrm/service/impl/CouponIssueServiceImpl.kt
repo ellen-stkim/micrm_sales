@@ -45,7 +45,8 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponIssueDto.coupon_seq = decodingSeq(couponIssueDto.encodedCouponSeq.toString())
 
         // 쿠폰 메시지 내용 개행
-        couponIssueDto.msg_content = couponIssueDto.msg_content!!.replace("<br/>", "\n")
+        logger.error("yaho={}", couponIssueDto.msg_content)
+        couponIssueDto.msg_content = couponIssueDto.msg_content!!.replace("&lt;br/&gt;", "\n")
 
         // 발신 번호 조회
         val searchDto = Tblmi_set_lstDto()
