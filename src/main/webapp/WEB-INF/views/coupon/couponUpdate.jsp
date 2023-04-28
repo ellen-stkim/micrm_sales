@@ -127,19 +127,19 @@
                             <h6 class="label_name">Date</h6>
                             <section class="components">
                                 <ul class="days">
-                                    <label for="chk-mon"><li <c:if test="${fn:contains(coupon.available_day, 1)}">class="active"</c:if>>MON</li></label>
+                                    <label for="chk-mon"><li  onclick="checkDayDrag('chk-mon')" <c:if test="${fn:contains(coupon.available_day, 1)}">class="active"</c:if>>MON</li></label>
                                     <input type="checkbox" id="chk-mon" value="1" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 1)}">checked</c:if>>
-                                    <label for="chk-tue"><li <c:if test="${fn:contains(coupon.available_day, 2)}">class="active"</c:if>>TUE</li></label>
+                                    <label for="chk-tue"><li  onclick="checkDayDrag('chk-tue')" <c:if test="${fn:contains(coupon.available_day, 2)}">class="active"</c:if>>TUE</li></label>
                                     <input type="checkbox" id="chk-tue" value="2" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 2)}">checked</c:if> >
-                                    <label for="chk-wed"><li <c:if test="${fn:contains(coupon.available_day, 3)}">class="active"</c:if>>WED</li></label>
+                                    <label for="chk-wed"><li  onclick="checkDayDrag('chk-wed')" <c:if test="${fn:contains(coupon.available_day, 3)}">class="active"</c:if>>WED</li></label>
                                     <input type="checkbox" id="chk-wed" value="3" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 3)}">checked</c:if>>
-                                    <label for="chk-thu"><li <c:if test="${fn:contains(coupon.available_day, 4)}">class="active"</c:if>>THU</li></label>
+                                    <label for="chk-thu"><li  onclick="checkDayDrag('chk-thu')" <c:if test="${fn:contains(coupon.available_day, 4)}">class="active"</c:if>>THU</li></label>
                                     <input type="checkbox" id="chk-thu" value="4" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 4)}">checked</c:if>>
-                                    <label for="chk-fri"><li <c:if test="${fn:contains(coupon.available_day, 5)}">class="active"</c:if>>FRI</li></label>
+                                    <label for="chk-fri"><li  onclick="checkDayDrag('chk-fri')" <c:if test="${fn:contains(coupon.available_day, 5)}">class="active"</c:if>>FRI</li></label>
                                     <input type="checkbox" id="chk-fri" value="5" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 5)}">checked</c:if>>
-                                    <label for="chk-sat"><li <c:if test="${fn:contains(coupon.available_day, 6)}">class="active"</c:if>>SAT</li></label>
+                                    <label for="chk-sat"><li  onclick="checkDayDrag('chk-sat')" <c:if test="${fn:contains(coupon.available_day, 6)}">class="active"</c:if>>SAT</li></label>
                                     <input type="checkbox" id="chk-sat" value="6" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 6)}">checked</c:if>>
-                                    <label for="chk-sun"><li <c:if test="${fn:contains(coupon.available_day, 0)}">class="active"</c:if>>SUN</li></label>
+                                    <label for="chk-sun"><li  onclick="checkDayDrag('chk-sun')" <c:if test="${fn:contains(coupon.available_day, 0)}">class="active"</c:if>>SUN</li></label>
                                     <input type="checkbox" id="chk-sun" value="0" name="available_day" style="display:none" <c:if test="${fn:contains(coupon.available_day, 0)}">checked</c:if>>
                                 </ul>
                             </section>
@@ -386,5 +386,9 @@
             }
             time.value = hours + ":" + minute;
         }
+    }
+
+    function checkDayDrag(value) {
+        $("input:checkbox[id='"+value+"']").prop("checked", !$("input:checkbox[id='"+value+"']").is(':checked'));
     }
 </script>
