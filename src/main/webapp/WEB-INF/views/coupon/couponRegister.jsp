@@ -123,7 +123,7 @@
                             <h6 class="label_name">Date</h6>
                             <section class="components">
                                 <ul class="days">
-                                    <label for="chk-mon"><li onclick="checkDay('chk-mon')">MON</li></label>
+                                    <label for="chk-mon"><li onclick="checkDayDrag('chk-mon')">MON</li></label>
                                     <input type="checkbox" id="chk-mon" value="1" name="available_day" style="display:none" >
                                     <label for="chk-tue"><li onclick="checkDayDrag('chk-tue')">TUE</li></label>
                                     <input type="checkbox" id="chk-tue" value="2" name="available_day" style="display:none" >
