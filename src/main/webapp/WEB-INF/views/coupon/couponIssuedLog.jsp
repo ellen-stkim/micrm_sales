@@ -34,12 +34,12 @@
             </section>
             <div class="period_wrap">
                 <section class="period">
-                    <input type="text" name="send_start_dt" placeholder="발송 일자" class="datepicker" />
+                    <input type="text" name="send_start_dt" id="from" placeholder="발송 일자" />
                     <button type="button" class="btn calendar"></button>
                 </section>
                 <span>-</span>
                 <section class="period">
-                    <input type="text" name="send_end_dt" placeholder="발송 일자" class="datepicker" />
+                    <input type="text" name="send_end_dt" id="to" placeholder="발송 일자"/>
                     <button type="button" class="btn calendar"></button>
                 </section>
             </div>
@@ -127,4 +127,22 @@
             this.checked = deleteAllChk.is(':checked');
         });
     }
+
+    $('#from').datepicker({
+        onSelect: function (selected) {
+            $('#to').datepicker("option", "minDate", selected);
+        }
+    });
+    $('#to').datepicker({
+        onSelect: function (selected) {
+            $('#from').datepicker("option", "maxDate", selected);
+        }
+    });
+
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd'
+        , monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+        , showMonthAfterYear: true
+        , yearSuffix: "."
+    });
 </script>
