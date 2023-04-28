@@ -18,7 +18,7 @@
             <div class="coupon_preview">
                 <!-- 쿠폰 만료시 coupon_img에 disable 클래스 추가 -->
                 <div class="coupon_img">
-                    <img src="${couponImageDomain}${coupon.img_url}" alt="쿠폰 이미지" />
+                    <img src="${couponImageDomain}${coupon.img_url}" alt="쿠폰 이미지" style="500px"/>
                 </div>
                 <div class="coupon_cont">
                     <div class="info">
@@ -60,7 +60,9 @@
                         <div class="inner">
 <%--                            <h6></h6>--%>
                             <ol>
-                                <li>${coupon.descr}</li>
+                                <c:forEach var="d" items="${fn:split(coupon.descr, '<br/>')}" >
+                                    <li>${d}</li>
+                                </c:forEach>
                             </ol>
                         </div>
                         <article class="btn_field">
@@ -85,7 +87,9 @@
                                 <section class="item">
                                     <h5>※ 유의사항</h5>
                                     <ul class="list">
-                                        <li>${coupon.notice}</li>
+                                        <c:forEach var="n" items="${fn:split(coupon.notice, '<br/>')}" >
+                                            <li>${n}</li>
+                                        </c:forEach>
                                     </ul>
                                 </section>
                             </div>

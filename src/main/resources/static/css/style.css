@@ -3061,7 +3061,7 @@ input::placeholder {
     line-height: 1.8em;
 }
 .layer_pop.couponPreview .inner_modal .contents .area.description .items .list li::before {
-    content: "-";
+    content: "";
     position: absolute;
     top: 0;
     left: 1px;
