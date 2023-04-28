@@ -275,10 +275,13 @@
 
     function resetPhoneNumber() {
         $("#fileInput").val("");
+        $("#fileName").val("");
         phoneSet = new Set();
         currentAddNumberCount = 0;
         $("#current_add_number").text(currentAddNumberCount);
-        resetAllTarget();
+        $('#add_list').html('');
     }
+
+
 
 </script>
