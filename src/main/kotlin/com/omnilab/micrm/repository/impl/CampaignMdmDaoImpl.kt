@@ -75,7 +75,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
              * 쿠폰 로직
              * 1. 도메인
              * 2. Path
-             * 3. 쿠폰 발급
+             * 3. 쿠폰 발급 조회
              * 4. uuid
              * 5. encoded UUID
              * 6. Naver short URL
@@ -91,7 +91,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
                 // 2. Path
                 var couponPath = "/mobileCoupon/"
-                // 3. 쿠폰 발급 조회
+                // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
                 var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id.toString())
 
                 // 4. uuid
