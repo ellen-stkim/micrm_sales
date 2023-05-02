@@ -92,7 +92,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 // 2. Path
                 var couponPath = "/mobileCoupon/"
                 // 3. 쿠폰 발급 조회
-                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id)
+                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id.toString())
 
                 // 4. uuid
                 val uuid = UUID.randomUUID()
