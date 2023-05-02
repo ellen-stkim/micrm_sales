@@ -2339,7 +2339,7 @@ class SalesforceServiceImpl : SalesforceService {
                                         couponIssueDto.msg_content = i.cont_body
                                         couponIssueDto.usr_grp_cd = i.cont_grp_cd
                                         couponIssueDto.reg_id = i.reg_id
-                                        couponIssueDto.camp_seq = tblmicp_cont_lstDto.seq
+                                        couponIssueDto.camp_seq = cpMstDto.seq
                                         salesforceDao.insert_coupon_issue(couponIssueDto)
                                     }
                                 }
