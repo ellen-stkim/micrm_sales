@@ -19,7 +19,7 @@
 				<li<c:if test="${urlPath eq '/cont/imgLst.mi'}"> class='on'</c:if>><a href="/cont/imgLst.mi">이미지 파일</a></li>
 			</ul>
 		</li>
-		<li>
+		<li class="coupon">
 			<span>쿠폰</span>
 			<ul class="sub_menu">
 
