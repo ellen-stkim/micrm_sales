@@ -53,7 +53,7 @@
                                 <button type="button" class="btn del" onclick="delImage(this)"></button>
                             </section>
                             <label class="file label">
-                                <input type="file" name="imgFile" id="imgFile" accept=".git,.png,.jpg,.jpeg" src="${baseURL}${coupon.img_url}" onchange="loadImage(this)" />
+                                <input type="file" name="imgFile" id="imgFile" accept=".gif,.png,.jpg,.jpeg" src="${baseURL}${coupon.img_url}" onchange="loadImage(this)" />
                                 <span class="btn file">선택</span>
                             </label>
                         </article>
