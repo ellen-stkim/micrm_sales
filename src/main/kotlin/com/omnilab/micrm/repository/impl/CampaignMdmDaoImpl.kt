@@ -4,7 +4,6 @@ import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.NaverShortUrl
-import com.omnilab.micrm.config.error.CouponException
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
@@ -17,7 +16,6 @@ import org.apache.ibatis.session.SqlSession
 import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Repository
 import java.util.*
 import kotlin.collections.ArrayList
@@ -93,19 +91,9 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
                 // 2. Path
                 var couponPath = "/mobileCoupon/"
-                // 3. 쿠폰 발급
-                var couponIssueDto: CouponIssueDto? = sqlSession.selectOne("select_coupon_issue", dto.seq.toString())
-                if (CommonUtils.isEmptyObject(couponIssueDto)) {
-                    couponIssueDto = CouponIssueDto()
-                    couponIssueDto.coupon_seq = contTpLst["DMTP02"]!!.coupon_seq!!.toInt()
-                    couponIssueDto.send_phone = contDto.send_to
-                    couponIssueDto.msg_title = targetSubject
-                    couponIssueDto.msg_content = targetBody
-                    couponIssueDto.usr_grp_cd = dto.usr_grp_cd
-                    couponIssueDto.reg_id = dto.reg_id
-                    couponIssueDto.camp_seq = dto.seq
-                    sqlSession.insert("insert_coupon_issue", couponIssueDto)
-                }
+                // 3. 쿠폰 발급 조회
+                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.seq)
+
                 // 4. uuid
                 val uuid = UUID.randomUUID()
                 val couponUuid = CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)

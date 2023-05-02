@@ -2330,6 +2330,18 @@ class SalesforceServiceImpl : SalesforceService {
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
 
+                                    // 쿠폰 발급 이력 생성
+                                    if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
+                                        var couponIssueDto = CouponIssueDto()
+                                        couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
+                                        couponIssueDto.send_phone = tblmicp_cont_lstDto.send_to
+                                        couponIssueDto.msg_title = i.cont_sub
+                                        couponIssueDto.msg_content = i.cont_body
+                                        couponIssueDto.usr_grp_cd = i.cont_grp_cd
+                                        couponIssueDto.reg_id = i.reg_id
+                                        couponIssueDto.camp_seq = tblmicp_cont_lstDto.seq
+                                        salesforceDao.insert_coupon_issue(couponIssueDto)
+                                    }
                                 }
                         }
                     }

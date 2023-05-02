@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository
 
+import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
@@ -34,4 +35,5 @@ interface SalesforceDao {
 
 
     fun ins_camp_send_rcs_img_lg(rcsImgLst: ArrayList<LgRcs_imgDto>):Int
+    fun insert_coupon_issue(couponIssueDto: CouponIssueDto)
 }
