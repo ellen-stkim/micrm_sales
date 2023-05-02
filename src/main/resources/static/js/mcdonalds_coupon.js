@@ -154,11 +154,11 @@ const delImage = (el) => {
 }
 //쿠폰 발급 시 발행 대상자 추가
 const addAudience = (el) => {
-    const inputValue = el.previousElementSibling;
+    const inputValue = el.closest(".inner").querySelector("input");
     if(inputValue.value === "") {
         return false;
     }
-    const list = el.closest(".inner").nextElementSibling;
+    const list = el.closest(".inner").nextElementSibling.querySelector(".add_list");
     const listItem = document.createElement("li");
     const valueText = document.createElement("p");
     const btnDel = document.createElement("button");

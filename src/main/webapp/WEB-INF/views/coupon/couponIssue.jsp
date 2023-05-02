@@ -64,12 +64,17 @@
                         <section class="part list">
                             <div class="inner">
                                 <input type="text" id="phoneNumberInput" placeholder="직접 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  autocomplete="off" />
-                                <button type="button" class="btn add" id="addBtn" onclick="addReceivePhoneNumber()">
-                                    <span class="line"></span>
-                                    <span class="line"></span>
-                                </button>
+                                <div class="btn_field">
+                                    <button type="button" class="btn add" id="addBtn" onclick="addReceivePhoneNumber()">
+                                        <span class="line"></span>
+                                        <span class="line"></span>
+                                    </button>
+                                    <button type="button" class="btn reset" onclick="resetPhoneNumber();"></button>
+                                </div>
                             </div>
-                            <ul class="add_list" id="add_list"></ul>
+                            <div class="list_wrap">
+                                <ul class="add_list" id="add_list"></ul>
+                            </div>
                         </section>
                         <section class="part file">
                             <div class="inner">
@@ -81,7 +86,6 @@
                             </div>
                             <section class="count">총 <span class="current" id="current_add_number">0</span>건</section>
                         </section>
-                        <button type="button" class="btn reset" onclick="resetPhoneNumber();"></button>
                     </article>
                 </li>
             </ul>
