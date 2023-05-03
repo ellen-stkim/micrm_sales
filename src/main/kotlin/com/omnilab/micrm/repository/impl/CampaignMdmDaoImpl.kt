@@ -227,13 +227,6 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 couponIssuedLogDto.msgtp = msgTp
                 sqlSession.insert("insert_coupon_issued_log", couponIssuedLogDto)
 
-
-//                // 9. 쿠폰 발급 타겟 수
-//                val mapUpdateTarget = mapOf(
-//                    "seq" to couponIssuedLogDto.coupon_issue_seq,
-//                    "target_cnt" to 1
-//                )
-//                sqlSession.update("update_coupon_issue_target_count", mapUpdateTarget)
             }
 
             cnt++
