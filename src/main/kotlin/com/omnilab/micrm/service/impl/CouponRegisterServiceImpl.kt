@@ -28,9 +28,6 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Value("\${upload.content}")
-    private val filePath: String? = null
-
     @Autowired
     private lateinit var couponDao: CouponDao
 
@@ -42,26 +39,6 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     }
 
     override fun registerCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
-//        try {
-//            val file = dto.imgFile
-//            var fileName: String? = file!!.originalFilename
-//            val fileExe = fileName?.substring(fileName.lastIndexOf(".") + 1)
-//            val digits = CommonUtils.getRandString16()
-//            fileName = "$digits.$fileExe"
-//            val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
-//
-//            minioClient.putObject(
-//                PutObjectArgs.builder().bucket(share_bucket).`object`("/sales/dev/${UsefulUtils.sessionUser().usr_grp_cd}/$fileName").stream(
-//                    file!!.inputStream, file.size, -1
-//                )
-//                    .contentType("video/mp4")
-//                    .build()
-//            )
-//        } catch (e: Exception) {
-//            logger.error("image={}", e.message)
-//            logger.error("image={}", e.stackTraceToString())
-//        }
-
         // 유효성
         validationCouponDto(dto, "register")
         replaceNewLine(dto)
@@ -107,12 +84,8 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     private fun decodingSeq(encodedSeq: String) = AES256.AES_Decode(encodedSeq, GlobalValues.encKey).toInt()
 
     private fun uploadAndSaveCouponImage(dto: CouponRegisterDto, request: HttpServletRequest, user: Tblmi_usrDto) {
-
         // 이미지 로컬 저장
         val map = fileUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
-
-        // 이미지 resize
-//        imageResize(dto.imgFile!!, user.usr_grp_cd!!, map)
 
         // 이미지 정보 DB 수정
         val imgDto = Tblmicou_img_fileDto(
@@ -125,47 +98,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         dto.img_file_seq = imgDto.seq
     }
 
-    private fun imageResize(file: MultipartFile, usr_grp_cd: String, map: MutableMap<String, Any>) {
-        val contentFilePath = "$filePath/$usr_grp_cd"
-        val fileName = map["file_nm"]
-        val image : BufferedImage = ImageIO.read(file.inputStream)
-        val imageWidth: Int = image.width
-        val imageHeight: Int = image.height
-
-        val newWidth = 500
-        val newHeight = 500
-        val ratio: Double
-        val w: Int
-        var h: Int
-
-        if (imageWidth > imageHeight) {
-            ratio = newWidth.toDouble() / imageWidth.toDouble()
-            w = (imageWidth * ratio).toInt()
-            h = (imageHeight * ratio).toInt()
-
-        } else if (imageHeight > imageWidth) {
-            ratio = newHeight.toDouble() / imageHeight.toDouble()
-            w = (imageWidth * ratio).toInt()
-            h = (imageHeight * ratio).toInt()
-        } else {
-            w = newWidth
-            h = newHeight
-        }
-//            if (h < 250) {
-//                h = 250
-//            }
-        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
-        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-        val g = newImage.graphics
-        g.drawImage(resizeImage, 0, 0, null)
-        g.dispose()
-
-        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
-        resizeImage.flush()
-        image.flush()
-    }
-
-    private fun replaceNewLine(dto:CouponRegisterDto) {
+    private fun replaceNewLine(dto: CouponRegisterDto) {
         dto.title = dto.title!!.replace("\n", "<br/>")
         dto.descr = dto.descr!!.replace("\n", "<br/>")
         dto.notice = dto.notice!!.replace("\n", "<br/>")
@@ -177,17 +110,31 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (CommonUtils.isEmptyObject(dto.category_seq)) throw CouponException(HttpStatus.BAD_REQUEST, "카테고리를 선택해주세요.")
         if (type != "update") {
             if (CommonUtils.isEmptyObject(dto.imgFile)) throw CouponException(HttpStatus.BAD_REQUEST, "이미지를 등록해주세요.")
-            else if (!isImageFile(dto.imgFile!!)) { throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요.") }
+            else if (!isImageFile(dto.imgFile!!)) {
+                throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요.")
+            }
         } else if (!CommonUtils.isEmptyObject(dto.imgFile) && !isImageFile(dto.imgFile!!)) {
             throw CouponException(HttpStatus.BAD_REQUEST, "이미지 형식 파일을 등록해주세요.")
         }
         if (dto.title.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Title을 입력해주세요.")
         if (dto.descr.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요.")
         if (dto.notice.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요.")
-        if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST,"Expiry Date를 선택해주세요.")
-        if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Time을 선택해주세요.")
-        if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Start Time을 선택해주세요.")
-        if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily End Time을 선택해주세요.")
+        if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(
+            HttpStatus.BAD_REQUEST,
+            "Expiry Date를 선택해주세요."
+        )
+        if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(
+            HttpStatus.BAD_REQUEST,
+            "Expiry Time을 선택해주세요."
+        )
+        if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(
+            HttpStatus.BAD_REQUEST,
+            "Daily Start Time을 선택해주세요."
+        )
+        if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(
+            HttpStatus.BAD_REQUEST,
+            "Daily End Time을 선택해주세요."
+        )
         if (dto.daily_start_time!!.replace(":", "") == dto.daily_end_time!!.replace(":", "")) {
             throw CouponException(HttpStatus.BAD_REQUEST, "Daily Time의 시간 간격이 없습니다.")
         }
@@ -199,14 +146,14 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
     private fun isImageFile(file: MultipartFile): Boolean {
         // content-type 검사
-        val imageContentType = listOf("jpeg","jpg","png", "gif")
+        val imageContentType = listOf("jpeg", "jpg", "png", "gif")
 
         // 확장자 검사
         val extPos = file.originalFilename!!.lastIndexOf(".")
         val ext = file.originalFilename!!.substring(extPos + 1).lowercase()
 
         // 이미지 content-type 검사
-        var isImageContentType =  false
+        var isImageContentType = false
         imageContentType.forEach {
             if (file.contentType == "image/${it}") isImageContentType = true
         }
@@ -215,6 +162,5 @@ class CouponRegisterServiceImpl: CouponRegisterService {
 
         return isImageContentType && isImageExt
     }
-
 
 }

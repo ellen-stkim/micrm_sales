@@ -45,7 +45,6 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponIssueDto.coupon_seq = decodingSeq(couponIssueDto.encodedCouponSeq.toString())
 
         // 쿠폰 메시지 내용 개행
-        logger.error("yaho={}", couponIssueDto.msg_content)
         couponIssueDto.msg_content = couponIssueDto.msg_content!!.replace("&lt;br/&gt;", "\n")
 
         // 발신 번호 조회
@@ -85,10 +84,6 @@ class CouponIssueServiceImpl: CouponIssueService {
                 val resultJson: JSONObject = jsonObject["result"] as JSONObject
                 sendUrl = resultJson["url"].toString()
             }
-//            else {
-//                logger.error("CouponIssueServiceImpl.issueCoupon={}", "네이버 URL 오류")
-//                throw CouponException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 문제가 생겼습니다. 관리자에게 문의 바랍니다.")
-//            }
 
             // {쿠폰링크} -> shortUrl 치환
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
