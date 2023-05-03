@@ -65,6 +65,9 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponIssueDto.reg_id = user.usr_id
         couponDao.insertCouponIssue(couponIssueDto)
 
+        // 문자 메시지 DB 조회
+        val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
+
         // 쿠폰 전송
         val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
         if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요")
@@ -90,7 +93,6 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             // mms 전송
             val msgtp = "DMCH203"
-            val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
             val msgDto = LgMms_msgDto(
                 couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
                 LocalDateTime.now().toString(), msgContent, "0", "", "", "",
