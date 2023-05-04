@@ -70,7 +70,7 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         // 쿠폰 전송
         val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
-        if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요")
+        if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요.")
 
         for (receiveNumber in refinePhoneNumberList) {
             // uuid 생성

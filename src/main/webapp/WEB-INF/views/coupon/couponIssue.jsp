@@ -248,7 +248,17 @@
     }
 
     function issueCoupon() {
+
         let phoneNumberArr = divisionArr(Array.from(phoneSet));
+        if ($('#msgTitleInput').val() == '') {
+            popup.popAlert('메시지 제목을 입력해주세요.');
+            return;
+        }
+        if (phoneNumberArr.length == 0) {
+            popup.popAlert('쿠폰 발행 대상을 입력해주세요.');
+            return;
+        }
+
         var data = $('#couponIssueForm').serializeArray();
         data.push({name: "phoneNumberList", value: phoneNumberArr});
 
