@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository
 
+import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.coupon.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
@@ -13,6 +14,7 @@ interface CouponDao {
     fun selectCouponListCount(searchDto: SearchCouponDto): Int
     fun selectCouponListAtSales(searchDto: SearchCouponDto): MutableList<CouponListDto>
     fun selectCouponListCountAtSales(searchDto: SearchCouponDto): Int
+    fun selectCouponIssue(cont_id: String): CouponIssueDto
     fun selectCouponIssuedLogList(searchDto: SearchCouponIssuedLogDto): MutableList<CouponIssuedListDto>
     fun selectCouponIssuedLogListCount(searchDto: SearchCouponIssuedLogDto): Int
     fun selectDefaultSendNumber(dto: Tblmi_set_lstDto): String

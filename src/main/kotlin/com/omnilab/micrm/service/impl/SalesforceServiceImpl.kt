@@ -15,6 +15,7 @@ import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
+import com.omnilab.micrm.service.CouponIssueService
 import com.omnilab.micrm.service.SalesforceService
 import com.omnilab.micrm.service.SysSettingService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
@@ -125,6 +126,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
+
+    @Autowired
+    @Qualifier("CouponIssueServiceImpl")
+    private lateinit var couponIssueService: CouponIssueService
 
     @Autowired
     private lateinit var customAuthenticationProvider: AuthenticationProvider
@@ -2624,6 +2629,10 @@ class SalesforceServiceImpl : SalesforceService {
                                 mdmSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
+                    }
+
+                    if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
+                        couponIssueService.issueCouponAtSales(campaignDto, contTpLst, inArguments)
                     }
                 }
             }

@@ -3,10 +3,12 @@ package com.omnilab.micrm.service.impl
 import com.monitorjbl.xlsx.StreamingReader
 import com.omnilab.micrm.common.*
 import com.omnilab.micrm.config.error.CouponException
+import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
 import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
+import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
@@ -25,7 +27,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-@Service
+@Service("CouponIssueServiceImpl")
 class CouponIssueServiceImpl: CouponIssueService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
@@ -120,6 +122,41 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
     }
 
+    override fun issueCouponAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>) {
+        // 1. 도메인
+        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(grp_id, dto.usr_grp_cd!!))
+        // 2. Path
+        var couponPath = "/mobileCoupon/"
+        // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
+        val couponIssueDto = couponDao.selectCouponIssue(dto.cont_id.toString())
+        // 4. uuid
+        val couponUuid = makeUuidUrl()
+        val encodedUuid = makeEncodedUuidUrl(couponUuid)
+        var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+        // 6. Naver Short URL
+        val jsonObject = NaverShortUrl.shorten(sendUrl)
+        if (jsonObject["code"] != null && jsonObject["code"] == "200") {
+            val resultJson: JSONObject = jsonObject["result"] as JSONObject
+            sendUrl = resultJson["url"].toString()
+        }
+
+        val contDto = contTpLst["DMTP02"]!!
+        contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", sendUrl)
+
+        val couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
+            couponIssueDto.seq!!,
+            couponUuid,
+            sendUrl,
+            map["SEND_TO"].toString(),
+            dto.reg_id,
+            dto.usr_grp_cd.toString()
+        )
+
+        val HstSeq = map["SEND_HST_SEQ"].toString()
+        couponIssuedLogDto.msgkey = HstSeq
+        couponIssuedLogDto.msgtp = "" // todo 제거 필요
+        couponDao.insertCouponIssuedLog(couponIssuedLogDto)
+    }
     override fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any> {
 
         if (file.isEmpty) {

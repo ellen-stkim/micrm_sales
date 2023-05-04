@@ -85,41 +85,44 @@ class CampaignMdmDaoImpl : CampaignSendDao {
              * 8. 쿠폰 발급 내역
              * 9. 쿠폰 발급 타겟 수
              */
-            var couponIssuedLogDto = Tblmicou_coupon_issued_logDto()
-            if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
-                // 1. 도메인
-                var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
-                // 2. Path
-                var couponPath = "/mobileCoupon/"
-                // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
-                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id.toString())
-
-                // 4. uuid
-                val uuid = UUID.randomUUID()
-                val couponUuid = CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)
-                // 5. uuid 암호화
-                val encodedUuid = AES256.AES_Encode(couponUuid, GlobalValues.encKey)
-                var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
-
-                // 6. Naver Short URL
-                val jsonObject = NaverShortUrl.shorten(sendUrl)
-                if (jsonObject["code"] != null && jsonObject["code"] == "200") {
-                    val resultJson: JSONObject = jsonObject["result"] as JSONObject
-                    sendUrl = resultJson["url"].toString()
-                }
-
-                targetBody = targetBody.replace("{쿠폰링크}", sendUrl)
-
-                couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
-                    couponIssueDto!!.seq!!,
-                    couponUuid,
-                    sendUrl,
-                    map["SEND_TO"].toString(),
-                    dto.reg_id,
-                    dto.usr_grp_cd.toString()
-                )
-
-            }
+//            var couponIssuedLogDto = Tblmicou_coupon_issued_logDto()
+//            if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
+//
+//
+//
+//                // 1. 도메인
+//                var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
+//                // 2. Path
+//                var couponPath = "/mobileCoupon/"
+//                // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
+//                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id.toString())
+//
+//                // 4. uuid
+//                val uuid = UUID.randomUUID()
+//                val couponUuid = CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6) + CommonUtils.toUnsignedString(uuid.mostSignificantBits, 6)
+//                // 5. uuid 암호화
+//                val encodedUuid = AES256.AES_Encode(couponUuid, GlobalValues.encKey)
+//                var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+//
+//                // 6. Naver Short URL
+//                val jsonObject = NaverShortUrl.shorten(sendUrl)
+//                if (jsonObject["code"] != null && jsonObject["code"] == "200") {
+//                    val resultJson: JSONObject = jsonObject["result"] as JSONObject
+//                    sendUrl = resultJson["url"].toString()
+//                }
+//
+//                targetBody = targetBody.replace("{쿠폰링크}", sendUrl)
+//
+//                couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
+//                    couponIssueDto!!.seq!!,
+//                    couponUuid,
+//                    sendUrl,
+//                    map["SEND_TO"].toString(),
+//                    dto.reg_id,
+//                    dto.usr_grp_cd.toString()
+//                )
+//
+//            }
 
 
             // URL to TrackURL
@@ -212,22 +215,22 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
                 sqlSession.insert("ins_camp_send_sms_lg", sendLst)
             }
-
-            // 8.쿠폰 발급 내역
-            if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
-                var msgkey = ""
-                val map = mapOf("etc3" to HstSeq, "m_server" to mdmDb)
-
-                if ("DMCH202" == msgTp || "DMCH203" == msgTp) { // lms, mms
-                    msgkey = sqlSession.selectOne("sel_camp_send_mms_lg", map)
-                } else {  // sms
-                    msgkey = sqlSession.selectOne("sel_camp_send_sms_lg", map)
-                }
-                couponIssuedLogDto.msgkey = msgkey
-                couponIssuedLogDto.msgtp = msgTp
-                sqlSession.insert("insert_coupon_issued_log", couponIssuedLogDto)
-
-            }
+//
+//            // 8.쿠폰 발급 내역
+//            if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
+//                var msgkey = ""
+//                val map = mapOf("etc3" to HstSeq, "m_server" to mdmDb)
+//
+//                if ("DMCH202" == msgTp || "DMCH203" == msgTp) { // lms, mms
+//                    msgkey = sqlSession.selectOne("sel_camp_send_mms_lg", map)
+//                } else {  // sms
+//                    msgkey = sqlSession.selectOne("sel_camp_send_sms_lg", map)
+//                }
+//                couponIssuedLogDto.msgkey = msgkey
+//                couponIssuedLogDto.msgtp = msgTp
+//                sqlSession.insert("insert_coupon_issued_log", couponIssuedLogDto)
+//
+//            }
 
             cnt++
         } catch (e: Exception) {

@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
+import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.coupon.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
@@ -39,6 +40,10 @@ class CouponDaoImpl: CouponDao {
 
     override fun selectCouponListCountAtSales(searchDto: SearchCouponDto): Int {
         return sqlSession.selectOne("select_coupon_list_count_at_sales", searchDto)
+    }
+
+    override fun selectCouponIssue(cont_id: String): CouponIssueDto {
+        return sqlSession.selectOne("select_coupon_issue", cont_id)
     }
 
     override fun selectCouponIssuedLogList(searchDto: SearchCouponIssuedLogDto): MutableList<CouponIssuedListDto> {
