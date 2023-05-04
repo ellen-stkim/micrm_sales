@@ -31,7 +31,7 @@
 		<!-- 시스템 공지사항 팝업 영역 시작-->
 		<div id="noticePopAppend"></div>
 		<!-- 시스템 공지사항 팝업 영역 끝 -->
-		<div class="wrap">
+		<div class="wrap" style="padding-top: 0; padding-left: 0">
 			<!-- 알림 영역 시작 -->
 			<aside class="side_notice">
 				<div class="top bottom-border cf">

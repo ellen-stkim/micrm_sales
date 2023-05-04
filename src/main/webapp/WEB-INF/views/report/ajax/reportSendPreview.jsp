@@ -95,7 +95,7 @@
                                     </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
-                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn">${dto.kko_btn_nm}</a>
+                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
                                     </c:if>
                                 </div>
                             </div>
