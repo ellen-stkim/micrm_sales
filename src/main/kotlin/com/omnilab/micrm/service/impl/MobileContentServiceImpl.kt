@@ -1502,8 +1502,7 @@ class MobileContentServiceImpl : ContentService {
      * @title : 제이슨 버튼 파싱
      */
     private fun jsonButtonParsing(dto: Tblmi_cont_mstDto) {
-
-        var jsonParser = JsonParser()
+        val jsonParser = JsonParser()
         val dto = dto as Content_view_Dto
         val rcsMsgTp = dto.msg_tp
 
@@ -1513,9 +1512,8 @@ class MobileContentServiceImpl : ContentService {
         ) {
             // 슬라이드 형태가 아닌 것들 Json 파싱
             // 초기 Suggestion Json 배열은 1개이다
-            val jsonBtnArray = jsonParser?.parse(dto?.rcs_btn_obj).asJsonArray
-            val jsonSuggestArray = jsonBtnArray.get(0).asJsonObject
-                .get("suggestions").asJsonArray
+            val jsonBtnArray = jsonParser.parse(dto.rcs_btn_obj).asJsonArray
+            val jsonSuggestArray = jsonBtnArray.get(0).asJsonObject.get("suggestions").asJsonArray
             val len = jsonSuggestArray.size()
 
             //logger.error("jsonBtnArray : " + jsonBtnArray.size())
@@ -1533,9 +1531,8 @@ class MobileContentServiceImpl : ContentService {
                 if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.clipBoardAction))) {
                     // 복사하기 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.clipBoardAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
-                    val textData =
-                        (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val textData = (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
 
                     //logger.error("복사 데이터가 존재한다 : " + dataJsonObj.toString());
 
@@ -1547,7 +1544,7 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.urlAction))) {
                     // URL 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.urlAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
                     val urlData = (jsonDataMap[BtnValueUtils.openUrl] as? MutableMap<*, *>)?.get(BtnValueUtils.url)
 
                     //logger.error("URL 데이터가 존재한다 : " + dataJsonObj.toString());
@@ -1561,22 +1558,20 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.dialerAction))) {
                     // 전화 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.dialerAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
-                    val phoneNumber =
-                        (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val phoneNumber = (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
 
                     //logger.error("전화 데이터가 존재한다 : " + dataJsonObj.toString())
                     // logger.error("phoneNumber : " + phoneNumber.toString())
 
                     dto.btnType?.add(BtnValueUtils.dialerAction)
                     dto.btnData?.add(listOf(phoneNumber.toString()))
-                    dto.btnText?.add(displayText.toString()
-                        .replace("\"", ""))
+                    dto.btnText?.add(displayText.toString().replace("\"", ""))
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.mapAction))) {
                     // MapAction의 경우 3가지가 존재한다 ( 1. 좌표 입력 , 2. 쿼리 입력 , 3. 내 위치 보내기)
                     val mapObj = actionObj?.get(BtnValueUtils.mapAction)
-                    val jsonDataMap = gson?.fromJson(mapObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(mapObj.toString(), MutableMap::class.java)
 
                     //logger.error("jsonDataMapAction :" + jsonDataMap)
                     //logger.error("mapObj" + mapObj.toString())
@@ -1586,28 +1581,20 @@ class MobileContentServiceImpl : ContentService {
                         logger.error("requestLocationPush !! : 현재 위치 ")
                         dto.btnType?.add(BtnValueUtils.requestLocationPush)
                         dto.btnData?.add(listOf(""))
-                        dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""))
+                        dto.btnText?.add(displayText.toString().replace("\"", ""))
                     } else {
                         logger.error("nothing : 좌표 or 쿼리 입력")
-                        val fallbackUrl =
-                            (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                ?.get(BtnValueUtils.fallbackUrl)
-                                .toString()
+                        val fallbackUrl = (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.fallbackUrl).toString()
 
                         // 좌표 입력과 쿼리 입력 여부의 차이는 location 하위의 query 여부이다
-                        val location =
-                            gson?.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                ?.get(BtnValueUtils.location)
-                                .toString(), MutableMap::class.java)
+                        val location = gson.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.location).toString(), MutableMap::class.java)
 
                         if (!CommonUtils.isEmptyObject(location[BtnValueUtils.query])) {
                             // 좌표 쿼리가 존재하는 Json 버튼 데이터
                             val query = location[BtnValueUtils.query].toString()
                             // logger.error("좌표 쿼리 존재1 " + query);
                             dto.btnData?.add(listOf(query, fallbackUrl))
-                            dto.btnText?.add(displayText.toString()
-                                .replace("\"", ""))
+                            dto.btnText?.add(displayText.toString().replace("\"", ""))
                             dto.btnType?.add(BtnValueUtils.query)
 
                         } else {
@@ -1621,8 +1608,7 @@ class MobileContentServiceImpl : ContentService {
                             logger.error("좌표 쿼리 존재 X " + label);
 
                             dto.btnData?.add(listOf(latitude, longitude, label, fallbackUrl))
-                            dto.btnText?.add(displayText.toString()
-                                .replace("\"", ""))
+                            dto.btnText?.add(displayText.toString().replace("\"", ""))
                             dto.btnType?.add(BtnValueUtils.latitude)
                         }
                     }
@@ -1678,26 +1664,15 @@ class MobileContentServiceImpl : ContentService {
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.calendarAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.calendarAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
-                    val description = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.description)
-                        .toString()
-                    val startTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.startTime)
-                        .toString()
-                        .split("T")
-                    val endTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.endTime)
-                        .toString()
-                        .split("T")
-                    val title = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.title)
-                        .toString()
+                    val description = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.description).toString()
+                    val startTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.startTime).toString().split("T")
+                    val endTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.endTime).toString().split("T")
+                    val title = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.title).toString()
 
                     dto.btnData?.add(listOf(startTime[0], endTime[0], title, description))
-                    dto.btnText?.add(displayText.toString()
-                        .replace("\"", ""))
+                    dto.btnText?.add(displayText.toString().replace("\"", ""))
                     dto.btnType?.add(BtnValueUtils.calendarAction)
 
 
@@ -1709,31 +1684,23 @@ class MobileContentServiceImpl : ContentService {
                      logger.error("title : " + title);*/
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.composeAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.composeAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
-                    val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.phoneNumber)
-                        .toString()
-                    val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.text)
-                        .toString()
+                    val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber).toString()
+                    val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.text).toString()
 
                     dto.btnData?.add(listOf(phoneNumber, text))
-                    dto.btnText?.add(displayText.toString()
-                        .replace("\"", ""))
+                    dto.btnText?.add(displayText.toString().replace("\"", ""))
                     dto.btnType?.add(BtnValueUtils.composeAction)
-
 
                     //logger.error("text : " + text);
                     //logger.error("phoneNumber : " + phoneNumber);
-
                 } else {
                     //logger.error("Json 데이터가 존재하지 않는다");
                 }
                 // 버튼은 그냥 담기
-
-                logger.error("suggestObj : " + suggestObj.toString());
-                logger.error("버튼명 : " + displayText)
+                logger.error("suggestObj : $suggestObj");
+                logger.error("버튼명 : $displayText")
 
                 logger.error("btnText : " + dto.btnText);
                 logger.error("버튼 타입: " + dto.btnType);

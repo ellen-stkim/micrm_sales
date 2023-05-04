@@ -81,7 +81,7 @@
                             <div class="create_article">
                                 <h2>컨텐츠</h2>
                                 <div class="form_viewer">
-                                    <iframe name="preview" id="preview" frameborder="0"></iframe>
+                                    <iframe name="preview" id="preview" frameborder="0" title="viwer"></iframe>
                                 </div>
                             </div>
                         </div>

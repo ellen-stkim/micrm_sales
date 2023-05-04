@@ -42,7 +42,7 @@
                 <div class="camp-content">
                     <div class="preview-container">
                         <c:if test="${cont_tp eq 'DMTP01'}">
-                            <iframe name="preview" id="preview" frameborder="0"></iframe>
+                            <iframe name="preview" id="preview" frameborder="0" title="viwer"></iframe>
                         </c:if>
                         <!-- 모바일 (문자) 이면서 MMS 형태 -->
                         <c:if test="${cont_tp eq 'DMTP02' && dto.msg_tp eq 'DMCH203'}">

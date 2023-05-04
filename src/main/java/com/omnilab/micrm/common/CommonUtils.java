@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.entity.ContentType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.slf4j.Logger;
@@ -578,10 +579,10 @@ public class CommonUtils {
      */
     public static String checkImageMime(MultipartFile file) {
         String fileMime = file.getContentType();
-        if (fileMime.equals("image/jpeg")
-                || fileMime.equals("image/gif")
-                || fileMime.equals("image/png")
-                || fileMime.equals("image/bmp")) {
+        if (ContentType.IMAGE_JPEG.getMimeType().equalsIgnoreCase(fileMime)
+                || ContentType.IMAGE_GIF.getMimeType().equalsIgnoreCase(fileMime)
+                || ContentType.IMAGE_PNG.getMimeType().equalsIgnoreCase(fileMime)
+                || ContentType.IMAGE_BMP.getMimeType().equalsIgnoreCase(fileMime)) {
             return fileMime;
         } else {
             return null;

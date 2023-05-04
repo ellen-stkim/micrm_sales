@@ -11,7 +11,7 @@
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil" %>
 <div id="testDetail">
     <h3 class="popup_title">${cnt["pro_nm"]}</h3>
-    <table class="pop_table_type3 pop_margin_bttm">
+    <table class="pop_table_type3 pop_margin_bttm" summary="detail">
         <colgroup>
             <col width="33.3%"/>
             <col width="33.3%"/>
