@@ -1,8 +1,6 @@
 package com.omnilab.micrm.common
 
-import io.minio.BucketExistsArgs
 import io.minio.MinioClient
-import io.minio.PutObjectArgs
 import io.minio.UploadObjectArgs
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -43,7 +41,7 @@ class CouponImageUploadUtils {
 
     fun upload(usrCd:String, file: MultipartFile, request: HttpServletRequest): MutableMap<String, Any> {
         val curFilePath = "$filePath/$usrCd"
-        val updFildPath = "$updPath/$usrCd"
+        val updFilePath = "$updPath/$usrCd"
         val saveFile = File(curFilePath)
         if (!saveFile.exists()) {
             logger.info("폴더생성")
@@ -65,8 +63,8 @@ class CouponImageUploadUtils {
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(share_bucket)
-                            .`object`("$couponImagePath$usrCd/$fileName")
-                            .filename(static_path + "$updFildPath/$fileName")
+                            .`object`("$couponImagePath/$usrCd/$fileName")
+                            .filename(static_path + "$updFilePath/$fileName")
                             .build())
 
                     map["uploaded"] = 1
