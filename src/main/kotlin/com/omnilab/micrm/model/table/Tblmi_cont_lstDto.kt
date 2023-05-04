@@ -32,6 +32,7 @@ open class Tblmi_cont_lstDto {
     var kko_title : String ?= null    // (알림톡) 템플릿 내용 중 강조 표기할 핵심 정보 text(50)
     var kko_header : String ?= null    // (알림톡) 메시지 상단에 표기할 제목 text(16)
 
+    var coupon_seq : String? = null // 쿠폰 시퀀스
     var img_cd_1 : Int?= null   // 이미지 번호
     var img_cd_2 : Int?= null
     var img_cd_3 : Int?= null

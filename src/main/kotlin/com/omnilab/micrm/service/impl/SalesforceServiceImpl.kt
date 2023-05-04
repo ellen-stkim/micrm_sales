@@ -6,7 +6,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
+import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
@@ -498,6 +500,11 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.msg_tp = "DMCH201"
                         tblmiContLstdto.img_cd_1 = null
                     }
+
+                    if (!contentListCreatedto.coupon_seq.isNullOrEmpty()) {
+                        tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
+                    }
+
                     tblmiContLstdto.cont_body = contentListCreatedto.sms_body
                 }
 
@@ -1060,6 +1067,11 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.msg_tp = "DMCH201"
                     tblmiContLstdto.img_cd_1 = null
                 }
+
+                if (!contentListCreatedto.coupon_seq.isNullOrEmpty()) {
+                    tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
+                }
+
                 tblmiContLstdto.cont_body = contentListCreatedto.sms_body
             }
 
@@ -2312,6 +2324,18 @@ class SalesforceServiceImpl : SalesforceService {
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
 
+                                    // 쿠폰 발급 이력 생성
+                                    if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
+                                        var couponIssueDto = CouponIssueDto()
+                                        couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
+                                        couponIssueDto.send_phone = tblmicp_cont_lstDto.send_to
+                                        couponIssueDto.msg_title = i.cont_sub
+                                        couponIssueDto.msg_content = i.cont_body
+                                        couponIssueDto.usr_grp_cd = i.cont_grp_cd
+                                        couponIssueDto.reg_id = i.reg_id
+                                        couponIssueDto.camp_seq = cpMstDto.seq
+                                        salesforceDao.insert_coupon_issue(couponIssueDto)
+                                    }
                                 }
                         }
                     }

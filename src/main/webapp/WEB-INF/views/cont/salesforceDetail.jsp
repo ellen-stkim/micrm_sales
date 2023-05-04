@@ -43,6 +43,12 @@
                     <input type="hidden" id="seq" name="mst_seq" value="${list[0].seq}"/>
                     <input type="hidden" id="usr_grp_cd" name="usr_grp_cd" value="${list[0].cont_grp_cd}"/>
                     <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
+                    <c:if test="${list[1].coupon_seq != null}">
+                        <input type="hidden" id="coupon_seq" name="coupon_seq" value="${list[1].coupon_seq}"/>
+                    </c:if>
+                    <c:if test="${list[1].coupon_seq == null}">
+                        <input type="hidden" id="coupon_seq" name="coupon_seq" value=""/>
+                    </c:if>
                     <div class="th">템플릿 명</div>
                     <div class="td right-border">
                         <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
@@ -648,6 +654,26 @@
                                                     <div class="th bottom-border">내용</div>
                                                     <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
                                                                                onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea></div>
+                                                </div>
+                                                <div class="row send">
+                                                    <div class="th bottom-border">쿠폰 발송</div>
+                                                    <div class="td bottom-border">
+                                                        <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
+
+                                                        <c:if test="${list[1].coupon_seq != null}">
+                                                            <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
+                                                            <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
+                                                            <input type="text" name="" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
+                                                        </c:if>
+                                                        <c:if test="${list[1].coupon_seq == null}">
+                                                            <input type="text" name="" placeholder="" value="" readonly/>
+                                                        </c:if>
+                                                        <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
+                                                        <!-- 쿠폰 활성화 시 -->
+                                                        <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
+                                                        <!-- 쿠폰 비활성화 시 -->
+                                                        <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th">수신거부 문구</div>

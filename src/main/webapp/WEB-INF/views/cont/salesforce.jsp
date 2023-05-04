@@ -42,6 +42,7 @@
             <input type="hidden" id="seq" name="mst_seq" value=""/>
             <input type="hidden" id="usr_grp_cd" name="usr_grp_cd"/>
             <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
+            <input type="hidden" id="coupon_seq" name="coupon_seq"/>
             <div class="create_sms cf">
                 <div class="row head bottom-border">
                     <div class="th">템플릿 명</div>
@@ -465,6 +466,18 @@
                                             <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
                                                                        onkeyup="onchangePrevSmsTxt(this)"></textarea></div>
                                         </div>
+                                        <div class="row send">
+                                            <div class="th bottom-border">쿠폰 발송</div>
+                                            <div class="td bottom-border">
+                                                <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
+                                                <input type="text" name="" placeholder="" readonly/>
+                                                <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
+                                                <!-- 쿠폰 활성화 시 -->
+                                                <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
+                                                <!-- 쿠폰 비활성화 시 -->
+                                                <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">
@@ -699,6 +712,59 @@
 <form:form id="tblmisetForm" name="tblmisetForm" onsubmit="return false">
     <span id="callPopUp"></span>
 </form:form>
+
+<div class="layer_pop couponListPop" id="couponListPop">
+    <div class="pop_container popup_size1">
+        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
+        <div class="pop_title">COUPON</div>
+        <div class="pop_inner">
+            <form:form id="searchCouponListForm" name="searchCouponListForm" onsubmit="return false">
+                <div class="form_search">
+                    <div class="radio_type">
+                        <label class="block_radio" for="month1">
+                            <input type="radio" name="Cperiod" value="1" id="month1" onclick="checkClicked()" checked/>
+                            <span>1개월</span>
+                        </label>
+                        <label class="block_radio" for="month3">
+                            <input type="radio" name="Cperiod" value="3" id="month3" onclick="checkClicked()" />
+                            <span>3개월</span>
+                        </label>
+                        <label class="block_radio" for="month6">
+                            <input type="radio" name="Cperiod" value="6" id="month6" onclick="checkClicked()" />
+                            <span>6개월</span>
+                        </label>
+                        <label class="block_radio" for="month9">
+                            <input type="radio" name="Cperiod" value="9" id="month9" onclick="checkClicked()" />
+                            <span>9개월</span>
+                        </label>
+                        <label class="block_radio" for="month12">
+                            <input type="radio" name="Cperiod" value="12" id="month12" onclick="checkClicked()" />
+                            <span>12개월</span>
+                        </label>
+                    </div>
+                    <div class="input_txt">
+                        <input type="text" name="nm" placeholder="쿠폰 명 검색" onkeyup="if (window.event.keyCode == 13) { getCouponListAtSales('1'); } return false;"  />
+                        <input type="button" class="btn_search" id="" value="검색" onclick="getCouponListAtSales('1');" />
+                    </div>
+                </div>
+            </form:form>
+            <div id="couponListTable">
+
+            </div>
+            <!-- 오류 메시지 영역 -->
+            <div class="pop_error_txt blue_point_color" id="targetError"></div>
+            <div class="btn_row">
+                <input type="button" class="btn_bg btn_size2 btn_center" onclick="targetCheck(this);" value="확인" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 쿠폰 미리보기 팝업 시작 -->
+<div class="layer_pop couponPreview" id="couponPreview">
+
+</div>
+<!-- 쿠폰 미리보기 팝업 끝 -->
 
 <!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
 <form:form id="imgSetForm" name="imgSetForm" onsubmit="return false">
@@ -1588,6 +1654,10 @@
                     prevEl: '.rcs_prev',
                 },
             });
+
+            couponSeq = $("#savedCouponSeq").val();
+            couponSelectSeq = $("#savedCouponSeq").val();
+            couponNm = $("#savedCouponNm").val();
         }
 
         let param = {seq: seq}
@@ -1728,7 +1798,8 @@
                 if (smsNumber != '' || smsNumber != null) {
                     if (smsTxt.val() != '') {
                         let type = smsTypeValidate();
-                        if (type == true) {
+                        let coupon = couponValidate();
+                        if (type == true && coupon == true) {
                             return true;
                         } else {
                             return false;
@@ -1753,7 +1824,9 @@
         if (smsOption == 'guide') {
             if (smsTitle.val() != '') {
                 let type = smsTypeValidate();
-                if (type == true) {
+                let coupon = couponValidate();
+
+                if (type == true && coupon == true) {
                     return true;
                 } else {
                     return false;
@@ -1765,6 +1838,7 @@
                 return false;
             }
         }
+
         return true;
     }
 
@@ -1810,6 +1884,22 @@
             }
         }
         return true;
+    }
+
+    function couponValidate() {
+        if (couponSelectSeq == undefined) {
+            return true;
+        }
+        if (couponSelectSeq.length == 0) {
+            return true;
+        }
+        let smsTxt = $('#sms_txt_area');
+        if (smsTxt.val().indexOf("{쿠폰링크}") === -1) {
+            popup.popAlert("사용 버튼을 클릭하여 {쿠폰링크}를 입력해주세요");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // blur 유효성 체크
@@ -3472,6 +3562,104 @@
         com_ajax.ajax('post', '${baseURL}/cont/updateMobileUseYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
+    //쿠폰 리스트
+    let couponNm = "";
+    let couponSelectSeq = "";
+    let couponSeq = "";
+    const couponListPop = () => {
+        getCouponListAtSales('1');
+    };
+
+    function getCouponListAtSales(pageNo) {
+        var data = $('#searchCouponListForm').serializeArray();
+        data.push({name: "pageNo", value: pageNo});
+        if (selectedExpireMonth != 0) {
+            var expireDate = moment().add(Number($('input[name="Cperiod"]:checked').val()), 'months').format('YYYY-MM-DD HH:mm:ss');
+            data.push({name: "expire_dt", value: expireDate});
+        }
+        const res = function (response) {
+            var $doc = new DOMParser().parseFromString(response, "text/html");
+            $('#couponListTable').html($("#body", $doc).html());
+
+            const couponLayerPop = document.querySelector(".layer_pop.couponListPop");
+            couponLayerPop.classList.add("active");
+        }
+
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/getCouponListAtSales.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+
+    //쿠폰 리스트 선택 시
+    const chkCoupon = (url, nm) => {
+        couponNm = nm;
+        couponSelectSeq = url;
+    };
+
+    //쿠폰 리스트 확인 클릭 시
+    const targetCheck = (value) => {
+        if (couponSelectSeq.length != 0) {
+            const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
+            couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
+            couponSeq = couponSelectSeq;
+            $('#coupon_seq').val(couponSeq);
+            popupClose(value);
+        } else {
+            popup.popAlert("쿠폰을 선택해주세요.");
+            return false;
+        }
+    };
+
+    //쿠폰 URL 사용(적용)
+    const applyCoupon = () => {
+        if (couponSeq == "") {
+            popup.popAlert("리스트에서 쿠폰을 먼저 선택해주세요.");
+            return false;
+        }
+        const preview = document.querySelector(".viewer_area .inner .text_box .scroll_txt_area");
+        //입력된 URL 미리보기에 추가
+        preview.innerHTML += '<br/>' + ' {쿠폰링크}';
+        let smsContent = $('#sms_txt_area').val();
+        $('#sms_txt_area').val(smsContent + '\n {쿠폰링크}');
+    };
+
+    //쿠폰 미리보기
+    const couponPreview = (status) => {
+        if (couponSeq == "") {
+            popup.popAlert("리스트에서 쿠폰을 먼저 선택해주세요.");
+            return false;
+        }
+
+        const res = function (response) {
+            var $doc = new DOMParser().parseFromString(response, "text/html");
+            $('#couponPreview').html($("#body", $doc).html());
+
+            const layerPop = document.querySelector(".layer_pop.couponPreview");
+            layerPop.classList.add("active");
+        }
+        var data = {};
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/getCouponAtSales.ajax?seq='+ couponSeq, data, res, '${_csrf.headerName}', '${_csrf.token}');
+    };
+
+    var selectedExpireMonth = 1;
+    function checkClicked() {
+        var clickNumber = Number($('input[name="Cperiod"]:checked').val());
+
+        if (selectedExpireMonth == clickNumber) {
+            $('input[name="Cperiod"]').each(function() {
+                $(this).prop('checked', false);
+            });
+            selectedExpireMonth = 0;
+        } else {
+            selectedExpireMonth = clickNumber;
+        }
+    }
+
+    const openInnerModal = (name) => {
+        const modalName = document.querySelector('.inner_modal.' + name);
+        modalName.classList.add("open");
+    };
+    const closeInnerModal = (el) => {
+        el.closest(".inner_modal").classList.remove("open");
+    };
 
 </script>
 

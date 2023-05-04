@@ -67,6 +67,7 @@
 			kko_currency_type,
 			kko_title,
 			kko_header,
+			coupon_seq,
 			img_cd_1,
 			img_cd_2,
 			img_cd_3,
@@ -116,6 +117,7 @@
 			#{kko_currency_type},
 			#{kko_title},
 			#{kko_header},
+		    #{coupon_seq},
 			#{img_cd_1},
 			#{img_cd_2},
 			#{img_cd_3},
@@ -996,6 +998,7 @@
 		img_cd_4 = #{img_cd_4},
 		img_cd_5 = #{img_cd_5},
 		img_cd_6 = #{img_cd_6},
+		coupon_seq = #{coupon_seq},
 		kko_img_cd = #{kko_img_cd},
 		kko_img_url = #{kko_img_url},
 		kko_btn_nm = #{kko_btn_nm},
@@ -1192,6 +1195,7 @@
 			, kko_img.img_url                                                                                      AS kko_img_lst
 			, l.kko_btn_nm                                                                                         AS kko_btn_nm
 			, l.kko_btn_url                                                                                        AS kko_btn_url
+			, l.coupon_seq                                                                                         AS coupon_seq
 			, l.img_cd_1                                                                                           AS img_cd_1
 			, l.img_cd_2                                                                                           AS img_cd_2
 			, l.img_cd_3                                                                                           AS img_cd_3

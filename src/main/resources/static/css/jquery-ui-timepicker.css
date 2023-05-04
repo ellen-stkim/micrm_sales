@@ -1,0 +1,75 @@
+/*
+ * Timepicker stylesheet
+ * Version 0.3.3
+ * Highly inspired from datepicker
+ * FG - Nov 2010 - Web3R 
+ *
+ * version 0.0.3 : Fixed some settings, more dynamic
+ * version 0.0.4 : Removed width:100% on tables
+ * version 0.1.1 : set width 0 on tables to fix an ie6 bug
+ */
+
+ .ui-timepicker-inline { display: inline; }
+
+ #ui-timepicker-div { padding: 0; border:1px solid #ddd; }
+ /* .ui-timepicker-table { display: inline-table; width: 0; } */
+ .ui-timepicker-table table { margin:0; border-collapse: collapse; }
+ 
+ .ui-timepicker-hours, .ui-timepicker-minutes { padding:0;  }
+ 
+ .ui-timepicker-table .ui-timepicker-title {display:flex; justify-content: center; align-items: center; height:36px; font-size:11px; border-bottom:1px solid #f4f4f4;}
+ .ui-timepicker-table .ui-timepicker-minutes .ui-timepicker-title {
+    border-left:1px solid #ddd;
+ }
+ .ui-timepicker-table td { 
+    /* padding: 0.1em;  */
+    /* width: 2.2em; */
+ }
+ .ui-timepicker-table tr:not(:first-child) {
+    border-top:1px solid #f4f4f4;
+ }
+ .ui-timepicker-table th.periods { padding: 0; width: 36px; font-size:10px; border-right:1px solid #f4f4f4; }
+ .ui-widget-content {border:none}
+ /* span for disabled cells */
+ .ui-timepicker-table td span {
+     display:block;
+     padding:0.2em 0.3em 0.2em 0.5em;
+     width: 1.2em;
+ 
+     text-align:right;
+     text-decoration:none;
+ }
+ /* anchors for clickable cells */
+ .ui-timepicker-table td {
+    border-left:1px solid #f4f4f4;
+ }
+ .ui-timepicker-table td a {
+     display:flex;
+     justify-content: center;
+     align-items: center;
+     /* padding:0.2em 0.3em 0.2em 0.5em; */
+     /* width: 1.2em; */
+     width:35px;
+     height:35px;
+     cursor: pointer;
+     text-align:right;
+     text-decoration:none;
+ }
+ .ui-timepicker-table td.ui-timepicker-minutes td:nth-child(1) {border-left-color:#ddd;}
+ 
+ 
+ /* buttons and button pane styling */
+ .ui-timepicker .ui-timepicker-buttonpane {
+     background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0;
+ }
+ .ui-timepicker .ui-timepicker-buttonpane button { margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+ /* The close button */
+ .ui-timepicker .ui-timepicker-close { float: right }
+ 
+ /* the now button */
+ .ui-timepicker .ui-timepicker-now { float: left; }
+ 
+ /* the deselect button */
+ .ui-timepicker .ui-timepicker-deselect { float: left; }
+ 
+ 

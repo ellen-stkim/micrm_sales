@@ -26,9 +26,9 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 .nav .gnb > li:nth-child(3) > span {background-image:url('../image/ico_gnb3.png');}
 .nav .gnb > li:nth-child(4) > span {background-image:url('../image/ico_gnb4.png');}
 .nav .gnb > li:nth-child(5) > span {background-image:url('../image/ico_gnb5.png');}
+.nav .gnb > li.coupon > span {background-image:url('../image/ico_gnb_coupon.png');}
 .nav .gnb .sub_menu {padding-bottom:20px;}
-.nav .gnb .sub_menu li a {display:block; padding:4px 0 4px 27px; color:#bbbbbb;
-    font-weight:600;}
+.nav .gnb .sub_menu li a {display:block; padding:4px 0 4px 27px; color:#bbbbbb;}
 .nav .gnb .sub_menu li.on a,
 .nav .gnb .sub_menu li:hover a {color:#618cd3;}
 

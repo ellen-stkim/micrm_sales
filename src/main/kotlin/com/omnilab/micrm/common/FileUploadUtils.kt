@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest
 class FileUploadUtils {
     val logger = LoggerFactory.getLogger(this::class.java)
 
-
     @Value("\${variable.minio-url}")
     private lateinit var minio_url: String
 
@@ -38,6 +37,7 @@ class FileUploadUtils {
     private val updPath: String? = null
 
 
+
     fun upload(usrCd:String, file: MultipartFile, request: HttpServletRequest): MutableMap<String, Any> {
         val curFilePath = "$filePath/$usrCd"
         val updFildPath = "$updPath/$usrCd"
@@ -57,6 +57,7 @@ class FileUploadUtils {
                 fileName = "$digits.$fileExe"
 
                 if (fileupload(curFilePath,file, fileName)) {
+
                     val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()

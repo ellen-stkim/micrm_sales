@@ -2,12 +2,15 @@ package com.omnilab.micrm.service.impl
 
 
 import com.google.gson.*
+import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.BtnValueUtils
 import com.omnilab.micrm.common.CommonUtils
+import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
+import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.ContentService
@@ -37,6 +40,10 @@ class MobileContentServiceImpl : ContentService {
     @Autowired
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
+
+    @Autowired
+    @Qualifier("CouponDaoImpl")
+    private lateinit var couponDao: CouponDao
 
 
     /**
@@ -855,7 +862,12 @@ class MobileContentServiceImpl : ContentService {
             if (!CommonUtils.isEmptyObject(dto.rcs_btn_obj)) {
                 jsonButtonParsing(dto)
             }
-
+            // 이전에 선택한 쿠폰 시퀀스와 이름 조회
+            if (dto.cont_tp.equals("DMTP02") && !dto.coupon_seq.isNullOrEmpty()) {
+                val selectCoupon = couponDao.selectCoupon(dto.coupon_seq!!.toInt())
+                dto.coupon_nm = selectCoupon.nm
+                dto.coupon_seq = AES256.AES_Encode(dto.coupon_seq, GlobalValues.encKey)
+            }
             contentOneList.add(dto)
         }
         return contentOneList

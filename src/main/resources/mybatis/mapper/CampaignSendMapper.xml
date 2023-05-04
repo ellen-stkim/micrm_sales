@@ -287,6 +287,21 @@
 		</where>
 	</select>
 
+	<select id="sel_camp_send_sms_lg" parameterType="Map" resultType="String">
+		select tr_num from ${m_server}.SC_TRAN
+		<where>
+			tr_etc3 = #{etc3}
+		</where>
+	</select>
+
+	<select id="sel_camp_send_mms_lg" parameterType="Map" resultType="String">
+		select msgkey from ${m_server}.MMS_MSG
+		<where>
+			etc3 = #{etc3}
+		</where>
+	</select>
+
+
 </mapper>
 
 

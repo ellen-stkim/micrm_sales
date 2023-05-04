@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
+import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
@@ -110,5 +111,9 @@ class SalesforceDaoImpl: SalesforceDao {
 
     override fun ins_camp_send_rcs_img_lg(rcsImgLst: ArrayList<LgRcs_imgDto>): Int {
         return sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)
+    }
+
+    override fun insert_coupon_issue(couponIssueDto: CouponIssueDto) {
+        sqlSession.insert("insert_coupon_issue", couponIssueDto)
     }
 }
