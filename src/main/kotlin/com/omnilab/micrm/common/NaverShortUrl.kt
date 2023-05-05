@@ -21,11 +21,11 @@ class NaverShortUrl {
 
     private val logger = LoggerFactory.getLogger("NaverShortUrl")
 
-    fun shorten(uuid: String): String {
+    fun shorten(uuid: String, clientId: String, clientSecret:String): String {
         try {
 
-            val clientId = "rfsedehh6a" //애플리케이션 클라이언트 아이디값";
-            val clientSecret = "Wgz9vBfeS8FzVY7WR00mcz02yhW0tDoXDzKnAGW3" //애플리케이션 클라이언트 시크릿값";
+//            val clientId = "rfsedehh6a" //애플리케이션 클라이언트 아이디값";
+//            val clientSecret = "Wgz9vBfeS8FzVY7WR00mcz02yhW0tDoXDzKnAGW3" //애플리케이션 클라이언트 시크릿값";
 
 
             val text: String = uuid

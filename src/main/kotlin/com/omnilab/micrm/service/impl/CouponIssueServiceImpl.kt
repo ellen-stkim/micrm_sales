@@ -73,6 +73,11 @@ class CouponIssueServiceImpl: CouponIssueService {
         // 문자 메시지 DB 조회
         val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
 
+        // Naver API 정보 조회
+        val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", user.usr_grp_cd!!, "ID"))
+        val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", user.usr_grp_cd!!, "SECRET"))
+
+
         // 쿠폰 전송
         val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
         if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요.")
@@ -90,7 +95,7 @@ class CouponIssueServiceImpl: CouponIssueService {
             var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
             // Naver short Url 에러 또는 오류 시 원본 url 반환
-            sendUrl = naverShortUrl.shorten(sendUrl)
+            sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?: "")
 
             // {쿠폰링크} -> shortUrl 치환
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
@@ -149,8 +154,13 @@ class CouponIssueServiceImpl: CouponIssueService {
         val couponUuid = makeUuidUrl()
         val encodedUuid = makeEncodedUuidUrl(couponUuid)
         var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+
+        // Naver API 정보 조회
+        val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", dto.usr_grp_cd.toString(), "ID"))
+        val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", dto.usr_grp_cd.toString(), "SECRET"))
+
         // 6. Naver Short URL
-        sendUrl = naverShortUrl.shorten(sendUrl)
+        sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
 
         val contDto = contTpLst["DMTP02"]!!
         contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", sendUrl)
