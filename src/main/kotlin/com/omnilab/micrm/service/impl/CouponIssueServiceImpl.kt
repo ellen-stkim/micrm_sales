@@ -9,7 +9,9 @@ import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
 import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.mdm.CjMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
+import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -92,18 +94,28 @@ class CouponIssueServiceImpl: CouponIssueService {
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
 
             // mms 전송
+            val msgList = ArrayList<Any>()
             val msgtp = "DMCH203"
-            val msgDto = LgMms_msgDto(
-                couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
-                LocalDateTime.now().toString(), msgContent, "0", "", "", "",
-                mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd
-            )
-            couponDao.insertCouponIssueMsg(msgDto)
+            if (mdmDBDto.cd_desc == "CJ") {
+                val msgDto = CjMms_msgDto(couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "1",
+                    LocalDateTime.now().toString(), msgContent, "0",
+                    "", "", "", // todo 추후 content로 관리하면 이부분 추가 요망
+                    mdmDBDto.cd_val, user.usr_grp_cd)
+                msgList.add(msgDto)
+                couponDao.insertCouponIssueMsgCj(msgList)
+            } else {
+                val msgDto = LgMms_msgDto(couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
+                    LocalDateTime.now().toString(), msgContent, "0",
+                    "", "", "", // todo 추후 content로 관리하면 이부분 추가 요망
+                    mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd)
+                msgList.add(msgDto)
+                couponDao.insertCouponIssueMsgLg(msgList)
+            }
 
             // coupon issue log
             val dto = Tblmicou_coupon_issued_logDto(
-                msgDto.msgkey.toString(),
-                msgtp,
+                "", // todo 추후 content로 관리하면 tblmicp_send_hst seq 저장 필요
+                msgtp, // todo 제거 필요
                 couponIssueDto.seq!!,
                 couponUuid,
                 sendUrl,

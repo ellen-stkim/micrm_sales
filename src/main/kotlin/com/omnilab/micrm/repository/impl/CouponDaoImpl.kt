@@ -3,7 +3,6 @@ package com.omnilab.micrm.repository.impl
 import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.coupon.*
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CouponDao
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
@@ -63,9 +62,8 @@ class CouponDaoImpl: CouponDao {
     }
 
     override fun selectCommCd(tblmiCommCdDto: Tblmi_comm_cdDto): Tblmi_comm_cdDto {
-        return sqlSession.selectOne("getCommCD", tblmiCommCdDto)
+        return sqlSession.selectOne("getCommCD", tblmiCommCdDto) // SysSettingMapper
     }
-
 
     override fun insertCoupon(dto: CouponRegisterDto) {
         sqlSession.insert("insert_coupon", dto)
@@ -83,8 +81,12 @@ class CouponDaoImpl: CouponDao {
         sqlSession.insert("insert_coupon_issued_log", dto)
     }
 
-    override fun insertCouponIssueMsg(dto: LgMms_msgDto): Int {
-        return sqlSession.insert("insert_coupon_issue_msg", dto)
+    override fun insertCouponIssueMsgLg(list: ArrayList<Any>): Int {
+        return sqlSession.insert("ins_camp_send_mms_lg", list) // CampaignSendMapper
+    }
+
+    override fun insertCouponIssueMsgCj(list: ArrayList<Any>): Int {
+        return sqlSession.insert("ins_camp_send_mms_cj", list) // CampaignSendMapper
     }
 
     override fun updateCoupon(registerDto: CouponRegisterDto) {
