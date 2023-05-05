@@ -2633,6 +2633,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     if (isCouponSend) {
+                        couponIssuedLog.phone = sendHstDto.send_to
                         couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
                     }
                 }

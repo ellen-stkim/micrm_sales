@@ -145,7 +145,6 @@ class CouponIssueServiceImpl: CouponIssueService {
             couponIssueDto.seq!!,
             couponUuid,
             sendUrl,
-            map["SEND_TO"].toString(),
             dto.reg_id,
             dto.usr_grp_cd.toString()
         )
