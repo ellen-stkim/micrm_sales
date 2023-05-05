@@ -12,10 +12,8 @@ import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
-import com.sun.xml.ws.api.pipe.FiberContextSwitchInterceptor.Work
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -122,7 +120,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
     }
 
-    override fun issueCouponAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>) {
+    override fun createCouponIssuedLogAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto {
         // 1. 도메인
         val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(grp_id, dto.usr_grp_cd!!))
         // 2. Path
@@ -143,7 +141,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         val contDto = contTpLst["DMTP02"]!!
         contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", sendUrl)
 
-        val couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
+        return Tblmicou_coupon_issued_logDto(
             couponIssueDto.seq!!,
             couponUuid,
             sendUrl,
@@ -151,12 +149,14 @@ class CouponIssueServiceImpl: CouponIssueService {
             dto.reg_id,
             dto.usr_grp_cd.toString()
         )
+    }
 
-        val HstSeq = map["SEND_HST_SEQ"].toString()
-        couponIssuedLogDto.msgkey = HstSeq
+    override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
+        couponIssuedLogDto.msgkey = hst_seq
         couponIssuedLogDto.msgtp = "" // todo 제거 필요
         couponDao.insertCouponIssuedLog(couponIssuedLogDto)
     }
+
     override fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any> {
 
         if (file.isEmpty) {

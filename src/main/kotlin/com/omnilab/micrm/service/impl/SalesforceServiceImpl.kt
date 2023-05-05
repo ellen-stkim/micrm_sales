@@ -19,8 +19,6 @@ import com.omnilab.micrm.service.CouponIssueService
 import com.omnilab.micrm.service.SalesforceService
 import com.omnilab.micrm.service.SysSettingService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
-import io.minio.MinioClient
-import io.minio.UploadObjectArgs
 import org.apache.http.HttpEntity
 import org.apache.http.HttpStatus
 import org.apache.http.StatusLine
@@ -50,13 +48,9 @@ import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
 import java.util.*
 import java.util.regex.Pattern
-import java.util.stream.Collectors
-import java.util.stream.Collectors.joining
-import java.util.stream.Collectors.toList
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 import kotlin.streams.toList
 
 
@@ -2571,6 +2565,13 @@ class SalesforceServiceImpl : SalesforceService {
                                     .build())
                         }
                     }*/
+
+                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
+                    val isCouponSend = !contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()
+                    if (isCouponSend) {
+                        couponIssuedLog = couponIssueService.createCouponIssuedLogAtSales(campaignDto, contTpLst, inArguments)
+                    }
+
                     // 발송
                     when {
                         // 카카오 친구톡
@@ -2631,8 +2632,8 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                     }
 
-                    if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
-                        couponIssueService.issueCouponAtSales(campaignDto, contTpLst, inArguments)
+                    if (isCouponSend) {
+                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
                     }
                 }
             }
