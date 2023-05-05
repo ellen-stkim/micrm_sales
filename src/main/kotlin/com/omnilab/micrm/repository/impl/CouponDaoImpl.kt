@@ -77,7 +77,7 @@ class CouponDaoImpl: CouponDao {
         return sqlSession.insert("insert_coupon_issue", dto)
     }
 
-    override fun insertCouponIssuedLog(dto: Tblmicou_coupon_issued_logDto) {
+    override fun insertCouponIssuedLog(dto: List<Tblmicou_coupon_issued_logDto>) {
         sqlSession.insert("insert_coupon_issued_log", dto)
     }
 

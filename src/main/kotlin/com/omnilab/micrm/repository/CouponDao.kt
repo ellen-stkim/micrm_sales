@@ -23,7 +23,7 @@ interface CouponDao {
     fun insertCoupon(dto: CouponRegisterDto)
     fun insertCouponImage(dto: Tblmicou_img_fileDto): Int
     fun insertCouponIssue(dto: Tblmicou_coupon_issueDto): Int
-    fun insertCouponIssuedLog(dto: Tblmicou_coupon_issued_logDto)
+    fun insertCouponIssuedLog(dto: List<Tblmicou_coupon_issued_logDto>)
     fun insertCouponIssueMsgLg(list: ArrayList<Any>): Int
     fun insertCouponIssueMsgCj(list: ArrayList<Any>): Int
     fun updateCoupon(registerDto: CouponRegisterDto)

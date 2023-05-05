@@ -77,7 +77,10 @@ class CouponIssueServiceImpl: CouponIssueService {
         val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
         if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요.")
 
+        val issuedLogList: MutableList<Tblmicou_coupon_issued_logDto> = ArrayList()
+
         for (receiveNumber in refinePhoneNumberList) {
+            val msgList = ArrayList<Any>()
             // uuid 생성
             val couponUuid = makeUuidUrl()
 
@@ -93,8 +96,8 @@ class CouponIssueServiceImpl: CouponIssueService {
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
 
             // mms 전송
-            val msgList = ArrayList<Any>()
             val msgtp = "DMCH203"
+            var msgKey = ""
             if (mdmDBDto.cd_desc == "CJ") {
                 val msgDto = CjMms_msgDto(couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "1",
                     LocalDateTime.now().toString(), msgContent, "0",
@@ -102,6 +105,7 @@ class CouponIssueServiceImpl: CouponIssueService {
                     mdmDBDto.cd_val, user.usr_grp_cd)
                 msgList.add(msgDto)
                 couponDao.insertCouponIssueMsgCj(msgList)
+                msgKey = msgDto.msgkey.toString()
             } else {
                 val msgDto = LgMms_msgDto(couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
                     LocalDateTime.now().toString(), msgContent, "0",
@@ -109,11 +113,12 @@ class CouponIssueServiceImpl: CouponIssueService {
                     mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd)
                 msgList.add(msgDto)
                 couponDao.insertCouponIssueMsgLg(msgList)
+                msgKey = msgDto.msgkey.toString()
             }
 
             // coupon issue log
             val dto = Tblmicou_coupon_issued_logDto(
-                "", // todo 추후 content로 관리하면 tblmicp_send_hst seq 저장 필요
+                msgKey, // todo 추후 content로 관리하면 tblmicp_send_hst seq 저장 필요
                 msgtp, // todo 제거 필요
                 couponIssueDto.seq!!,
                 couponUuid,
@@ -122,10 +127,12 @@ class CouponIssueServiceImpl: CouponIssueService {
                 user.usr_id,
                 user.usr_grp_cd
             )
-            couponDao.insertCouponIssuedLog(dto)
+
+            issuedLogList.add(dto)
 
             sendCnt++
         }
+        couponDao.insertCouponIssuedLog(issuedLogList)
 
         // 쿠폰 발급 target Count 입력
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
@@ -160,7 +167,7 @@ class CouponIssueServiceImpl: CouponIssueService {
     override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
         couponIssuedLogDto.msgkey = hst_seq
         couponIssuedLogDto.msgtp = "" // todo 제거 필요
-        couponDao.insertCouponIssuedLog(couponIssuedLogDto)
+        couponDao.insertCouponIssuedLog(listOf(couponIssuedLogDto))
     }
 
     override fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any> {

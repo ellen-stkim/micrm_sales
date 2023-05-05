@@ -405,7 +405,7 @@
 		WHERE A.seq = #{coupon_seq}
 	</insert>
 
-	<insert id="insert_coupon_issued_log" parameterType="Tblmicou_coupon_issued_logDto">
+	<insert id="insert_coupon_issued_log" parameterType="list" >
 		INSERT INTO tblmicou_coupon_issued_log (
 			msgkey,
 			msgtp,
@@ -415,16 +415,18 @@
 			phone,
 			usr_grp_cd,
 			reg_id
-		) VALUES (
-			#{msgkey},
-		    #{msgtp},
-			#{coupon_issue_seq},
-			#{coupon_uuid},
-			#{short_url},
-			#{phone},
-			#{usr_grp_cd},
-			#{reg_id}
-		)
+		) VALUES
+		<foreach collection="list" index="seq" item="list" separator="," >
+			( #{list.msgkey},
+			#{list.msgtp},
+			#{list.coupon_issue_seq},
+			#{list.coupon_uuid},
+			#{list.short_url},
+			#{list.phone},
+			#{list.usr_grp_cd},
+			#{list.reg_id} )
+		</foreach>
+
 	</insert>
 
 	<insert id="insert_coupon_issue_msg" parameterType="LgMms_msgDto" useGeneratedKeys="true" keyProperty="msgkey" >
