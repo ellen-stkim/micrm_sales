@@ -37,6 +37,9 @@ class CouponIssueServiceImpl: CouponIssueService {
     @Autowired
     private lateinit var couponDao: CouponDao
 
+    @Autowired
+    private lateinit var naverShortUrl: NaverShortUrl
+
     override fun issueCoupon(couponIssueDto: CouponIssueDto) {
         if (couponIssueDto.msg_title.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "메시지 제목을 입력해주세요.")
 
@@ -83,12 +86,8 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
-            // Naver short Url
-            val jsonObject = NaverShortUrl.shorten(sendUrl)
-            if (jsonObject["code"] != null && jsonObject["code"] == "200") {
-                val resultJson: JSONObject = jsonObject["result"] as JSONObject
-                sendUrl = resultJson["url"].toString()
-            }
+            // Naver short Url 에러 또는 오류 시 원본 url 반환
+            sendUrl = naverShortUrl.shorten(sendUrl)
 
             // {쿠폰링크} -> shortUrl 치환
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
@@ -144,11 +143,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         val encodedUuid = makeEncodedUuidUrl(couponUuid)
         var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
         // 6. Naver Short URL
-        val jsonObject = NaverShortUrl.shorten(sendUrl)
-        if (jsonObject["code"] != null && jsonObject["code"] == "200") {
-            val resultJson: JSONObject = jsonObject["result"] as JSONObject
-            sendUrl = resultJson["url"].toString()
-        }
+        sendUrl = naverShortUrl.shorten(sendUrl)
 
         val contDto = contTpLst["DMTP02"]!!
         contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", sendUrl)
