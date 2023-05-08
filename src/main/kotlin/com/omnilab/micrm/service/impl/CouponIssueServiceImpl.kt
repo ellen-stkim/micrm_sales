@@ -5,10 +5,7 @@ import com.omnilab.micrm.common.*
 import com.omnilab.micrm.config.error.CouponException
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.CouponIssueDto
-import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmi_set_lstDto
-import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
-import com.omnilab.micrm.model.table.Tblmicp_campaignDto
+import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.CjMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CampaignDao
@@ -16,9 +13,9 @@ import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
-import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -32,10 +29,14 @@ class CouponIssueServiceImpl: CouponIssueService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    val grp_id = "COUPON_DOMAIN"
+    val couponDomainGrpId = "COUPON_DOMAIN"
 
     @Autowired
     private lateinit var couponDao: CouponDao
+
+    @Autowired
+    @Qualifier("CampaignDaoImpl")
+    private lateinit var campaignDao: CampaignDao
 
     @Autowired
     private lateinit var naverShortUrl: NaverShortUrl
@@ -60,7 +61,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponIssueDto.send_phone = couponDao.selectDefaultSendNumber(searchDto)
 
         // 도메인 조회
-        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(grp_id, user.usr_grp_cd!!))
+        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, user.usr_grp_cd!!))
 
         // Path
         val couponPath = "/mobileCoupon/"
@@ -143,12 +144,12 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
     }
 
-    override fun createCouponIssuedLogAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto {
+    override fun createCouponIssuedLogAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, couponSendUrl: String): Tblmicou_coupon_issued_logDto {
         // 1. 도메인
-        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(grp_id, dto.usr_grp_cd!!))
+        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, dto.usr_grp_cd!!))
         // 2. Path
         var couponPath = "/mobileCoupon/"
-        // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
+        //3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
         val couponIssueDto = couponDao.selectCouponIssue(dto.cont_id.toString())
         // 4. uuid
         val couponUuid = makeUuidUrl()
@@ -163,7 +164,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
 
         val contDto = contTpLst["DMTP02"]!!
-        contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", sendUrl)
+        contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", couponSendUrl)
 
         return Tblmicou_coupon_issued_logDto(
             couponIssueDto.seq!!,
@@ -172,6 +173,65 @@ class CouponIssueServiceImpl: CouponIssueService {
             dto.reg_id,
             dto.usr_grp_cd.toString()
         )
+    }
+
+    override fun createCouponLink(map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto? {
+        //컨텐츠 마스터 정보
+        val avo_id = map["activityId"].toString()
+        val inten_id = map["journeyId"].toString()
+        val contMstDto = Tblmicp_cont_mstDto()
+        contMstDto.avo_id = avo_id
+        contMstDto.inten_id = inten_id
+        val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
+        if (contMst == null) {
+            return null
+        }
+
+        //캠페인 정보
+        val cDto = Tblmicp_campaignDto()
+        cDto.cont_id = contMst.seq
+        val campLst = campaignDao.sel_tblmicp_campaign(cDto)
+        if (campLst.isEmpty()) {
+            return null
+        }
+
+        for (campaignDto in campLst) {
+            //컨텐츠 리스트
+            val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
+            val contTpLst = HashMap<String, Contents_lstDto>()
+            for (check in contLst) {
+                contTpLst[check.cont_tp.toString()] = check
+            }
+            val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
+            if (isCouponSend) {
+                // 1. 도메인
+                val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, campaignDto.usr_grp_cd!!))
+                // 2. Path
+                var couponPath = "/mobileCoupon/"
+                // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
+                val couponIssueDto = couponDao.selectCouponIssue(campaignDto.cont_id.toString())
+                // 4. uuid
+                val couponUuid = makeUuidUrl()
+                val encodedUuid = makeEncodedUuidUrl(couponUuid)
+                var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+
+                // Naver API 정보 조회
+                val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "ID"))
+                val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "SECRET"))
+
+                // 6. Naver Short URL
+                sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
+                return Tblmicou_coupon_issued_logDto(
+                    couponIssueDto.seq!!,
+                    couponUuid,
+                    sendUrl,
+                    campaignDto.reg_id,
+                    campaignDto.usr_grp_cd.toString()
+                )
+            }
+        }
+
+        return null
     }
 
     override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
