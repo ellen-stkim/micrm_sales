@@ -155,7 +155,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         val couponUuid = makeUuidUrl()
         val encodedUuid = makeEncodedUuidUrl(couponUuid)
         var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
-
+        //
         // Naver API 정보 조회
         val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", dto.usr_grp_cd.toString(), "ID"))
         val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", dto.usr_grp_cd.toString(), "SECRET"))
