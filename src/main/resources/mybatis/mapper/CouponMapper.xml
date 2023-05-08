@@ -144,20 +144,17 @@
 		SELECT
 			A.seq,
 			A.msgkey,
-			A.msgtp,
-				CASE
-				WHEN A.msgtp = 'DMCH201' THEN (
-					SELECT `tr_rsltstat` FROM test_db_lgagent_micrm.sc_tran WHERE tr_num = A.msgkey
-				)
-				ELSE (
-					SELECT rslt FROM test_db_lgagent_micrm.mms_msg WHERE msgkey = A.msgkey
-				)
-			END 'send_status',
 			A.phone,
 			C.nm as coupon_nm,
 			A.send_dt,
 			A.use_yn,
-			D.img_url
+			D.img_url,
+			CASE
+				WHEN E.send_rst is null THEN '0'
+				WHEN E.send_rst = '0' THEN '1'
+				WHEN E.send_rst = '1' THEN '2'
+			    ELSE '0'
+			END send_status
 		FROM tblmicou_coupon_issued_log as A
 		LEFT JOIN tblmicou_coupon_issue as B
 			ON A.coupon_issue_seq = B.seq
@@ -165,6 +162,8 @@
 			ON B.coupon_seq = C.seq
 		LEFT JOIN tblmicou_img_file as D
 			ON C.img_file_seq = D.seq
+		LEFT JOIN tblmicp_send_hst as E
+			ON A.msgkey = E.seq
 		<where>
 			A.del_yn = 'N'
 			AND A.usr_grp_cd = #{usr_grp_cd}
@@ -184,34 +183,10 @@
 				AND C.nm LIKE CONCAT('%',#{coupon_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
-				AND (
-					CASE
-						WHEN A.msgtp = 'DMCH201' THEN (
-							SELECT (
-								CASE
-									WHEN tr_rsltstat is null THEN '0'
-									WHEN tr_rsltstat = '00' THEN '1'
-									WHEN tr_rsltstat = '06' THEN '2'
-									ELSE '3'
-								END
-							)
-							FROM test_db_lgagent_micrm.sc_tran
-							WHERE tr_num = A.msgkey
-						)
-						ELSE (
-							SELECT (
-								CASE
-									WHEN rslt is null THEN '0'
-									WHEN rslt = '0' THEN '1'
-									WHEN rslt = '1000' THEN '2'
-									ELSE '3'
-								END
-							)
-							FROM test_db_lgagent_micrm.mms_msg
-							WHERE msgkey = A.msgkey
-						)
-					END
-				) = #{send_status}
+				AND E.send_rst
+				<if test='send_status == "0"'>IS NULL</if>
+				<if test='send_status == "1"'>= '0'</if>
+				<if test='send_status == "2"'>= '1'</if>
 			</if>
 		</where>
 		ORDER BY A.reg_dt DESC
@@ -230,6 +205,8 @@
 			ON B.coupon_seq = C.seq
 		LEFT JOIN tblmicou_img_file as D
 			ON C.img_file_seq = D.seq
+		LEFT JOIN tblmicp_send_hst as E
+		ON A.msgkey = E.seq
 		<where>
 		   	A.del_yn = 'N'
 			AND A.usr_grp_cd = #{usr_grp_cd}
@@ -249,34 +226,10 @@
 				AND C.nm LIKE CONCAT('%',#{coupon_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_status)">
-				AND (
-					CASE
-						WHEN A.msgtp = 'DMCH201' THEN (
-							SELECT (
-								CASE
-									WHEN tr_rsltstat is null THEN '0'
-									WHEN tr_rsltstat = '00' THEN '1'
-									WHEN tr_rsltstat = '06' THEN '2'
-									ELSE '3'
-								END
-							)
-							FROM test_db_lgagent_micrm.sc_tran
-							WHERE tr_num = A.msgkey
-						)
-						ELSE (
-							SELECT (
-								CASE
-									WHEN rslt is null THEN '0'
-									WHEN rslt = '0' THEN '1'
-									WHEN rslt = '1000' THEN '2'
-									ELSE '3'
-								END
-							)
-							FROM test_db_lgagent_micrm.mms_msg
-							WHERE msgkey = A.msgkey
-						)
-					END
-				) = #{send_status}
+				AND E.send_rst
+				<if test='send_status == "0"'>IS NULL</if>
+				<if test='send_status == "1"'>= '0'</if>
+				<if test='send_status == "2"'>= '1'</if>
 			</if>
 		</where>
 	</select>
