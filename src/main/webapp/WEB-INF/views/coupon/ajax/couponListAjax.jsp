@@ -18,7 +18,7 @@
         <col width="206" />
         <col width="*" />
         <col width="208" />
-        <col width="224" />
+<%--        <col width="224" />--%>
         <col width="243" />
     </colgroup>
     <thead>
@@ -32,7 +32,7 @@
         <th>카테고리</th>
         <th>쿠폰명</th>
         <th>유효 기간</th>
-        <th>쿠폰 발급</th>
+<%--        <th>쿠폰 발급</th>--%>
         <th>쿠폰 수정</th>
     </tr>
     </thead>
@@ -58,9 +58,9 @@
                 </article>
             </td>
             <td>${coupon.expire_dt}</td>
-            <td>
-                <a href="${baseUrl}/coupon/couponIssue.mi?seq=${coupon.encodedSeq}" class="btn coupon">쿠폰 발급</a>
-            </td>
+<%--            <td>--%>
+<%--                <a href="${baseUrl}/coupon/couponIssue.mi?seq=${coupon.encodedSeq}" class="btn coupon">쿠폰 발급</a>--%>
+<%--            </td>--%>
             <td>
                 <a href="${baseURL}/coupon/couponUpdate.mi?seq=${coupon.encodedSeq}" class="btn coupon" >쿠폰 수정</a>
             </td>
