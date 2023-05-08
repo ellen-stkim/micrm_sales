@@ -144,37 +144,6 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
     }
 
-    override fun createCouponIssuedLogAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, couponSendUrl: String): Tblmicou_coupon_issued_logDto {
-        // 1. 도메인
-        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, dto.usr_grp_cd!!))
-        // 2. Path
-        var couponPath = "/mobileCoupon/"
-        //3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
-        val couponIssueDto = couponDao.selectCouponIssue(dto.cont_id.toString())
-        // 4. uuid
-        val couponUuid = makeUuidUrl()
-        val encodedUuid = makeEncodedUuidUrl(couponUuid)
-        var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
-        //
-        // Naver API 정보 조회
-        val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", dto.usr_grp_cd.toString(), "ID"))
-        val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", dto.usr_grp_cd.toString(), "SECRET"))
-
-        // 6. Naver Short URL
-        sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
-
-        val contDto = contTpLst["DMTP02"]!!
-        contTpLst["DMTP02"]!!.cont_body = contDto.cont_body!!.replace("{쿠폰링크}", couponSendUrl)
-
-        return Tblmicou_coupon_issued_logDto(
-            couponIssueDto.seq!!,
-            couponUuid,
-            sendUrl,
-            dto.reg_id,
-            dto.usr_grp_cd.toString()
-        )
-    }
-
     override fun createCouponLink(map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto? {
         //컨텐츠 마스터 정보
         val avo_id = map["activityId"].toString()
