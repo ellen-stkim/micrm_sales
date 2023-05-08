@@ -10,7 +10,8 @@ interface CouponIssueService {
 
 
     fun issueCoupon(couponIssueDto: CouponIssueDto)
-    fun createCouponIssuedLogAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto
+    fun createCouponIssuedLogAtSales(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, couponSendUrl: String): Tblmicou_coupon_issued_logDto
+    fun createCouponLink(map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto?
     fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String)
     fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any>
     fun deleteCouponIssuedLog(deleteCouponIssuedLogSeq: MutableList<String>)
