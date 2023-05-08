@@ -10,8 +10,8 @@
         <location>/html/not.html</location>
     </error-page>
 
-    <error-page>
-		<location>/error/error.mi</location>
-	</error-page>
+<!--    <error-page>-->
+<!--		<location>/error/error.mi</location>-->
+<!--	</error-page>-->
 
 </web-app>
