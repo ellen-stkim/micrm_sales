@@ -46,6 +46,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
+import java.time.LocalDateTime
 import java.util.*
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
@@ -2565,14 +2566,15 @@ class SalesforceServiceImpl : SalesforceService {
                                     .build())
                         }
                     }*/
-
-//                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
-//                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
-//                    if (isCouponSend) {
-//                        couponIssuedLog = couponIssueService.createCouponIssuedLogAtSales(campaignDto, contTpLst, inArguments)
-//                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
-//                    }
-
+                    val default = System.currentTimeMillis()
+                    logger.error("start=" + default/1000  )
+                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
+                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
+                    if (isCouponSend) {
+                        couponIssuedLog = couponIssueService.createCouponIssuedLogAtSales(campaignDto, contTpLst, inArguments)
+                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
+                    }
+                    logger.error("logic1="+ (default - System.currentTimeMillis()) /1000 )
                     // 발송
                     when {
                         // 카카오 친구톡
@@ -2632,11 +2634,14 @@ class SalesforceServiceImpl : SalesforceService {
                             }
                         }
                     }
+                    logger.error("logic2="+ (default - System.currentTimeMillis()) /1000 )
 
-//                    if (isCouponSend) {
-//                        couponIssuedLog.phone = sendHstDto.send_to
-//                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
-//                    }
+                    if (isCouponSend) {
+                        couponIssuedLog.phone = sendHstDto.send_to
+                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
+                    }
+                    logger.error("logic3="+ (default - System.currentTimeMillis()) /1000 )
+
                 }
             }
         }
