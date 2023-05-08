@@ -2566,12 +2566,12 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                     }*/
 
-                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
-                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
-                    if (isCouponSend) {
-                        couponIssuedLog = couponIssueService.createCouponIssuedLogAtSales(campaignDto, contTpLst, inArguments)
-                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
-                    }
+//                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
+//                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
+//                    if (isCouponSend) {
+//                        couponIssuedLog = couponIssueService.createCouponIssuedLogAtSales(campaignDto, contTpLst, inArguments)
+//                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
+//                    }
 
                     // 발송
                     when {
@@ -2633,10 +2633,10 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                     }
 
-                    if (isCouponSend) {
-                        couponIssuedLog.phone = sendHstDto.send_to
-                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
-                    }
+//                    if (isCouponSend) {
+//                        couponIssuedLog.phone = sendHstDto.send_to
+//                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
+//                    }
                 }
             }
         }
