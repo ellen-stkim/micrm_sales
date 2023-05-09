@@ -83,6 +83,10 @@ class SalesforceController {
     @Autowired
     private lateinit var couponListService: CouponListService
 
+    @Autowired
+    @Qualifier("CouponIssueServiceImpl")
+    private lateinit var couponIssueService: CouponIssueService
+
     @Value("\${upload.content}")
     private val filePath: String? = null
 
@@ -802,6 +806,8 @@ class SalesforceController {
                 val gson = GsonBuilder().create()
                 val data = gson.fromJson(payload, Map::class.java)
                 logger.error("data : {}", data)
+                val couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
+                if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
                 salesforceService.sendCampaign(data as MutableMap<String, Any>)
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)

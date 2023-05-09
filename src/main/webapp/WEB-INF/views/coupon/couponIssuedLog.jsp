@@ -48,9 +48,8 @@
                     <option value="">발송상태</option>
                     <option value="">전체</option>
                     <option value="0">발송대기</option>
-                    <option value="1">결과수신대기</option>
-                    <option value="2">성공</option>
-                    <option value="3">실패</option>
+                    <option value="1">성공</option>
+                    <option value="2">실패</option>
                 </select>
             </section>
             <section class="select-box">

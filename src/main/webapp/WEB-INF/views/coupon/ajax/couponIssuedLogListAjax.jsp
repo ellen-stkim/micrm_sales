@@ -103,12 +103,9 @@
                         <td>발송대기</td>
                     </c:when>
                     <c:when test="${log.send_status == 1}">
-                        <td>결과수신대기</td>
-                    </c:when>
-                    <c:when test="${log.send_status == 2}">
                         <td>성공</td>
                     </c:when>
-                    <c:when test="${log.send_status == 3}">
+                    <c:when test="${log.send_status == 2}">
                         <td>실패</td>
                     </c:when>
                 </c:choose>

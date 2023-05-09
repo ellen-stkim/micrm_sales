@@ -3,20 +3,19 @@ package com.omnilab.micrm.service.impl
 import com.monitorjbl.xlsx.StreamingReader
 import com.omnilab.micrm.common.*
 import com.omnilab.micrm.config.error.CouponException
+import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.CouponIssueDto
-import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmi_set_lstDto
-import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
+import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.mdm.CjMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
+import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponIssueService
-import com.sun.xml.ws.api.pipe.FiberContextSwitchInterceptor.Work
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -25,15 +24,22 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-@Service
+@Service("CouponIssueServiceImpl")
 class CouponIssueServiceImpl: CouponIssueService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    val grp_id = "COUPON_DOMAIN"
+    val couponDomainGrpId = "COUPON_DOMAIN"
 
     @Autowired
     private lateinit var couponDao: CouponDao
+
+    @Autowired
+    @Qualifier("CampaignDaoImpl")
+    private lateinit var campaignDao: CampaignDao
+
+    @Autowired
+    private lateinit var naverShortUrl: NaverShortUrl
 
     override fun issueCoupon(couponIssueDto: CouponIssueDto) {
         if (couponIssueDto.msg_title.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "메시지 제목을 입력해주세요.")
@@ -55,7 +61,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         couponIssueDto.send_phone = couponDao.selectDefaultSendNumber(searchDto)
 
         // 도메인 조회
-        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(grp_id, user.usr_grp_cd!!))
+        val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, user.usr_grp_cd!!))
 
         // Path
         val couponPath = "/mobileCoupon/"
@@ -68,11 +74,19 @@ class CouponIssueServiceImpl: CouponIssueService {
         // 문자 메시지 DB 조회
         val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
 
+        // Naver API 정보 조회
+        val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", user.usr_grp_cd!!, "ID"))
+        val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", user.usr_grp_cd!!, "SECRET"))
+
+
         // 쿠폰 전송
         val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
         if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요.")
 
+        val issuedLogList: MutableList<Tblmicou_coupon_issued_logDto> = ArrayList()
+
         for (receiveNumber in refinePhoneNumberList) {
+            val msgList = ArrayList<Any>()
             // uuid 생성
             val couponUuid = makeUuidUrl()
 
@@ -81,29 +95,36 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
-            // Naver short Url
-            val jsonObject = NaverShortUrl.shorten(sendUrl)
-            if (jsonObject["code"] != null && jsonObject["code"] == "200") {
-                val resultJson: JSONObject = jsonObject["result"] as JSONObject
-                sendUrl = resultJson["url"].toString()
-            }
+            // Naver short Url 에러 또는 오류 시 원본 url 반환
+            sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?: "")
 
             // {쿠폰링크} -> shortUrl 치환
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
 
             // mms 전송
             val msgtp = "DMCH203"
-            val msgDto = LgMms_msgDto(
-                couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
-                LocalDateTime.now().toString(), msgContent, "0", "", "", "",
-                mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd
-            )
-            couponDao.insertCouponIssueMsg(msgDto)
+            var msgKey = ""
+            if (mdmDBDto.cd_desc == "CJ") {
+                val msgDto = CjMms_msgDto(couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "1",
+                    LocalDateTime.now().toString(), msgContent, "0",
+                    "", "", "", // todo 추후 content로 관리하면 이부분 추가 요망
+                    mdmDBDto.cd_val, user.usr_grp_cd)
+                msgList.add(msgDto)
+                couponDao.insertCouponIssueMsgCj(msgList)
+                msgKey = msgDto.msgkey.toString()
+            } else {
+                val msgDto = LgMms_msgDto(couponIssueDto.msg_title, receiveNumber, couponIssueDto.send_phone, "0",
+                    LocalDateTime.now().toString(), msgContent, "0",
+                    "", "", "", // todo 추후 content로 관리하면 이부분 추가 요망
+                    mdmDBDto.cd_val, "MICRM_SALES", user.usr_grp_cd)
+                msgList.add(msgDto)
+                couponDao.insertCouponIssueMsgLg(msgList)
+                msgKey = msgDto.msgkey.toString()
+            }
 
             // coupon issue log
             val dto = Tblmicou_coupon_issued_logDto(
-                msgDto.msgkey.toString(),
-                msgtp,
+                msgKey,
                 couponIssueDto.seq!!,
                 couponUuid,
                 sendUrl,
@@ -111,13 +132,79 @@ class CouponIssueServiceImpl: CouponIssueService {
                 user.usr_id,
                 user.usr_grp_cd
             )
-            couponDao.insertCouponIssuedLog(dto)
+
+            issuedLogList.add(dto)
 
             sendCnt++
         }
+        couponDao.insertCouponIssuedLog(issuedLogList)
 
         // 쿠폰 발급 target Count 입력
         couponDao.updateCouponIssueTargetCount(couponIssueDto.seq!!, sendCnt)
+    }
+
+    override fun createCouponLink(map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto? {
+        //컨텐츠 마스터 정보
+        val avo_id = map["activityId"].toString()
+        val inten_id = map["journeyId"].toString()
+        val contMstDto = Tblmicp_cont_mstDto()
+        contMstDto.avo_id = avo_id
+        contMstDto.inten_id = inten_id
+        val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
+        if (contMst == null) {
+            return null
+        }
+
+        //캠페인 정보
+        val cDto = Tblmicp_campaignDto()
+        cDto.cont_id = contMst.seq
+        val campLst = campaignDao.sel_tblmicp_campaign(cDto)
+        if (campLst.isEmpty()) {
+            return null
+        }
+
+        for (campaignDto in campLst) {
+            //컨텐츠 리스트
+            val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
+            val contTpLst = HashMap<String, Contents_lstDto>()
+            for (check in contLst) {
+                contTpLst[check.cont_tp.toString()] = check
+            }
+            val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
+            if (isCouponSend) {
+                // 1. 도메인
+                val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, campaignDto.usr_grp_cd!!))
+                // 2. Path
+                var couponPath = "/mobileCoupon/"
+                // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
+                val couponIssueDto = couponDao.selectCouponIssue(campaignDto.cont_id.toString())
+                // 4. uuid
+                val couponUuid = makeUuidUrl()
+                val encodedUuid = makeEncodedUuidUrl(couponUuid)
+                var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+
+                // Naver API 정보 조회
+                val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "ID"))
+                val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "SECRET"))
+
+                // 6. Naver Short URL
+                sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
+                return Tblmicou_coupon_issued_logDto(
+                    couponIssueDto.seq!!,
+                    couponUuid,
+                    sendUrl,
+                    campaignDto.reg_id,
+                    campaignDto.usr_grp_cd.toString()
+                )
+            }
+        }
+
+        return null
+    }
+
+    override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
+        couponIssuedLogDto.msgkey = hst_seq
+        couponDao.insertCouponIssuedLog(listOf(couponIssuedLogDto))
     }
 
     override fun extractPhoneNumberToExcel(file: MultipartFile): MutableMap<String, Any> {

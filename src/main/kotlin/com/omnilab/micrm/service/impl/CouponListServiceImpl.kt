@@ -83,8 +83,6 @@ class CouponListServiceImpl: CouponListService {
         val m_server = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", UsefulUtils.sessionUser().usr_grp_cd!!)).cd_val
         searchDto.m_server = m_server
 
-        // 쿠폰 발급 내역 리스트 조회
-
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
@@ -93,35 +91,6 @@ class CouponListServiceImpl: CouponListService {
         // 시퀀스 암호화
         couponIssuedLogList.forEach {
             it.encodedSeq = encodingSeq(it.seq!!.toInt())
-        }
-
-        /** 문자 발송 상태
-         * "0" -> 발송 대기
-         * "1" -> 결과 수신 대기
-         * "2" -> 성공
-         * "3" -> 실패
-         */
-        couponIssuedLogList.forEach {
-            it.send_status =
-            if (it.send_status.isNullOrBlank()) {
-                "0" // 발송 대기
-            } else {
-                // sms
-                if (it.msgtp == "DMCH201") {
-                    when (it.send_status) {
-                        "00" -> "1"
-                        "06" -> "2"
-                        else -> "3"
-                    }
-                // mms, lms
-                } else {
-                    when (it.send_status) {
-                        "0" -> "1"
-                        "1000" -> "2"
-                        else -> "3"
-                    }
-                }
-            }
         }
 
         // 페이징

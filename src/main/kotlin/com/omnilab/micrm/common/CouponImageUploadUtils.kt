@@ -73,7 +73,7 @@ class CouponImageUploadUtils {
                     map["file_nm"] = fileName
                     map["file_extention"] = fileExe.toString()
                     map["file_mime"] = file.getContentType().toString()
-                    map["url"] = "/$couponImagePath${usrCd}/"+ fileName
+                    map["url"] = "/$couponImagePath/${usrCd}/"+ fileName
 
                     fileDelete(curFilePath, fileName)
                 } else {
