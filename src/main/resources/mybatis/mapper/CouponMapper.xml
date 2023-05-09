@@ -361,7 +361,6 @@
 	<insert id="insert_coupon_issued_log" parameterType="list" >
 		INSERT INTO tblmicou_coupon_issued_log (
 			msgkey,
-			msgtp,
 			coupon_issue_seq,
 			coupon_uuid,
 			short_url,
@@ -371,7 +370,6 @@
 		) VALUES
 		<foreach collection="list" index="seq" item="list" separator="," >
 			( #{list.msgkey},
-			#{list.msgtp},
 			#{list.coupon_issue_seq},
 			#{list.coupon_uuid},
 			#{list.short_url},

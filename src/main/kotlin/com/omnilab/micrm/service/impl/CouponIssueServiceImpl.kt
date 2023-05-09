@@ -124,8 +124,7 @@ class CouponIssueServiceImpl: CouponIssueService {
 
             // coupon issue log
             val dto = Tblmicou_coupon_issued_logDto(
-                msgKey, // todo 추후 content로 관리하면 tblmicp_send_hst seq 저장 필요
-                msgtp, // todo 제거 필요
+                msgKey,
                 couponIssueDto.seq!!,
                 couponUuid,
                 sendUrl,
@@ -205,7 +204,6 @@ class CouponIssueServiceImpl: CouponIssueService {
 
     override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
         couponIssuedLogDto.msgkey = hst_seq
-        couponIssuedLogDto.msgtp = "" // todo 제거 필요
         couponDao.insertCouponIssuedLog(listOf(couponIssuedLogDto))
     }
 

@@ -7,7 +7,6 @@ open class Tblmicou_coupon_issued_logDto() {
 
     var seq: Int? = null
     var msgkey: String? = null
-    var msgtp: String? = null
     var usr_grp_cd: String? = null
     var coupon_issue_seq: Int? = null
     var coupon_uuid: String? = null
@@ -25,7 +24,6 @@ open class Tblmicou_coupon_issued_logDto() {
     var upd_dt: String? = null
 
     constructor(msgkey: String,
-                msgtp: String,
                 coupon_issue_seq: Int,
                 coupon_uuid: String,
                 shortUrl: String,
@@ -33,7 +31,6 @@ open class Tblmicou_coupon_issued_logDto() {
                 usr_id: String?,
                 usr_grp_cd: String?) : this() {
         this.msgkey = msgkey
-        this.msgtp = msgtp
         this.coupon_issue_seq = coupon_issue_seq
         this.coupon_uuid = coupon_uuid
         this.short_url = shortUrl
