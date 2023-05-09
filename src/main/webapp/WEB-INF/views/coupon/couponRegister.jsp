@@ -123,20 +123,20 @@
                             <h6 class="label_name">Date</h6>
                             <section class="components">
                                 <ul class="days">
-                                    <label for="chk-mon"><li onclick="checkDayDrag('chk-mon')">MON</li></label>
-                                    <input type="checkbox" id="chk-mon" value="1" name="available_day" style="display:none" >
-                                    <label for="chk-tue"><li onclick="checkDayDrag('chk-tue')">TUE</li></label>
-                                    <input type="checkbox" id="chk-tue" value="2" name="available_day" style="display:none" >
-                                    <label for="chk-tue"><li onclick="checkDayDrag('chk-wed')">TUE</li></label>
-                                    <input type="checkbox" id="chk-wed" value="3" name="available_day" style="display:none" >
-                                    <label for="chk-thu"><li onclick="checkDayDrag('chk-thu')">THU</li></label>
-                                    <input type="checkbox" id="chk-thu" value="4" name="available_day" style="display:none" >
-                                    <label for="chk-fri"><li onclick="checkDayDrag('chk-fri')">FRI</li></label>
-                                    <input type="checkbox" id="chk-fri" value="5" name="available_day" style="display:none" >
-                                    <label for="chk-sat"><li onclick="checkDayDrag('chk-sat')">SAT</li></label>
-                                    <input type="checkbox" id="chk-sat" value="6" name="available_day" style="display:none" >
-                                    <label for="chk-sun"><li onclick="checkDayDrag('chk-sun')">SUN</li></label>
-                                    <input type="checkbox" id="chk-sun" value="0" name="available_day" style="display:none" >
+                                    <li  onclick="checkDayDrag('chk-mon')"><label>MON</label></li>
+                                    <input type="checkbox" id="chk-mon" value="1" name="available_day" style="display:none">
+                                    <li  onclick="checkDayDrag('chk-tue')"><label>TUE</label></li>
+                                    <input type="checkbox" id="chk-tue" value="2" name="available_day" style="display:none">
+                                    <li  onclick="checkDayDrag('chk-wed')"><label>WED</label></li>
+                                    <input type="checkbox" id="chk-wed" value="3" name="available_day" style="display:none">
+                                    <li  onclick="checkDayDrag('chk-thu')"><label>THU</label></li>
+                                    <input type="checkbox" id="chk-thu" value="4" name="available_day" style="display:none">
+                                    <li  onclick="checkDayDrag('chk-fri')"><label>FRI</label></li>
+                                    <input type="checkbox" id="chk-fri" value="5" name="available_day" style="display:none">
+                                    <li  onclick="checkDayDrag('chk-sat')"><label>SAT</label></li>
+                                    <input type="checkbox" id="chk-sat" value="6" name="available_day" style="display:none">
+                                    <li  onclick="checkDayDrag('chk-sun')"><label>SUN</label></li>
+                                    <input type="checkbox" id="chk-sun" value="0" name="available_day" style="display:none">
                                 </ul>
                             </section>
                         </article>
