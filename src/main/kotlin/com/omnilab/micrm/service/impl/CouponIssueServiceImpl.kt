@@ -136,7 +136,7 @@ class CouponIssueServiceImpl: CouponIssueService {
     }
 
     override fun deleteCouponIssuedLog(deleteCouponIssuedLogSeq: MutableList<String>) {
-        var decodedSeqList : MutableList<Int> = ArrayList()
+        val decodedSeqList : MutableList<Int> = ArrayList()
 
         deleteCouponIssuedLogSeq.forEach { decodedSeqList.add(decodingSeq(it)) }
 

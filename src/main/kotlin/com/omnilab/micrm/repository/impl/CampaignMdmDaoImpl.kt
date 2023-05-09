@@ -85,14 +85,14 @@ class CampaignMdmDaoImpl : CampaignSendDao {
              * 8. 쿠폰 발급 내역
              * 9. 쿠폰 발급 타겟 수
              */
-            var couponIssuedLogDto = Tblmicou_coupon_issued_logDto()
+            var couponIssuedLogDto: Tblmicou_coupon_issued_logDto = Tblmicou_coupon_issued_logDto()
             if (!contTpLst["DMTP02"]!!.coupon_seq.isNullOrEmpty()) {
                 // 1. 도메인
-                var couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
+                val couponDomain: String = sqlSession.selectOne("select_coupon_domain", Tblmi_comm_cdDto("COUPON_DOMAIN", dto.usr_grp_cd.toString()))
                 // 2. Path
-                var couponPath = "/mobileCoupon/"
+                val couponPath = "/mobileCoupon/"
                 // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
-                var couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id.toString())
+                val couponIssueDto: CouponIssueDto = sqlSession.selectOne("select_coupon_issue", dto.cont_id.toString())
 
                 // 4. uuid
                 val uuid = UUID.randomUUID()
@@ -107,20 +107,10 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     val resultJson: JSONObject = jsonObject["result"] as JSONObject
                     sendUrl = resultJson["url"].toString()
                 }
-
                 targetBody = targetBody.replace("{쿠폰링크}", sendUrl)
 
-                couponIssuedLogDto = Tblmicou_coupon_issued_logDto(
-                    couponIssueDto!!.seq!!,
-                    couponUuid,
-                    sendUrl,
-                    map["SEND_TO"].toString(),
-                    dto.reg_id,
-                    dto.usr_grp_cd.toString()
-                )
-
+                couponIssuedLogDto = Tblmicou_coupon_issued_logDto(couponIssueDto.seq!!, couponUuid, sendUrl, map["SEND_TO"].toString(), dto.reg_id, dto.usr_grp_cd.toString())
             }
-
 
             // URL to TrackURL
             if (!contentUrlLst.isNullOrEmpty()) {
@@ -141,7 +131,6 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                                             + "\\}\\}")
                                         .toRegex()
                             , "$trackURL/s/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-
                 }
             }
             if ("DMCH202" == msgTp) { // lms
@@ -226,9 +215,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 couponIssuedLogDto.msgkey = msgkey
                 couponIssuedLogDto.msgtp = msgTp
                 sqlSession.insert("insert_coupon_issued_log", couponIssuedLogDto)
-
             }
-
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendMdm", e)

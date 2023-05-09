@@ -874,7 +874,7 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/coupon/getCouponListAtSales.ajax")
     fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, searchCouponDto: SearchCouponDto): ModelAndView {
-        var view = ModelAndView("cont/coupon/couponListAjax")
+        val view = ModelAndView("cont/coupon/couponListAjax")
         val reMap = couponListService.getCouponListAtSales(searchCouponDto, usr_cd)
         view.addObject("couponList", reMap["list"])
         view.addObject("page", reMap["page"])
@@ -886,7 +886,7 @@ class SalesforceController {
 
     @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
     fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
-        var view = ModelAndView("cont/coupon/couponPreviewAjax")
+        val view = ModelAndView("cont/coupon/couponPreviewAjax")
 
         val couponListDto = couponListService.getCoupon(seq)
         view.addObject("coupon", couponListDto)

@@ -3,14 +3,13 @@ package com.omnilab.micrm.config
 import com.omnilab.micrm.config.handler.AuthenticationHandler
 import com.omnilab.micrm.config.handler.LoginFailHandler
 import com.omnilab.micrm.config.handler.LoginSuccessHandler
-import com.omnilab.micrm.service.CustomAuthenticationProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -26,11 +25,10 @@ import java.util.*
 import javax.servlet.DispatcherType
 import javax.servlet.Filter
 
-
-@EnableWebSecurity
+@Configuration
 class SecurityConfig {
 
-    private val INDEXPAGE = "index.mi"
+    private val INDEXPAGE = "/index.mi"
 
     @Autowired
     private lateinit var authenticationhandler: AuthenticationHandler
@@ -77,7 +75,7 @@ class SecurityConfig {
             }
             .authorizeRequests { authorize: ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry ->
                 authorize
-                    .antMatchers(INDEXPAGE, "/", "/login.service", "/logout.service", "/error", "error/error.mi"
+                    .antMatchers(INDEXPAGE, "/", "/login.service", "/logout.service", "/error", "/error/error.mi"
                         ,"/mcr/check/id.ajax" ,"/mcr/find/pw.ajax", "/mcr/send/password.service", "/check.mi", "/error.mi"
                         , "/sf/*/config.json", "/sf/*/index.mi", "/sf/*/getUser.ajax", "/sf/*/save.service", "/sf/*/publish.service", "/sf/*/validate.service", "/sf/*/stop.service", "/sf/*/unpublish.service", "/sf/*/TestSave.service", "/sf/*/execute.service", "/sf/*/getDataExtension.ajax").permitAll()
                     .antMatchers("/sf/**").access("hasAnyRole('WEB', 'SALES')")
@@ -108,6 +106,7 @@ class SecurityConfig {
                     .accessDeniedHandler(authenticationhandler)
             }
             // remember me 설정
+            /*
             .rememberMe { rememberMe: RememberMeConfigurer<HttpSecurity> ->
                 rememberMe
                     .key("micrm")
@@ -115,6 +114,7 @@ class SecurityConfig {
                     .rememberMeCookieName("MICRMRE")
                     .tokenValiditySeconds(864000)
             }
+            */
             // session
             .sessionManagement { sessionManagement: SessionManagementConfigurer<HttpSecurity> ->
                 sessionManagement
