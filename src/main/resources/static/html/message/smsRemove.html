@@ -980,7 +980,7 @@
                 if (btnName != '') {
                     if (btnLink != '') {
                         if (btnLink.substring(0, 4) == 'http') {
-                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
+                            $(this).parents('#kakao').find('.viewer_area .inner').append('<a href="' + btnLink + '" class="kakao_link" target="_blank" rel="noopener">' + btnName + '</a>');
                             name.attr('disabled', true);
                             link.attr('disabled', true);
                             $(this).val('삭제');

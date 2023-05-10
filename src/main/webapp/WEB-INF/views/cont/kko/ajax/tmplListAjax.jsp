@@ -127,7 +127,7 @@
                                              <a class="sms_btn kakao_yellow">${btn.name}</a>
                                          </c:if>
                                          <c:if test="${btn.linkType ne 'AC'}">
-                                             <a href="${btn.linkPc}" target="_blank" class="sms_btn">${btn.name}</a></c:if>
+                                             <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
                                      </c:forEach>
                                  </c:if>
                             </div>

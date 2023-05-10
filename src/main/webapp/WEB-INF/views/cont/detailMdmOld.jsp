@@ -288,16 +288,14 @@
                                         </c:if>
                                         <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                         <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                            <a href="${baseURL}${list[0].kko_img_url}" target="_blank">
+                                            <a href="${baseURL}${list[0].kko_img_url}" target="_blank" rel="noopener">
                                                 <img src="${baseURL}${list[0].kko_img_lst}"/>
                                             </a>
                                         </c:if>
                                     </div>
-                                    <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10"
-                                              onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
+                                    <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
                                     <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                        <a href="${list[0].kko_btn_url}" class="kakao_link"
-                                           target="_blank">${list[0].kko_btn_nm}</a>
+                                        <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
                                     </c:if>
                                 </div>
                                 <div class="byte">

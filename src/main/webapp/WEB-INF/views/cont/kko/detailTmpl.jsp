@@ -299,7 +299,7 @@
                                                     <c:if test="${!empty dto.img_seq}">
                                                         <div class="delete_img" data="img" style="right: 10px;">
                                                             <img src="/image/btn_delete1.png" alt="삭제"></div>
-                                                        <a href="${dto.kko_img_url}" target="_blank">
+                                                        <a href="${dto.kko_img_url}" target="_blank" rel="noopener">
                                                             <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'">
                                                         </a>
                                                     </c:if>
@@ -335,7 +335,7 @@
                                                             <c:if test="${!empty dto.img_seq}">
                                                                 <div class="delete_img" data="img" style="right: 10px;">
                                                                     <img src="/image/btn_delete1.png" alt="삭제"></div>
-                                                                <a href="${dto.kko_img_url}" target="_blank">
+                                                                <a href="${dto.kko_img_url}" target="_blank" rel="noopener">
                                                                     <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'">
                                                                 </a>
                                                             </c:if>
@@ -417,7 +417,7 @@
                                                                 <div class="delete_img" data="img_item"  style="right: 20px; top: 110px;">
                                                                     <img src="/image/btn_delete1.png" alt="삭제"></div>
 
-                                                                <a href="${dto.highlight_json.imageUrl}" target="_blank">
+                                                                <a href="${dto.highlight_json.imageUrl}" target="_blank" rel="noopener">
                                                                     <img src="${dto.highlight_json.imageUrl}" onerror="this.src='/image/bg_none.png'" style="height: 175px; width: 175px;">
                                                                 </a>
                                                             </div>

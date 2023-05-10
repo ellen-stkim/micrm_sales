@@ -107,8 +107,7 @@
                                     ${cutil:replaceBr(content.cont_body)}
                                 </p>
                                 <c:if test="${not empty content.kko_btn_url}">
-                                <a href="${content.kko_btn_url}" target="_blank"
-                                   class="sms_btn">${content.kko_btn_nm}</a>
+                                <a href="${content.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${content.kko_btn_nm}</a>
                                 </c:if>
                             </div>
                     </div>
@@ -191,7 +190,7 @@
                                                  <a class="sms_btn kakao_yellow">${btn.name}</a>
                                              </c:if>
                                              <c:if test="${btn.linkType ne 'AC'}">
-                                                 <a href="${btn.linkPc}" target="_blank" class="sms_btn">${btn.name}</a></c:if>
+                                                 <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
                                          </c:forEach>
                                      </c:if>
                                 </div>

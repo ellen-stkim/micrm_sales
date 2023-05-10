@@ -117,8 +117,7 @@
                                         <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                         <c:forEach var="btn" items="${dto.at_btn_json}">
                                             <div>
-                                                <a href="${btn.get('linkPc')}" target="_blank"
-                                                   class="sms_btn">${btn.get('name')}</a>
+                                                <a href="${btn.get('linkPc')}" target="_blank" class="sms_btn" rel="noopener">${btn.get('name')}</a>
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -296,10 +295,12 @@
                 <tbody id="tbody_${cont_tp}" class="${status.count ==1 ? "" : "disnone"}">
                 <c:forEach var="item" items="${listmap.url}">
                     <tr>
-                        <td><a href="${item.url}" class="help_box" target="_blank">
-                            <span class="link_name" name="click-help">${item.url_id}</span>
-                            <label class="disnone">${item.url}</label>
-                        </a></td>
+                        <td>
+                            <a href="${item.url}" class="help_box" target="_blank" rel="noopener">
+                                <span class="link_name" name="click-help">${item.url_id}</span>
+                                <label class="disnone">${item.url}</label>
+                            </a>
+                        </td>
                         <td><span>${empty item.click_cnt ? 0: item.click_cnt} 회</span></td>
                         <td><span>${empty item.per_cnt ? 0: item.per_cnt} 명</span></td>
                         <td><span>${empty item.link_per_cnt ? 0.00: item.link_per_cnt} 회</span></td>

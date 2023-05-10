@@ -120,7 +120,7 @@
                             <p class="sms_txt">${cutil:replaceBr(g.cont_body)}</p>
                             <!-- 카카오 링크 버튼 영역 -->
                             <c:if test="${!cutil:isEmptyObject(g.kko_btn_url)}">
-                                <a href="${g.kko_btn_url}" target="_blank" class="sms_btn">${g.kko_btn_nm}</a>
+                                <a href="${g.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${g.kko_btn_nm}</a>
                             </c:if>
                         </div>
                         </c:when>

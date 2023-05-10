@@ -101,8 +101,7 @@
                                         <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                         <c:forEach var="btn" items="${dto.at_btn_json}">
                                             <div>
-                                                <a href="${btn.get('linkPc')}" target="_blank"
-                                                   class="sms_btn">${btn.get('name')}</a>
+                                                <a href="${btn.get('linkPc')}" target="_blank" class="sms_btn" rel="noopener">${btn.get('name')}</a>
                                             </div>
                                         </c:forEach>
                                     </div>

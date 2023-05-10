@@ -65,7 +65,7 @@
                                     </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
                                     <c:if test="${not empty content.kko_btn_url}">
-                                    <a href="${content.kko_btn_url}" target="_blank" class="sms_btn">${content.kko_btn_nm}</a>
+                                    <a href="${content.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${content.kko_btn_nm}</a>
                                     </c:if>
                                  </div>
                               </div>
