@@ -9,7 +9,5 @@ public class testEtc {
 
     public static void main(String[] args) {
         logger.error("{}", 0 | 123 | 0 | 4232);
-        logger.error("{}", 123 | 0 | 4232);
-        logger.error("{}", 123 | 4232);
     }
 }

@@ -763,7 +763,7 @@ public class CommonUtils {
     public static String toUnsignedString(long i, int shift) {
         char[] buf = new char[64];
         int charPos = 64;
-        int radix = 1 << shift;
+        long radix = 1L << shift;
         long mask = radix - 1;
         long number = i;
         do {
