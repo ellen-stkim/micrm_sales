@@ -18,6 +18,7 @@
 		<tomcat.version>9.0.31</tomcat.version>
 		<sonar.language>java</sonar.language>
 		<sonar.sources>src/main,pom.xml</sonar.sources>
+		<sonar.exclusions>src/main/resources/js/ckeditor</sonar.exclusions>
 	</properties>
 
 	<parent>

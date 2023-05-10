@@ -1830,9 +1830,9 @@ span.ellipsis {display:block; line-height:1.5;}
 #campDt .status_area .left li.active::after {content: '';display: block;width: 100%;height: 4px;background: #ffa444; position: absolute; left: 0; bottom: 0;}
 #campDt table.report-tab-table { position: relative; border-collapse: collapse; }
 #campDt.report-tab-contents div.half-grid, #roiTab.report-tab-contents div.half-grid, #saleTab.report-tab-contents div.half-grid, #sucTab.report-tab-contents div.half-grid {  position: relative; width: 50%;  float: left;  display: inline-block;}
-#campDt span.pointMid { font-size: 24px; font-family: 'Gotham'; font-weight: 800; color: #6475de; }
+#campDt span.pointMid { font-size: 24px; font-family: 'Gotham', Sans-Serif; font-weight: 800; color: #6475de; }
 #campDt table.report-tab-table.yellow th { border: 1px #f9c426 solid; background-color: #fdfaf1; }
-#campDt table.report-tab-table th { position: relative; padding: 20px 40px; text-align: center; font-family: 'NanumBarunGothic'; font-size: 16px; font-weight: 600; color: #4f5f6f; }
+#campDt table.report-tab-table th { position: relative; padding: 20px 40px; text-align: center; font-family: 'NanumBarunGothic', Sans-Serif; font-size: 16px; font-weight: 600; color: #4f5f6f; }
 #campDt table.report-tab-table.max { width: calc(100% - 10px); }
 #campDt table.report-tab-table { position: relative; border-collapse: collapse;}
 #campDt .wait_txt {position: relative; display: inline-block; top: -6px; left: 8px; font-size: 13px; color: #93a2b0; font-weight: 500;}
@@ -1849,24 +1849,24 @@ open-title::after { top: -43px; left: 60px; padding: 0 5px; border: solid 1px bl
 #sucTab.report-tab-contents div.half-grid div.grid-space div.grid-line.b { top: 50%; left: -30%; width: calc(30% + 70px); height: 1px; background-color: #f9c426;}
 #sucTab.report-tab-contents div.half-grid div.grid-space div.grid-line.c { top: 50%; height: 50%; width: 1px; background-color: #f9c426; left: -30%;}
 .wid-100-p { width: 100% !important; }
-#sucTab table.report-tab-table div.legend-cover ul.legend-list li div.info { position: absolute; top: 0px; right: 0px; font-size: 7px; font-family: 'NanumBarunGothic'; color: #93a2b0; border: 1px #c9d0d7 solid; width: 14px; height: 14px; text-align: center; display: inline-block; line-height: 14px; cursor: pointer; text-align: center; }
-#sucTab table.report-tab-table div.legend-cover ul.legend-list li div.info > div.info-box { position: absolute; display: none; top: 0px; left: -240px;width: 240px; padding: 10px 10px 10px 35px;border: 1px #dddddd solid; background-color: #ffffff; font-size: 12px; color: #7e8e9f; font-family: 'NanumBarunGothic'; text-align: left; line-height: 1.8; z-index: 100; }
+#sucTab table.report-tab-table div.legend-cover ul.legend-list li div.info { position: absolute; top: 0px; right: 0px; font-size: 7px; font-family: 'NanumBarunGothic'; color: #93a2b0; border: 1px #c9d0d7 solid; width: 14px; height: 14px; text-align: center; display: inline-block; line-height: 14px; cursor: pointer; }
+#sucTab table.report-tab-table div.legend-cover ul.legend-list li div.info > div.info-box { position: absolute; display: none; top: 0px; left: -240px;width: 240px; padding: 10px 10px 10px 35px;border: 1px #dddddd solid; background-color: #ffffff; font-size: 12px; color: #7e8e9f; font-family: 'NanumBarunGothic', Sans-Serif; text-align: left; line-height: 1.8; z-index: 100; }
 #sucTab table.report-tab-table div.legend-cover ul.legend-list li div.info h6 {  position: relative; width: 100%; font-size: 14px; font-weight: 600; color: #6475de; }
 #sucTab table.report-tab-table div.legend-cover ul.legend-list li div.info h6:before { position: absolute; top: -5px; left: -30px; content: "?"; width: 20px; height: 20px; display: inline-block; border-radius: 100%; background-color: #6475de; color: #fff; text-align: center; line-height: 20px; }
-table.report-tab-table td { position: relative; padding: 20px 40px; text-align: center; font-family: 'NanumBarunGothic'; color: #93a2b0; font-size: 13px; }
+table.report-tab-table td { position: relative; padding: 20px 40px; text-align: center; font-family: 'NanumBarunGothic', Sans-Serif; color: #93a2b0; font-size: 13px; }
 #sucTab table.report-tab-table div.legend-cover ul.legend-list li { position: relative; width: 100%; margin: 10px 0px; text-align: left; }
 #sucTab .cd_val{text-align: center; width: 181px; overflow: hidden; word-break: break-all;}
 /*open*/
 #openTab .select{ width: 286px; }
 #openTab .customSelect , #openTab .option { width: 65%; display: inline-block; border: solid 1px #dddddd; float: left; }
-#openTab input{ display: inline-block; display: inline-block; width: auto; padding: 0 20px; height: 37px; font-weight: 500; }
+#openTab input{ display: inline-block; width: auto; padding: 0 20px; height: 37px; font-weight: 500; }
 #openTab div.open-time-anal-cover ul.row ,
 #tooltip-open-time ul.row { position: relative; display: inline-block; min-width: 993px; line-height: 0; }
 #openTab div.open-time-anal-cover ,#tooltip-open-time{ position: relative; width: 100%; text-align: center; z-index: 0; }
 #openTab div.open-time-anal-cover ul.row li.td, #openTab div.open-time-anal-cover ul.row li.th,
 #tooltip-open-time ul.row li.td,#tooltip-open-time ul.row li.th{ position: relative; width: 33px; height: 33px; font-size: 14px; color: #fff; background-color: #6475de; text-align: center; line-height: 33px; float: left; }
 #openTab div.open-time-anal-cover ul.row li.td .open-title
-,#tooltip-open-time ul.row li.td .open-title{ white-space: nowrap; min-width: 150px; position: relative; display: none; font-family: 'Gotham'; font-weight: 800; color: #6475de; border: 1px #6475de solid; background-color: #fff; padding: 5px 10px; bottom: 37px; left: 20px; z-index: 999; }
+,#tooltip-open-time ul.row li.td .open-title{ white-space: nowrap; min-width: 150px; position: relative; display: none; font-family: 'Gotham', Sans-Serif; font-weight: 800; color: #6475de; border: 1px #6475de solid; background-color: #fff; padding: 5px 10px; bottom: 37px; left: 20px; z-index: 999; }
 #openTab div.open-time-anal-cover ul.row li.td:not(:last-child), #openTab div.open-time-anal-cover ul.row li.th:not(:last-child),
 #tooltip-open-time ul.row li.td:not(:last-child), #tooltip-open-time ul.row li.th:not(:last-child){ margin-right: 7px; }
 
@@ -1876,7 +1876,7 @@ table.report-tab-table td { position: relative; padding: 20px 40px; text-align: 
 .report-contents-list-cover .title{ margin: 25px 0px;}
 .chart-box{ text-align: center; display: flex; justify-content: space-evenly; }
 .chart-box .full h3{ padding: 10px; display: inline-block; width: 90%; border: solid 1px #dddddd; }
-.row-flex{ display: flex; flex-direction: row;text-alignjustify-contenttblmi_target_grp: space-around; }
+.row-flex{ display: flex; flex-direction: row; justify-content: space-around; }
 .click-chart-cover>div{ width: 50%; height: 500px; border: solid 1px #dddddd; margin: 0px 15px; }
 
  .click-chart-cover tbody{ display: block; height: 460px;  width: 756px; overflow-y: scroll;}
@@ -1920,7 +1920,7 @@ table.report-tab-table td { position: relative; padding: 20px 40px; text-align: 
 #tool-tip .help span { position: relative; right: 55px; font-size: 15px;}
 .arrow_img{ background-image: url("/image/arrow2.png"); left: 200px; position: relative; background-size: cover; width: 35px; height: 35px; top: 10px;}
 #tool-tip #tooltip-click{ background-color: white; width: 650px; position: relative; top: 270px; right: -90px; height: 145px; overflow: hidden;}
-.tool_tip_close::before{ content:"\f00d"; display: inline-block; font-family: "Font Awesome 5 Free"; font-weight: 800; margin-right: 18px; color: white; position: absolute; font-size: 48px; top: 15px; right: 15px; }
+.tool_tip_close::before{ content:"\f00d"; display: inline-block; font-family: "Font Awesome 5 Free", Sans-Serif; font-weight: 800; margin-right: 18px; color: white; position: absolute; font-size: 48px; top: 15px; right: 15px; }
 
 
 /*알림톡 템플릿*/
@@ -2140,7 +2140,7 @@ select option[value=""][disabled] {
 
 .drag-button:hover{
     transition: all ease 0.5s;
-    boxshadow: 3px 3px 8px #333;
+    box-shadow: 3px 3px 8px #333;
     border-color: #ea3333;
     color: #ea3333;
 }
