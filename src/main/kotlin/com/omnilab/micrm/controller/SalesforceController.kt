@@ -31,6 +31,8 @@ import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStreamReader
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
 import javax.imageio.ImageIO
@@ -891,13 +893,23 @@ class SalesforceController {
     }
 
     @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
-    fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
-        val view = ModelAndView("cont/coupon/couponPreviewAjax")
+    fun couponPreview(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
+        var view = ModelAndView("cont/coupon/couponPreviewAjax")
 
         val couponListDto = couponListService.getCoupon(seq)
+
+        couponListDto.daily_start_time = formattingTime(couponListDto.daily_start_time!!)
+        couponListDto.daily_end_time = formattingTime(couponListDto.daily_end_time!!)
+
         view.addObject("coupon", couponListDto)
         view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
+    }
+
+    private fun formattingTime(time: String): String {
+        val splitTime = time.split(":").map { it.toInt() }
+        val localTime = LocalTime.of(splitTime[0], splitTime[1])
+        return localTime.format(DateTimeFormatter.ofPattern("h:mm a", Locale.US))
     }
 
 }
