@@ -2261,18 +2261,14 @@ class SalesforceServiceImpl : SalesforceService {
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
                             val avo_id = activity["id"].toString()
-                            val seq =
-                                (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
-                                    .split(".")[0]
-
-
+                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
                                 val temp = Tblmi_cont_mstDto(seq.toInt())
                                 val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
 
                                 val usrId = if (mstDto.upd_id == null) {
                                     mstDto.reg_id
                                 } else {
-                                    mstDto.reg_id
+                                    mstDto.upd_id
                                 }
                                 val cpMstDto = Tblmicp_cont_mstDto(contDto)
                                 cpMstDto.cont_seq = seq.toInt()
@@ -2361,7 +2357,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val usrId = if (contLst[0].upd_id == null) {
                     contLst[0].reg_id
                 } else {
-                    contLst[0].reg_id
+                    contLst[0].upd_id
                 }
 
                 val temp = Tblmicp_programDto()
@@ -2413,15 +2409,12 @@ class SalesforceServiceImpl : SalesforceService {
                     contListDto.use_yn = "Y"
                     val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
                     for (cont in contLst) {
-                        val rcsBrnID =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
+                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
                         // 이미지 저장 경로
-                        val imgPath =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
+                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
 
                         // RCS 발송 서버 정보
-                        val rcsDb =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
+                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
 
                         val urlLst = cont.img_nm_lst!!.split(",")
 
