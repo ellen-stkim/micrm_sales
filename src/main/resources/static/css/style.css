@@ -68,7 +68,7 @@
 .month_tbl {width:145px; height:145px; border:1px solid #dddddd;}
 .month_tbl thead tr {background:#fafafa; border-bottom:1px solid #fafafa;}
 .month_tbl thead tr th {height:36px; line-height:36px;}
-.month_tbl thead tr .year {text-align:center;  font-family:"Gotham"; font-weight:700;}
+.month_tbl thead tr .year {text-align:center;  font-family:Gotham, sans-serif; font-weight:700;}
 .month_tbl thead tr .prev,
 .month_tbl thead tr .next {width:100%; height:100%; cursor:pointer;}
 .month_tbl thead tr .prev {background:url('../image/ico_pager_prev4.png') no-repeat 12px center;}
@@ -186,7 +186,7 @@
 .summary_modal .view .img.mms img {max-width:100%; max-height:100%;}
 .summary_modal .view p.mms {line-height:1.6;}
 .summary_modal .row_state {border:1px solid #dddddd; position:relative; margin-bottom:15px;}
-.summary_modal .row_state div {float:left; line-height:31px; font-family:"Gotham"; font-size:11px; text-align:center;}
+.summary_modal .row_state div {float:left; line-height:31px; font-family:Gotham, sans-serif; font-size:11px; text-align:center;}
 .summary_modal .row_state .th {width:117px; border-right:1px solid #f4f4f4;
     background:#fafafa; font-size:11px;}
 .summary_modal .row_state .td {width:90px; padding:0 20px; text-align:left;}
@@ -227,7 +227,7 @@
 .column .row_footer .date {display:inline-block; line-height:35px; font-size:12px; color:#999999;}
 .column .row_footer .date:nth-of-type(1)::after {content:''; display:inline-block;
     width:1px; height:14px; background:#e6e6e6; margin:0 10px; vertical-align: middle;}
-.column .row_footer .date span {font-family:"Gotham"; font-size:11px;}
+.column .row_footer .date span {font-family:Gotham, sans-serif; font-size:11px;}
 
 .pop_inner .list_container .row_grid{ border: solid 1px #efefef; border-bottom: none;}
 .pop_inner .list_container.sms .column { height: 490px; }
@@ -308,7 +308,7 @@
 .link_info {height:401px; padding:20px;}
 .link_info .link_nav {margin-bottom:20px;}
 .link_info .link_nav li {float:left; width:31px; height:31px; line-height:29px; border-radius:50%;
-    font-family:"Gotham"; color:#cccccc; text-align:center; border:1px solid transparent;
+    font-family:Gotham,sans-serif; color:#cccccc; text-align:center; border:1px solid transparent;
     margin-right:5px; cursor:pointer;}
 .link_info .link_nav li.on {color:#666666; border-color:#999999; background:#fafafa;}
 .link_info .form_tbl {border-top:1px solid #dddddd; display:none;}
@@ -466,7 +466,7 @@
 .row.body .column_1 .title {height:100%;}
 .row.body .column_2 .block_radio {float:left; margin-top:6px;}
 .row.body .column_2 .block_radio:nth-of-type(1) {margin-left:6px;}
-.row.body .column_1 input[type="text"].sms_number {float:left; width:calc(100% - 57px); height:100%; padding:0 20px; font-size:11px; font-family:"Gotham"; font-weight:600;}
+.row.body .column_1 input[type="text"].sms_number {float:left; width:calc(100% - 57px); height:100%; padding:0 20px; font-size:11px; font-family:Gotham, sans-serif; font-weight:600;}
 .row.body .column_1 .btn_sm_line {float:left; margin-top:6px;}
 .row.body .column_4 .custom_radio {margin:10px 20px 0 10px;}
 .row.body .column_3 .title {width:100%; height:100%; padding:0 20px;}
@@ -626,7 +626,7 @@
 .rcs_inner .rcs_area {line-height:1.5;}
 .rcs_inner .rcs_btn {padding:15px 0; font-weight:700; font-size:13px; text-align:center;}
 .rcs_inner .rcs_register {margin-top:20px; text-align:right;  color:#cccccc; margin-bottom:30px;}
-.rcs_inner .rcs_register span {color:#666666; font-family:"Gotham";}
+.rcs_inner .rcs_register span {color:#666666; font-family:Gotham,sans-serif;}
 .rcs_inner .text_count {text-align:right; padding-bottom:10px;}
 .rcs_inner .text_count .num {display:block; margin-bottom:10px;}
 .rcs_inner .text_count p {font-size:11px; color:#cccccc; line-height:1.6;}
@@ -765,7 +765,7 @@
 
 /* 그룹 추가 팝업 */
 .target_total {padding:19px 0 0; text-align:center;}
-.target_total span {font-family:"Gotham" !important; font-size:22px; color:#618cd3; padding-left:17px; vertical-align:-2px;}
+.target_total span {font-family:Gotham, sans-serif !important; font-size:22px; color:#618cd3; padding-left:17px; vertical-align:-2px;}
 .groupPopup .pop_table_type3 tbody tr td:nth-child(n+5):nth-child(-n+9) {padding-left:15px;}
 .groupPopup .no_data td {width:100%; height:178px; text-align:center; padding-left:0;}
 .varible_width tbody tr td:first-child,
@@ -839,11 +839,11 @@
 .range_calendar .date {float:left; width: 132.2px; height: 35px; line-height:34px;
     border-left: 1px solid #dddddd;  padding: 0 24px 0 11px;
     background: url(../image/ico_calendar.png) no-repeat right 10px center;
-    font-family:"Gotham";}
+    font-family:Gotham, sans-serif;}
 #typeArea .date {float:left; width: 132.2px; height: 35px; line-height:34px;
     border-left: 1px solid #dddddd;  padding: 0 24px 0 11px;
     background: url(../image/ico_calendar.png) no-repeat right 10px center;
-    font-family:"Gotham";}
+    font-family:Gotham, sans-serif;}
 
 /* 메일 정보 설정 */
 .tableType2.margin-bottom {margin-bottom:5px;}
@@ -1019,7 +1019,7 @@ span.ellipsis {display:block; line-height:1.5;}
 .contentsSetting .image_container .row_footer .date {display:inline-block; line-height:35px; font-size:12px; color:#999999;}
 .contentsSetting .image_container .row_footer .date:nth-of-type(1)::after {content:''; display:inline-block;
     width:1px; height:14px; background:#e6e6e6; margin:0 10px; vertical-align: middle;}
-.contentsSetting .image_container .row_footer .date span {font-family:"Gotham"; font-size:11px;}
+.contentsSetting .image_container .row_footer .date span {font-family:Gotham, sans-serif; font-size:11px;}
 .contentsSetting .image_container .image_column .body {padding:35px;}
 .contentsSetting .image_container .image_column .body .thumbnail {width:100%; height:455px;}
 .contentsSetting .image_container .image_column .body.sms_height {padding:20px 0;  height:490px;}
@@ -2627,7 +2627,7 @@ input::placeholder {
 /* 20230313 세일즈포스 맥도날드 쿠폰시스템 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 .wrap.mcdonald {padding:0; line-height: 1;}
-.wrap.mcdonald .page_title {display:flex; align-items: center; padding-left:20px; height:36px; font-family:"Gotham"; font-size:16px; font-weight:300; color:#687e92; letter-spacing: -0.05em; border-bottom:1px solid #ddd;}
+.wrap.mcdonald .page_title {display:flex; align-items: center; padding-left:20px; height:36px; font-family: Gotham, sans-serif; font-size:16px; font-weight:300; color:#687e92; letter-spacing: -0.05em; border-bottom:1px solid #ddd;}
 .wrap.mcdonald .area.bdr_bottom {height:36px; border-bottom:1px solid #ddd}
 .wrap.mcdonald .area.bdr_right .btn.del {border-right:1px solid #ddd;}
 .wrap.mcdonald .area.option {display:flex; width:100%}
@@ -2713,7 +2713,7 @@ input::placeholder {
 .wrap.mcdonald .area.form_field .left .input_field li .components .btn:not(.del) {display:flex; justify-content: center; align-items: center; width:47px; height:23px; font-size:12px; font-weight: 400; border:1px solid #ddd; color:#888;}
 .wrap.mcdonald .area.form_field .left .input_field .components textarea {flex-grow: 1; padding:10px 0; border:none; resize:none;}
 .wrap.mcdonald .area.form_field .left .input_field.text {margin:20px 0;}
-.wrap.mcdonald .area.form_field .left .input_field.text .components .text_cnt {position:absolute; bottom:9px; right:9px; font-family:"Gotham"; font-weight: 500; font-size:11px; color:#ccc;}
+.wrap.mcdonald .area.form_field .left .input_field.text .components .text_cnt {position:absolute; bottom:9px; right:9px; font-family:Gotham, sans-serif; font-weight: 500; font-size:11px; color:#ccc;}
 .wrap.mcdonald .area.form_field .left .input_field.text .components .text_cnt i {font-family: 'Noto Sans KR', sans-serif; font-size:12px;}
 .wrap.mcdonald .area.form_field .left .input_field.text .label_name {align-items: flex-start; padding-top:14px;}
 .wrap.mcdonald .area.form_field .left .input_field.text li:nth-child(1) {height:72px;}
@@ -2980,7 +2980,7 @@ input::placeholder {
     font-size: 16px;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue ol li span {
-    font-family: "Gotham";
+    font-family: Gotham, sans-serif;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .btn_field {
     display: flex;
