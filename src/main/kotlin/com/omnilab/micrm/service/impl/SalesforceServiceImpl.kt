@@ -2570,7 +2570,6 @@ class SalesforceServiceImpl : SalesforceService {
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
                     if (isCouponSend) {
                         if (map["couponIssuedLogDto"] != null) couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-//                        couponIssuedLog = couponIssueService.createCouponIssuedLogAtSales(campaignDto, contTpLst, map["couponSendUrl"].toString())
                         contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
                     }
 
