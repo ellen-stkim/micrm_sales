@@ -58,21 +58,6 @@ import kotlin.streams.toList
 class SalesforceServiceImpl : SalesforceService {
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
 
-    @Value("\${variable.minio-url}")
-    private lateinit var minio_url: String
-
-    @Value("\${variable.minio-username}")
-    private lateinit var minio_username: String
-
-    @Value("\${variable.minio-password}")
-    private lateinit var minio_password: String
-
-    @Value("\${variable.minio-bucket}")
-    private lateinit var minio_bucket: String
-
-    @Value("\${variable.static-path}")
-    private lateinit var static_path: String
-
     @Autowired
     private lateinit var salesforceDao: SalesforceDao
 
@@ -2538,33 +2523,6 @@ class SalesforceServiceImpl : SalesforceService {
                         contTpLst[check.cont_tp.toString()] = check
                     }
                     logger.error("{}",contTpLst)
-                    /*// 이미지 업로드
-                    val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-                    for (check in contLst) {
-                        // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
-                        contTpLst[check.cont_tp.toString()] = check
-                        if (!check.img_lst.isNullOrEmpty()) {
-                            val url_list = check.img_lst!!.split(",")
-                            val nm_list = check.img_nm_lst!!.split(",")
-
-                            for (i in url_list.indices) {
-                                minioClient.uploadObject(
-                                    UploadObjectArgs.builder()
-                                        .bucket(minio_bucket)
-                                        .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
-                                        .filename(static_path + url_list[i])
-                                        .build())
-                            }
-                        }
-                        if (!check.kko_image_url.isNullOrEmpty()) {
-                            minioClient.uploadObject(
-                                UploadObjectArgs.builder()
-                                    .bucket(minio_bucket)
-                                    .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
-                                    .filename(static_path + check.kko_image_url)
-                                    .build())
-                        }
-                    }*/
 
                     var couponIssuedLog = Tblmicou_coupon_issued_logDto()
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()

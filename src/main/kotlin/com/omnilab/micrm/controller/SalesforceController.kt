@@ -894,7 +894,7 @@ class SalesforceController {
 
     @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
     fun couponPreview(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
-        var view = ModelAndView("cont/coupon/couponPreviewAjax")
+        val view = ModelAndView("cont/coupon/couponPreviewAjax")
 
         val couponListDto = couponListService.getCoupon(seq)
 

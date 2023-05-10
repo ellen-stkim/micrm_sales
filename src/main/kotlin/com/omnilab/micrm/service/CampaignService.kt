@@ -6,7 +6,6 @@ import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import java.util.HashMap
 
-
 interface CampaignService {
     // 타이틀에 필요한 programCnt 가져오기
     fun getTitleProgramCnt() : Map<String,Any>
