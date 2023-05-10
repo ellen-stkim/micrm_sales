@@ -15,19 +15,19 @@ class CouponImageUploadUtils {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     @Value("\${variable.share-url}")
-    private lateinit var share_url: String
+    private lateinit var shareUrl: String
 
     @Value("\${variable.share-username}")
-    private lateinit var share_username: String
+    private lateinit var shareUsername: String
 
     @Value("\${variable.share-password}")
-    private lateinit var share_password: String
+    private lateinit var sharePassword: String
 
     @Value("\${variable.share-bucket}")
-    private lateinit var share_bucket: String
+    private lateinit var shareBucket: String
 
     @Value("\${variable.static-path}")
-    private lateinit var static_path: String
+    private lateinit var staticPath: String
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -44,10 +44,8 @@ class CouponImageUploadUtils {
         val updFilePath = "$updPath/$usrCd"
         val saveFile = File(curFilePath)
         if (!saveFile.exists()) {
-            logger.info("폴더생성")
             saveFile.mkdirs()
         }
-        logger.info("Upload start")
         val map: MutableMap<String, Any> = HashMap()
         try {
             val fileMime = CommonUtils.checkImageMime(file);
@@ -58,13 +56,12 @@ class CouponImageUploadUtils {
                 fileName = "$digits.$fileExe"
 
                 if (fileupload(curFilePath,file, fileName)) {
-
-                    val minioClient = MinioClient.builder().endpoint(share_url).credentials(share_username, share_password).build()
+                    val minioClient = MinioClient.builder().endpoint(shareUrl).credentials(shareUsername, sharePassword).build()
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
-                            .bucket(share_bucket)
+                            .bucket(shareBucket)
                             .`object`("$couponImagePath/$usrCd/$fileName")
-                            .filename(static_path + "$updFilePath/$fileName")
+                            .filename(staticPath + "$updFilePath/$fileName")
                             .build())
 
                     map["uploaded"] = 1
@@ -81,7 +78,6 @@ class CouponImageUploadUtils {
                     map["message"] = "파일 업로드 실패, 다시 시도해주세요."
                 }
             } else {
-                logger.info("File image mime check :$fileMime")
                 map["uploaded"] = 0
                 map["message"] = "업로드는 jpg, jpeg, gif, bmp, png 만 가능합니다."
             }
@@ -98,32 +94,33 @@ class CouponImageUploadUtils {
         val saveFile = File(curFilePath)
 
         if (!saveFile.exists()) {
-            logger.info("폴더생성")
             saveFile.mkdirs()
         }
         var fos: FileOutputStream? = null
-        try {
+        return try {
             val fileByte: ByteArray = file.bytes
             fos = FileOutputStream("$curFilePath/$fileName")
             fos.write(fileByte)
             fos.close()
-            return true
+            true
         } catch (e: Exception) {
-            logger.info("File Upload false : " + e.message)
+            logger.error("File Upload false : ", e)
             fos?.close()
-            return false
+            false
         }
     }
 
     fun fileDelete(curFilePath:String?, fileName: String): String {
         val file = File("$curFilePath/$fileName")
-        if (file.exists()) {
-            file.delete()
-            return "$curFilePath/$fileName 삭제"
+        return if (file.exists()) {
+            if(file.delete()){
+                "$curFilePath/$fileName 삭제"
+            }else{
+                "$curFilePath/$fileName 삭제 실패"
+            }
         }else{
-            return "삭제할 파일이 없습니다."
+            "삭제할 파일이 없습니다."
         }
-
     }
 
 }

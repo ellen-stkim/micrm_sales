@@ -1,5 +1,8 @@
 package com.omnilab.micrm.common.fmsware;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -33,6 +36,8 @@ import java.awt.image.*;
  */
 
 public class GifDecoder {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * File read status: No errors.
@@ -316,8 +321,11 @@ public class GifDecoder {
 			status = STATUS_OPEN_ERROR;
 		}
 		try {
-			is.close();
+			if (is != null) {
+				is.close();
+			}
 		} catch (IOException e) {
+			logger.error("read", e);
 		}
 		return status;
 	}

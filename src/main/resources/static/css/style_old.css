@@ -49,13 +49,12 @@
 .month_tbl {width:145px; height:145px; border:1px solid #dddddd;}
 .month_tbl thead tr {background:#fafafa; border-bottom:1px solid #fafafa;}
 .month_tbl thead tr th {height:36px; line-height:36px;}
-.month_tbl thead tr .year {text-align:center;  font-family:"Gotham"; font-weight:700;}
+.month_tbl thead tr .year {text-align:center;  font-family:"Gotham", sans-serif; font-weight:700;}
 .month_tbl thead tr .prev,
 .month_tbl thead tr .next {width:100%; height:100%; cursor:pointer;}
 .month_tbl thead tr .prev {background:url('../image/ico_pager_prev4.png') no-repeat 12px center;}
 .month_tbl thead tr .next {background:url('../image/ico_pager_next4.png') no-repeat 18px center;}
-.month_tbl tbody td {font-family:"Gotham"; text-align:center;  border:1px solid#fafafa;
-    background:#FFFFFF; font-weight:500; cursor:pointer;}
+.month_tbl tbody td {font-family:"Gotham", sans-serif; text-align:center;  border:1px solid#fafafa; background:#FFFFFF; font-weight:500; cursor:pointer;}
 .month_tbl tbody td .month {width:100%; height:100%; line-height:34px;}
 .month_tbl tbody td.on .month,
 .month_tbl tbody td .month:hover {outline:1px solid #555555;}
@@ -84,14 +83,13 @@
     background:#fafafa; line-height:36px; }
 .member_progress {text-align:center; padding:0 20px;}
 .member_progress .top { padding:34px 0 31px;  border-bottom:1px solid #f4f4f4;}
-.member_progress .top span {margin-left:17px; color:#618cd3; font-family:"Gotham"; font-size:22px;}
+.member_progress .top span {margin-left:17px; color:#618cd3; font-family:"Gotham", sans-serif; font-size:22px;}
 .member_progress .bottom {padding:29px 0 26px;}
 .member_progress .bottom .edm,
 .member_progress .bottom .mms {float:left; width:calc(50% - 20px);}
 .member_progress .bottom .edm {margin-right:40px;}
 .member_progress .bottom .edm p,
-.member_progress .bottom .mms p {padding-left:23px; line-height:17px;
-    font-family:"Gotham";   text-align:left; margin-bottom:11px;}
+.member_progress .bottom .mms p {padding-left:23px; line-height:17px; font-family:"Gotham", sans-serif; text-align:left; margin-bottom:11px;}
 .member_progress .bottom .edm p span,
 .member_progress .bottom .mms p span {font-size:11px; color:#999999;}
 .member_progress .bottom .edm p {background:url('../image/ico_edm.png') no-repeat left center;}

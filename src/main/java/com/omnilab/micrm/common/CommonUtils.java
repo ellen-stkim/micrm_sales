@@ -140,37 +140,6 @@ public class CommonUtils {
     }
 
     /**
-     * @param : String
-     * @return : boolean
-     * @Method Name  : isDigit
-     * @Method Description :
-     * String 문자열을  Double로 Parse 하여 변환되면 true, 변환되지 않으면 false를 리턴한다.
-     */
-    public static boolean isDigit(String s) {
-        try {
-            Double.parseDouble(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    /**
-     * @param : String
-     * @return : boolean
-     * @Method Name  : isBit
-     * @version : 0.1
-     * @Method Description :
-     * 입력받은 문자열이 0 또는 1인지 체크하여 true 및 false를 리턴한다.
-     */
-    public static boolean isBit(String s) {
-        if (!s.equals("0") && !s.equals("1")) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * @param : String, int
      * @return : boolean
      * @Method Name  : checkByteLength
@@ -214,26 +183,6 @@ public class CommonUtils {
             }
         }
         return en + ko + etc;
-    }
-
-    /**
-     * @param : String value, int start, int end
-     * @return : boolean
-     * @Method Name  : stringBetween
-     * @version : 0.1
-     * @Method Description :
-     * 입력받은 문자열 str이 int start와 int end 이상 이하인 경우 true를 리턴하며
-     * String이 정수가 아니거나 start 보다 미만, end 를 초과할 경우 false를 리턴한다.
-     */
-    public static boolean stringBetween(String value, int start, int end) {
-        try {
-            int i = Integer.parseInt(value);
-            if (i >= start && i <= end) {
-                return true;
-            } else return false;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     /**
@@ -387,99 +336,6 @@ public class CommonUtils {
     }
 
     /**
-     * @param : Map<String, String[]> parameterMap, Class<T> dto
-     * @return : <T> T
-     * @throws : IllegalAccessException, InstantiationException
-     * @Method Name  : getDTOFromParamMap
-     * @version : 0.1
-     * @Method Description :
-     * 입력받은 ParameterMap을 함께 입력받은 Dto 객체로 치환한 다음 DTO 객체를 리턴한다.
-     */
-    public static <T> T getDTOFromParamMap(Map<String, String[]> parameterMap, Class<T> dto) throws IllegalAccessException, InstantiationException {
-
-        final MutablePropertyValues sourceProps = getPropsFrom(parameterMap);
-
-        T targetDTO = dto.newInstance();
-        DataBinder binder = new DataBinder(targetDTO);
-        binder.bind(sourceProps);
-
-        return targetDTO;
-    }
-
-    /**
-     * @param : Map<String, String[]> parameterMap
-     * @return : MutablePropertyValues
-     * @throws : IllegalAccessException, InstantiationException
-     * @Method Name  : getPropsFrom
-     * @version : 0.1
-     * @Method Description :
-     */
-    private static MutablePropertyValues getPropsFrom(Map<String, String[]> parameterMap) {
-
-        final MutablePropertyValues mpvs = new MutablePropertyValues();
-
-        parameterMap.forEach(
-                (k, v) -> {
-                    String dotKey =
-                            k.replaceAll("\\[]", "")
-                                    .replaceAll("\\[(\\D+)", ".$1")
-                                    .replaceAll("]\\[(\\D)", ".$1")
-                                    .replaceAll("(\\.\\w+)]", "$1");
-                    mpvs.addPropertyValue(dotKey, v);
-                }
-        );
-
-        return mpvs;
-    }
-
-    /**
-     * @param : HttpServletRequest request, String name
-     * @return : String
-     * @throws : UnsupportedEncodingException
-     * @Method Name  : getCookie
-     * @version : 0.1
-     * @Method Description :
-     * request에 저장되어있는 Cookie 중에서 name 문자열과 일치하는 쿠키명의 값을 리턴한다. 없는 경우 null을 리턴한다.
-     */
-    public static String getCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(name)) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param : Date
-     * @return : String
-     * @Method Name : simpleDateToDatetime
-     * @Method Description :
-     * Date date 객체를 받아서 yyyy-MM-dd HH:mm:ss 형식의 String을 반환한다.
-     */
-    public static String simpleDateToDatetime(Date date) {
-        SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String strDate = form.format(date);
-        return strDate;
-    }
-
-    /**
-     * @param : Date date
-     * @return : String
-     * @Method Name : simpleDateToDate
-     * @Method Description :
-     * Date date 객체를 받아서 기본 날짜형 yyyy-MM-dd 형식 String을 반환한다.
-     */
-    public static String simpleDateToDate(Date date) {
-        SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
-        String strDate = form.format(date);
-        return strDate;
-    }
-
-    /**
      * @param : String
      * @return : String
      * @throws : ParseException
@@ -554,23 +410,6 @@ public class CommonUtils {
         return form.format(date);
     }
 
-
-    /**
-     * @param : String[] p, int i
-     * @return : String
-     * @Method Name : blankStringArr
-     * @Method Description : 공백 리턴 배열용
-     */
-    public static String blankStringArr(String[] p, int i) {
-        if (CommonUtils.isEmptyObject(p)) {
-            return "";
-        } else if (p.length <= i) {
-            return "";
-        } else {
-            return p[i];
-        }
-    }
-
     /**
      * @param : MultipartFile
      * @return : boolean
@@ -590,23 +429,6 @@ public class CommonUtils {
     }
 
     /**
-     * @param : MultipartFile
-     * @return : boolean
-     * @Method Name : checkExcelMime
-     * @Method Description : 파일 엑셀 확인.
-     */
-    public static String checkEecelMime(MultipartFile file) {
-        String fileMime = file.getContentType();
-        if (fileMime.equals("application/vnd.ms-excel")
-                || fileMime.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                || fileMime.equals("text/css")) {
-            return fileMime;
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * _NONE(- 1),
      * NUMERIC(0),
      * STRING(1),
@@ -615,7 +437,6 @@ public class CommonUtils {
      * BOOLEAN(4),
      * ERROR(5);
      */
-
     public static String Excel_cell_value(Cell cell) {
         try {
             if (cell == null) {
@@ -711,9 +532,7 @@ public class CommonUtils {
         if(s == null){
             return null;
         }else {
-            //return s.replaceAll("(\r\n|\r|\n|\n\r|\\\\r\\\\n|\\\\r|\\\\n|\\\\n\\\\r)", "<br>");
             return s.replaceAll("(\r\n|\r|\n|\n\r|\\\\r\\\\n)", "<br>");
-            //return s.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
         }
     }
 

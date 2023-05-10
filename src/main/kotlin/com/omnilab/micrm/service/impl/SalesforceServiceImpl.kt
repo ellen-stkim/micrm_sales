@@ -2269,7 +2269,11 @@ class SalesforceServiceImpl : SalesforceService {
                                 val temp = Tblmi_cont_mstDto(seq.toInt())
                                 val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
 
-                                val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
+                                val usrId = if (mstDto.upd_id == null) {
+                                    mstDto.reg_id
+                                } else {
+                                    mstDto.reg_id
+                                }
                                 val cpMstDto = Tblmicp_cont_mstDto(contDto)
                                 cpMstDto.cont_seq = seq.toInt()
                                 cpMstDto.sales_nm = sales_nm
@@ -2354,7 +2358,11 @@ class SalesforceServiceImpl : SalesforceService {
                 mstContDto.inta_key = dto.inta_key
                 mstContDto.inta_ve = dto.inta_ve
                 val contLst = salesforceDao.sel_tblmicp_cont_mst(mstContDto)
-                val usrId = if (contLst[0].upd_id == null) contLst[0].reg_id else contLst[0].reg_id
+                val usrId = if (contLst[0].upd_id == null) {
+                    contLst[0].reg_id
+                } else {
+                    contLst[0].reg_id
+                }
 
                 val temp = Tblmicp_programDto()
                 temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"

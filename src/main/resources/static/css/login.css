@@ -2,7 +2,7 @@
 body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
     font-size:12px; font-weight:600; overflow-x:auto; position:relative; color:#666666;}
 
-.en_font {font-family:"Gotham" !important;}
+.en_font {font-family: "Gotham", sans-serif !important;}
 
 /* login */
 .cf::after {content:''; display:block; clear:both;}
@@ -14,7 +14,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 .logo img {vertical-align:middle;}
 .icon_notice {float:right; line-height:70px; padding-left:20px; font-weight:600;
     color:#aaaaaa; background:url('../image/ico_notice.png') no-repeat left 27px;}
-.icon_notice span {font-family:"Helvetica"; color:#222222;}
+.icon_notice span {font-family:"Helvetica", sans-serif; color:#222222;}
 
 .nav {position:fixed; left:0; top:72px; width:200px; height:calc(100% - 72px); border-right:1px solid #aaaaaa;
     background:#fafafa;}
@@ -96,7 +96,7 @@ div.error {padding:10px 0 18px; text-align:center; color:#618cd3; font-weight:60
 
 .log_find {float:right; line-height:15px; font-size:12px; color:#aaaaaa; font-weight:600; cursor:pointer;}
 
-.footer {padding:22px 0 49px; text-align:center; font-family:"Helvetica"; color:#bbbbbb;}
+.footer {padding:22px 0 49px; text-align:center; font-family:"Helvetica", sans-serif; color:#bbbbbb;}
 
 /* layer popup */
 .layer_pop {position:fixed; left:0; top:0; width:100%; height:100%;
@@ -131,7 +131,7 @@ div.error {padding:10px 0 18px; text-align:center; color:#618cd3; font-weight:60
 
 .pop_table_type1 .custom_radio {vertical-align:top;}
 .pop_table_type1 td .full_inp {display:block; width:100%; height:100%; padding:0 20px;}
-.pop_table_type1 td .number_inp {float:left; display:block; width:90px; height:100%; padding:0 20px; font-family:"Gotham";}
+.pop_table_type1 td .number_inp {float:left; display:block; width:90px; height:100%; padding:0 20px; font-family: "Gotham", sans-serif;}
 .pop_table_type1 td .hyphen {float:left; display:block; height:100%; line-height:20px;
     font-size:12px; color:#dddddd;}
 .pop_table_type1 tr {border-bottom:1px solid #f4f4f4;}

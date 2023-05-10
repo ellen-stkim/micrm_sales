@@ -29,7 +29,7 @@
         border: none;
         background-color: #af9c6e;
         color: #fff;
-        font-family: "NanumBarunGothic";
+        font-family: "NanumBarunGothic", sans-serif;
         font-weight: 400;
         font-size: 18px;
     }

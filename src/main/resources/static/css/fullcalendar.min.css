@@ -248,7 +248,7 @@ a[data-goto]:hover {
 .fc-event {
     position: relative;
     line-height: 27px;
-    font-family: "NotoSansCJKkr";
+    font-family: "NotoSansCJKkr", sans-serif;
     display: block;
     color: #555;
     font-size: 11px
@@ -421,7 +421,7 @@ a.fc-more {
     margin: 1px 3px;
     font-size: 11px;
     cursor: pointer;
-    font-family: "Gotham";
+    font-family: "Gotham", sans-serif;
     text-decoration: none;
     color: #618cd3;
     padding-right: 10px
@@ -493,7 +493,7 @@ a.fc-more:hover {
     font-size: 1em;
     text-align: center;
     overflow: hidden;
-    font-family: "Courier New",Courier,monospace;
+    font-family: "Courier New",Courier,monospace, sans-serif;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -691,7 +691,7 @@ a.fc-more:hover {
 }
 
 .fc-toolbar h2 {
-    font-family: "Gotham";
+    font-family: "Gotham", sans-serif;
     color: #999;
     font-size: 12px;
     line-height: 14px;
@@ -764,7 +764,7 @@ a.fc-more:hover {
 .fc-ltr .fc-basic-view .fc-day-top .fc-day-number {
     float: left;
     padding: 10px;
-    font-family: "Gotham"
+    font-family: "Gotham", sans-serif;
 }
 
 .fc-rtl .fc-basic-view .fc-day-top .fc-day-number {
@@ -997,7 +997,7 @@ a.fc-more:hover {
     overflow: hidden;
     line-height: 8px;
     font-size: 11px;
-    font-family: monospace;
+    font-family: monospace, sans-serif;
     text-align: center;
     cursor: s-resize
 }
@@ -1147,7 +1147,7 @@ a.fc-more:hover {
 }
 
 .fc-unthemed th {
-    font-family: "NotoSansCJKkr";
+    font-family: "NotoSansCJKkr", sans-serif;
     color: #666;
     font-size: 12px;
     height: 36px;
@@ -1191,7 +1191,7 @@ a.fc-more:hover {
 .fc-unthemed .fc-popover .fc-header .fc-title {
     width: 100%;
     line-height: 35px;
-    font-family: "NotoSansCJKkr";
+    font-family: "NotoSansCJKkr", sans-serif;
     text-align: center;
     color: #666
 }

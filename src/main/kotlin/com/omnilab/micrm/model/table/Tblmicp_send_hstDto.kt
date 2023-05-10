@@ -71,6 +71,9 @@ open class Tblmicp_send_hstDto {
     }
 
     override fun equals(other: Any?): Boolean {
+        if (other?.javaClass != this.javaClass)
+            return false
+
         val oth = other as Tblmicp_send_hstDto
         return EqualsBuilder().append(send_to, oth.send_to)
                 .append(camp_ch, oth.camp_ch)

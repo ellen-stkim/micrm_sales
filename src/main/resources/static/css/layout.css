@@ -175,7 +175,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 .top-border-none {border-top:none!important;}
 .bottom-border-none {border-bottom:none !important;}
 
-.en_font {font-family:"Gotham" !important; font-weight:600;}
+.en_font {font-family:"Gotham", sans-serif !important; font-weight:600;}
 
 .blue_point_color {color:#618cd3 !important;}
 .gray_color {color:#cccccc;}
@@ -198,16 +198,16 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 .logo a {display:block; line-height:71px;}
 .logo a img {vertical-align: middle;}
 
-.summary {float:left; font-family:"Helvetica";}
+.summary {float:left; font-family:"Helvetica", sans-serif;}
 .summary li {float:left; line-height:70px;}
 .summary li::after {content:'|'; display:block; float:right; margin:0 15px;
     line-height:70px; color:#e6e6e6;}
-.summary li span { color:#aaaaaa; font-family:"NotoSansCJKkr";}
+.summary li span { color:#aaaaaa; font-family:"NotoSansCJKkr", sans-serif;}
 
-.ico_notice {float:left; font-family:"Helvetica"; line-height:70px;
+.ico_notice {float:left; font-family:"Helvetica", sans-serif; line-height:70px;
     padding-left:20px; background:url('../image/ico_notice.png') no-repeat left 27px;
     cursor:pointer;}
-.ico_notice span {color:#aaaaaa; font-family:"NotoSansCJKkr";}
+.ico_notice span {color:#aaaaaa; font-family:"NotoSansCJKkr", sans-serif;}
 .ico_notice img {vertical-align:-4px; margin-left:5px;}
 
 .nav {position:fixed; left:0; top:72px; width:200px; height:calc(100% - 72px); border-right:1px solid #aaaaaa;
@@ -249,7 +249,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 .location::after {content:''; display:block; clear:both;}
 .location li {float:left; line-height:35px; font-size:12px; color:#bbbbbb;}
 .location li:last-child {color:#555555;}
-.location li::after {content:'>'; display:block; float:right; font-family:"NotoSansCJKkr"; font-size:10px;
+.location li::after {content:'>'; display:block; float:right; font-family:"NotoSansCJKkr", sans-serif; font-size:10px;
     margin:0 8px;}
 .location li:last-child::after {display:none;}
 
@@ -358,7 +358,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 
 .count {position:relative; padding:28px 20px 15px 20px;}
 .count .total {margin-right:19px;}
-.count .total span {margin-left:17px; font-family:"Gotham"; font-size:22px; color:#618cd3;
+.count .total span {margin-left:17px; font-family:"Gotham", sans-serif; font-size:22px; color:#618cd3;
     vertical-align:sub;}
 .count ol li {float:left; line-height:22px; color:#999999; }
 .count ol li span {color:#555555;}
@@ -443,8 +443,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif;
 /* table btn */
 .btn_row {clear:both; width:100%; text-align:center;}
 .pager {display:flex; flex-direction:row; justify-content:center;}
-.pager li {width:42px; height:35px; line-height:39px; text-align:center; color:#cccccc;
-    font-family:"Helvetica";}
+.pager li {width:42px; height:35px; line-height:39px; text-align:center; color:#cccccc; font-family:"Helvetica", sans-serif;}
 .pager .page {cursor: pointer;}
 .pager .page.on {color:#555555; background:#fafafa; border-left:1px solid #dddddd;
     border-right:1px solid #dddddd;}

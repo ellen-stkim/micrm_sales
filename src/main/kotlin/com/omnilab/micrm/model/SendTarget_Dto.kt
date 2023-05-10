@@ -23,6 +23,9 @@ class SendTarget_Dto {
     }
 
     override fun equals(other: Any?): Boolean {
+        if (other?.javaClass != this.javaClass)
+            return false
+
         val oth = other as SendTarget_Dto
         return EqualsBuilder().append(send_to, oth.send_to).isEquals
     }
