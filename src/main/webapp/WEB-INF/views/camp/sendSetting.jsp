@@ -962,15 +962,15 @@
                             </colgroup>
                             <tbody>
                             <tr>
-                                <th colspan="row">기획비</th>
+                                <th scope="row">기획비</th>
                                 <td><input type="text" id="plan_cost" placeholder="0" class="en_font" /><span>원</span></td>
-                                <th colspan="row">오퍼비</th>
+                                <th scope="row">오퍼비</th>
                                 <td><input type="text" id="off_cost" placeholder="0" class="en_font" /><span>원</span></td>
                             </tr>
                             <tr>
-                                <th colspan="row">개발비</th>
+                                <th scope="row">개발비</th>
                                 <td><input type="text" id="dev_cost" placeholder="0" class="en_font" /><span>원</span></td>
-                                <th colspan="row">디자인비</th>
+                                <th scope="row">디자인비</th>
                                 <td><input type="text" id="des_cost" placeholder="0" class="en_font" /><span>원</span></td>
                             </tr>
                             </tbody>

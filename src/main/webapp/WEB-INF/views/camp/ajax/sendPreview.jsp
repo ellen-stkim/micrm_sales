@@ -35,8 +35,7 @@
                                     <div class="sms_box">
                                         <div class="sms_title" id="sms_title">${dto.cont_sub}</div>
                                         <div class="sms_img">
-                                            <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" alt=""
-                                                 onerror="this.src = '/image/bg_none.png'"></div>
+                                            <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" alt="" onerror="this.src = '/image/bg_none.png'"></div>
                                         <div class="sms_txt">${cutil:replaceBr(dto.cont_body)}</div>
                                     </div>
                                 </div>

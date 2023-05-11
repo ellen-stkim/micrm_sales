@@ -39,7 +39,7 @@
                 </div>
                 <!-- 이메일 viewer 영역 -->
                 <div class="view">
-                    <div class="img edm"><img src="${filePath}${camp.thm_url}" alt=""  onerror="this.src = '/image/bg_none_wide.png'"/></div>
+                    <div class="img edm"><img src="${filePath}${camp.thm_url}" alt="" onerror="this.src = '/image/bg_none_wide.png'"/></div>
                 </div>
                 <!-- Target 영역 -->
                 <div class="row_state arrow cf">
@@ -116,10 +116,10 @@
                         <c:choose>
                             <c:when test="${!cutil:isEmptyObject(camp.img_lst)}">
                                 <c:set var="img_lst" value="${fn:split(camp.img_lst,',')}"/>
-                                <img src="${filePath}${img_lst[0]}" alt=""  onerror="this.src = '/image/bg_none_wide.png'"/>
+                                <img src="${filePath}${img_lst[0]}" alt="" onerror="this.src = '/image/bg_none_wide.png'"/>
                             </c:when>
                             <c:when test="${!cutil:isEmptyObject(camp.kko_image_url)}">
-                                <img src="${filePath}${camp.kko_image_url}" alt=""  onerror="this.src = '/image/bg_none_wide.png'"/>
+                                <img src="${filePath}${camp.kko_image_url}" alt="" onerror="this.src = '/image/bg_none_wide.png'"/>
                             </c:when>
                             <c:otherwise>
                                 <img src="/image/bg_none_wide.png" alt=""/>

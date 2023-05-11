@@ -124,8 +124,7 @@
                                     <c:if test="${content.tmpl_empsize_tp eq 'ITEM_LIST'  || content.tmpl_empsize_tp eq 'IMAGE'}">
                                         <c:if test="${!empty content.kko_img_cd}">
                                             <div class="kko_img_box">
-                                                <img src="${content.kko_img_url}" style="max-height: 135px;"
-                                                     onerror="this.src = '/image/bg_none.png'" alt="">
+                                                <img src="${content.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
                                             </div>
                                         </c:if>
                                     </c:if>
@@ -147,9 +146,9 @@
                                                             <div class="tmpl_subtit">${highlight.description}</div>
                                                         </div>
                                                         <c:if test="${fn:contains(content.item_highlight_json,'\"imageUrl\"')}">
-                                                            <div class="right_img_box"><img src="${highlight.imageUrl}"
-                                                                                            onerror="this.src = '/image/bg_none.png'"
-                                                                                            alt=""></div>
+                                                            <div class="right_img_box">
+                                                                <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                            </div>
                                                         </c:if>
                                                        </div>
                                             </c:if>
@@ -253,7 +252,7 @@
                                     <img src="${baseURL}${content.img_lst}" alt="" onerror="this.src = '/image/bg_none.png'">
                                 </c:if>--%>
                                 <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"/>
+                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"  alt="" />
                                 </c:if>
                             </div>
                             <div class="txt_area">
@@ -277,7 +276,7 @@
                                     <img src="${baseURL}${content.img_lst}" alt="" onerror="this.src = '/image/bg_none.png'">
                                 </c:if>--%>
                                 <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"/>
+                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src='/image/bg_none.png'" alt=""/>
                                 </c:if>
                             </div>
                             <div class="txt_area">
@@ -300,7 +299,7 @@
                                     <div class="slide small cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -314,7 +313,7 @@
                                     <div class="slide small cf">
                                         <div class="img_area">
                                          <c:if test="${not empty fn:split(content.img_lst,',')[1]}">
-                                             <img src="${filePath}${fn:split(content.img_lst,',')[1]}" onerror="this.src = '/image/bg_none.png'"/>
+                                             <img src="${filePath}${fn:split(content.img_lst,',')[1]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                          </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -334,7 +333,7 @@
                                 <div class="slide medium cf">
                                     <div class="img_area">
                                      <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                         <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"/>
+                                         <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                      </c:if>
                                     </div>
                                     <div class="txt_area">
@@ -350,7 +349,7 @@
                                 <div class="slide medium cf">
                                     <div class="img_area">
                                         <c:if test="${not empty fn:split(content.img_lst,',')[1]}">
-                                            <img src="${filePath}${fn:split(content.img_lst,',')[1]}" onerror="this.src = '/image/bg_none.png'"/>
+                                            <img src="${filePath}${fn:split(content.img_lst,',')[1]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                         </c:if>
                                     </div>
                                     <div class="txt_area">

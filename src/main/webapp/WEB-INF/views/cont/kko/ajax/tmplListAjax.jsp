@@ -61,8 +61,7 @@
                                 <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
                                     <c:if test="${!empty tmpl.img_seq}">
                                         <div class="kko_img_box">
-                                            <img src="${tmpl.kko_img_url}"
-                                                 onerror="this.src = '/image/bg_none.png'" alt="">
+                                            <img src="${tmpl.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
                                         </div>
                                     </c:if>
                                 </c:if>
@@ -84,9 +83,9 @@
                                                         <div class="tmpl_subtit">${highlight.description}</div>
                                                     </div>
                                                     <c:if test="${fn:contains(tmpl.item_highlight_json,'\"imageUrl\"')}">
-                                                        <div class="right_img_box"><img src="${highlight.imageUrl}"
-                                                                                        onerror="this.src = '/image/bg_none.png'"
-                                                                                        alt=""></div>
+                                                        <div class="right_img_box">
+                                                            <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                        </div>
                                                     </c:if>
                                                    </div>
                                         </c:if>
@@ -169,8 +168,9 @@
 <span id="pageHtml">
     <c:choose>
         <c:when test="${nextCk eq true}">
-        <div class="btn_more" onclick="getMobileListAdd('${pageNo}');"><img src="/image/bullet_arrw1.png"
-                                                                            alt=""/>더보기</div>
+        <div class="btn_more" onclick="getMobileListAdd('${pageNo}');">
+            <img src="/image/bullet_arrw1.png" alt=""/>더보기
+        </div>
         </c:when>
         <c:otherwise>
             <c:if test="${empty list}">

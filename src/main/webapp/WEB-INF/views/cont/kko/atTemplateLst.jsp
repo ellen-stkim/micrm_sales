@@ -100,7 +100,9 @@
             <!-- list_container 영역 끝 -->
             <span id="pageBtn">
                 <c:if test="${nextCk eq true}">
-                    <div class="btn_more" onclick="getMobileListAdd();"><img src="/image/bullet_arrw1.png" alt="" />더보기</div>
+                    <div class="btn_more" onclick="getMobileListAdd();">
+                        <img src="/image/bullet_arrw1.png" alt="" />더보기
+                    </div>
                 </c:if>
             </span>
         </div>
