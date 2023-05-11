@@ -225,16 +225,19 @@
                                                 <fmt:formatNumber value="${cont.suc_cnt / cont.total_cnt}"
                                                                   pattern="(###%)"/>
                                             </td>
-                                            <td name="open"> <span><fmt:formatNumber value="${cont.open_cnt}"
-                                                                         pattern="#,##0"></fmt:formatNumber></span><br>
-                                                <fmt:formatNumber value="${cont.open_cnt / cont.total_cnt}"
-                                                                  pattern="(###%)"/>
+                                            <td name="open">
+                                                <span>
+                                                    <fmt:formatNumber value="${cont.open_cnt}" pattern="#,##0"></fmt:formatNumber>
+                                                </span>
+                                                <br>
+                                                <fmt:formatNumber value="${cont.open_cnt / cont.total_cnt}" pattern="(###%)"/>
                                             </td>
                                             <td name="click">
-                                            <span><fmt:formatNumber value="${cont.click_cnt}"
-                                                                    pattern="#,##0"></fmt:formatNumber></span><br>
-                                                <fmt:formatNumber value="${cont.click_cnt / cont.total_cnt}"
-                                                                  pattern="(###%)"/>
+                                                <span>
+                                                    <fmt:formatNumber value="${cont.click_cnt}" pattern="#,##0"></fmt:formatNumber>
+                                                </span>
+                                                <br>
+                                                <fmt:formatNumber value="${cont.click_cnt / cont.total_cnt}" pattern="(###%)"/>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -263,22 +266,19 @@
 												<c:choose>
                                                     <c:when test="${total.total_cnt eq '' }">0%</c:when>
                                                     <c:otherwise>
-                                                        <fmt:formatNumber
-                                                                value="${total.suc_cnt / total.total_cnt}"
-                                                                pattern="###.##%"></fmt:formatNumber>
+                                                        <fmt:formatNumber value="${total.suc_cnt / total.total_cnt}" pattern="###.##%"></fmt:formatNumber>
                                                     </c:otherwise>
                                                 </c:choose>
 											</span>
-                                        <span class="text">(<fmt:formatNumber value="${total.suc_cnt }"
-                                                                              pattern="#,##0"></fmt:formatNumber>)</span>
+                                        <span class="text">(<fmt:formatNumber value="${total.suc_cnt }" pattern="#,##0"></fmt:formatNumber>)</span>
                                     </td>
                                 </tr>
                             </table>
                             <div class="wait_txt"><span>발송 대기 : </span><span id="wait_cnt">0</span>명</div>
                             <div class="grid-space"></div>
-                            <table class="report-tab-table max yellow">
+                            <table class="report-tab-table max yellow" summary="table">
                                 <tr>
-                                    <th class="wid-40-p">사용자 계정문제</th>
+                                    <th class="wid-40-p" scope="row">사용자 계정문제</th>
                                     <td>
                                         <span id="softTotalPortion" class="pointMid yellow"></span>
                                         <span id="softTotalSpan" class="text"></span>
@@ -314,7 +314,7 @@
                             </div>
                             <table class="report-tab-table wid-100-p yellow" summary="table">
                                 <tr>
-                                    <th class="wid-40-p">시스템 문제</th>
+                                    <th class="wid-40-p" scope="row">시스템 문제</th>
                                     <td>
                                         <span id="hardTotalPortion" class="pointMid yellow"></span>
                                         <span id="hardTotalSpan" class="text"></span>
@@ -424,7 +424,7 @@
 
                 </form:form>
                 <div id="list_table_box" style="width: 588px; min-height:210px;">
-                    <table class="pop_table table_fixed" id="pop_list_table">
+                    <table class="pop_table table_fixed" id="pop_list_table" summary="table">
                         <colgroup>
                             <col width="40"/>
                             <col width="130"/>
@@ -458,10 +458,9 @@
             </div>
             <div class="pop_inner">
                 <div class="select_lst_box">
-                    <div><h1 class="info">선택된 캠페인 리스트 ( 프로그램 <span id="info_prg">0</span>건 | 캠페인 <span
-                            id="info_camp">0</span>건 )</h1></div>
+                    <div><h1 class="info">선택된 캠페인 리스트 ( 프로그램 <span id="info_prg">0</span>건 | 캠페인 <span id="info_camp">0</span>건 )</h1></div>
                     <form:form id="select_form" action="./dt.mi">
-                        <table class="pop_table table_fixed" id="select_lst">
+                        <table class="pop_table table_fixed" id="select_lst" summary="table">
                             <colgroup>
                                 <col width="20"/>
                                 <col width="100"/>
@@ -470,19 +469,25 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <th><input type="checkbox" name="pro_nm_allcheck"
-                                           onclick="allCheckBtn(this); checkEvent(this);"></th>
-                                <th><span>프로그램명</span></th>
-                                <th><input type="checkbox" name="camp_nm_allcheck"
-                                           onclick="allCheckBtn(this); checkEvent(this);"></th>
-                                <th><span>캠페인명</span></th>
+                                <th>
+                                    <input type="checkbox" name="pro_nm_allcheck" onclick="allCheckBtn(this); checkEvent(this);">
+                                </th>
+                                <th>
+                                    <span>프로그램명</span>
+                                </th>
+                                <th>
+                                    <input type="checkbox" name="camp_nm_allcheck" onclick="allCheckBtn(this); checkEvent(this);">
+                                </th>
+                                <th>
+                                    <span>캠페인명</span>
+                                </th>
                             </tr>
                             </thead>
                             <tbody id="select_lst_tbody"></tbody>
 
                         </table>
                     </form:form>
-                    <table class="disnone">
+                    <table class="disnone" summary="table">
                         <tbody id="curent_tbody">
                         <c:choose>
                             <c:when test="${fn:length(programLst) == 0 }">
@@ -493,16 +498,20 @@
                                 <c:forEach var="programMap" items="${programLst}">
                                     <c:set var="total" value="${programMap.total}"/>
                                     <tr>
-                                    <td rowspan="${total.rowCnt}">
-                                        <input type="checkbox" name="pro_nm_check" value="${total.pro_id}" data="${total.pro_id}"
-                                               onclick="checkEvent(this)">
-                                    </td>
-                                    <td rowspan="${total.rowCnt}"><span class="ellipsis" name="pro_nm">${total.pro_nm}</span></td>
+                                        <td rowspan="${total.rowCnt}">
+                                            <input type="checkbox" name="pro_nm_check" value="${total.pro_id}" data="${total.pro_id}" onclick="checkEvent(this)">
+                                        </td>
+                                        <td rowspan="${total.rowCnt}">
+                                            <span class="ellipsis" name="pro_nm">${total.pro_nm}</span>
+                                        </td>
                                     <c:forEach var="cont" items="${programMap.program}">
                                         <tr>
-                                            <td><input type="checkbox" class="camp_nm_check" name="cont_seq" data_pro_id="${cont.pro_id}"
-                                                       value="${cont.seq}" onclick="checkEvent(this);"></td>
-                                            <td><span class="ellipsis" >${cont.camp_nm}</span></td>
+                                            <td>
+                                                <input type="checkbox" class="camp_nm_check" name="cont_seq" data_pro_id="${cont.pro_id}" value="${cont.seq}" onclick="checkEvent(this);">
+                                            </td>
+                                            <td>
+                                                <span class="ellipsis" >${cont.camp_nm}</span>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </c:forEach>

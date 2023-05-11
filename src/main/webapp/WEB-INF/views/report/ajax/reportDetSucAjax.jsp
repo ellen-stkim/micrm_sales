@@ -347,7 +347,7 @@
         </table>
         <div class="wait_txt"><span>발송 대기 : </span><span id="wait_cnt">0</span>명</div>
         <div class="grid-space"></div>
-        <table class="report-tab-table max yellow">
+        <table class="report-tab-table max yellow" summary="table">
             <tr>
                 <th class="wid-40-p" scope="row">사용자 계정문제</th>
                 <td>
