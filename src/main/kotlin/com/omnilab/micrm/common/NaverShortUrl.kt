@@ -23,7 +23,6 @@ class NaverShortUrl {
 
     fun shorten(uuid: String, clientId: String, clientSecret:String): String {
         try {
-
             val text: String = uuid
             val apiURL = "https://naveropenapi.apigw.ntruss.com/util/v1/shorturl"
 
@@ -40,15 +39,16 @@ class NaverShortUrl {
                 .header("X-NCP-APIGW-API-KEY", clientSecret)
                 .build()
             val result: ResponseEntity<String> = restTemplate.exchange(requestEntity, String::class.java)
-            if (result.statusCode == HttpStatus.OK) {
+            return if (result.statusCode == HttpStatus.OK) {
                 val gson = GsonBuilder().create()
                 val json = gson.fromJson(result.body, Map::class.java)
                 val url = (json["result"] as Map<String, String>)["url"]
-                return url ?: uuid
+                url ?: uuid
             } else {
-                return uuid
+                uuid
             }
         } catch (e:Exception) {
+            logger.error("shorten {}", e)
             return uuid
         }
     }

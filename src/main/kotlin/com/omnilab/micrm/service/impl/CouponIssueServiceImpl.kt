@@ -175,7 +175,7 @@ class CouponIssueServiceImpl: CouponIssueService {
                 // 1. 도메인
                 val couponDomain = couponDao.selectCouponDomain(Tblmi_comm_cdDto(couponDomainGrpId, campaignDto.usr_grp_cd!!))
                 // 2. Path
-                var couponPath = "/mobileCoupon/"
+                val couponPath = "/mobileCoupon/"
                 // 3. 쿠폰 발급 조회 tblmicp_cont_mst의 시퀀스로 조회
                 val couponIssueDto = couponDao.selectCouponIssue(campaignDto.cont_id.toString())
                 // 4. uuid

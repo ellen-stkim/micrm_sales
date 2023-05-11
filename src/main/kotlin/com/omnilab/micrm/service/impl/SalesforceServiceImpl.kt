@@ -34,7 +34,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -2455,8 +2454,8 @@ class SalesforceServiceImpl : SalesforceService {
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
-        val avo_id = map["activityId"].toString()
-        val inten_id = map["journeyId"].toString()
+        val avoId: String = map["activityId"].toString()
+        val intenId = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
 
         val exMap = HashMap<String, Any>(map)
@@ -2464,8 +2463,8 @@ class SalesforceServiceImpl : SalesforceService {
 
         // 컨테츠 마스터 정보
         val contMstDto = Tblmicp_cont_mstDto()
-        contMstDto.avo_id = avo_id
-        contMstDto.inten_id = inten_id
+        contMstDto.avo_id = avoId
+        contMstDto.inten_id = intenId
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
 
         if(contMst == null){
@@ -2536,57 +2535,57 @@ class SalesforceServiceImpl : SalesforceService {
                     when {
                         // 카카오 친구톡
                         contTpLst["DMTP03"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP03"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP03"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
                             }
                         }
                         // 카카오 알림톡
                         contTpLst["DMTP05"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP05"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 kkoSendAt.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // RCS
                         contTpLst["DMTP04"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP04"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP04"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 rcsSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // 문자
                         else -> {
-                            val send_to = inArguments[contTpLst["DMTP02"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP02"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 mdmSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
