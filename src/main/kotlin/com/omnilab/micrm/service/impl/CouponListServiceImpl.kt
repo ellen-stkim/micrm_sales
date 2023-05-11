@@ -84,7 +84,7 @@ class CouponListServiceImpl: CouponListService {
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
 
-        searchDto.send_end_dt += " 23:59:59"
+        if (!searchDto.send_end_dt.isNullOrBlank()) searchDto.send_end_dt += " 23:59:59"
         val couponIssuedLogList = couponDao.selectCouponIssuedLogList(searchDto)
 
         // 시퀀스 암호화
