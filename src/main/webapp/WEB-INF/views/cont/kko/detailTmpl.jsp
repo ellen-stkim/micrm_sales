@@ -300,7 +300,7 @@
                                                         <div class="delete_img" data="img" style="right: 10px;">
                                                             <img src="/image/btn_delete1.png" alt="삭제"></div>
                                                         <a href="${dto.kko_img_url}" target="_blank" rel="noopener">
-                                                            <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'">
+                                                            <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'" alt="kko">
                                                         </a>
                                                     </c:if>
                                                 </div>
@@ -336,7 +336,7 @@
                                                                 <div class="delete_img" data="img" style="right: 10px;">
                                                                     <img src="/image/btn_delete1.png" alt="삭제"></div>
                                                                 <a href="${dto.kko_img_url}" target="_blank" rel="noopener">
-                                                                    <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'">
+                                                                    <img src="${dto.kko_img_url}" onerror="this.src='/image/bg_none.png'" alt="kko">
                                                                 </a>
                                                             </c:if>
                                                         </div>
@@ -418,7 +418,7 @@
                                                                     <img src="/image/btn_delete1.png" alt="삭제"></div>
 
                                                                 <a href="${dto.highlight_json.imageUrl}" target="_blank" rel="noopener">
-                                                                    <img src="${dto.highlight_json.imageUrl}" onerror="this.src='/image/bg_none.png'" style="height: 175px; width: 175px;">
+                                                                    <img src="${dto.highlight_json.imageUrl}" onerror="this.src='/image/bg_none.png'" style="height: 175px; width: 175px;" alt="img">
                                                                 </a>
                                                             </div>
                                                         </c:if>
@@ -434,7 +434,7 @@
                                                     <div class="button" onclick="addRowItemList()">추가</div>
                                                 </div>
                                                 <div class="td">
-                                                    <table id="emphItemList_list_table">
+                                                    <table id="emphItemList_list_table" summary="list">
                                                         <colgroup>
                                                             <col width="8%">
                                                             <col width="35%">
@@ -442,10 +442,10 @@
                                                             <col width="12%">
                                                         </colgroup>
                                                         <thead>
-                                                        <th>순서</th>
-                                                        <th>아이템명</th>
-                                                        <th>아이템내용</th>
-                                                        <th>삭제</th>
+                                                            <th>순서</th>
+                                                            <th>아이템명</th>
+                                                            <th>아이템내용</th>
+                                                            <th>삭제</th>
                                                         </thead>
                                                         <tbody>
                                                         <c:if test="${empty dto.item_list_json || !fn:contains(dto.item_json,'\"list\"')}">
@@ -642,7 +642,7 @@
                                                 <div class="button" onclick="addRowBtn()">추가</div>
                                             </div>
                                             <div class="td">
-                                                <table id="template_btn_table">
+                                                <table id="template_btn_table" summary="list">
                                                     <colgroup>
                                                         <col width="8%">
                                                         <col width="15%">
@@ -810,7 +810,7 @@
                                         <div class="row" style="height: auto;">
                                             <div class="th">검수 결과</div>
                                             <div class="td">
-                                                <table>
+                                                <table summary="list">
                                                     <colgroup>
                                                         <col width="10%">
                                                         <col width="16%">

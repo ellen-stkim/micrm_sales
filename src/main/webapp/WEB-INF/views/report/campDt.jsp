@@ -161,7 +161,7 @@
             </div>
             <div class="border-bottom cf" id="campLstBox">
                 <div class="border-bottom cf contentBox">
-                    <table class="table target_tbl border">
+                    <table class="table target_tbl border" summary="table">
                         <colgroup>
                             <col width="200"/>
                             <col width="220"/>
@@ -174,14 +174,14 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th><span>상태</span></th>
-                            <th><span>프로그램명</span></th>
-                            <th><span>캠페인명</span></th>
-                            <th><span>캠페인 채널</span></th>
-                            <th><span>발송 타겟수</span></th>
-                            <th><span>성공</span></th>
-                            <th name="open"><span>오픈</span></th>
-                            <th name="click"><span>클릭</span></th>
+                            <th scope="col"><span>상태</span></th>
+                            <th scope="col"><span>프로그램명</span></th>
+                            <th scope="col"><span>캠페인명</span></th>
+                            <th scope="col"><span>캠페인 채널</span></th>
+                            <th scope="col"><span>발송 타겟수</span></th>
+                            <th scope="col"><span>성공</span></th>
+                            <th scope="col" name="open"><span>오픈</span></th>
+                            <th scope="col" name="click"><span>클릭</span></th>
                         </tr>
                         </thead>
                         <tbody id="body">
@@ -255,7 +255,7 @@
                     <div id="sucTab" class="report-tab-contents disnone">
                         <c:set var="total" value="${totalResult}"/>
                         <div class="half-grid">
-                            <table class="report-tab-table blue" style="display: inline-block">
+                            <table class="report-tab-table blue" style="display: inline-block" summary="table"
                                 <tr>
                                     <th>발송성공</th>
                                     <td>
@@ -299,7 +299,7 @@
                         <div class="half-grid">
                             <table class="report-tab-table yellow">
                                 <tr>
-                                    <th>발송실패</th>
+                                    <th scope="row">발송실패</th>
                                     <td>
 											<span class="pointMid yellow" id="totalFailPct">
 											</span>
@@ -312,7 +312,7 @@
                                 <div class="grid-line b"></div>
                                 <div class="grid-line c"></div>
                             </div>
-                            <table class="report-tab-table wid-100-p yellow">
+                            <table class="report-tab-table wid-100-p yellow" summary="table">
                                 <tr>
                                     <th class="wid-40-p">시스템 문제</th>
                                     <td>

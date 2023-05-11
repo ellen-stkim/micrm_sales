@@ -322,7 +322,7 @@
 <!-- 도달 리포트 ------------------------------------------------------------------------- ajax -->
 <div id="sucTab" class="report-tab-contents">
     <div class="half-grid">
-        <table class="report-tab-table blue" style="display: inline-block">
+        <table class="report-tab-table blue" style="display: inline-block" summary="table">
             <tr>
                 <th>발송성공</th>
                 <td>
@@ -349,7 +349,7 @@
         <div class="grid-space"></div>
         <table class="report-tab-table max yellow">
             <tr>
-                <th class="wid-40-p">사용자 계정문제</th>
+                <th class="wid-40-p" scope="row">사용자 계정문제</th>
                 <td>
                     <span id="softTotalPortion" class="pointMid yellow"></span>
                     <span id="softTotalSpan" class="text"></span>
@@ -370,11 +370,11 @@
     <div class="half-grid">
         <table class="report-tab-table yellow">
             <tr>
-                <th>발송실패</th>
+                <th scope="row">발송실패</th>
                 <td>
-										<span class="pointMid">
-											10%
-										</span>
+                    <span class="pointMid">
+                        10%
+                    </span>
                     <span class="text">(1,000)</span>
                 </td>
                 <%--<td>
@@ -400,7 +400,7 @@
             <div class="grid-line b"></div>
             <div class="grid-line c"></div>
         </div>
-        <table class="report-tab-table wid-100-p yellow">
+        <table class="report-tab-table wid-100-p yellow" summary="table">
             <tr>
                 <th class="wid-40-p">시스템 문제</th>
                 <td>

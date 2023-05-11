@@ -252,7 +252,7 @@
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
         <div class="pop_title"><span class="en_font">TARGET Segment</span> 조건 생성 및 수정</div>
         <div class="filter_area" id="tableauDiv">
-            <%--<iframe src="http://z.tableau-report.com:8081/html/test.html"></iframe>--%>
+            <%--<iframe src="http://z.tableau-report.com:8081/html/test.html" tittle=""></iframe>--%>
         </div>
         <div class="btn_row">
             <input type="button" class="btn_bg btn_size1 btn_center" id="btn_save" value="저장"/>

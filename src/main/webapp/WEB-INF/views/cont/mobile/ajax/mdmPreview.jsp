@@ -161,7 +161,7 @@
                                  <div class="rcs_vertical tall cf">
                                     <div class="img_area">
                                        <c:if test="${not empty content.rcs_img_url_1}">
-                                          <img src="${filePath}${content.rcs_img_url_1}" onerror="this.src = '/image/bg_none.png'"/>
+                                          <img src="${filePath}${content.rcs_img_url_1}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                        </c:if>
                                     </div>
                                     <div class="txt_area">
@@ -182,7 +182,7 @@
                                  <div class="rcs_vertical medium cf">
                                     <div class="img_area">
                                        <c:if test="${not empty content.rcs_img_url_1}">
-                                          <img src="${filePath}${content.rcs_img_url_1}" onerror="this.src = '/image/bg_none.png'"/>
+                                          <img src="${filePath}${content.rcs_img_url_1}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                        </c:if>
                                     </div>
                                     <div class="txt_area">
@@ -233,32 +233,32 @@
                                                       <div class="img_area">
                                                          <c:if test="${i eq 0}">
                                                             <c:if test="${not empty content.rcs_img_url_1}">
-                                                               <img src="${content.rcs_img_url_1}" onerror="this.src = '/image/bg_none.png'"/>
+                                                               <img src="${content.rcs_img_url_1}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                             </c:if>
                                                          </c:if>
                                                          <c:if test="${i eq 1}">
                                                             <c:if test="${not empty content.rcs_img_url_2}">
-                                                               <img src="${content.rcs_img_url_2}" onerror="this.src = '/image/bg_none.png'"/>
+                                                               <img src="${content.rcs_img_url_2}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                             </c:if>
                                                          </c:if>
                                                          <c:if test="${i eq 2}">
                                                             <c:if test="${not empty content.rcs_img_url_3}">
-                                                               <img src="${content.rcs_img_url_3}" onerror="this.src = '/image/bg_none.png'"/>
+                                                               <img src="${content.rcs_img_url_3}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                             </c:if>
                                                          </c:if>
                                                          <c:if test="${i eq 3}">
                                                             <c:if test="${not empty content.rcs_img_url_4}">
-                                                               <img src="${content.rcs_img_url_4}" onerror="this.src = '/image/bg_none.png'"/>
+                                                               <img src="${content.rcs_img_url_4}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                             </c:if>
                                                          </c:if>
                                                          <c:if test="${i eq 4}">
                                                             <c:if test="${not empty content.rcs_img_url_5}">
-                                                               <img src="${content.rcs_img_url_5}" onerror="this.src = '/image/bg_none.png'"/>
+                                                               <img src="${content.rcs_img_url_5}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                             </c:if>
                                                          </c:if>
                                                          <c:if test="${i eq 5}">
                                                             <c:if test="${not empty content.rcs_img_url_6}">
-                                                               <img src="${content.rcs_img_url_6}" onerror="this.src = '/image/bg_none.png'"/>
+                                                               <img src="${content.rcs_img_url_6}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                             </c:if>
                                                          </c:if>
                                                       </div>

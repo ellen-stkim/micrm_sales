@@ -275,13 +275,13 @@
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
                                                                 <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                             <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
                                                                 <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                         </c:if>
@@ -401,13 +401,13 @@
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
                                                                 <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                             <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
                                                                 <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                         </c:if>
@@ -477,8 +477,7 @@
                                                             <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
                                                                 <c:if test="${!empty tmpl.kko_img_cd}">
                                                                     <div class="kko_img_box">
-                                                                        <img src="${tmpl.kko_img_url}" style="max-height: 135px;"
-                                                                             onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                        <img src="${tmpl.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
                                                                     </div>
                                                                 </c:if>
                                                             </c:if>
@@ -499,9 +498,9 @@
                                                                                 <div class="tmpl_subtit">${highlight.description}</div>
                                                                             </div>
                                                                             <c:if test="${fn:contains(tmpl.item_highlight_json,'\"imageUrl\"')}">
-                                                                                <div class="right_img_box"><img src="${highlight.imageUrl}"
-                                                                                                                onerror="this.src = '/image/bg_none.png'"
-                                                                                                                alt=""></div>
+                                                                                <div class="right_img_box">
+                                                                                    <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                                </div>
                                                                             </c:if>
                                                                         </div>
                                                                     </c:if>
@@ -634,7 +633,7 @@
                                                         <div class="col_img" id="js-sms-img">
                                                             <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                             <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
-                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" />
+                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" alt="" />
                                                             </a>
                                                             </c:if>
                                                         </div>
@@ -713,7 +712,7 @@
                                             <div class="sms_img_box" id="sms_img_box"><c:if
                                                     test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                 <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
-                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'"/>
+                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                 </a>
                                             </c:if></div>
                                             <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">${cutil:replaceBr(list[1].cont_body)}</p></div>
@@ -3581,7 +3580,7 @@
                                                             <c:set var="imgNm" value="${fn:split(list[2].img_lst,',')[idx]}"/>
                                                             <div class="img_area">
                                                                 <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                    <img src="${filePath}${imgNm}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${imgNm}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </c:if>
                                                             </div>
                                                             <c:set var="imgIdx" value="${idx+1}"/>

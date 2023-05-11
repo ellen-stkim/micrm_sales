@@ -252,8 +252,7 @@
                                     <img src="${baseURL}${content.img_lst}" alt="" onerror="this.src = '/image/bg_none.png'">
                                 </c:if>--%>
                                 <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}"
-                                         onerror="this.src = '/image/bg_none.png'"/>
+                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="" />
                                 </c:if>
                             </div>
                             <div class="txt_area">
@@ -277,8 +276,7 @@
                                     <img src="${baseURL}${content.img_lst}" alt="" onerror="this.src = '/image/bg_none.png'">
                                 </c:if>--%>
                                 <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}"
-                                         onerror="this.src = '/image/bg_none.png'"/>
+                                    <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                 </c:if>
                             </div>
                             <div class="txt_area">
@@ -301,8 +299,7 @@
                                     <div class="slide small cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(content.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -316,8 +313,7 @@
                                     <div class="slide small cf">
                                         <div class="img_area">
                                          <c:if test="${not empty fn:split(content.img_lst,',')[1]}">
-                                             <img src="${filePath}${fn:split(content.img_lst,',')[1]}"
-                                                  onerror="this.src = '/image/bg_none.png'"/>
+                                             <img src="${filePath}${fn:split(content.img_lst,',')[1]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                          </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -337,8 +333,7 @@
                                 <div class="slide medium cf">
                                     <div class="img_area">
                                      <c:if test="${not empty fn:split(content.img_lst,',')[0]}">
-                                         <img src="${filePath}${fn:split(content.img_lst,',')[0]}"
-                                              onerror="this.src = '/image/bg_none.png'"/>
+                                         <img src="${filePath}${fn:split(content.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="" />
                                      </c:if>
                                     </div>
                                     <div class="txt_area">
@@ -354,8 +349,7 @@
                                 <div class="slide medium cf">
                                     <div class="img_area">
                                         <c:if test="${not empty fn:split(content.img_lst,',')[1]}">
-                                            <img src="${filePath}${fn:split(content.img_lst,',')[1]}"
-                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                            <img src="${filePath}${fn:split(content.img_lst,',')[1]}" onerror="this.src = '/image/bg_none.png'" alt="" />
                                         </c:if>
                                     </div>
                                     <div class="txt_area">
