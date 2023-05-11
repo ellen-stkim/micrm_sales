@@ -1787,7 +1787,7 @@ class MobileContentServiceImpl : ContentService {
      */
 
     private fun rcsSlideSetting(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
-        val len = contentListCreatedto?.slide_cont_sub?.size
+        val len = contentListCreatedto.slide_cont_sub?.size
         var slideCnt = 0
 
         if (len != 0) {
@@ -1876,12 +1876,8 @@ class MobileContentServiceImpl : ContentService {
      * @Method Decription : RCS 버튼 저장 Json 파싱
      * @title : RCS 버튼 저장
      */
-    private fun rcsButtonMakeJsonString(
-        contentListCreatedto: Content_list_CreateDto,
-        tblmiContLstdto: Tblmi_cont_lstDto,
-    ) {
-
-        val len = contentListCreatedto?.copy_value?.size
+    private fun rcsButtonMakeJsonString(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
+        val len = contentListCreatedto.copy_value?.size
         val jsonSuggestObj = JSONObject()
         val jsonSuggestArr = JSONArray()
         val jsonBtnArray = JSONArray()
@@ -2206,16 +2202,11 @@ class MobileContentServiceImpl : ContentService {
      * @title : RCS 슬라이드 버튼 저장
      */
 
-    private fun rcsButtonMakeJsonStringSlide(
-        contentListCreatedto: Content_list_CreateDto,
-        tblmiContLstdto: Tblmi_cont_lstDto,
-    ) {
-
+    private fun rcsButtonMakeJsonStringSlide(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
         /*
             1. slide_rcs_btn_tp 값과 slide_rcs_btn 값은 카드의 개수 만큼 고정 되서 들어 온다 (각각 분리되어 카드의 idx로 체크한다)
             2. 버튼에 따른 필요 값들은 뷰에서 index 를 지키며 들어 온다 ( 짝수 인덱스 : 버튼 1번 , 홀수 인덱스 : 버튼 2번 )
          */
-
         val btn1Len = contentListCreatedto.slide_rcs_btn_1?.size
         val btn2Len = contentListCreatedto.slide_rcs_btn_2?.size
 
@@ -2229,10 +2220,10 @@ class MobileContentServiceImpl : ContentService {
             // 카드의 개수 만큼 버튼을 담으며 For 문 돌린다.
             //logger.error("현재 인덱스 : " + idx)
 
-            val btn1Value = contentListCreatedto?.slide_rcs_btn_1!![idx]
-            val btn1Type = contentListCreatedto?.slide_rcs_btn_tp_1!![idx]
-            val btn2Value = contentListCreatedto?.slide_rcs_btn_2!![idx]
-            val btn2Type = contentListCreatedto?.slide_rcs_btn_tp_2!![idx]
+            val btn1Value = contentListCreatedto.slide_rcs_btn_1!![idx]
+            val btn1Type = contentListCreatedto.slide_rcs_btn_tp_1!![idx]
+            val btn2Value = contentListCreatedto.slide_rcs_btn_2!![idx]
+            val btn2Type = contentListCreatedto.slide_rcs_btn_tp_2!![idx]
 
             //logger.error("버튼 1번 값 : " + btn1Value)
             //logger.error("버튼 1번 Type : " + btn1Type)
@@ -2489,7 +2480,7 @@ class MobileContentServiceImpl : ContentService {
     }
 
     override fun selectRejectTextList(dto: SetLst_searchDto): Map<String, Any> {
-        val searchDto = dto as SetLst_searchDto
+        val searchDto = dto
         val paramMap: MutableMap<String, Any> = HashMap()
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
 
