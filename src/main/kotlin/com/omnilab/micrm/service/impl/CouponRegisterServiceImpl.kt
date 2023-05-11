@@ -8,19 +8,11 @@ import com.omnilab.micrm.model.table.Tblmicou_categoryDto
 import com.omnilab.micrm.model.table.Tblmicou_img_fileDto
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.service.CouponRegisterService
-import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.awt.Image
-import java.awt.image.BufferedImage
-import java.io.File
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 
 @Service
@@ -99,10 +91,10 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     }
 
     private fun replaceNewLine(dto: CouponRegisterDto) {
-        dto.title = dto.title!!.replace("\n", "<br/>")
-        dto.descr = dto.descr!!.replace("\n", "<br/>")
-        dto.notice = dto.notice!!.replace("\n", "<br/>")
-        dto.content = dto.content!!.replace("\n", "<br/>")
+        dto.title = dto.title ?: "".replace("\n", "<br/>")
+        dto.descr = dto.descr ?: "".replace("\n", "<br/>")
+        dto.notice = dto.notice ?: "".replace("\n", "<br/>")
+        dto.content = dto.content ?: "".replace("\n", "<br/>")
     }
 
     private fun validationCouponDto(dto: CouponRegisterDto, type: String) {

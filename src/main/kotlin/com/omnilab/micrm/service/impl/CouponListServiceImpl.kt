@@ -80,12 +80,11 @@ class CouponListServiceImpl: CouponListService {
         val reMap: MutableMap<String, Any> = HashMap()
         val paginationInfo : PaginationInfo = UsefulUtils.makePage(searchDto.pageNo,10,10)
 
-        val m_server = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", UsefulUtils.sessionUser().usr_grp_cd!!)).cd_val
-        searchDto.m_server = m_server
-
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         searchDto.firstIndex = paginationInfo.firstRecordIndex
         searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+
+        if (!searchDto.send_end_dt.isNullOrBlank()) searchDto.send_end_dt += " 23:59:59"
         val couponIssuedLogList = couponDao.selectCouponIssuedLogList(searchDto)
 
         // 시퀀스 암호화

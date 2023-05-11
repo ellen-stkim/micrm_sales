@@ -58,13 +58,13 @@
                             </label>
                         </article>
                     </li>
-                    <li>
-                        <h6 class="label_name">쿠폰 링크</h6>
-                        <article class="components al_center">
-                            <input type="text" name="" id="" placeholder="URL" value="{쿠폰링크}" readonly/>
-                            <button type="button" class="btn insert" onclick="insertCouponLinkText()">삽입</button>
-                        </article>
-                    </li>
+<%--                    <li>--%>
+<%--                        <h6 class="label_name">쿠폰 링크</h6>--%>
+<%--                        <article class="components al_center">--%>
+<%--                            <input type="text" name="" id="" placeholder="URL" value="{쿠폰링크}" readonly/>--%>
+<%--                            <button type="button" class="btn insert" onclick="insertCouponLinkText()">삽입</button>--%>
+<%--                        </article>--%>
+<%--                    </li>--%>
                 </ul>
                 <ul class="input_field text">
                     <li>
@@ -148,11 +148,11 @@
                 </ul>
             </section>
             <section class="right">
-                <article class="preview">
+                <article class="preview" style="height: 268px;">
                     <section class="image">
                         <img alt="이미지 없음" src="${couponImageDomain}${coupon.img_url}" class="noimage modifyImg" />
                     </section>
-                    <section class="contents">
+                    <section class="contents"  style="display: none">
                         <textarea name="content" id="content" cols="30" rows="10" placeholder="문자 메시지 내용과 쿠폰 링크를 삽입해주세요.">${fn:replace(coupon.content, "<br/>", newLineChar)}</textarea>
                     </section>
                 </article>
