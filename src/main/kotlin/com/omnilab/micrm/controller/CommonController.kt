@@ -80,7 +80,6 @@ class CommonController {
     @PostMapping("/getMainCampView.ajax")
     fun getMainCampView(@ModelAttribute dto: Tblmicp_campaignDto): ModelAndView {
         val view = ModelAndView("camp/ajax/homeCampPreview")
-        val map : MutableMap<String, Any> = HashMap()
         val resultMap =  campaignService.getMainCampView(dto);
         view.addObject("startDt", dto.start_dt)
         view.addObject("tarCnt", dto.tar_cnt)
@@ -110,7 +109,7 @@ class CommonController {
     @ResponseBody
     @PostMapping("/getCampInfo.ajax")
     fun getCampInfo(@RequestParam(value = "startDate")startDate: String, @RequestParam(value = "endDate")endDate: String ):List<Tblmicp_campaignDto> {
-        val dto : Tblmicp_campaignDto = Tblmicp_campaignDto()
+        val dto = Tblmicp_campaignDto()
         dto.start_dt = startDate
         dto.end_dt = endDate
         val map = campaignService.getCampList(dto);
