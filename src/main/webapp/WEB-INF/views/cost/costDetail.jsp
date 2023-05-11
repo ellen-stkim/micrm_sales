@@ -251,7 +251,7 @@
                     </form:form>
                     <!-- SEARCH AREA END-->
                     <div class="single-table-cover" id="programView">
-                        <table class="single-table">
+                        <table class="single-table" summary="table">
                             <colgroup>
                                 <col width="20%">
                                 <col width="10%">

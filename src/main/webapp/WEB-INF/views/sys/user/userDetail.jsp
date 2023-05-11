@@ -54,26 +54,26 @@
                         <span>기본정보</span>
                         <input type="button" class="btn_sm_line" onclick="accountPopup();" value="수정" />
                     </div>
-                    <table class="tableType1">
+                    <table class="tableType1" summary="table">
                         <colgroup>
                             <col width="102" />
                             <col width="*" />
                         </colgroup>
                         <tbody id="tableInfo">
                         <tr>
-                            <th>이름</th>
+                            <th scope="row">이름</th>
                             <td><span id="usrNm">${list[0].usr_nm}</span></td>
                         </tr>
                         <tr>
-                            <th>로그인 이메일</th>
+                            <th scope="row">로그인 이메일</th>
                             <td><span class="en_font" id="usrLogId">${list[0].usr_log_id}</span></td>
                         </tr>
                         <tr>
-                            <th>이메일</th>
+                            <th scope="row">이메일</th>
                             <td><span class="en_font" id="usrEmail">${list[0].usr_email}</span></td>
                         </tr>
                         <tr>
-                            <th>휴대폰 번호</th>
+                            <th scope="row">휴대폰 번호</th>
                             <td><span class="en_font" id="usrPhone">
                                 <c:if test="${!cutil:isEmptyObject(list[0].usr_mob)}">
                                     ${cutil:numberToPhone(list[0].usr_mob)}
@@ -81,11 +81,11 @@
                             </span></td>
                         </tr>
                         <tr>
-                            <th>권한</th>
+                            <th scope="row">권한</th>
                             <td><span id="usrAuth">${list[0].cd_nm}</span></td>
                         </tr>
                         <tr>
-                            <th>비밀번호</th>
+                            <th scope="row">비밀번호</th>
                             <td><span>비밀번호는 수정 시 변경 가능합니다.</span></td>
                         </tr>
                         </tbody>
@@ -124,25 +124,25 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>이름</th>
+                        <th scope="row">이름</th>
                         <td>
                             <input type="text" id="userName" class="input_type1" value="${list[0].usr_nm}" readonly/>
                         </td>
                     </tr>
                     <tr>
-                        <th>로그인 이메일</th>
+                        <th scope="row">로그인 이메일</th>
                         <td>
                             <input type="text" id="userLogId" class="input_type1" value="${list[0].usr_log_id}" readonly/>
                         </td>
                     </tr>
                     <tr>
-                        <th>이메일</th>
+                        <th scope="row">이메일</th>
                         <td>
                             <input type="text" id="userMail" name="usr_email" class="input_type1" value="${list[0].usr_email}"/>
                         </td>
                     </tr>
                     <tr>
-                        <th>핸드폰번호</th>
+                        <th scope="row">핸드폰번호</th>
                         <td>
                             <input type="text" id="userPhone" placeholder="사용자의 핸드폰 번호을 입력해주세요." name="usr_mob" class="input_type1" value=
                             <c:if test="${!cutil:isEmptyObject(list[0].usr_mob)}">
@@ -152,7 +152,7 @@
                     </tr>
                     <sec:authorize access="hasRole('R10')">
                     <tr>
-                        <th>권한</th>
+                        <th scope="row">권한</th>
                         <td class="pd_none">
                             <!-- select 영역 시작 -->
                             <div class="select fix">
@@ -170,14 +170,14 @@
                     </tr>
                     </sec:authorize>
                     <tr>
-                        <th>새 비밀번호</th>
+                        <th scope="row">새 비밀번호</th>
                         <td>
                             <input type="password" placeholder="새 비밀번호를 입력해주세요." id="password" name="usr_pw"
                                    class="input_type1 pwd"/>
                         </td>
                     </tr>
                     <tr>
-                        <th>새 비밀번호 확인</th>
+                        <th scope="row">새 비밀번호 확인</th>
                         <td>
                             <input type="password" placeholder="새 비밀번호를 입력해주세요." id="comfirmPsw" name="usr_pw_ck"
                                    class="input_type1 pwd"/>

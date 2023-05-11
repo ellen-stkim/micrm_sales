@@ -18,7 +18,7 @@
     <c:choose>
         <c:when test="${not empty list}">
             <!-- table 영역 시작 -->
-            <table class="table">
+            <table class="table" summary="table">
                 <colgroup>
                     <col width="12.5%" />
                     <col width="12.5%" />
@@ -31,14 +31,14 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>IP</th>
-                    <th>등록자</th>
-                    <th>해제 요청자</th>
-                    <th>차단 로그</th>
-                    <th>차단 주제</th>
-                    <th>등록일</th>
-                    <th>해제 사유</th>
-                    <th>해제/요청 거절</th>
+                    <th scope="col">IP</th>
+                    <th scope="col">등록자</th>
+                    <th scope="col">해제 요청자</th>
+                    <th scope="col">차단 로그</th>
+                    <th scope="col">차단 주제</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">해제 사유</th>
+                    <th scope="col">해제/요청 거절</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -77,7 +77,7 @@
             <!-- table 영역 끝 -->
         </c:when>
         <c:otherwise>
-            <table class="table">
+            <table class="table" summary="table">
                 <colgroup>
                     <col width="12.5%" />
                     <col width="12.5%" />
@@ -90,14 +90,14 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>IP</th>
-                    <th>등록자</th>
-                    <th>해제 요청자</th>
-                    <th>차단 로그</th>
-                    <th>차단 주제</th>
-                    <th>등록일</th>
-                    <th>해제 사유</th>
-                    <th>해제/요청 거절</th>
+                    <th scope="col">IP</th>
+                    <th scope="col">등록자</th>
+                    <th scope="col">해제 요청자</th>
+                    <th scope="col">차단 로그</th>
+                    <th scope="col">차단 주제</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">해제 사유</th>
+                    <th scope="col">해제/요청 거절</th>
                 </tr>
                 </thead>
                 <tbody>

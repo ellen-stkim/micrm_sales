@@ -19,7 +19,7 @@
     <!-- table 영역 시작 -->
     <c:choose>
         <c:when test="${not empty list}">
-            <table class="table">
+            <table class="table" summary="table">
                 <colgroup>
                     <col width="16.6%" />
                     <col width="16.6%" />
@@ -29,14 +29,14 @@
                     <col width="16.6%" />
                 </colgroup>
                 <thead>
-                <tr>
-                    <th>IP</th>
-                    <th>등록자</th>
-                    <th>차단 로그</th>
-                    <th>차단 주제</th>
-                    <th>등록일</th>
-                    <th>차단 해제</th>
-                </tr>
+                    <tr>
+                        <th scope="col">IP</th>
+                        <th scope="col">등록자</th>
+                        <th scope="col">차단 로그</th>
+                        <th scope="col">차단 주제</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">차단 해제</th>
+                    </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="n" items="${list}" varStatus="status">
@@ -67,7 +67,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <table class="table">
+            <table class="table" summary="table">
                 <colgroup>
                     <col width="16.6%" />
                     <col width="16.6%" />
@@ -77,14 +77,14 @@
                     <col width="16.6%" />
                 </colgroup>
                 <thead>
-                <tr>
-                    <th>IP</th>
-                    <th>등록자</th>
-                    <th>차단 로그</th>
-                    <th>차단 주제</th>
-                    <th>등록일</th>
-                    <th>차단 해제</th>
-                </tr>
+                    <tr>
+                        <th scope="col">IP</th>
+                        <th scope="col">등록자</th>
+                        <th scope="col">차단 로그</th>
+                        <th scope="col">차단 주제</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">차단 해제</th>
+                    </tr>
                 </thead>
                 <tbody>
                 <tr class="no_data">

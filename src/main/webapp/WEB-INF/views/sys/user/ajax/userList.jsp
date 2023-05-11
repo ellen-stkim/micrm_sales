@@ -20,7 +20,7 @@
     <!-- table 영역 시작 -->
     <c:choose>
         <c:when test="${not empty list}">
-            <table class="table management">
+            <table class="table management" summary="table">
                 <colgroup>
                     <col width="5%"/>
                     <col width="7%"/>
@@ -101,7 +101,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <table class="table management">
+            <table class="table management" summary="table">
                 <colgroup>
                     <col width="7%"/>
                     <col width="7%"/>

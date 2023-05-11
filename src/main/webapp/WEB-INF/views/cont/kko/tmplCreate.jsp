@@ -339,7 +339,7 @@
                                                     <div class="button" onclick="addRowItemList()">추가</div>
                                                 </div>
                                                 <div class="td">
-                                                    <table id="emphItemList_list_table">
+                                                    <table id="emphItemList_list_table" summary="table">
                                                         <colgroup>
                                                             <col width="8%">
                                                             <col width="35%">
@@ -469,7 +469,7 @@
                                                 <div class="button" onclick="addRowBtn()">추가</div>
                                             </div>
                                             <div class="td">
-                                                <table id="template_btn_table">
+                                                <table id="template_btn_table" summary="table">
                                                     <colgroup>
                                                         <col width="8%">
                                                         <col width="15%">

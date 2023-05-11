@@ -13,7 +13,7 @@
 <!-- table 영역 시작 -->
 <c:choose>
     <c:when test="${not empty list}">
-        <table class="table mail_tbl">
+        <table class="table mail_tbl" summary="table">
             <colgroup>
                 <col width="3%" />
                 <col width="12.8%" />
@@ -24,15 +24,15 @@
                 <col width="15.8%" />
             </colgroup>
             <thead>
-            <tr>
-                <th></th>
-                <th>기본</th>
-                <th>발신자명</th>
-                <th>발신번호</th>
-                <th>생성일</th>
-                <th>사용여부</th>
-                <th>삭제</th>
-            </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">기본</th>
+                    <th scope="col">발신자명</th>
+                    <th scope="col">발신번호</th>
+                    <th scope="col">생성일</th>
+                    <th scope="col">사용여부</th>
+                    <th scope="col">삭제</th>
+                </tr>
             </thead>
             <tbody>
             <c:forEach var="n" items="${list}" varStatus="status">
@@ -78,7 +78,7 @@
         <input type ="hidden" id ="nowPageNo" value ="${pageNo}"/>
     </c:when>
     <c:otherwise>
-        <table class="table mail_tbl">
+        <table class="table mail_tbl" summary="table">
             <colgroup>
                 <col width="3%" />
                 <col width="12.8%" />
@@ -89,15 +89,15 @@
                 <col width="15.8%" />
             </colgroup>
             <thead>
-            <tr>
-                <th></th>
-                <th>기본</th>
-                <th>발신자명</th>
-                <th>발신번호</th>
-                <th>생성일</th>
-                <th>사용여부</th>
-                <th>삭제</th>
-            </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">기본</th>
+                    <th scope="col">발신자명</th>
+                    <th scope="col">발신번호</th>
+                    <th scope="col">생성일</th>
+                    <th scope="col">사용여부</th>
+                    <th scope="col">삭제</th>
+                </tr>
             </thead>
             <tbody>
             <!-- 검색 결과가 없는 경우 영역 시작 -->

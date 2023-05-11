@@ -219,8 +219,8 @@
                         <table summary="table">
                             <tbody>
                                 <tr>
-                                    <th>Test1</th>
-                                    <td>Test12</td>
+                                    <th scope="col">Test1</th>
+                                    <td scope="col">Test12</td>
                                 </tr>
                             </tbody>
                         </table>

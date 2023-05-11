@@ -21,7 +21,7 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>채널</th>
+                        <th scope="row">채널</th>
                         <td>
                             <c:choose>
                                 <c:when test="${list[0].ch_tp eq 'DMTP02'}">
@@ -37,7 +37,7 @@
                         </td>
                     </tr>
                     <tr class="rcsImgForm rcs_option">
-                        <th>양식</th>
+                        <th scope="row">양식</th>
                         <td>
                             <div class="select style1 rcs_select">
                                 <!-- selected value -->
@@ -55,14 +55,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>이미지 명</th>
+                        <th scope="row">이미지 명</th>
                         <td>
                             <input type="text" placeholder="이미지 명을 입력해주세요." name="img_nm" value="${list[0].img_nm}"
                                    class="input_type1" />
                         </td>
                     </tr>
                     <tr>
-                        <th>이미지 파일</th>
+                        <th scope="row">이미지 파일</th>
                         <td>
                             <input type="text" id="fileName" name="fileName" class="input_file" placeholder="이미지 파일을 선택해주세요." value="${list[0].img_org_nm}" readonly />
                             <span class="btn_file">파일 선택<input type="file" class="file" id="file"/></span>

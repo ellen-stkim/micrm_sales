@@ -258,7 +258,7 @@
     <div class="disnone"><textarea name="cont_body" id="cont_body" cols="30" rows="10"
                                    style="visibility: hidden; display: none;">${dto.cont_body}</textarea></div>
     <div class="click-data-table" id="click-data-table">
-        <table class="table target_tbl ">
+        <table class="table target_tbl" summary="table">
             <colgroup>
                 <col width="140"/>
                 <col width="140"/>

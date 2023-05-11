@@ -52,11 +52,11 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th>
+                            <th scope="col">
                                 <div class="prev" onclick="prevYear();"></div>
                             </th>
-                            <th class="year" colspan="2"></th>
-                            <th>
+                            <th class="year" colspan="2" scope="col"></th>
+                            <th scope="col">
                                 <div class="next" onclick="nextYear();"></div>
                             </th>
                         </tr>

@@ -14,7 +14,7 @@
 <h5 class="title">쿠폰 발급내역</h5>
 <c:if test="${fn:length(couponIssuedLogList) == 0}">
 <div class="tbl_inner empty">
-    <table class="tbl">
+    <table class="tbl" summary="table">
         <colgroup>
             <col width="36" />
             <col width="206" />
@@ -50,7 +50,7 @@
 </c:if>
 <c:if test="${fn:length(couponIssuedLogList) != 0}">
 <div class="tbl_inner">
-    <table class="tbl">
+    <table class="tbl" summary="table">
         <colgroup>
             <col width="36" />
             <col width="206" />

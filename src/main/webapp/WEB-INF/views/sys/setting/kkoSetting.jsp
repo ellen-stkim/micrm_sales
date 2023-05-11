@@ -74,7 +74,7 @@
                 <div class="total left">기본 발신번호</div>
             </div>
             <!-- table 영역 시작 -->
-            <table class="tableType2">
+            <table class="tableType2" summary="table">
                 <colgroup>
                     <col width="156" />
                     <col width="*" />

@@ -124,13 +124,13 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>이름</th>
+                        <th scope="row">이름</th>
                         <td>
                             <input type="text" name="idName" class="full_inp" placeholder="작성자(성함)을 입력해주세요."/>
                         </td>
                     </tr>
                     <tr>
-                        <th>핸드폰 번호</th>
+                        <th scope="row">핸드폰 번호</th>
                         <td>
 <%--                            <input type="text" name="idPhone1" class="number_inp"/>--%>
 <%--                            <span class="hyphen">-</span>--%>
@@ -157,13 +157,13 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>이름</th>
+                        <th scope="row">이름</th>
                         <td>
                             <input type="text" name="pwName" class="full_inp" placeholder="작성자(성함)을 입력해주세요."/>
                         </td>
                     </tr>
                     <tr>
-                        <th>핸드폰 번호</th>
+                        <th scope="row">핸드폰 번호</th>
                         <td>
 <%--                            <input type="text" name="pwPhone1" class="number_inp"/>--%>
 <%--                            <span class="hyphen">-</span>--%>
@@ -174,7 +174,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>이메일</th>
+                        <th scope="row">이메일</th>
                         <td>
                             <input type="text" name="email" class="full_inp" placeholder="이메일을 입력해주세요."/>
                         </td>

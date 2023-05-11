@@ -95,7 +95,7 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>팀명</th>
+                        <th scope="row">팀명</th>
                         <td>
                             <input type="text" name="list_nm" id="list_nm" placeholder="팀명를 입력해주세요." class="input_type1" />
                         </td>
@@ -127,7 +127,7 @@
                     <tbody>
                     <input type ="hidden" name="seq_mod" id="seq_mod"/>
                     <tr>
-                        <th>팀명</th>
+                        <th scope="row">팀명</th>
                         <td>
                             <input type="text" name="list_nm_mod" id="list_nm_mod" placeholder="팀명을 입력해주세요." class="input_type1" />
                         </td>
