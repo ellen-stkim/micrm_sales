@@ -368,7 +368,7 @@
         </table>
     </div>
     <div class="half-grid">
-        <table class="report-tab-table yellow">
+        <table class="report-tab-table yellow" summary="tbl">
             <tr>
                 <th scope="row">발송실패</th>
                 <td>
@@ -402,7 +402,7 @@
         </div>
         <table class="report-tab-table wid-100-p yellow" summary="table">
             <tr>
-                <th class="wid-40-p">시스템 문제</th>
+                <th class="wid-40-p" scope="row">시스템 문제</th>
                 <td>
                     <span id="hardTotalPortion" class="pointMid yellow"></span>
                     <span id="hardTotalSpan" class="text"></span>

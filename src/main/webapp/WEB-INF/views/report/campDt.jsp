@@ -255,7 +255,7 @@
                     <div id="sucTab" class="report-tab-contents disnone">
                         <c:set var="total" value="${totalResult}"/>
                         <div class="half-grid">
-                            <table class="report-tab-table blue" style="display: inline-block" summary="table"
+                            <table class="report-tab-table blue" style="display: inline-block" summary="table">
                                 <tr>
                                     <th>발송성공</th>
                                     <td>
@@ -297,7 +297,7 @@
                             </table>
                         </div>
                         <div class="half-grid">
-                            <table class="report-tab-table yellow">
+                            <table class="report-tab-table yellow" summary="table">
                                 <tr>
                                     <th scope="row">발송실패</th>
                                     <td>
@@ -530,7 +530,7 @@
 
 <script src="/js/Chart.min.js"></script>
 <script src="/js/drawChart.js"></script>
-<script>
+<script type="text/javascript">
     let currentCampSet = new Set();
     let selectedCampSet = new Set();
     let cont_seq = [];
@@ -825,8 +825,6 @@
     $(document).on("click", "#rcs_prev", changeTitle)
     $(document).on("click", "#rcs_next", changeTitle)
 
-</script>
-<script>
     CKEDITOR.plugins.add('abbr', {
         icons: 'abbr',
         init: function (editor) {
@@ -862,7 +860,7 @@
             }
         });
 
-    };
+    }
     let RegExClass = /(\s)(class)(\s)?=(\s)?(\"|\')[^<]+(\"|\')/gi;
     let RegExStyle = /<(style)([^<]+)(<\/style>|\s+\/>)/gi;
     let RegExScript = /<(script)([^<]+)(<\/script>|\s+\/>)/gi;
@@ -906,8 +904,7 @@
         $('#click-data-table tbody').addClass("disnone");
         $('#click-data-table #tbody_' + type).removeClass("disnone");
     })
-</script>
-<script>
+
     /* 그래프 처리 모듬 ---------------------------------------------------------------- */
     function drawGraph(data) {// 도달 리포트 그래프
         let targetDiv1 = 'usrErrGraph';
@@ -1270,11 +1267,11 @@
         let campNm = $(tr).find("span[name='camp_nm']").html();
 
         let newHtml = `<tr>
-                                <td><input type="checkbox" name="pro_nm_check" data="`+proId+`" value="` + proId + `" onclick="checkEvent(this)"></td>
-                                <td><span class="ellipsis">` + proNm + `</span></td>
-                                <td><input type="checkbox" class="camp_nm_check" name="cont_seq" value="` + contSeq + `" data_pro_id ="`+proId+`" onclick="checkEvent(this)"></td>
-                                <td><span class="ellipsis">` + campNm + `</span></td>
-                            </tr>`;
+                            <td><input type="checkbox" name="pro_nm_check" data="`+proId+`" value="` + proId + `" onclick="checkEvent(this)"></td>
+                            <td><span class="ellipsis">` + proNm + `</span></td>
+                            <td><input type="checkbox" class="camp_nm_check" name="cont_seq" value="` + contSeq + `" data_pro_id ="`+proId+`" onclick="checkEvent(this)"></td>
+                            <td><span class="ellipsis">` + campNm + `</span></td>
+                        </tr>`;
 
         if($(`#select_lst_tbody input[data="`+proId+`"]`).length > 0){   // 기존에 선택된 프로그램이 있을 경우 바로 밑에 추가
             $(`#select_lst_tbody input[data="`+proId+`"]`).parents('tr').after(newHtml);
