@@ -144,8 +144,7 @@
                                     <div class="rcs_vertical tall cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(dto.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -168,8 +167,7 @@
                                     <div class="rcs_vertical medium cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(dto.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                             </c:if>
                                         </div>
                                         <div class="txt_area">

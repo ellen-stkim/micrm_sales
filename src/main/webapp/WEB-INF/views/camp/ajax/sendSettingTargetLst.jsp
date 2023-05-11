@@ -9,7 +9,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
-<table class="pop_table table_fixed" id="targetList">
+<table class="pop_table table_fixed" id="targetList" summary="targetList">
     <colgroup>
         <col width="35"/>
         <col width="302"/>

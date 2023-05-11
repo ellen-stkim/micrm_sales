@@ -206,7 +206,7 @@
                                     <input type="button" value="닫기" class="btn_pop_close sm"
                                            onclick="isShowPrice(false)">
                                     <div class="cf">
-                                        <table class="pop_table_type2 width1 margin">
+                                        <table class="pop_table_type2 width1 margin" summary="table">
                                             <thead>
                                             <tr>
                                                 <th class="en_font">Email</th>
@@ -218,7 +218,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <table class="pop_table_type2 width2 margin">
+                                        <table class="pop_table_type2 width2 margin" summary="table">
                                             <thead>
                                             <tr>
                                                 <th class="en_font">알림톡</th>
@@ -236,7 +236,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <table class="pop_table_type2">
+                                        <table class="pop_table_type2" summary="table">
                                             <colgroup>
                                                 <col width="25%"/>
                                                 <col width="25%"/>

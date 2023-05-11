@@ -12,7 +12,7 @@
 
 <span id="body">
     <h5 class="tbl_title">쿠폰리스트</h5>
-    <table class="pop_table table_fixed" id="send_tg_lst">
+    <table class="pop_table table_fixed" id="send_tg_lst" summary="list">
         <colgroup>
             <col width="248" />
             <col width="183" />

@@ -337,7 +337,7 @@
                 <!-- 검색 영역 끝 -->
             </div>
             </form:form>
-            <table class="pop_table table_fixed" id="send_tg_lst">
+            <table class="pop_table table_fixed" id="send_tg_lst" summary="list">
                 <colgroup>
                     <col width="35"/>
                     <col width="302"/>
@@ -431,7 +431,7 @@
                         </ul>
                     </div>
                     <div class="info">
-                        <table class="info_table">
+                        <table class="info_table" summary="table">
                             <colgroup>
                                 <col width="105">
                                 <col width="220">
@@ -440,31 +440,31 @@
                             </colgroup>
                             <tbody>
                                 <tr>
-                                    <th>캠페인 명</th>
+                                    <th scope="row">캠페인 명</th>
                                     <td colspan="3">
                                         <input type="text" class="" id="test_pro_nm" name="pro_nm" value="${dto.pro_nm}">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>타겟</th>
+                                    <th scope="row">타겟</th>
                                     <td class="ellipsis" id="test_target_nm">${targetDto.grp_nm}</td>
-                                    <th>총 명수</th>
+                                    <th scope="row">총 명수</th>
                                     <td class="ellipsis en_font" id="test_target_cnt">${targetDto.grp_cnt}</td>
                                 </tr>
                                 <tr>
-                                    <th>발송 일시</th>
+                                    <th scope="row">발송 일시</th>
                                     <td colspan="3" class="en_font" id="test_send_dt">${campDto.start_dt}</td>
                                 </tr>
                                 <tr>
-                                    <th>컨텐츠 명</th>
+                                    <th scope="row">컨텐츠 명</th>
                                     <td colspan="3" class="ellipsis" id="test_cont_nm">${contLst[cont_id].cont_nm}</td>
                                 </tr>
                                 <tr>
-                                    <th>발송 주소</th>
+                                    <th scope="row">발송 주소</th>
                                     <td colspan="3" class="ellipsis" id="test_from">${contLst[cont_id].send_to} (${contLst[cont_id].send_nm})</td>
                                 </tr>
                                 <tr>
-                                    <th>제목</th>
+                                    <th scope="row">제목</th>
                                     <td colspan="2" class="ellipsis title" >
                                         <input type="hidden" class="title" id="test_cont_id" name="cont_id" value="${contLst[cont_id].seq}">
                                         <input type="text" class="title" id="test_cont_sub" name="cont_sub" value="" onkeyup="common.calculate(this.value, 'test_cont_sub_byte');">
@@ -572,7 +572,7 @@
                         </ul>
                     </div>
                     <div class="info">
-                        <table class="info_table">
+                        <table class="info_table" summary="table">
                             <colgroup>
                                 <col width="105"/>
                                 <col width="220"/>
@@ -581,29 +581,29 @@
                             </colgroup>
                             <tbody>
                                 <tr>
-                                    <th>캠페인 명</th>
+                                    <th scope="row">캠페인 명</th>
                                     <td colspan="3" class="ellipsis" id="confirm_pro_nm">${dto.pro_nm}</td>
                                 </tr>
                                 <tr>
-                                    <th>타겟</th>
+                                    <th scope="row">타겟</th>
                                     <td class="ellipsis" id="confirm_target_nm">${targetDto.grp_nm}</td>
-                                    <th>총 명수</th>
+                                    <th scope="row">총 명수</th>
                                     <td class="ellipsis en_font" id="confirm_target_cnt">${targetDto.grp_cnt}</td>
                                 </tr>
                                 <tr>
-                                    <th>발송 일시</th>
+                                    <th scope="row">발송 일시</th>
                                     <td colspan="3" class="en_font" id="confirm_send_dt">${campDto.start_dt}</td>
                                 </tr>
                                 <tr>
-                                    <th>컨텐츠 명</th>
+                                    <th scope="row">컨텐츠 명</th>
                                     <td colspan="3" class="ellipsis" id="confirm_cont_nm">${contLst[cont_id].cont_nm}</td>
                                 </tr>
                                 <tr>
-                                    <th>발송 주소</th>
+                                    <th scope="row">발송 주소</th>
                                     <td colspan="3" class="ellipsis" id="confirm_from">${contLst[cont_id].send_to} (${contLst[cont_id].send_nm})</td>
                                 </tr>
                                 <tr>
-                                    <th>제목</th>
+                                    <th scope="row">제목</th>
                                     <input type="hidden" class="title" id="confirm_cont_id" name="cont_id" value="${contLst[cont_id].seq}">
                                     <td colspan="3" class="ellipsis title" id="confirm_cont_sub">${dto.pro_nm}</td>
                                 </tr>

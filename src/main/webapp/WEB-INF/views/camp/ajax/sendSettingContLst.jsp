@@ -113,7 +113,7 @@
                             <!-- 이미지 영역 -->
                             <c:if test="${!cutil:isEmptyObject(g.kko_image_url)}">
                             <div class="sms">
-                                <img src="${filePath}${g.kko_image_url}" onerror="this.src = '/image/bg_none.png'">
+                                <img src="${filePath}${g.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="sms">
                             </div>
                             </c:if>
                             <!-- 텍스트 영역 -->
@@ -243,7 +243,7 @@
                                        <!-- 슬라이드 형태는 뷰에 최대 2개까지만 뿌려준다 -->
                                        <div class="slide small cf">
                                            <div class="img_area">
-                                               <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'">
+                                               <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                            </div>
                                            <div class="txt_area">
                                                <h3>${cutil:replaceBr(g.cont_body_json[0]['title1'])}</h3>
@@ -259,7 +259,7 @@
                                        </div>
                                        <div class="slide small cf">
                                            <div class="img_area">
-                                               <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'">
+                                               <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                            </div>
                                            <div class="txt_area">
                                                <h3>${cutil:replaceBr(g.cont_body_json[0]['title2'])}</h3>
@@ -304,7 +304,7 @@
                                         </c:forEach>--%>
                                         <div class="slide medium cf">
                                             <div class="img_area">
-                                                <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                             </div>
                                             <div class="txt_area">
                                                 <h3>${cutil:replaceBr(g.cont_body_json[0]['title1'])}</h3>
@@ -320,7 +320,7 @@
                                         </div>
                                         <div class="slide medium cf">
                                             <div class="img_area">
-                                                <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                             </div>
                                             <div class="txt_area">
                                                 <h3>${cutil:replaceBr(g.cont_body_json[0]['title2'])}</h3>

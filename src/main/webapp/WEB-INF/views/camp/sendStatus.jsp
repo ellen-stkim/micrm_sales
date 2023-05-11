@@ -95,19 +95,19 @@
                     <c:when test="${!cutil:isEmptyObject(list)}">
                         <div class="scroll_tbl" id="bodyDom">
                             <!-- table 영역 시작 -->
-                            <table class="table target_tbl dynamic_tbl list" id="sendTable">
+                            <table class="table target_tbl dynamic_tbl list" id="sendTable" summary="send">
                                 <thead>
                                 <tr>
-                                    <th>상태</th>
-                                    <th>구분</th>
-                                    <th>캠페인 명</th>
-                                    <th>시작 일시</th>
-                                    <th>최근 발송 일시<br>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">구분</th>
+                                    <th scope="col">캠페인 명</th>
+                                    <th scope="col">시작 일시</th>
+                                    <th scope="col">최근 발송 일시<br>
                                         <p style="font-size: 5px;padding: 2px 0">※발송 1일 이후 반영</p></th>
-                                    <th>타겟 수</th>
-                                    <th>실 발송 수<br>
+                                    <th scope="col">타겟 수</th>
+                                    <th scope="col">실 발송 수<br>
                                     <p style="font-size: 5px;padding: 2px 0">※발송 1일 이후 집계</p></th>
-                                    <th>보기</th>
+                                    <th scope="col">보기</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -156,18 +156,18 @@
                 <c:otherwise>
                     <div class="scroll_tbl">
                         <!-- table 영역 시작 -->
-                        <table class="table target_tbl dynamic_tbl list" id="sendTable">
+                        <table class="table target_tbl dynamic_tbl list" id="sendTable" summary="send">
                             <thead>
                             <tr>
-                                <th>상태</th>
-                                <th>구분</th>
-                                <th>캠페인 명</th>
-                                <th>시작 일시</th>
-                                <th>최근 발송 일시</th>
-                                <th>발송 타겟</th>
-                                <th>타겟 수</th>
-                                <th>실 발송 수</th>
-                                <th>보기</th>
+                                <th scope="col">상태</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">캠페인 명</th>
+                                <th scope="col">시작 일시</th>
+                                <th scope="col">최근 발송 일시</th>
+                                <th scope="col">발송 타겟</th>
+                                <th scope="col">타겟 수</th>
+                                <th scope="col">실 발송 수</th>
+                                <th scope="col">보기</th>
                             </tr>
                             </thead>
                             <tbody>

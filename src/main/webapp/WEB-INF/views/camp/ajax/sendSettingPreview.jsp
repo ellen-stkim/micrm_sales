@@ -35,7 +35,7 @@
                 <div class="round_box">
                     <c:if test="${!cutil:isEmptyObject(dto.kko_image_url)}">
                     <div class="sms">
-                        <img src="${filePath}${dto.kko_image_url}" onerror="this.src = '/image/bg_none.png'">
+                        <img src="${filePath}${dto.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="sms">
                     </div>
                     </c:if>
                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
@@ -128,7 +128,7 @@
                                </c:if>
                            </div>
                            <c:forEach var="img_lst" items="${fn:split(dto.img_lst,',')}">
-                               <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png' alt="RCS"">
+                               <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS" />
                            </c:forEach>
                        </div>
                         <!-- [RCS 가로형 Right] 끝 -->
@@ -152,7 +152,7 @@
                                             <section>
                                                 <c:if test="${fn:length(img_lst) > st.index}">
                                                 <div class="img_area">
-                                                    <img src="${filePath}${img_lst[st.index]}" onerror="this.src = '/image/bg_none.png'">
+                                                    <img src="${filePath}${img_lst[st.index]}" onerror="this.src = '/image/bg_none.png'" alt="img">
                                                 </div>
                                                 </c:if>
                                                 <div class="txt_area">
@@ -202,7 +202,7 @@
                                             <section>
                                                 <c:if test="${fn:length(dto.img_lst) > st.index}">
                                                 <div class="img_area">
-                                                    <img src="${filePath}${img_lst[st.index]}" onerror="this.src = '/image/bg_none.png'">
+                                                    <img src="${filePath}${img_lst[st.index]}" onerror="this.src = '/image/bg_none.png'" alt="img" >
                                                 </div>
                                                 </c:if>
                                                 <div class="txt_area">

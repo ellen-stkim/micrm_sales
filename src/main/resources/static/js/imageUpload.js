@@ -288,9 +288,6 @@ function imageUpload(addImage) {
                     return false;
                 }
             }
-            $('#fileName').val(file.name);
-            $('.img_viewer').removeClass('noImg');
-            $('.img_viewer').html('<img src="' + img.src + '"/>');
         } else {
             $('.file').val('');
             popup.popAlert("이미지 오류를 막기위해\n이미지 비율은 1:1 또는 2:1 이상 3:4 이하만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
@@ -378,10 +375,6 @@ function atImageUpload(addImage,type) {
                     return false;
                 }
             }
-
-            $('#fileName').val(file.name);
-            $('.img_viewer').removeClass('noImg');
-            $('.img_viewer').html('<img src="' + img.src + '"/>');
         } else{    //비율이 안맞을 경우
             $('.file').val('');
             popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
@@ -461,9 +454,6 @@ function ftImageUpload(addImage,type) {
                         return false;
                     }
                 }
-                $('#fileName').val(file.name);
-                $('.img_viewer').removeClass('noImg');
-                $('.img_viewer').html('<img src="' + img.src + '"/>');
             } else{    //비율이 안맞을 경우
                 $('.file').val('');
                 popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
@@ -508,9 +498,6 @@ function ftImageUpload(addImage,type) {
                     return false;
                 }
             }
-            $('#fileName').val(file.name);
-            $('.img_viewer').removeClass('noImg');
-            $('.img_viewer').html('<img src="' + img.src + '"/>');
         }
     }
 }
