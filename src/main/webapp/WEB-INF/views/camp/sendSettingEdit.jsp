@@ -491,7 +491,7 @@
                         <div class="group_area">
                             <h3>개별 추가</h3>
                             <!-- 개별 추가 table 영역 시작 -->
-                            <table class="pop_table_type3 align">
+                            <table class="pop_table_type3 align" summary="table">
                                 <thead>
                                     <tr>
                                         <th>이름</th>
@@ -522,7 +522,7 @@
                             <h3>테스트 발송 리스트</h3>
                             <div class="vertical_scroll">
                                 <!-- 테스트 발송 리스트 영역 시작 -->
-                                <table class="pop_table_type3 table_fixed">
+                                <table class="pop_table_type3 table_fixed" summary="table">
                                     <colgroup>
                                         <col width="130"/>
                                         <col width="130"/>
@@ -1055,7 +1055,7 @@
                             </div>
                         </div>
                         <!-- 캠페인 비용 입력 영역 -->
-                        <table class="pop_table_type2">
+                        <table class="pop_table_type2" summary="table">
                             <colgroup>
                                 <col width="104"/>
                                 <col width="*"/>
@@ -1064,15 +1064,15 @@
                             </colgroup>
                             <tbody>
                             <tr>
-                                <th>기획비</th>
+                                <th scope="row">기획비</th>
                                 <td><input type="text" id="plan_cost" placeholder="0" class="en_font" value="<fmt:formatNumber value="${dto.plan_cost}" pattern="#,###" />" /><span>원</span></td>
-                                <th>오퍼비</th>
+                                <th scope="row">오퍼비</th>
                                 <td><input type="text" id="off_cost" placeholder="0" class="en_font" value="<fmt:formatNumber value="${dto.off_cost}" pattern="#,###" />" /><span>원</span></td>
                             </tr>
                             <tr>
-                                <th>개발비</th>
+                                <th scope="row">개발비</th>
                                 <td><input type="text" id="dev_cost" placeholder="0" class="en_font" value="<fmt:formatNumber value="${dto.dev_cost}" pattern="#,###" />" /><span>원</span></td>
-                                <th>디자인비</th>
+                                <th scope="row">디자인비</th>
                                 <td><input type="text" id="des_cost" placeholder="0" class="en_font" value="<fmt:formatNumber value="${dto.des_cost}" pattern="#,###" />" /><span>원</span></td>
                             </tr>
                             </tbody>
@@ -1123,7 +1123,7 @@
                     </dd>
                 </dl>
                 <!-- 타겟 리스트 1단위 영역 끝 -->
-                <table class="pop_table_type2 unit">
+                <table class="pop_table_type2 unit" summary="table">
                     <thead>
                     <tr>
                         <th class="en_font">SMS/RCS<br/>SMS</th>

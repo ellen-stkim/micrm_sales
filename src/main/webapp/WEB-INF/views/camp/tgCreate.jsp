@@ -216,7 +216,7 @@
                     </div>
                     <div class="row row_tit"><span lang="en">Segment</span> 상세</div>
                     <div class="segment_area">
-                        <table>
+                        <table summary="table">
                             <tbody>
                                 <tr>
                                     <th>Test1</th>

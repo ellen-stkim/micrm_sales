@@ -2422,8 +2422,7 @@
                                                 <div class="rcs_vertical tall cf">
                                                     <div class="img_area">
                                                         <c:if test="${fn:trim(fn:split(list[2].img_lst,',')[0]) != ''}">
-                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}"
-                                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                                         </c:if>
                                                     </div>
                                                     <input type="hidden" name="rcs_img_url_1"
@@ -2451,8 +2450,7 @@
                                                 <div class="rcs_vertical medium cf">
                                                     <div class="img_area">
                                                         <c:if test="${fn:trim(fn:split(list[2].img_lst,',')[0]) != ''}">
-                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}"
-                                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"  alt="img" />
                                                         </c:if>
                                                     </div>
                                                     <input type="hidden" name="rcs_img_url_1"

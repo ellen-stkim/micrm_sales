@@ -247,13 +247,13 @@
                                                         <!-- 이미지는 있고, 이미지 링크는 없을때 -->
                                                         <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
                                                             <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
-                                                                <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                <img src="${filePath}${list[0].kko_img_lst}" alt="img" />
                                                             </a>
                                                         </c:if>
                                                         <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                         <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
                                                             <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
-                                                                <img src="${filePath}${list[0].kko_img_lst}"/>
+                                                                <img src="${filePath}${list[0].kko_img_lst}" alt="img" />
                                                             </a>
                                                         </c:if>
                                                     </div>
@@ -496,7 +496,7 @@
                                                             <div class="col_img" id="js-sms-img">
                                                                 <!-- SMS 이미지 미리보기 -->
                                                                 <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"/>
+                                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}" alt="img" />
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -2495,8 +2495,7 @@
                                                 <div class="rcs_vertical tall cf">
                                                     <div class="img_area">
                                                         <c:if test="${fn:trim(fn:split(list[2].img_lst,',')[0]) != ''}">
-                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}"
-                                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"  alt="img" />
                                                         </c:if>
                                                     </div>
                                                     <input type="hidden" name="rcs_img_url_1"
@@ -2524,8 +2523,7 @@
                                                 <div class="rcs_vertical medium cf">
                                                     <div class="img_area">
                                                         <c:if test="${fn:trim(fn:split(list[2].img_lst,',')[0]) != ''}">
-                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}"
-                                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"  alt="img" />
                                                         </c:if>
                                                     </div>
                                                     <input type="hidden" name="rcs_img_url_1"
@@ -3815,8 +3813,7 @@
                                                                                value="${fn:split(list[2].img_lst,',')[idx]}"/>
                                                                         <div class="img_area">
                                                                             <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                                <img src="${filePath}${imgNm}"
-                                                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                                                <img src="${filePath}${imgNm}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                                                             </c:if>
                                                                         </div>
                                                                         <c:set var="imgIdx" value="${idx+1}"/>
