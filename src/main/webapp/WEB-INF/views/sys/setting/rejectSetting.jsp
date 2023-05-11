@@ -125,7 +125,7 @@
         <div class="pop_title">수신거부 문구 추가</div>
         <div class="pop_inner">
             <form action="" id="postForm1">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="수신거부 문구 추가">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />
@@ -159,7 +159,7 @@
         <div class="pop_title">수신거부 문구 수정</div>
         <div class="pop_inner">
             <form action="" id="postForm2">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="수신거부 문구 수정">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />

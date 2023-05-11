@@ -117,7 +117,7 @@
         <div class="pop_inner">
             <h2 class="table_tit">아이디 찾기</h2>
             <form action="/mcr/id" id="idInquiry" method="post">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="아이디 찾기">
                     <colgroup>
                         <col width="102"/>
                         <col width="*"/>
@@ -150,7 +150,7 @@
 
             <h2 class="table_tit">비밀번호 찾기</h2>
             <form action="" id="pwInquiry">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="비밀번호 찾기">
                     <colgroup>
                         <col width="102"/>
                         <col width="*"/>

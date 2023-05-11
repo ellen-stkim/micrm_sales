@@ -92,13 +92,10 @@ function colorPicker(length, baseColor, min, max){
 		rr = (r + parseInt(Math.random() * (max - min) + min));
 		gg = (g + parseInt(Math.random() * (max - min) + min));
 		bb = (b + parseInt(Math.random() * (max - min) + min));
-		if (rr >= 255){rr = 255};
-		if (gg >= 255){gg = 255};
-		if (bb >= 255){bb = 255};
-		color.push('rgb('
-				+ rr + ', '
-				+ gg + ', '
-				+ bb + ')');
+		if (rr >= 255){rr = 255}
+		if (gg >= 255){gg = 255}
+		if (bb >= 255){bb = 255}
+		color.push('rgb(' + rr + ', ' + gg + ', ' + bb + ')');
 	}
 	return color;
 }

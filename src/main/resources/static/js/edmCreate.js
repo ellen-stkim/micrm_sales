@@ -80,9 +80,9 @@ let edmCreate = {
                 link_url: $(this).attr('href') == null ? "" : $(this).attr('href'),
                 link_id: $(this).attr('id') == null ? $(this).attr('id', 'Link' + linkNum) : $(this).attr('id'),
                 link_name: $(this).attr('name') == null ? $(this).attr('name', 'Link' + linkNum) : $(this).attr('name'),
-                link_target: $(this).attr('target') == null ? "_blank" : "_blank",
+                link_target: "_blank",
                 link_type: $(this).attr('linkType') == null ? "0" : $(this).attr('linkType'),
-                tag_type: $(this).attr('tagType') == null ? "a" : "a"
+                tag_type: "a"
             });
             num = num + 1;
         });
@@ -105,9 +105,9 @@ let edmCreate = {
                 link_id: $(this).attr('id') == null ? 'Link' + linkNum : $(this).attr('id'),
                 link_name: $(this).attr('name') == null ? 'Link' + linkNum : $(this).attr('name'),
                 link_coords: $(this).attr('coords') == null ? "" : $(this).attr('coords'),
-                link_target: $(this).attr('target') == null ? "_blank" : "_blank",
+                link_target: "_blank",
                 link_type: $(this).attr('linkType') == null ? "0" : $(this).attr('linkType'),
-                tag_type: $(this).attr('tagType') == null ? "map" : "map"
+                tag_type: "map"
             });
             num = num + 1;
         });

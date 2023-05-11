@@ -89,8 +89,7 @@
                                 <div class="round_box">
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
                                         <div class="sms">
-                                            <img src="${filePath}${dto.kko_img_url}"
-                                                 onerror="this.src = '/image/bg_none.png'">
+                                            <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                         </div>
                                     </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
@@ -110,8 +109,7 @@
                                         </div>
                                         <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
                                             <div class="sms">
-                                                <img src="${filePath}${dto.kko_img_url}"
-                                                     onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                             </div>
                                         </c:if>
                                         <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
@@ -206,8 +204,7 @@
                                                                value="${fn:split(dto.img_lst,',')[idx]}"/>
                                                         <div class="img_area">
                                                             <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                <img src="${filePath}${imgNm}"
-                                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                                <img src="${filePath}${imgNm}" alt="img" onerror="this.src = '/image/bg_none.png'"/>
                                                             </c:if>
                                                         </div>
                                                         <c:set var="imgIdx" value="${idx+1}"/>

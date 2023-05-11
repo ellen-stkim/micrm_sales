@@ -13,7 +13,7 @@
     <c:choose>
         <c:when test="${dto.cont_tp eq 'DMTP01'}">
             <div class="thumbnail">
-                <img src="${filePath}${dto.thm_url}" onerror="this.src = '/image/bg_none_wide.png'">
+                <img src="${filePath}${dto.thm_url}" onerror="this.src = '/image/bg_none_wide.png'" alt="thumbnail">
             </div>
         </c:when>
         <c:otherwise>
@@ -24,7 +24,7 @@
                     <c:if test="${!cutil:isEmptyObject(dto.img_lst)}">
                         <div class="sms_img">
                             <c:forEach var="img_lst" items="${fn:split(dto.img_lst,',')}">
-                                <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" >
+                                <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="sms_img">
                             </c:forEach>
                         </div>
                     </c:if>
@@ -50,7 +50,7 @@
                         <div class="rcs_vertical tall cf">
                             <div class="img_area">
                             <c:forEach var="img_lst" items="${fn:split(dto.img_lst,',')}">
-                                  <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                  <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                             </c:forEach>
                             </div>
                             <div class="txt_area">
@@ -72,7 +72,7 @@
                         <div class="rcs_vertical medium cf">
                             <div class="img_area">
                                 <c:forEach var="img_lst" items="${fn:split(dto.img_lst,',')}">
-                                    <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                    <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                 </c:forEach>
                             </div>
                             <div class="txt_area">
@@ -94,7 +94,7 @@
                         <div class="rcs_horizontal cf">
                             <div class="img_area">
                                 <c:forEach var="img_lst" items="${fn:split(dto.img_lst,',')}">
-                                    <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                    <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                 </c:forEach>
                             </div>
                             <div class="txt_area">
@@ -128,7 +128,7 @@
                                </c:if>
                            </div>
                            <c:forEach var="img_lst" items="${fn:split(dto.img_lst,',')}">
-                               <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                               <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png' alt="RCS"">
                            </c:forEach>
                        </div>
                         <!-- [RCS 가로형 Right] 끝 -->

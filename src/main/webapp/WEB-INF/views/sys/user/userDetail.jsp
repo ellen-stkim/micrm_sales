@@ -117,7 +117,7 @@
             <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
             <div class="pop_title">사용자 수정</div>
             <div class="pop_inner">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="사용자 수정">
                     <colgroup>
                         <col width="103"/>
                         <col width="*"/>
