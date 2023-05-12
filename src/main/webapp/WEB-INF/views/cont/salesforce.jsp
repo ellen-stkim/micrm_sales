@@ -941,9 +941,15 @@
 
         //컨텐츠 포맷 click event
         $(document).on('click', '.formatType', function () {
+
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
             let tabInx = $('.formatType').index(this);
+
+            if ((tabInx == 0 || tabInx == 2) && couponSelectSeq != '') {
+                popup.popAlert('쿠폰 발송은 문자에서만 사용 가능합니다.');
+                return false;
+            }
 
             if (state == true) {
                 $('#js-smsTab li').eq(tabInx).show().addClass('on').siblings().removeClass('on');
