@@ -2497,25 +2497,25 @@ class SalesforceServiceImpl : SalesforceService {
                 for(campaignDto in campLst){
                     campaignDto.start_dt = CommonUtils.getDateTimeNow()
 
-                    // 타겟수 업데이트
-                    if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
-
-                        var targetCnt: Int? = null
-                        if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
-                            targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
-                            inArguments.remove("§extention_cnt§")
-                            inArguments.remove("§data_extension_id§")
-                        }
-                        campaignDto.tar_cnt = targetCnt
-
-                        campaignDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
-                        salesforceDao.upd_tblmicp_campaign(campaignDto)
-
-                        // 프로그램 total target cnt 수정
-                        val program = Tblmicp_programDto(campaignDto.pro_id)
-                        program.pro_id = campaignDto.pro_id
-                        salesforceDao.upd_tblmicp_program_total_cnt(program)
-                    }
+//                    // 타겟수 업데이트
+//                    if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
+//
+//                        var targetCnt: Int? = null
+//                        if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+//                            targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
+//                            inArguments.remove("§extention_cnt§")
+//                            inArguments.remove("§data_extension_id§")
+//                        }
+//                        campaignDto.tar_cnt = targetCnt
+//
+//                        campaignDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
+//                        salesforceDao.upd_tblmicp_campaign(campaignDto)
+//
+//                        // 프로그램 total target cnt 수정
+//                        val program = Tblmicp_programDto(campaignDto.pro_id)
+//                        program.pro_id = campaignDto.pro_id
+//                        salesforceDao.upd_tblmicp_program_total_cnt(program)
+//                    }
 
                     // sendhst 삽입
                     val sendHstDto = Tblmicp_send_hstDto()
@@ -2642,8 +2642,6 @@ class SalesforceServiceImpl : SalesforceService {
         }
         return true
     }
-
-
     override fun getDataExtention(usr_cd: String, extentionId: String) : HashMap<String,Any> {
         val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
 
