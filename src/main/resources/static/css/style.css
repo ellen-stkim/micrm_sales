@@ -2858,8 +2858,16 @@ input::placeholder {
     width: 47px;
     height: 23px;
     font-size: 12px;
-    color: #888;
-    border: 1px solid #ddd;
+    color: #cccccc;
+    border: 1px solid #f4f4f4;
+}
+
+.layer_pop.couponListPop .pop_table td .btn.select.selected {
+    width: 47px;
+    height: 23px;
+    font-size: 12px;
+    color:#666666;
+    border:1px solid #999999;
 }
 .layer_pop.couponPreview .pop_container {
     position: relative;
