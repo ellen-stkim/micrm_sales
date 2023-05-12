@@ -77,7 +77,7 @@
               <!-- 검색 결과 영역 끝 -->
               <div class="scroll_tbl">
                   <!-- table 영역 시작 -->
-                  <table class="table target_tbl dynamic_tbl">
+                  <table class="table target_tbl dynamic_tbl" summary="table">
                       <thead>
                           <tr>
                               <th><label class="custom_check1 all"><input type="checkbox" /><span></span></label></th>

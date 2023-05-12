@@ -74,7 +74,7 @@
                 <div class="total left">기본 수신거부 문구</div>
             </div>
             <!-- table 영역 시작 -->
-            <table class="tableType2">
+            <table class="tableType2" summary="table">
                 <colgroup>
                     <col width="156" />
                     <col width="*" />
@@ -125,7 +125,7 @@
         <div class="pop_title">수신거부 문구 추가</div>
         <div class="pop_inner">
             <form action="" id="postForm1">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="수신거부 문구 추가">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />
@@ -159,7 +159,7 @@
         <div class="pop_title">수신거부 문구 수정</div>
         <div class="pop_inner">
             <form action="" id="postForm2">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="수신거부 문구 수정">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />

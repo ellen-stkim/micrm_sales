@@ -93,7 +93,7 @@
                 <!-- table 영역 시작 -->
                 <c:choose>
                     <c:when test="${not empty list}">
-                        <table class="table">
+                        <table class="table" summary="table">
                             <colgroup>
                                 <col width="20%" />
                                 <col width="20%" />
@@ -101,12 +101,12 @@
                                 <col width="40%" />
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>시간</th>
-                                <th>IP</th>
-                                <th>사용자</th>
-                                <th>로그</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">시간</th>
+                                    <th scope="col">IP</th>
+                                    <th scope="col">사용자</th>
+                                    <th scope="col">로그</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <c:forEach var="n" items="${list}" varStatus="status">
@@ -127,7 +127,7 @@
                     <!-- table 영역 끝 -->
                     </c:when>
                     <c:otherwise>
-                        <table class="table">
+                        <table class="table" summary="table">
                             <colgroup>
                                 <col width="20%" />
                                 <col width="20%" />
@@ -135,12 +135,12 @@
                                 <col width="40%" />
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>시간</th>
-                                <th>IP</th>
-                                <th>사용자</th>
-                                <th>로그</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">시간</th>
+                                    <th scope="col">IP</th>
+                                    <th scope="col">사용자</th>
+                                    <th scope="col">로그</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr class="no_data">

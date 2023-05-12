@@ -12,7 +12,7 @@
 
 <span id="body">
 <h5 class="title">쿠폰 리스트</h5>
-<table class="tbl">
+<table class="tbl" summary="table">
     <colgroup>
         <col width="36" />
         <col width="206" />

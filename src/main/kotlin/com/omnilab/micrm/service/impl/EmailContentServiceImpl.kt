@@ -20,6 +20,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 @Service("EmailContentServiceImpl")
 class EmailContentServiceImpl : ContentService {
@@ -239,7 +240,6 @@ class EmailContentServiceImpl : ContentService {
                     map["br_yn"] = tblmiContLstdto.br_yn.toString()
                     map["sup_yn"] = tblmiContLstdto.sup_yn.toString()
                     map["cont_top_body"] = tblmiContLstdto.cont_top_body.toString()
-                    tblmiContLstdto.cont_body = tblmiContLstdto.cont_body
                     val thumbfilePath = "$filePath/thumbnail/$usr_grp_cd"
 
                     var f = File(FilenameUtils.normalize(thumbfilePath))
@@ -355,7 +355,9 @@ class EmailContentServiceImpl : ContentService {
                 forder.mkdirs()
             }
             if (f.exists()) {
-                f.delete()
+                if(!f.delete()){
+                    logger.error("${f.name} 파일이 존재 하지 않습니다.")
+                }
             }
             file!!.transferTo(f)
         } catch (e: IllegalStateException) {
@@ -366,11 +368,13 @@ class EmailContentServiceImpl : ContentService {
             return false
         }
         val templist: List<String>? = map["templist"] as ArrayList<String>?
-        var f: File? = null
+        var f: File?
         for (a in templist!!) {
             f = File(FilenameUtils.normalize(a))
             if (f.exists()) {
-                f.delete()
+                if(!f.delete()){
+                    logger.error("${f.name} 파일이 존재 하지 않습니다.")
+                }
             }
         }
         return true

@@ -146,7 +146,7 @@
             <section class="right">
                 <article class="preview" style="height: 268px;">
                     <section class="image">
-                        <img src="/image/noimage.png" class="noimage" />
+                        <img src="/image/noimage.png" class="noimage" alt="" />
                     </section>
                     <section class="contents"  style="display: none">
                         <textarea name="content" id="content" cols="30" rows="10" placeholder="문자 메시지 내용과 쿠폰 링크를 삽입해주세요." style="display: none">{쿠폰링크}</textarea>

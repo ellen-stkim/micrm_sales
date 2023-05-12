@@ -68,7 +68,7 @@ $(function () {
                 return false;
             } else {
                 // 이메일 이미지 유효성 검사
-                setThumbnail(event);
+                setThumbnail();
             }
         } else if(type == 'RCS') {
             let type = $('.rcs_select .value').attr('data');
@@ -287,13 +287,7 @@ function imageUpload(addImage) {
                     $('.img_viewer').html('<img src="' + img.src + '"/>');
                     return false;
                 }
-                return;
             }
-
-            $('#fileName').val(file.name);
-            $('.img_viewer').removeClass('noImg');
-            $('.img_viewer').html('<img src="' + img.src + '"/>');
-            return;
         } else {
             $('.file').val('');
             popup.popAlert("이미지 오류를 막기위해\n이미지 비율은 1:1 또는 2:1 이상 3:4 이하만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
@@ -301,7 +295,6 @@ function imageUpload(addImage) {
             $('.img_viewer').addClass('noImg');
             $('.img_viewer').find('img').remove();
             $("#form")[0].reset();
-            return;
         }
     }
 }
@@ -381,13 +374,7 @@ function atImageUpload(addImage,type) {
                     $('.img_viewer').html('<img src="' + img.src + '"/>');
                     return false;
                 }
-                return;
             }
-
-            $('#fileName').val(file.name);
-            $('.img_viewer').removeClass('noImg');
-            $('.img_viewer').html('<img src="' + img.src + '"/>');
-            return;
         } else{    //비율이 안맞을 경우
             $('.file').val('');
             popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
@@ -395,7 +382,6 @@ function atImageUpload(addImage,type) {
             $('.img_viewer').addClass('noImg');
             $('.img_viewer').find('img').remove();
             $("#form")[0].reset();
-            return;
         }
     }
 }
@@ -467,12 +453,7 @@ function ftImageUpload(addImage,type) {
                         $('.img_viewer').html('<img src="' + img.src + '"/>');
                         return false;
                     }
-                    return;
                 }
-                $('#fileName').val(file.name);
-                $('.img_viewer').removeClass('noImg');
-                $('.img_viewer').html('<img src="' + img.src + '"/>');
-                return;
             } else{    //비율이 안맞을 경우
                 $('.file').val('');
                 popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
@@ -480,7 +461,6 @@ function ftImageUpload(addImage,type) {
                 $('.img_viewer').addClass('noImg');
                 $('.img_viewer').find('img').remove();
                 $("#form")[0].reset();
-                return;
             }
         }else {    // 친구톡 와이드 이미지
             const width = 800
@@ -517,12 +497,7 @@ function ftImageUpload(addImage,type) {
                     $('.img_viewer').html('<img src="' + img.src + '"/>');
                     return false;
                 }
-                return;
             }
-            $('#fileName').val(file.name);
-            $('.img_viewer').removeClass('noImg');
-            $('.img_viewer').html('<img src="' + img.src + '"/>');
-            return;
         }
     }
 }
@@ -568,7 +543,7 @@ function horizontal(image){
         $('#fileName').val(file.name);
         $('.img_viewer').removeClass('noImg');
         $('.img_viewer').html('<img src="' + img.src + '"/>');
-        return;
+        return true;
     }
 }
 
@@ -613,7 +588,7 @@ function verticalTall(image){
                 $('#fileName').val(file.name);
                 $('.img_viewer').removeClass('noImg');
                 $('.img_viewer').html('<img src="' + img.src + '"/>');
-                return;
+                return true;
             }
         }
     }
@@ -660,7 +635,7 @@ function verticalMedium(image){
                 $('#fileName').val(file.name);
                 $('.img_viewer').removeClass('noImg');
                 $('.img_viewer').html('<img src="' + img.src + '"/>');
-                return;
+                return true;
             }
         }
     }
@@ -708,7 +683,7 @@ function slideSmall(image){
                 $('#fileName').val(file.name);
                 $('.img_viewer').removeClass('noImg');
                 $('.img_viewer').html('<img src="' + img.src + '"/>');
-                return;
+                return true;
             }
         }
     }
@@ -748,7 +723,7 @@ function slideMedium(image){
                 $('#fileName').val(file.name);
                 $('.img_viewer').removeClass('noImg');
                 $('.img_viewer').html('<img src="' + img.src + '"/>');
-                return;
+                return true;
             }
         }
     }

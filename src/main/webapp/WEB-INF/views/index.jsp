@@ -117,20 +117,20 @@
         <div class="pop_inner">
             <h2 class="table_tit">아이디 찾기</h2>
             <form action="/mcr/id" id="idInquiry" method="post">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="아이디 찾기">
                     <colgroup>
                         <col width="102"/>
                         <col width="*"/>
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>이름</th>
+                        <th scope="row">이름</th>
                         <td>
                             <input type="text" name="idName" class="full_inp" placeholder="작성자(성함)을 입력해주세요."/>
                         </td>
                     </tr>
                     <tr>
-                        <th>핸드폰 번호</th>
+                        <th scope="row">핸드폰 번호</th>
                         <td>
 <%--                            <input type="text" name="idPhone1" class="number_inp"/>--%>
 <%--                            <span class="hyphen">-</span>--%>
@@ -150,20 +150,20 @@
 
             <h2 class="table_tit">비밀번호 찾기</h2>
             <form action="" id="pwInquiry">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="비밀번호 찾기">
                     <colgroup>
                         <col width="102"/>
                         <col width="*"/>
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>이름</th>
+                        <th scope="row">이름</th>
                         <td>
                             <input type="text" name="pwName" class="full_inp" placeholder="작성자(성함)을 입력해주세요."/>
                         </td>
                     </tr>
                     <tr>
-                        <th>핸드폰 번호</th>
+                        <th scope="row">핸드폰 번호</th>
                         <td>
 <%--                            <input type="text" name="pwPhone1" class="number_inp"/>--%>
 <%--                            <span class="hyphen">-</span>--%>
@@ -174,7 +174,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>이메일</th>
+                        <th scope="row">이메일</th>
                         <td>
                             <input type="text" name="email" class="full_inp" placeholder="이메일을 입력해주세요."/>
                         </td>
@@ -231,7 +231,7 @@
     </div>
 </div>
 <!-- 비밀번호 팝업 영역 끝 -->
-<iframe id="iframe1" name="iframe1" style="display:none"></iframe>
+<iframe id="iframe1" name="iframe1" style="display:none" title="none"></iframe>
 <script>
 
     $(function () {

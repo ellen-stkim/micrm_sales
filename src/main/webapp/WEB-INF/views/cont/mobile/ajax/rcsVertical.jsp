@@ -61,10 +61,11 @@
                <div class="row">
                   <div class="th">이미지 선택</div>
                   <div class="td">
-                     <div class="vertical_delete_img"><img src="/image/btn_delete1.png" alt="삭제"></div><input
-                          type="text" class="txt_input en_font" name="" id="verticalImage" placeholder="이미지를 선택해 주세요."
-                          readonly=""><input type="hidden" name="verticalImg" id="verticalImg" value=""><span
-                          class="btn_sm_line" data="verticalImage" onclick="imageListPopUp('1','verticalImage')">선택</span>
+                     <div class="vertical_delete_img">
+                        <img src="/image/btn_delete1.png" alt="삭제"></div>
+                     <input type="text" class="txt_input en_font" name="" id="verticalImage" placeholder="이미지를 선택해 주세요." readonly="">
+                     <input type="hidden" name="verticalImg" id="verticalImg" value="">
+                     <span class="btn_sm_line" data="verticalImage" onclick="imageListPopUp('1','verticalImage')">선택</span>
                   </div>
                   <input type="hidden" name="rcs_img_url_1" value=""/>
                </div>

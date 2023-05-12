@@ -11,7 +11,7 @@
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <!-- container 영역 시작 -->
 <div  id="list_table_box">
-    <table class="pop_table table_fixed" id="" style="width: 588px; height:210px;">
+    <table class="pop_table table_fixed" id="" style="width: 588px; height:210px;" summary="table">
         <colgroup>
             <col width="30"/>
             <col width="180"/>

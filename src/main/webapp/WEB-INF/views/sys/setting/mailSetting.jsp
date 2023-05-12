@@ -74,7 +74,7 @@
             </div>
             <!-- table 영역 시작 -->
 
-            <table class="tableType2">
+            <table class="tableType2" summary="table">
                 <colgroup>
                     <col width="156"/>
                     <col width="*"/>
@@ -131,7 +131,7 @@
         <div class="pop_title">메일 주소 추가</div>
         <div class="pop_inner">
             <form action="" id="postForm1">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="메일 주소 추가">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />
@@ -166,7 +166,7 @@
         <div class="pop_title">메일 주소 수정</div>
         <div class="pop_inner">
             <form action="" id="postForm2">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="메일 주소 수정">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />

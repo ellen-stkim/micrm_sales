@@ -251,7 +251,7 @@
                     </form:form>
                     <!-- SEARCH AREA END-->
                     <div class="single-table-cover" id="programView">
-                        <table class="single-table">
+                        <table class="single-table" summary="table">
                             <colgroup>
                                 <col width="20%">
                                 <col width="10%">
@@ -260,11 +260,11 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <th>캠페인 명</th>
-                                <th>캠페인 시작일</th>
-<%--                                <th>발송자</th>--%>
-                                <th>발송건수</th>
-                                <th>발송비용</th>
+                                <th scope="col">캠페인 명</th>
+                                <th scope="col">캠페인 시작일</th>
+<%--                                <th scope="col">발송자</th>--%>
+                                <th scope="col">발송건수</th>
+                                <th scope="col">발송비용</th>
                             </tr>
                             </thead>
                             <tbody id="listBody">

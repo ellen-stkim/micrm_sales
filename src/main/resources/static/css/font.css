@@ -71,7 +71,7 @@
 }
 
 @font-face{
-  font-family:"Gotham";
+  font-family: "Gotham";
   src: url("../font/Gotham-Medium.eot?#iefix") format('embedded-opentype'),
   url("../font/Gotham-Medium.woff") format("woff");
   font-weight:600;

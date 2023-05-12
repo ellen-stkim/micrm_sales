@@ -43,7 +43,7 @@
                 <h2>발송 캘린더</h2>
                 <!-- 월별 이동 달력 영역 시작 -->
                 <div class="month_pop">
-                    <table class="month_tbl">
+                    <table class="month_tbl" summary="month_tbl">
                         <colgroup>
                             <col width="35"/>
                             <col width="35"/>
@@ -52,11 +52,11 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th>
+                            <th scope="col">
                                 <div class="prev" onclick="prevYear();"></div>
                             </th>
-                            <th class="year" colspan="2"></th>
-                            <th>
+                            <th class="year" colspan="2" scope="col"></th>
+                            <th scope="col">
                                 <div class="next" onclick="nextYear();"></div>
                             </th>
                         </tr>

@@ -34,7 +34,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -57,21 +56,6 @@ import kotlin.streams.toList
 @Service("SalesforceServiceImpl")
 class SalesforceServiceImpl : SalesforceService {
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
-
-    @Value("\${variable.minio-url}")
-    private lateinit var minio_url: String
-
-    @Value("\${variable.minio-username}")
-    private lateinit var minio_username: String
-
-    @Value("\${variable.minio-password}")
-    private lateinit var minio_password: String
-
-    @Value("\${variable.minio-bucket}")
-    private lateinit var minio_bucket: String
-
-    @Value("\${variable.static-path}")
-    private lateinit var static_path: String
 
     @Autowired
     private lateinit var salesforceDao: SalesforceDao
@@ -2276,15 +2260,15 @@ class SalesforceServiceImpl : SalesforceService {
                             val sales_nm = data["name"].toString()
                             val avo_nm = activity["name"].toString()
                             val avo_id = activity["id"].toString()
-                            val seq =
-                                (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString()
-                                    .split(".")[0]
-
-
+                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
                                 val temp = Tblmi_cont_mstDto(seq.toInt())
                                 val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
 
-                                val usrId = if (mstDto.upd_id == null) mstDto.reg_id else mstDto.reg_id
+                                val usrId = if (mstDto.upd_id == null) {
+                                    mstDto.reg_id
+                                } else {
+                                    mstDto.upd_id
+                                }
                                 val cpMstDto = Tblmicp_cont_mstDto(contDto)
                                 cpMstDto.cont_seq = seq.toInt()
                                 cpMstDto.sales_nm = sales_nm
@@ -2369,7 +2353,11 @@ class SalesforceServiceImpl : SalesforceService {
                 mstContDto.inta_key = dto.inta_key
                 mstContDto.inta_ve = dto.inta_ve
                 val contLst = salesforceDao.sel_tblmicp_cont_mst(mstContDto)
-                val usrId = if (contLst[0].upd_id == null) contLst[0].reg_id else contLst[0].reg_id
+                val usrId = if (contLst[0].upd_id == null) {
+                    contLst[0].reg_id
+                } else {
+                    contLst[0].upd_id
+                }
 
                 val temp = Tblmicp_programDto()
                 temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
@@ -2420,15 +2408,12 @@ class SalesforceServiceImpl : SalesforceService {
                     contListDto.use_yn = "Y"
                     val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
                     for (cont in contLst) {
-                        val rcsBrnID =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
+                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
                         // 이미지 저장 경로
-                        val imgPath =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
+                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
 
                         // RCS 발송 서버 정보
-                        val rcsDb =
-                            sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
+                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
 
                         val urlLst = cont.img_nm_lst!!.split(",")
 
@@ -2469,8 +2454,8 @@ class SalesforceServiceImpl : SalesforceService {
         val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
         _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
-        val avo_id = map["activityId"].toString()
-        val inten_id = map["journeyId"].toString()
+        val avoId: String = map["activityId"].toString()
+        val intenId = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
 
         val exMap = HashMap<String, Any>(map)
@@ -2478,8 +2463,8 @@ class SalesforceServiceImpl : SalesforceService {
 
         // 컨테츠 마스터 정보
         val contMstDto = Tblmicp_cont_mstDto()
-        contMstDto.avo_id = avo_id
-        contMstDto.inten_id = inten_id
+        contMstDto.avo_id = avoId
+        contMstDto.inten_id = intenId
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
 
         if(contMst == null){
@@ -2538,33 +2523,6 @@ class SalesforceServiceImpl : SalesforceService {
                         contTpLst[check.cont_tp.toString()] = check
                     }
                     logger.error("{}",contTpLst)
-                    /*// 이미지 업로드
-                    val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-                    for (check in contLst) {
-                        // 문자 - DMTP02, 카카오 - DMTP03, RCS - DMTP04
-                        contTpLst[check.cont_tp.toString()] = check
-                        if (!check.img_lst.isNullOrEmpty()) {
-                            val url_list = check.img_lst!!.split(",")
-                            val nm_list = check.img_nm_lst!!.split(",")
-
-                            for (i in url_list.indices) {
-                                minioClient.uploadObject(
-                                    UploadObjectArgs.builder()
-                                        .bucket(minio_bucket)
-                                        .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
-                                        .filename(static_path + url_list[i])
-                                        .build())
-                            }
-                        }
-                        if (!check.kko_image_url.isNullOrEmpty()) {
-                            minioClient.uploadObject(
-                                UploadObjectArgs.builder()
-                                    .bucket(minio_bucket)
-                                    .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
-                                    .filename(static_path + check.kko_image_url)
-                                    .build())
-                        }
-                    }*/
 
                     var couponIssuedLog = Tblmicou_coupon_issued_logDto()
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
@@ -2577,57 +2535,57 @@ class SalesforceServiceImpl : SalesforceService {
                     when {
                         // 카카오 친구톡
                         contTpLst["DMTP03"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP03"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP03"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
                             }
                         }
                         // 카카오 알림톡
                         contTpLst["DMTP05"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP05"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 kkoSendAt.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // RCS
                         contTpLst["DMTP04"] != null -> {
-                            val send_to = inArguments[contTpLst["DMTP04"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP04"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 rcsSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // 문자
                         else -> {
-                            val send_to = inArguments[contTpLst["DMTP02"]!!.from_to]
-                            if(send_to == null){
+                            val sendTo = inArguments[contTpLst["DMTP02"]!!.from_to]
+                            if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
-                                sendHstDto.send_to = send_to.toString()
+                                sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = send_to.toString()
+                                inArguments["SEND_TO"] = sendTo.toString()
                                 mdmSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }

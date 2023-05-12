@@ -38,7 +38,7 @@
                     <div class="body">
                         <!-- 이미지 썸네일 -->
                         <div class="thumbnail">
-                            <img src="${filePath}${g.thm_url}" onerror="this.src = '/image/bg_none_wide.png'">
+                            <img src="${filePath}${g.thm_url}" onerror="this.src = '/image/bg_none_wide.png'" alt="썸네일">
                         </div>
                     </div>
                     <div class="row_footer">
@@ -101,7 +101,7 @@
                             <c:if test="${!cutil:isEmptyObject(g.img_lst)}">
                                 <div class="sms_img">
                                 <c:forEach var="img_lst" items="${fn:split(g.img_lst,',')}">
-                                    <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                    <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                 </c:forEach>
                                 </div>
                             </c:if>
@@ -113,14 +113,14 @@
                             <!-- 이미지 영역 -->
                             <c:if test="${!cutil:isEmptyObject(g.kko_image_url)}">
                             <div class="sms">
-                                <img src="${filePath}${g.kko_image_url}" onerror="this.src = '/image/bg_none.png'">
+                                <img src="${filePath}${g.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="sms">
                             </div>
                             </c:if>
                             <!-- 텍스트 영역 -->
                             <p class="sms_txt">${cutil:replaceBr(g.cont_body)}</p>
                             <!-- 카카오 링크 버튼 영역 -->
                             <c:if test="${!cutil:isEmptyObject(g.kko_btn_url)}">
-                                <a href="${g.kko_btn_url}" target="_blank" class="sms_btn">${g.kko_btn_nm}</a>
+                                <a href="${g.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${g.kko_btn_nm}</a>
                             </c:if>
                         </div>
                         </c:when>
@@ -130,7 +130,7 @@
                                 <div class="rcs_vertical tall cf">
                                     <div class="img_area">
                                     <c:forEach var="img_lst" items="${fn:split(g.img_lst,',')}">
-                                        <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                        <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                     </c:forEach>
                                     </div>
                                     <div class="txt_area">
@@ -152,7 +152,7 @@
                                 <div class="rcs_vertical medium cf">
                                     <div class="img_area">
                                         <c:forEach var="img_lst" items="${fn:split(g.img_lst,',')}">
-                                            <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                            <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                         </c:forEach>
                                     </div>
                                     <div class="txt_area">
@@ -174,7 +174,7 @@
                                 <div class="rcs_horizontal cf">
                                     <div class="img_area">
                                         <c:forEach var="img_lst" items="${fn:split(g.img_lst,',')}">
-                                            <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                            <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                         </c:forEach>
                                     </div>
                                     <div class="txt_area">
@@ -208,7 +208,7 @@
                                         </c:if>
                                     </div>
                                     <c:forEach var="img_lst" items="${fn:split(g.img_lst,',')}">
-                                        <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'">
+                                        <img src="${filePath}${img_lst}" onerror="this.src = '/image/bg_none.png'" alt="RCS">
                                     </c:forEach>
                                 </div>
                                 </c:when>
@@ -243,7 +243,7 @@
                                        <!-- 슬라이드 형태는 뷰에 최대 2개까지만 뿌려준다 -->
                                        <div class="slide small cf">
                                            <div class="img_area">
-                                               <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'">
+                                               <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                            </div>
                                            <div class="txt_area">
                                                <h3>${cutil:replaceBr(g.cont_body_json[0]['title1'])}</h3>
@@ -259,7 +259,7 @@
                                        </div>
                                        <div class="slide small cf">
                                            <div class="img_area">
-                                               <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'">
+                                               <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                            </div>
                                            <div class="txt_area">
                                                <h3>${cutil:replaceBr(g.cont_body_json[0]['title2'])}</h3>
@@ -304,7 +304,7 @@
                                         </c:forEach>--%>
                                         <div class="slide medium cf">
                                             <div class="img_area">
-                                                <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${baseURL}${img_lst[0]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                             </div>
                                             <div class="txt_area">
                                                 <h3>${cutil:replaceBr(g.cont_body_json[0]['title1'])}</h3>
@@ -320,7 +320,7 @@
                                         </div>
                                         <div class="slide medium cf">
                                             <div class="img_area">
-                                                <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${baseURL}${img_lst[1]}" onerror="this.src = '/image/bg_none.png'" alt="rcs">
                                             </div>
                                             <div class="txt_area">
                                                 <h3>${cutil:replaceBr(g.cont_body_json[0]['title2'])}</h3>

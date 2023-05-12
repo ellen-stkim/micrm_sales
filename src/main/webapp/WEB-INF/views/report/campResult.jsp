@@ -142,7 +142,7 @@
             <div class="right">
                 <input type="button" value="캠페인 통합 분석" class="btn_sm_line" onclick="ReportPopup();"/></div>
             <div class="scroll_tbl">
-                <table class="table target_tbl">
+                <table class="table target_tbl" summary="table">
                     <colgroup>
                         <col width="200"/>
                         <col width="220"/>
@@ -302,7 +302,7 @@
 
                 </form:form>
                 <div id="list_table_box" style="width: 588px; min-height:210px;">
-                    <table class="pop_table table_fixed" id="pop_list_table">
+                    <table class="pop_table table_fixed" id="pop_list_table" summary="table">
                         <colgroup>
                             <col width="40"/>
                             <col width="130"/>
@@ -339,7 +339,7 @@
                     <div><h1 class="info">선택된 캠페인 리스트 ( 프로그램 <span id="info_prg">0</span>건 | 캠페인 <span
                             id="info_camp">0</span>건 )</h1></div>
                     <form:form id="select_form" action="./dt.mi">
-                        <table class="pop_table table_fixed" id="select_lst">
+                        <table class="pop_table table_fixed" id="select_lst" summary="table">
                             <colgroup>
                                 <col width="20"/>
                                 <col width="100"/>
