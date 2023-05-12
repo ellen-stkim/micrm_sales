@@ -3641,9 +3641,10 @@
         }
         const preview = document.querySelector(".viewer_area .inner .text_box .scroll_txt_area");
         //입력된 URL 미리보기에 추가
-        preview.innerHTML += '<br/>' + ' {쿠폰링크}';
+        preview.innerHTML += '<br/>' + '{쿠폰링크}';
         let smsContent = $('#sms_txt_area').val();
-        $('#sms_txt_area').val(smsContent + '\n {쿠폰링크}');
+        $('#sms_txt_area').val(smsContent + '\n{쿠폰링크}');
+        onchangePrevSmsTxt($('#sms_txt_area'));
     };
 
     //쿠폰 미리보기
@@ -3679,6 +3680,9 @@
     }
 
     function couponCancel() {
+        var text = document.getElementById("sms_txt_area").value;
+        document.getElementById("sms_txt_area").value = text.replace(/\n\{쿠폰링크\}/gi, '');
+        onchangePrevSmsTxt($('#sms_txt_area'));
         $("#couponCancelBtn").css("display","none");
         couponSeq = "";
         couponSelectSeq = "";
