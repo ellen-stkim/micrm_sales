@@ -67,6 +67,20 @@ class InterceptorHandler : HandlerInterceptor {
                 "/camp/st/sendStatus.mi" -> detail = "캠페인 : 캠페인 발송현황 조회";
                 "/camp/st/sendDetail.mi" -> detail = "캠페인 : 캠페인 상세보기";
                 "/sys/work/workList.mi" -> detail = "시스템관리 : 작업 리스트 조회";
+                "/coupon/couponList.mi" -> detail = "쿠폰 : 쿠폰 리스트 페이지 조회";
+                "/coupon/couponRegister.mi" -> detail = "쿠폰 : 쿠폰 등록 페이지 접속";
+                "/coupon/couponUpdate.mi" -> detail = "쿠폰 : 쿠폰 수정 페이지 접속";
+                "/coupon/couponIssue.mi" -> detail = "쿠폰 : 쿠폰 발급 페이지 접속";
+                "/coupon/couponIssuedLog.mi" -> detail = "쿠폰 : 쿠폰 발급 내역 페이지 접속";
+                "/coupon/registerCoupon.service" -> detail = "쿠폰 : 쿠폰 등록";
+                "/coupon/updateCoupon.service" -> detail = "쿠폰 : 쿠폰 수정";
+                "/coupon/deleteCoupon.service" -> detail = "쿠폰 : 쿠폰 삭제";
+                "/coupon/issueCoupon.service" -> detail = "쿠폰 : 쿠폰 발급";
+                "/coupon/deleteCouponIssuedLog.service" -> detail = "쿠폰 : 쿠폰 발급 내역 삭제";
+                "/coupon/getCouponList.ajax" -> detail = "쿠폰 : 쿠폰 리스트 조회";
+                "/coupon/getCouponIssuedLogList.ajax" -> detail = "쿠폰 : 쿠폰 발급 내역 조회";
+                "/coupon/extractExcel.ajax" -> detail = "쿠폰 : 쿠폰 발급 대상자 엑셀 추출";
+
                 else -> checkIn = false
             }
             if (checkIn) {
