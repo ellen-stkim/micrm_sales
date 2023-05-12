@@ -47,7 +47,7 @@
 				AND A.expire_dt >= #{expire_dt}
 			</if>
 		</where>
-		ORDER BY A.reg_dt DESC
+		ORDER BY A.expire_dt DESC
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
 			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
 		</if>
