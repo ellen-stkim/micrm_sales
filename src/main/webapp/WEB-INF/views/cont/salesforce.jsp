@@ -470,7 +470,10 @@
                                             <div class="th bottom-border">쿠폰 발송</div>
                                             <div class="td bottom-border">
                                                 <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
-                                                <input type="text" name="" placeholder="" readonly/>
+                                                <div style="flex-grow: 1; display: flex">
+                                                    <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" readonly/>
+                                                    <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" style="display: none;" onclick="couponCancel();">×</button>
+                                                </div>
                                                 <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
                                                 <!-- 쿠폰 활성화 시 -->
                                                 <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
@@ -3577,6 +3580,13 @@
     };
 
     function getCouponListAtSales(pageNo) {
+        const kakaoUseYn = $("input[name='formatType'][value='kakao']").is(":checked");
+        const rcsUseYn = $("input[name='formatType'][value='rcs']").is(":checked");
+        if (kakaoUseYn || rcsUseYn) {
+            popup.popAlert("쿠폰 발송은 문자에서만 사용 가능합니다..");
+            return false;
+        }
+
         var data = $('#searchCouponListForm').serializeArray();
         data.push({name: "pageNo", value: pageNo});
         if (selectedExpireMonth != 0) {
@@ -3595,9 +3605,18 @@
     }
 
     //쿠폰 리스트 선택 시
-    const chkCoupon = (url, nm) => {
-        couponNm = nm;
-        couponSelectSeq = url;
+    const chkCoupon = (seq, nm, item) => {
+        if (item.classList.contains('selected') || couponSelectSeq == seq) {
+            item.classList.remove('selected');
+            couponCancel();
+        } else {
+            $('#send_tg_tbody .couponClickBtn').each(function () {
+                    $(this).removeClass('selected');
+            });
+            item.classList.add('selected');
+            couponNm = nm;
+            couponSelectSeq = seq;
+        }
     };
 
     //쿠폰 리스트 확인 클릭 시
@@ -3605,13 +3624,13 @@
         if (couponSelectSeq.length != 0) {
             const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
             couponURLEl.value =  '{' + couponNm +' 쿠폰링크}';
+            couponURLEl.style.width = ( (couponURLEl.value.length + 2)  * 9 ) + 'px';
+            $("#couponCancelBtn").css("display","flex");
+
             couponSeq = couponSelectSeq;
             $('#coupon_seq').val(couponSeq);
-            popupClose(value);
-        } else {
-            popup.popAlert("쿠폰을 선택해주세요.");
-            return false;
         }
+        popupClose(value);
     };
 
     //쿠폰 URL 사용(적용)
@@ -3657,6 +3676,14 @@
         } else {
             selectedExpireMonth = clickNumber;
         }
+    }
+
+    function couponCancel() {
+        $("#couponCancelBtn").css("display","none");
+        couponSeq = "";
+        couponSelectSeq = "";
+        const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
+        couponURLEl.value =  '';
     }
 
     const openInnerModal = (name) => {

@@ -33,7 +33,7 @@
                 </td>
                 <td class="en_font">${coupon.expire_dt}</td>
                 <td>
-                    <button type="button" class="btn select" onclick="chkCoupon('${coupon.encodedSeq}', '${coupon.nm}')">선택</button>
+                    <button type="button" class="btn select couponClickBtn" value="${coupon.encodedSeq}" onclick="chkCoupon('${coupon.encodedSeq}', '${coupon.nm}', this);">선택</button>
                 </td>
             </tr>
         </c:forEach>
@@ -47,4 +47,13 @@
             </ul>
         </div>
     </section>
+        <script>
+        $(document).ready(function () {
+            $('#send_tg_tbody .couponClickBtn').each(function () {
+                if ($(this).val() == couponSeq) {
+                    $(this).addClass('selected');
+                }
+            });
+        });
+    </script>
 </span>
