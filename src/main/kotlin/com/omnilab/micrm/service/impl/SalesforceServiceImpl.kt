@@ -2530,7 +2530,6 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                     logger.error("{}",contTpLst)
 
-//                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
                     if (isCouponSend && map["couponIssuedLogDto"] != null) {
                         val couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
