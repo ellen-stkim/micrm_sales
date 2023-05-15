@@ -483,7 +483,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="th top-border">쿠폰 발송 Short URL 사용</div>
+                                            <div class="th top-border">쿠폰 발송 Short URL 사용 여부</div>
                                             <div class="td top-border">
                                                 <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y"/><span></span></label>
                                                 <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" checked/><span></span></label>

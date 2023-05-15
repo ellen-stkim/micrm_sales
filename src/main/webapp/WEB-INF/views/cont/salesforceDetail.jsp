@@ -650,14 +650,14 @@
                                                 </div>
                                                 <div class="row"  style="height:150px;">
                                                     <div class="th bottom-border">내용</div>
-                                                    <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                               onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea></div>
+                                                    <div class="td bottom-border">
+                                                        <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea>
+                                                    </div>
                                                 </div>
                                                 <div class="row send">
                                                     <div class="th bottom-border">쿠폰 발송</div>
                                                     <div class="td bottom-border">
                                                         <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
-
                                                         <c:if test="${list[1].coupon_seq != null}">
                                                             <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
                                                             <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
@@ -677,7 +677,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="th top-border">쿠폰 발송 Short URL 사용</div>
+                                                    <div class="th top-border">쿠폰 발송 Short URL 사용 여부</div>
                                                     <div class="td top-border">
                                                         <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
                                                         <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
