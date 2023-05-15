@@ -1061,7 +1061,8 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
                 }
 
-                tblmiContLstdto.cont_body = contentListCreatedto.sms_body
+                // short url 사용 여부
+                tblmiContLstdto.short_url_yn = contentListCreatedto.short_url_yn
             }
 
             // 인덱스 번호 2: RCS 분기 처리

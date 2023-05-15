@@ -49,6 +49,7 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.kko_title = tblmi_cont_lstDto.kko_title
         this.kko_header = tblmi_cont_lstDto.kko_header
         this.coupon_seq = tblmi_cont_lstDto.coupon_seq
+        this.short_url_yn = tblmi_cont_lstDto.short_url_yn
         this.img_cd_1 = tblmi_cont_lstDto.img_cd_1
         this.img_cd_2 = tblmi_cont_lstDto.img_cd_2
         this.img_cd_3 = tblmi_cont_lstDto.img_cd_3
