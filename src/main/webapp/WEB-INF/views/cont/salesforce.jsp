@@ -431,19 +431,6 @@
                                             </div>
                                             <input type="hidden" name="mms_imgurl"/>
                                         </div>
-                                        <div class="row">
-                                            <div class="th top-border">Short URL 사용</div>
-                                            <div class="td top-border">
-                                                <label class="custom_radio">사용함<input class="" name="short_url_yn"
-                                                                                      type="radio"
-                                                                                      value="Y"
-                                                                                      /><span></span></label>
-                                                <label class="custom_radio">사용안함<input class="" name="short_url_yn"
-                                                                                      type="radio"
-                                                                                      value="N"
-                                                                                       checked/><span></span></label>
-                                            </div>
-                                        </div>
                                         <div class="row input-img">
                                             <div class="th top-border">이미지 선택</div>
                                             <div class="td top-border">
@@ -480,21 +467,6 @@
                                                 <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevSmsTxt(this)"></textarea>
                                             </div>
                                         </div>
-                                        <div class="row send">
-                                            <div class="th bottom-border">쿠폰 발송</div>
-                                            <div class="td bottom-border">
-                                                <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
-                                                <div style="flex-grow: 1; display: flex">
-                                                    <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" readonly/>
-                                                    <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" style="display: none;" onclick="couponCancel();">×</button>
-                                                </div>
-                                                <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
-                                                <!-- 쿠폰 활성화 시 -->
-                                                <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
-                                                <!-- 쿠폰 비활성화 시 -->
-                                                <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
-                                            </div>
-                                        </div>
                                         <div class="row">
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">
@@ -518,10 +490,33 @@
                                         <div class="row">
                                             <div class="th">추적 링크 생성</div>
                                             <div class="td">
-                                                <input type="text" class="txt_input" id="smsTracking"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                 <input type="hidden" name="sms_trackinglink"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block">
+                                        <div class="row send">
+                                            <div class="th bottom-border">쿠폰 발송</div>
+                                            <div class="td bottom-border">
+                                                <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
+                                                <div style="flex-grow: 1; display: flex">
+                                                    <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" readonly/>
+                                                    <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" style="display: none;" onclick="couponCancel();">×</button>
+                                                </div>
+                                                <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
+                                                <!-- 쿠폰 활성화 시 -->
+                                                <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
+                                                <!-- 쿠폰 비활성화 시 -->
+                                                <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="th">Short URL 사용</div>
+                                            <div class="td">
+                                                <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y"/><span></span></label>
+                                                <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" checked/><span></span></label>
                                             </div>
                                         </div>
                                     </div>

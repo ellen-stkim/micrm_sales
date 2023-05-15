@@ -615,13 +615,6 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="th top-border">Short URL 사용</div>
-                                                    <div class="td top-border">
-                                                        <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
-                                                        <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
-                                                    </div>
-                                                </div>
                                                 <div class="row input-img <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">
                                                     <div class="th top-border <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">이미지 선택</div>
                                                     <div class="td top-border">
@@ -657,30 +650,8 @@
                                                 </div>
                                                 <div class="row"  style="height:150px;">
                                                     <div class="th bottom-border">내용</div>
-                                                    <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                               onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea></div>
-                                                </div>
-                                                <div class="row send">
-                                                    <div class="th bottom-border">쿠폰 발송</div>
                                                     <div class="td bottom-border">
-                                                        <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
-
-                                                        <c:if test="${list[1].coupon_seq != null}">
-                                                            <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
-                                                            <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
-                                                            <div style="flex-grow: 1; display: flex">
-                                                                <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
-                                                                <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" onclick="couponCancel();">×</button>
-                                                            </div>
-                                                        </c:if>
-                                                        <c:if test="${list[1].coupon_seq == null}">
-                                                            <input type="text" name="" placeholder="" value="" readonly/>
-                                                        </c:if>
-                                                        <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
-                                                        <!-- 쿠폰 활성화 시 -->
-                                                        <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
-                                                        <!-- 쿠폰 비활성화 시 -->
-                                                        <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                                        <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -709,6 +680,37 @@
                                                         <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                         <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                         <input type="hidden" name="sms_trackinglink"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block">
+                                                <div class="row send">
+                                                    <div class="th bottom-border">쿠폰 발송</div>
+                                                    <div class="td bottom-border">
+                                                        <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
+                                                        <c:if test="${list[1].coupon_seq != null}">
+                                                            <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
+                                                            <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
+                                                            <div style="flex-grow: 1; display: flex">
+                                                                <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
+                                                                <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" onclick="couponCancel();">×</button>
+                                                            </div>
+                                                        </c:if>
+                                                        <c:if test="${list[1].coupon_seq == null}">
+                                                            <input type="text" name="" placeholder="" value="" readonly/>
+                                                        </c:if>
+                                                        <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
+                                                        <!-- 쿠폰 활성화 시 -->
+                                                        <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
+                                                        <!-- 쿠폰 비활성화 시 -->
+                                                        <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="th">Short URL 사용</div>
+                                                    <div class="td">
+                                                        <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
+                                                        <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
                                                     </div>
                                                 </div>
                                             </div>
