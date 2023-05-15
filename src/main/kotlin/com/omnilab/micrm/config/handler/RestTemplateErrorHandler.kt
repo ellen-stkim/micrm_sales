@@ -24,6 +24,7 @@ class RestTemplateErrorHandler: ResponseErrorHandler  {
     }
 
     override fun handleError(url: URI, method: HttpMethod, response: ClientHttpResponse) {
-        logger.error("handleError response: {} ({}) - {} ", url, response.statusCode, StreamUtils.copyToString(response.body, StandardCharsets.UTF_8))
+        //logger.error("handleError response: {} ({}) - {} ", url, response.statusCode, StreamUtils.copyToString(response.body, StandardCharsets.UTF_8))
+        logger.error("handleError response: {} ({})", url, response.statusCode)
     }
 }
