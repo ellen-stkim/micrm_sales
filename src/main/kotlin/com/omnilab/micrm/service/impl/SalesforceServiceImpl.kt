@@ -2525,11 +2525,11 @@ class SalesforceServiceImpl : SalesforceService {
                     logger.error("{}",contTpLst)
 
 //                    var couponIssuedLog = Tblmicou_coupon_issued_logDto()
-//                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
-//                    if (isCouponSend) {
-//                        if (map["couponIssuedLogDto"] != null) couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-//                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
-//                    }
+                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
+                    if (isCouponSend && map["couponIssuedLogDto"] != null) {
+                        val couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
+                    }
 
                     // 발송
                     when {
@@ -2591,10 +2591,13 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                     }
 
-//                    if (isCouponSend) {
+                    if (isCouponSend) {
+                        val dto = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                        dto.phone = sendHstDto.send_to
+                        dto.msgkey = sendHstDto.seq.toString()
 //                        couponIssuedLog.phone = sendHstDto.send_to
 //                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
-//                    }
+                    }
                 }
             }
         }

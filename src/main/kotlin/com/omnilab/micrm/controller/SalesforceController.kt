@@ -808,9 +808,13 @@ class SalesforceController {
                 val gson = GsonBuilder().create()
                 val data = gson.fromJson(payload, Map::class.java)
                 logger.error("data : {}", data)
-//                val couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
-//                if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
+                var couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
+                if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
                 salesforceService.sendCampaign(data as MutableMap<String, Any>)
+                if (couponIssuedLogDto != null) {
+                    couponIssuedLogDto = data["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                    couponIssueService.issueCouponAtSales(couponIssuedLogDto, couponIssuedLogDto.msgkey.toString())
+                }
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
             return ResponseEntity(null, HttpStatus.OK)
