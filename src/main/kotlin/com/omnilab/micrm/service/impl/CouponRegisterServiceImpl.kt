@@ -150,7 +150,7 @@ class CouponRegisterServiceImpl: CouponRegisterService {
             if (file.contentType == "image/${it}") isImageContentType = true
         }
         // 파일 확장자 검사
-        var isImageExt = imageContentType.contains(ext)
+        val isImageExt = imageContentType.contains(ext)
 
         return isImageContentType && isImageExt
     }
