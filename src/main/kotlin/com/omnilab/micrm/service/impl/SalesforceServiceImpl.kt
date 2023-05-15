@@ -2676,7 +2676,7 @@ class SalesforceServiceImpl : SalesforceService {
 
         val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
         val status = result.statusCode.value()
-        if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
+        return if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
             logger.error("+----------------------------------------------------")
             logger.error("{}",result.body)
             logger.error("{}",urlString)
@@ -2684,9 +2684,9 @@ class SalesforceServiceImpl : SalesforceService {
                 logger.error("getTotalCnt url : {}",urlString)
             }
             val body = result.body!!
-            return GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+            GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
         }else {
-            return null
+            null
         }
 
     }
