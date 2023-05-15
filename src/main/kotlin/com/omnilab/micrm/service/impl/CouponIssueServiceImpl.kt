@@ -180,13 +180,21 @@ class CouponIssueServiceImpl: CouponIssueService {
                 val couponUuid = makeUuidUrl()
                 val encodedUuid = makeEncodedUuidUrl(couponUuid)
                 var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
+                if (contLst[0].short_url_yn == "Y") {
+                    // Naver API 정보 조회
+                    val naverApiId =
+                        couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "ID"))
+                    val naverApiSecret = couponDao.selectCommCd(
+                        Tblmi_comm_cdDto(
+                            "NAVER_APP",
+                            campaignDto.usr_grp_cd.toString(),
+                            "SECRET"
+                        )
+                    )
 
-                // Naver API 정보 조회
-                val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "ID"))
-                val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "SECRET"))
-
-                // 6. Naver Short URL
-                sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
+                    // 6. Naver Short URL
+                    sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?: "")
+                }
                 return Tblmicou_coupon_issued_logDto(
                     couponIssueDto.seq!!,
                     couponUuid,
