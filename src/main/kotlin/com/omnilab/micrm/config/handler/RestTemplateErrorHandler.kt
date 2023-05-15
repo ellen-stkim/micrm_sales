@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.http.client.ClientHttpResponse
+import org.springframework.util.StreamUtils
 import org.springframework.web.client.ResponseErrorHandler
 import java.net.HttpURLConnection
 import java.net.URI
@@ -23,7 +24,7 @@ class RestTemplateErrorHandler: ResponseErrorHandler  {
     }
 
     override fun handleError(url: URI, method: HttpMethod, response: ClientHttpResponse) {
-        logger.error("handleError response: {} ({}) - {} ", url, response.statusCode, IOUtils.toString(response.body, StandardCharsets.UTF_8.toString()))
+        logger.error("handleError response: {} ({}) - {} ", url, response.statusCode, StreamUtils.copyToString(response.body, StandardCharsets.UTF_8))
         super.handleError(url, method, response)
     }
 }
