@@ -677,8 +677,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="th top-border">쿠폰 발송 Short URL 사용 여부</div>
-                                                    <div class="td top-border">
+                                                    <div class="th bottom-border">쿠폰 Short URL</div>
+                                                    <div class="td bottom-border">
                                                         <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
                                                         <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
                                                     </div>
