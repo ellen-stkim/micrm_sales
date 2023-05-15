@@ -30,6 +30,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var kko_img_lst: String? = null //
     var coupon_seq: String? = null // 선택한 쿠폰 시퀀스
     var coupon_nm: String? = null // 선택한 쿠폰명
+    var short_url_yn: String? = null // 선택한 쿠폰명
     var img_cd_1: Int? = null   // 이미지 번호
     var img_cd_2: Int? = null
     var img_cd_3: Int? = null
@@ -198,4 +199,5 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
             ArrayList()
         }
 }
+
 

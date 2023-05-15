@@ -443,7 +443,6 @@
                                                                                       value="N"
                                                                                        checked/><span></span></label>
                                             </div>
-                                            <input type="hidden" name="mms_imgurl"/>
                                         </div>
                                         <div class="row input-img">
                                             <div class="th top-border">이미지 선택</div>
