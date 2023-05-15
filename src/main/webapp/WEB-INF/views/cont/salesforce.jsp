@@ -437,10 +437,11 @@
                                                 <label class="custom_radio">사용함<input class="" name="short_url_yn"
                                                                                       type="radio"
                                                                                       value="Y"
-                                                                                      checked/><span></span></label>
+                                                                                      /><span></span></label>
                                                 <label class="custom_radio">사용안함<input class="" name="short_url_yn"
                                                                                       type="radio"
-                                                                                      value="N"/><span></span></label>
+                                                                                      value="N"
+                                                                                       checked/><span></span></label>
                                             </div>
                                             <input type="hidden" name="mms_imgurl"/>
                                         </div>
