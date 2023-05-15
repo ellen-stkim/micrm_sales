@@ -16,7 +16,6 @@ class RestTemplateErrorHandler: ResponseErrorHandler  {
     override fun hasError(response: ClientHttpResponse): Boolean {
         val status = response.statusCode.value()
         return !(status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE)
-
     }
 
     override fun handleError(response: ClientHttpResponse) {
