@@ -24,5 +24,6 @@ class RestTemplateErrorHandler: ResponseErrorHandler  {
 
     override fun handleError(url: URI, method: HttpMethod, response: ClientHttpResponse) {
         logger.error("handleError response: {} ({}) - {} ", url, response.statusCode, IOUtils.toString(response.body, StandardCharsets.UTF_8.toString()))
+        super.handleError(url, method, response)
     }
 }
