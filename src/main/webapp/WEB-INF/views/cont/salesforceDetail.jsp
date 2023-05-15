@@ -661,7 +661,10 @@
                                                         <c:if test="${list[1].coupon_seq != null}">
                                                             <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
                                                             <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
-                                                            <input type="text" name="" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
+                                                            <div style="flex-grow: 1; display: flex">
+                                                                <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
+                                                                <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" onclick="couponCancel();">×</button>
+                                                            </div>
                                                         </c:if>
                                                         <c:if test="${list[1].coupon_seq == null}">
                                                             <input type="text" name="" placeholder="" value="" readonly/>

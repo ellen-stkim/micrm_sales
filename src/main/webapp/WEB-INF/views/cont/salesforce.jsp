@@ -3682,6 +3682,7 @@
     function couponCancel() {
         var text = document.getElementById("sms_txt_area").value;
         document.getElementById("sms_txt_area").value = text.replace(/\n\{쿠폰링크\}/gi, '');
+        document.getElementById("sms_txt_area").value = text.replace(/\{쿠폰링크\}/gi, '');
         onchangePrevSmsTxt($('#sms_txt_area'));
         $("#couponCancelBtn").css("display","none");
         couponSeq = "";
