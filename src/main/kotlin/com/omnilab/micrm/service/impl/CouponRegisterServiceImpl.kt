@@ -79,6 +79,10 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         // 이미지 로컬 저장
         val map = fileUploadUtils.upload(user.usr_grp_cd.toString(), dto.imgFile!!, request)
 
+        if (map["uploaded"] == 0) {
+            throw CouponException(HttpStatus.BAD_REQUEST, (map["message"] ?: "파일 업로드 실패, 다시 시도해주세요.") as String)
+        }
+
         // 이미지 정보 DB 수정
         val imgDto = Tblmicou_img_fileDto(
             user.usr_id.toString(),
