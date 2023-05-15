@@ -431,19 +431,6 @@
                                             </div>
                                             <input type="hidden" name="mms_imgurl"/>
                                         </div>
-                                        <div class="row">
-                                            <div class="th top-border">Short URL 사용</div>
-                                            <div class="td top-border">
-                                                <label class="custom_radio">사용함<input class="" name="short_url_yn"
-                                                                                      type="radio"
-                                                                                      value="Y"
-                                                                                      /><span></span></label>
-                                                <label class="custom_radio">사용안함<input class="" name="short_url_yn"
-                                                                                      type="radio"
-                                                                                      value="N"
-                                                                                       checked/><span></span></label>
-                                            </div>
-                                        </div>
                                         <div class="row input-img">
                                             <div class="th top-border">이미지 선택</div>
                                             <div class="td top-border">
@@ -493,6 +480,13 @@
                                                 <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
                                                 <!-- 쿠폰 비활성화 시 -->
                                                 <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="th top-border">쿠폰 발송 Short URL 사용</div>
+                                            <div class="td top-border">
+                                                <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y"/><span></span></label>
+                                                <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" checked/><span></span></label>
                                             </div>
                                         </div>
                                         <div class="row">
