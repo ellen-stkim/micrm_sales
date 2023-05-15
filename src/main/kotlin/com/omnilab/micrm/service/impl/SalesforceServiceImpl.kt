@@ -2600,8 +2600,6 @@ class SalesforceServiceImpl : SalesforceService {
                         val dto = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
                         dto.phone = sendHstDto.send_to
                         dto.msgkey = sendHstDto.seq.toString()
-//                        couponIssuedLog.phone = sendHstDto.send_to
-//                        couponIssueService.issueCouponAtSales(couponIssuedLog, sendHstDto.seq.toString())
                     }
                 }
             }
