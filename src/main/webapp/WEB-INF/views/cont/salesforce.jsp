@@ -476,8 +476,9 @@
                                         </div>
                                         <div class="row"  style="height:150px;">
                                             <div class="th bottom-border">내용</div>
-                                            <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                       onkeyup="onchangePrevSmsTxt(this)"></textarea></div>
+                                            <div class="td bottom-border">
+                                                <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevSmsTxt(this)"></textarea>
+                                            </div>
                                         </div>
                                         <div class="row send">
                                             <div class="th bottom-border">쿠폰 발송</div>
