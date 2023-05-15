@@ -485,6 +485,18 @@
                                                 <input type="hidden" name="sms_trackinglink"/>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="block">
+                                        <div class="row">
+                                            <div class="th">추적 링크 생성</div>
+                                            <div class="td">
+                                                <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <span class="btn_sm_line trackingLinkBtn">생성</span>
+                                                <input type="hidden" name="sms_trackinglink"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block">
                                         <div class="row send">
                                             <div class="th bottom-border">쿠폰 발송</div>
                                             <div class="td bottom-border">
@@ -501,21 +513,10 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="th bottom-border">쿠폰 Short URL</div>
-                                            <div class="td bottom-border">
+                                            <div class="th">쿠폰 Short URL</div>
+                                            <div class="td">
                                                 <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y"/><span></span></label>
                                                 <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" checked/><span></span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="block">
-                                        <div class="row">
-                                            <div class="th">추적 링크 생성</div>
-                                            <div class="td">
-                                                <input type="text" class="txt_input" id="smsTracking"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                <span class="btn_sm_line trackingLinkBtn">생성</span>
-                                                <input type="hidden" name="sms_trackinglink"/>
                                             </div>
                                         </div>
                                     </div>
