@@ -9,7 +9,7 @@ class RestTemplateErrorHandler: ResponseErrorHandler  {
     val logger = LoggerFactory.getLogger(this.javaClass)
 
     override fun hasError(response: ClientHttpResponse): Boolean {
-        logger.error("Has error response: {}", response)
+        logger.error("Has error response: {}", "status=${response.statusCode},body=${response.body}" )
         return false
     }
 
