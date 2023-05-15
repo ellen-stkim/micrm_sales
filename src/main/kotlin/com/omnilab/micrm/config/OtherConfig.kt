@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 
 import org.springframework.context.annotation.Bean
+import org.springframework.http.client.BufferingClientHttpRequestFactory
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.mail.javamail.JavaMailSenderImpl
@@ -93,7 +94,7 @@ class OtherConfig {
                 .setRedirectStrategy(LaxRedirectStrategy())
                 .build()
         factorty.httpClient = httpClient
-
+        // BufferingClientHttpRequestFactory(factorty)
         val restTemplateBuilder = RestTemplateBuilder()
                 .requestFactory { factorty }
                 .errorHandler(RestTemplateErrorHandler())
