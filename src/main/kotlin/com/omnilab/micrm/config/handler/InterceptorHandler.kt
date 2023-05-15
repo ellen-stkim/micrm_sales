@@ -85,7 +85,7 @@ class InterceptorHandler : HandlerInterceptor {
             }
             if (checkIn) {
                 val userInfo = UsefulUtils.sessionUser()
-                val dto: Tblmi_usr_hstDto = Tblmi_usr_hstDto()
+                val dto = Tblmi_usr_hstDto()
                 dto.usr_grp_cd = userInfo.usr_grp_cd
                 dto.usr_seq = userInfo.seq
                 dto.usr_id = userInfo.usr_id
