@@ -322,7 +322,7 @@
 <!-- 도달 리포트 ------------------------------------------------------------------------- ajax -->
 <div id="sucTab" class="report-tab-contents">
     <div class="half-grid">
-        <table class="report-tab-table blue" style="display: inline-block">
+        <table class="report-tab-table blue" style="display: inline-block" summary="table">
             <tr>
                 <th>발송성공</th>
                 <td>
@@ -347,9 +347,9 @@
         </table>
         <div class="wait_txt"><span>발송 대기 : </span><span id="wait_cnt">0</span>명</div>
         <div class="grid-space"></div>
-        <table class="report-tab-table max yellow">
+        <table class="report-tab-table max yellow" summary="table">
             <tr>
-                <th class="wid-40-p">사용자 계정문제</th>
+                <th class="wid-40-p" scope="row">사용자 계정문제</th>
                 <td>
                     <span id="softTotalPortion" class="pointMid yellow"></span>
                     <span id="softTotalSpan" class="text"></span>
@@ -368,13 +368,13 @@
         </table>
     </div>
     <div class="half-grid">
-        <table class="report-tab-table yellow">
+        <table class="report-tab-table yellow" summary="tbl">
             <tr>
-                <th>발송실패</th>
+                <th scope="row">발송실패</th>
                 <td>
-										<span class="pointMid">
-											10%
-										</span>
+                    <span class="pointMid">
+                        10%
+                    </span>
                     <span class="text">(1,000)</span>
                 </td>
                 <%--<td>
@@ -400,9 +400,9 @@
             <div class="grid-line b"></div>
             <div class="grid-line c"></div>
         </div>
-        <table class="report-tab-table wid-100-p yellow">
+        <table class="report-tab-table wid-100-p yellow" summary="table">
             <tr>
-                <th class="wid-40-p">시스템 문제</th>
+                <th class="wid-40-p" scope="row">시스템 문제</th>
                 <td>
                     <span id="hardTotalPortion" class="pointMid yellow"></span>
                     <span id="hardTotalSpan" class="text"></span>

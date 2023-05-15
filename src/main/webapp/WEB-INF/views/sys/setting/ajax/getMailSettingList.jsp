@@ -13,7 +13,7 @@
 <!-- table 영역 시작 -->
 <c:choose>
     <c:when test="${not empty list}">
-        <table class="table mail_tbl">
+        <table class="table mail_tbl" summary="table">
             <colgroup>
                 <col width="3%"/>
                 <col width="5%"/>
@@ -82,7 +82,7 @@
         <input type ="hidden" id ="nowPageNo" value ="${pageNo}"/>
     </c:when>
     <c:otherwise>
-        <table class="table mail_tbl">
+        <table class="table mail_tbl" summary="table">
             <colgroup>
                 <col width="3%"/>
                 <col width="5%"/>

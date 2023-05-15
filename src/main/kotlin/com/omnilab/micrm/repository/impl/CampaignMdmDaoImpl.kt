@@ -14,6 +14,8 @@ import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Repository("CampaignMdmDaoImpl")
 class CampaignMdmDaoImpl : CampaignSendDao {
@@ -89,7 +91,6 @@ class CampaignMdmDaoImpl : CampaignSendDao {
 
                 }
             }
-
             if ("DMCH202" == msgTp) { // lms
                 if(mdmServerType == "CJ"){
                     val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
@@ -158,6 +159,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                 sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
                 sqlSession.insert("ins_camp_send_sms_lg", sendLst)
             }
+
             cnt++
         } catch (e: Exception) {
             logger.error("ins_sendMdm", e)

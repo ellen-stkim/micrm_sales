@@ -26,7 +26,7 @@
                 <div class="camp-content">
                     <div class="preview-container">
                         <c:if test="${cont_tp eq 'DMTP01'}">
-                            <iframe name="preview" id="preview" frameborder="0"></iframe>
+                            <iframe name="preview" id="preview" frameborder="0" title="viwer"></iframe>
                         </c:if>
                         <!-- 모바일 (문자) 이면서 MMS 형태 -->
                         <c:if test="${cont_tp eq 'DMTP02' && dto.msg_tp eq 'DMCH203'}">
@@ -35,8 +35,7 @@
                                     <div class="sms_box">
                                         <div class="sms_title" id="sms_title">${dto.cont_sub}</div>
                                         <div class="sms_img">
-                                            <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" alt=""
-                                                 onerror="this.src = '/image/bg_none.png'"></div>
+                                            <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" alt="" onerror="this.src = '/image/bg_none.png'"></div>
                                         <div class="sms_txt">${cutil:replaceBr(dto.cont_body)}</div>
                                     </div>
                                 </div>
@@ -73,13 +72,12 @@
                                 <div class="round_box">
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
                                         <div class="sms">
-                                            <img src="${filePath}${dto.kko_img_url}"
-                                                 onerror="this.src = '/image/bg_none.png'">
+                                            <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                         </div>
                                     </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
-                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn">${dto.kko_btn_nm}</a>
+                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
                                     </c:if>
                                 </div>
                             </div>
@@ -94,15 +92,13 @@
                                         </div>
                                         <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
                                             <div class="sms">
-                                                <img src="${filePath}${dto.kko_img_url}"
-                                                     onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                             </div>
                                         </c:if>
                                         <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                         <c:forEach var="btn" items="${dto.at_btn_json}">
                                             <div>
-                                                <a href="${btn.get('linkPc')}" target="_blank"
-                                                   class="sms_btn">${btn.get('name')}</a>
+                                                <a href="${btn.get('linkPc')}" target="_blank" class="sms_btn" rel="noopener">${btn.get('name')}</a>
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -131,8 +127,7 @@
                                     <div class="rcs_vertical tall cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(dto.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img"/>
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -155,8 +150,7 @@
                                     <div class="rcs_vertical medium cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(dto.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -191,8 +185,7 @@
                                                                value="${fn:split(dto.img_lst,',')[idx]}"/>
                                                         <div class="img_area">
                                                             <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                <img src="${filePath}${imgNm}"
-                                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                                <img src="${filePath}${imgNm}" alt="img" onerror="this.src = '/image/bg_none.png'"/>
                                                             </c:if>
                                                         </div>
                                                         <c:set var="imgIdx" value="${idx+1}"/>

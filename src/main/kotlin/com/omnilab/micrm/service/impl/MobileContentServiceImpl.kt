@@ -2,12 +2,15 @@ package com.omnilab.micrm.service.impl
 
 
 import com.google.gson.*
+import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.BtnValueUtils
 import com.omnilab.micrm.common.CommonUtils
+import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
+import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.ContentService
@@ -37,6 +40,10 @@ class MobileContentServiceImpl : ContentService {
     @Autowired
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
+
+    @Autowired
+    @Qualifier("CouponDaoImpl")
+    private lateinit var couponDao: CouponDao
 
 
     /**
@@ -122,7 +129,7 @@ class MobileContentServiceImpl : ContentService {
                     if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
 
                         // 템플릿 조회
-                        var atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
+                        val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
                         atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
                         atDto.kep_status = "O"  // 승인완료
 
@@ -855,7 +862,12 @@ class MobileContentServiceImpl : ContentService {
             if (!CommonUtils.isEmptyObject(dto.rcs_btn_obj)) {
                 jsonButtonParsing(dto)
             }
-
+            // 이전에 선택한 쿠폰 시퀀스와 이름 조회
+            if (dto.cont_tp.equals("DMTP02") && !dto.coupon_seq.isNullOrEmpty()) {
+                val selectCoupon = couponDao.selectCoupon(dto.coupon_seq!!.toInt())
+                dto.coupon_nm = selectCoupon.nm
+                dto.coupon_seq = AES256.AES_Encode(dto.coupon_seq, GlobalValues.encKey)
+            }
             contentOneList.add(dto)
         }
         return contentOneList
@@ -1502,8 +1514,7 @@ class MobileContentServiceImpl : ContentService {
      * @title : 제이슨 버튼 파싱
      */
     private fun jsonButtonParsing(dto: Tblmi_cont_mstDto) {
-
-        var jsonParser = JsonParser()
+        val jsonParser = JsonParser()
         val dto = dto as Content_view_Dto
         val rcsMsgTp = dto.msg_tp
 
@@ -1513,9 +1524,8 @@ class MobileContentServiceImpl : ContentService {
         ) {
             // 슬라이드 형태가 아닌 것들 Json 파싱
             // 초기 Suggestion Json 배열은 1개이다
-            val jsonBtnArray = jsonParser?.parse(dto?.rcs_btn_obj).asJsonArray
-            val jsonSuggestArray = jsonBtnArray.get(0).asJsonObject
-                .get("suggestions").asJsonArray
+            val jsonBtnArray = jsonParser.parse(dto.rcs_btn_obj).asJsonArray
+            val jsonSuggestArray = jsonBtnArray.get(0).asJsonObject.get("suggestions").asJsonArray
             val len = jsonSuggestArray.size()
 
             //logger.error("jsonBtnArray : " + jsonBtnArray.size())
@@ -1533,9 +1543,8 @@ class MobileContentServiceImpl : ContentService {
                 if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.clipBoardAction))) {
                     // 복사하기 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.clipBoardAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
-                    val textData =
-                        (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val textData = (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
 
                     //logger.error("복사 데이터가 존재한다 : " + dataJsonObj.toString());
 
@@ -1547,7 +1556,7 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.urlAction))) {
                     // URL 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.urlAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
                     val urlData = (jsonDataMap[BtnValueUtils.openUrl] as? MutableMap<*, *>)?.get(BtnValueUtils.url)
 
                     //logger.error("URL 데이터가 존재한다 : " + dataJsonObj.toString());
@@ -1561,22 +1570,20 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.dialerAction))) {
                     // 전화 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.dialerAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
-                    val phoneNumber =
-                        (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val phoneNumber = (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
 
                     //logger.error("전화 데이터가 존재한다 : " + dataJsonObj.toString())
                     // logger.error("phoneNumber : " + phoneNumber.toString())
 
                     dto.btnType?.add(BtnValueUtils.dialerAction)
                     dto.btnData?.add(listOf(phoneNumber.toString()))
-                    dto.btnText?.add(displayText.toString()
-                        .replace("\"", ""))
+                    dto.btnText?.add(displayText.toString().replace("\"", ""))
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.mapAction))) {
                     // MapAction의 경우 3가지가 존재한다 ( 1. 좌표 입력 , 2. 쿼리 입력 , 3. 내 위치 보내기)
                     val mapObj = actionObj?.get(BtnValueUtils.mapAction)
-                    val jsonDataMap = gson?.fromJson(mapObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(mapObj.toString(), MutableMap::class.java)
 
                     //logger.error("jsonDataMapAction :" + jsonDataMap)
                     //logger.error("mapObj" + mapObj.toString())
@@ -1586,28 +1593,20 @@ class MobileContentServiceImpl : ContentService {
                         logger.error("requestLocationPush !! : 현재 위치 ")
                         dto.btnType?.add(BtnValueUtils.requestLocationPush)
                         dto.btnData?.add(listOf(""))
-                        dto.btnText?.add(displayText.toString()
-                            .replace("\"", ""))
+                        dto.btnText?.add(displayText.toString().replace("\"", ""))
                     } else {
                         logger.error("nothing : 좌표 or 쿼리 입력")
-                        val fallbackUrl =
-                            (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                ?.get(BtnValueUtils.fallbackUrl)
-                                .toString()
+                        val fallbackUrl = (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.fallbackUrl).toString()
 
                         // 좌표 입력과 쿼리 입력 여부의 차이는 location 하위의 query 여부이다
-                        val location =
-                            gson?.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                ?.get(BtnValueUtils.location)
-                                .toString(), MutableMap::class.java)
+                        val location = gson.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.location).toString(), MutableMap::class.java)
 
                         if (!CommonUtils.isEmptyObject(location[BtnValueUtils.query])) {
                             // 좌표 쿼리가 존재하는 Json 버튼 데이터
                             val query = location[BtnValueUtils.query].toString()
                             // logger.error("좌표 쿼리 존재1 " + query);
                             dto.btnData?.add(listOf(query, fallbackUrl))
-                            dto.btnText?.add(displayText.toString()
-                                .replace("\"", ""))
+                            dto.btnText?.add(displayText.toString().replace("\"", ""))
                             dto.btnType?.add(BtnValueUtils.query)
 
                         } else {
@@ -1621,8 +1620,7 @@ class MobileContentServiceImpl : ContentService {
                             logger.error("좌표 쿼리 존재 X " + label);
 
                             dto.btnData?.add(listOf(latitude, longitude, label, fallbackUrl))
-                            dto.btnText?.add(displayText.toString()
-                                .replace("\"", ""))
+                            dto.btnText?.add(displayText.toString().replace("\"", ""))
                             dto.btnType?.add(BtnValueUtils.latitude)
                         }
                     }
@@ -1678,26 +1676,15 @@ class MobileContentServiceImpl : ContentService {
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.calendarAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.calendarAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
-                    val description = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.description)
-                        .toString()
-                    val startTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.startTime)
-                        .toString()
-                        .split("T")
-                    val endTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.endTime)
-                        .toString()
-                        .split("T")
-                    val title = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.title)
-                        .toString()
+                    val description = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.description).toString()
+                    val startTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.startTime).toString().split("T")
+                    val endTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.endTime).toString().split("T")
+                    val title = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.title).toString()
 
                     dto.btnData?.add(listOf(startTime[0], endTime[0], title, description))
-                    dto.btnText?.add(displayText.toString()
-                        .replace("\"", ""))
+                    dto.btnText?.add(displayText.toString().replace("\"", ""))
                     dto.btnType?.add(BtnValueUtils.calendarAction)
 
 
@@ -1709,31 +1696,23 @@ class MobileContentServiceImpl : ContentService {
                      logger.error("title : " + title);*/
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.composeAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.composeAction)
-                    val jsonDataMap = gson?.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
-                    val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.phoneNumber)
-                        .toString()
-                    val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)
-                        ?.get(BtnValueUtils.text)
-                        .toString()
+                    val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber).toString()
+                    val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.text).toString()
 
                     dto.btnData?.add(listOf(phoneNumber, text))
-                    dto.btnText?.add(displayText.toString()
-                        .replace("\"", ""))
+                    dto.btnText?.add(displayText.toString().replace("\"", ""))
                     dto.btnType?.add(BtnValueUtils.composeAction)
-
 
                     //logger.error("text : " + text);
                     //logger.error("phoneNumber : " + phoneNumber);
-
                 } else {
                     //logger.error("Json 데이터가 존재하지 않는다");
                 }
                 // 버튼은 그냥 담기
-
-                logger.error("suggestObj : " + suggestObj.toString());
-                logger.error("버튼명 : " + displayText)
+                logger.error("suggestObj : $suggestObj");
+                logger.error("버튼명 : $displayText")
 
                 logger.error("btnText : " + dto.btnText);
                 logger.error("버튼 타입: " + dto.btnType);
@@ -1808,7 +1787,7 @@ class MobileContentServiceImpl : ContentService {
      */
 
     private fun rcsSlideSetting(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
-        val len = contentListCreatedto?.slide_cont_sub?.size
+        val len = contentListCreatedto.slide_cont_sub?.size
         var slideCnt = 0
 
         if (len != 0) {
@@ -1897,12 +1876,8 @@ class MobileContentServiceImpl : ContentService {
      * @Method Decription : RCS 버튼 저장 Json 파싱
      * @title : RCS 버튼 저장
      */
-    private fun rcsButtonMakeJsonString(
-        contentListCreatedto: Content_list_CreateDto,
-        tblmiContLstdto: Tblmi_cont_lstDto,
-    ) {
-
-        val len = contentListCreatedto?.copy_value?.size
+    private fun rcsButtonMakeJsonString(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
+        val len = contentListCreatedto.copy_value?.size
         val jsonSuggestObj = JSONObject()
         val jsonSuggestArr = JSONArray()
         val jsonBtnArray = JSONArray()
@@ -2227,16 +2202,11 @@ class MobileContentServiceImpl : ContentService {
      * @title : RCS 슬라이드 버튼 저장
      */
 
-    private fun rcsButtonMakeJsonStringSlide(
-        contentListCreatedto: Content_list_CreateDto,
-        tblmiContLstdto: Tblmi_cont_lstDto,
-    ) {
-
+    private fun rcsButtonMakeJsonStringSlide(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
         /*
             1. slide_rcs_btn_tp 값과 slide_rcs_btn 값은 카드의 개수 만큼 고정 되서 들어 온다 (각각 분리되어 카드의 idx로 체크한다)
             2. 버튼에 따른 필요 값들은 뷰에서 index 를 지키며 들어 온다 ( 짝수 인덱스 : 버튼 1번 , 홀수 인덱스 : 버튼 2번 )
          */
-
         val btn1Len = contentListCreatedto.slide_rcs_btn_1?.size
         val btn2Len = contentListCreatedto.slide_rcs_btn_2?.size
 
@@ -2250,10 +2220,10 @@ class MobileContentServiceImpl : ContentService {
             // 카드의 개수 만큼 버튼을 담으며 For 문 돌린다.
             //logger.error("현재 인덱스 : " + idx)
 
-            val btn1Value = contentListCreatedto?.slide_rcs_btn_1!![idx]
-            val btn1Type = contentListCreatedto?.slide_rcs_btn_tp_1!![idx]
-            val btn2Value = contentListCreatedto?.slide_rcs_btn_2!![idx]
-            val btn2Type = contentListCreatedto?.slide_rcs_btn_tp_2!![idx]
+            val btn1Value = contentListCreatedto.slide_rcs_btn_1!![idx]
+            val btn1Type = contentListCreatedto.slide_rcs_btn_tp_1!![idx]
+            val btn2Value = contentListCreatedto.slide_rcs_btn_2!![idx]
+            val btn2Type = contentListCreatedto.slide_rcs_btn_tp_2!![idx]
 
             //logger.error("버튼 1번 값 : " + btn1Value)
             //logger.error("버튼 1번 Type : " + btn1Type)
@@ -2510,7 +2480,7 @@ class MobileContentServiceImpl : ContentService {
     }
 
     override fun selectRejectTextList(dto: SetLst_searchDto): Map<String, Any> {
-        val searchDto = dto as SetLst_searchDto
+        val searchDto = dto
         val paramMap: MutableMap<String, Any> = HashMap()
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
 

@@ -114,7 +114,7 @@ let smsCreate = {
         }
         if(code != 8 && count > 40){
             for(b=i=0;c=newTitle.charCodeAt(i);) {
-                b+=c>>7?2:2;
+                b += c >> 7 ? 2:2;
                 if (b > 40){
                     if(type == 'sms'){
                         popup.popAlert('문자 제목은 40byte를 초과할 수 없습니다.');
@@ -218,10 +218,7 @@ function slideLayout(type){
 
     var cnt = 0;
     var checkCnt = 0;
-
     for(let b = 0; b < total; b++){
-        cnt = cnt;
-        checkCnt = checkCnt;
         if(b == 0){ // b : 1  -> b : 0
             html += '<div class="rcs_slide_conts on">';
         }else{

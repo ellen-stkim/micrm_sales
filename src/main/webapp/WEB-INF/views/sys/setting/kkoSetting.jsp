@@ -74,7 +74,7 @@
                 <div class="total left">기본 발신번호</div>
             </div>
             <!-- table 영역 시작 -->
-            <table class="tableType2">
+            <table class="tableType2" summary="table">
                 <colgroup>
                     <col width="156" />
                     <col width="*" />
@@ -129,18 +129,18 @@
         <div class="pop_title">발신번호 추가</div>
         <div class="pop_inner">
             <form action="" id="sendKeyForm">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="발신번호 추가">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>채널명</th>
+                        <th scope="row">채널명</th>
                         <td><input type="text" name="yellowId" id="yellowId" placeholder="'@'+채널명을 입력해주세요." class="input_type1" /></td>
                     </tr>
                     <tr>
-                        <th rowspan="2">카테고리</th>
+                        <th rowspan="2" scope="row">카테고리</th>
                         <td style="padding: 0"><div class="select" id="sendCateSel">
                             <!-- selected value -->
                             <div class="value" data="">카테고리를 선택해주세요</div>
@@ -173,28 +173,28 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>고객명</th>
+                        <th scope="row">고객명</th>
                         <td><input type="text" name="bizName" id="bizName" placeholder="고객명을 입력해주세요." class="input_type1" /></td>
                     </tr>
                     <tr>
-                        <th>사업자번호</th>
+                        <th scope="row">사업자번호</th>
                         <td><input type="text" name="bizNo" id="bizNo" placeholder="사업자번호를 입력해주세요." class="input_type1" /></td>
                     </tr>
                     <tr>
-                        <th>담당자명</th>
+                        <th scope="row">담당자명</th>
                         <td><input type="text" name="managerName" id="managerName" placeholder="담당자명을 입력해주세요." class="input_type1" /></td>
                     </tr>
                     <tr>
-                        <th>휴대폰 번호</th>
+                        <th scope="row">휴대폰 번호</th>
                         <td><input type="text" name="phoneNumber" id="phoneNumber" style="width: 87%;display: inline-block;" placeholder="채널 관리자 휴대폰 번호를 입력해주세요." class="input_type1" />
                             <input type="button" class="btn_sm_line btn_inline size" value="인증" onclick="checkToken()"></td>
                     </tr>
                     <tr class="check_token_tr">
-                        <th>인증번호</th>
+                        <th scope="row">인증번호</th>
                         <td><input type="text" id="senderkey_token" name="token" class="input_type1" placeholder="인증번호를 입력해주세요."></td>
                     </tr>
                     <tr>
-                        <th>오픈희망일</th>
+                        <th scope="row">오픈희망일</th>
                         <td><input type="text" name="openDate" id="openDate" placeholder="오픈희망일을 입력해주세요. (ex: 2023-01-01 )" class="input_type1" /></td>
                     </tr>
                     </tbody>
@@ -216,7 +216,7 @@
         <div class="pop_title">발신번호 수정</div>
         <div class="pop_inner">
             <form action="" id="postForm2">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="발신번호 수정">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />

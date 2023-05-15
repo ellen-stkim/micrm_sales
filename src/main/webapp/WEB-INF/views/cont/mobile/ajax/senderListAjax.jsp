@@ -15,7 +15,7 @@
       <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
       <div class="pop_title">발신자 메일 주소</div>
       <div class="pop_inner">
-         <table class="pop_table">
+         <table class="pop_table" summary="table">
             <colgroup>
                <col width="35" />
                <col style="width:calc(50% - 17.5px);" />

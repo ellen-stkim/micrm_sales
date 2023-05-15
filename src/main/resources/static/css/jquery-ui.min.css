@@ -386,7 +386,7 @@ input.ui-button::-moz-focus-inner,button.ui-button::-moz-focus-inner {
 }
 
 .ui-datepicker th {
-    font-family:"Gotham";
+    font-family:"Gotham", sans-serif;
     font-size:10px;
     color:#555555;
     /* padding: .7em .3em; */
@@ -399,7 +399,7 @@ input.ui-button::-moz-focus-inner,button.ui-button::-moz-focus-inner {
 }
 
 .ui-datepicker td {
-    font-family:"Gotham";
+    font-family: "Gotham", sans-serif;
     font-size:10px;
     font-weight:500;
     color:#555555;

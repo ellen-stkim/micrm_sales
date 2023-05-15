@@ -43,6 +43,12 @@
                     <input type="hidden" id="seq" name="mst_seq" value="${list[0].seq}"/>
                     <input type="hidden" id="usr_grp_cd" name="usr_grp_cd" value="${list[0].cont_grp_cd}"/>
                     <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
+                    <c:if test="${list[1].coupon_seq != null}">
+                        <input type="hidden" id="coupon_seq" name="coupon_seq" value="${list[1].coupon_seq}"/>
+                    </c:if>
+                    <c:if test="${list[1].coupon_seq == null}">
+                        <input type="hidden" id="coupon_seq" name="coupon_seq" value=""/>
+                    </c:if>
                     <div class="th">템플릿 명</div>
                     <div class="td right-border">
                         <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
@@ -268,14 +274,14 @@
                                                         <!-- 이미지는 있고, 이미지 링크는 없을때 -->
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                                <a href="${list[0].kko_img_lst}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                             <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                                <a href="${list[0].kko_img_url}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                         </c:if>
@@ -394,22 +400,21 @@
                                                         <!-- 이미지는 있고, 이미지 링크는 없을때 -->
                                                         <c:if test="${cont_tp eq 'DMTP03'}">
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                                <a href="${list[0].kko_img_lst}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'"/>
+                                                                <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                             <!-- 이미지는 있고, 이미지 링크도 있을때 -->
                                                             <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                                <a href="${list[0].kko_img_url}" target="_blank">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
+                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </a>
                                                             </c:if>
                                                         </c:if>
                                                     </div>
                                                     <p class="kakao_txt" id="prev_ft_txt">${cutil:replaceBr(list[0].cont_body)}</p>
                                                     <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                        <a href="${list[0].kko_btn_url}" class="kakao_link"
-                                                           target="_blank">${list[0].kko_btn_nm}</a>
+                                                        <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
                                                     </c:if>
                                                 </div>
                                             </div>
@@ -472,8 +477,7 @@
                                                             <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
                                                                 <c:if test="${!empty tmpl.kko_img_cd}">
                                                                     <div class="kko_img_box">
-                                                                        <img src="${tmpl.kko_img_url}" style="max-height: 135px;"
-                                                                             onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                        <img src="${tmpl.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
                                                                     </div>
                                                                 </c:if>
                                                             </c:if>
@@ -494,9 +498,9 @@
                                                                                 <div class="tmpl_subtit">${highlight.description}</div>
                                                                             </div>
                                                                             <c:if test="${fn:contains(tmpl.item_highlight_json,'\"imageUrl\"')}">
-                                                                                <div class="right_img_box"><img src="${highlight.imageUrl}"
-                                                                                                                onerror="this.src = '/image/bg_none.png'"
-                                                                                                                alt=""></div>
+                                                                                <div class="right_img_box">
+                                                                                    <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                                </div>
                                                                             </c:if>
                                                                         </div>
                                                                     </c:if>
@@ -536,7 +540,7 @@
                                                                         <a class="sms_btn kakao_yellow">${btn.name}</a>
                                                                     </c:if>
                                                                     <c:if test="${btn.linkType ne 'AC'}">
-                                                                        <a href="${btn.linkPc}" target="_blank" class="sms_btn">${btn.name}</a></c:if>
+                                                                        <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
                                                                 </c:forEach>
                                                             </c:if>
                                                             <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
@@ -611,6 +615,14 @@
                                                         </label>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="th top-border">Short URL 사용</div>
+                                                    <div class="td top-border">
+                                                        <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
+                                                        <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
+                                                    </div>
+                                                    <input type="hidden" name="mms_imgurl"/>
+                                                </div>
                                                 <div class="row input-img <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">
                                                     <div class="th top-border <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">이미지 선택</div>
                                                     <div class="td top-border">
@@ -628,8 +640,8 @@
                                                     <div class="td top-border">
                                                         <div class="col_img" id="js-sms-img">
                                                             <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
-                                                            <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
-                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" />
+                                                            <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
+                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" alt="" />
                                                             </a>
                                                             </c:if>
                                                         </div>
@@ -648,6 +660,29 @@
                                                     <div class="th bottom-border">내용</div>
                                                     <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
                                                                                onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea></div>
+                                                </div>
+                                                <div class="row send">
+                                                    <div class="th bottom-border">쿠폰 발송</div>
+                                                    <div class="td bottom-border">
+                                                        <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
+
+                                                        <c:if test="${list[1].coupon_seq != null}">
+                                                            <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
+                                                            <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
+                                                            <div style="flex-grow: 1; display: flex">
+                                                                <input type="text" name="" id="couponNameInput" style="max-width: 540px;" placeholder="" value="{${list[1].coupon_nm} 쿠폰링크}" readonly/>
+                                                                <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" onclick="couponCancel();">×</button>
+                                                            </div>
+                                                        </c:if>
+                                                        <c:if test="${list[1].coupon_seq == null}">
+                                                            <input type="text" name="" placeholder="" value="" readonly/>
+                                                        </c:if>
+                                                        <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
+                                                        <!-- 쿠폰 활성화 시 -->
+                                                        <button type="button" class="btn preview" onclick="couponPreview('able');">미리보기</button>
+                                                        <!-- 쿠폰 비활성화 시 -->
+                                                        <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="th">수신거부 문구</div>
@@ -687,8 +722,8 @@
                                                 <%--                                        <div class="sms_img"></div>--%>
                                             <div class="sms_img_box" id="sms_img_box"><c:if
                                                     test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
-                                                <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank">
-                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'"/>
+                                                <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
+                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                 </a>
                                             </c:if></div>
                                             <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">${cutil:replaceBr(list[1].cont_body)}</p></div>
@@ -2397,8 +2432,7 @@
                                                 <div class="rcs_vertical tall cf">
                                                     <div class="img_area">
                                                         <c:if test="${fn:trim(fn:split(list[2].img_lst,',')[0]) != ''}">
-                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}"
-                                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                                         </c:if>
                                                     </div>
                                                     <input type="hidden" name="rcs_img_url_1"
@@ -2426,8 +2460,7 @@
                                                 <div class="rcs_vertical medium cf">
                                                     <div class="img_area">
                                                         <c:if test="${fn:trim(fn:split(list[2].img_lst,',')[0]) != ''}">
-                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}"
-                                                                 onerror="this.src = '/image/bg_none.png'"/>
+                                                            <img src="${filePath}${fn:split(list[2].img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'"  alt="img" />
                                                         </c:if>
                                                     </div>
                                                     <input type="hidden" name="rcs_img_url_1"
@@ -3558,7 +3591,7 @@
                                                             <c:set var="imgNm" value="${fn:split(list[2].img_lst,',')[idx]}"/>
                                                             <div class="img_area">
                                                                 <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                    <img src="${filePath}${imgNm}" onerror="this.src = '/image/bg_none.png'"/>
+                                                                    <img src="${filePath}${imgNm}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                                 </c:if>
                                                             </div>
                                                             <c:set var="imgIdx" value="${idx+1}"/>

@@ -8,11 +8,9 @@ import com.omnilab.micrm.model.SendResult_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.*
-import com.omnilab.micrm.task.ThreadPool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,137 +21,15 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Value("\${variable.minio-url}")
-    private lateinit var minio_url: String
-
-    @Value("\${variable.minio-username}")
-    private lateinit var minio_username: String
-
-    @Value("\${variable.minio-password}")
-    private lateinit var minio_password: String
-
-    @Value("\${variable.minio-bucket}")
-    private lateinit var minio_bucket: String
-
-    @Value("\${variable.static-path}")
-    private lateinit var static_path: String
-
-    @Autowired
-    @Qualifier("ThreadPoolImpl")
-    private lateinit var pool: ThreadPool
-
     @Autowired
     @Qualifier("CampaignDaoImpl")
     private lateinit var campaignDao: CampaignDao
 
     @Autowired
-    @Qualifier("CampaignEdmDaoImpl")
-    private lateinit var edmSend: CampaignSendDao
-
-    @Autowired
-    @Qualifier("CampaignMdmDaoImpl")
-    private lateinit var mdmSend: CampaignSendDao
-
-    @Autowired
-    @Qualifier("CampaignKakaoDaoImpl")
-    private lateinit var kkoSend: CampaignSendDao
-
-    @Autowired
-    @Qualifier("CampaignRcsDaoImpl")
-    private lateinit var rcsSend: CampaignSendDao
-
-    @Autowired
-    @Qualifier("CommonDaoImpl")
-    private lateinit var commonDao: CommonDao
-
-    @Autowired
     private lateinit var sysSettingDao: SysSettingDao
 
     @Autowired
-    private lateinit var campaignReportDao: CampaignReportDao
-
-    @Autowired
     private lateinit var commonService: com.omnilab.micrm.service.CommonService
-
-
-    override fun programSend(pro_id: String, auto_tp: Boolean) {
-        /*
-        //val programDto = campaignDao.sel_tblmicp_programOne(Tblmicp_programDto(pro_id, "01"))
-        val campaignLst = campaignDao.sel_tblmicp_campaign(Tblmicp_campaignDto(pro_id))
-
-        campaignDao.upd_tblmicp_program(Tblmicp_programDto(pro_id, "02"))
-
-        for (campaignDto in campaignLst) {
-            val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
-            val contTpLst = HashMap<String, Contents_lstDto>()
-            //val imgPath =  sysSettingDao.getCommCD(Tblmi_comm_cdDto("IMG_PATH", campaignDto.usr_grp_cd.toString())).cd_val
-            val minioClient = MinioClient.builder().endpoint(minio_url).credentials(minio_username, minio_password).build()
-
-            for (check in contLst) {
-                contTpLst[check.cont_tp.toString()] = check
-                if (!check.img_lst.isNullOrEmpty()) {
-                    val url_list = check.img_lst!!.split(",")
-                    val nm_list = check.img_nm_lst!!.split(",")
-
-                    for (i in url_list.indices) {
-                        minioClient.uploadObject(
-                                UploadObjectArgs.builder()
-                                        .bucket(minio_bucket)
-                                        .`object`("${campaignDto.usr_grp_cd.toString()}/${nm_list[i]}")
-                                        .filename(static_path + url_list[i])
-                                        .build())
-                    }
-                }
-                if (!check.kko_image_url.isNullOrEmpty()) {
-                    minioClient.uploadObject(
-                            UploadObjectArgs.builder()
-                                    .bucket(minio_bucket)
-                                    .`object`("${campaignDto.usr_grp_cd.toString()}/${check.kko_image_file_nm}")
-                                    .filename(static_path + check.kko_image_url)
-                                    .build())
-                }
-            }
-            if (campaignDto.camp_ch == "CH01") { //이메일
-                edmSend.ins_send(campaignDto, contTpLst)
-                val map = HashMap<String, Any>()
-                map["program_id"] = pro_id
-                map["camp_id"] = campaignDto.seq.toString()
-                map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                map["gubun"] = "99"
-                edmSend.upd_send(map)
-            } else {  //문자
-                when {
-                    contTpLst["DMTP04"] != null -> {
-                        rcsSend.ins_send(campaignDto, contTpLst)
-                        val map = HashMap<String, Any>()
-                        map["camp_id"] = campaignDto.seq.toString()
-                        map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                        map["gubun"] = "9"
-                        rcsSend.upd_send(map)
-                    }
-                    contTpLst["DMTP03"] != null -> {
-                        kkoSend.ins_send(campaignDto, contTpLst)
-                        val map = HashMap<String, Any>()
-                        map["camp_id"] = campaignDto.seq.toString()
-                        map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                        map["gubun"] = "9"
-                        kkoSend.upd_send(map)
-                    }
-                    else -> {
-                        mdmSend.ins_send(campaignDto, contTpLst)
-                        val map = HashMap<String, Any>()
-                        map["camp_id"] = campaignDto.seq.toString()
-                        map["usr_grp_cd"] = campaignDto.usr_grp_cd.toString()
-                        map["msgTp"] = contTpLst["DMTP02"]!!.msg_tp.toString()
-                        map["gubun"] = "9"
-                        mdmSend.upd_send(map)
-                    }
-                }
-            }
-        }
-         */
-    }
-
 
     override fun getTitleProgramCnt(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
@@ -339,13 +215,12 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
 
     override fun getContentPreview(searchCont: Tblmicp_cont_mstDto): MutableList<HashMap<String, Any?>> {
-        var mapLst = mutableListOf<HashMap<String, Any?>>()
+        val mapLst = mutableListOf<HashMap<String, Any?>>()
 
         val contentDtoLst = campaignDao.getContentsViewList(searchCont)
 
         for (contentDto in contentDtoLst) {
-
-            var map = HashMap<String, Any?>()
+            val map = HashMap<String, Any?>()
             contentDto.cardSize = '1'.toString()
             if (contentDto.cont_tp.equals("DMTP04")) {
                 commonService.jsonOneContentsParsing(contentDto)

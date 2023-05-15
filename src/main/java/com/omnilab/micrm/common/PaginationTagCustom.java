@@ -13,21 +13,19 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class PaginationTagCustom extends TagSupport {
-	
-	private static final long serialVersionUID = 1L;
-    private PaginationInfo paginationInfo;
-    private String type;
-    private String jsFunction;
 
-    public PaginationTagCustom() {
-    }
+    private static final long serialVersionUID = 1L;
+    private PaginationInfo paginationInfo = null;
+    private String type = null;
+    private String jsFunction = null;
 
+    @Override
     public int doEndTag() throws JspException {
         try {
             JspWriter out = this.pageContext.getOut();
             WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext((HttpServletRequest) this.pageContext.getRequest(), this.pageContext.getServletContext());
             Object paginationManager;
-            if (ctx.containsBean("paginationManager")) {
+            if (ctx != null && ctx.containsBean("paginationManager")) {
                 paginationManager = ctx.getBean("paginationManager");
             } else {
                 paginationManager = new DefaultPaginationManager();
@@ -53,5 +51,4 @@ public class PaginationTagCustom extends TagSupport {
     public void setType(String type) {
         this.type = type;
     }
-    
 }

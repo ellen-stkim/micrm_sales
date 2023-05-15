@@ -5,6 +5,7 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
+import com.omnilab.micrm.model.coupon.SearchCouponDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
@@ -30,6 +31,8 @@ import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStreamReader
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
 import javax.imageio.ImageIO
@@ -37,7 +40,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 
 @Controller
@@ -79,6 +81,13 @@ class SalesforceController {
     @Autowired
     @Qualifier("KkoMsgServiceImpl")
     private lateinit var kkoMsgService: KkoMsgService
+
+    @Autowired
+    private lateinit var couponListService: CouponListService
+
+    @Autowired
+    @Qualifier("CouponIssueServiceImpl")
+    private lateinit var couponIssueService: CouponIssueService
 
     @Value("\${upload.content}")
     private val filePath: String? = null
@@ -799,7 +808,15 @@ class SalesforceController {
                 val gson = GsonBuilder().create()
                 val data = gson.fromJson(payload, Map::class.java)
                 logger.error("data : {}", data)
-                salesforceService.sendCampaign(data as MutableMap<String, Any>)
+                var couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
+                if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
+
+                salesforceService.sendCampaign(data)
+
+                if (couponIssuedLogDto != null) {
+                    couponIssuedLogDto = data["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                    couponIssueService.issueCouponAtSales(couponIssuedLogDto, couponIssuedLogDto.msgkey.toString())
+                }
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
             return ResponseEntity(null, HttpStatus.OK)
@@ -864,6 +881,41 @@ class SalesforceController {
     fun error(@PathVariable(value = "usr_cd") usr_cd: String): String {
         logger.error("error")
         return "index"
+    }
+
+    /**
+     * 쿠폰 기능
+     */
+    @PostMapping("/{usr_cd}/coupon/getCouponListAtSales.ajax")
+    fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, searchCouponDto: SearchCouponDto): ModelAndView {
+        val view = ModelAndView("cont/coupon/couponListAjax")
+        val reMap = couponListService.getCouponListAtSales(searchCouponDto, usr_cd)
+        view.addObject("couponList", reMap["list"])
+        view.addObject("page", reMap["page"])
+        view.addObject("pageNo", reMap["pageNo"])
+        view.addObject("cnt", reMap["cnt"])
+
+        return view
+    }
+
+    @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
+    fun couponPreview(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
+        val view = ModelAndView("cont/coupon/couponPreviewAjax")
+
+        val couponListDto = couponListService.getCoupon(seq)
+
+        couponListDto.daily_start_time = formattingTime(couponListDto.daily_start_time!!)
+        couponListDto.daily_end_time = formattingTime(couponListDto.daily_end_time!!)
+
+        view.addObject("coupon", couponListDto)
+        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
+        return view
+    }
+
+    private fun formattingTime(time: String): String {
+        val splitTime = time.split(":").map { it.toInt() }
+        val localTime = LocalTime.of(splitTime[0], splitTime[1])
+        return localTime.format(DateTimeFormatter.ofPattern("h:mm a", Locale.US))
     }
 
 }

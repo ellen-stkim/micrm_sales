@@ -76,7 +76,7 @@
             </div>
             <!-- 검색 결과 영역 끝 -->
             <!-- table 영역 시작 -->
-            <table class="table">
+            <table class="table" summary="table">
                 <colgroup>
                     <col width="16.6%" />
                     <col width="16.6%" />

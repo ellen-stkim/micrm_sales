@@ -6,13 +6,7 @@ import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import java.util.HashMap
 
-
 interface CampaignService {
-
-
-    //이후 배치서버로 이전대상
-    fun programSend(pro_id: String, auto_tp: Boolean)
-
     // 타이틀에 필요한 programCnt 가져오기
     fun getTitleProgramCnt() : Map<String,Any>
 

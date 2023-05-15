@@ -1,7 +1,6 @@
 package com.omnilab.micrm.service
 
 import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.model.Block_searchDto
 import com.omnilab.micrm.model.table.*
 import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
@@ -32,25 +31,25 @@ class CustomAuthenticationProvider : AuthenticationProvider {
 
     @Throws(AuthenticationException::class)
     override fun authenticate(auth: Authentication): Authentication {
-        val usr_email = auth.principal.toString()
-        val usr_pw = auth.credentials.toString()
+        val usrEmail = auth.principal.toString()
+        val usrPw = auth.credentials.toString()
 
 
-        if(usr_email.trim().isEmpty() || usr_pw.trim().isEmpty()){
+        if(usrEmail.trim().isEmpty() || usrPw.trim().isEmpty()){
             throw BadCredentialsException("BAD")
         }
         var ip = CommonUtils.clientip(request)
         if (ip == "0:0:0:0:0:0:0:1")
             ip = "127.0.0.1"
 
-        val loginDto = Tblmi_usrDto(usr_email, CommonUtils.sha512(usr_pw))
+        val loginDto = Tblmi_usrDto(usrEmail, CommonUtils.sha512(usrPw))
         val userInfo: Tblmi_usrDto? = sqlSession.selectOne("sel_login", loginDto)
 
         if(userInfo == null){
             val commDto = Tblmi_comm_cdDto()
             commDto.par_id = "SALESFORCE"
             commDto.grp_id = "SALES_MID"
-            commDto.cd_id = usr_email
+            commDto.cd_id = usrEmail
             val usrGrpCd = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", commDto)
 
             if(usrGrpCd == null){
@@ -58,18 +57,18 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 if(info != null){
                     sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(info.usr_grp_cd!!, info.usr_id!!, info.usr_email!!, ip, "1"))
                 }else{
-                    sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(usr_email, ip, "1"))
+                    sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(usrEmail, ip, "1"))
                 }
                 throw BadCredentialsException("BAD")
             }else{
                 val roles = ArrayList<GrantedAuthority>()
                 roles.add(SimpleGrantedAuthority("ROLE_SALES"))
                 //세일즈 포스 접속
-                val result = UsernamePasswordAuthenticationToken(usr_email, "", roles)
+                val result = UsernamePasswordAuthenticationToken(usrEmail, "", roles)
                 val uInfo = Tblmi_usrDto()
-                uInfo.usr_id = usr_pw
-                uInfo.usr_sales_id = usr_pw
-                uInfo.usr_sales_org_id = usr_email
+                uInfo.usr_id = usrPw
+                uInfo.usr_sales_id = usrPw
+                uInfo.usr_sales_org_id = usrEmail
                 uInfo.usr_grp_cd = usrGrpCd.cd_val
                 result.details = uInfo
                 return result
@@ -101,7 +100,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             for(role in roleList){
                 roles.add(SimpleGrantedAuthority("ROLE_${role.role_cd}"))
             }
-            val result = UsernamePasswordAuthenticationToken(usr_email, "", roles)
+            val result = UsernamePasswordAuthenticationToken(usrEmail, "", roles)
             userInfo.usr_pw = null
             result.details = userInfo
             return result

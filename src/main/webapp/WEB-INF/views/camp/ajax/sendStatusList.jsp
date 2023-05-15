@@ -62,17 +62,17 @@
     <c:when test="${!cutil:isEmptyObject(list)}">
         <div class="scroll_tbl" id="bodyDom">
             <!-- table 영역 시작 -->
-            <table class="table target_tbl dynamic_tbl list" id="sendTable">
+            <table class="table target_tbl dynamic_tbl list" id="sendTable" summary="send">
                 <thead>
                 <tr>
-                    <th>상태</th>
-                    <th>구분</th>
-                    <th>캠페인 명</th>
-                    <th>발송일시</th>
-                    <th>발송 타겟</th>
-                    <th>타겟 수</th>
-                    <th>발송 담당자</th>
-                    <th>보기</th>
+                    <th scope="col">상태</th>
+                    <th scope="col">구분</th>
+                    <th scope="col">캠페인 명</th>
+                    <th scope="col">발송일시</th>
+                    <th scope="col">발송 타겟</th>
+                    <th scope="col">타겟 수</th>
+                    <th scope="col">발송 담당자</th>
+                    <th scope="col">보기</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -121,16 +121,16 @@
     <c:otherwise>
         <div class="scroll_tbl" id="bodyDom">
             <!-- table 영역 시작 -->
-            <table class="table target_tbl dynamic_tbl list" id="sendTable">
+            <table class="table target_tbl dynamic_tbl list" id="sendTable" summary="send">
                 <thead>
                 <tr>
-                    <th>상태</th>
-                    <th>캠페인 명</th>
-                    <th>발송일시</th>
-                    <th>발송 타겟</th>
-                    <th>타겟 수</th>
-                    <th>발송 담당자</th>
-                    <th>보기</th>
+                    <th scope="col">상태</th>
+                    <th scope="col">캠페인 명</th>
+                    <th scope="col">발송일시</th>
+                    <th scope="col">발송 타겟</th>
+                    <th scope="col">타겟 수</th>
+                    <th scope="col">발송 담당자</th>
+                    <th scope="col">보기</th>
                 </tr>
                 </thead>
                 <tbody>

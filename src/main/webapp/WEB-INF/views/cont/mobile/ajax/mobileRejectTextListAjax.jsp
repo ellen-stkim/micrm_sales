@@ -17,7 +17,7 @@
       <div class="pop_title">수신거부 문구 선택</div>
       <div class="pop_inner">
          <span class="btn_sm_line right" style="margin-bottom: 10px;" onclick="rejectTextAddPopup()" >추가</span>
-         <table class="pop_table">
+         <table class="pop_table" summary="table">
             <colgroup>
                <col width="35" />
                <col style="width:calc(50% - 17.5px);" />
@@ -77,7 +77,7 @@
          <div class="pop_title">수신거부 문구 추가</div>
          <div class="pop_inner">
             <form action="" id="postForm1">
-               <table class="pop_table_type1">
+               <table class="pop_table_type1" summary="수신거부 문구 추가">
                   <colgroup>
                      <col width="103" />
                      <col width="*" />

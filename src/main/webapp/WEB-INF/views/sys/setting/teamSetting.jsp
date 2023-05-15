@@ -88,14 +88,14 @@
         <div class="pop_title">팀 정보 추가</div>
         <div class="pop_inner">
             <form action="" id="postForm1">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="팀 정보 추가">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>팀명</th>
+                        <th scope="row">팀명</th>
                         <td>
                             <input type="text" name="list_nm" id="list_nm" placeholder="팀명를 입력해주세요." class="input_type1" />
                         </td>
@@ -119,7 +119,7 @@
         <div class="pop_title">팀 정보 수정</div>
         <div class="pop_inner">
             <form action="" id="postForm2">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="팀 정보 수정">
                     <colgroup>
                         <col width="103" />
                         <col width="*" />
@@ -127,7 +127,7 @@
                     <tbody>
                     <input type ="hidden" name="seq_mod" id="seq_mod"/>
                     <tr>
-                        <th>팀명</th>
+                        <th scope="row">팀명</th>
                         <td>
                             <input type="text" name="list_nm_mod" id="list_nm_mod" placeholder="팀명을 입력해주세요." class="input_type1" />
                         </td>

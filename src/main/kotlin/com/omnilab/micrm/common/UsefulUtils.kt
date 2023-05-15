@@ -59,7 +59,6 @@ class UsefulUtils {
             out.flush()
             out.close()
         }
-
     }
 
 

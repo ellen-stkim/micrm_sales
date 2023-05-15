@@ -42,7 +42,7 @@
                 <div class="camp-content">
                     <div class="preview-container">
                         <c:if test="${cont_tp eq 'DMTP01'}">
-                            <iframe name="preview" id="preview" frameborder="0"></iframe>
+                            <iframe name="preview" id="preview" frameborder="0" title="viwer"></iframe>
                         </c:if>
                         <!-- 모바일 (문자) 이면서 MMS 형태 -->
                         <c:if test="${cont_tp eq 'DMTP02' && dto.msg_tp eq 'DMCH203'}">
@@ -89,13 +89,12 @@
                                 <div class="round_box">
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
                                         <div class="sms">
-                                            <img src="${filePath}${dto.kko_img_url}"
-                                                 onerror="this.src = '/image/bg_none.png'">
+                                            <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                         </div>
                                     </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
-                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn">${dto.kko_btn_nm}</a>
+                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
                                     </c:if>
                                 </div>
                             </div>
@@ -110,15 +109,13 @@
                                         </div>
                                         <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
                                             <div class="sms">
-                                                <img src="${filePath}${dto.kko_img_url}"
-                                                     onerror="this.src = '/image/bg_none.png'">
+                                                <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                             </div>
                                         </c:if>
                                         <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
                                         <c:forEach var="btn" items="${dto.at_btn_json}">
                                             <div>
-                                                <a href="${btn.get('linkPc')}" target="_blank"
-                                                   class="sms_btn">${btn.get('name')}</a>
+                                                <a href="${btn.get('linkPc')}" target="_blank" class="sms_btn" rel="noopener">${btn.get('name')}</a>
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -147,8 +144,7 @@
                                     <div class="rcs_vertical tall cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(dto.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -171,8 +167,7 @@
                                     <div class="rcs_vertical medium cf">
                                         <div class="img_area">
                                             <c:if test="${not empty fn:split(dto.img_lst,',')[0]}">
-                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}"
-                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                <img src="${filePath}${fn:split(dto.img_lst,',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="img" />
                                             </c:if>
                                         </div>
                                         <div class="txt_area">
@@ -207,8 +202,7 @@
                                                                value="${fn:split(dto.img_lst,',')[idx]}"/>
                                                         <div class="img_area">
                                                             <c:if test="${fn:trim(imgNm) != '' && fn:trim(imgNm) != null}">
-                                                                <img src="${filePath}${imgNm}"
-                                                                     onerror="this.src = '/image/bg_none.png'"/>
+                                                                <img src="${filePath}${imgNm}" alt="img" onerror="this.src = '/image/bg_none.png'"/>
                                                             </c:if>
                                                         </div>
                                                         <c:set var="imgIdx" value="${idx+1}"/>
@@ -264,7 +258,7 @@
     <div class="disnone"><textarea name="cont_body" id="cont_body" cols="30" rows="10"
                                    style="visibility: hidden; display: none;">${dto.cont_body}</textarea></div>
     <div class="click-data-table" id="click-data-table">
-        <table class="table target_tbl ">
+        <table class="table target_tbl" summary="table">
             <colgroup>
                 <col width="140"/>
                 <col width="140"/>
@@ -296,10 +290,12 @@
                 <tbody id="tbody_${cont_tp}" class="${status.count ==1 ? "" : "disnone"}">
                 <c:forEach var="item" items="${listmap.url}">
                     <tr>
-                        <td><a href="${item.url}" class="help_box" target="_blank">
-                            <span class="link_name" name="click-help">${item.url_id}</span>
-                            <label class="disnone">${item.url}</label>
-                        </a></td>
+                        <td>
+                            <a href="${item.url}" class="help_box" target="_blank" rel="noopener">
+                                <span class="link_name" name="click-help">${item.url_id}</span>
+                                <label class="disnone">${item.url}</label>
+                            </a>
+                        </td>
                         <td><span>${empty item.click_cnt ? 0: item.click_cnt} 회</span></td>
                         <td><span>${empty item.per_cnt ? 0: item.per_cnt} 명</span></td>
                         <td><span>${empty item.link_per_cnt ? 0.00: item.link_per_cnt} 회</span></td>

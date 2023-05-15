@@ -108,7 +108,7 @@
                                     9월 2일~3일 동안 ZX 알카인 제품을 구매해주신 회원님께<br />
                                     20% BOUNCE BACK 쿠폰이 발급되었습니다.<br />
                                 </p>
-                                <a href="#" target="_blank" class="sms_btn">자세히 보기</a>
+                                <a href="#" target="_blank" class="sms_btn" rel="noopener">자세히 보기</a>
                             </div>
                         </div>
                         <div class="row_footer">

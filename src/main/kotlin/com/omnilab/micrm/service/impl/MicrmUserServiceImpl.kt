@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import java.security.SecureRandom
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -45,9 +46,9 @@ class MicrmUserServiceImpl : MicrmUserService {
     override fun sendPassword(usrDto: Tblmi_usrDto): HashMap<String, String> {
 
         val userMap = HashMap<String,String>()
-        val random = Random()
-        val randomNumber = random.nextInt(79999) + 10000;
-        val tempPassword = "micrm" + randomNumber
+        val random = SecureRandom()
+        val randomNumber = random.nextInt(79999) + 10000
+        val tempPassword = "micrm$randomNumber"
 
         val sendTo = usrDto.usr_log_id
         val sendToNm = usrDto.usr_nm
@@ -55,7 +56,7 @@ class MicrmUserServiceImpl : MicrmUserService {
         val subject = "임시 비밀번호"
         val body = "임시 비밀번호를 발급합니다.<br> 임시 비밀번호는 " + tempPassword + "입니다"
 
-        logger.error("tempPasword: " + tempPassword);
+        logger.error("tempPasword: $tempPassword");
 
         val userDto = Tblmi_usrDto()
         userDto.usr_log_id = usrDto.usr_log_id

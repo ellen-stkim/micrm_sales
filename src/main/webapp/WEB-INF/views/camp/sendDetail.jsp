@@ -206,7 +206,7 @@
                                     <input type="button" value="닫기" class="btn_pop_close sm"
                                            onclick="isShowPrice(false)">
                                     <div class="cf">
-                                        <table class="pop_table_type2 width1 margin">
+                                        <table class="pop_table_type2 width1 margin" summary="table">
                                             <thead>
                                             <tr>
                                                 <th class="en_font">Email</th>
@@ -218,7 +218,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <table class="pop_table_type2 width2 margin">
+                                        <table class="pop_table_type2 width2 margin" summary="table">
                                             <thead>
                                             <tr>
                                                 <th class="en_font">알림톡</th>
@@ -236,7 +236,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <table class="pop_table_type2">
+                                        <table class="pop_table_type2" summary="table">
                                             <colgroup>
                                                 <col width="25%"/>
                                                 <col width="25%"/>
@@ -269,7 +269,7 @@
                             </div>
                             <!-- 발송단가 영역 끝 -->
 
-                            <table class="pop_table_type3">
+                            <table class="pop_table_type3" summary="발송단가">
                                 <colgroup>
                                     <col width="1"/>
                                     <col width="80"/>
@@ -378,179 +378,6 @@
 <!-- container 영역 끝 -->
 </div>
 <!-- wrap end -->
-
-<!-- 상세 조건 보기 팝업 영역 시작 -->
-<%--<div class="layer_pop" id="detailPopup">
-    <div class="pop_container popup_size8">
-        <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
-        <div class="pop_title">캠페인 상세 조건 보기 <span class="bar">|</span>
-            <span class="ellipsis">${dto.pro_nm}</span></div>
-        <div class="pop_inner padding_none">
-            <div class="condition_area cf">
-                <div class="left">
-                    <table class="pop_table_type3">
-                        <colgroup>
-                            <col width="50"/>
-                            <col width="195"/>
-                            <col width="245"/>
-                            <col width="195"/>
-                            <col width="*"/>
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th class="en_font">NO</th>
-                                <th>타겟 설정</th>
-                                <th>컨텐츠 설정</th>
-                                <th>시간 설정</th>
-                                <th>예상 발송 비용</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="g" items="${campLst}" varStatus="st">
-                                <c:set var="camp_id">${g.seq}</c:set>
-                                <c:set var="cont_id">${g.cont_id}</c:set>
-                            <tr>
-                                <td class="en_font">${st.count}</td>
-                                <td>
-                                    <div><span class="ellipsis name">${g.camp_nm}</span> <span>(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###" />명)</span></div>
-                                    <c:choose>
-                                        <c:when test="${empty targetDto}"><div><span class="th">계산일 : </span><span class="en_font">${cutil:getDateTimeNow()}</span></div></c:when>
-                                        <c:otherwise><div><span class="th">계산일 : </span><span class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span></div></c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <div>
-                                        <span class="ellipsis conts_name bar">${contLst[cont_id].cont_nm}</span>
-                                        <span>
-                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
-                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <input type="button" value="컨텐츠 미리보기" class="btn_sm_line size" onclick="preView('${g.cont_id}')"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <span class="bar">
-                                        <c:choose>
-                                            <c:when test="${g.sto eq '02'}">시간 최적화</c:when>
-                                            <c:when test="${g.sto eq '03'}">요일 최적화</c:when>
-                                            <c:otherwise>일괄 발송
-                                            </c:otherwise>
-                                        </c:choose>
-                                        </span>
-                                        <c:choose>
-                                            <c:when test="${g.send_st_tp eq '0'}"><span class="bar">예약발송</span></c:when>
-                                            <c:otherwise><span class="bar">즉시발송</span></c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div>
-                                        <span class="en_font">${cutil:stringDatetimeParse(g.start_dt)}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="en_font">0</span>원
-                                </td>
-                            </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                    <!-- 발송단가 영역 시작 -->
-                    <div class="price">
-                        <input type="button" class="btn_sm_line size" value="발송단가 확인하기" id="btn_price">
-                        <div class="price_detail">
-                            <h4>발송단가</h4>
-                            <div class="cf">
-                                <table class="pop_table_type2 width1 margin">
-                                    <thead>
-                                    <tr>
-                                        <th class="en_font">Email</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><span class="en_font">0</span>원</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <table class="pop_table_type2 width2 margin">
-                                    <thead>
-                                    <tr>
-                                        <th class="en_font">Kakao(img)</th>
-                                        <th class="en_font">MMS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><span class="en_font">0</span>원</td>
-                                        <td><span class="en_font">0</span>원</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <table class="pop_table_type2 width2">
-                                    <thead>
-                                    <tr>
-                                        <th class="en_font">Kakao</th>
-                                        <th class="en_font">LMS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><span class="en_font">0</span>원</td>
-                                        <td><span class="en_font">0</span>원</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <table class="pop_table_type2">
-                                    <colgroup>
-                                        <col width="25%"/>
-                                        <col width="25%"/>
-                                        <col width="25%"/>
-                                        <col width="25%"/>
-                                    </colgroup>
-                                    <thead>
-                                    <tr>
-                                        <th class="en_font">SMS/RCS SMS</th>
-                                        <th class="en_font">LMS/RCS LMS</th>
-                                        <th class="en_font">MMS/RCS MMS</th>
-                                        <th><span class="en_font">RCS</span> 템플릿</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><span class="en_font">0</span>원</td>
-                                        <td><span class="en_font">0</span>원</td>
-                                        <td><span class="en_font">0</span>원</td>
-                                        <td><span class="en_font">0</span>원</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 발송단가 영역 끝 -->
-                    <div class="sub_text">
-                        ※ RCS/카카오/문자 비용은 타겟 수의 1:3:6 비율로 측정됩니다.<br/>
-                        ※ 실제 발송 비용과 다를 수 있습니다.
-                    </div>
-                    <!-- 버튼 영역 -->
-                    <div class="btn_row">
-                        <input type="button" class="btn_bg btn_size2 btn_center" value="확인" onclick="popupClose(this);"/>
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="row">
-                        <span class="ellipsis">${dto.pro_nm} </span>미리보기
-                    </div>
-                    <div class="view" id="tpreview"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>--%>
-<!-- 상세 조건 보기 팝업 영역 끝 -->
-
 <!-- 캠페인 발송실패 문의 팝업 영역 시작 -->
 <div class="layer_pop" id="sendFailPopup">
     <div class="pop_container popup_size1">
@@ -559,7 +386,7 @@
         <form:form id="mailForm" method="post" action="/camp/inquirySend.service">
             <input type="hidden" name="pro_id" value="${dto.pro_id}"/>
             <div class="pop_inner">
-                <table class="pop_table_type1">
+                <table class="pop_table_type1" summary="캠페인 발송실패 문의">
                     <colgroup>
                         <col width="102"/>
                         <col width="*"/>

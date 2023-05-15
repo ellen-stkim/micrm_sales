@@ -39,9 +39,15 @@ variable:
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
   minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
 
+  share-url: ENC(XANceXIDQfsg2xrEnOJcVFroqyZN1KZDGeYaXEyMk6YG+uqzSz2Ts+EWQTb0N6zgFT6uA8KMtgZhC7sMq5BkMQ==)
+  share-bucket: sr.milvusapp.com
+  share-username: ENC(ysXvvktmQZPKfx6DyEVVatZat1KueviWusCJmMO0o6NQcfTfmTq77hZNN/4OH6mv)
+  share-password: ENC(DpPCIrO3zhhkShd2ciqoyktEBSpYuLITCgelA3gYWj55059S6NTh2C5Yj/NxDxnD)
+
   static-path : "C:/work/micrm_sales/src/main/webapp/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
+  coupon-image-path: "sales/dev"
 
 # 운영 서버
 #   biz-url: https://bizmsg-web.kakaoenterprise.com/mng

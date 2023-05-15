@@ -18,7 +18,7 @@
 	</c:otherwise>
 </c:choose>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 	<head>
 		<title>miCRM::
 		</title>
