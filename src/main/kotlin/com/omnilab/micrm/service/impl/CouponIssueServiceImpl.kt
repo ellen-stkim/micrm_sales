@@ -186,7 +186,7 @@ class CouponIssueServiceImpl: CouponIssueService {
                 val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "SECRET"))
 
                 // 6. Naver Short URL
-//                sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
+                sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?:"")
                 return Tblmicou_coupon_issued_logDto(
                     couponIssueDto.seq!!,
                     couponUuid,
