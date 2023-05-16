@@ -2322,7 +2322,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                                     // 쿠폰 발급 이력 생성
                                     if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
-                                        var couponIssueDto = CouponIssueDto()
+                                        val couponIssueDto = CouponIssueDto()
                                         couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
                                         couponIssueDto.send_phone = tblmicp_cont_lstDto.send_to
                                         couponIssueDto.msg_title = i.cont_sub
@@ -2529,7 +2529,7 @@ class SalesforceServiceImpl : SalesforceService {
                     for (check in contLst) {
                         contTpLst[check.cont_tp.toString()] = check
                     }
-                    logger.error("{}",contTpLst)
+                    //logger.error("{}",contTpLst)
 
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
                     if (isCouponSend && map["couponIssuedLogDto"] != null) {
@@ -2676,18 +2676,20 @@ class SalesforceServiceImpl : SalesforceService {
         val urlString = "$totalCntUrl?key=$key"
 
         val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-        if (result.statusCodeValue != HttpStatus.SC_OK) {
-            return null
+        val status = result.statusCode.value()
+        return if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
+            logger.error("+----------------------------------------------------")
+            logger.error("{}",result.body)
+            logger.error("{}",urlString)
+            if(CommonUtils.isEmptyObject(result.body)){
+                logger.error("getTotalCnt url : {}",urlString)
+            }
+            val body = result.body!!
+            GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+        }else {
+            null
         }
 
-        logger.error("+----------------------------------------------------")
-        logger.error("{}",result.body)
-        logger.error("{}",urlString)
-        if(CommonUtils.isEmptyObject(result.body)){
-            logger.error("getTotalCnt url : {}",urlString)
-        }
-        val body = result.body!!
-        return GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
     }
 
 

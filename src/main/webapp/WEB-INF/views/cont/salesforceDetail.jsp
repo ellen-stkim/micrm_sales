@@ -615,13 +615,6 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="th top-border">Short URL 사용</div>
-                                                    <div class="td top-border">
-                                                        <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
-                                                        <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
-                                                    </div>
-                                                </div>
                                                 <div class="row input-img <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">
                                                     <div class="th top-border <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">on</c:if>">이미지 선택</div>
                                                     <div class="td top-border">
@@ -657,9 +650,40 @@
                                                 </div>
                                                 <div class="row"  style="height:150px;">
                                                     <div class="th bottom-border">내용</div>
-                                                    <div class="td bottom-border"> <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                               onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea></div>
+                                                    <div class="td bottom-border">
+                                                        <textarea name="sms_body" class="sms_body textarea" id="sms_txt_area" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevSmsTxt(this)">${list[1].cont_body}</textarea>
+                                                    </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="th">수신거부 문구</div>
+                                                    <div class="td">
+                                                        <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
+                                                                <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                                    value="${cutil:numberToPhone(rejectText[0].list_val)}"
+                                                                </c:if>
+                                                                <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                                    placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                                </c:if>
+                                                        />
+                                                        <div style="display: flex; width: 110px">
+                                                            <span class="btn_sm_line btn_inline" onclick="addRejectText('sms')">사용</span>
+                                                            <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
+                                                        </div>
+                                                        <input type="hidden" name="sms_trackinglink"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block">
+                                                <div class="row">
+                                                    <div class="th">추적 링크 생성</div>
+                                                    <div class="td">
+                                                        <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                        <span class="btn_sm_line trackingLinkBtn">생성</span>
+                                                        <input type="hidden" name="sms_trackinglink"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block">
                                                 <div class="row send">
                                                     <div class="th bottom-border">쿠폰 발송</div>
                                                     <div class="td bottom-border">
@@ -689,31 +713,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="th">수신거부 문구</div>
+                                                    <div class="th">Short URL 사용</div>
                                                     <div class="td">
-                                                        <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
-                                                                <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                                    value="${cutil:numberToPhone(rejectText[0].list_val)}"
-                                                                </c:if>
-                                                                <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
-                                                                    placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
-                                                                </c:if>
-                                                        />
-                                                        <div style="display: flex; width: 110px">
-                                                            <span class="btn_sm_line btn_inline" onclick="addRejectText('sms')">사용</span>
-                                                            <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
-                                                        </div>
-                                                        <input type="hidden" name="sms_trackinglink"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="block">
-                                                <div class="row">
-                                                    <div class="th">추적 링크 생성</div>
-                                                    <div class="td">
-                                                        <input type="text" class="txt_input" id="smsTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                        <span class="btn_sm_line trackingLinkBtn">생성</span>
-                                                        <input type="hidden" name="sms_trackinglink"/>
+                                                        <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" <c:if test="${fn:trim(list[1].short_url_yn) eq 'Y'}">checked</c:if>/><span></span></label>
+                                                        <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
                                                     </div>
                                                 </div>
                                             </div>

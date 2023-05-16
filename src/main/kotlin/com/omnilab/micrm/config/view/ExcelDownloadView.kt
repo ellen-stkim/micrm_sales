@@ -53,7 +53,7 @@ class ExcelDownloadView: AbstractView() {
         } catch (e1: OpenXML4JRuntimeException) {
             logger.error("엑셀 다운로드 에러 팝업창 닫음 : " + filename.replace("[\r\n]".toRegex(), ""))
         } catch (e: Exception) {
-            logger.error("엑셀 다운로드 에러")
+            logger.error("엑셀 다운로드 에러", e)
             val out: PrintWriter
             try {
                 out = response.writer

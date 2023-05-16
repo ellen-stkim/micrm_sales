@@ -153,11 +153,11 @@ class CouponIssueServiceImpl: CouponIssueService {
 
     override fun createCouponLink(map: MutableMap<String, Any>): Tblmicou_coupon_issued_logDto? {
         //컨텐츠 마스터 정보
-        val avo_id = map["activityId"].toString()
-        val inten_id = map["journeyId"].toString()
+        val avoId = map["activityId"].toString()
+        val intenId = map["journeyId"].toString()
         val contMstDto = Tblmicp_cont_mstDto()
-        contMstDto.avo_id = avo_id
-        contMstDto.inten_id = inten_id
+        contMstDto.avo_id = avoId
+        contMstDto.inten_id = intenId
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
         if (contMst == null) {
             return null
@@ -213,7 +213,6 @@ class CouponIssueServiceImpl: CouponIssueService {
                 )
             }
         }
-
         return null
     }
 

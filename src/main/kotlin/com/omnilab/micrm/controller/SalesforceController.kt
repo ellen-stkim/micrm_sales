@@ -810,7 +810,9 @@ class SalesforceController {
                 logger.error("data : {}", data)
                 var couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
                 if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
-                salesforceService.sendCampaign(data as MutableMap<String, Any>)
+
+                salesforceService.sendCampaign(data)
+
                 if (couponIssuedLogDto != null) {
                     couponIssuedLogDto = data["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
                     couponIssueService.issueCouponAtSales(couponIssuedLogDto)

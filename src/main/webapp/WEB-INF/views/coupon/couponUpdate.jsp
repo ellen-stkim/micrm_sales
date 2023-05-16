@@ -10,7 +10,7 @@
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <script src="/js/jquery-ui-timepicker.js"></script>
-<script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js?v=0.12"></script>
+<script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js?v=0.13"></script>
 <div class="wrap mcdonald">
     <h3 class="page_title">COUPON</h3>
         <article class="area option bdr_bottom">
