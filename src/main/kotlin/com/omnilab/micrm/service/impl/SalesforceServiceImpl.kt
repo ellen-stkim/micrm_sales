@@ -2529,7 +2529,7 @@ class SalesforceServiceImpl : SalesforceService {
                     for (check in contLst) {
                         contTpLst[check.cont_tp.toString()] = check
                     }
-                    logger.error("{}",contTpLst)
+                    //logger.error("{}",contTpLst)
 
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
                     if (isCouponSend && map["couponIssuedLogDto"] != null) {
