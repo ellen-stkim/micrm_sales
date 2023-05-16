@@ -674,7 +674,12 @@
                                                             </div>
                                                         </c:if>
                                                         <c:if test="${list[1].coupon_seq == null}">
-                                                            <input type="text" name="" placeholder="" value="" readonly/>
+                                                            <input type ="hidden" id="savedCouponSeq" value=""/>
+                                                            <input type ="hidden" id="savedCouponNm" value=""/>
+                                                            <div style="flex-grow: 1; display: flex">
+                                                                <input type="text" name="" placeholder="" value="" readonly/>
+                                                                <button type="button" class="close" id="couponCancelBtn" data-dismiss="modal" aria-hidden="true" style="display: none" onclick="couponCancel();">×</button>
+                                                            </div>
                                                         </c:if>
                                                         <button type="button" class="btn apply" onclick="applyCoupon();">사용</button>
                                                         <!-- 쿠폰 활성화 시 -->
