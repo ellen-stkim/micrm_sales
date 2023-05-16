@@ -813,7 +813,7 @@ class SalesforceController {
                 salesforceService.sendCampaign(data as MutableMap<String, Any>)
                 if (couponIssuedLogDto != null) {
                     couponIssuedLogDto = data["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-                    couponIssueService.issueCouponAtSales(couponIssuedLogDto, couponIssuedLogDto.msgkey.toString())
+                    couponIssueService.issueCouponAtSales(couponIssuedLogDto)
                 }
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)

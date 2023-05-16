@@ -208,8 +208,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         return null
     }
 
-    override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
-        couponIssuedLogDto.msgkey = hst_seq
+    override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto) {
         couponDao.insertCouponIssuedLog(listOf(couponIssuedLogDto))
     }
 
