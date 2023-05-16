@@ -799,5 +799,30 @@ class SysSettingController {
         return sysSettingService.insertRejectText(lstDto)
     }
 
+    @GetMapping("/naverAppSetting.mi")
+    fun appKeySetting(): ModelAndView {
+        val view = ModelAndView("sys/setting/naverAppSetting")
+        val map = sysSettingService.getNaverApp();
+        view.addObject("list", map)
 
+        return view;
+    }
+
+    @ResponseBody
+    @PostMapping("/insertNaverApp.ajax")
+    fun insertNaverApp(lstDto: Tblmi_set_lstDto) : Map<String, Any> {
+        return sysSettingService.insertNaverApp(lstDto)
+    }
+
+    @ResponseBody
+    @PostMapping("/updateNaverApp.ajax")
+    fun updateNaverApp(lstDto: Tblmi_set_lstDto) : Map<String, Any> {
+        return sysSettingService.updateNaverApp(lstDto)
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteNaverApp.ajax")
+    fun deleteNaverApp(lstDto: Tblmi_set_lstDto) : Map<String, Any> {
+        return sysSettingService.deleteNaverApp(lstDto)
+    }
 }
