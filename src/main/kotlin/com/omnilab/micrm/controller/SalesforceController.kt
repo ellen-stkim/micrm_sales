@@ -815,7 +815,7 @@ class SalesforceController {
 
                 if (couponIssuedLogDto != null) {
                     couponIssuedLogDto = data["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-                    couponIssueService.issueCouponAtSales(couponIssuedLogDto, couponIssuedLogDto.msgkey.toString())
+                    couponIssueService.issueCouponAtSales(couponIssuedLogDto)
                 }
             }
             //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
@@ -910,6 +910,12 @@ class SalesforceController {
         view.addObject("coupon", couponListDto)
         view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
         return view
+    }
+
+    @ResponseBody
+    @PostMapping("/{usr_cd}/coupon/checkNaverApi.ajax")
+    fun checkNaverApi(@PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
+        return sysSettingService.isExistNaverApi(usrCd)
     }
 
     private fun formattingTime(time: String): String {

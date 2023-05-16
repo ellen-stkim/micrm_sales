@@ -453,6 +453,11 @@
 		</foreach>
 	</update>
 
+	<delete id="delete_coupon_issue" parameterType="String">
+		DELETE FROM tblmicou_coupon_issue
+		WHERE camp_seq = #{seq}
+	</delete>
+
 	<update id="delete_coupon_issued_log" parameterType="Map">
 		UPDATE tblmicou_coupon_issued_log
 		SET

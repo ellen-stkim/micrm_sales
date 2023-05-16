@@ -515,7 +515,7 @@
                                         <div class="row">
                                             <div class="th">Short URL 사용</div>
                                             <div class="td">
-                                                <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y"/><span></span></label>
+                                                <label class="custom_radio">사용함<input class="" name="short_url_yn" type="radio" value="Y" onclick="checkNaverApi();/><span></span></label>
                                                 <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" checked/><span></span></label>
                                             </div>
                                         </div>
@@ -3696,8 +3696,24 @@
         $("#couponCancelBtn").css("display","none");
         couponSeq = "";
         couponSelectSeq = "";
+        $('#coupon_seq').val('');
         const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
         couponURLEl.value =  '';
+    }
+
+    function checkNaverApi() {
+
+        const res = function (response) {
+            if (!response.status) {
+                $("input:radio[name='short_url_yn']:radio[value='Y']").prop('checked', false); // 선택하기
+                $("input:radio[name='short_url_yn']:radio[value='N']").prop('checked', true);
+                popup.popAlert('MiCRM 시스템 관리 환경에서 네이버 Short URL 설정이 필요합니다.');
+
+            }
+
+        }
+        var data = {};
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/checkNaverApi.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     const openInnerModal = (name) => {

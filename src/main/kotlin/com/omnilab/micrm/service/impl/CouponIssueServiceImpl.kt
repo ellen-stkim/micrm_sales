@@ -5,11 +5,13 @@ import com.omnilab.micrm.common.*
 import com.omnilab.micrm.config.error.CouponException
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.CouponIssueDto
+import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.CjMms_msgDto
 import com.omnilab.micrm.model.table.mdm.LgMms_msgDto
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CouponDao
+import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.CouponIssueService
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
@@ -31,6 +33,9 @@ class CouponIssueServiceImpl: CouponIssueService {
 
     @Autowired
     private lateinit var couponDao: CouponDao
+
+    @Autowired
+    private lateinit var sysSettingDao: SysSettingDao
 
     @Autowired
     @Qualifier("CampaignDaoImpl")
@@ -73,8 +78,13 @@ class CouponIssueServiceImpl: CouponIssueService {
         val mdmDBDto = couponDao.selectCommCd(Tblmi_comm_cdDto("MDM_DB", user.usr_grp_cd!!))
 
         // Naver API 정보 조회
-        val naverApiId = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", user.usr_grp_cd!!, "ID"))
-        val naverApiSecret = couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", user.usr_grp_cd!!, "SECRET"))
+        val lstDto = SetLst_searchDto()
+        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+
+        val dto = sysSettingDao.getSettingList(lstDto)
+
 
 
         // 쿠폰 전송
@@ -94,7 +104,7 @@ class CouponIssueServiceImpl: CouponIssueService {
             var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
 
             // Naver short Url 에러 또는 오류 시 원본 url 반환
-            sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?: "")
+            sendUrl = naverShortUrl.shorten(sendUrl, dto[0].list_nm ?: "", dto[0].list_nm ?: "")
 
             // {쿠폰링크} -> shortUrl 치환
             val msgContent = couponIssueDto.msg_content!!.replace("{쿠폰링크}", sendUrl)
@@ -182,18 +192,17 @@ class CouponIssueServiceImpl: CouponIssueService {
                 var sendUrl = "${couponDomain}${couponPath}${encodedUuid}"
                 if (contLst[0].short_url_yn == "Y") {
                     // Naver API 정보 조회
-                    val naverApiId =
-                        couponDao.selectCommCd(Tblmi_comm_cdDto("NAVER_APP", campaignDto.usr_grp_cd.toString(), "ID"))
-                    val naverApiSecret = couponDao.selectCommCd(
-                        Tblmi_comm_cdDto(
-                            "NAVER_APP",
-                            campaignDto.usr_grp_cd.toString(),
-                            "SECRET"
-                        )
-                    )
+                    val lstDto = SetLst_searchDto()
+                    lstDto.usr_grp_cd = campaignDto.usr_grp_cd
+                    lstDto.list_tp_id = "CH06"
+                    lstDto.list_dt_id = "APPK01"
+
+                    val dto = sysSettingDao.getSettingList(lstDto)
 
                     // 6. Naver Short URL
-                    sendUrl = naverShortUrl.shorten(sendUrl, naverApiId.cd_val ?: "", naverApiSecret.cd_val ?: "")
+                    if (dto.isNotEmpty()) {
+                        sendUrl = naverShortUrl.shorten(sendUrl, dto[0].list_nm ?: "", dto[0].list_nm ?: "")
+                    }
                 }
                 return Tblmicou_coupon_issued_logDto(
                     couponIssueDto.seq!!,
@@ -207,8 +216,7 @@ class CouponIssueServiceImpl: CouponIssueService {
         return null
     }
 
-    override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto, hst_seq: String) {
-        couponIssuedLogDto.msgkey = hst_seq
+    override fun issueCouponAtSales(couponIssuedLogDto: Tblmicou_coupon_issued_logDto) {
         couponDao.insertCouponIssuedLog(listOf(couponIssuedLogDto))
     }
 

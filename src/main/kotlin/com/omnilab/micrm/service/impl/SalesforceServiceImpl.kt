@@ -2293,6 +2293,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 //기존 데이터가 있을 경우 삭제
                                 salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
                                 salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
+                                salesforceDao.del_tblmicou_coupon_issue(cpMstDto.seq.toString())
 
                                 //신규 데이터 삽입
                                 val contListDto = Tblmi_cont_lstDto()
@@ -2528,7 +2529,7 @@ class SalesforceServiceImpl : SalesforceService {
                     for (check in contLst) {
                         contTpLst[check.cont_tp.toString()] = check
                     }
-                    logger.error("{}",contTpLst)
+                    //logger.error("{}",contTpLst)
 
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
                     if (isCouponSend && map["couponIssuedLogDto"] != null) {

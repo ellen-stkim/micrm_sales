@@ -116,4 +116,8 @@ class SalesforceDaoImpl: SalesforceDao {
     override fun insert_coupon_issue(couponIssueDto: CouponIssueDto) {
         sqlSession.insert("insert_coupon_issue", couponIssueDto)
     }
+
+    override fun del_tblmicou_coupon_issue(seq: String) {
+        sqlSession.delete("delete_coupon_issue", seq)
+    }
 }
