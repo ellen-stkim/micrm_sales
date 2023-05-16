@@ -90,5 +90,6 @@ interface SysSettingService {
     fun insertNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any>
     fun updateNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any>
     fun deleteNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any>
+    fun isExistNaverApi(usrCd: String): Map<String, Any>
 
 }

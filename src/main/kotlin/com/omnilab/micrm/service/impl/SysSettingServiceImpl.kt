@@ -787,6 +787,19 @@ class SysSettingServiceImpl : SysSettingService {
         return statusMap
     }
 
+    override fun isExistNaverApi(usrCd: String): Map<String, Any> {
+        val map = HashMap<String, Any>()
+
+        val lstDto = SetLst_searchDto()
+        lstDto.usr_grp_cd = usrCd
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+
+        val dto = sysSettingDao.getSettingList(lstDto)
+        map["status"] = dto.isNotEmpty()
+        return map
+    }
+
 
     private fun createSenderKey(param: HashMap<String, String>): MutableMap<String, Any> {
         var result: MutableMap<String, Any>

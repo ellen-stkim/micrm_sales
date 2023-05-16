@@ -910,6 +910,12 @@ class SalesforceController {
         return view
     }
 
+    @ResponseBody
+    @PostMapping("/{usr_cd}/coupon/checkNaverApi.ajax")
+    fun checkNaverApi(@PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
+        return sysSettingService.isExistNaverApi(usrCd)
+    }
+
     private fun formattingTime(time: String): String {
         val splitTime = time.split(":").map { it.toInt() }
         val localTime = LocalTime.of(splitTime[0], splitTime[1])

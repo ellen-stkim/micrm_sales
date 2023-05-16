@@ -436,7 +436,7 @@
                                             <div class="td top-border">
                                                 <label class="custom_radio">사용함<input class="" name="short_url_yn"
                                                                                       type="radio"
-                                                                                      value="Y"
+                                                                                      value="Y" onclick="checkNaverApi();"
                                                                                       /><span></span></label>
                                                 <label class="custom_radio">사용안함<input class="" name="short_url_yn"
                                                                                       type="radio"
@@ -3596,7 +3596,7 @@
         const kakaoUseYn = $("input[name='formatType'][value='kakao']").is(":checked");
         const rcsUseYn = $("input[name='formatType'][value='rcs']").is(":checked");
         if (kakaoUseYn || rcsUseYn) {
-            popup.popAlert("쿠폰 발송은 문자에서만 사용 가능합니다..");
+            popup.popAlert("쿠폰 발송은 문자에서만 사용 가능합니다.");
             return false;
         }
 
@@ -3703,6 +3703,21 @@
         $('#coupon_seq').val('');
         const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
         couponURLEl.value =  '';
+    }
+
+    function checkNaverApi() {
+
+        const res = function (response) {
+            if (!response.status) {
+                $("input:radio[name='short_url_yn']:radio[value='Y']").prop('checked', false); // 선택하기
+                $("input:radio[name='short_url_yn']:radio[value='N']").prop('checked', true);
+                popup.popAlert('MiCRM 시스템 관리 환경에서 네이버 Short URL 설정이 필요합니다.');
+
+            }
+
+        }
+        var data = {};
+        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/checkNaverApi.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 
     const openInnerModal = (name) => {

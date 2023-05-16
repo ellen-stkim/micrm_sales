@@ -200,7 +200,9 @@ class CouponIssueServiceImpl: CouponIssueService {
                     val dto = sysSettingDao.getSettingList(lstDto)
 
                     // 6. Naver Short URL
-                    sendUrl = naverShortUrl.shorten(sendUrl, dto[0].list_nm ?: "", dto[0].list_nm ?: "")
+                    if (dto.isNotEmpty()) {
+                        sendUrl = naverShortUrl.shorten(sendUrl, dto[0].list_nm ?: "", dto[0].list_nm ?: "")
+                    }
                 }
                 return Tblmicou_coupon_issued_logDto(
                     couponIssueDto.seq!!,
