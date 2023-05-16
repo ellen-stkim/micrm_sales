@@ -95,10 +95,10 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     }
 
     private fun replaceNewLine(dto: CouponRegisterDto) {
-        dto.title = dto.title ?: "".replace("\n", "<br/>")
-        dto.descr = dto.descr ?: "".replace("\n", "<br/>")
-        dto.notice = dto.notice ?: "".replace("\n", "<br/>")
-        dto.content = dto.content ?: "".replace("\n", "<br/>")
+        dto.title = (dto.title ?: "").replace("\n", "<br/>")
+        dto.descr = (dto.descr ?: "").replace("\n", "<br/>")
+        dto.notice = (dto.notice ?: "").replace("\n", "<br/>")
+        dto.content = (dto.content ?: "").replace("\n", "<br/>")
     }
 
     private fun validationCouponDto(dto: CouponRegisterDto, type: String) {
