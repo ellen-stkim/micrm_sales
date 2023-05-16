@@ -2302,7 +2302,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 contListDto.upd_id = usrId
                                 contListDto.use_yn = "Y"
                                 val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
-                                logger.error("yaho={}", contLst.size)
+
                                 for (i in contLst) {
                                     val oriSeq = i.seq.toString()
 
