@@ -211,13 +211,13 @@
 				seq = #{seq}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
-				usr_grp_cd = #{usr_grp_cd}
+				and usr_grp_cd = #{usr_grp_cd}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_tp_id)">
-				list_tp_id = #{list_tp_id}
+				and list_tp_id = #{list_tp_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list_dt_id)">
-				list_dt_id = #{list_dt_id}
+				and list_dt_id = #{list_dt_id}
 			</if>
 		</where>
 	</update>

@@ -36,4 +36,5 @@ interface SalesforceDao {
 
     fun ins_camp_send_rcs_img_lg(rcsImgLst: ArrayList<LgRcs_imgDto>):Int
     fun insert_coupon_issue(couponIssueDto: CouponIssueDto)
+    fun del_tblmicou_coupon_issue(seq: String)
 }

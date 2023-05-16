@@ -731,6 +731,76 @@ class SysSettingServiceImpl : SysSettingService {
         }
     }
 
+    override fun getNaverApp(): Map<String, Any> {
+        val map = HashMap<String, Any>()
+
+        val lstDto = SetLst_searchDto()
+        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+
+        val dto = sysSettingDao.getSettingList(lstDto)
+        map["list"] = dto
+        return map
+    }
+
+    override fun insertNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+        lstDto.reg_id = userInfo.usr_id
+
+        val result = sysSettingDao.insertSetLst(lstDto)
+
+        return statusMap
+
+    }
+
+    override fun updateNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+        lstDto.reg_id = userInfo.usr_id
+
+        val result = sysSettingDao.updateSetLst(lstDto)
+
+        return statusMap
+
+    }
+    override fun deleteNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+        lstDto.usr_grp_cd = userInfo.usr_grp_cd
+        lstDto.upd_id = userInfo.usr_id
+
+        val result = sysSettingDao.deleteSetLst(lstDto)
+
+        return statusMap
+    }
+
+    override fun isExistNaverApi(usrCd: String): Map<String, Any> {
+        val map = HashMap<String, Any>()
+
+        val lstDto = SetLst_searchDto()
+        lstDto.usr_grp_cd = usrCd
+        lstDto.list_tp_id = "CH06"
+        lstDto.list_dt_id = "APPK01"
+
+        val dto = sysSettingDao.getSettingList(lstDto)
+        map["status"] = dto.isNotEmpty()
+        return map
+    }
+
+
     private fun createSenderKey(param: HashMap<String, String>): MutableMap<String, Any> {
         var result: MutableMap<String, Any>
 
