@@ -3700,6 +3700,7 @@
         $("#couponCancelBtn").css("display","none");
         couponSeq = "";
         couponSelectSeq = "";
+        $('#coupon_seq').val('');
         const couponURLEl = document.querySelector(".input_area .row.send .td input[type='text']");
         couponURLEl.value =  '';
     }
