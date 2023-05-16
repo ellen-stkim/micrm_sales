@@ -193,7 +193,7 @@ class CouponIssueServiceImpl: CouponIssueService {
                 if (contLst[0].short_url_yn == "Y") {
                     // Naver API 정보 조회
                     val lstDto = SetLst_searchDto()
-                    lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                    lstDto.usr_grp_cd = campaignDto.usr_grp_cd
                     lstDto.list_tp_id = "CH06"
                     lstDto.list_dt_id = "APPK01"
 
