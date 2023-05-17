@@ -163,8 +163,11 @@
     </footer>
 </div>
 <script type="text/javascript">
-
     $(document).ready(function() {
+        var isExistCategory = '${categoryList[0] ne null}';
+        if (isExistCategory == 'false') {
+            popup.popAlertCallback("카테고리가 없습니다. 관리자에게 문의바랍니다.", "window.location.href = '/'");
+        }
 
         $("#title").keyup(function(e) {
             var content = $(this).val();
