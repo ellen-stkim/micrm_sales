@@ -187,6 +187,9 @@ class CouponController {
 
     @ExceptionHandler(CouponException::class)
     fun exceptionHandler(e: CouponException, response: HttpServletResponse): ResponseEntity<Any> {
+        if (e.message.contains("redirect")) {
+            response.sendRedirect(e.message.split(":")[1])
+        }
         return ResponseEntity(mapOf("status" to "400", "message" to e.message), HttpStatus.OK)
     }
 
