@@ -3,6 +3,7 @@ package com.omnilab.micrm.service.impl
 import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
+import com.omnilab.micrm.config.error.CouponException
 import com.omnilab.micrm.model.coupon.CouponListDto
 import com.omnilab.micrm.model.coupon.SearchCouponDto
 import com.omnilab.micrm.model.coupon.SearchCouponIssuedLogDto
@@ -13,6 +14,7 @@ import com.omnilab.micrm.service.CouponListService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
@@ -70,10 +72,15 @@ class CouponListServiceImpl: CouponListService {
     }
 
     override fun getCoupon(encodedSeq: String): CouponListDto {
-        val findCoupon = couponDao.selectCoupon(decodingSeq(encodedSeq))
-        findCoupon.encodedSeq = encodingSeq(findCoupon.seq!!)
+        try {
+            val findCoupon = couponDao.selectCoupon(decodingSeq(encodedSeq))
+            findCoupon.encodedSeq = encodingSeq(findCoupon.seq!!)
 
-        return findCoupon
+            return findCoupon
+        } catch (e: Exception) {
+            logger.error("getCoupon : {}", e)
+            throw CouponException(HttpStatus.BAD_REQUEST,"redirect:/coupon/couponList.mi")
+        }
     }
 
     override fun getCouponIssuedLogList(searchDto: SearchCouponIssuedLogDto): MutableMap<String, Any> {

@@ -201,7 +201,7 @@ class CouponIssueServiceImpl: CouponIssueService {
 
                     // 6. Naver Short URL
                     if (dto.isNotEmpty()) {
-                        sendUrl = naverShortUrl.shorten(sendUrl, dto[0].list_nm ?: "", dto[0].list_nm ?: "")
+                        sendUrl = naverShortUrl.shorten(sendUrl, dto[0].list_nm ?: "", dto[0].list_val ?: "")
                     }
                 }
                 return Tblmicou_coupon_issued_logDto(
