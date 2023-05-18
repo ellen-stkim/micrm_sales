@@ -335,7 +335,7 @@
 	    ) SELECT
 			#{coupon_seq},
 			#{send_phone},
-			A.nm,
+			A.title,
 			B.img_url,
 			A.descr,
 			A.notice,
