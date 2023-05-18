@@ -31,6 +31,7 @@ import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStreamReader
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -39,7 +40,6 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
-import kotlin.collections.HashMap
 
 
 @Controller
@@ -906,6 +906,7 @@ class SalesforceController {
 
         couponListDto.daily_start_time = formattingTime(couponListDto.daily_start_time!!)
         couponListDto.daily_end_time = formattingTime(couponListDto.daily_end_time!!)
+        couponListDto.expire_dt = formattingDate(couponListDto.expire_dt!!)
 
         view.addObject("coupon", couponListDto)
         view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
@@ -916,6 +917,10 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/coupon/checkNaverApi.ajax")
     fun checkNaverApi(@PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
         return sysSettingService.isExistNaverApi(usrCd)
+    }
+
+    private fun formattingDate(time: String): String {
+        return LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString().replace("T", " ")
     }
 
     private fun formattingTime(time: String): String {
