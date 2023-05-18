@@ -9,7 +9,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
-
+<% pageContext.setAttribute("newLineChar", "\n"); %>
 <span id="body">
     <div class="pop_container">
         <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);" />
@@ -22,7 +22,7 @@
                 </div>
                 <div class="coupon_cont">
                     <div class="info">
-                        <h5>${coupon.title}</h5>
+                        <h5>${fn:replace(coupon.nm, newLineChar, "<br/>")}</h5>
                       <!-- 해당하는 버튼에 active 클래스 추가가 -->
                         <div class="btn_group">
                             <div class="btn able active">사용하기</div>
@@ -60,7 +60,7 @@
                         <div class="inner">
 <%--                            <h6></h6>--%>
                             <ol>
-                                <c:forEach var="d" items="${fn:split(coupon.descr, '<br/>')}" >
+                                <c:forEach var="d" items="${fn:split(coupon.descr, newLineChar)}" >
                                     <li>${d}</li>
                                 </c:forEach>
                             </ol>
@@ -87,7 +87,7 @@
                                 <section class="item">
                                     <h5>※ 유의사항</h5>
                                     <ul class="list">
-                                        <c:forEach var="n" items="${fn:split(coupon.notice, '<br/>')}" >
+                                        <c:forEach var="n" items="${fn:split(coupon.notice, newLineChar)}" >
                                             <li>${n}</li>
                                         </c:forEach>
                                     </ul>
