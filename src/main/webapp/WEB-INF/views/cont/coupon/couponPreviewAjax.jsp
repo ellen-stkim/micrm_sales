@@ -22,7 +22,7 @@
                 </div>
                 <div class="coupon_cont">
                     <div class="info">
-                        <h5>${fn:replace(coupon.nm, newLineChar, "<br/>")}</h5>
+                        <h5>${fn:replace(coupon.title, newLineChar, "<br/>")}</h5>
                       <!-- 해당하는 버튼에 active 클래스 추가가 -->
                         <div class="btn_group">
                             <div class="btn able active">사용하기</div>
