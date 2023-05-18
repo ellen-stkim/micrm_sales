@@ -66,7 +66,7 @@
                             </ol>
                         </div>
                         <article class="btn_field">
-                            <button type="button" class="btn detail" onclick="openInnerModal('detail')">자세한 내용 및<br />사용불가 매장 확인하기</button>
+                            <button type="button" class="btn detail" onclick="openInnerModal('detail')">자세히 알아보기</button>
                         </article>
                     </div>
                 </div>

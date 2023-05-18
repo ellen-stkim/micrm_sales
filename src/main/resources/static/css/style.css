@@ -2887,8 +2887,14 @@ input::placeholder {
     overflow-y: auto;
     position: relative;
     padding: 0;
+    max-width: 500px;
     max-height: 800px;
     background: #fff;
+}
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_preview,
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_preview .coupon_image,
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_preview .coupon_image img {
+    width: 100%;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_img.disable {
     opacity: 0.55;
@@ -2898,17 +2904,19 @@ input::placeholder {
     flex-direction: column;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info {
-    padding: 37px 0 40px;
-    background: #fff;
+    padding: 37px 34px 40px;
+    max-width: 500px;
+    background: #d1ecfe;
+    color: #009ddc;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info h5 {
-    font-size: 27px;
-    font-weight: 900;
+    font-size: 31px;
+    font-weight: 700;
     line-height: 1.2962em;
     text-align: center;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info h5 span {
-    font-family: "Gotham", sans-serif;
+    font-family: "Gotham";
     font-weight: 700;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info .btn_group {
@@ -2920,18 +2928,18 @@ input::placeholder {
     display: none;
     justify-content: center;
     align-items: center;
-    width: 350px;
-    height: 77px;
-    font-size: 22px;
+    width: 100%;
+    height: 72px;
+    font-size: 24px;
     font-weight: 700;
     color: #fff;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info .btn.active {
     display: flex;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info .btn.able {
-    background: #c60c0f;
+    background: #009ddc;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .info .btn.disable {
     background: #c9c8c9;
@@ -2939,57 +2947,52 @@ input::placeholder {
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .period {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 13px;
+    gap: 12px;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .period dl {
     display: flex;
-    font-size: 18px;
-    font-weight: 500;
-    color: #000;
-}
-.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .period dl dt {
-    color: #6c6c6c;
+    font-size: 14px;
+    font-weight: 700;
+    color: #009ddc;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .period dl dd {
-    font-family: "Gotham", sans-serif;
-    font-weight: 700;
+    font-family: "ITCAvantGardeGothicStd";
+    font-weight: 500;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .period dl dd[lang="ko"] {
-    font-family: NotoSansCJKkr, sans-serif;
+    font-family: "NotoSansCJKkr";
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue {
-    padding: 30px 0;
-    background: #f9de91;
-}
-.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .inner {
-    padding-left: 40px;
+    padding: 34px;
+    background: #ffffff;
+    color: #009ddc;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue h6 {
-    font-size: 16px;
+    font-size: 14px;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue ol {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding-top: 16px;
-    font-size: 16px;
+    gap: 6px;
+    padding-top: 12px;
+    font-size: 13px;
 }
-.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue ol li span {
-    font-family: "Gotham", sans-serif;
+.layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue ol li {
+    position: relative;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .btn_field {
     display: flex;
     justify-content: center;
-    padding-top: 50px;
+    padding-top: 25px;
 }
 .layer_pop.couponPreview .pop_container .pop_inner .coupon_cont .issue .btn.detail {
-    width: 350px;
-    height: 77px;
-    font-size: 20px;
+    width: 100%;
+    height: 72px;
+    font-size: 24px;
     font-weight: 700;
-    border: 1px solid #000;
+    border: 1px solid #009ddc;
     border-radius: 12px;
+    color: #009ddc;
 }
 
 .layer_pop.couponPreview .inner_modal {
@@ -3019,7 +3022,7 @@ input::placeholder {
     align-items: center;
     padding: 0 27px;
     height: 75px;
-    background: #c60c0f;
+    background: #009ddc;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
 }
@@ -3027,6 +3030,9 @@ input::placeholder {
     width: 12px;
     height: 12px;
     background: url("../image/btn_close4.png") no-repeat;
+}
+.layer_pop.couponPreview .inner_modal .contents .area.top h3 {
+    font-size: 20px;
 }
 .layer_pop.couponPreview .inner_modal .contents .area.description {
     overflow-y: scroll;
@@ -3043,8 +3049,9 @@ input::placeholder {
     gap: 45px;
 }
 .layer_pop.couponPreview .inner_modal .contents .area.description .items h5 {
+    padding-bottom: 5px;
     font-size: 14.5px;
-    font-weight: 700;
+    font-weight: 400;
 }
 .layer_pop.couponPreview .inner_modal .contents .area.description .items .list {
     font-size: 14px;
@@ -3052,15 +3059,9 @@ input::placeholder {
 }
 .layer_pop.couponPreview .inner_modal .contents .area.description .items .list li {
     position: relative;
-    padding-left: 15px;
     line-height: 1.8em;
 }
-.layer_pop.couponPreview .inner_modal .contents .area.description .items .list li::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 1px;
-}
+
 
 /* 20230424 miMC 쿠폰 시스템 추가 수정 사항 */
 .wrap.mcdonald .area.form_field .left .input_field.period li .part.full {
