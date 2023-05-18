@@ -79,13 +79,12 @@
                 <div class="inner_modal_container">
                     <div class="contents">
                         <article class="area top">
-                            <h3>자세한 내용 및 사용불가 매장 확인하기</h3>
+                            <h3>유의사항</h3>
                             <button type="button" class="btn close" onclick="closeInnerModal(this)"></button>
                         </article>
                         <div class="area description">
                             <div class="items">
                                 <section class="item">
-                                    <h5>※ 유의사항</h5>
                                     <ul class="list">
                                         <c:forEach var="n" items="${fn:split(coupon.notice, newLineChar)}" >
                                             <li>${n}</li>
