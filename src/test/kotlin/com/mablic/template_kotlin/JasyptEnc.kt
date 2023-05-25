@@ -15,7 +15,7 @@ private val log: Logger = LoggerFactory.getLogger("JasyptEnc")
 fun main(args: Array<String>) {
     val enc = PooledPBEStringEncryptor()
     val config = SimpleStringPBEConfig()
-    config.password = "milvuslucas"
+    config.password = "milvussteve"
     config.algorithm = "PBEWITHHMACSHA512ANDAES_256"
     config.poolSize = 1
     config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator")
@@ -24,10 +24,8 @@ fun main(args: Array<String>) {
     enc.setConfig(config)
 
 
-    log.error("{}", enc.encrypt("http://121.78.144.240:9000"))
-    log.error("{}", enc.encrypt("share"))
-    log.error("{}", enc.encrypt("};kz;DAInpq,f(K"))
-
-    log.error("{}", enc.encrypt("https://io.milvus.co.kr:9010"))
+    log.error("{}", enc.decrypt("efak8s6OtnO1z0mOGwCyo/a+yiM65h/enJmKbCqzsFrs10qYFsd8L3TxthlGn6cxTHLcD0UlV7aFEmESsFS6MEsVZ3W9WGscDoPATSsQoLo="))
+    log.error("{}", enc.decrypt("DZbycoCjudmjzCgeTsX8t3E/UAk/w5PtYNLwB+lCilsLJ0vsnpQVT4YAFoT5Z9G8"))
+    log.error("{}", enc.decrypt("Dpat/neh+q4uSsO++MsBzkJtUXi9W5+byXZiysSMPeYwtr6Ba8V3j5Il01DKLNiFxOECzZkAmGyY4/YZScXY3Q=="))
 
 }
