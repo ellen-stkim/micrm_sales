@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
-
-    private val logger = LoggerFactory.getLogger(this.javaClass)
-
     var sender: String? = null
     var img_nm : String?  = null
     var img_org_nm : String? = null
@@ -30,7 +27,6 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
 
     var btn_json: ArrayList<MutableMap<String, Any>>? = null
         get() = if (!button_json.isNullOrEmpty() && field == null) {
-            logger.error("{}", button_json)
             val g = GsonBuilder().create()
             val obj = g.fromJson(button_json, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()
