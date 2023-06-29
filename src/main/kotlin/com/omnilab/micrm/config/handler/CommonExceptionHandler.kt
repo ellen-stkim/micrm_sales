@@ -10,7 +10,6 @@ import org.springframework.web.servlet.NoHandlerFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
-
 @ControllerAdvice
 class CommonExceptionHandler {
 

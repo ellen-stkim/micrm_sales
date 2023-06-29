@@ -7617,6 +7617,7 @@ select option[value=""][disabled] {
     line-height: 1.6;
     background: #ffffff;
     border-radius: 0;
+    max-height: 100%;
 }
 .template_body .at_tmpl_data .at_msg_cont {
     padding: 5px 15px !important;
