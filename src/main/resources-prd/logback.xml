@@ -46,13 +46,9 @@
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
 	</logger>
-	<root level="INFO">
-		<appender-ref ref="CONSOLE"/>
-		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
-	</root>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
-	</root>	
+	</root>
 </configuration>
