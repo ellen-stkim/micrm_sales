@@ -280,17 +280,17 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.github.salesforce-marketingcloud/fuelsdk -->
-		<dependency>
-			<groupId>com.github.salesforce-marketingcloud</groupId>
-			<artifactId>fuelsdk</artifactId>
-			<version>1.6.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>5.0.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.salesforce-marketingcloud/fuelsdk -->
+		<dependency>
+			<groupId>com.github.salesforce-marketingcloud</groupId>
+			<artifactId>fuelsdk</artifactId>
+			<version>1.6.0</version>
 		</dependency>
 	</dependencies>
 
