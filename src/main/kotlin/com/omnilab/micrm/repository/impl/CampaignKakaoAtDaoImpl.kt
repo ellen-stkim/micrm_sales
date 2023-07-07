@@ -286,6 +286,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             kkoMsgdto.type = kakaoCont.kko_msg_tp
 
             if(kakaoCont.kko_btn_obj != null){
+                logger.error("eWQEWQEWQEQWEQWEWQEQWEQEEWQEWQ")
                 val gson = GsonBuilder().create()
                 val objMap: MutableMap<String, Any> = gson.fromJson(kakaoCont.kko_btn_obj, MutableMap::class.java) as MutableMap<String, Any>
 
