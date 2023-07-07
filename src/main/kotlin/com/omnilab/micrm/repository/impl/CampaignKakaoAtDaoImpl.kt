@@ -291,7 +291,9 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                 val objMap: MutableMap<String, Any> = gson.fromJson(kakaoCont.kko_btn_obj, MutableMap::class.java) as MutableMap<String, Any>
 
                 if(objMap["button"] != null){
+                    logger.error("button not null")
                     for (key in map.keys) {
+                        logger.error("key : {}", key)
                         kkoMsgdto.button_json = gson.toJson(objMap["button"]).replace("#{$key}", CommonUtils.stringValueOf(map[key]))
                     }
                 }
