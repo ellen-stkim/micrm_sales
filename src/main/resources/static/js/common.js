@@ -97,6 +97,7 @@ const com_ajax = {
                     } else if (xhr.status === 403) {
                         window.location.reload();
                     } else{
+                        console.log(xhr + " , " + status + " , " + error)
                         alert("에러가 발생하였습니다 화면을 새로 고쳐주세요");
                     }
                 }

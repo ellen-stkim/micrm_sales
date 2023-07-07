@@ -130,7 +130,7 @@
                                      </c:forEach>
                                  </c:if>
                             </div>
-<%--                            <input type="hidden" class="kakao_txt" name="kakao_body" value="${tmpl.tmpl_cont}">--%>
+                            <%--  <input type="hidden" class="kakao_txt" name="kakao_body" value="${tmpl.tmpl_cont}">--%>
 
                         </div>
                     </div>

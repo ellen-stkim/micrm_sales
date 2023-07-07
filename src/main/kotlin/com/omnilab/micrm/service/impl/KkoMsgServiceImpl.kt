@@ -57,7 +57,6 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.firstIndex = paginationInfo.firstRecordIndex
         dto.recordCountPerPage = paginationInfo.recordCountPerPage
 
-
         paginationInfo.totalRecordCount =  kkoAtTmplDao.selectTotalAtTmplCnt(dto)
         paramMap["page"] = paginationInfo
         paramMap["pageNo"] = paginationInfo.currentPageNo

@@ -1,4 +1,4 @@
-package template_kotlin
+package com.mablic.template_kotlin
 
 import com.exacttarget.fuelsdk.*
 import org.slf4j.LoggerFactory
@@ -16,6 +16,7 @@ object dataExtentionSelectOmnilabKt {
         configuration["soapEndpoint"] = "https://mcrhrh7j3bl6xd1n35nt5lxc5tk4.auth.marketingcloudapis.com/service.asmx"
         configuration["useOAuth2Authentication"] = "true"
         val client = ETClient(configuration)
+
         val etf = ETFilter()
         etf.addProperty("id")
         etf.addProperty("key")
@@ -30,7 +31,6 @@ object dataExtentionSelectOmnilabKt {
         exp.value = "cce071c7-4680-ed11-ba43-5cba2c19aa40"
         etf.expression = exp
 
-//        ETClient client  = new ETClient("/fuelSdk.properties");
         println("---------------------ETDataExtension------------------------")
         val response = client.retrieve(ETDataExtension::class.java, "id=cce071c7-4680-ed11-ba43-5cba2c19aa40")
         val result = response.result

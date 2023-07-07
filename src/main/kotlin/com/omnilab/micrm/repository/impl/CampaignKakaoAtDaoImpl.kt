@@ -285,13 +285,16 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             kkoMsgdto.ad_flag = "N"
             kkoMsgdto.type = kakaoCont.kko_msg_tp
 
-
             if(kakaoCont.kko_btn_obj != null){
                 val gson = GsonBuilder().create()
                 val objMap: MutableMap<String, Any> = gson.fromJson(kakaoCont.kko_btn_obj, MutableMap::class.java) as MutableMap<String, Any>
 
                 if(objMap["button"] != null){
-                    kkoMsgdto.button_json = gson.toJson(objMap["button"])
+                    var btnData = gson.toJson(objMap["button"])
+                    for (key in map.keys) {
+                        btnData = btnData.replace("#{$key}", CommonUtils.stringValueOf(map[key]))
+                    }
+                    kkoMsgdto.button_json = btnData
                 }
                 if(objMap["quick_reply"] != null){
                     kkoMsgdto.quick_reply = gson.toJson(objMap["quick_reply"])

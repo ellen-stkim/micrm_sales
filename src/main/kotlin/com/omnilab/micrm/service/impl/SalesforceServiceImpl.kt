@@ -2550,7 +2550,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 campaignDao.ins_programSendHst(sendHstDto)
                                 inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
                                 inArguments["SEND_TO"] = sendTo.toString()
-                                kkoSend.ins_send(campaignDto, contTpLst, inArguments) //
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
                             }
                         }
                         // 카카오 알림톡

@@ -2,10 +2,11 @@ package com.omnilab.micrm.model
 
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
-
     var sender: String? = null
     var img_nm : String?  = null
     var img_org_nm : String? = null
@@ -26,7 +27,7 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
 
     var btn_json: ArrayList<MutableMap<String, Any>>? = null
         get() = if (!button_json.isNullOrEmpty() && field == null) {
-            val g = GsonBuilder().create();
+            val g = GsonBuilder().create()
             val obj = g.fromJson(button_json, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()
             if(obj is List<*>){
