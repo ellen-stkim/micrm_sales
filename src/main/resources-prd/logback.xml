@@ -37,15 +37,10 @@
 	<logger name="jdbc.connection" level="OFF"/>
 	<logger name="jdbc.audit" level="OFF"/>
 	<logger name="jdbc.sqlonly" level="OFF"/>
-	<logger name="jdbc.sqltiming" level="INFO">
-		<appender-ref ref="CONSOLE"/>
-		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
-	</logger>
+	<logger name="jdbc.sqltiming" level="INFO"/>
 	<logger name="jdbc.resultset" level="OFF"/>
-	<logger name="jdbc.resultsettable" level="INFO">
-		<appender-ref ref="CONSOLE"/>
-		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
-	</logger>
+	<logger name="jdbc.resultsettable" level="INFO"/>
+	<logger name="org.apache.cxf" level="ERROR"/>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>

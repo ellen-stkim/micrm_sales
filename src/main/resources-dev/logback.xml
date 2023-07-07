@@ -42,6 +42,7 @@
 	<logger name="jdbc.sqltiming" level="INFO"/>
 	<logger name="jdbc.resultset" level="OFF"/>
 	<logger name="jdbc.resultsettable" level="INFO"/>
+	<logger name="org.apache.cxf" level="ERROR"/>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
