@@ -22,7 +22,7 @@ import kotlin.collections.ArrayList
 class CampaignKakaoAtDaoImpl : CampaignSendDao {
 
     val logger = LoggerFactory.getLogger(this::class.java)
-    val sdf = SimpleDateFormat("yyyyMMddHHmm")
+    val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS")
 
     @Autowired
     private lateinit var sqlSession: SqlSession

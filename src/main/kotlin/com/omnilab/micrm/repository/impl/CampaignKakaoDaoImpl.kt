@@ -23,15 +23,13 @@ import kotlin.collections.ArrayList
 class CampaignKakaoDaoImpl : CampaignSendDao {
 
     val logger = LoggerFactory.getLogger(this::class.java)
-
-    val sdf = SimpleDateFormat("yyyyMMddHHmm")
+    val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS")
 
     @Autowired
     private lateinit var sqlSession: SqlSession
 
     override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Int {
         var cnt = 0
-        logger.error("{}", map)
         val mdmCont = contTpLst["DMTP02"]
         val kakaoCont = contTpLst["DMTP03"]!!
         val rcsCont = contTpLst["DMTP04"]
