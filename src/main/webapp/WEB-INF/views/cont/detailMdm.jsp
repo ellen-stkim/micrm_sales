@@ -6339,7 +6339,7 @@
             '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>' +
             '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>' +
             '</ul>' +
-            '<div class="left pop_error_txt other_guide">※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>' +
+            '<div class="left pop_error_txt other_guide">※ 모바일 : Jpg(200KB 이하), 이메일 : jpg, png, gif</div>' +
             '<div class="right pop_error_txt blue_point_color"></div>' +
             '<div class="img_viewer noImg"></div>' +
             '<div class="btn_row">' +

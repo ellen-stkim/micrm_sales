@@ -227,7 +227,7 @@
             '<li>※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
             '<li>※ 이미지 파일은 가로 800px 세로 600px 파일만 등록 가능합니다.</li>'+
             '</ul>'+
-            '<div class="left pop_error_txt other_guide guide_lst" hidden>※ 모바일 : Jpg, png(200KB 이하), 이메일 : jpg, png, gif</div>'+
+            '<div class="left pop_error_txt other_guide guide_lst" hidden>※ 모바일 : Jpg(200KB 이하), 이메일 : jpg, png, gif</div>'+
             '<div class="right pop_error_txt blue_point_color"></div>'+
             '<div class="img_viewer noImg"></div>'+
             '<div class="btn_row">'+

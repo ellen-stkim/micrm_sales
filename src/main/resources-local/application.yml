@@ -27,42 +27,36 @@ spring:
 
 variable:
   db-class: org.mariadb.jdbc.Driver
+  db-url: jdbc:mariadb://125.131.213.7:3306/test_db_micrm_sales
   db-username: ENC(OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p)
   db-password: ENC(TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA==)
 
   mail-username:
   mail-password:
 
-  minio-url: http://125.131.213.7:9001
+  minio-url: https://cdn.milvusapp.com:9001
   minio-bucket: img
   minio-username: ENC(U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE)
-  minio-password: ENC(Mza1uI1TW/GpwnZ0Zvx+WkRqvF9dhzqWE9XDb/hBgsiA4vjep0rtmf7wAouQYRZo)
+  minio-password: ENC(21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ)
 
   share-url: ENC(XANceXIDQfsg2xrEnOJcVFroqyZN1KZDGeYaXEyMk6YG+uqzSz2Ts+EWQTb0N6zgFT6uA8KMtgZhC7sMq5BkMQ==)
   share-bucket: sr.milvusapp.com
   share-username: ENC(ysXvvktmQZPKfx6DyEVVatZat1KueviWusCJmMO0o6NQcfTfmTq77hZNN/4OH6mv)
   share-password: ENC(DpPCIrO3zhhkShd2ciqoyktEBSpYuLITCgelA3gYWj55059S6NTh2C5Yj/NxDxnD)
 
-  static-path : "C:/work/micrm_sales/src/main/webapp/WEB-INF/classes/static"
+  static-path : "D:/work/micrm_sales/src/main/resources/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
   coupon-image-path: "sales/dev"
 
-# 운영 서버
-#   biz-url: https://bizmsg-web.kakaoenterprise.com/mng
-#   biz-msg-url: https://bizmsg-web.kakaoenterprise.com
-#   biz-version: v1
-#   biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
-
-#  테스트 서버
   biz-url: https://stg-web.bizmsg.kakaoenterprise.com/mng
   biz-msg-url: https://stg-web.bizmsg.kakaoenterprise.com
   biz-version: v1
   biz-Auth: ENC(dmJvohs5vbmPFEj8t4Zck31UbJFsO2+7S8sYGszIeHMFnp44cZcNN7Gik1AxZUZZDfDR/qIT0LzJnX+7uoDlYjKPnu3q2BXkp8nJAoWdlf03the7JBFitaGTUbmXx2N6)
 
 upload:
-  src : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/content"
+  src : "D:/work/micrm_sales/src/main/resources/static/image/upload/notice"
+  content : "D:/work/micrm_sales/src/main/resources/static/image/upload/content"
   upd_content: "/image/upload/content"
-  temp : "D:/work/micrm_sales/src/main/webapp/ROOT/WEB-INF/classes/static/image/upload/temp"
+  temp : "D:/work/micrm_sales/src/main/resources/static/image/upload/temp"
 
