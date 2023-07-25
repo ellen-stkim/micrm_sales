@@ -8207,7 +8207,7 @@ input::placeholder {
     display: block;
     width: 7px;
     height: 4px;
-    background: url("../image/mcdonalds/ico_select.png");
+    background: url("../image/ico_select.png");
 }
 .wrap.mcdonald .area.option .select-box select {
     padding: 0 10px;
@@ -8248,12 +8248,12 @@ input::placeholder {
 .wrap.mcdonald .period .btn.calendar {
     width: 14px;
     height: 13px;
-    background: url("../image/mcdonalds/ico_calendar.png") no-repeat;
+    background: url("../image/ico_calendar.png") no-repeat;
 }
 .wrap.mcdonald .period .btn.time {
     width: 15px;
     height: 15px;
-    background: url("../image/mcdonalds/ico_time.png") no-repeat;
+    background: url("../image/ico_time.png") no-repeat;
 }
 .wrap.mcdonald .area.option .srh-box {
     position: relative;
@@ -8271,7 +8271,7 @@ input::placeholder {
 .wrap.mcdonald .area.option .srh-box .btn.srh {
     width: 16px;
     height: 16px;
-    background: url("../image/mcdonalds/ico_srh.png") no-repeat;
+    background: url("../image/ico_srh.png") no-repeat;
 }
 .wrap.mcdonald .area.option .btn.del {
     display: flex;
@@ -8283,7 +8283,7 @@ input::placeholder {
 .wrap.mcdonald .area.option .btn.del > .ico {
     width: 14px;
     height: 14px;
-    background: url("../image/mcdonalds/ico_del.png");
+    background: url("../image/ico_del.png");
 }
 .wrap.mcdonald .area.option .btn.del > .text {
     color: #999;
@@ -8301,7 +8301,7 @@ input::placeholder {
 .wrap.mcdonald .ico.coupon {
     width: 16px;
     height: 12px;
-    background: url("../image/mcdonalds/ico_coupon.png") no-repeat;
+    background: url("../image/ico_coupon.png") no-repeat;
 }
 .wrap.mcdonald .link.create .text {
     color: #999;
@@ -8354,7 +8354,7 @@ input::placeholder {
     transform: translate(-50%, -50%);
     width: 8px;
     height: 6px;
-    background: url("../image/mcdonalds/check.png") no-repeat;
+    background: url("../image/check.png") no-repeat;
 }
 .wrap.mcdonald .tbl_wrap.list .tbl {
     width: 100%;
@@ -8391,7 +8391,7 @@ input::placeholder {
     left: 5px;
     width: 12px;
     height: 12px;
-    background: url("../image/mcdonalds/btn_detail.png") no-repeat;
+    background: url("../image/btn_detail.png") no-repeat;
 }
 .wrap.mcdonald .coupon_detail .modal.coupon {
     display: none;
@@ -8465,7 +8465,7 @@ input::placeholder {
 .wrap.mcdonald .tbl_wrap.list .paging_wrap > .btn {
     width: 8px;
     height: 14px;
-    background: url("../image/mcdonalds/btn_paging.png") no-repeat;
+    background: url("../image/btn_paging.png") no-repeat;
 }
 .wrap.mcdonald .tbl_wrap.list .paging_wrap > .btn.prev {
     transform: rotate(180deg);
@@ -8578,7 +8578,7 @@ input::placeholder {
     display: none;
     width: 9px;
     height: 9px;
-    background: url("../image/mcdonalds/btn_del.png") no-repeat;
+    background: url("../image/btn_del.png") no-repeat;
 }
 .wrap.mcdonald .area.form_field .left .input_field li .components.file .value.add .btn.del {
     display: block;
@@ -8728,7 +8728,7 @@ input::placeholder {
     width: 15px;
     height: 15px;
     border: 0;
-    background: url("../image/mcdonalds/btn_srh.png") no-repeat;
+    background: url("../image/btn_srh.png") no-repeat;
 }
 .wrap.mcdonald .area.form_field .input_field.info .components .value {
     flex-grow: 1;
@@ -8767,7 +8767,7 @@ input::placeholder {
     width: 23px;
     height: 23px;
     border: 1px solid #ddd;
-    background: url("../image/mcdonalds/btn_reset.png") no-repeat;
+    background: url("../image/btn_reset.png") no-repeat;
     background-position: center center;
 }
 .wrap.mcdonald .area.form_field .input_field.audience li .components .part.list {
@@ -8808,7 +8808,7 @@ input::placeholder {
     padding: 0;
     width: 9px;
     height: 9px;
-    background: url("../image/mcdonalds/btn_del.png") no-repeat;
+    background: url("../image/btn_del.png") no-repeat;
 }
 .wrap.mcdonald .area.form_field .input_field.audience li .components .btn.add {
     position: relative;

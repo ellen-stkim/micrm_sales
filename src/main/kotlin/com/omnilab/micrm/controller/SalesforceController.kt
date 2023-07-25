@@ -24,6 +24,7 @@ import org.springframework.core.io.Resource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
@@ -482,20 +483,38 @@ class SalesforceController {
      */
     @ResponseBody
     @RequestMapping("/{usr_cd}/contentUpload.ajax")
-    fun contentUpload(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam("file") file: MultipartFile?, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
+    fun contentUpload(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam("file") file: MultipartFile, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
         var map: MutableMap<String, Any> = hashMapOf()
         //이미지명 중복 체크 추가.
         val imgNmCh = salesforceService.getImgNmCh(dto)
         if(imgNmCh > 0 ){
             map["imgCheck"] = 0
             map["imgCheckErr"] = "중복된 이미지명입니다."
-            return map;
+            return map
         }
-        if (file != null) {
+        // 파일 타입 체크
+        if(dto.ch_tp == "IMGTP01"){
+            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE){
+                map["imgCheck"] = 0
+                map["imgCheckErr"] = "모바일은 jpg 파일만 업로드 가능 합니다."
+                return map
+            }
+        }else{
+            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE
+                && file.contentType != MimeTypeUtils.IMAGE_PNG_VALUE
+                && file.contentType != MimeTypeUtils.IMAGE_GIF_VALUE
+            ){
+                map["imgCheck"] = 0
+                map["imgCheckErr"] = "jpg, png, gif 파일만 업로드 가능 합니다."
+                return map
+            }
+        }
+        try {
             map["imgCheck"] = 1
             val userInfo = UsefulUtils.sessionUser()
             val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(userInfo.usr_grp_cd!!, file, request);
+            map = fileUpload.upload(userInfo.usr_grp_cd!!, file, request)
+
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
             }else{
@@ -537,12 +556,16 @@ class SalesforceController {
                         image.flush()
                     }
                     var resultMap: MutableMap<String, Any>? = null
-                    if(dto.ch_tp == "IMGTP09" ){    // 카카오 알림톡 이미지
-                        resultMap = kkoRestApiService.uploadTmplImg(file)
-                    } else if (dto.ch_tp == "IMGTP10"){
-                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
-                    } else if (dto.ch_tp == "IMGTP03" || dto.ch_tp == "IMGTP11"){    // 카카오 친구톡 이미지
-                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                    when (dto.ch_tp) {
+                        "IMGTP09" -> {    // 카카오 알림톡 이미지
+                            resultMap = kkoRestApiService.uploadTmplImg(file)
+                        }
+                        "IMGTP10" -> {
+                            resultMap = kkoRestApiService.uploadTmplItemImg(file)
+                        }
+                        "IMGTP03", "IMGTP11" -> {    // 카카오 친구톡 이미지
+                            resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                        }
                     }
 
                     if(!CommonUtils.isEmptyObject(resultMap)){
@@ -578,6 +601,11 @@ class SalesforceController {
                 map["message"] = "파일 저장에 실패하였습니다."
                 logger.info("File DB insert fail")
             }
+        }catch (e:Exception){
+            map["uploaded"] = 0
+            map["message"] = "파일 저장에 실패하였습니다."
+            logger.info("File DB insert fail")
+            return map
         }
         return map
     }
