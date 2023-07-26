@@ -30,14 +30,12 @@ class FileUploadUtils {
     private lateinit var staticPath: String
 
     @Value("\${upload.content}")
-    private val filePath: String? = null
+    private lateinit var filePath: String
 
     @Value("\${upload.upd_content}")
-    private val updPath: String? = null
+    private lateinit var updPath: String
 
-
-
-    fun upload(usrCd:String, file: MultipartFile, request: HttpServletRequest): MutableMap<String, Any> {
+    fun upload(usrCd:String, file: MultipartFile): MutableMap<String, Any> {
         val curFilePath = "$filePath/$usrCd"
         val updFildPath = "$updPath/$usrCd"
         val saveFile = File(curFilePath)
