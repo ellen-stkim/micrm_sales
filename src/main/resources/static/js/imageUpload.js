@@ -420,7 +420,7 @@ function ftImageUpload(addImage,type) {
                 r_height = imgHeight / a;
             }
 
-            if((r_width == 2 && r_height == 1) ||(r_width == 3 && r_height == 4)){
+            if((r_width == 1 && r_height == 1)  || (r_width == 2 && r_height == 1) ||(r_width == 3 && r_height == 4)){
                 if (minWidth > imgWidth) {
                     popup.popAlert("이미지 해상도가 가로 최소 "+ minWidth +" 입니다.\n현재 이미지 해상도\n가로 : " + imgWidth + ", 세로 : " + imgHeight);
                     $("#fileName").val('');

@@ -60,7 +60,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     }
 
     override fun updateAtTmpl(newDto: Kko_at_tmplDto): MutableMap<String, Any> {
-        val token = getToken(url);
+        val token = getToken(url)
 
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
@@ -89,7 +89,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     }
 
     override fun uploadTmplImg(file: MultipartFile): MutableMap<String, Any> {
-        val token = getToken(url);
+        val token = getToken(url)
         //        header 설정
         val headers = HttpHeaders()
         headers.contentType = MediaType.MULTIPART_FORM_DATA
@@ -168,7 +168,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
 
     override fun uploadFtImg(file: MultipartFile, imgType: String): MutableMap<String, Any> {
-        val token = getToken(mstUrl);
+        val token = getToken(mstUrl)
         //        header 설정
         val headers = HttpHeaders()
         headers.contentType = MediaType.MULTIPART_FORM_DATA
@@ -176,7 +176,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("version", version)
         headers.set("accept", MediaType.ALL_VALUE)
 
-        val urlString = if("IMGTP03".equals(imgType)) "$mstUrl/$version/upload/ft/image" else "$mstUrl/$version/upload/ft/wide/image"
+        val urlString = if("IMGTP03" == imgType) "$mstUrl/$version/upload/ft/image" else "$mstUrl/$version/upload/ft/wide/image"
 
         val map = LinkedMultiValueMap<String, Any>()
         val resource = FilenameAwareInputStreamResource(file.inputStream, file.size, file.originalFilename.toString())

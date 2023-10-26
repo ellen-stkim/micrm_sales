@@ -24,11 +24,13 @@ fun main(args: Array<String>) {
     config.stringOutputType = "base64"
     enc.setConfig(config)
 
-    log.error("{}", enc.encrypt("Basic R000000029 R000000029_n6LtN7z7ReeOJaduoQgG+w"))
-    //log.error("{}", enc.encrypt("img-royal-2020##"))
+    //log.error("{}", enc.decrypt("7oSd352h4MAHAG+5BEcn42+5cYJAGd2M7HagoKkgNpmcTvt2IsS5HfZ90cthBLM2AthBUzGKtaCFA0YM4+ZToLTlFzOM9I1l9Zh3PH9izLw="))
+    //log.error("{}", enc.decrypt("0JPxMQULBj+YuzTgfI3weY3nP1RnRNhFuU0gTaBgOn3LJAqGEE1sy4KAsZxB+P61"))
+    //log.error("{}", enc.decrypt("DMwQUYtYxrDyDa/oTS+8xfuSQ007FK5N195RuX0D1Dzs/xu9xslJbvbEcW63Pl6K"))
 
-    //log.error("{}", enc.decrypt("d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY="))
-    //log.error("{}", enc.decrypt("E61c3eAA5KnRsxfXBjTAlcsCe8QU8ws5Xq38DRBES4UW2yenht4i9bCLsOw5nRurga6Vid3k3PQGs6a85ji6bvXU/XG709kt74MrT0uDLaU="))
-    //log.error("{}", enc.decrypt("X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX"))
+    //log.error("{}", enc.decrypt("zQoP26ubMZ161bF/s+HPpLLp0/OQuBXHum1gXnUEC1PP9X4+IdxpOjZ2ldaQSW3sCz9gMOT1OnNqEd/czycfcmR5CfhDBWDsAjZ5iynk7rI="))
+    //log.error("{}", enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
+    //log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+
 
 }

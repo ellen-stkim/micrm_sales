@@ -107,7 +107,7 @@
              , a.CONT_GRP_CD
              , #{reg_id} as reg_id
         from Tblmi_cont_lst as a
-            INNER JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
+            LEFT JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
                 and a.SEQ = #{seq}
