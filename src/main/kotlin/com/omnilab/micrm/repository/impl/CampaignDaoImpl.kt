@@ -175,12 +175,13 @@ class CampaignDaoImpl : CampaignDao {
                 val row = sheet.createRow(i)
                 val dd: SendResult_lstDto = resultContext.resultObject as SendResult_lstDto
                 row.createCell(0).setCellValue(dd.camp_nm)
-                row.createCell(1).setCellValue(dd.send_rst)
-                row.createCell(2).setCellValue(dd.usr_key)
-                row.createCell(3).setCellValue(dd.send_to)
-                row.createCell(4).setCellValue(dd.cd_desc)
-                row.createCell(5).setCellValue(dd.send_rep_time)
-                row.createCell(6).setCellValue(dd.send_mdm)
+                row.createCell(1).setCellValue(dd.cont_nm)
+                row.createCell(2).setCellValue(dd.send_rst)
+                row.createCell(3).setCellValue(dd.usr_key)
+                row.createCell(4).setCellValue(dd.send_to)
+                row.createCell(5).setCellValue(dd.cd_desc)
+                row.createCell(6).setCellValue(dd.send_rep_time)
+                row.createCell(7).setCellValue(dd.send_mdm)
                 i++
             }
         })

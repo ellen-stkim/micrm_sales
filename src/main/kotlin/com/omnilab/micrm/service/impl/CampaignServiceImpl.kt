@@ -236,6 +236,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         val reMap = HashMap<String, Any>()
         val labelList = mutableListOf<String>();
         labelList.add("캠페인명")
+        labelList.add("컨텐츠명")
         labelList.add("발송상세")
         labelList.add("회원번호")
         labelList.add("이메일/모바일")
