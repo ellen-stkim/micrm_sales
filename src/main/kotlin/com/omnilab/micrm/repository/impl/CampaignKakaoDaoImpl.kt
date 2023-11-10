@@ -43,6 +43,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val kakaoClientId = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_ID", dto.usr_grp_cd!!)).cd_val
 
         if(kakaoClientId.isNullOrEmpty()){
+            logger.error("kakaoClientId id null {}", dto.usr_grp_cd)
             return cnt
         }
 

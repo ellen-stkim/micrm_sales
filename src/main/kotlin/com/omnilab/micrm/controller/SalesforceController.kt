@@ -513,7 +513,7 @@ class SalesforceController {
             map["imgCheck"] = 1
             val userInfo = UsefulUtils.sessionUser()
             val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(userInfo.usr_grp_cd!!, file, request)
+            map = fileUpload.upload(userInfo.usr_grp_cd!!, file)
 
             if(map["uploaded"].toString() == "0"){
                 logger.info("File Upload fail")
@@ -846,7 +846,6 @@ class SalesforceController {
                     couponIssueService.issueCouponAtSales(couponIssuedLogDto)
                 }
             }
-            //return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
             return ResponseEntity(null, HttpStatus.OK)
         } catch (e: Exception) {
             logger.error("execute.service", e)

@@ -15,7 +15,8 @@ private val log: Logger = LoggerFactory.getLogger("JasyptEnc")
 fun main(args: Array<String>) {
     val enc = PooledPBEStringEncryptor()
     val config = SimpleStringPBEConfig()
-    config.password = "milvuslucas"
+    //config.password = "milvuslucas"
+    config.password = "milvussteve"
     config.algorithm = "PBEWITHHMACSHA512ANDAES_256"
     config.poolSize = 1
     config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator")
@@ -23,7 +24,13 @@ fun main(args: Array<String>) {
     config.stringOutputType = "base64"
     enc.setConfig(config)
 
-    log.error("{}", enc.encrypt("img-royal"))
-    log.error("{}", enc.encrypt("img-royal-2020##"))
+    //log.error("{}", enc.decrypt("7oSd352h4MAHAG+5BEcn42+5cYJAGd2M7HagoKkgNpmcTvt2IsS5HfZ90cthBLM2AthBUzGKtaCFA0YM4+ZToLTlFzOM9I1l9Zh3PH9izLw="))
+    //log.error("{}", enc.decrypt("0JPxMQULBj+YuzTgfI3weY3nP1RnRNhFuU0gTaBgOn3LJAqGEE1sy4KAsZxB+P61"))
+    //log.error("{}", enc.decrypt("DMwQUYtYxrDyDa/oTS+8xfuSQ007FK5N195RuX0D1Dzs/xu9xslJbvbEcW63Pl6K"))
+
+    //log.error("{}", enc.decrypt("zQoP26ubMZ161bF/s+HPpLLp0/OQuBXHum1gXnUEC1PP9X4+IdxpOjZ2ldaQSW3sCz9gMOT1OnNqEd/czycfcmR5CfhDBWDsAjZ5iynk7rI="))
+    //log.error("{}", enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
+    //log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+
 
 }

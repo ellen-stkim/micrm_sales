@@ -57,21 +57,19 @@ class CostReportServiceImpl : CostReportService {
             var totalCnt =  0L
             val sendTypeMap = hashMapOf<String,HashMap<String,Any?>>()
             for(dto in list){
-                sendTypeMap[dto.msg_tp!!] = hashMapOf( "total_cnt" to dto.total_cnt
-                                                        ,"total_cost" to dto.total_cost )
+                sendTypeMap[dto.msg_tp!!] = hashMapOf( "total_cnt" to dto.total_cnt, "total_cost" to dto.total_cost )
                 totalCost = totalCost.plus(dto.total_cost!!)
                 totalCnt += dto.total_cnt!!
             }
             sendMap[mon] = sendTypeMap
-            totalMap[mon] = mapOf("totalCost" to totalCost
-                                    ,"totalCnt" to totalCnt)
+            totalMap[mon] = mapOf("totalCost" to totalCost, "totalCnt" to totalCnt)
         }
 
         // 그래프
         val gson = GsonBuilder().create()
         val jsonMap = gson.toJson(sendMap)
 
-//         총합 계산
+        // 총합 계산
         val typeTotalMap = mutableMapOf<String,Any>()
         val typeTotal = totalLst.stream().collect(groupingBy(SendCostDto::msg_tp))
         var allTotalCost  =  BigDecimal("0")
@@ -87,19 +85,16 @@ class CostReportServiceImpl : CostReportService {
                 totalCnt += dto.total_cnt!!
             }
 
-            typeTotalMap[type] = mapOf("total_cost" to totalCost
-                                        ,"total_cnt" to totalCnt )
+            typeTotalMap[type] = mapOf("total_cost" to totalCost, "total_cnt" to totalCnt )
 
             allTotalCost = allTotalCost.plus(totalCost)
             allTotalCnt += totalCnt
         }
 
-        typeTotalMap["ALL"] = mapOf("total_cost" to allTotalCost
-                                    ,"total_cnt" to allTotalCnt )
+        typeTotalMap["ALL"] = mapOf("total_cost" to allTotalCost, "total_cnt" to allTotalCnt )
 
-//        프로그램 당 발송 디테일
+        // 프로그램 당 발송 디테일
         val prgMap = getProgramCostLst(searchDto)
-
 
         val cal = Calendar.getInstance()
         val format = SimpleDateFormat("yyyy-MM")

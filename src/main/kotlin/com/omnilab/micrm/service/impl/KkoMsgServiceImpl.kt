@@ -87,25 +87,25 @@ class KkoMsgServiceImpl : KkoMsgService {
         searchDto.grp_id= "KAKAO_TMPL"
 
         searchDto.cd_id ="CATE"
-        map.put("cateLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["cateLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id ="CATE_SUB"
-        map.put("cateSubLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["cateSubLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id ="MSG_TP"
-        map.put("msgTpLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["msgTpLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id ="EMP_TP"
-        map.put("empTpLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["empTpLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id ="CATE_SUB_GID"
-        map.put("cateSubGidLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["cateSubGidLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id ="TMPL_BTN_LINK_TP"
-        map.put("btnLinkLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["btnLinkLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id ="TMPL_BTN_TP"
-        map.put("btnLst",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["btnLst"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         return map
     }
@@ -148,8 +148,8 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     //개인화 변수 파싱
                     val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
-                    var etcArr = mutableListOf<String>()
-                    var tempCont: String? = null
+                    val etcArr = mutableListOf<String>()
+                    var tempCont: String?
                     for(idx in 1 until tempContStrs.size){
                         tempCont = tempContStrs[idx]
                         etcArr.add(tempCont.substring(0,tempCont.indexOf("}")))
@@ -206,7 +206,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
     override fun updateTmpl( dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto, updDto: Tblmi_kko_at_tmplDto ): Map<String, Any> {
         val map :MutableMap<String,Any> = mutableMapOf()
-logger.error("{}",dto)
+        logger.error("{}",dto)
         searchTmplDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto,kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
 

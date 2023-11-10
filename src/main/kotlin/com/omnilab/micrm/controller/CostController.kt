@@ -25,7 +25,6 @@ class CostController {
     @GetMapping("/costDetail.mi")
     fun costDetail(@ModelAttribute dto: SearchSendCostDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cost/costDetail")
-
         val map = costReportService.getCostReport(dto)
         view.addObject("startDt",map["startDt"])
         view.addObject("endDt",map["endDt"])

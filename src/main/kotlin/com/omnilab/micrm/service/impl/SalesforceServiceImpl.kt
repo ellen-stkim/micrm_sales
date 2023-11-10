@@ -916,7 +916,6 @@ class SalesforceServiceImpl : SalesforceService {
 
         for (i in 0..len) {
             // 항상 3번 Insert 작업을 진행한다.
-
             // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
             val tblmiContLstdto = Tblmi_cont_lstDto()
 

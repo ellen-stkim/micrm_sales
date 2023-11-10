@@ -51,8 +51,9 @@
             <div class="create_sms cf">
                 <div class="row head bottom-border">
                     <div class="th">템플릿 명</div>
-                    <div class="td right-border"><input type="text" class="txt_input template_name" name="cont_nm"
-                                                        placeholder="템플릿 명을 입력하세요."/></div>
+                    <div class="td right-border">
+                        <input type="text" class="txt_input template_name" name="cont_nm" placeholder="템플릿 명을 입력하세요."/>
+                    </div>
                     <div class="th">컨텐츠 포맷</div>
                     <div class="td flex_row">
                         <div class="sms_option cf">
@@ -137,8 +138,7 @@
                                     <div class="th">문자 제목</div>
                                     <div class="column_1">
                                             <%--<input type="text" class="title kakaoTitle" name="cont_sub" placeholder="문자 제목을 입력하세요." />--%>
-                                        <input type="text" class="title kakaoTitle" name="cont_sub_list"
-                                               placeholder="문자 제목을 입력하세요."/>
+                                        <input type="text" class="title kakaoTitle" name="cont_sub_list" placeholder="문자 제목을 입력하세요."/>
                                         <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                     </div>
                                 </div>

@@ -9,6 +9,7 @@ import org.apache.ibatis.type.Alias
 class SendResult_lstDto: Tblmicp_send_hstDto {
 
     var camp_nm: String? = null
+    var cont_nm: String? = null
     var cd_desc: String? = null
     var firstIndex: Int? = null
     var recordCountPerPage: Int? = null

@@ -698,9 +698,7 @@
         addCell1 += '<option value="${btn.cd_val}" data_sn="${btn.cd_sn}">${btn.cd_desc}</option>'
         </c:forEach>
         addCell1 += '</select>';
-
         addCell2 += '<input class="border" type="text" name="name" placeholder="버튼명 입력 (14자 이내)">';
-
         addCell3 += '<div class="webLink-on display-none">' +
             '<p class="btn_link_title_first">Moblie</p>' +
             '<input type="text" class="border" name="linkMo" placeholder="http:// 또는 https:// 가 포함된 URL">' +
@@ -1929,13 +1927,17 @@
 
     // 발신자 번호 input 저장하기
     function mobileSendSave(type) {
-        let send_to = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNumber"]').val();  // 보낼 번호
-        let send_nm = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNm"]').val(); // 발신자 명
-        let sender = send_nm + "(" + send_to + ")";
+        let isChecked = $('input:radio[name=callNumber]').is(':checked');
+        if(isChecked){
+            let send_to = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNumber"]').val();  // 보낼 번호
+            let send_nm = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNm"]').val(); // 발신자 명
+            let sender = send_nm + "(" + send_to + ")";
 
-        $("#kko_send_to").val(sender);
-        $("#send_key").val(send_to);
+            $("#kko_send_to").val(sender);
+            $("#send_key").val(send_to);
+        }else{
 
+        }
         $('.mobilePopup').removeClass('active');
     }
 
