@@ -48,6 +48,9 @@
 				<sec:authorize access="hasAnyRole('R1','R2')">
 					<li<c:if test="${fn:contains(urlPath,'/sys/user')}"> class='on'</c:if>><a href="/sys/user/myInfo.mi">사용자</a></li>
 				</sec:authorize>
+				<sec:authorize access="hasRole('R99')">
+					<li<c:if test="${fn:contains(urlPath,'/sys/info')}"> class='on'</c:if>><a href="/sys/info/main.mi">시스템 정보</a></li>
+				</sec:authorize>
 			</ul>
 		</li>
 	</ul>

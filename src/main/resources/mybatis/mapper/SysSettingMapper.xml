@@ -79,7 +79,9 @@
 	</select>
 
 	<select id="getCommCD" parameterType="Tblmi_comm_cdDto" resultType="Tblmi_comm_cdDto">
-		SELECT * FROM tblmi_comm_cd
+		/* getCommCD */
+		SELECT *
+		FROM tblmi_comm_cd
 		<where>
 			USE_YN = 'Y'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_id)">
@@ -97,10 +99,16 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(par_id)">
 				and PAR_ID = #{par_id}
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grpIdLst)">
+				and GRP_ID in
+				<foreach collection="grpIdLst" item="list" separator="," open="(" close=")">
+					#{list}
+				</foreach>
+				or (grp_id = 'SALES_MID' AND cd_val = #{cd_val})
+			</if>
 		</where>
 		order by cd_sn
 	</select>
-
 
 	<update id ="updateSetLstYn" parameterType="Tblmi_set_lst">
 		UPDATE tblmi_set_lst
@@ -437,7 +445,6 @@
 		</where>
 	</select>
 
-
 	<select id="getMaxDtIdByDto" parameterType="Tblmi_set_lst" resultType="Tblmi_set_lst">
 		SELECT MAX(list_val) as list_val , MAX(list_etc) as list_etc
 		FROM tblmi_set_lst
@@ -463,6 +470,46 @@
 		</where>
 	</select>
 
+	<insert id="ins_tblmi_comm_cd" parameterType="Tblmi_comm_cdDto" useGeneratedKeys="true" keyProperty="seq">
+		insert into tblmi_comm_cd (
+			grp_id
+			, grp_nm
+			, cd_id
+			, cd_nm
+		    , cd_val
+		    , cd_desc
+		    , cd_sn
+		    , par_id
+		    , par_nm
+		    , use_yn
+		    , reg_id
+		    , reg_dt
+		) values (
+			 #{grp_id}
+			 , #{grp_nm}
+			 , #{cd_id}
+			 , #{cd_nm}
+			 , #{cd_val}
+			 , #{cd_desc}
+			 , #{cd_sn}
+			 , #{par_id}
+			 , #{par_nm}
+			 , #{use_yn}
+			 , #{reg_id}
+			 , #{reg_dt}
+		)
+	</insert>
+
+	<update id="upd_tblmi_comm_cd" parameterType="Tblmi_comm_cdDto" >
+		update tblmi_comm_cd set
+			cd_id = #{cd_id}
+			, cd_val = #{cd_val}
+			, cd_desc = #{cd_desc}
+			, upd_dt = now()
+		<where>
+			seq = #{seq}
+		</where>
+	</update>
  </mapper>
 
 

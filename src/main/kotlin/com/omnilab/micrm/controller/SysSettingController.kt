@@ -33,11 +33,6 @@ class SysSettingController {
     lateinit var sysSettingService: SysSettingService;
 
     @Autowired
-    @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : CampaignService
-
-
-    @Autowired
     @Qualifier("KkoRestApiServiceImpl")
     lateinit var kkoRestApiService: KkoRestApiService
 

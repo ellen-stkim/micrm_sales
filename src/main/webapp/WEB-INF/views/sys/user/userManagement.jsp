@@ -54,8 +54,7 @@
                         </ul>
                     </div>
                     <!-- select 영역 끝 -->
-                    <input type="text" class="searchInp left-border searchWord" name="searchValue" id="searchValue" placeholder="검색어입력"
-                           onkeydown="enterSubmit();"/>
+                    <input type="text" class="searchInp left-border searchWord" name="searchValue" id="searchValue" placeholder="검색어입력" onkeydown="enterSubmit();"/>
                     <input type="hidden" id="searchType" name="searchType"/>
                     <button type="button" class="searchBtn" onclick="return searchUser();">검색</button>
                 </div>

@@ -42,7 +42,7 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.selectOne("getCommCD", dto)
     }
 
-    override fun getCommCDLst(dto: Tblmi_comm_cdDto): List<Tblmi_comm_cdDto> {
+    override fun getCommCDLst(dto: Tblmi_comm_cdDto): MutableList<Tblmi_comm_cdDto> {
         return sqlSession.selectList("getCommCD", dto)
     }
 
@@ -110,4 +110,11 @@ class SysSettingDaoImpl: SysSettingDao{
         return sqlSession.selectList("getMappingSettingListSort",dto)
     }
 
+    override fun ins_tblmi_comm_cd(dto: Tblmi_comm_cdDto): Int {
+        return sqlSession.insert("ins_tblmi_comm_cd",dto)
+    }
+
+    override fun upd_tblmi_comm_cd(dto: Tblmi_comm_cdDto): Int {
+        return sqlSession.update("upd_tblmi_comm_cd", dto)
+    }
 }

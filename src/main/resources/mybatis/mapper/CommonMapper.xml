@@ -148,27 +148,26 @@
 
 
 	<insert id="insertUserHistoryLog" parameterType="Tblmi_usr_hstDto">
-		INSERT INTO		tblmi_usr_hst
-						(
-						usr_grp_cd
-						,usr_seq
-						,usr_id
-						,usr_ip
-						,work_url
-						,work_detail
-						,reg_id
-						,reg_dt
-						)
-		VALUES			(
-						#{usr_grp_cd}
-						,#{usr_seq}
-						,#{usr_id}
-						,INET_ATON(#{usr_ip})
-						,#{work_url}
-						,#{work_detail}
-						,#{usr_id}
-						,now()
-						)
+		/* insertUserHistoryLog */
+		INSERT INTO tblmi_usr_hst (
+		   usr_grp_cd
+			, usr_seq
+			, usr_id
+			, usr_ip
+			, work_url
+			, work_detail
+			, reg_id
+			, reg_dt
+		) VALUES (
+			#{usr_grp_cd}
+		   , #{usr_seq}
+		   , #{usr_id}
+		   , INET_ATON(#{usr_ip})
+		   , #{work_url}
+		   , #{work_detail}
+		   , #{usr_id}
+		   , now()
+		)
 	</insert>
 
 	<select id="getBlockBlockDto" parameterType="Tblmi_Block_lstDto" resultType="Tblmi_Block_lstDto">

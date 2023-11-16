@@ -175,12 +175,11 @@
                                         <div class="row">
                                             <div class="th">이미지 선택</div>
                                             <div class="td">
-                                                <div class="delete_img" data="kakao"><img src="/image/btn_delete1.png" alt="삭제">
+                                                <div class="delete_img" data="kakao">
+                                                    <img src="/image/btn_delete1.png" alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage"
-                                                       placeholder="이미지를 선택해 주세요." readonly>
-                                                <span class="btn_sm_line" data="kakaoImage"
-                                                      onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly>
+                                                <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" name="kko_img_cd" value=""> <!--임시 히든값 -->
                                                 <input type="hidden" name="kko_view_img_url" value="">
                                                 <!-- 프리뷰를 위한 이미지 URL -->
@@ -189,9 +188,7 @@
                                         <div class="row">
                                             <div class="th top-border">이미지 링크 주소</div>
                                             <div class="td top-border">
-                                                <input type="text" class="txt_input en_font width kakaoImgLink"
-                                                       name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)">
+                                                <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)">
                                             </div>
                                         </div>
                                         <div class="row flex_row">

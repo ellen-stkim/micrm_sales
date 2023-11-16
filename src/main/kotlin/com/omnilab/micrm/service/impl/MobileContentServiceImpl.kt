@@ -186,8 +186,6 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
                         tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
                         tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
-
-
                     }
                 }
 

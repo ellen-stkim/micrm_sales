@@ -61,7 +61,7 @@
                     <td class="en_font">${n.usr_email}</td>
                     <td class="en_font">
                         <c:if test="${!cutil:isEmptyObject(n.usr_mob)}">
-                                ${cutil:numberToPhone(n.usr_mob)}
+                            ${cutil:numberToPhone(n.usr_mob)}
                         </c:if>
                     </td>
                     <td class="en_font">${n.cd_nm}</td>

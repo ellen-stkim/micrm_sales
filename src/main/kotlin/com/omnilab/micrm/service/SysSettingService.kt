@@ -14,7 +14,7 @@ interface SysSettingService {
 
     fun getCommCD(dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?
 
-    fun getCommCDLst(dto: Tblmi_comm_cdDto) : List<Tblmi_comm_cdDto>
+    fun getCommCDLst(dto: Tblmi_comm_cdDto) : MutableList<Tblmi_comm_cdDto>
 
     fun getDBValue() : MutableList<SalesforceDto>
 

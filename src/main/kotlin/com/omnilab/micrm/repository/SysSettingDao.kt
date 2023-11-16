@@ -17,7 +17,7 @@ interface SysSettingDao {
 
     fun getCommCdKeyValueNull (dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?
 
-    fun getCommCDLst(dto: Tblmi_comm_cdDto) : List<Tblmi_comm_cdDto>
+    fun getCommCDLst(dto: Tblmi_comm_cdDto) : MutableList<Tblmi_comm_cdDto>
 
     fun updateSetLstYn(dto : Tblmi_set_lstDto) : Int
 
@@ -50,5 +50,9 @@ interface SysSettingDao {
     fun getMaxDtIdByDto(tempDt: Tblmi_set_lstDto) : Tblmi_set_lstDto?
 
     fun getMappingSettingListSort(searchDto: SetLst_searchDto):  List<Tblmi_set_lstDto>
+
+    fun ins_tblmi_comm_cd(dto: Tblmi_comm_cdDto): Int
+
+    fun upd_tblmi_comm_cd(dto: Tblmi_comm_cdDto): Int
 
 }

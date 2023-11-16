@@ -25,7 +25,6 @@ import kotlin.collections.HashMap
 
 
 @Service("SysSettingServiceImpl")
-
 class SysSettingServiceImpl : SysSettingService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
@@ -110,7 +109,7 @@ class SysSettingServiceImpl : SysSettingService {
         return sysSettingDao.getCommCD(dto)
     }
 
-    override fun getCommCDLst(dto: Tblmi_comm_cdDto): List<Tblmi_comm_cdDto> {
+    override fun getCommCDLst(dto: Tblmi_comm_cdDto): MutableList<Tblmi_comm_cdDto> {
         return sysSettingDao.getCommCDLst(dto)
     }
 

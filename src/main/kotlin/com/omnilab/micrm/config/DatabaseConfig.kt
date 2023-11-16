@@ -13,6 +13,7 @@ import org.springframework.aop.Advisor
 import org.springframework.aop.aspectj.AspectJExpressionPointcut
 import org.springframework.aop.support.DefaultPointcutAdvisor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -51,8 +52,8 @@ internal class DatabaseConfig {
     @Value("\${variable.db-password}")
     private lateinit var dbPassword: String
 
-    @Bean
-    fun dataSource(): DataSource {
+    @Bean(name = ["ds"], destroyMethod = "close")
+    fun ds(): HikariDataSource {
         val dataSource = HikariDataSource()
         dataSource.driverClassName = dbClass
         dataSource.jdbcUrl = dbUrl
@@ -63,22 +64,26 @@ internal class DatabaseConfig {
         dataSource.connectionTestQuery = "select 1"
         dataSource.connectionTimeout = 15000
         dataSource.validationTimeout = 60000
+        return dataSource
+    }
 
+    @Bean("dataSource")
+    fun dataSource(@Qualifier("ds") dataSource: DataSource): DataSource {
         val dataSourceSpy = DataSourceSpy(dataSource)
         dataSourceSpy.logDelegator = Slf4jSpyLogDelegator()
         return dataSourceSpy
     }
 
-    @Bean
-    fun transactionManager(): DataSourceTransactionManager {
-        val transactionManager = DataSourceTransactionManager(dataSource())
+    @Bean("transactionManager")
+    fun transactionManager(@Qualifier("dataSource") dataSource: DataSource): DataSourceTransactionManager {
+        val transactionManager = DataSourceTransactionManager(dataSource)
         transactionManager.isGlobalRollbackOnParticipationFailure = false
         transactionManager.isRollbackOnCommitFailure
         return transactionManager
     }
 
-    @Bean
-    fun txAdvice(): TransactionInterceptor {
+    @Bean("txAdvice")
+    fun txAdvice(@Qualifier("transactionManager") transactionManager: DataSourceTransactionManager): TransactionInterceptor {
         val txAdvice = TransactionInterceptor()
         val txAttributes = Properties()
 
@@ -113,23 +118,23 @@ internal class DatabaseConfig {
         // write rollback-rule
         txAttributes.setProperty("*", writeTransactionAttributesDefinition)
         txAdvice.setTransactionAttributes(txAttributes)
-        txAdvice.transactionManager = transactionManager()
+        txAdvice.transactionManager = transactionManager
         return txAdvice
     }
 
     @Bean
-    fun txAdviceAdvisor(): Advisor {
+    fun txAdviceAdvisor(@Qualifier("txAdvice") txAdvice: TransactionInterceptor): Advisor {
         val pointcut = AspectJExpressionPointcut()
         pointcut.expression = "execution(* com.omnilab.micrm.service..*.*(..))"
         //pointcut.expression = "execution(* com.omnilab.micrm.repository..*.*(..))"
-        return DefaultPointcutAdvisor(pointcut, txAdvice())
+        return DefaultPointcutAdvisor(pointcut, txAdvice)
     }
 
     @Bean(name = ["sqlSessionFactory"])
     @Throws(Exception::class)
-    fun sqlSessionFactory(): SqlSessionFactory? {
+    fun sqlSessionFactory(@Qualifier("dataSource") dataSource: DataSource): SqlSessionFactory? {
         val sessionFactoryBean = SqlSessionFactoryBean()
-        sessionFactoryBean.setDataSource(dataSource())
+        sessionFactoryBean.setDataSource(dataSource)
         sessionFactoryBean.setTypeAliasesPackage("com.omnilab.micrm.model")
         sessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis/mybatis-config.xml"))
         sessionFactoryBean.setMapperLocations(*applicationContext.getResources("classpath:mybatis/mapper/*.xml"))
@@ -138,8 +143,8 @@ internal class DatabaseConfig {
 
     @Bean(name = ["sqlSession"], destroyMethod = "clearCache")
     @Throws(Exception::class)
-    fun sqlSession(): SqlSession {
-        val sqlSession = SqlSessionTemplate(sqlSessionFactory()!!)
+    fun sqlSession(@Qualifier("sqlSessionFactory") sqlSessionFactory: SqlSessionFactory): SqlSession {
+        val sqlSession = SqlSessionTemplate(sqlSessionFactory)
         return sqlSession
     }
 }
