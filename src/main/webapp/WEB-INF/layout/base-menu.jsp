@@ -57,12 +57,20 @@
 	<!-- gnb 영역 끝 -->
 	<!-- 로그인 정보 영역 -->
 	<div class="user_info cf">
-		<c:if test = "${sessionScope.userName ne null}">
-			<div class="user">${sessionScope.userName} 님</div>
+		<sec:authorize access="isAuthenticated()">
+			<c:choose>
+				<c:when test="${sessionScope.userName ne null}">
+					<div class="user">${sessionScope.userName} 님</div>
+				</c:when>
+				<c:otherwise>
+					<div class="user"><sec:authentication property="principal" /> 님</div>
+				</c:otherwise>
+			</c:choose>
+
 			<form:form id="logout" action="/logout.service" method="post">
 				<input type="submit" class="logout" value="로그아웃"/>
 			</form:form>
-		</c:if>
+		</sec:authorize>
 	</div>
 </nav>
 <!-- left menu 영역 끝 -->

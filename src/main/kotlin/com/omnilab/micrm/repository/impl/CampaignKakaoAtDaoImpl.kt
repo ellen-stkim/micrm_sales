@@ -114,17 +114,17 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             }
             var rcsSubject: String? = null
             var rcsBody: String? = null
-            var rcs_btn_obj: String? = null
-            var rcs_btn_cont_1: String? = null
-            var rcs_btn_cont_2: String? = null
-            var rcs_btn_cont_3: String? = null
+            var rcsBtnObj: String? = null
+            var rcsBtnCont1: String? = null
+            var rcsBtnCont2: String? = null
+            var rcsBtnCont3: String? = null
             if(rcsCont != null){
                 rcsSubject = rcsCont.cont_sub
                 rcsBody = CommonUtils.EscapeTextToHtml(rcsCont.cont_body)
-                rcs_btn_obj = rcsCont.rcs_btn_obj
-                rcs_btn_cont_1 = rcsCont.rcs_btn_cont_1
-                rcs_btn_cont_2 = rcsCont.rcs_btn_cont_2
-                rcs_btn_cont_3 = rcsCont.rcs_btn_cont_3
+                rcsBtnObj = rcsCont.rcs_btn_obj
+                rcsBtnCont1 = rcsCont.rcs_btn_cont_1
+                rcsBtnCont2 = rcsCont.rcs_btn_cont_2
+                rcsBtnCont3 = rcsCont.rcs_btn_cont_3
             }
 
             val HstSeq = map["SEND_HST_SEQ"].toString()
@@ -207,7 +207,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                             , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
 
                     }else{
-                        rcs_btn_obj = rcs_btn_obj?.replaceFirst(("\\{\\{"
+                        rcsBtnObj = rcsBtnObj?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
                             .replace("{", "\\{")
@@ -222,7 +222,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                                 + "\\}\\}")
                             .toRegex()
                             , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        rcs_btn_cont_1 = rcs_btn_cont_1?.replaceFirst(("\\{\\{"
+                        rcsBtnCont1 = rcsBtnCont1?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
                             .replace("{", "\\{")
@@ -237,7 +237,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                                 + "\\}\\}")
                             .toRegex()
                             , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        rcs_btn_cont_2 = rcs_btn_cont_2?.replaceFirst(("\\{\\{"
+                        rcsBtnCont2 = rcsBtnCont2?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
                             .replace("{", "\\{")
@@ -252,7 +252,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                                 + "\\}\\}")
                             .toRegex()
                             , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        rcs_btn_cont_3 = rcs_btn_cont_3?.replaceFirst(("\\{\\{"
+                        rcsBtnCont3 = rcsBtnCont3?.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
                             .replace("{", "\\{")
@@ -348,16 +348,16 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                         callbackDto.rcs_msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0" // 안내 0, 광고 1
                         callbackDto.rcs_btn_ins_tp = rcsCont.rcs_btn_ins_tp
                         callbackDto.rcs_btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrEmpty()) "0" else rcsCont.rcs_btn_cnt
-                        callbackDto.rcs_btn_obj = rcs_btn_obj
+                        callbackDto.rcs_btn_obj = rcsBtnObj
                         callbackDto.rcs_btn_1 = rcsCont.rcs_btn_1
                         callbackDto.rcs_btn_tp_1 = rcsCont.rcs_btn_tp_1
-                        callbackDto.rcs_btn_cont_1 = rcs_btn_cont_1
+                        callbackDto.rcs_btn_cont_1 = rcsBtnCont1
                         callbackDto.rcs_btn_2 = rcsCont.rcs_btn_2
                         callbackDto.rcs_btn_tp_2 = rcsCont.rcs_btn_tp_2
-                        callbackDto.rcs_btn_cont_2 = rcs_btn_cont_2
+                        callbackDto.rcs_btn_cont_2 = rcsBtnCont2
                         callbackDto.rcs_btn_3 = rcsCont.rcs_btn_3
                         callbackDto.rcs_btn_tp_3 = rcsCont.rcs_btn_tp_3
-                        callbackDto.rcs_btn_cont_3 = rcs_btn_cont_3
+                        callbackDto.rcs_btn_cont_3 = rcsBtnCont3
                         callbackDto.rcs_footer = rcsCont.rcs_footer
                         if (!rcsCont.img_nm_lst.isNullOrBlank()) {
                             val list = rcsCont.img_nm_lst!!.split(",")

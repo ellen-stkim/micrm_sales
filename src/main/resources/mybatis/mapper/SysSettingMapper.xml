@@ -496,7 +496,7 @@
 			 , #{par_nm}
 			 , #{use_yn}
 			 , #{reg_id}
-			 , #{reg_dt}
+			 , now()
 		)
 	</insert>
 

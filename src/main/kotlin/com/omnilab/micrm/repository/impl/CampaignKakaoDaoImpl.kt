@@ -72,9 +72,9 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
 
         for (urlLst in kakaoContUrlList) {
             urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
-            if("btn" == urlLst.url_tag?.toLowerCase()){
+            if("btn" == urlLst.url_tag?.lowercase(Locale.getDefault())){
                 kakaoBtnUrl = urlLst
-            }else if("img" == urlLst.url_tag?.toLowerCase()){
+            }else if("img" == urlLst.url_tag?.lowercase(Locale.getDefault())){
                 kakaoImgUrl = urlLst
             }
         }
@@ -294,7 +294,12 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                 }else{
                     kkoMsgdto.type = "FI"
                 }
-                kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}\"}"
+
+                if(kakaoImgUrl != null) {
+                    kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}\"}"
+                }else{
+                    kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\"}"
+                }
             }else{
                 kkoMsgdto.type = "FT"
             }

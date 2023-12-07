@@ -34,6 +34,7 @@ class SysInfoServiceImpl : SysInfoService {
             }
             return true
         }catch (e: Exception){
+            logger.error("setcode", e)
             return false
         }
     }
