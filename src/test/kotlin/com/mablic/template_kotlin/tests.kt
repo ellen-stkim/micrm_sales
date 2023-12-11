@@ -1,18 +1,12 @@
 package com.mablic.template_kotlin
 
-import com.omnilab.micrm.common.AES256
 import org.apache.commons.codec.binary.Base64
 import org.slf4j.LoggerFactory
+import org.springframework.web.util.HtmlUtils
+import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import java.security.InvalidAlgorithmParameterException
-import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
-import java.security.spec.AlgorithmParameterSpec
-import javax.crypto.BadPaddingException
 import javax.crypto.Cipher
-import javax.crypto.IllegalBlockSizeException
-import javax.crypto.NoSuchPaddingException
-import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 class tests {
@@ -47,11 +41,18 @@ class tests {
 
 fun main(args: Array<String>) {
     val logger = LoggerFactory.getLogger("aaa")
-
+    /*
     val t = tests()
     val str = "textte"
     val key = "Sr8iEd30psDL8lIeCECLgDprWXbbBIR8"
 
     logger.error("{}", t.AES_Encode(str, key))
     logger.error("{}", t.AES_Decode("DHtOma7mcZWE51Z8VgcSsA", key))
+    */
+
+    val filename = "[MMS]_마캠_2023christmas_MMS,친구톡(4차)_고유란_231206_live"
+    logger.error("{}", String(filename.toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1))
+    logger.error("{}", HtmlUtils.htmlEscape(filename))
+    logger.error("{}", String(filename.replace(",", "%2C").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1))
+
 }

@@ -38,7 +38,7 @@ class ExcelDownloadView: AbstractView() {
             if (header.contains("Edge")) {
                 response.setHeader("Content-Disposition", "attachment; fileName=" + URLEncoder.encode(filename, "UTF-8").replace("\\+", "%20") + ";")
             } else if (header.contains("Chrome") || header.contains("Opera") || header.contains("Firefox")) {
-                response.setHeader("Content-Disposition", "attachment; fileName=" + String(filename.toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1) + ";")
+                response.setHeader("Content-Disposition", "attachment; fileName=" + String(filename.replace(",", "%2C").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1) + ";")
             } else {
                 response.setHeader("Content-Disposition", "attachment; fileName=" + URLEncoder.encode(filename, "UTF-8").replace("\\+", "%20") + ";")
             }

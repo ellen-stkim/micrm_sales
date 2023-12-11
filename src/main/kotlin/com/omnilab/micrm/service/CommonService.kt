@@ -109,10 +109,8 @@ class CommonService {
         }
     }
 
-
     fun jsonOneContentsParsing(dto: Content_view_Dto) {
         // 수정 페이지 json 파싱하기
-
         val jsonParser = JsonParser()
         val rcsMsgTp = dto.msg_tp
 

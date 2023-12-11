@@ -10,9 +10,10 @@ public class testtest {
         Logger logger = LoggerFactory.getLogger("testtest");
 
         // admin@hankyung.com
-        logger.error("{}", CommonUtils.sha512("hankyung_20230926_#@"));
-        logger.error("{}", CommonUtils.sha512("daewonmedia_20231123_#@"));
-        logger.error("{}", CommonUtils.sha512("milvus_1@3$"));
+        // logger.error("{}", CommonUtils.sha512("hankyung_20230926_#@"));
+        // logger.error("{}", CommonUtils.sha512("daewonmedia_20231123_#@"));
+        // logger.error("{}", CommonUtils.sha512("milvus_1@3$"));
+
     }
 
 }
