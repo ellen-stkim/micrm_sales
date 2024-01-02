@@ -20,31 +20,31 @@
 			<fileNamePattern>${LOGS_PATH}/appLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
-				<maxFileSize>100MB</maxFileSize>
+				<maxFileSize>2048MB</maxFileSize>
 				<!-- kb, mb, gb -->
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<maxHistory>90</maxHistory>
 		</rollingPolicy>
 	</appender>
 	<!--
-            # log4jdbc settings development production
-            jdbc.connection     :     OFF       OFF
-            jdbc.audit          :     OFF       OFF
-            jdbc.sqlonly        :     OFF       OFF
-            jdbc.sqltiming      :     INFO      OFF
-            jdbc.resultset      :     OFF       OFF
-            jdbc.resultsettable :     INFO      OFF
-        -->
-	<logger name="jdbc" level="OFF"/>
-	<logger name="jdbc.connection" level="OFF"/>
-	<logger name="jdbc.audit" level="OFF"/>
-	<logger name="jdbc.sqlonly" level="OFF"/>
-	<logger name="jdbc.sqltiming" level="INFO"/>
-	<logger name="jdbc.resultset" level="OFF"/>
-	<logger name="jdbc.resultsettable" level="INFO"/>
-	<logger name="org.apache.cxf" level="ERROR"/>
+		# log4jdbc settings development production
+		jdbc.connection     :     OFF       OFF
+		jdbc.audit          :     OFF       OFF
+		jdbc.sqlonly        :     OFF       OFF
+		jdbc.sqltiming      :     INFO      OFF
+		jdbc.resultset      :     OFF       OFF
+		jdbc.resultsettable :     INFO      OFF
+	-->
+	<logger name="jdbc" level="OFF" additivity="false"/>
+	<logger name="jdbc.connection" level="OFF" additivity="false"/>
+	<logger name="jdbc.audit" level="OFF" additivity="false"/>
+	<logger name="jdbc.sqlonly" level="OFF" additivity="false"/>
+	<logger name="jdbc.sqltiming" level="INFO" additivity="false"/>
+	<logger name="jdbc.resultset" level="OFF" additivity="false"/>
+	<logger name="jdbc.resultsettable" level="INFO" additivity="false"/>
+	<logger name="org.apache.cxf" level="ERROR" additivity="false"/>
 
-	<root level="INFO">
+	<root level="INFO" additivity="false">
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
 	</root>
