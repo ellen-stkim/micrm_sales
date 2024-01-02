@@ -2261,13 +2261,13 @@ class SalesforceServiceImpl : SalesforceService {
                     for(activity in activities) {
                         val type = activity["type"].toString()
                         if (type == "REST") {
+                            logger.error("{}", activity)
                             val salesNm = data["name"].toString()
                             val avoNm = activity["name"].toString()
                             val avoId = activity["id"].toString()
                             val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
                                 val temp = Tblmi_cont_mstDto(seq.toInt())
                                 val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
-
                                 val usrId = if (mstDto.upd_id == null) {
                                     mstDto.reg_id
                                 } else {
@@ -2333,7 +2333,6 @@ class SalesforceServiceImpl : SalesforceService {
                                 }
                         }
                     }
-                    throw Exception("rollback")
                     return true
                 }else{
                     logger.error("connection Error : {} / {}", "${restUrl.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}",result)

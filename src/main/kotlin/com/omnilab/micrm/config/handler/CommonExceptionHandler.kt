@@ -20,10 +20,10 @@ class CommonExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException::class)
     fun handlesdConflict(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, e: NoHandlerFoundException) {
 		try {
-            logger.error("error", e)
+            logger.error("handlesdConflict", e)
             rep.sendRedirect("/html/not.html")
         } catch (err: Exception) {
-
+            logger.error("handlesdConflict catch err", err)
         }
     }
 
@@ -35,14 +35,14 @@ class CommonExceptionHandler {
             logger.error("invalid {}", req.requestURI, e)
             rep.sendRedirect("/html/error.html")
         } catch (err: Exception) {
-
+            logger.error("handleException catch err", err)
         }
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = [RequestRejectedException::class])
     fun rejected(e: RequestRejectedException): String {
-        logger.error("error", e)
+        logger.error("rejected", e)
 		return "redirect:/html/error2.html"
     }
 
@@ -52,14 +52,9 @@ class CommonExceptionHandler {
         if(e.message != "rollback"){
             logger.error("error", e)
         }else{
-            logger.error("error", "rollback")
+            logger.error("rollback")
         }
 		return "redirect:/html/error2.html"
     }
 
-    /*@ExceptionHandler(value = [Exception::class])
-    fun handleServerException(e : Exception) : String{
-        logger.error("error", e);
-        return "redirect:/html/error2.html"
-    }*/
 }

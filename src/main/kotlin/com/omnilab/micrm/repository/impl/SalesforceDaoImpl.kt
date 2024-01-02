@@ -50,7 +50,6 @@ class SalesforceDaoImpl: SalesforceDao {
     }
      */
 
-
     override fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int {
         val check = sqlSession.selectOne<Tblmicp_cont_mstDto>("sel_tblmicp_cont_mst", dto)
         return if(check == null){

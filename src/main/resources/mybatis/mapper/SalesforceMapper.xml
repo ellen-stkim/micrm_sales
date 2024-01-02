@@ -129,6 +129,7 @@
     </select>
 
     <select id="sel_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" resultType="Tblmicp_cont_mstDto">
+        /* sel_tblmicp_cont_mst */
         select *
         from tblmicp_cont_mst
         <where>
@@ -266,6 +267,7 @@
     </update>
     
     <update id="upd_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto">
+        /* upd_tblmicp_cont_mst */
         <selectKey keyProperty="seq,cont_grp_cd" resultType="Tblmicp_cont_mstDto" order="AFTER">
             SELECT seq
                 , cont_grp_cd
@@ -291,9 +293,6 @@
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
                 , inta_ve = #{inta_ve}
-            </if>
-            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pub_yn)">
-                , pub_yn = #{pub_yn}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_id)">
                 , upd_id = #{upd_id}

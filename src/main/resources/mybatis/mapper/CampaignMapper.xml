@@ -237,6 +237,7 @@
 	</select>
 
 	<select id="sel_camp_cont_mstOne" parameterType="Tblmicp_cont_mstDto" resultType="Tblmicp_cont_mstDto">
+		/* sel_camp_cont_mstOne */
 		select *
 		from Tblmicp_cont_mst
 		<where>
