@@ -22,7 +22,7 @@
 <script src="/js/jquery-3.6.0.min.js?v=0.13"></script>
 <script src="/js/jquery.validate.min.js?v=0.13"></script>
 <script src="/js/jquery-ui.min.js?v=0.13"></script>
-<script src="/js/common.js?v=0.13"></script>
+<script src="/js/common.js?v=0.14"></script>
 <script src="/js/popup.js?v=0.13"></script>
 <script src="/js/moment.min.js?v=0.13"></script><!-- moment.js -->
 <script src="/js/fullcalendar.min.js?v=0.13"></script><!-- fullcalendar.js -->

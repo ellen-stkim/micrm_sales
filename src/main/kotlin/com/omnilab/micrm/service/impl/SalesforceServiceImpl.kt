@@ -1413,7 +1413,6 @@ class SalesforceServiceImpl : SalesforceService {
                     return false;
                 }
             } else if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
-                logger.error("비어있음")
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
                     logger.error("KaKao 2000Byte Error")
                     return false;
@@ -2262,9 +2261,9 @@ class SalesforceServiceImpl : SalesforceService {
                     for(activity in activities) {
                         val type = activity["type"].toString()
                         if (type == "REST") {
-                            val sales_nm = data["name"].toString()
-                            val avo_nm = activity["name"].toString()
-                            val avo_id = activity["id"].toString()
+                            val salesNm = data["name"].toString()
+                            val avoNm = activity["name"].toString()
+                            val avoId = activity["id"].toString()
                             val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
                                 val temp = Tblmi_cont_mstDto(seq.toInt())
                                 val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
@@ -2276,12 +2275,12 @@ class SalesforceServiceImpl : SalesforceService {
                                 }
                                 val cpMstDto = Tblmicp_cont_mstDto(contDto)
                                 cpMstDto.cont_seq = seq.toInt()
-                                cpMstDto.sales_nm = sales_nm
+                                cpMstDto.sales_nm = salesNm
                                 cpMstDto.camp_nm = contDto.camp_nm
                                 cpMstDto.team_cd = contDto.team_cd
                                 cpMstDto.usr_key = contDto.usr_key
-                                cpMstDto.avo_nm = avo_nm
-                                cpMstDto.avo_id = avo_id
+                                cpMstDto.avo_nm = avoNm
+                                cpMstDto.avo_id = avoId
                                 cpMstDto.inten_id = dto.inten_id
                                 cpMstDto.orig_id = dto.orig_id
                                 cpMstDto.inta_key = dto.inta_key
@@ -2334,6 +2333,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 }
                         }
                     }
+                    throw Exception("rollback")
                     return true
                 }else{
                     logger.error("connection Error : {} / {}", "${restUrl.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}",result)
@@ -2344,7 +2344,7 @@ class SalesforceServiceImpl : SalesforceService {
                 return false
             }
         }catch (e: Exception){
-            logger.error("campaingContent", e)
+            logger.error("campaingContent ERROR", e)
             throw Exception("rollback")
         }
     }

@@ -660,20 +660,18 @@
 
         function prePeriodControl(){
             const monDt = $('#monthlyDt').val();
-
-            const date = new Date(monDt)
-            $('#monthlyDt').val(date.getFullYear()+"-"+ date.getMonth());
-
+            const date = new Date(monDt);
+            date.addMonths(-1);
+            $('#monthlyDt').val(date.getFullYear() + "-" + (date.getMonth() + 1));
             searchCostReport();
         }
 
         function nextPeriodControl(){
             const monDt = $('#monthlyDt').val();
-            const date = new Date(monDt)
-            date.setMonth(date.getMonth()+2)
-            $('#monthlyDt').val(date.getFullYear()+"-"+date.getMonth());
+            const date = new Date(monDt);
+            date.addMonths(1);
+            $('#monthlyDt').val(date.getFullYear() + "-" + (date.getMonth() + 1));
             searchCostReport();
         }
-
     </script>
 </content>

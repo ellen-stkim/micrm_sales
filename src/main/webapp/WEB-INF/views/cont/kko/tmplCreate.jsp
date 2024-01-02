@@ -1785,6 +1785,7 @@
             return this;
         }.bind({}))[0];
 
+        data.templateContent = data.templateContent.replace(/\u200B/g,'');
         data.categoryCode = $('.bizContsVal .value').attr("data")
 
         // --------- 버튼 정보 ---------

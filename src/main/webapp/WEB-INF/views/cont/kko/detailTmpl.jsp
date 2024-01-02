@@ -2047,23 +2047,24 @@
     // 템플릿 명 유효성 검사
     // 템플릿 등록
 
-function isCheckTemplateName() {
-    const seq = $("#tmplSeq").val();
-    const tmpl_nm = $("input[name='newTemplateName']").val();
-    const send_key = $('#send_key').val();
-    const res = function (response) {
-        if (response.status == 200) {
-            popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "updateTmpl()");
+    function isCheckTemplateName() {
+        const seq = $("#tmplSeq").val();
+        const tmpl_nm = $("input[name='newTemplateName']").val();
+        const send_key = $('#send_key').val();
+        const res = function (response) {
+            if (response.status == 200) {
+                popup.confirmAlertCallback("템플릿을 수정 하시겠습니까?", "updateTmpl()");
 
-        } else {
-            // 중복된 명칭 존재
-            popup.popAlert(response.msg)
+            } else {
+                // 중복된 명칭 존재
+                popup.popAlert(response.msg)
+            }
         }
+        let param = {seq :seq ,tmpl_nm: tmpl_nm, send_key: send_key}
+        com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckUpdTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
     }
-    let param = {seq :seq ,tmpl_nm: tmpl_nm, send_key: send_key}
-    com_ajax.ajax('post', '${baseURL}/cont/kko/isCheckUpdTmplNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
-}
-function updateTmpl() {
+
+    function updateTmpl() {
         const res = function (response) {
             popup.popAlert(response.msg)
             $('#smsContentsPopup').addClass('active');
@@ -2077,6 +2078,7 @@ function updateTmpl() {
             return this;
         }.bind({}))[0];
 
+        data.templateContent = data.templateContent.replace(/\u200B/g,'');
         data.categoryCode = $('.bizContsVal .value').attr("data")
 
         // --------- 버튼 정보 ---------

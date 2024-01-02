@@ -749,6 +749,7 @@ class SalesforceController {
             save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
         }catch (e: Exception){
             logger.error("unpublish Service error : {}", dto)
+            logger.error("unpublish Service error", e)
         }
 
         return if(save > 0){

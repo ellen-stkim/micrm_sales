@@ -612,7 +612,6 @@ class MobileContentServiceImpl : ContentService {
                     return false;
                 }
             } else if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
-                logger.error("비어있음");
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
                     logger.error("KaKao 2000Byte Error")
                     return false;
