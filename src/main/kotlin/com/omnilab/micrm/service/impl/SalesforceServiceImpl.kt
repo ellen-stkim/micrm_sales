@@ -2261,7 +2261,7 @@ class SalesforceServiceImpl : SalesforceService {
                     for(activity in activities) {
                         val type = activity["type"].toString()
                         if (type == "REST") {
-                            logger.error("{}", activity)
+                            logger.error("activity : {}", activity)
                             val salesNm = data["name"].toString()
                             val avoNm = activity["name"].toString()
                             val avoId = activity["id"].toString()
@@ -2303,18 +2303,17 @@ class SalesforceServiceImpl : SalesforceService {
 
                                 for (i in contLst) {
                                     val oriSeq = i.seq.toString()
-
                                     // 리스트 삽입
-                                    val tblmicp_cont_lstDto = Tblmicp_cont_lstDto(i)
-                                    tblmicp_cont_lstDto.seq = null
-                                    tblmicp_cont_lstDto.cont_cd = cpMstDto.seq
-                                    tblmicp_cont_lstDto.reg_id = usrId
-                                    tblmicp_cont_lstDto.upd_id = usrId
-                                    salesforceDao.ins_tblmicp_cont_lst(tblmicp_cont_lstDto)
+                                    val tblmicpContLstdto = Tblmicp_cont_lstDto(i)
+                                    tblmicpContLstdto.seq = null
+                                    tblmicpContLstdto.cont_cd = cpMstDto.seq
+                                    tblmicpContLstdto.reg_id = usrId
+                                    tblmicpContLstdto.upd_id = usrId
+                                    salesforceDao.ins_tblmicp_cont_lst(tblmicpContLstdto)
 
                                     //신규 url 리스트 삽입
                                     val map = HashMap<String, Any>()
-                                    map["cont_lst_cd"] = tblmicp_cont_lstDto.seq!!
+                                    map["cont_lst_cd"] = tblmicpContLstdto.seq!!
                                     map["list_seq"] = oriSeq
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
 
@@ -2322,7 +2321,7 @@ class SalesforceServiceImpl : SalesforceService {
                                     if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
                                         val couponIssueDto = CouponIssueDto()
                                         couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
-                                        couponIssueDto.send_phone = tblmicp_cont_lstDto.send_to
+                                        couponIssueDto.send_phone = tblmicpContLstdto.send_to
                                         couponIssueDto.msg_title = i.cont_sub
                                         couponIssueDto.msg_content = i.cont_body
                                         couponIssueDto.usr_grp_cd = i.cont_grp_cd
