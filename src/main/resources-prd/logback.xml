@@ -2,7 +2,7 @@
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-	<property name="LOGS_PATH" value="./logs"/>
+	<property name="LOGS_PATH" value="${catalina.base}/logs"/>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -19,9 +19,7 @@
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOGS_PATH}/appLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<!-- or whenever the file size reaches 100MB -->
-				<maxFileSize>2048MB</maxFileSize>
-				<!-- kb, mb, gb -->
+				<maxFileSize>1GB</maxFileSize><!-- kb, mb, gb -->
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<maxHistory>90</maxHistory>
 		</rollingPolicy>
@@ -39,9 +37,13 @@
 	<logger name="jdbc.connection" level="OFF" additivity="false"/>
 	<logger name="jdbc.audit" level="OFF" additivity="false"/>
 	<logger name="jdbc.sqlonly" level="OFF" additivity="false"/>
-	<logger name="jdbc.sqltiming" level="INFO" additivity="false"/>
+	<logger name="jdbc.sqltiming" level="INFO" additivity="false">
+		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
+	</logger>
 	<logger name="jdbc.resultset" level="OFF" additivity="false"/>
-	<logger name="jdbc.resultsettable" level="INFO" additivity="false"/>
+	<logger name="jdbc.resultsettable" level="INFO" additivity="false">
+		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
+	</logger>
 	<logger name="org.apache.cxf" level="ERROR" additivity="false"/>
 
 	<root level="INFO" additivity="false">

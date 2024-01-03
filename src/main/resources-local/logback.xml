@@ -2,7 +2,7 @@
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-	<property name="LOGS_PATH" value="./logs"/>
+	<property name="LOGS_PATH" value="${catalina.base}/logs"/>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -11,17 +11,24 @@
 		</encoder>
 	</appender>
 
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>C:\test\catalina_full.out</file>
+		<append>true</append>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] [%X{USER}] : %msg %n</pattern>
+		</encoder>
+	</appender>
+
 	<appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS_PATH}/catalina.out</file>
+		<file>C:\test\catalina_rolling.out</file>
 		<encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss} [${LOG_LEVEL_PATTERN:-%5p}] [%class{0}] [%X{REQSEQ}] [%X{USER}] : %msg%n</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOGS_PATH}/appLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<!-- or whenever the file size reaches 100MB -->
-				<maxFileSize>100MB</maxFileSize>
-				<!-- kb, mb, gb -->
+				<maxFileSize>1GB</maxFileSize><!-- kb, mb, gb -->
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<maxHistory>90</maxHistory>
 		</rollingPolicy>
@@ -39,13 +46,16 @@
 	<logger name="jdbc.connection" level="OFF" additivity="false"/>
 	<logger name="jdbc.audit" level="OFF" additivity="false"/>
 	<logger name="jdbc.sqlonly" level="OFF" additivity="false"/>
-	<logger name="jdbc.sqltiming" level="INFO" additivity="false"/>
-	<logger name="jdbc.resultset" level="OFF" additivity="false"/>
-	<logger name="jdbc.resultsettable" level="INFO" additivity="false"/>
-	<logger name="org.apache.cxf" level="INFO" additivity="false"/>
+	<logger name="jdbc.sqltiming" level="INFO" additivity="false">
+		<!--<appender-ref ref="FILE"/>-->
+	</logger>
+	<logger name="jdbc.resultset" level="OFF" additivity="false" />
+	<logger name="jdbc.resultsettable" level="INFO" additivity="false">
+		<!--<appender-ref ref="FILE"/>-->
+	</logger>
+	<logger name="org.apache.cxf" level="ERROR" additivity="false"/>
 
 	<root level="INFO" additivity="false">
 		<appender-ref ref="CONSOLE"/>
-		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
 	</root>
 </configuration>
