@@ -44,12 +44,6 @@ class SalesforceDaoImpl: SalesforceDao {
         return sqlSession.selectOne("sel_tblmicp_program_sales", dto)
     }
 
-    /*
-    override fun ins_tblmicp_cont(dto: Tblmicp_cont_mstDto): Boolean {
-        return true
-    }
-     */
-
     override fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int {
         val check = sqlSession.selectOne<Tblmicp_cont_mstDto>("sel_tblmicp_cont_mst", dto)
         return if(check == null){

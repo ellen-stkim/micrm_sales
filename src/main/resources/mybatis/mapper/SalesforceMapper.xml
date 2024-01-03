@@ -187,8 +187,7 @@
             , cont_grp_cd
             , reg_id
             , upd_id
-        )
-        values (
+        ) values (
             #{cont_seq}
             , #{ch_tp}
             , #{cont_nm}
@@ -207,6 +206,15 @@
             , #{reg_id}
             , #{upd_id}
         )
+        ON DUPLICATE KEY UPDATE
+            pub_yn = VALUES(pub_yn)
+            , cont_seq = VALUES(cont_seq)
+            , cont_nm = VALUES(cont_nm)
+            , sales_nm = VALUES(sales_nm)
+            , avo_nm = VALUES(avo_nm)
+            , inta_ve = VALUES(inta_ve)
+            , upd_id = VALUES(upd_id)
+
     </insert>
 
     <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">

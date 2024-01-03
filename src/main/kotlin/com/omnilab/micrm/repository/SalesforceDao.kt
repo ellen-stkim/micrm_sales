@@ -16,7 +16,6 @@ interface SalesforceDao {
     fun sel_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): MutableList<Tblmicp_cont_mstDto>
     fun sel_tblmicp_program(dto: Tblmicp_programDto): Tblmicp_programDto?
 
-    //fun ins_tblmicp_cont(dto: Tblmicp_cont_mstDto): Boolean
     fun ins_tblmicp_cont_mst(dto: Tblmicp_cont_mstDto): Int
     fun ins_tblmicp_cont_lst(dto: Tblmicp_cont_lstDto): Int
     fun ins_tblmicp_cont_url_lst(dto: MutableMap<String, Any>): Int
