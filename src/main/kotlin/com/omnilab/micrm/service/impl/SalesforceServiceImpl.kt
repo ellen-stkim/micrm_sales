@@ -1628,7 +1628,7 @@ class SalesforceServiceImpl : SalesforceService {
         }
     }
 
-    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
+    //@Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun publish(dto: Tblmicp_cont_mstDto): Boolean {
         val save = salesforceDao.upd_tblmicp_cont_mst(dto)
         return if(save == 1){
@@ -1645,31 +1645,39 @@ class SalesforceServiceImpl : SalesforceService {
                     contLstM[0].upd_id
                 }
 
-                val temp = Tblmicp_programDto()
-                temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
-                temp.pro_tp = "SALES"
-                temp.pro_st = "03" // 발송 진행 중
-                temp.pro_tg_tp = "TG01"
-                temp.pro_tg_id = "SALES"
-                temp.cont_cnt = contLstM.size
-                temp.camp_cnt = contLstM.size
-                temp.pro_nm = contLstM[0].sales_nm
-                temp.team_cd = contLstM[0].team_cd
-                temp.usr_grp_cd = contLstM[0].cont_grp_cd
-                temp.reg_id = usrId
-                temp.upd_id = usrId
-                temp.inten_id = dto.inten_id
-                temp.orig_id = dto.orig_id
-                temp.inta_key = dto.inta_key
-                temp.inta_ve = dto.inta_ve
+                val check = Tblmicp_programDto()
+                check.inten_id = dto.inten_id
+                check.orig_id = dto.orig_id
+                check.inta_key = dto.inta_key
+                check.inta_ve = dto.inta_ve
+                check.reg_id = usrId
+                check.upd_id = usrId
 
-                var proDto = salesforceDao.sel_tblmicp_program(temp)
+                var proDto = salesforceDao.sel_tblmicp_program(check)
                 if(proDto == null){
+                    val temp = Tblmicp_programDto()
+                    temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
+                    temp.pro_tp = "SALES"
+                    temp.pro_st = "03" // 발송 진행 중
+                    temp.pro_tg_tp = "TG01"
+                    temp.pro_tg_id = "SALES"
+                    temp.cont_cnt = contLstM.size
+                    temp.camp_cnt = contLstM.size
+                    temp.pro_nm = contLstM[0].sales_nm
+                    temp.team_cd = contLstM[0].team_cd
+                    temp.usr_grp_cd = contLstM[0].cont_grp_cd
+                    temp.inten_id = dto.inten_id
+                    temp.orig_id = dto.orig_id
+                    temp.inta_key = dto.inta_key
+                    temp.inta_ve = dto.inta_ve
+                    temp.reg_id = usrId
+                    temp.upd_id = usrId
                     campaignDao.ins_program(temp)
-                    proDto = temp
+                    proDto = salesforceDao.sel_tblmicp_program(check)
                 }
+
                 for(i in contLstM){
-                    val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
+                    val campaignDto = Tblmicp_campaignDto(proDto!!.pro_id)
                     campaignDto.cont_id = i.seq
                     campaignDto.send_tg_tp = "TG01"
                     campaignDto.send_tg_id = "SALES"
@@ -1697,15 +1705,12 @@ class SalesforceServiceImpl : SalesforceService {
                         val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
                         // 이미지 저장 경로
                         val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
-
                         // RCS 발송 서버 정보
                         val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
 
                         val urlLst = cont.img_nm_lst!!.split(",")
-
                         // 이미지 리스트
                         val rcsImgLst = ArrayList<LgRcs_imgDto>()
-
                         val urlSize = urlLst.size.toString()
                         for (j in urlLst.indices) {
                             if(!CommonUtils.isEmptyObject(urlLst[j].trim())){

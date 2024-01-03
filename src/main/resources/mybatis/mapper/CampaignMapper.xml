@@ -319,6 +319,18 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
 				and pro_nm = #{pro_nm}
 			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inten_id)">
+				and inten_id = #{inten_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(orig_id)">
+				and orig_id = #{orig_id}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_key)">
+				and inta_key = #{inta_key}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(inta_ve)">
+				and inta_ve = #{inta_ve}
+			</if>
 		</where>
 	</select>
 	
@@ -681,8 +693,7 @@
 			, #{plan_cost}, #{off_cost}, #{dev_cost}, #{des_cost}, #{inten_id}, #{orig_id}, #{inta_key}, #{inta_ve}
 		)
 		ON DUPLICATE KEY UPDATE
-			pro_id = #{pro_id}
-			, pro_tp = #{pro_tp}
+			pro_tp = #{pro_tp}
 			, pro_st = #{pro_st}
 			, pro_nm = #{pro_nm}
 			, pro_tg_tp = #{pro_tg_tp}
