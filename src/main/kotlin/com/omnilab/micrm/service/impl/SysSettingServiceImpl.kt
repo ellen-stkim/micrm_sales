@@ -73,11 +73,7 @@ class SysSettingServiceImpl : SysSettingService {
         val map: MutableMap<String, Any> = HashMap()
         val searchDto = dto as SetLst_searchDto
 
-        val pageNo = if (searchDto.pageNo == null) {
-            1
-        } else {
-            searchDto.pageNo!!
-        }
+        val pageNo = searchDto.pageNo
 
         if (searchDto.searchType == "list_nm") {
             searchDto.list_nm = searchDto.searchValue

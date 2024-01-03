@@ -74,6 +74,7 @@ internal class DatabaseConfig {
         return dataSourceSpy
     }
 
+    /*
     @Bean("transactionManager")
     fun transactionManager(@Qualifier("dataSource") dataSource: DataSource): DataSourceTransactionManager {
         val transactionManager = DataSourceTransactionManager(dataSource)
@@ -93,14 +94,10 @@ internal class DatabaseConfig {
         rollbackRules.add(RollbackRuleAttribute(BadSqlGrammarException::class.java))
         rollbackRules.add(RollbackRuleAttribute(Exception::class.java))
 
-        //val readOnlyAttribute = DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)
         val readOnlyAttribute = DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW)
         readOnlyAttribute.isReadOnly = true
-
-        //readOnlyAttribute.setTimeout(10);
         readOnlyAttribute.timeout = -1
 
-        //val writeAttribute = RuleBasedTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW, rollbackRules)
         val writeAttribute = RuleBasedTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW, rollbackRules)
         writeAttribute.timeout = -1
 
@@ -129,6 +126,7 @@ internal class DatabaseConfig {
         //pointcut.expression = "execution(* com.omnilab.micrm.repository..*.*(..))"
         return DefaultPointcutAdvisor(pointcut, txAdvice)
     }
+    */
 
     @Bean(name = ["sqlSessionFactory"])
     @Throws(Exception::class)
