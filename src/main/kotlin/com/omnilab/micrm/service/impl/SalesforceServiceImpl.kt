@@ -115,11 +115,12 @@ class SalesforceServiceImpl : SalesforceService {
 
     override fun getUser(dto: SalesforceDto, session: HttpSession): Map<String, Any> {
         val returnMap: MutableMap<String, Any> = HashMap()
-        val host: String = dto.host!!
-        val token: String? = dto.token
-        val fuel2token: String = dto.fuel2token!!
 
         try {
+            val host: String = dto.host!!
+            val token: String? = dto.token
+            val fuel2token: String = dto.fuel2token!!
+
             val client: HttpClient = HttpClients.createDefault()
             val httpGet = HttpGet("$host/platform/v1/tokenContext")
             httpGet.addHeader("Content-type", "application/json")
