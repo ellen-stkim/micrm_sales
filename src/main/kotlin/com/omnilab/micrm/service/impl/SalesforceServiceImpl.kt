@@ -50,6 +50,7 @@ import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -1541,14 +1542,13 @@ class SalesforceServiceImpl : SalesforceService {
                     logger.error("activities {}", activities.size)
                     val fillterActivities = activities.stream().filter {
                         it["type"].toString() == "REST" && it["id"] == dto.avo_id
-                    }.findAny().orElse(null)
+                    }.collect(Collectors.toList())
 
-                    if(fillterActivities != null){
-                        for(act in fillterActivities) {
+                    if(!fillterActivities.isNullOrEmpty()){
+                        for(activity in fillterActivities) {
                             //val type = activity["type"].toString()
                             //if (type == "REST") {
-                                logger.error("activity : {}", act)
-                                val activity = act as MutableMap<String, Any>
+                                logger.error("activity : {}", activity)
                                 val salesNm = data["name"].toString()
                                 val avoNm = activity["name"].toString()
                                 val avoId = activity["id"].toString()
