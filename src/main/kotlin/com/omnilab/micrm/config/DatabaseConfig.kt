@@ -78,7 +78,6 @@ internal class DatabaseConfig {
     fun transactionManager(@Qualifier("dataSource") dataSource: DataSource): DataSourceTransactionManager {
         val transactionManager = DataSourceTransactionManager(dataSource)
         transactionManager.isGlobalRollbackOnParticipationFailure = false
-        transactionManager.isRollbackOnCommitFailure
         return transactionManager
     }
 
