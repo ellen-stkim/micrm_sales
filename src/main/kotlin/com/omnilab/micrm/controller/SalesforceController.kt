@@ -32,6 +32,7 @@ import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStreamReader
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -817,11 +818,12 @@ class SalesforceController {
         val jwtCode = sysSettingService.getCommCD(commonCDDto)
         val secretKey = jwtCode?.cd_val
 
+        var payload: String? = null
         try {
             // jwt
             val chunks: List<String> = data.split(".")
             val decoder: Base64.Decoder = Base64.getUrlDecoder()
-            val payload = String(decoder.decode(chunks[1]))
+            payload = String(decoder.decode(chunks[1]))
             //logger.info("payload: $payload")
 
             val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
@@ -835,7 +837,7 @@ class SalesforceController {
                 logger.error("Could not verify JWT token integrity!")
             } else {
                 val gson = GsonBuilder().create()
-                val data = gson.fromJson(payload, Map::class.java)
+                val data = gson.fromJson(payload, MutableMap::class.java)
                 logger.error("data : {}", data)
                 var couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
                 if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
@@ -849,7 +851,11 @@ class SalesforceController {
             }
             return ResponseEntity(null, HttpStatus.OK)
         } catch (e: Exception) {
-            logger.error("execute.service", e)
+            if(e is SQLIntegrityConstraintViolationException){
+                logger.error("execute.service SQLIntegrityConstraintViolationException : {} | {}", e.message, payload)
+            }else{
+                logger.error("execute.service", e)
+            }
             return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
