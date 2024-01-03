@@ -41,7 +41,7 @@
 		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
 	</logger>
 	<logger name="jdbc.resultset" level="OFF" additivity="false"/>
-	<logger name="jdbc.resultsettable" level="INFO" additivity="false">
+	<logger name="jdbc.resultsettable" level="OFF" additivity="false">
 		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
 	</logger>
 	<logger name="org.apache.cxf" level="ERROR" additivity="false"/>
