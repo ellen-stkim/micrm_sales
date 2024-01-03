@@ -19,7 +19,7 @@
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOGS_PATH}/appLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>1GB</maxFileSize><!-- kb, mb, gb -->
+				<maxFileSize>1KB</maxFileSize><!-- kb, mb, gb -->
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<maxHistory>90</maxHistory>
 		</rollingPolicy>
