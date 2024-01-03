@@ -74,7 +74,6 @@ internal class DatabaseConfig {
         return dataSourceSpy
     }
 
-    /*
     @Bean("transactionManager")
     fun transactionManager(@Qualifier("dataSource") dataSource: DataSource): DataSourceTransactionManager {
         val transactionManager = DataSourceTransactionManager(dataSource)
@@ -83,6 +82,7 @@ internal class DatabaseConfig {
         return transactionManager
     }
 
+    /*
     @Bean("txAdvice")
     fun txAdvice(@Qualifier("transactionManager") transactionManager: DataSourceTransactionManager): TransactionInterceptor {
         val txAdvice = TransactionInterceptor()
