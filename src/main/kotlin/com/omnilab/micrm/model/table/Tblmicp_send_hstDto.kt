@@ -17,7 +17,7 @@ open class Tblmicp_send_hstDto {
     var tbl_id: String? = null
     var tbl_lst_id: String? = null
     var camp_ch: String? = null
-
+    var camp_dt: String? = null
     var usr_key: String? = null
     var send_to: String? = null
     var send_nm: String? = null

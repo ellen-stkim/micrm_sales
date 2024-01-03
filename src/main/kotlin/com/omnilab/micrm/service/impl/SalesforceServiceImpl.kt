@@ -43,8 +43,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
 import java.net.HttpURLConnection
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 import javax.servlet.http.HttpSession
@@ -112,10 +115,11 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     private lateinit var customAuthenticationProvider: AuthenticationProvider
 
+    private val yyyymmddFormat = SimpleDateFormat("YYYY-MM-dd")
 
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun getUser(dto: SalesforceDto, session: HttpSession): Map<String, Any> {
         val returnMap: MutableMap<String, Any> = HashMap()
-
         try {
             val host: String = dto.host!!
             val token: String? = dto.token
@@ -293,6 +297,7 @@ class SalesforceServiceImpl : SalesforceService {
         return returnMap
     }
 
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun mappingLst(dto: SalesforceDto): Map<String, Any> {
         val userInfo = UsefulUtils.sessionUser()
         val returnMap: MutableMap<String, Any> = HashMap()
@@ -318,10 +323,11 @@ class SalesforceServiceImpl : SalesforceService {
      * @title : 모바일 컨텐츠 저장
      */
 
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun insertContentList(contentListCreatedto: Content_list_CreateDto): Map<String, Any> {
         val statusMap: MutableMap<String, Any> = HashMap()
         val userInfo = UsefulUtils.sessionUser()
-        val cont_grp_cd = contentListCreatedto.cont_grp_cd
+        val contGrpCd = contentListCreatedto.cont_grp_cd
 
         val isByte = isCheckByte(contentListCreatedto);
 
@@ -332,13 +338,12 @@ class SalesforceServiceImpl : SalesforceService {
         statusMap["status"] = true
 
         val tblmiContMstDto = Tblmi_cont_mstDto()
-
         try {
             tblmiContMstDto.ch_tp = "CH03"
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
-            tblmiContMstDto.cont_grp_cd = cont_grp_cd
+            tblmiContMstDto.cont_grp_cd = contGrpCd
             tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
             tblmiContMstDto.avo_id = contentListCreatedto.avo_id
             tblmiContMstDto.inten_id = contentListCreatedto.inten_id
@@ -370,7 +375,7 @@ class SalesforceServiceImpl : SalesforceService {
                 tblmiContLstdto.sup_yn = "N"
                 tblmiContLstdto.reg_id = userInfo.usr_id
                 tblmiContLstdto.cont_grp_cd = userInfo.usr_grp_cd
-                tblmiContLstdto.cont_grp_cd = cont_grp_cd
+                tblmiContLstdto.cont_grp_cd = contGrpCd
 
                 val formatList = contentListCreatedto.formatType
 
@@ -705,12 +710,12 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     // 카카오 본문 a 링크 저장
-                    val url_kakao_body = contentListCreatedto.kakao_body
-                    if (url_kakao_body?.contains("{{") == true) {
+                    val urlKakaoBody = contentListCreatedto.kakao_body
+                    if (urlKakaoBody?.contains("{{") == true) {
 
                         val regex = "\\{\\{[^{]+}}"
                         val p = Pattern.compile(regex)
-                        val matcher = p.matcher(url_kakao_body)
+                        val matcher = p.matcher(urlKakaoBody)
 
                         var start = 0
                         var chk = true
@@ -745,7 +750,6 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
                 if (i == 1) {
-
                     // 모바일 이미지 a 링크 저장 (이미지 경로)
                     if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
                         val contUrlDto = Tblmi_cont_url_lstDto()
@@ -757,18 +761,15 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     // 모바일 본문 추적 a 링크 저장
-                    val url_sms_body = contentListCreatedto.sms_body
-                    if (url_sms_body?.contains("{{") == true) {
-
+                    val urlSmsBody = contentListCreatedto.sms_body
+                    if (urlSmsBody?.contains("{{") == true) {
                         val regex = "\\{\\{[^{]+}}"
                         val p = Pattern.compile(regex)
-                        val matcher = p.matcher(url_sms_body)
+                        val matcher = p.matcher(urlSmsBody)
 
                         var start = 0
                         var chk = true
-                        var i = 0
-                        var idx = 0;
-
+                        var idx = 0
                         while (chk) {
                             if (matcher.find(start)) {
                                 start = matcher.start() + matcher.group().length
@@ -793,45 +794,41 @@ class SalesforceServiceImpl : SalesforceService {
                                 chk = false
                             }
                         }
-
                     }
-
                 }
-
                 if (i == 2) {
                     val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
-
                     if (urlLen != null) {
                         // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
-                        for (i in 0 until urlLen) {
+                        for (j in 0 until urlLen) {
 
-                            val urlValue = contentListCreatedto?.url_value?.get(i)?.trim()
-                            val fallback_url_position = contentListCreatedto?.fallback_url_04?.get(i)?.trim()
-                            val fallback_url_query = contentListCreatedto?.fallback_url_05?.get(i)?.trim()
+                            val urlValue = contentListCreatedto.url_value?.get(i)?.trim()
+                            val fallbackUrlPosition = contentListCreatedto.fallback_url_04?.get(i)?.trim()
+                            val fallbackUrlQuery = contentListCreatedto.fallback_url_05?.get(i)?.trim()
 
                             if (!CommonUtils.isEmptyObject(urlValue)) {
                                 val contUrlDto = Tblmi_cont_url_lstDto()
                                 contUrlDto.url_tag = "btn"
                                 contUrlDto.url = urlValue
-                                contUrlDto.url_id = "urlBtn" + (i + 1)
+                                contUrlDto.url_id = "urlBtn" + (j + 1)
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
                             }
 
-                            if (!CommonUtils.isEmptyObject(fallback_url_position)) {
+                            if (!CommonUtils.isEmptyObject(fallbackUrlPosition)) {
                                 val contUrlDto = Tblmi_cont_url_lstDto()
                                 contUrlDto.url_tag = "btn"
-                                contUrlDto.url = fallback_url_position
-                                contUrlDto.url_id = "fallPosiBtn" + (i + 1)
+                                contUrlDto.url = fallbackUrlPosition
+                                contUrlDto.url_id = "fallPosiBtn" + (j + 1)
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
                             }
 
-                            if (!CommonUtils.isEmptyObject(fallback_url_query)) {
+                            if (!CommonUtils.isEmptyObject(fallbackUrlQuery)) {
                                 val contUrlDto = Tblmi_cont_url_lstDto()
                                 contUrlDto.url_tag = "btn"
-                                contUrlDto.url = fallback_url_query
-                                contUrlDto.url_id = "fallQueryBtn" + (i + 1)
+                                contUrlDto.url = fallbackUrlQuery
+                                contUrlDto.url_id = "fallQueryBtn" + (j + 1)
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
                             }
@@ -875,11 +872,12 @@ class SalesforceServiceImpl : SalesforceService {
      * @Method Decription : 모바일 컨텐츠 수정하기
      * @title  : 모바일 컨텐츠 수정
      */
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun updateContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
         val contentListCreatedto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
-        val usr_id: String = userInfo.usr_id!!
-        val usr_grp_cd = contentListCreatedto.cont_grp_cd
+        val usrId: String = userInfo.usr_id!!
+        val usrGrpCd = contentListCreatedto.cont_grp_cd
         val statusMap: MutableMap<String, Any> = HashMap()
         val tblmiContMstDto = Tblmi_cont_mstDto()
 
@@ -893,9 +891,9 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
         tblmiContMstDto.ch_tp = "CH03"
         tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
-        tblmiContMstDto.reg_id = usr_id
-        tblmiContMstDto.upd_id = usr_id
-        tblmiContMstDto.cont_grp_cd = usr_grp_cd
+        tblmiContMstDto.reg_id = usrId
+        tblmiContMstDto.upd_id = usrId
+        tblmiContMstDto.cont_grp_cd = usrGrpCd
         tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
         tblmiContMstDto.avo_id = contentListCreatedto.avo_id
         tblmiContMstDto.inten_id = contentListCreatedto.inten_id
@@ -913,7 +911,7 @@ class SalesforceServiceImpl : SalesforceService {
         contListDto.cont_cd = contentListCreatedto.mst_seq!!.toInt()
         val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
 
-        val len = contentListCreatedto.send_to_list!!.size - 1;
+        val len = contentListCreatedto.send_to_list!!.size - 1
 
         for (i in 0..len) {
             // 항상 3번 Insert 작업을 진행한다.
@@ -941,9 +939,9 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContLstdto.thm_url = null
             tblmiContLstdto.br_yn = "N"
             tblmiContLstdto.sup_yn = "N"
-            tblmiContLstdto.reg_id = usr_id
-            tblmiContLstdto.upd_id = usr_id
-            tblmiContLstdto.cont_grp_cd = usr_grp_cd
+            tblmiContLstdto.reg_id = usrId
+            tblmiContLstdto.upd_id = usrId
+            tblmiContLstdto.cont_grp_cd = usrGrpCd
 
             val formatList = contentListCreatedto.formatType
 
@@ -1004,7 +1002,7 @@ class SalesforceServiceImpl : SalesforceService {
                     kkoDto.list_val = contentListCreatedto.key_id
                     val kkoSenderLst = contentDao.selectSenderList(kkoDto)
 
-                    if (kkoSenderLst.size > 0) {
+                    if (kkoSenderLst.isNotEmpty()) {
                         tblmiContLstdto.key_id = kkoSenderLst[0].list_val
                     }
 
@@ -1095,10 +1093,10 @@ class SalesforceServiceImpl : SalesforceService {
                 // rcs 광고 , 유형 선택
                 val rcsOption = contentListCreatedto.rcs_option!!.trim()
 
-                if (rcsOption.equals("ad")) {
+                if (rcsOption == "ad") {
                     // 광고 처리
                     tblmiContLstdto.send_tp = "SENDTP01"
-                } else if (rcsOption.equals("guide")) {
+                } else if (rcsOption == "guide") {
                     // 안내 처리
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
@@ -1106,30 +1104,30 @@ class SalesforceServiceImpl : SalesforceService {
                 val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
                 val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
 
-                if (rcsFormatType.equals("text")) {
+                if (rcsFormatType == "text") {
                     // RCS 텍스트 형의 경우
-                    if (rcsMsgType.equals("sms")) {
+                    if (rcsMsgType == "sms") {
                         // SMS의 경우
                         tblmiContLstdto.msg_tp = "DMCH205"
 
                         // RCS SMS key 값 설정
                         val cdDto = Tblmi_comm_cdDto()
                         cdDto.grp_id = "RCS_SMS_MSG_ID"
-                        cdDto.cd_id = usr_grp_cd
+                        cdDto.cd_id = usrGrpCd
 
                         val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                         if (codeDto != null) {
                             tblmiContLstdto.key_id = codeDto.cd_val
                         }
 
-                    } else if (rcsMsgType.equals("lms")) {
+                    } else if (rcsMsgType == "lms") {
                         // LMS의 경우
                         tblmiContLstdto.msg_tp = "DMCH206"
 
                         // RCS LMS Key 값 설정
                         val cdDto = Tblmi_comm_cdDto()
                         cdDto.grp_id = "RCS_LMS_MSG_ID"
-                        cdDto.cd_id = usr_grp_cd
+                        cdDto.cd_id = usrGrpCd
 
                         val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                         if (codeDto != null) {
@@ -1154,30 +1152,30 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
 
                 }*/
-                else if (rcsFormatType.equals("vertical")) {
+                else if (rcsFormatType == "vertical") {
                     // RCS 세로형의 경우
-                    if (rcsMsgType.equals("tall")) {
+                    if (rcsMsgType == "tall") {
                         // tall형 인 경우
                         tblmiContLstdto.msg_tp = "DMCH207"
 
                         // RCS 세로형 Tall Key 값 설정
                         val cdDto = Tblmi_comm_cdDto()
                         cdDto.grp_id = "RCS_L_TALL_MSG_ID"
-                        cdDto.cd_id = usr_grp_cd
+                        cdDto.cd_id = usrGrpCd
 
                         val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                         if (codeDto != null) {
                             tblmiContLstdto.key_id = codeDto.cd_val
                         }
 
-                    } else if (rcsMsgType.equals("medium")) {
+                    } else if (rcsMsgType == "medium") {
                         // medium인 경우
                         tblmiContLstdto.msg_tp = "DMCH208"
 
                         // RCS 세로형 Medium Key 값 설정
                         val cdDto = Tblmi_comm_cdDto()
                         cdDto.grp_id = "RCS_L_MD_MSG_ID"
-                        cdDto.cd_id = usr_grp_cd
+                        cdDto.cd_id = usrGrpCd
 
                         val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
                         if (codeDto != null) {
@@ -1194,9 +1192,9 @@ class SalesforceServiceImpl : SalesforceService {
                     //.replace("\\r\\n", "\\\\r\\\\n")
                     tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
 
-                } else if (rcsFormatType.equals("slide")) {
+                } else if (rcsFormatType == "slide") {
                     // 슬라이드 형의 경우 타입 설정
-                    if (rcsMsgType.equals("small")) {
+                    if (rcsMsgType == "small") {
                         tblmiContLstdto.msg_tp = "DMCH211"
                     } else if (rcsMsgType.equals("medium")) {
                         tblmiContLstdto.msg_tp = "DMCH212"
@@ -1209,7 +1207,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
 
                 // RCS 버튼 체크 기능 개발
-                if (rcsFormatType.equals("slide")) {
+                if (rcsFormatType == "slide") {
                     // Slide 여러개 Button 처리
                     rcsButtonMakeJsonStringSlide(contentListCreatedto, tblmiContLstdto)
                 } else {
@@ -1252,20 +1250,19 @@ class SalesforceServiceImpl : SalesforceService {
                     contentDao.insertContentUrl(contUrlDto)
                 }
                 // 카카오 본문 a 링크 저장 테스트
-                val url_kakao_body = contentListCreatedto.kakao_body
+                val urlKakaoBody = contentListCreatedto.kakao_body
 
-                if (url_kakao_body?.contains("{{") == true) {
+                if (urlKakaoBody?.contains("{{") == true) {
 
                     //logger.error("contain url kakao_body : " + url_kakao_body)
 
                     val regex = "\\{\\{[^{]+}}"
                     val p = Pattern.compile(regex)
-                    val matcher = p.matcher(url_kakao_body)
+                    val matcher = p.matcher(urlKakaoBody)
 
                     var start = 0
                     var chk = true
-                    var i = 0
-                    var idx = 0;
+                    var idx = 0
 
                     while (chk) {
                         if (matcher.find(start)) {
@@ -1281,9 +1278,9 @@ class SalesforceServiceImpl : SalesforceService {
                                 contUrlDto.url_tag = "a"
                                 contUrlDto.url = url
                                 if (idx >= 10) {
-                                    contUrlDto.url_id = "kkoTrk0" + idx
+                                    contUrlDto.url_id = "kkoTrk0$idx"
                                 } else {
-                                    contUrlDto.url_id = "kkoTrk00" + idx
+                                    contUrlDto.url_id = "kkoTrk00$idx"
                                 }
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
@@ -1306,17 +1303,16 @@ class SalesforceServiceImpl : SalesforceService {
                     contentDao.insertContentUrl(contUrlDto)
                 }
 
-                val url_sms_body = contentListCreatedto.sms_body
-                if (url_sms_body?.contains("{{") == true) {
+                val urlSmsBody = contentListCreatedto.sms_body
+                if (urlSmsBody?.contains("{{") == true) {
 
                     val regex = "\\{\\{[^{]+}}"
                     val p = Pattern.compile(regex)
-                    val matcher = p.matcher(url_sms_body)
+                    val matcher = p.matcher(urlSmsBody)
 
                     var start = 0
                     var chk = true
-                    var i = 0
-                    var idx = 0;
+                    var idx = 0
 
                     while (chk) {
                         if (matcher.find(start)) {
@@ -1332,9 +1328,9 @@ class SalesforceServiceImpl : SalesforceService {
                                 contUrlDto.url_tag = "a"
                                 contUrlDto.url = url
                                 if (idx >= 10) {
-                                    contUrlDto.url_id = "smsTrk0" + idx
+                                    contUrlDto.url_id = "smsTrk0$idx"
                                 } else {
-                                    contUrlDto.url_id = "smsTrk00" + idx
+                                    contUrlDto.url_id = "smsTrk00$idx"
                                 }
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
@@ -1352,35 +1348,35 @@ class SalesforceServiceImpl : SalesforceService {
 
                 if (urlLen != null) {
                     // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
-                    for (i in 0 until urlLen) {
+                    for (j in 0 until urlLen) {
 
                         val urlValue = contentListCreatedto.url_value?.get(i)?.trim()
-                        val fallback_url_position = contentListCreatedto?.fallback_url_04?.get(i)?.trim()
-                        val fallback_url_query = contentListCreatedto?.fallback_url_05?.get(i)?.trim()
+                        val fallbackUrlPosition = contentListCreatedto.fallback_url_04?.get(i)?.trim()
+                        val fallbackUrlQuery = contentListCreatedto.fallback_url_05?.get(i)?.trim()
 
                         if (!CommonUtils.isEmptyObject(urlValue)) {
                             val contUrlDto = Tblmi_cont_url_lstDto()
                             contUrlDto.url_tag = "btn"
                             contUrlDto.url = urlValue
-                            contUrlDto.url_id = "urlBtn" + (i + 1)
+                            contUrlDto.url_id = "urlBtn" + (j + 1)
                             contUrlDto.cont_lst_cd = lastSeq
                             contentDao.insertContentUrl(contUrlDto)
                         }
 
-                        if (!CommonUtils.isEmptyObject(fallback_url_position)) {
+                        if (!CommonUtils.isEmptyObject(fallbackUrlPosition)) {
                             val contUrlDto = Tblmi_cont_url_lstDto()
                             contUrlDto.url_tag = "btn"
-                            contUrlDto.url = fallback_url_position
-                            contUrlDto.url_id = "fallPosiBtn" + (i + 1)
+                            contUrlDto.url = fallbackUrlPosition
+                            contUrlDto.url_id = "fallPosiBtn" + (j + 1)
                             contUrlDto.cont_lst_cd = lastSeq
                             contentDao.insertContentUrl(contUrlDto)
                         }
 
-                        if (!CommonUtils.isEmptyObject(fallback_url_query)) {
+                        if (!CommonUtils.isEmptyObject(fallbackUrlQuery)) {
                             val contUrlDto = Tblmi_cont_url_lstDto()
                             contUrlDto.url_tag = "btn"
-                            contUrlDto.url = fallback_url_query
-                            contUrlDto.url_id = "fallQueryBtn" + (i + 1)
+                            contUrlDto.url = fallbackUrlQuery
+                            contUrlDto.url_id = "fallQueryBtn" + (j + 1)
                             contUrlDto.cont_lst_cd = lastSeq
                             contentDao.insertContentUrl(contUrlDto)
                         }
@@ -1390,6 +1386,626 @@ class SalesforceServiceImpl : SalesforceService {
         }
         statusMap["status"] = true
         return statusMap
+    }
+
+    /**
+     * @Method Name  : isCheckMoblieContentNm
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : tblmiContMstdto: Tblmi_cont_mstDto
+     * @return   : Map<String, Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 컨텐츠 명 중복 확인 하기
+     * @title : 컨텐츠 명 중복 확인 하기
+     */
+    override fun checkContNm(tblmiContMstdto: Tblmi_cont_mstDto): Int {
+        return contentDao.checkContNm(tblmiContMstdto)
+    }
+
+    /**
+     * @Method Name  : selectSenderList
+     * @Since    : 2021. 03. 07.
+     * @author   : Grayson
+     * @param    : tblmiSetLstDto: Tblmi_set_lstDto
+     * @return   : Map<String, Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 발신자 리스트 가져오기
+     * @title : 발신자 리스트 가져오기
+     */
+    override fun selectSenderList(tblmiSetLstDto: Tblmi_set_lstDto): Map<String, Any> {
+        val searchDto = tblmiSetLstDto as SetLst_searchDto
+        val paramMap: MutableMap<String, Any> = HashMap()
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
+
+        paramMap["page"] = paginationInfo
+        paramMap["pageNo"] = paginationInfo.currentPageNo
+        paramMap["list"] = contentDao.selectSenderList(searchDto)
+        paramMap["listCnt"] = contentDao.selectSenderListCnt(searchDto)
+
+        return paramMap
+    }
+
+    override fun selectRejectTextList(dto: SetLst_searchDto): MutableMap<String, Any> {
+        val searchDto = dto as SetLst_searchDto
+        val paramMap: MutableMap<String, Any> = HashMap()
+        val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
+
+        paramMap["page"] = paginationInfo
+        paramMap["pageNo"] = paginationInfo.currentPageNo
+        paramMap["list"] = contentDao.selectSenderList(searchDto)
+        paramMap["listCnt"] = contentDao.selectSenderListCnt(searchDto)
+
+        return paramMap
+    }
+
+    /**
+     * @Method Name  : selectImgForPopup
+     * @Since    : 2021. 03. 07.
+     * @author   : Andy
+     * @param    : tblmiContImgdto: Tblmi_cont_imgDto
+     * @return   : Map<String,Any>
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 선택된 이미지 팝업 띄우기
+     * @title : 선택 이미지 팝업
+     */
+    override fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto): Map<String, Any> {
+        // 클릭 값에 따라 이미지가 다르게 보여져야함
+        val searchDto = tblmiContImgdto as Image_searchDto
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+
+        val paginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
+        val paramMap: MutableMap<String, Any> = HashMap()
+
+        searchDto.firstIndex = paginationInfo.firstRecordIndex
+        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = contentDao.getImgListCnt(searchDto)
+
+        paramMap["page"] = paginationInfo
+        paramMap["pageNo"] = paginationInfo.currentPageNo
+        paramMap["list"] = contentDao.getImgList(searchDto)
+        paramMap["listCnt"] = paginationInfo.totalRecordCount
+
+        return paramMap
+    }
+
+    /**
+     * @Method Name  : getImgNmCh
+     * @Since    : 2021. 03. 07.
+     * @author   : Andy
+     * @param    : dto: Tblmi_cont_imgDto
+     * @return   : Int
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 이미지 명 중복확인
+     * @title : 이미지면 중복확인
+     */
+    override fun getImgNmCh(dto:Tblmi_cont_imgDto): Int{
+        val idto = Tblmi_cont_imgDto()
+        idto.img_nm = dto.img_nm
+        idto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        return contentDao.getImgNmCh(idto)
+    }
+
+    override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
+        try{
+            val mstDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
+            // Journey Builder 정보 조회
+            val commDto = Tblmi_comm_cdDto()
+            commDto.cd_id = mstDto.cont_grp_cd
+            commDto.par_id = "SALESFORCE"
+            val urlInfo = systemDao.getCommCDLst(commDto)
+
+            val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
+            val authUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_AUTH_URL") }.findAny().orElse(null)
+            val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
+            val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
+
+            val g: Gson = GsonBuilder().create()
+            val postData = HashMap<String, String>()
+            postData["grant_type"] = "client_credentials"
+            postData["client_id"] =  cid.cd_val.toString()
+            postData["client_secret"] = sec.cd_val.toString()
+
+            val headers = HttpHeaders()
+            headers.contentType = MediaType.APPLICATION_JSON
+            val acceptableMediaType: MutableList<MediaType> = ArrayList()
+            acceptableMediaType.add(MediaType.APPLICATION_JSON)
+            headers.accept = acceptableMediaType
+
+            val tokenResult = connection("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, g.toJson(postData), null)
+            if(tokenResult["result"] as Boolean){
+                val tokenMap = g.fromJson(tokenResult["data"].toString(), MutableMap::class.java)
+                val token = tokenMap["access_token"].toString()
+                val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
+                if(result["result"] as Boolean){
+                    val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
+                    val activities = data["activities"] as MutableList<MutableMap<String, Any>>
+
+                    for(activity in activities) {
+                        val type = activity["type"].toString()
+                        if (type == "REST") {
+                            logger.error("activity : {}", activity)
+                            val salesNm = data["name"].toString()
+                            val avoNm = activity["name"].toString()
+                            val avoId = activity["id"].toString()
+                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
+                            val temp = Tblmi_cont_mstDto(seq.toInt())
+                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
+                            val usrId = if (mstDto.upd_id == null) {
+                                mstDto.reg_id
+                            } else {
+                                mstDto.upd_id
+                            }
+                            val cpMstDto = Tblmicp_cont_mstDto(contDto)
+                            cpMstDto.cont_seq = seq.toInt()
+                            cpMstDto.sales_nm = salesNm
+                            cpMstDto.camp_nm = contDto.camp_nm
+                            cpMstDto.team_cd = contDto.team_cd
+                            cpMstDto.usr_key = contDto.usr_key
+                            cpMstDto.avo_nm = avoNm
+                            cpMstDto.avo_id = avoId
+                            cpMstDto.inten_id = dto.inten_id
+                            cpMstDto.orig_id = dto.orig_id
+                            cpMstDto.inta_key = dto.inta_key
+                            cpMstDto.inta_ve = dto.inta_ve
+                            cpMstDto.pub_yn = dto.pub_yn
+                            salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+
+                            // 중복 데이터 이슈로 인한 체크 변경
+                            if(cpMstDto.seq != null) {
+                                //기존 데이터가 있을 경우 삭제
+                                salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
+                                salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
+                                salesforceDao.del_tblmicou_coupon_issue(cpMstDto.seq.toString())
+
+                                //신규 데이터 삽입
+                                val contListDto = Tblmi_cont_lstDto()
+                                contListDto.cont_cd = seq.toInt()
+                                contListDto.reg_id = usrId
+                                contListDto.upd_id = usrId
+                                contListDto.use_yn = "Y"
+                                val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
+
+                                for (i in contLst) {
+                                    val oriSeq = i.seq.toString()
+                                    // 리스트 삽입
+                                    val tblmicpContLstdto = Tblmicp_cont_lstDto(i)
+                                    tblmicpContLstdto.seq = null
+                                    tblmicpContLstdto.cont_cd = cpMstDto.seq
+                                    tblmicpContLstdto.reg_id = usrId
+                                    tblmicpContLstdto.upd_id = usrId
+                                    salesforceDao.ins_tblmicp_cont_lst(tblmicpContLstdto)
+
+                                    //신규 url 리스트 삽입
+                                    val map = HashMap<String, Any>()
+                                    map["cont_lst_cd"] = tblmicpContLstdto.seq!!
+                                    map["list_seq"] = oriSeq
+                                    salesforceDao.ins_tblmicp_cont_url_lst(map)
+
+                                    // 쿠폰 발급 이력 생성
+                                    if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
+                                        val couponIssueDto = CouponIssueDto()
+                                        couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
+                                        couponIssueDto.send_phone = tblmicpContLstdto.send_to
+                                        couponIssueDto.msg_title = i.cont_sub
+                                        couponIssueDto.msg_content = i.cont_body
+                                        couponIssueDto.usr_grp_cd = i.cont_grp_cd
+                                        couponIssueDto.reg_id = i.reg_id
+                                        couponIssueDto.camp_seq = cpMstDto.seq
+                                        salesforceDao.insert_coupon_issue(couponIssueDto)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return true
+                }else{
+                    logger.error("connection Error : {} / {}", "${restUrl.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}",result)
+                    return false
+                }
+             }else {
+                logger.error("connection Error : {}", tokenResult)
+                return false
+            }
+        }catch (e: Exception){
+            logger.error("campaingContent ERROR", e)
+            throw Exception("rollback")
+        }
+    }
+
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
+    override fun publish(dto: Tblmicp_cont_mstDto): Boolean {
+        val save = salesforceDao.upd_tblmicp_cont_mst(dto)
+        return if(save == 1){
+            if(dto.pub_yn == "Y"){
+                val mstContDto = Tblmicp_cont_mstDto()
+                mstContDto.inten_id = dto.inten_id
+                mstContDto.orig_id = dto.orig_id
+                mstContDto.inta_key = dto.inta_key
+                mstContDto.inta_ve = dto.inta_ve
+                val contLstM = salesforceDao.sel_tblmicp_cont_mst(mstContDto)
+                val usrId = if (contLstM[0].upd_id == null) {
+                    contLstM[0].reg_id
+                } else {
+                    contLstM[0].upd_id
+                }
+
+                val temp = Tblmicp_programDto()
+                temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
+                temp.pro_tp = "SALES"
+                temp.pro_st = "03" // 발송 진행 중
+                temp.pro_tg_tp = "TG01"
+                temp.pro_tg_id = "SALES"
+                temp.cont_cnt = contLstM.size
+                temp.camp_cnt = contLstM.size
+                temp.pro_nm = contLstM[0].sales_nm
+                temp.team_cd = contLstM[0].team_cd
+                temp.usr_grp_cd = contLstM[0].cont_grp_cd
+                temp.reg_id = usrId
+                temp.upd_id = usrId
+                temp.inten_id = dto.inten_id
+                temp.orig_id = dto.orig_id
+                temp.inta_key = dto.inta_key
+                temp.inta_ve = dto.inta_ve
+
+                var proDto = salesforceDao.sel_tblmicp_program(temp)
+                if(proDto == null){
+                    campaignDao.ins_program(temp)
+                    proDto = temp
+                }
+                for(i in contLstM){
+                    val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
+                    campaignDto.cont_id = i.seq
+                    campaignDto.send_tg_tp = "TG01"
+                    campaignDto.send_tg_id = "SALES"
+                    campaignDto.camp_st = "03"
+                    campaignDto.camp_nm = contLstM[0].camp_nm
+                    campaignDto.team_cd = contLstM[0].team_cd
+                    campaignDto.camp_ch = i.ch_tp
+                    campaignDto.sto = "01"
+                    campaignDto.usr_grp_cd = proDto.usr_grp_cd
+                    campaignDto.reg_id = proDto.reg_id
+                    campaignDto.start_dt = CommonUtils.getDateTimeNow()
+                    campaignDto.send_st_tp = "1"
+                    campaignDao.ins_campaign(campaignDto)
+
+                    // RCS img
+                    val contListDto = Tblmicp_cont_lstDto()
+                    contListDto.cont_cd = i.seq
+                    contListDto.reg_id = usrId
+                    contListDto.upd_id = usrId
+                    contListDto.cont_grp_cd = proDto.usr_grp_cd
+                    contListDto.cont_tp ="DMTP04"
+                    contListDto.use_yn = "Y"
+                    val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
+                    for (cont in contLst) {
+                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
+                        // 이미지 저장 경로
+                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
+
+                        // RCS 발송 서버 정보
+                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
+
+                        val urlLst = cont.img_nm_lst!!.split(",")
+
+                        // 이미지 리스트
+                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
+
+                        val urlSize = urlLst.size.toString()
+                        for (j in urlLst.indices) {
+                            if(!CommonUtils.isEmptyObject(urlLst[j].trim())){
+                                val imgDto = LgRcs_imgDto()
+                                imgDto.group_key = "GR_${campaignDto.seq.toString()}"
+                                imgDto.group_cnt = urlSize
+                                imgDto.status = "0"
+                                imgDto.sendable = "N"
+                                imgDto.brand_id = rcsBrnID
+                                imgDto.img_path = imgPath?.trim() + urlLst[j].trim()
+                                imgDto.template_yn = "N"
+                                imgDto.m_server = rcsDb
+                                rcsImgLst.add(imgDto)
+                            }
+                        }
+                        if(rcsImgLst.size > 0){
+                            salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
+                        }
+                    }
+                }
+                true
+            }else{
+                true
+            }
+        }else{
+            false
+        }
+    }
+
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
+    override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
+        val inArguments = mutableMapOf<String,Any>()
+        val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
+
+        val avoId: String = map["activityId"].toString()
+        val intenId = map["journeyId"].toString()
+        val keyValue = map["keyValue"].toString()
+
+        val exMap = HashMap<String, Any>(map)
+        exMap["inArguments"] = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+
+        // 컨테츠 마스터 정보
+        val contMstDto = Tblmicp_cont_mstDto()
+        contMstDto.avo_id = avoId
+        contMstDto.inten_id = intenId
+        val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
+
+        if(contMst == null){
+            salesforceDao.ins_tblmicp_sales_execute(exMap)
+            return false
+        }else {
+            //캠페인 정보
+            val cDto = Tblmicp_campaignDto()
+            cDto.cont_id = contMst.seq
+            val campLst = campaignDao.sel_tblmicp_campaign(cDto)
+
+            if(campLst.isEmpty()){
+                return false
+            }else{
+                val date = Date()
+                for(campaignDto in campLst){
+                    campaignDto.start_dt = CommonUtils.getDateTimeNow()
+                    // 타겟수 업데이트
+                    if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
+                        var targetCnt: Int? = null
+                        if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
+                            targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
+                            inArguments.remove("§extention_cnt§")
+                            inArguments.remove("§data_extension_id§")
+                        }
+                        campaignDto.tar_cnt = targetCnt
+
+                        campaignDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
+                        salesforceDao.upd_tblmicp_campaign(campaignDto)
+
+                        // 프로그램 total target cnt 수정
+                        val program = Tblmicp_programDto(campaignDto.pro_id)
+                        program.pro_id = campaignDto.pro_id
+                        salesforceDao.upd_tblmicp_program_total_cnt(program)
+                    }
+
+                    // sendhst 삽입
+                    val sendHstDto = Tblmicp_send_hstDto()
+                    sendHstDto.pro_id = campaignDto.pro_id
+                    sendHstDto.camp_id = campaignDto.seq
+                    sendHstDto.cont_id = campaignDto.cont_id
+                    sendHstDto.tbl_id = "sales"
+                    sendHstDto.tbl_lst_id = keyValue
+                    sendHstDto.send_yn = "N"
+                    sendHstDto.auto_tp = null
+                    sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
+                    sendHstDto.reg_id = campaignDto.reg_id
+                    sendHstDto.camp_ch = campaignDto.camp_ch
+                    sendHstDto.camp_dt = yyyymmddFormat.format(date)
+                    sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
+
+                    //컨텐츠 리스트
+                    val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
+                    val contTpLst = HashMap<String, Contents_lstDto>()
+                    for (check in contLst) {
+                        contTpLst[check.cont_tp.toString()] = check
+                    }
+                    //logger.error("{}",contTpLst)
+
+                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
+                    if (isCouponSend && map["couponIssuedLogDto"] != null) {
+                        val couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
+                    }
+
+                    // 발송
+                    when {
+                        // 카카오 친구톡
+                        contTpLst["DMTP03"] != null -> {
+                            val sendTo = inArguments[contTpLst["DMTP03"]!!.from_to]
+                            if(sendTo == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
+                                salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else{
+                                sendHstDto.send_to = sendTo.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = sendTo.toString()
+                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
+                            }
+                        }
+                        // 카카오 알림톡
+                        contTpLst["DMTP05"] != null -> {
+                            val sendTo = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            if(sendTo == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
+                                salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else{
+                                sendHstDto.send_to = sendTo.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = sendTo.toString()
+                                kkoSendAt.ins_send(campaignDto, contTpLst, inArguments)
+                            }
+                        }
+                        // RCS
+                        contTpLst["DMTP04"] != null -> {
+                            val sendTo = inArguments[contTpLst["DMTP04"]!!.from_to]
+                            if(sendTo == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
+                                salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else{
+                                sendHstDto.send_to = sendTo.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = sendTo.toString()
+                                rcsSend.ins_send(campaignDto, contTpLst, inArguments)
+                            }
+                        }
+                        // 문자
+                        else -> {
+                            val sendTo = inArguments[contTpLst["DMTP02"]!!.from_to]
+                            if(sendTo == null){
+                                exMap["inArguments"] = exMap["inArguments"].toString()
+                                salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else{
+                                sendHstDto.send_to = sendTo.toString()
+                                campaignDao.ins_programSendHst(sendHstDto)
+                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
+                                inArguments["SEND_TO"] = sendTo.toString()
+                                mdmSend.ins_send(campaignDto, contTpLst, inArguments)
+                            }
+                        }
+                    }
+
+                    if (isCouponSend) {
+                        val dto = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                        dto.phone = sendHstDto.send_to
+                        dto.msgkey = sendHstDto.seq.toString()
+                    }
+                }
+            }
+        }
+        return true
+    }
+
+    override fun getDataExtention(usr_cd: String, extentionId: String) : HashMap<String,Any> {
+        val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
+        val configuration = ETConfiguration()
+        for (commCd in commCdList){
+            when (commCd.grp_id) {
+                "SALES_CID" -> configuration["clientId"] = commCd.cd_val
+                "SALES_SEC" ->  configuration["clientSecret"] = commCd.cd_val
+                "SALES_AUTH_URL" ->  configuration["authEndpoint"] = commCd.cd_val
+                "SALES_REST_URL" ->  configuration["endpoint"] = commCd.cd_val
+                "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
+            }
+        }
+        configuration["useOAuth2Authentication"] = "true"
+        val client = ETClient(configuration)
+
+        val filter = ETFilter()
+        val exp = ETExpression()
+
+        exp.property = "id"
+        exp.operator = ETExpression.Operator.EQUALS
+        exp.addValue(extentionId)
+
+        filter.expression = exp
+
+        val response = client.retrieve(ETDataExtension::class.java, filter)
+
+        val dataExtension = response.result.getObject()
+        val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
+
+        var totalCnt = 0
+        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
+        try {
+            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
+            if (!CommonUtils.isEmptyObject(data)) {
+                totalCnt = data!!["rowCount"].toString().toInt()
+            }else{
+                totalCnt = dataExtension.select().totalCount
+            }
+        } catch (e:Exception){
+            logger.error("{}",e)
+            totalCnt = dataExtension.select().totalCount
+        }
+
+        val reMap = HashMap<String, Any>()
+        reMap["list"] = reList
+        reMap["totalCnt"] = totalCnt
+
+        return reMap
+    }
+
+
+    /**
+     * @Method Name  : isCheckSender
+     * @Since    : 2023. 01. 05.
+     * @author   : Belisa
+     * @return    : Int
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 발신자 체크 하기
+     * @title  카카오 발신자 체크
+     */
+    override fun isCheckSender(usr_cd: String): Map<String, Any> {
+        val paramMap: MutableMap<String, Any> = java.util.HashMap()
+
+        val tblmiDto = Tblmi_set_lstDto()
+        tblmiDto.list_tp_id = "CH02"
+        tblmiDto.list_dt_id = "DMTP03"
+        tblmiDto.usr_grp_cd = usr_cd
+
+        val smsMiDto = Tblmi_set_lstDto()
+        smsMiDto.list_tp_id = "CH02"
+        smsMiDto.list_dt_id = "DMTP02"
+        smsMiDto.usr_grp_cd = usr_cd
+
+        val rcsMiDto = Tblmi_set_lstDto()
+        rcsMiDto.list_tp_id = "CH02"
+        rcsMiDto.list_dt_id = "DMTP04"
+        rcsMiDto.usr_grp_cd = usr_cd
+
+        paramMap["kakaoCnt"] = contentDao.selectSenderListCnt(tblmiDto)
+        paramMap["smsCnt"] = contentDao.selectSenderListCnt(smsMiDto)
+        paramMap["rcsCnt"] = contentDao.selectSenderListCnt(rcsMiDto)
+
+        return paramMap
+    }
+
+    @Throws
+    private fun getTotalcnt(usr_cd: String, key : String): MutableMap<String, Any>? {
+        val tempComm = Tblmi_comm_cdDto("SALES_TOTAL",usr_cd)
+        tempComm.use_yn ="Y"
+        val commCd  = systemDao.getCommCDList(tempComm)
+        if(CommonUtils.isEmptyObject(commCd)){
+            return null
+        }
+
+        val totalCntUrl  = commCd[0].cd_val
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
+        headers.set("accept", MediaType.ALL_VALUE)
+
+        val urlString = "$totalCntUrl?key=$key"
+
+        val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
+        val status = result.statusCode.value()
+        return if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
+            logger.error("+----------------------------------------------------")
+            logger.error("{}",result.body)
+            logger.error("{}",urlString)
+            if(CommonUtils.isEmptyObject(result.body)){
+                logger.error("getTotalCnt url : {}",urlString)
+            }
+            val body = result.body!!
+            GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+        }else {
+            null
+        }
     }
 
     /**
@@ -1404,7 +2020,6 @@ class SalesforceServiceImpl : SalesforceService {
      * @Method Decription : 앞단에서 체크하지 못한 byte 체크를 백단에서 체크한다
      * @title : 모바일 컨텐츠 바이트 체크
      */
-
     private fun isCheckByte(dto: Content_list_CreateDto): Boolean {
         // 카카오의 본문 body byte를 체크한다
         if (!CommonUtils.isEmptyObject(dto.kakao_body)) {
@@ -1421,11 +2036,11 @@ class SalesforceServiceImpl : SalesforceService {
             }
         }
 
-        val sms_cont_sub = dto.cont_sub_list!![1].trim()
+        val smsContSub = dto.cont_sub_list!![1].trim()
         val smsMsgTp = dto.sms_msg_tp
 
         // 문자의 경우 제목 byte 체크 필요
-        if (!CommonUtils.checkByteLength(sms_cont_sub, 40)) {
+        if (!CommonUtils.checkByteLength(smsContSub, 40)) {
             logger.error("SMS Title 40Byte Error")
             return false;
         }
@@ -1448,7 +2063,7 @@ class SalesforceServiceImpl : SalesforceService {
                 return false
             }
         }
-        return true;
+        return true
     }
 
     /**
@@ -1461,14 +2076,10 @@ class SalesforceServiceImpl : SalesforceService {
      * @see      :
      * @version  : 0.01
      * @Method Decription : RCS 슬라이드 저장 을 위한 JSON 파싱
+     *      2021.04.30 수정 : 슬라이드 RCS 발송을 위해 JsonArray에 담는 구조가 아닌
+     *      JsonObject 형태로 변경
      * @title : RCS 슬라이드 세팅
      */
-
-    /**
-     * 2021.04.30 수정 : 슬라이드 RCS 발송을 위해 JsonArray에 담는 구조가 아닌
-     * JsonObject 형태로 변경
-     */
-
     private fun rcsSlideSetting(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
         val len = contentListCreatedto.slide_cont_sub?.size
         var slideCnt = 0
@@ -1478,8 +2089,8 @@ class SalesforceServiceImpl : SalesforceService {
             val jsonBody = JSONObject()
             for (i in 0 until len!!) {
                 slideCnt++
-                val titleIdx = "title" + slideCnt
-                val descriptionIdx = "description" + slideCnt
+                val titleIdx = "title$slideCnt"
+                val descriptionIdx = "description$slideCnt"
 
                 // API -> title ( title은 Title만 입력)
                 jsonTitle[titleIdx] = contentListCreatedto.slide_cont_sub?.get(i)
@@ -1555,9 +2166,7 @@ class SalesforceServiceImpl : SalesforceService {
      * @Method Decription : RCS 슬라이드 버튼 Json 파싱
      * @title : RCS 슬라이드 버튼 저장
      */
-
     private fun rcsButtonMakeJsonStringSlide(contentListCreatedto: Content_list_CreateDto, tblmiContLstdto: Tblmi_cont_lstDto) {
-
         /*
             1. slide_rcs_btn_tp 값과 slide_rcs_btn 값은 카드의 개수 만큼 고정 되서 들어 온다 (각각 분리되어 카드의 idx로 체크한다)
             2. 버튼에 따른 필요 값들은 뷰에서 index 를 지키며 들어 온다 ( 짝수 인덱스 : 버튼 1번 , 홀수 인덱스 : 버튼 2번 )
@@ -1576,10 +2185,10 @@ class SalesforceServiceImpl : SalesforceService {
             // 카드의 개수 만큼 버튼을 담으며 For 문 돌린다.
             //logger.error("현재 인덱스 : " + idx)
 
-            val btn1Value = contentListCreatedto?.slide_rcs_btn_1!![idx]
-            val btn1Type = contentListCreatedto?.slide_rcs_btn_tp_1!![idx]
-            val btn2Value = contentListCreatedto?.slide_rcs_btn_2!![idx]
-            val btn2Type = contentListCreatedto?.slide_rcs_btn_tp_2!![idx]
+            val btn1Value = contentListCreatedto.slide_rcs_btn_1!![idx]
+            val btn1Type = contentListCreatedto.slide_rcs_btn_tp_1!![idx]
+            val btn2Value = contentListCreatedto.slide_rcs_btn_2!![idx]
+            val btn2Type = contentListCreatedto.slide_rcs_btn_tp_2!![idx]
 
             //logger.error("버튼 1번 값 : " + btn1Value)
             //logger.error("버튼 1번 Type : " + btn1Type)
@@ -1665,7 +2274,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
 
                 jsonMainBtn1Object["action"] = jsonActionBtn1Object
-                jsonActionBtn1Object["displayText"] = contentListCreatedto?.slide_rcs_btn_1!![idx]
+                jsonActionBtn1Object["displayText"] = contentListCreatedto.slide_rcs_btn_1!![idx]
                 jsonActionBtn1Object["postback"] = jsonPostBtn1Back
                 jsonBtnArray.add(jsonMainBtn1Object)
                 //logger.error("slide jsonObject 버튼1 : " + jsonMainBtn1Object.toJSONString())
@@ -1747,7 +2356,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
 
                 jsonMainBtn2Object["action"] = jsonActionBtn2Object
-                jsonActionBtn2Object["displayText"] = contentListCreatedto?.slide_rcs_btn_2!![idx]
+                jsonActionBtn2Object["displayText"] = contentListCreatedto.slide_rcs_btn_2!![idx]
                 jsonActionBtn2Object["postback"] = jsonPostBtn2Back
                 jsonBtnArray.add(jsonMainBtn2Object)
                 //logger.error("slide jsonObject 버튼2 : " + jsonMainBtn2Object.toJSONString())
@@ -1778,6 +2387,7 @@ class SalesforceServiceImpl : SalesforceService {
         }
         tblmiContLstdto.rcs_btn_obj = jsonSuggestArr.toString().replace("\\", "")
     }
+
 
     /**
      * @Method Name  : rcsButtonMakeJsonString
@@ -1811,7 +2421,7 @@ class SalesforceServiceImpl : SalesforceService {
         if (len != 0 && len != null) {
             //logger.error("버튼 check");
             // 버튼을 체크하지 않았을 경우를 처리 한다.
-            for (i in 0 until len!!) {
+            for (i in 0 until len) {
                 val jsonMainObject = JSONObject()
                 val jsonActionObject = JSONObject()
                 val jsonTitleObject = JSONObject()
@@ -1903,7 +2513,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     jsonMainObject["action"] = jsonActionObject
-                    jsonActionObject["displayText"] = contentListCreatedto?.rcs_btn_1
+                    jsonActionObject["displayText"] = contentListCreatedto.rcs_btn_1
                     jsonActionObject["postback"] = jsonPostBack
 
                     jsonBtnArray.add(jsonMainObject)
@@ -2073,7 +2683,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     jsonMainObject["action"] = jsonActionObject
-                    jsonActionObject["displayText"] = contentListCreatedto?.rcs_btn_3
+                    jsonActionObject["displayText"] = contentListCreatedto.rcs_btn_3
                     jsonActionObject["postback"] = jsonPostBack
 
                     jsonBtnArray.add(jsonMainObject)
@@ -2104,637 +2714,8 @@ class SalesforceServiceImpl : SalesforceService {
         }
     }
 
-    // 컨텐츠 등록 끝
-
-    /**
-     * @Method Name  : isCheckMoblieContentNm
-     * @Since    : 2021. 03. 07.
-     * @author   : Grayson
-     * @param    : tblmiContMstdto: Tblmi_cont_mstDto
-     * @return   : Map<String, Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 컨텐츠 명 중복 확인 하기
-     * @title : 컨텐츠 명 중복 확인 하기
-     */
-    override fun checkContNm(tblmiContMstdto: Tblmi_cont_mstDto): Int {
-        //tblmiContMstdto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        return contentDao.checkContNm(tblmiContMstdto)
-    }
-
-    /**
-     * @Method Name  : selectSenderList
-     * @Since    : 2021. 03. 07.
-     * @author   : Grayson
-     * @param    : tblmiSetLstDto: Tblmi_set_lstDto
-     * @return   : Map<String, Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 발신자 리스트 가져오기
-     * @title : 발신자 리스트 가져오기
-     */
-
-    override fun selectSenderList(tblmiSetLstDto: Tblmi_set_lstDto): Map<String, Any> {
-
-        val searchDto = tblmiSetLstDto as SetLst_searchDto
-        val paramMap: MutableMap<String, Any> = HashMap()
-        val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
-
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
-
-        paramMap["page"] = paginationInfo
-        paramMap["pageNo"] = paginationInfo.currentPageNo
-        paramMap["list"] = contentDao.selectSenderList(searchDto)
-        paramMap["listCnt"] = contentDao.selectSenderListCnt(searchDto)
-
-        return paramMap
-    }
-
-    override fun selectRejectTextList(dto: SetLst_searchDto): MutableMap<String, Any> {
-        val searchDto = dto as SetLst_searchDto
-        val paramMap: MutableMap<String, Any> = java.util.HashMap()
-        val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
-
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = contentDao.selectSenderListCnt(searchDto)
-
-        paramMap["page"] = paginationInfo
-        paramMap["pageNo"] = paginationInfo.currentPageNo
-        paramMap["list"] = contentDao.selectSenderList(searchDto)
-        paramMap["listCnt"] = contentDao.selectSenderListCnt(searchDto)
-
-        return paramMap
-    }
-
-    /**
-     * @Method Name  : selectImgForPopup
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : tblmiContImgdto: Tblmi_cont_imgDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 선택된 이미지 팝업 띄우기
-     * @title : 선택 이미지 팝업
-     */
-    override fun selectImgForPopup(tblmiContImgdto: Tblmi_cont_imgDto): Map<String, Any> {
-        // 클릭 값에 따라 이미지가 다르게 보여져야함
-        val searchDto = tblmiContImgdto as Image_searchDto
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-
-        val paginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)
-        val paramMap: MutableMap<String, Any> = HashMap()
-
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = contentDao.getImgListCnt(searchDto)
-
-        paramMap["page"] = paginationInfo
-        paramMap["pageNo"] = paginationInfo.currentPageNo
-        paramMap["list"] = contentDao.getImgList(searchDto)
-        paramMap["listCnt"] = paginationInfo.totalRecordCount
-
-        return paramMap
-    }
-
-    /**
-     * @Method Name  : getImgNmCh
-     * @Since    : 2021. 03. 07.
-     * @author   : Andy
-     * @param    : dto: Tblmi_cont_imgDto
-     * @return   : Int
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 이미지 명 중복확인
-     * @title : 이미지면 중복확인
-     */
-    override fun getImgNmCh(dto:Tblmi_cont_imgDto): Int{
-        val idto = Tblmi_cont_imgDto()
-        idto.img_nm = dto.img_nm
-        idto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        return contentDao.getImgNmCh(idto)
-    }
-
-
-    override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
-        return try{
-            val mstDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
-
-            // Journey Builder 정보 조회
-            val commDto = Tblmi_comm_cdDto()
-            commDto.cd_id = mstDto.cont_grp_cd
-            commDto.par_id = "SALESFORCE"
-            val urlInfo = systemDao.getCommCDLst(commDto)
-
-            val restUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_REST_URL") }.findAny().orElse(null)
-            val authUrl = urlInfo.stream().filter{ it.grp_id.equals("SALES_AUTH_URL") }.findAny().orElse(null)
-            val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
-            val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
-
-            val g: Gson = GsonBuilder().create()
-            val postData = HashMap<String, String>()
-            postData["grant_type"] = "client_credentials"
-            postData["client_id"] =  cid.cd_val.toString()
-            postData["client_secret"] = sec.cd_val.toString()
-
-            val headers = HttpHeaders()
-            headers.contentType = MediaType.APPLICATION_JSON
-            val acceptableMediaType: MutableList<MediaType> = ArrayList()
-            acceptableMediaType.add(MediaType.APPLICATION_JSON)
-            headers.accept = acceptableMediaType
-
-            val tokenResult = connection("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, g.toJson(postData), null)
-            if(tokenResult["result"] as Boolean){
-                val tokenMap = g.fromJson(tokenResult["data"].toString(), MutableMap::class.java)
-                val token = tokenMap["access_token"].toString()
-                val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
-                if(result["result"] as Boolean){
-                    val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
-                    val activities = data["activities"] as MutableList<MutableMap<String, Any>>
-
-                    for(activity in activities) {
-                        val type = activity["type"].toString()
-                        if (type == "REST") {
-                            logger.error("activity : {}", activity)
-                            val salesNm = data["name"].toString()
-                            val avoNm = activity["name"].toString()
-                            val avoId = activity["id"].toString()
-                            val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
-                            val temp = Tblmi_cont_mstDto(seq.toInt())
-                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
-                            val usrId = if (mstDto.upd_id == null) {
-                                mstDto.reg_id
-                            } else {
-                                mstDto.upd_id
-                            }
-                            val cpMstDto = Tblmicp_cont_mstDto(contDto)
-                            cpMstDto.cont_seq = seq.toInt()
-                            cpMstDto.sales_nm = salesNm
-                            cpMstDto.camp_nm = contDto.camp_nm
-                            cpMstDto.team_cd = contDto.team_cd
-                            cpMstDto.usr_key = contDto.usr_key
-                            cpMstDto.avo_nm = avoNm
-                            cpMstDto.avo_id = avoId
-                            cpMstDto.inten_id = dto.inten_id
-                            cpMstDto.orig_id = dto.orig_id
-                            cpMstDto.inta_key = dto.inta_key
-                            cpMstDto.inta_ve = dto.inta_ve
-                            cpMstDto.pub_yn = dto.pub_yn
-                            salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
-
-                            // 중복 데이터 이슈로 인한 체크
-                            if(cpMstDto.seq != null) {
-                                //기존 데이터가 있을 경우 삭제
-                                salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
-                                salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
-                                salesforceDao.del_tblmicou_coupon_issue(cpMstDto.seq.toString())
-
-                                //신규 데이터 삽입
-                                val contListDto = Tblmi_cont_lstDto()
-                                contListDto.cont_cd = seq.toInt()
-                                contListDto.reg_id = usrId
-                                contListDto.upd_id = usrId
-                                contListDto.use_yn = "Y"
-                                val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
-
-                                for (i in contLst) {
-                                    val oriSeq = i.seq.toString()
-                                    // 리스트 삽입
-                                    val tblmicpContLstdto = Tblmicp_cont_lstDto(i)
-                                    tblmicpContLstdto.seq = null
-                                    tblmicpContLstdto.cont_cd = cpMstDto.seq
-                                    tblmicpContLstdto.reg_id = usrId
-                                    tblmicpContLstdto.upd_id = usrId
-                                    salesforceDao.ins_tblmicp_cont_lst(tblmicpContLstdto)
-
-                                    //신규 url 리스트 삽입
-                                    val map = HashMap<String, Any>()
-                                    map["cont_lst_cd"] = tblmicpContLstdto.seq!!
-                                    map["list_seq"] = oriSeq
-                                    salesforceDao.ins_tblmicp_cont_url_lst(map)
-
-                                    // 쿠폰 발급 이력 생성
-                                    if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
-                                        val couponIssueDto = CouponIssueDto()
-                                        couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
-                                        couponIssueDto.send_phone = tblmicpContLstdto.send_to
-                                        couponIssueDto.msg_title = i.cont_sub
-                                        couponIssueDto.msg_content = i.cont_body
-                                        couponIssueDto.usr_grp_cd = i.cont_grp_cd
-                                        couponIssueDto.reg_id = i.reg_id
-                                        couponIssueDto.camp_seq = cpMstDto.seq
-                                        salesforceDao.insert_coupon_issue(couponIssueDto)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return true
-                }else{
-                    logger.error("connection Error : {} / {}", "${restUrl.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}",result)
-                    return false
-                }
-             }else {
-                logger.error("connection Error : {}", tokenResult)
-                return false
-            }
-        }catch (e: Exception){
-            logger.error("campaingContent ERROR", e)
-            throw Exception("rollback")
-        }
-    }
-
-    override fun publish(dto: Tblmicp_cont_mstDto): Boolean {
-        val save = salesforceDao.upd_tblmicp_cont_mst(dto)
-        return if(save == 1){
-            if(dto.pub_yn == "Y"){
-                val mstContDto = Tblmicp_cont_mstDto()
-                mstContDto.inten_id = dto.inten_id
-                mstContDto.orig_id = dto.orig_id
-                mstContDto.inta_key = dto.inta_key
-                mstContDto.inta_ve = dto.inta_ve
-                val contLst = salesforceDao.sel_tblmicp_cont_mst(mstContDto)
-                val usrId = if (contLst[0].upd_id == null) {
-                    contLst[0].reg_id
-                } else {
-                    contLst[0].upd_id
-                }
-
-                val temp = Tblmicp_programDto()
-                temp.pro_id = "PRO${CommonUtils.getDateTimeNowYYYMMDDSSS()}${dto.cont_grp_cd}"
-                temp.pro_tp = "SALES"
-                temp.pro_st = "03" // 발송 진행 중
-                temp.pro_tg_tp = "TG01"
-                temp.pro_tg_id = "SALES"
-                temp.cont_cnt = contLst.size
-                temp.camp_cnt = contLst.size
-                temp.pro_nm = contLst[0].sales_nm
-                temp.team_cd = contLst[0].team_cd
-                temp.usr_grp_cd = contLst[0].cont_grp_cd
-                temp.reg_id = usrId
-                temp.upd_id = usrId
-                temp.inten_id = dto.inten_id
-                temp.orig_id = dto.orig_id
-                temp.inta_key = dto.inta_key
-                temp.inta_ve = dto.inta_ve
-
-                var proDto = salesforceDao.sel_tblmicp_program(temp)
-                if(proDto == null){
-                    campaignDao.ins_program(temp)
-                    proDto = temp
-                }
-                for(i in contLst){
-                    val campaignDto = Tblmicp_campaignDto(proDto.pro_id)
-                    campaignDto.cont_id = i.seq
-                    campaignDto.send_tg_tp = "TG01"
-                    campaignDto.send_tg_id = "SALES"
-                    campaignDto.camp_st = "03"
-                    campaignDto.camp_nm = contLst[0].camp_nm
-                    campaignDto.team_cd = contLst[0].team_cd
-                    campaignDto.camp_ch = i.ch_tp
-                    campaignDto.sto = "01"
-                    campaignDto.usr_grp_cd = proDto.usr_grp_cd
-                    campaignDto.reg_id = proDto.reg_id
-                    campaignDto.start_dt = CommonUtils.getDateTimeNow()
-                    campaignDto.send_st_tp = "1"
-                    campaignDao.ins_campaign(campaignDto)
-
-                    // RCS img
-                    val contListDto = Tblmicp_cont_lstDto()
-                    contListDto.cont_cd = i.seq
-                    contListDto.reg_id = usrId
-                    contListDto.upd_id = usrId
-                    contListDto.cont_grp_cd = proDto.usr_grp_cd
-                    contListDto.cont_tp ="DMTP04"
-                    contListDto.use_yn = "Y"
-                    val contLst = campaignDao.sel_tblmicp_cont_lst(contListDto)
-                    for (cont in contLst) {
-                        val rcsBrnID = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_BRND_ID", contListDto.cont_grp_cd!!))!!.cd_val
-                        // 이미지 저장 경로
-                        val imgPath = sysSettingService.getCommCD(Tblmi_comm_cdDto("IMG_PATH", contListDto.cont_grp_cd!!))!!.cd_val
-
-                        // RCS 발송 서버 정보
-                        val rcsDb = sysSettingService.getCommCD(Tblmi_comm_cdDto("RCS_DB", contListDto.cont_grp_cd!!))!!.cd_val
-
-                        val urlLst = cont.img_nm_lst!!.split(",")
-
-                        // 이미지 리스트
-                        val rcsImgLst = ArrayList<LgRcs_imgDto>()
-
-                        val urlSize = urlLst.size.toString()
-                        for (i in urlLst.indices) {
-                            if(!CommonUtils.isEmptyObject(urlLst[i]!!.trim())){
-                                val imgDto = LgRcs_imgDto()
-                                imgDto.group_key = "GR_${campaignDto.seq.toString()}"
-                                imgDto.group_cnt = urlSize
-                                imgDto.status = "0"
-                                imgDto.sendable = "N"
-                                imgDto.brand_id = rcsBrnID
-                                imgDto.img_path = imgPath?.trim() + urlLst[i]!!.trim()
-                                imgDto.template_yn = "N"
-                                imgDto.m_server = rcsDb
-                                rcsImgLst.add(imgDto)
-                            }
-                        }
-                        if(rcsImgLst.size > 0){
-                            salesforceDao.ins_camp_send_rcs_img_lg(rcsImgLst)
-                        }
-                    }
-                }
-                true
-            }else{
-                true
-            }
-        }else{
-            false
-        }
-    }
-
-    override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
-        val inArguments = mutableMapOf<String,Any>()
-        val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
-        _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
-
-        val avoId: String = map["activityId"].toString()
-        val intenId = map["journeyId"].toString()
-        val keyValue = map["keyValue"].toString()
-
-        val exMap = HashMap<String, Any>(map)
-        exMap["inArguments"] = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
-
-        // 컨테츠 마스터 정보
-        val contMstDto = Tblmicp_cont_mstDto()
-        contMstDto.avo_id = avoId
-        contMstDto.inten_id = intenId
-        val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
-
-        if(contMst == null){
-            salesforceDao.ins_tblmicp_sales_execute(exMap)
-            return false
-        }else {
-            //캠페인 정보
-            val cDto = Tblmicp_campaignDto()
-            cDto.cont_id = contMst.seq
-            val campLst = campaignDao.sel_tblmicp_campaign(cDto)
-
-            if(campLst.isEmpty()){
-                return false
-            }else{
-                for(campaignDto in campLst){
-                    campaignDto.start_dt = CommonUtils.getDateTimeNow()
-
-                    // 타겟수 업데이트
-                    if(campaignDto.tar_cnt == null || campaignDto.tar_cnt == 0){
-
-                        var targetCnt: Int? = null
-                        if(!CommonUtils.isEmptyObject(inArguments["§extention_cnt§"])){
-                            targetCnt = inArguments["§extention_cnt§"].toString().split(".")[0].toInt()
-                            inArguments.remove("§extention_cnt§")
-                            inArguments.remove("§data_extension_id§")
-                        }
-                        campaignDto.tar_cnt = targetCnt
-
-                        campaignDto.start_dt = CommonUtils.getDateTimeNow()   // 캠페인 시작 시점
-                        salesforceDao.upd_tblmicp_campaign(campaignDto)
-
-                        // 프로그램 total target cnt 수정
-                        val program = Tblmicp_programDto(campaignDto.pro_id)
-                        program.pro_id = campaignDto.pro_id
-                        salesforceDao.upd_tblmicp_program_total_cnt(program)
-                    }
-
-                    // sendhst 삽입
-                    val sendHstDto = Tblmicp_send_hstDto()
-                    sendHstDto.pro_id = campaignDto.pro_id
-                    sendHstDto.camp_id = campaignDto.seq
-                    sendHstDto.cont_id = campaignDto.cont_id
-                    sendHstDto.tbl_id = "sales"
-                    sendHstDto.tbl_lst_id = keyValue
-                    sendHstDto.send_yn = "N"
-                    sendHstDto.auto_tp = null
-                    sendHstDto.usr_grp_cd = campaignDto.usr_grp_cd
-                    sendHstDto.reg_id = campaignDto.reg_id
-                    sendHstDto.camp_ch = campaignDto.camp_ch
-                    sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
-
-                    //컨텐츠 리스트
-                    val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
-                    val contTpLst = HashMap<String, Contents_lstDto>()
-                    for (check in contLst) {
-                        contTpLst[check.cont_tp.toString()] = check
-                    }
-                    //logger.error("{}",contTpLst)
-
-                    val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
-                    if (isCouponSend && map["couponIssuedLogDto"] != null) {
-                        val couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
-                    }
-
-                    // 발송
-                    when {
-                        // 카카오 친구톡
-                        contTpLst["DMTP03"] != null -> {
-                            val sendTo = inArguments[contTpLst["DMTP03"]!!.from_to]
-                            if(sendTo == null){
-                                exMap["inArguments"] = exMap["inArguments"].toString()
-                                salesforceDao.ins_tblmicp_sales_execute(exMap)
-                            }else{
-                                sendHstDto.send_to = sendTo.toString()
-                                campaignDao.ins_programSendHst(sendHstDto)
-                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = sendTo.toString()
-                                kkoSend.ins_send(campaignDto, contTpLst, inArguments)
-                            }
-                        }
-                        // 카카오 알림톡
-                        contTpLst["DMTP05"] != null -> {
-                            val sendTo = inArguments[contTpLst["DMTP05"]!!.from_to]
-                            if(sendTo == null){
-                                exMap["inArguments"] = exMap["inArguments"].toString()
-                                salesforceDao.ins_tblmicp_sales_execute(exMap)
-                            }else{
-                                sendHstDto.send_to = sendTo.toString()
-                                campaignDao.ins_programSendHst(sendHstDto)
-                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = sendTo.toString()
-                                kkoSendAt.ins_send(campaignDto, contTpLst, inArguments)
-                            }
-                        }
-                        // RCS
-                        contTpLst["DMTP04"] != null -> {
-                            val sendTo = inArguments[contTpLst["DMTP04"]!!.from_to]
-                            if(sendTo == null){
-                                exMap["inArguments"] = exMap["inArguments"].toString()
-                                salesforceDao.ins_tblmicp_sales_execute(exMap)
-                            }else{
-                                sendHstDto.send_to = sendTo.toString()
-                                campaignDao.ins_programSendHst(sendHstDto)
-                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = sendTo.toString()
-                                rcsSend.ins_send(campaignDto, contTpLst, inArguments)
-                            }
-                        }
-                        // 문자
-                        else -> {
-                            val sendTo = inArguments[contTpLst["DMTP02"]!!.from_to]
-                            if(sendTo == null){
-                                exMap["inArguments"] = exMap["inArguments"].toString()
-                                salesforceDao.ins_tblmicp_sales_execute(exMap)
-                            }else{
-                                sendHstDto.send_to = sendTo.toString()
-                                campaignDao.ins_programSendHst(sendHstDto)
-                                inArguments["SEND_HST_SEQ"] = sendHstDto.seq!!
-                                inArguments["SEND_TO"] = sendTo.toString()
-                                mdmSend.ins_send(campaignDto, contTpLst, inArguments)
-                            }
-                        }
-                    }
-
-                    if (isCouponSend) {
-                        val dto = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-                        dto.phone = sendHstDto.send_to
-                        dto.msgkey = sendHstDto.seq.toString()
-                    }
-                }
-            }
-        }
-        return true
-    }
-    override fun getDataExtention(usr_cd: String, extentionId: String) : HashMap<String,Any> {
-        val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
-
-        val configuration = ETConfiguration()
-        for (commCd in commCdList){
-            when (commCd.grp_id) {
-                "SALES_CID" -> configuration["clientId"] = commCd.cd_val
-                "SALES_SEC" ->  configuration["clientSecret"] = commCd.cd_val
-                "SALES_AUTH_URL" ->  configuration["authEndpoint"] = commCd.cd_val
-                "SALES_REST_URL" ->  configuration["endpoint"] = commCd.cd_val
-                "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
-            }
-        }
-        configuration["useOAuth2Authentication"] = "true"
-        val client = ETClient(configuration)
-
-        val filter = ETFilter()
-        val exp = ETExpression()
-
-        exp.property = "id"
-        exp.operator = ETExpression.Operator.EQUALS
-        exp.addValue(extentionId)
-
-        filter.expression = exp
-
-        val response = client.retrieve(ETDataExtension::class.java, filter)
-
-        val dataExtension = response.result.getObject()
-        val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
-
-        var totalCnt = 0
-        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-        try {
-            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
-            if (!CommonUtils.isEmptyObject(data)) {
-                totalCnt = data!!["rowCount"].toString().toInt()
-            }else{
-                totalCnt = dataExtension.select().totalCount
-            }
-        } catch (e:Exception){
-            logger.error("{}",e)
-            totalCnt = dataExtension.select().totalCount
-        }
-
-        val reMap = HashMap<String, Any>()
-        reMap["list"] = reList
-        reMap["totalCnt"] = totalCnt
-
-        return reMap
-    }
-
-    @Throws
-    private fun getTotalcnt(usr_cd: String, key : String): MutableMap<String, Any>? {
-        val tempComm = Tblmi_comm_cdDto("SALES_TOTAL",usr_cd)
-        tempComm.use_yn ="Y"
-        val commCd  = systemDao.getCommCDList(tempComm)
-        if(CommonUtils.isEmptyObject(commCd)){
-            return null
-        }
-
-        val totalCntUrl  = commCd[0].cd_val
-
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
-        headers.set("accept", MediaType.ALL_VALUE)
-
-        val urlString = "$totalCntUrl?key=$key"
-
-        val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
-        val status = result.statusCode.value()
-        return if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
-            logger.error("+----------------------------------------------------")
-            logger.error("{}",result.body)
-            logger.error("{}",urlString)
-            if(CommonUtils.isEmptyObject(result.body)){
-                logger.error("getTotalCnt url : {}",urlString)
-            }
-            val body = result.body!!
-            GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
-        }else {
-            null
-        }
-
-    }
-
-
-    /**
-     * @Method Name  : isCheckSender
-     * @Since    : 2023. 01. 05.
-     * @author   : Belisa
-     * @return    : Int
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 카카오 발신자 체크 하기
-     * @title  카카오 발신자 체크
-     */
-
-    override fun isCheckSender(usr_cd: String): Map<String, Any> {
-
-        val paramMap: MutableMap<String, Any> = java.util.HashMap()
-
-        val tblmiDto = Tblmi_set_lstDto()
-        tblmiDto.list_tp_id = "CH02"
-        tblmiDto.list_dt_id = "DMTP03"
-        tblmiDto.usr_grp_cd = usr_cd
-
-        val smsMiDto = Tblmi_set_lstDto()
-        smsMiDto.list_tp_id = "CH02"
-        smsMiDto.list_dt_id = "DMTP02"
-        smsMiDto.usr_grp_cd = usr_cd
-
-        val rcsMiDto = Tblmi_set_lstDto()
-        rcsMiDto.list_tp_id = "CH02"
-        rcsMiDto.list_dt_id = "DMTP04"
-        rcsMiDto.usr_grp_cd = usr_cd
-
-        paramMap["kakaoCnt"] = contentDao.selectSenderListCnt(tblmiDto)
-        paramMap["smsCnt"] = contentDao.selectSenderListCnt(smsMiDto)
-        paramMap["rcsCnt"] = contentDao.selectSenderListCnt(rcsMiDto)
-
-        return paramMap
-    }
-
     private fun connection(url: String, method: HttpMethod, data: String?, authKey: String?): MutableMap<String, Any> {
-        val re_map: MutableMap<String, Any> = HashMap()
-
+        val reMap: MutableMap<String, Any> = HashMap()
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         val acceptableMediaType: MutableList<MediaType> = ArrayList()
@@ -2746,19 +2727,19 @@ class SalesforceServiceImpl : SalesforceService {
         try{
             val result: ResponseEntity<String> = restTemplate.exchange(url, method, org.springframework.http.HttpEntity(data, headers), String::class.java)
             val status = result.statusCode.value()
-            re_map["result"] = status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE
-            re_map["status"] = status
+            reMap["result"] = status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE
+            reMap["status"] = status
             if(result.body == null){
-                re_map["data"] = ""
+                reMap["data"] = ""
             }else{
-                re_map["data"] = result.body!!
+                reMap["data"] = result.body!!
                 //log.error("{}", result.body)
             }
-            return re_map
+            return reMap
         }catch (e: Exception){
             logger.error("connection {}", e)
-            re_map["result"] = false
-            return re_map
+            reMap["result"] = false
+            return reMap
         }
     }
 }

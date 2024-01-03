@@ -703,19 +703,19 @@
 
 	<insert id="ins_programSendHstOne" parameterType="Tblmicp_send_hstDto" useGeneratedKeys="true" keyProperty="seq">
 		insert into tblmicp_send_hst (
-	    	pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch
+	    	pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch, camp_dt
 	    )
 		values (
-			#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{usr_key}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch}
+			#{pro_id}, #{camp_id}, #{cont_id}, #{tbl_id}, #{tbl_lst_id}, #{usr_key}, #{send_to}, #{send_nm}, #{send_yn}, #{auto_tp}, #{usr_grp_cd}, #{reg_id}, #{camp_ch}, #{camp_dt}
 		)
 	</insert>
 
 	<insert id="ins_programSendHst" parameterType="Tblmicp_send_hstDto" >
 		insert into tblmicp_send_hst
-		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch)
+		(pro_id, camp_id, cont_id, tbl_id, tbl_lst_id, usr_key, send_to, send_nm, send_yn, auto_tp, usr_grp_cd, reg_id, camp_ch, camp_dt)
 		values
 		<foreach collection="list" item="list" separator=" , " >
-			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{usr_key}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch})
+			(#{list.pro_id}, #{list.camp_id}, #{list.cont_id}, #{list.tbl_id}, #{list.tbl_lst_id}, #{usr_key}, #{list.send_to}, #{list.send_nm}, #{list.send_yn}, #{list.auto_tp}, #{list.usr_grp_cd}, #{list.reg_id}, #{list.camp_ch}, #{list.camp_dt})
 		</foreach>
 	</insert>
 
