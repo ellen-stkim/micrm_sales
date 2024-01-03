@@ -1532,11 +1532,10 @@ class SalesforceServiceImpl : SalesforceService {
             if(tokenResult["result"] as Boolean){
                 val tokenMap = g.fromJson(tokenResult["data"].toString(), MutableMap::class.java)
                 val token = tokenMap["access_token"].toString()
-                val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
+                val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}&\$pageSize=2", HttpMethod.GET, null, token)
                 if(result["result"] as Boolean){
                     val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
                     logger.error("interactions data {}", data)
-
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
 
                     logger.error("activities {}", activities.size)
@@ -1548,7 +1547,7 @@ class SalesforceServiceImpl : SalesforceService {
                         for(activity in fillterActivities) {
                             //val type = activity["type"].toString()
                             //if (type == "REST") {
-                                logger.error("activity : {}", activity)
+                                //logger.error("activity : {}", activity)
                                 val salesNm = data["name"].toString()
                                 val avoNm = activity["name"].toString()
                                 val avoId = activity["id"].toString()
@@ -1622,6 +1621,8 @@ class SalesforceServiceImpl : SalesforceService {
                                 }
                             //}
                         }
+                    }else {
+                        logger.error("fillterActivities is null : {}", dto)
                     }
                     return true
                 }else{
