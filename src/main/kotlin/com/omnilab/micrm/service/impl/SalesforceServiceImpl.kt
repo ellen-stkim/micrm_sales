@@ -1544,10 +1544,11 @@ class SalesforceServiceImpl : SalesforceService {
                     }.findAny().orElse(null)
 
                     if(fillterActivities != null){
-                        for(activity in activities) {
+                        for(act in fillterActivities) {
                             //val type = activity["type"].toString()
                             //if (type == "REST") {
-                                logger.error("activity : {}", activity)
+                                logger.error("activity : {}", act)
+                                val activity = act as MutableMap<String, Any>
                                 val salesNm = data["name"].toString()
                                 val avoNm = activity["name"].toString()
                                 val avoId = activity["id"].toString()
