@@ -2267,28 +2267,30 @@ class SalesforceServiceImpl : SalesforceService {
                             val avoNm = activity["name"].toString()
                             val avoId = activity["id"].toString()
                             val seq = (((activity["arguments"] as MutableMap<String, Any>)["execute"] as MutableMap<String, Any>)["inArguments"] as MutableList<MutableMap<String, Any>>)[0]["seq"].toString().split(".")[0]
-                                val temp = Tblmi_cont_mstDto(seq.toInt())
-                                val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
-                                val usrId = if (mstDto.upd_id == null) {
-                                    mstDto.reg_id
-                                } else {
-                                    mstDto.upd_id
-                                }
-                                val cpMstDto = Tblmicp_cont_mstDto(contDto)
-                                cpMstDto.cont_seq = seq.toInt()
-                                cpMstDto.sales_nm = salesNm
-                                cpMstDto.camp_nm = contDto.camp_nm
-                                cpMstDto.team_cd = contDto.team_cd
-                                cpMstDto.usr_key = contDto.usr_key
-                                cpMstDto.avo_nm = avoNm
-                                cpMstDto.avo_id = avoId
-                                cpMstDto.inten_id = dto.inten_id
-                                cpMstDto.orig_id = dto.orig_id
-                                cpMstDto.inta_key = dto.inta_key
-                                cpMstDto.inta_ve = dto.inta_ve
-                                cpMstDto.pub_yn = dto.pub_yn
-                                salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
+                            val temp = Tblmi_cont_mstDto(seq.toInt())
+                            val contDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(temp)
+                            val usrId = if (mstDto.upd_id == null) {
+                                mstDto.reg_id
+                            } else {
+                                mstDto.upd_id
+                            }
+                            val cpMstDto = Tblmicp_cont_mstDto(contDto)
+                            cpMstDto.cont_seq = seq.toInt()
+                            cpMstDto.sales_nm = salesNm
+                            cpMstDto.camp_nm = contDto.camp_nm
+                            cpMstDto.team_cd = contDto.team_cd
+                            cpMstDto.usr_key = contDto.usr_key
+                            cpMstDto.avo_nm = avoNm
+                            cpMstDto.avo_id = avoId
+                            cpMstDto.inten_id = dto.inten_id
+                            cpMstDto.orig_id = dto.orig_id
+                            cpMstDto.inta_key = dto.inta_key
+                            cpMstDto.inta_ve = dto.inta_ve
+                            cpMstDto.pub_yn = dto.pub_yn
+                            salesforceDao.ins_tblmicp_cont_mst(cpMstDto)
 
+                            // 중복 데이터 이슈로 인한 체크
+                            if(cpMstDto.seq != null) {
                                 //기존 데이터가 있을 경우 삭제
                                 salesforceDao.del_tblmicp_cont_url_lst(cpMstDto.seq.toString())
                                 salesforceDao.del_tblmicp_cont_lst(cpMstDto.seq.toString())
@@ -2331,6 +2333,7 @@ class SalesforceServiceImpl : SalesforceService {
                                         salesforceDao.insert_coupon_issue(couponIssueDto)
                                     }
                                 }
+                            }
                         }
                     }
                     return true
