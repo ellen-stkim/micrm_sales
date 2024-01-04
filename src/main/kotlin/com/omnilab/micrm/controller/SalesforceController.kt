@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -636,7 +637,6 @@ class SalesforceController {
 
 
     // =================================================== Salesforce ===================================================== //
-
     /**
      * @Method Name  : getUser
      * @Since    : 2022. 08. 04.
@@ -840,7 +840,7 @@ class SalesforceController {
                 val data = gson.fromJson(payload, MutableMap::class.java)
                 logger.error("data : {}", data)
                 var couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
-                if (couponIssuedLogDto != null) data.put("couponIssuedLogDto", couponIssuedLogDto)
+                if (couponIssuedLogDto != null) data["couponIssuedLogDto"] = couponIssuedLogDto
 
                 salesforceService.sendCampaign(data)
 
@@ -851,7 +851,8 @@ class SalesforceController {
             }
             return ResponseEntity(null, HttpStatus.OK)
         } catch (e: Exception) {
-            if(e is SQLIntegrityConstraintViolationException){
+            logger.error("excep {}", e.javaClass)
+            if(e is SQLIntegrityConstraintViolationException || e is DuplicateKeyException){
                 logger.error("execute.service SQLIntegrityConstraintViolationException : {} | {}", e.message, payload)
             }else{
                 logger.error("execute.service", e)
