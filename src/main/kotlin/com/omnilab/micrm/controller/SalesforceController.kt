@@ -144,7 +144,6 @@ class SalesforceController {
         view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
         val cntMap = salesforceService.isCheckSender(usr_cd)
-
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])

@@ -282,7 +282,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             kkoMsgdto.msg = targetBody
             kkoMsgdto.profile_key = kakaoCont.send_to
             kkoMsgdto.template_code = kakaoCont.key_id
-            kkoMsgdto.ad_flag = "N"
+            kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
             kkoMsgdto.type = kakaoCont.kko_msg_tp
 
             if(kakaoCont.kko_btn_obj != null){

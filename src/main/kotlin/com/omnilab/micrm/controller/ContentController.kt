@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
-import org.springframework.util.MimeType
 import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -1045,8 +1044,7 @@ class ContentController  {
     @PostMapping("/updateEmailContForm.mi")
     fun updateEmailContForm(@ModelAttribute dto: Content_list_CreateDto): ModelAndView {
         val map = emailContentService.updateContentLst(dto)
-        val Result = map["result"]
-        when (Result) {
+        when (map["result"]) {
             1 -> {
                 //body 변경으로 file 변경
                 val view = ModelAndView("cont/thumbnailCreate")
@@ -1192,7 +1190,7 @@ class ContentController  {
     @PostMapping("/kko/tmplCreate.mi")
     fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,@ModelAttribute("extId") extId :String): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
-        val map = kkoMsgService.tmplCreateLst();
+        val map = kkoMsgService.tmplCreateLst()
 
         view.addObject("cateLst",map["cateLst"]);
         view.addObject("cateSubLst",map["cateSubLst"])
@@ -1205,8 +1203,8 @@ class ContentController  {
         if(CommonUtils.isEmptyObject(extId)){
             view.addObject("column", sysSettingService.getDBValue())
         } else {
-            val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usr_grp_cd!!,extId)
+            val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd
+            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usrGrpCd!!,extId)
             view.addObject("extention",reMap["list"])
         }
 

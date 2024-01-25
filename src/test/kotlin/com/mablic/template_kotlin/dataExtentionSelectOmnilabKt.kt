@@ -9,12 +9,20 @@ object dataExtentionSelectOmnilabKt {
     fun main(args: Array<String>) {
         val logger = LoggerFactory.getLogger("testSdk")
         val configuration = ETConfiguration()
-        configuration["clientId"] = "3k9fq4ivxzmbqjybxfnmiemk"
-        configuration["clientSecret"] = "Pffpsqx9jkM0bFb77kEdGM18"
-        configuration["authEndpoint"] = "https://mcrhrh7j3bl6xd1n35nt5lxc5tk4.auth.marketingcloudapis.com"
-        configuration["endpoint"] = "https://mcrhrh7j3bl6xd1n35nt5lxc5tk4.auth.marketingcloudapis.com"
-        configuration["soapEndpoint"] = "https://mcrhrh7j3bl6xd1n35nt5lxc5tk4.auth.marketingcloudapis.com/service.asmx"
+        configuration["clientId"] = "dpt70jlizqdloq86kzngeqt5"
+        configuration["clientSecret"] = "BgrW1BbgWbltuFw5Ik63xpQW"
+        configuration["authEndpoint"] = "https://mcjfm2d4ywsykrff1y2x8rgtvtm0.auth.marketingcloudapis.com/"
+        configuration["endpoint"] = "https://mcjfm2d4ywsykrff1y2x8rgtvtm0.rest.marketingcloudapis.com/"
+        configuration["soapEndpoint"] = "https://mcjfm2d4ywsykrff1y2x8rgtvtm0.soap.marketingcloudapis.com/"
         configuration["useOAuth2Authentication"] = "true"
+        /*
+        configuration["clientId"] = "gqx22xm7en2e0uficums7cut"
+        configuration["clientSecret"] = "qnxivHhJnaUinosSXaz4stQu"
+        configuration["authEndpoint"] = "https://mc82m0sycp8ynx4fqynw-63lx470.auth.marketingcloudapis.com/"
+        configuration["endpoint"] = "https://mc82m0sycp8ynx4fqynw-63lx470.rest.marketingcloudapis.com/"
+        configuration["soapEndpoint"] = "https://mcjfm2d4ywsykrff1y2x8rgtvtm0.soap.marketingcloudapis.com/"
+        configuration["useOAuth2Authentication"] = "true"
+        */
         val client = ETClient(configuration)
 
         val etf = ETFilter()
@@ -32,7 +40,7 @@ object dataExtentionSelectOmnilabKt {
         etf.expression = exp
 
         println("---------------------ETDataExtension------------------------")
-        val response = client.retrieve(ETDataExtension::class.java, "id=cce071c7-4680-ed11-ba43-5cba2c19aa40")
+        val response = client.retrieve(ETDataExtension::class.java, "id=3411bb9a-d2b9-ee11-a5c5-5cba2c19a5e8")
         val result = response.result
         val dataExtension = result.getObject()
         val res = dataExtension.select()
