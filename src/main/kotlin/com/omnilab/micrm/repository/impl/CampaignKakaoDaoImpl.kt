@@ -132,12 +132,13 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
 
             // 제목 , 내용 치환
             for (key in map.keys) {
-                targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                mdmSubject = mdmSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                mdmBody = mdmBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                rcsSubject = rcsSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                rcsBody = rcsBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                val reg = Regex("\\{\\{(?i)${key}}}")
+                targetSubject = targetSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                targetBody = targetBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                mdmSubject = mdmSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                mdmBody = mdmBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                rcsSubject = rcsSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                rcsBody = rcsBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
             }
 
             // KAKAO URL to TrackURL

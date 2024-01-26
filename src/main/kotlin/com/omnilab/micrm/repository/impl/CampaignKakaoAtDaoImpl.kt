@@ -131,12 +131,14 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
 
             // 제목 , 내용 치환
             for (key in map.keys) {
-                targetSubject = targetSubject?.replace("#{$key}", CommonUtils.stringValueOf(map[key]))
-                targetBody = targetBody?.replace("#{$key}", CommonUtils.stringValueOf(map[key]))
-                mdmSubject = mdmSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                mdmBody = mdmBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                rcsSubject = rcsSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                rcsBody = rcsBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                val regK = Regex("#\\{(?i)${key}}")
+                val regM = Regex("\\{\\{(?i)${key}}}")
+                targetSubject = targetSubject?.replace(regK, CommonUtils.stringValueOf(map[key]))
+                targetBody = targetBody?.replace(regK, CommonUtils.stringValueOf(map[key]))
+                mdmSubject = mdmSubject?.replace(regM, CommonUtils.stringValueOf(map[key]))
+                mdmBody = mdmBody?.replace(regM, CommonUtils.stringValueOf(map[key]))
+                rcsSubject = rcsSubject?.replace(regM, CommonUtils.stringValueOf(map[key]))
+                rcsBody = rcsBody?.replace(regM, CommonUtils.stringValueOf(map[key]))
             }
 
             // KAKAO URL to TrackURL
@@ -292,7 +294,8 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                 if(objMap["button"] != null){
                     var btnData = gson.toJson(objMap["button"])
                     for (key in map.keys) {
-                        btnData = btnData.replace("#{$key}", CommonUtils.stringValueOf(map[key]))
+                        val reg = Regex("#\\{(?i)${key}}")
+                        btnData = btnData.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
                     kkoMsgdto.button_json = btnData
                 }

@@ -14,7 +14,6 @@ import org.apache.ibatis.session.SqlSession
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Repository("CampaignMdmDaoImpl")
@@ -61,12 +60,13 @@ class CampaignMdmDaoImpl : CampaignSendDao {
             var targetSubject = contDto.cont_sub
             var targetBody = CommonUtils.EscapeTextToHtml(contDto.cont_body)
 
-            val HstSeq = map["SEND_HST_SEQ"].toString()
+            val hstSeq = map["SEND_HST_SEQ"].toString()
 
             // 제목 , 내용 치환
             for (key in map.keys) {
-                targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                val reg = Regex("\\{\\{(?i)${key}}}")
+                targetSubject = targetSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                targetBody = targetBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
             }
 
             // URL to TrackURL
@@ -87,7 +87,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                                             .replace("?", "[?]")
                                             + "\\}\\}")
                                         .toRegex()
-                            , "$trackURL/s/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/m/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
 
                 }
             }

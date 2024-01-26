@@ -101,10 +101,10 @@ class CampaignRcsDaoImpl : CampaignSendDao {
         try {
             var targetSubject = rcsCont.cont_sub
             var targetBody = CommonUtils.EscapeTextToHtml(rcsCont.cont_body)
-            var rcs_btn_obj = rcsCont.rcs_btn_obj
-            var rcs_btn_cont_1 = rcsCont.rcs_btn_cont_1
-            var rcs_btn_cont_2 = rcsCont.rcs_btn_cont_2
-            var rcs_btn_cont_3 = rcsCont.rcs_btn_cont_3
+            var rcsBtnObj = rcsCont.rcs_btn_obj
+            var rcsBtnCont1 = rcsCont.rcs_btn_cont_1
+            var rcsBtnCont2 = rcsCont.rcs_btn_cont_2
+            var rcsBtnCont3 = rcsCont.rcs_btn_cont_3
 
             var mdmSubject: String? = null
             var mdmBody: String? = null
@@ -119,16 +119,17 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 kakaoBody =CommonUtils.EscapeTextToHtml(kakaoCont.cont_body)
             }
 
-            val HstSeq = map["SEND_HST_SEQ"].toString()
+            val hstSeq = map["SEND_HST_SEQ"].toString()
 
             // 제목 , 내용 치환
             for (key in map.keys) {
-                targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                mdmSubject = mdmSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                mdmBody = mdmBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                kakaoSubject = kakaoSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                kakaoBody = kakaoBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                val reg = Regex("\\{\\{(?i)${key}}}")
+                targetSubject = targetSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                targetBody = targetBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                mdmSubject = mdmSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                mdmBody = mdmBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                kakaoSubject = kakaoSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                kakaoBody = kakaoBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
             }
 
             // RCS URL to TrackURL
@@ -150,9 +151,9 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                             .replace("?", "[?]")
                                             + "\\}\\}")
                                         .toRegex()
-                            , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/r/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                     }else{
-                        rcs_btn_obj = rcs_btn_obj?.replaceFirst(("\\{\\{"
+                        rcsBtnObj = rcsBtnObj?.replaceFirst(("\\{\\{"
                                             + url.replace("(", "\\(")
                                                 .replace(")", "\\)")
                                                 .replace("{", "\\{")
@@ -166,8 +167,8 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                                 .replace("?", "[?]")
                                                 + "\\}\\}")
                                             .toRegex()
-                                , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        rcs_btn_cont_1 = rcs_btn_cont_1?.replaceFirst(("\\{\\{"
+                                , "$trackURL/s/r/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        rcsBtnCont1 = rcsBtnCont1?.replaceFirst(("\\{\\{"
                                                     + url.replace("(", "\\(")
                                                         .replace(")", "\\)")
                                                         .replace("{", "\\{")
@@ -181,8 +182,8 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                                         .replace("?", "[?]")
                                                         + "\\}\\}")
                                                     .toRegex()
-                                        , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        rcs_btn_cont_2 = rcs_btn_cont_2?.replaceFirst(("\\{\\{"
+                                        , "$trackURL/s/r/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        rcsBtnCont2 = rcsBtnCont2?.replaceFirst(("\\{\\{"
                                                     + url.replace("(", "\\(")
                                                         .replace(")", "\\)")
                                                         .replace("{", "\\{")
@@ -196,8 +197,8 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                                         .replace("?", "[?]")
                                                         + "\\}\\}")
                                                     .toRegex()
-                                        , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                        rcs_btn_cont_3 = rcs_btn_cont_3?.replaceFirst(("\\{\\{"
+                                        , "$trackURL/s/r/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        rcsBtnCont3 = rcsBtnCont3?.replaceFirst(("\\{\\{"
                                                     + url.replace("(", "\\(")
                                                         .replace(")", "\\)")
                                                         .replace("{", "\\{")
@@ -211,7 +212,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                                         .replace("?", "[?]")
                                                         + "\\}\\}")
                                                     .toRegex()
-                                        , "$trackURL/s/r/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                                        , "$trackURL/s/r/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                     }
                 }
             }
@@ -234,7 +235,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                         .replace("?", "[?]")
                                         + "\\}\\}")
                                     .toRegex()
-                        , "$trackURL/s/m/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                        , "$trackURL/s/m/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                 }
             }
 
@@ -257,7 +258,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                                             .replace("?", "[?]")
                                             + "\\}\\}")
                                         .toRegex()
-                            , "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                     }
                 }
             }
@@ -320,14 +321,14 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             sendDto.btn_insert_type = rcsCont.rcs_btn_ins_tp
             sendDto.btn_text_1 = rcsCont.rcs_btn_1
             sendDto.btn_type_1 = rcsCont.rcs_btn_tp_1
-            sendDto.btn_contents_1 = rcs_btn_cont_1
+            sendDto.btn_contents_1 = rcsBtnCont1
             sendDto.btn_text_2 = rcsCont.rcs_btn_2
             sendDto.btn_type_2 = rcsCont.rcs_btn_tp_2
-            sendDto.btn_contents_2 = rcs_btn_cont_2
+            sendDto.btn_contents_2 = rcsBtnCont2
             sendDto.btn_text_3 = rcsCont.rcs_btn_3
             sendDto.btn_type_3 = rcsCont.rcs_btn_tp_3
-            sendDto.btn_contents_3 = rcs_btn_cont_3
-            sendDto.btn_object = rcs_btn_obj
+            sendDto.btn_contents_3 = rcsBtnCont3
+            sendDto.btn_object = rcsBtnObj
 
             sendDto.etc1 = dto.pro_id
             sendDto.etc2 = dto.seq.toString()
@@ -341,7 +342,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
 
             if(kakaoCont != null || mdmCont != null){
                 val callbackDto = Tblmicp_send_callback_msgDto()
-                callbackDto.hst_seq = HstSeq.toInt()
+                callbackDto.hst_seq = hstSeq.toInt()
                 callbackDto.send_to = map["SEND_TO"].toString()
                 if(kakaoCont != null){
                     callbackDto.kko_tp = kakaoCont.msg_tp
@@ -349,13 +350,13 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                     callbackDto.kko_body = kakaoBody
                     callbackDto.kko_key = kakaoKey
                     if(kakaoBtnUrl != null){
-                        callbackDto.kko_btn = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
+                        callbackDto.kko_btn = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
                     }
                     if(kakaoCont.kko_image_file_nm != null){
                         callbackDto.kko_img_path = imgPath + kakaoCont.kko_image_file_nm
                     }
                     if(kakaoImgUrl != null) {
-                        callbackDto.kko_img_url = "$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
+                        callbackDto.kko_img_url = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}"
                     }
                     callbackDto.kko_server = kakaoDb
                 }

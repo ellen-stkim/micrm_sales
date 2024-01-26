@@ -93,9 +93,10 @@ class CampaignEdmDaoImpl : CampaignSendDao {
 
                     // 제목 , 내용 치환
                     for (key in map.keys) {
-                        targetSubject = targetSubject?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        targetBody = targetBody?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
-                        targetBodyTop = targetBodyTop?.replace("{{$key}}", CommonUtils.stringValueOf(map[key]))
+                        val reg = Regex("\\{\\{(?i)${key}}}")
+                        targetSubject = targetSubject?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                        targetBody = targetBody?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                        targetBodyTop = targetBodyTop?.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
 
                     // URL to TrackURL
