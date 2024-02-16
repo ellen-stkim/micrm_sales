@@ -163,7 +163,7 @@
                                     <!-- selected value -->
                                     <div class="value hidden-drop" data="${fromToLst[0].list_val}">${fromToLst[0].list_val}</div>
                                 </div>
-                                <input type="hidden" id="recv_phone"  name="from_to" value="${fromToLst[0].list_val}"/>
+                                <input type="hidden" id="recv_phone" name="from_to" value="${fromToLst[0].list_val}"/>
                             </c:if>
                         </div>
                     </div>
@@ -220,17 +220,15 @@
                                         <div class="row">
                                             <div class="th">이미지 선택</div>
                                             <div class="td">
-                                                <div class="delete_img" data="kakao"><img
-                                                        src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                <div class="delete_img" data="kakao">
+                                                    <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage"
-                                                       placeholder="이미지를 선택해 주세요." readonly/>
-                                                <span class="btn_sm_line" data="kakaoImage"
-                                                      onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly/>
+                                                <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" id="kakao_img_cd" name="kko_img_cd" value="">
                                                 <!--임시 히든값 -->
-                                                <input type="hidden" id="kko_view_img_url" name="kko_view_img_url"
-                                                       value=""> <!-- 프리뷰를 위한 이미지 URL -->
+                                                <input type="hidden" id="kko_view_img_url" name="kko_view_img_url" maxlength="" value="">
+                                                <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
                                         </div>
                                         <div class="row">
@@ -297,9 +295,7 @@
                                         <div class="row">
                                             <div class="th bottom-border">버튼 링크 주소</div>
                                             <div class="td bottom-border">
-                                                <input type="text"
-                                                       class="txt_input en_font kakao_btn_link"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <input type="text" class="txt_input en_font kakao_btn_link" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 <input type="hidden" name="kko_btn_url" id="kko_btn_url" />
                                                 <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
                                             </div>
@@ -307,8 +303,7 @@
                                         <div class="row">
                                             <div class="th">추적 링크 생성</div>
                                             <div class="td">
-                                                <input type="text" class="txt_input en_font" id="kakaoTracking"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <input type="text" class="txt_input en_font" id="kakaoTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                 <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                 <input type="hidden" name="kko_trackinglink"/>
                                             </div>
@@ -320,16 +315,12 @@
                                         <div class="row">
                                             <div class="th">템플릿 선택</div>
                                             <div class="td">
-                                                <div class="delete_tmpl" data="kakao"><img
-                                                        src="${baseURL}/image/btn_delete1.png" alt="삭제">
+                                                <div class="delete_tmpl" data="kakao">
+                                                    <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm"
-                                                       id="tmplNm"
-                                                       placeholder="템플릿을 선택해 주세요." readonly/>
-                                                <input type="text" name="key_id" id="templateCode" class="at_tmpl_data"
-                                                       readonly hidden/>
-                                                <span class="btn_sm_line" data="kakaoImage"
-                                                      onclick="tmplListPopUp('1')">선택</span>
+                                                <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm" id="tmplNm" placeholder="템플릿을 선택해 주세요." readonly/>
+                                                <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" readonly hidden/>
+                                                <span class="btn_sm_line" data="kakaoImage" onclick="tmplListPopUp('1')">선택</span>
                                                 <!--임시 히든값 -->
                                                 <input type="hidden" name="kko_img_cd" value="">
                                                 <input type="hidden" name="kko_view_img_url" value="">

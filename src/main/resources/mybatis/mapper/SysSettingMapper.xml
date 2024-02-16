@@ -8,22 +8,23 @@
 	<!--공지사항 저장하기-->
 	<insert id="insertNoticeFile" parameterType="Tblmi_noti_fileDto">
 		INSERT INTO tblmi_noti_file
-            (
-                        file_org_nm,
-                        file_nm,
-                        file_extension,
-                        file_mime,
-                        reg_id,
-                        reg_dt
-            )
-            VALUES
-			(			#{file_org_nm},
-			 			#{file_nm},
-			 			#{file_extension},
-			 			#{file_mime},
-			 			#{reg_id},
-			 			now()
-			)
+		(
+			file_org_nm
+			, file_nm
+			, file_extension
+			, file_mime
+			, reg_id
+			, reg_dt
+		)
+		VALUES
+		(
+			#{file_org_nm}
+			, #{file_nm}
+			, #{file_extension}
+			, #{file_mime}
+			, #{reg_id}
+			, now()
+		)
 	</insert>
 
 	<select id="getSettingListCnt" parameterType="Tblmi_set_lst"  resultType="INT">

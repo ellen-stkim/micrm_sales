@@ -633,7 +633,7 @@
                                                         <div class="col_img" id="js-sms-img">
                                                             <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                             <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
-                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" alt="" />
+                                                                <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}" onerror="this.src = '/image/bg_none.png'" alt="" />
                                                             </a>
                                                             </c:if>
                                                         </div>
@@ -688,7 +688,6 @@
                                                     <div class="th bottom-border">쿠폰 발송</div>
                                                     <div class="td bottom-border">
                                                         <button type="button" class="btn list" onclick="couponListPop()">리스트</button>
-
                                                         <c:if test="${list[1].coupon_seq != null}">
                                                             <input type ="hidden" id="savedCouponSeq" value="${list[1].coupon_seq}"/>
                                                             <input type ="hidden" id="savedCouponNm" value="${list[1].coupon_nm}"/>
@@ -726,13 +725,14 @@
                                         <div class="top">문자 미리보기</div>
                                         <div class="inner" style="width: 270px">
                                             <div class="sms_title" id="prev_sms_title">${list[1].cont_sub}</div>
-                                                <%--                                        <div class="sms_img"></div>--%>
-                                            <div class="sms_img_box" id="sms_img_box"><c:if
-                                                    test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
+                                            <%--<div class="sms_img"></div>--%>
+                                            <div class="sms_img_box" id="sms_img_box">
+                                                <c:if test="${fn:trim(list[1].msg_tp) eq 'DMCH203'}">
                                                 <a href="${fn:split(list[1].img_lst,",")[0]}" target="_blank" rel="noopener">
-                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                    <img src="${filePath}${fn:split(list[1].img_lst,",")[0]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
                                                 </a>
-                                            </c:if></div>
+                                                </c:if>
+                                            </div>
                                             <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">${cutil:replaceBr(list[1].cont_body)}</p></div>
                                         </div>
                                         <div class="byte"  style="width: 270px">
@@ -749,10 +749,10 @@
                         <!-- RCS Contents 시작 -->
                         <c:if test="${list[2].list_use_yn eq 'Y'}">
                         <div class="tab_contents active">
-                            </c:if>
+                        </c:if>
                             <c:if test="${list[2].list_use_yn eq 'N'}">
                             <div class="tab_contents">
-                                </c:if>
+                            </c:if>
                                 <div class="sms_form right-border cover" id="rcs">
                                     <h2>RCS</h2>
                                     <div class="row body">
@@ -3685,8 +3685,7 @@
                 </div>
             </div>
             <div class="btn_row bottom-border" id="js-btn-area">
-                <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn"
-                       value="저장"/>
+                <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn" value="저장"/>
             </div>
         </div>
     </div>

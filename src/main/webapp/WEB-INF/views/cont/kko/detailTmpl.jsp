@@ -190,8 +190,7 @@
                                         <div class="row template_textarea">
                                             <div class="th">템플릿내용 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <textarea name="newTemplateContent"  cols="30"
-                                                          rows="10">${dto.tmpl_cont}</textarea>
+                                                <textarea name="newTemplateContent"  cols="30" rows="10">${dto.tmpl_cont}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -2078,7 +2077,7 @@
             return this;
         }.bind({}))[0];
 
-        data.templateContent = data.templateContent.replace(/\u200B/g,'');
+        data.newTemplateContent = data.newTemplateContent.replace(/\u200B/g,'');
         data.categoryCode = $('.bizContsVal .value').attr("data")
 
         // --------- 버튼 정보 ---------

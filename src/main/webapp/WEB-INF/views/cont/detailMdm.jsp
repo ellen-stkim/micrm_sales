@@ -3891,8 +3891,7 @@
                             </div>
                         </div>
                         <div class="btn_row bottom-border" id="js-btn-area">
-                            <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn"
-                                   value="저장"/>
+                            <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn" value="저장"/>
                         </div>
                     </div>
                 </div>
