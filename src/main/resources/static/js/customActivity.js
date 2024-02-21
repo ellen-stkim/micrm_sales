@@ -201,12 +201,17 @@ define(["postmonger"], function (Postmonger) {
     // 저장
     function mobileSave() {
         const res = function(response) {
-            if(response.status) {
-				mstSeq = response.seq
-                save();
-			} else {
-                popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
-            }
+			if(response.status == null){
+				alert("사용자 세션이 만료 되어 다시 접속이 필요 합니다.")
+				connection.trigger("destroy");
+			}else{
+				if(response.status) {
+					mstSeq = response.seq
+					save();
+				} else {
+					popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다.");
+				}
+			}
         }
         let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
@@ -224,10 +229,15 @@ define(["postmonger"], function (Postmonger) {
 
 	function mobileEdit() {
 		const res = function(response) {
-			if(response.status) {
-				save();
-			} else {
-				popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n관리자에게 문의 바랍니다.");
+			if(response.status == null){
+				alert("사용자 세션이 만료 되어 다시 접속이 필요 합니다.")
+				connection.trigger("destroy");
+			}else{
+				if(response.status) {
+					save();
+				} else {
+					popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다.");
+				}
 			}
 		}
 		let data = $("#form").serializeArray();
