@@ -13,9 +13,7 @@ public class testtest {
         // admin@hankyung.com
         // logger.error("{}", CommonUtils.sha512("hankyung_20230926_#@"));
         // logger.error("{}", CommonUtils.sha512("daewonmedia_20231123_#@"));
-
-
-
+        /*
         PaginationInfo pagination = new PaginationInfo();
         pagination.setCurrentPageNo(1);
         pagination.setPageSize(10);
@@ -27,6 +25,9 @@ public class testtest {
         logger.error("{}", pagination.getLastPageNoOnPageList());
         logger.error("{}", pagination.getLastRecordIndex());
         logger.error("{}", pagination.getLastPageNo());
+        */
+        String st = "(광고)\"신나는 새 학기가 다가와요!\"";
+        logger.error("{}", CommonUtils.checkByteLength(st, 40));
     }
 
 }

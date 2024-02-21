@@ -2057,7 +2057,7 @@ class SalesforceServiceImpl : SalesforceService {
         // 문자의 경우 제목 byte 체크 필요
         if (!CommonUtils.checkByteLength(smsContSub, 40)) {
             logger.error("SMS Title 40Byte Error")
-            return false;
+            return false
         }
 
         if (smsMsgTp.equals("LMS")) {     // LMS의 경우 본문 Byte 2000 제한
