@@ -224,6 +224,7 @@ class ContentController  {
     fun detailMobileContent(@PathVariable("seq") seq : Int) : ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
+        tblmiContMstdto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val view = ModelAndView("/cont/detailMdm")
         val map = sysSettingService.getDBValue()
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
@@ -238,7 +239,7 @@ class ContentController  {
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
         view.addObject("filePath", uploadPrefix?.cd_val)
 
         return view
@@ -445,7 +446,6 @@ class ContentController  {
          */
 
         val formatList = dto.formatType
-
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
             val map = mobileContentService.previewJsonService(dto);

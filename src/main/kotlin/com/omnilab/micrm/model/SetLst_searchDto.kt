@@ -7,8 +7,6 @@ import org.apache.ibatis.type.Alias
 
 @Alias("SetLst_searchDto")
 class SetLst_searchDto: Tblmi_set_lstDto {
-
-
     var pageNo: Int = 1
     var firstIndex: Int? = null
     var recordCountPerPage: Int? = null
@@ -19,11 +17,11 @@ class SetLst_searchDto: Tblmi_set_lstDto {
     var changeMailNo : Int?= null
 
     constructor()
-    constructor(list_tp_id: String?, list_dt_id: String?, def_yn: String?, usr_grp_cd: String?) {
-        this.list_tp_id = list_tp_id
-        this.list_dt_id = list_dt_id
-        this.def_yn = def_yn
-        this.usr_grp_cd = usr_grp_cd
+    constructor(listTpId: String?, listDtId: String?, defYn: String?, usrGrpCd: String?) {
+        this.list_tp_id = listTpId
+        this.list_dt_id = listDtId
+        this.def_yn = defYn
+        this.usr_grp_cd = usrGrpCd
     }
 
     override fun toString(): String {

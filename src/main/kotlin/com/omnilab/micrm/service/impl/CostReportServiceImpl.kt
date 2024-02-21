@@ -37,7 +37,6 @@ class CostReportServiceImpl : CostReportService {
     @Autowired
     @Qualifier("SysSettingDaoImpl")
     lateinit var sysSettingDao : SysSettingDao
-
     override fun getCostReport(dto : SearchSendCostDto): HashMap<String, Any?> {
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val searchDto = setDateDefault(dto)   // 조회 날짜 체크 후 기본값 설정
@@ -123,7 +122,7 @@ class CostReportServiceImpl : CostReportService {
     }
 
     override fun costReportDownloadExcel(dto: SearchSendCostDto): HashMap<String, Any> {
-        val re_map = HashMap<String, Any>()
+        val reMap = HashMap<String, Any>()
         val labelList = mutableListOf("발송요청일"
                                     , "알림톡", "친구톡(txt)", "친구톡(img)", "친구톡(wid)"
                                     , "RCS SMS", "RCS LMS", "RCS MMS", "RCS 템플릿"
@@ -147,10 +146,10 @@ class CostReportServiceImpl : CostReportService {
             var totalCost =  BigDecimal("0")
             var totalCnt =  0L
             val sendTypeMap = hashMapOf<String,Long?>()
-            for(dto in list){
-                sendTypeMap[dto.msg_tp!!] = dto.total_cnt
-                totalCost = totalCost.plus(dto.total_cost!!)
-                totalCnt += dto.total_cnt!!
+            for(dd in list){
+                sendTypeMap[dd.msg_tp!!] = dd.total_cnt
+                totalCost = totalCost.plus(dd.total_cost!!)
+                totalCnt += dd.total_cnt!!
             }
             sendMap[mon] = sendTypeMap
         }
@@ -162,7 +161,7 @@ class CostReportServiceImpl : CostReportService {
         // 일별 발송건수
         for(group in sendMap){
             val row = sheet.createRow(i++)
-            val value = group.value as Map<String,Long>
+            val value = group.value as MutableMap<String,Long>
 
             row.createCell(0).setCellValue(group.key)
             row.createCell(1).setCellValue(if (value["KKO_AT"] != null)  value["KKO_AT"].toString() else "0")
@@ -243,10 +242,10 @@ class CostReportServiceImpl : CostReportService {
         row.createCell(1).setCellValue(totalCost.toString())
         sheet.addMergedRegion(CellRangeAddress(rowInx, rowInx, 1, 11))
 
-        re_map["name"] = "총 발송 비용"
-        re_map["book"] = book
+        reMap["name"] = "총 발송 비용"
+        reMap["book"] = book
 
-        return re_map
+        return reMap
     }
 
     private fun getProgramCostLst(searchDto: SearchSendCostDto): HashMap<String, Any?> {
@@ -257,14 +256,10 @@ class CostReportServiceImpl : CostReportService {
 
         val programLst: List<SendCostDto> = costReportDao.selPrgSendCostLst(searchDto)
         val programMap = programLst.stream().collect(
-            groupingBy(
-                SendCostDto::pro_id, { TreeMap() }, toMap(SendCostDto::msg_tp, Function.identity())
-            )
+            groupingBy(SendCostDto::pro_id, { TreeMap() }, toMap(SendCostDto::msg_tp, Function.identity()))
         )
 
-        return hashMapOf( "programMap" to programMap
-                            , "page" to paginationInfo
-                            )
+        return hashMapOf( "programMap" to programMap, "page" to paginationInfo)
     }
 
     private fun setDateDefault(searchDto: SearchSendCostDto): SearchSendCostDto {
@@ -292,7 +287,6 @@ class CostReportServiceImpl : CostReportService {
             cal.add(Calendar.MONTH, 1)
             searchDto.end_dt = format.format(cal.time)
         }
-
         return searchDto
     }
 

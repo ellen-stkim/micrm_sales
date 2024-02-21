@@ -29,7 +29,6 @@ class KkoMsgServiceImpl : KkoMsgService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-
     @Autowired
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
@@ -37,7 +36,6 @@ class KkoMsgServiceImpl : KkoMsgService {
     @Autowired
     @Qualifier("KkoRestApiServiceImpl")
     private lateinit var kkoRestApiService: KkoRestApiService
-
 
     override fun selectAtTemplViewLst(dto: AtTmpl_searchDto): Map<String, Any> {
         val paramMap: MutableMap<String, Any> = HashMap()
@@ -73,10 +71,10 @@ class KkoMsgServiceImpl : KkoMsgService {
         val searchDto = Tblmi_comm_cdDto()
         searchDto.grp_id="KAKAO_TMPL"
         searchDto.cd_id = "TMPL_ST"
-        map.put("tmplSt",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["tmplSt"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         searchDto.cd_id = "KEP_ST"
-        map.put("kepSt",kkoAtTmplDao.getTmplSearchLst(searchDto))
+        map["kepSt"] = kkoAtTmplDao.getTmplSearchLst(searchDto)
 
         return map
     }
@@ -215,9 +213,8 @@ class KkoMsgServiceImpl : KkoMsgService {
         val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
 
         try {
-            if(result.get("result") as Boolean){
-                if("API_200".equals(data.get("code"))){
-
+            if(result["result"] as Boolean){
+                if("API_200" == data["code"]){
                     //at_tmplDto 변경
                     val tmplDto = getTmplDtoByUpdKkoDto(dto, updDto)  //변경
                     tmplDto.kep_status = "I"   // 수정 후 자동 검수 요청
@@ -226,8 +223,8 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     //개인화 변수 파싱
                     val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
-                    var etcArr = mutableListOf<String>()
-                    var tempCont: String? = null
+                    val etcArr = mutableListOf<String>()
+                    var tempCont: String?
                     for (idx in 1 until tempContStrs.size) {
                         tempCont = tempContStrs[idx]
                         etcArr.add(tempCont.substring(0, tempCont.indexOf("}")))
@@ -248,27 +245,27 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     kkoAtTmplDao.updTmplDto(tmplDto)
 
-                    map.put("status",HttpServletResponse.SC_OK)
-                    map.put("msg", "알림톡 템플릿이 수정되었습니다.")
+                    map["status"] = HttpServletResponse.SC_OK
+                    map["msg"] = "알림톡 템플릿이 수정되었습니다."
 
                 }else{
                     logger.error("카카오 알림톡 템플릿 수정 데이터 에러 {}",result)
 
                     val code :String = data.get("code")?.toString()!!.replace("API_","")
-                    map.put("status", code.toInt())
-                    map.put("msg", data.get("message")!!)
+                    map["status"] = code.toInt()
+                    map["msg"] = data.get("message")!!
                 }
             }else{
                 logger.error("카카오 알림톡 템플릿 수정 API 에러 {}",result)
 
                 val code :String = data.get("code")?.toString()!!.replace("API_","")
-                map.put("status", code.toInt())
-                map.put("msg", data.get("message")!!)
+                map["status"] = code.toInt()
+                map["msg"] = data.get("message")!!
             }
         }catch (e:Exception){
             logger.error("",e)
-            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            map.put("msg", "템플릿 수정에 실패했습니다. 관리자에게 문의 바랍니다.")
+            map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            map["msg"] = "템플릿 수정에 실패했습니다. 관리자에게 문의 바랍니다."
         }
 
         return map
@@ -286,23 +283,23 @@ class KkoMsgServiceImpl : KkoMsgService {
 
             if (!CommonUtils.isEmptyObject(dto)) {
                 // 검수 요청 상태일 경우
-                if ("I".equals(dto!!.kep_status)) {
+                if ("I" == dto!!.kep_status) {
                     // 비즈메세지 요청 취소
                     val tmplResult: MutableMap<String, Any>? = kkoRestApiService.cancleKepReq(dto.tmpl_cd, dto.send_key)
 
-                    if (tmplResult!!.get("result") as Boolean) {
-                        val data: MutableMap<String, Any> = tmplResult.get("data") as MutableMap<String, Any>
-                        if ("API_200".equals(data.get("code"))) { // 요청 취소 성공
+                    if (tmplResult!!["result"] as Boolean) {
+                        val data: MutableMap<String, Any> = tmplResult["data"] as MutableMap<String, Any>
+                        if ("API_200" == data.get("code")) { // 요청 취소 성공
                             val updDto: Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(dto.seq, updId, null)
                             updDto.kep_status = "N"
                             kkoAtTmplDao.updTmplDtoBySeq(updDto)
 
-                            map.put("status", HttpServletResponse.SC_OK)
-                            map.put("msg", "검수요청이 취소되었습니다.")
+                            map["status"] = HttpServletResponse.SC_OK
+                            map["msg"] = "검수요청이 취소되었습니다."
                         }else{
                             logger.error("비즈메세지 검수요청 취소 에러 {}",tmplResult)
-                            map.put("status", HttpServletResponse.SC_OK)
-                            map.put("msg", data.get("message") as String)
+                            map["status"] = HttpServletResponse.SC_OK
+                            map["msg"] = data["message"] as String
                         }
                     }else{
                         logger.error("비즈메세지 검수요청 취소 에러 {}",tmplResult)
@@ -310,42 +307,41 @@ class KkoMsgServiceImpl : KkoMsgService {
                 }
             }
 
-            if(CommonUtils.isEmptyObject(map.get("status"))){
-                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
-                map.put("msg", "에러가 발생했습니다. 새로고침 후 다시 시도해주세요.")
+            if(CommonUtils.isEmptyObject(map["status"])){
+                map["status"] = HttpServletResponse.SC_BAD_REQUEST
+                map["msg"] = "에러가 발생했습니다. 새로고침 후 다시 시도해주세요."
             }
         } catch (e: Exception) {
             logger.error("", e)
-            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            map.put("msg", "검수요청 취소에 실패했습니다. 관리자에게 문의 바랍니다.")
+            map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            map["msg"] = "검수요청 취소에 실패했습니다. 관리자에게 문의 바랍니다."
         }
         return map
     }
 
     override fun updAtTmplData(searchDto: AtTmpl_searchDto, updId: String?): MutableMap<String, Any> {
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-
         val map :MutableMap<String,Any> = mutableMapOf()
         try {
             val dto: Tblmi_kko_at_tmplDto? = kkoAtTmplDao.selKkoAtTmplByGrpCd(searchDto)
 
             if (!CommonUtils.isEmptyObject(dto)) {
                 // 비즈메세지 데이터 조회
-                val tmplResult: MutableMap<String, Any>? = kkoRestApiService.getTmplDetail(dto!!.tmpl_cd, dto.send_key)
+                val tmplResult: MutableMap<String, Any> = kkoRestApiService.getTmplDetail(dto!!.tmpl_cd, dto.send_key)
 
-                if (tmplResult!!.get("result") as Boolean) {
-                    val tempData: MutableMap<String, Any> = tmplResult.get("data") as MutableMap<String, Any>
-                    if ("API_200".equals(tempData.get("code"))) {
-                        if(!CommonUtils.isEmptyObject(tempData.get("data"))){
-                            val data: MutableMap<String, Any> = tempData.get("data") as MutableMap<String, Any>
+                if (tmplResult["result"] as Boolean) {
+                    val tempData: MutableMap<String, Any> = tmplResult["data"] as MutableMap<String, Any>
+                    if ("API_200" == tempData["code"]) {
+                        if(!CommonUtils.isEmptyObject(tempData["data"])){
+                            val data: MutableMap<String, Any> = tempData["data"] as MutableMap<String, Any>
 
                             val gson :Gson = GsonBuilder().create()
-                            val cmtLstStr = data.get("templateComments")
+                            val cmtLstStr = data["templateComments"]
 
-                            val tmplSt :String = data.get("templateStatus") as String
-                            val kepSt :String = data.get("kepStatus") as String
-                            val tmplDormant :String = if(data.get("templateDormant")as Boolean) "Y" else "N"  //휴면
-                            val tmplBlock :String = if(data.get("templateBlock")as Boolean) "Y" else "N"   //차단
+                            val tmplSt :String = data["templateStatus"] as String
+                            val kepSt :String = data["kepStatus"] as String
+                            val tmplDormant :String = if(data["templateDormant"] as Boolean) "Y" else "N"  //휴면
+                            val tmplBlock :String = if(data["templateBlock"] as Boolean) "Y" else "N"   //차단
 
                             val updDto = Tblmi_kko_at_tmplDto(dto.seq, tmplSt, kepSt,tmplDormant,tmplBlock)
                             updDto.cmt_json = gson.toJson(cmtLstStr)
@@ -353,27 +349,27 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                             kkoAtTmplDao.updTmplDtoBySeq(updDto)
 
-                            map.put("status", HttpServletResponse.SC_OK)
-                            map.put("msg", "템플릿 상태가 업데이트 됐습니다.")
+                            map["status"] = HttpServletResponse.SC_OK
+                            map["msg"] = "템플릿 상태가 업데이트 됐습니다."
                         }
                     } else {
                         logger.error("템플릿 업테이트 에러 {}", tmplResult)
-                        map.put("status", HttpServletResponse.SC_BAD_REQUEST)
-                        map.put("msg", tempData.get("message") as String)
+                        map["status"] = HttpServletResponse.SC_BAD_REQUEST
+                        map["msg"] = tempData.get("message") as String
                     }
                 } else {
                     logger.error("템플릿 업테이트 에러 {}", tmplResult)
                 }
             }
 
-            if(CommonUtils.isEmptyObject(map.get("status"))){
-                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
-                map.put("msg", "에러가 발생했습니다. 새로고침 후 다시 시도해주세요.")
+            if(CommonUtils.isEmptyObject(map["status"])){
+                map["status"] = HttpServletResponse.SC_BAD_REQUEST
+                map["msg"] = "에러가 발생했습니다. 새로고침 후 다시 시도해주세요."
             }
         } catch (e: Exception) {
             logger.error("", e)
-            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            map.put("msg", "템플릿 상태 업데이트에 실패했습니다. 관리자에게 문의 바랍니다.")
+            map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            map["msg"] = "템플릿 상태 업데이트에 실패했습니다. 관리자에게 문의 바랍니다."
         }
         return map
     }
@@ -384,10 +380,10 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         val map :MutableMap<String,Any> = mutableMapOf()
         try {
-            val dto: AtTmpl_viewDto? = kkoAtTmplDao.selTmplBytmplDto(searchDto)
+            val dto: AtTmpl_viewDto = kkoAtTmplDao.selTmplBytmplDto(searchDto)
 
             if (!CommonUtils.isEmptyObject(dto)) {
-                if ("N".equals(dto!!.kep_status) || "R".equals(dto!!.kep_status)) {   // 검수 요청 전이거나 반려상태의 경우에만
+                if ("N" == dto.kep_status || "R" == dto.kep_status) {   // 검수 요청 전이거나 반려상태의 경우에만
 
                     // 템플릿 내용 수정 후 자동 검수요청
                     var updTmpl: Kko_at_tmplDto = getAtTmplDataByViewDto(Kko_at_tmplDto(),dto)
@@ -396,46 +392,46 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                     // 검수 요청 상태 반영
                     val updResult:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(updTmpl)
-                    if (updResult!!.get("result") as Boolean) {
-                        val tempData :MutableMap<String,Any> = updResult.get("data") as MutableMap<String, Any>
-                        if ("API_200".equals(tempData.get("code"))) {
-                            val data :MutableMap<String,Any> = tempData.get("data") as MutableMap<String, Any>
-                            val tmplSt :String = data.get("templateStatus") as String
-                            val kepSt :String = data.get("kepStatus") as String
+                    if (updResult["result"] as Boolean) {
+                        val tempData :MutableMap<String,Any> = updResult["data"] as MutableMap<String, Any>
+                        if ("API_200" == tempData["code"]) {
+                            val data :MutableMap<String,Any> = tempData["data"] as MutableMap<String, Any>
+                            val tmplSt :String = data["templateStatus"] as String
+                            val kepSt :String = data["kepStatus"] as String
 
                             val updDto = Tblmi_kko_at_tmplDto(dto.seq, updId, null)
                             updDto.tmpl_status = tmplSt
                             updDto.kep_status = kepSt
 
                             kkoAtTmplDao.updTmplDtoBySeq(updDto)
-                            
-                            map.put("status", HttpServletResponse.SC_OK)
-                            map.put("msg", "검수요청이 등록되었습니다.")
-                            
+
+                            map["status"] = HttpServletResponse.SC_OK
+                            map["msg"] = "검수요청이 등록되었습니다."
+
                         } else {
                             logger.error("템플릿 검수요청 에러 {}", updResult)
-                            map.put("status", HttpServletResponse.SC_BAD_REQUEST)
-                            map.put("msg", tempData.get("message") as String)
+                            map["status"] = HttpServletResponse.SC_BAD_REQUEST
+                            map["msg"] = tempData["message"] as String
                         }
                     } else {
                         logger.error("템플릿 검수요청 에러 {}", updResult)
                     }
 
                 } else {
-                    map.put("status", HttpServletResponse.SC_BAD_REQUEST)
-                    map.put("msg", "템플릿 검수상태가 등록 또는 반려인 경우에만 요청이 가능합니다")
+                    map["status"] = HttpServletResponse.SC_BAD_REQUEST
+                    map["msg"] = "템플릿 검수상태가 등록 또는 반려인 경우에만 요청이 가능합니다"
                 }
             }
 
-            if(CommonUtils.isEmptyObject(map.get("status"))){
-                map.put("status", HttpServletResponse.SC_BAD_REQUEST)
-                map.put("msg", "에러가 발생했습니다. 새로고침 후 다시 시도해주세요.")
+            if(CommonUtils.isEmptyObject(map["status"])){
+                map["status"] = HttpServletResponse.SC_BAD_REQUEST
+                map["msg"] = "에러가 발생했습니다. 새로고침 후 다시 시도해주세요."
             }
 
         } catch (e: Exception) {
             logger.error("", e)
-            map.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            map.put("msg", "검수요청에 실패했습니다. 관리자에게 문의 바랍니다.")
+            map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            map["msg"] = "검수요청에 실패했습니다. 관리자에게 문의 바랍니다."
         }
         return map
     }
@@ -531,7 +527,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.templateName =  curDto.tmpl_nm
         dto.templateCode =  curDto.tmpl_cd
         dto.templateContent =  curDto.tmpl_cont
-        dto.securityFlag =  if("Y".equals(curDto.secur_flag)) "true" else null
+        dto.securityFlag =  if("Y" == curDto.secur_flag) "true" else null
         dto.templateStatus =  curDto.tmpl_status
         dto.kepStatus =  curDto.kep_status
         dto.templateMessageType =  curDto.tmpl_msg_tp
@@ -584,7 +580,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.send_key = dto.send_key
         tmplDto.tmpl_cont = dto.templateContent
         tmplDto.tmpl_status = dto.templateStatus
-        tmplDto.secur_flag = if ("true".equals(dto.securityFlag)) "Y" else "N"
+        tmplDto.secur_flag = if ("true" == dto.securityFlag) "Y" else "N"
         tmplDto.tmpl_msg_tp = dto.templateMessageType
         tmplDto.tmpl_ext = dto.templateExtra
         tmplDto.tmpl_ad = dto.templateAd
@@ -609,7 +605,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         tmplDto.send_key = dto.send_key
         tmplDto.tmpl_cont = dto.newTemplateContent
         tmplDto.tmpl_status = dto.templateStatus
-        tmplDto.secur_flag = if ("true".equals(dto.securityFlag)) "Y" else "N"
+        tmplDto.secur_flag = if ("true" == dto.securityFlag) "Y" else "N"
         tmplDto.tmpl_msg_tp = dto.newTemplateMessageType
         tmplDto.tmpl_ext = dto.newTemplateExtra
         tmplDto.tmpl_ad = dto.newTemplateAd

@@ -2422,8 +2422,7 @@ class MobileContentServiceImpl : ContentService {
 
 
     override fun previewJsonService(dto: Tblmi_cont_lstDto): Map<String, Any> {
-
-        val dataMap = HashMap<String, Any>();
+        val dataMap = HashMap<String, Any>()
         val contentListCreatedto = dto as Content_list_CreateDto
         val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
         val tblmiContLstDto = Tblmi_cont_lstDto()
@@ -2433,7 +2432,7 @@ class MobileContentServiceImpl : ContentService {
             jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(2)
             jsonBody["description"] = contentListCreatedto.rcs_body
             // 공백 파싱 처리
-            tblmiContLstDto.cont_body = jsonBody.toString();
+            tblmiContLstDto.cont_body = jsonBody.toString()
             tblmiContLstDto.img_cd_1 = contentListCreatedto.verticalImg
         } else if (rcsFormatType == "slide") {
             // RCS 슬라이드 관련 INSERT 처리
@@ -2449,10 +2448,10 @@ class MobileContentServiceImpl : ContentService {
             rcsButtonMakeJsonString(contentListCreatedto, tblmiContLstDto)
         }
 
-        val viewDto = Contents_lstDto();
-        viewDto.rcs_btn_obj = tblmiContLstDto.rcs_btn_obj;
-        viewDto.cont_body = tblmiContLstDto.cont_body;
-        dataMap["jsonContent"] = viewDto;
+        val viewDto = Contents_lstDto()
+        viewDto.rcs_btn_obj = tblmiContLstDto.rcs_btn_obj
+        viewDto.cont_body = tblmiContLstDto.cont_body
+        dataMap["jsonContent"] = viewDto
 
         return dataMap;
     }

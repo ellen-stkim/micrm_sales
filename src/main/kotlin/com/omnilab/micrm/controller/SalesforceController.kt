@@ -125,25 +125,25 @@ class SalesforceController {
      * @title : 세일즈포스 뷰 페이지
      */
     @GetMapping("/{usr_cd}/index.mi")
-    fun mdmCreate(@PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
+    fun mdmCreate(@PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
         val view =  ModelAndView("cont/salesforce")
-        view.addObject("usr_cd", usr_cd)
+        view.addObject("usr_cd", usrCd)
 
         val searchDto = SetLst_searchDto()
-        searchDto.usr_grp_cd = usr_cd
+        searchDto.usr_grp_cd = usrCd
         searchDto.list_tp_id = "CH05"
         searchDto.list_dt_id = "TEAM01"
         searchDto.use_yn = "Y"
         view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
-        val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
+        val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usrCd)
         temp.list_nm = "USR_KEY"
         view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
 
         temp.list_nm = "from_to"
         view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
-        val cntMap = salesforceService.isCheckSender(usr_cd)
+        val cntMap = salesforceService.isCheckSender(usrCd)
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
@@ -168,11 +168,9 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileInsert.service")
-    fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String, response: HttpServletResponse): Map<String, Any> {
-        content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val statusMap = salesforceService.insertContentList(content_list_dto)
-
-        return statusMap;
+    fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
+        contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        return salesforceService.insertContentList(contentListDto)
     }
 
     /**
@@ -187,30 +185,26 @@ class SalesforceController {
      * @Method Decription : 모바일 컨텐츠 수정하기
      * @title : 모바일 컨텐츠 수정하기
      */
-
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileUpdate.service")
-    fun updateMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String, response: HttpServletResponse): Map<String, Any> {
-        content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val statusMap = salesforceService.updateContentList(content_list_dto)
-        return statusMap;
+    fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
+        contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        return salesforceService.updateContentList(contentListDto);
     }
 
-    //@ResponseBody
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
     fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int
-                            , @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
+                            , @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
-        tblmiContMstdto.cont_grp_cd = usr_cd
-        tblmiContMstdto.reg_dt = usr_cd
+        tblmiContMstdto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        tblmiContMstdto.reg_dt = UsefulUtils.sessionUser().usr_grp_cd
         val view = ModelAndView("/cont/salesforceDetail")
         val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = salesforceService.isCheckSender(usr_cd)
+        val cntMap = salesforceService.isCheckSender(usrCd)
 
-        val list = listMap["list"] as List<Content_view_Dto>
+        val list = listMap["list"] as MutableList<Content_view_Dto>
         if(list.isNotEmpty()){
-
             val rejDto = SetLst_searchDto()
             rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
             rejDto.list_tp_id = "CH04"
@@ -230,13 +224,13 @@ class SalesforceController {
             view.addObject("filePath", uploadPrefix?.cd_val)
 
             val searchDto = SetLst_searchDto()
-            searchDto.usr_grp_cd = usr_cd
+            searchDto.usr_grp_cd = usrCd
             searchDto.list_tp_id = "CH05"
             searchDto.list_dt_id = "TEAM01"
             searchDto.use_yn = "Y"
             view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
-            val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usr_cd)
+            val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usrCd)
             temp.list_nm = "USR_KEY"
             view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
 
@@ -244,11 +238,9 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
         }
         view.addObject("list" , listMap["list"])
-
         view.addObject("kakaoCnt", cntMap["kakaoCnt"])
         view.addObject("smsCnt", cntMap["smsCnt"])
         view.addObject("rcsCnt", cntMap["rcsCnt"])
-
         return view
     }
 
@@ -261,33 +253,24 @@ class SalesforceController {
      * @see      :
      * @version  : 0.01
      * @Method Decription : RCS 프리뷰 페이지
+     * RCS의 Json 데이터는 Model 값으로 jsonContent 값을 뿌려준다
+     * (Content_list_CreateDto로 넘어온 값 재 파싱 후 Contents_lstDto 값 )
+     * 그 외의 데이터는 Model 값으로 "content" 값을 뿌려 준다
+     * (Content_list_CreateDto 로 넘어온 값 )
+     *
      * @title : RCS 프리뷰 페이지
      */
 
     @PostMapping("/{usr_cd}/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String) : ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/mdmPreview")
-        //logger.error("preview Dto : " + dto.toString());
-        //logger.error("kakaoUrl : " + dto.kko_view_img_url);
-        //logger.error("rcsUrl : " + dto.rcs_img_url_1);
-
-        /**
-         * RCS의 Json 데이터는 Model 값으로 jsonContent 값을 뿌려준다
-         *      (Content_list_CreateDto로 넘어온 값 재 파싱 후 Contents_lstDto 값 )
-         * 그 외의 데이터는 Model 값으로 "content" 값을 뿌려 준다
-         *      (Content_list_CreateDto 로 넘어온 값 )
-         */
-
         val formatList = dto.formatType
-
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
-            val map = mobileContentService.previewJsonService(dto);
-            //logger.error("jsonContent : " + map["jsonContent"])
+            val map = mobileContentService.previewJsonService(dto)
             view.addObject("jsonContent", map["jsonContent"])
         }
         view.addObject("content", dto);
-
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
@@ -808,12 +791,11 @@ class SalesforceController {
     // done 동작
     @ResponseBody
     @PostMapping("/{usr_cd}/execute.service")
-    fun execute(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String): ResponseEntity<Any> {
+    fun execute(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String): ResponseEntity<Any> {
         logger.info("/execute.service data: $data")
-
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "SALES_JWT"
-        commonCDDto.cd_id = usr_cd
+        commonCDDto.cd_id = usrCd
         val jwtCode = sysSettingService.getCommCD(commonCDDto)
         val secretKey = jwtCode?.cd_val
 
@@ -836,15 +818,15 @@ class SalesforceController {
                 logger.error("Could not verify JWT token integrity!")
             } else {
                 val gson = GsonBuilder().create()
-                val data = gson.fromJson(payload, MutableMap::class.java)
-                logger.error("data : {}", data)
-                var couponIssuedLogDto = couponIssueService.createCouponLink(data as MutableMap<String, Any>)
-                if (couponIssuedLogDto != null) data["couponIssuedLogDto"] = couponIssuedLogDto
+                val data1 = gson.fromJson(payload, MutableMap::class.java)
+                logger.error("data : {}", data1)
+                var couponIssuedLogDto = couponIssueService.createCouponLink(data1 as MutableMap<String, Any>)
+                if (couponIssuedLogDto != null) data1["couponIssuedLogDto"] = couponIssuedLogDto
 
-                salesforceService.sendCampaign(data)
+                salesforceService.sendCampaign(data1)
 
                 if (couponIssuedLogDto != null) {
-                    couponIssuedLogDto = data["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                    couponIssuedLogDto = data1["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
                     couponIssueService.issueCouponAtSales(couponIssuedLogDto)
                 }
             }
@@ -885,14 +867,14 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/kko/getAtTmpl.ajax")
     fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any>? {
         val map :MutableMap<String,Any> = mutableMapOf()
-        dto.usr_grp_cd =usr_cd
-        val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
-        if(CommonUtils.isEmptyObject(dto)){
+        dto.usr_grp_cd = usr_cd
+        val dto1: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(dto)
+        if(CommonUtils.isEmptyObject(dto1)){
             rep.status= HttpServletResponse.SC_BAD_REQUEST
             return null
         }
         map["status"] = HttpServletResponse.SC_OK
-        map["dto"] = dto!!
+        map["dto"] = dto1!!
         return map
     }
 

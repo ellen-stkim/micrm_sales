@@ -63,7 +63,6 @@ class CouponImageUploadUtils {
                             .`object`("$couponImagePath/$usrCd/$fileName")
                             .filename(staticPath + "$updFilePath/$fileName")
                             .build())
-
                     map["uploaded"] = 1
                     map["message"] = "파일 업로드 성공"
                     map["fileName"] = file.originalFilename.toString()

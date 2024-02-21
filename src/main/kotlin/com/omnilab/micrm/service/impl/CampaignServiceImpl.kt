@@ -107,9 +107,9 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     //메인 페이지 camp 미리보기 가져오기
     override fun getMainCampView(dto: Tblmicp_campaignDto) :Map<String, Any> {
         val map : MutableMap<String, Any> = HashMap()
-        val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd!!
+        val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd!!
         val searchDto = Tblmicp_programDto(dto.pro_id)
-        searchDto.usr_grp_cd = usr_grp_cd
+        searchDto.usr_grp_cd = usrGrpCd
 
         /*
         val programDto = campaignDao.sel_tblmicp_programOne(searchDto)
@@ -118,9 +118,9 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             map["targetDto"] = campaignDao.sel_tblmi_traget_grp(Tblmi_target_grpDto(programDto.pro_tg_id?.toInt(), usr_grp_cd, null))
         }*/
 
-        val contMstDto = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(dto.cont_id, usr_grp_cd, null))
+        val contMstDto = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(dto.cont_id, usrGrpCd, null))
         val list = campaignDao.sel_ContentsList(Contents_searchDto(contMstDto!!.cont_seq))
-        if(!list.isNullOrEmpty()) {
+        if(list.isNotEmpty()) {
             map["camp"] = list[0]
         }
 
@@ -181,7 +181,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             for (camp in campLSt) {
                 val tempDt = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(camp.cont_id!!, usr_grp_cd, null))
                 val tempTblDto = campaignDao.sel_ContentsList(Contents_searchDto(tempDt?.cont_seq))
-                if (!tempTblDto.isNullOrEmpty()) {
+                if (tempTblDto.isNotEmpty()) {
                     contMap[camp.cont_id.toString()] = tempTblDto[0]
                 }
             }
@@ -196,8 +196,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             cdDto.cd_id = usr_grp_cd
             cdDto.grp_id = "API_PRICE"
             val priceLst = sysSettingDao.getCommCDLst(cdDto)
-            val priceMap = priceLst.stream().collect(
-                Collectors.toMap(Tblmi_comm_cdDto::cd_val, Tblmi_comm_cdDto::cd_desc))
+            val priceMap = priceLst.stream().collect(Collectors.toMap(Tblmi_comm_cdDto::cd_val, Tblmi_comm_cdDto::cd_desc))
 
             map["priceMap"] = priceMap
         }
@@ -206,7 +205,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
     override fun getCampContentPreview(dto: Tblmi_cont_mstDto): Tblmi_cont_lstDto {
         val contentLst = campaignDao.sel_camp_ContentsList(dto)
-        return if (contentLst.isNullOrEmpty()) {
+        return if (contentLst.isEmpty()) {
             Tblmi_cont_lstDto()
         } else {
             contentLst[0]
@@ -232,7 +231,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         return mapLst
     }
 
-    override fun getProgramSendResultExcel(pro_id: String, type: String?, usr_grp_cd: String): MutableMap<String, Any> {
+    override fun getProgramSendResultExcel(proId: String, type: String?, usrGrpCd: String): MutableMap<String, Any> {
         val reMap = HashMap<String, Any>()
         val labelList = mutableListOf<String>();
         labelList.add("캠페인명")
@@ -247,13 +246,13 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         val book = commonService.createExcel(labelList)
         labelList.clear()
 
-        val proDto = Tblmicp_programDto(pro_id)
-        proDto.usr_grp_cd = usr_grp_cd
+        val proDto = Tblmicp_programDto(proId)
+        proDto.usr_grp_cd = usrGrpCd
         val pro = campaignDao.sel_tblmicp_programOne(proDto)
         reMap["name"] = "${pro.pro_nm}"
         reMap["book"] = book
 
-        val lstDto = SendResult_lstDto(pro_id, usr_grp_cd)
+        val lstDto = SendResult_lstDto(proId, usrGrpCd)
         lstDto.send_rst = type
 
         campaignDao.sel_send_program_rstLstExcel(book, lstDto)

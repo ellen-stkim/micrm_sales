@@ -90,16 +90,6 @@
                               </div>
                               <h4>${content.cont_sub_list[1]}</h4>
                            </div>
-                           <!-- 문자 MMS  -->
-                           <c:if test="${content.sms_msg_tp eq 'MMS'}">
-                              <div class="row_body">
-                                 <div class="sms_box">
-                                    <div class="sms_title" id="sms_title">${content.cont_sub_list[1]}</div>
-                                    <div class="sms_img"><img src="${filePath}${content.mms_imgurl}" alt="" onerror="this.src = '/image/bg_none.png'"></div>
-                                    <div class="sms_txt">${cutil:replaceBr(content.sms_body)}</div>
-                                 </div>
-                              </div>
-                           </c:if>
                            <!-- 문자 SMS -->
                            <c:if test="${content.sms_msg_tp eq 'SMS'}">
                               <div class="row_body">
@@ -118,6 +108,16 @@
                                     <div class="sms_txt">
                                           ${cutil:replaceBr(content.sms_body)}<br/><br/>
                                     </div>
+                                 </div>
+                              </div>
+                           </c:if>
+                           <!-- 문자 MMS  -->
+                           <c:if test="${content.sms_msg_tp eq 'MMS'}">
+                              <div class="row_body">
+                                 <div class="sms_box">
+                                    <div class="sms_title" id="sms_title">${content.cont_sub_list[1]}</div>
+                                    <div class="sms_img"><img src="${filePath}${content.mms_imgurl}" alt="" onerror="this.src = '/image/bg_none.png'"></div>
+                                    <div class="sms_txt">${cutil:replaceBr(content.sms_body)}</div>
                                  </div>
                               </div>
                            </c:if>
@@ -149,7 +149,7 @@
                                     <p>${cutil:replaceBr(content.rcs_body)}</p>
                                     <c:forEach var="btn" items="${jsonContent.cont_btn_json[0]['suggestions']}">
                                        <div class="rcs_action">
-                                             ${btn['action']['displayText']}
+                                          ${btn['action']['displayText']}
                                        </div>
                                     </c:forEach>
                                  </div>

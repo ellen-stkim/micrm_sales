@@ -85,8 +85,6 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         val dto = sysSettingDao.getSettingList(lstDto)
 
-
-
         // 쿠폰 전송
         val refinePhoneNumberList = refinePhoneNumber(couponIssueDto)
         if (refinePhoneNumberList.isEmpty()) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 발행 대상을 입력해주세요.")
@@ -131,7 +129,7 @@ class CouponIssueServiceImpl: CouponIssueService {
             }
 
             // coupon issue log
-            val dto = Tblmicou_coupon_issued_logDto(
+            val dd = Tblmicou_coupon_issued_logDto(
                 msgKey,
                 couponIssueDto.seq!!,
                 couponUuid,
@@ -141,7 +139,7 @@ class CouponIssueServiceImpl: CouponIssueService {
                 user.usr_grp_cd
             )
 
-            issuedLogList.add(dto)
+            issuedLogList.add(dd)
 
             sendCnt++
         }
@@ -288,19 +286,18 @@ class CouponIssueServiceImpl: CouponIssueService {
 
         try {
             // StreamingReader 사용 으로 OOM 방지
-            if (file.contentType == "application/vnd.ms-excel") {
-                workbook = HSSFWorkbook(file.inputStream)
+            workbook = if (file.contentType == "application/vnd.ms-excel") {
+                HSSFWorkbook(file.inputStream)
             } else {
-                workbook = StreamingReader.builder()
+                StreamingReader.builder()
                     .rowCacheSize(100)
-                .bufferSize(4096)
+                    .bufferSize(4096)
                     .open(file.inputStream) as Workbook
             }
 
-            val sheet = workbook?.getSheetAt(0)
+            val sheet = workbook.getSheetAt(0)
             for (row in sheet!!) {
                 if (row != null) {
-
                     var extractedPhoneNumber = CommonUtils.Excel_cell_value(row.getCell(0))?.trim() ?: ""
                     extractedPhoneNumber = extractedPhoneNumber.replace(("[^\\d.]").toRegex(), "")
                     // 핸드폰 번호, null, empty 검사
@@ -324,12 +321,10 @@ class CouponIssueServiceImpl: CouponIssueService {
         } finally {
             workbook?.close()
         }
-
         reMap["phoneNumberList"] = reSet.toList()
         reMap["collectCnt"] = collectCnt
         reMap["duplicateCnt"] = duplicateCnt
         reMap["errorCnt"] = errorCnt
-
         return reMap
     }
 
