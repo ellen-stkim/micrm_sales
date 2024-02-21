@@ -90,5 +90,29 @@
         <url-rule>
             <url disable="true">/sf/05/mobileUpdate.service</url>
         </url-rule>
+        <url-rule>
+            <url disable="true">/sf/06/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/06/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/07/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/07/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/08/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/08/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/09/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/09/mobileUpdate.service</url>
+        </url-rule>
     </url-rule-set>
 </config>
