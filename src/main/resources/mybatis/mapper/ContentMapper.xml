@@ -61,6 +61,14 @@
 			kko_img_url,
 			kko_btn_nm,
 			kko_btn_url,
+			kko_btn_nm2,
+			kko_btn_url2,
+			kko_btn_nm3,
+			kko_btn_url3,
+			kko_btn_nm4,
+			kko_btn_url4,
+			kko_btn_nm5,
+			kko_btn_url5,
 			kko_msg_tp,
 			kko_btn_obj,
 			kko_price,
@@ -112,6 +120,14 @@
 			#{kko_img_url},
 			#{kko_btn_nm},
 			#{kko_btn_url},
+			#{kko_btn_nm2},
+		    #{kko_btn_url2},
+		    #{kko_btn_nm3},
+		    #{kko_btn_url3},
+		    #{kko_btn_nm4},
+		    #{kko_btn_url4},
+		    #{kko_btn_nm5},
+		    #{kko_btn_url5},
 			#{kko_msg_tp},
 			#{kko_btn_obj},
 			#{kko_price},
@@ -1039,6 +1055,14 @@
 			, l.kko_img_url    AS kko_img_url
 			, l.kko_btn_nm     AS kko_btn_nm
 			, l.kko_btn_url    AS kko_btn_url
+			, l.kko_btn_nm2    AS kko_btn_nm2
+			, l.kko_btn_url2   AS kko_btn_url2
+			, l.kko_btn_nm3    AS kko_btn_nm3
+			, l.kko_btn_url3   AS kko_btn_url3
+			, l.kko_btn_nm4    AS kko_btn_nm4
+			, l.kko_btn_url4   AS kko_btn_url4
+			, l.kko_btn_nm5    AS kko_btn_nm5
+			, l.kko_btn_url5   AS kko_btn_url5
 			, l.img_cd_1       AS img_cd_1
 			, l.img_cd_2       AS img_cd_2
 			, l.img_cd_3       AS img_cd_3
@@ -1175,6 +1199,7 @@
 	</select>-->
 
 	<select id="detailMobileContents" parameterType="Tblmi_cont_mstDto" resultType="Content_view_Dto">
+		/* detailMobileContents */
 		SELECT m.seq
 			, m.ch_tp
 			, m.camp_nm
@@ -1198,6 +1223,14 @@
 			, kko_img.img_url                                                                                      AS kko_img_lst
 			, l.kko_btn_nm                                                                                         AS kko_btn_nm
 			, l.kko_btn_url                                                                                        AS kko_btn_url
+			, l.kko_btn_nm2                                                                                        AS kko_btn_nm2
+			, l.kko_btn_url2                                                                                       AS kko_btn_url2
+			, l.kko_btn_nm3                                                                                        AS kko_btn_nm3
+			, l.kko_btn_url3                                                                                       AS kko_btn_url3
+			, l.kko_btn_nm4                                                                                        AS kko_btn_nm4
+			, l.kko_btn_url4                                                                                       AS kko_btn_url4
+			, l.kko_btn_nm5                                                                                        AS kko_btn_nm5
+			, l.kko_btn_url5                                                                                              AS kko_btn_url
 			, l.coupon_seq                                                                                         AS coupon_seq
 			, l.short_url_yn                                                                                       AS short_url_yn
 			, l.img_cd_1                                                                                           AS img_cd_1

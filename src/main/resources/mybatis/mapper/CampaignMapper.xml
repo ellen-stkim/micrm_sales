@@ -37,6 +37,14 @@
 			, b.kko_img_url
 			, b.kko_BTN_nm
 			, b.KKO_BTN_URL
+			, b.kko_BTN_nm2
+			, b.KKO_BTN_URL2
+			, b.kko_BTN_nm3
+			, b.KKO_BTN_URL3
+			, b.kko_BTN_nm4
+			, b.KKO_BTN_URL4
+			, b.kko_BTN_nm5
+			, b.KKO_BTN_URL5
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, b.RCS_BTN_INS_TP
 			, b.RCS_BTN_CNT
@@ -155,6 +163,14 @@
 			, b.kko_img_url
 			, b.kko_BTN_nm
 			, b.KKO_BTN_URL
+			, b.kko_BTN_nm2
+			, b.KKO_BTN_URL2
+			, b.kko_BTN_nm3
+			, b.KKO_BTN_URL3
+			, b.kko_BTN_nm4
+			, b.KKO_BTN_URL4
+			, b.kko_BTN_nm5
+			, b.KKO_BTN_URL5
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, b.RCS_BTN_INS_TP
 			, b.RCS_BTN_CNT
