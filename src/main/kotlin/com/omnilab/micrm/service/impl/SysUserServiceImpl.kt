@@ -75,7 +75,7 @@ class SysUserServiceImpl: SysUserService {
             val tempDto : Tblmi_usrDto = Tblmi_usrDto()
             tempDto.usr_grp_cd = userInfo.usr_grp_cd
             val maxUserDto = sysUserDao.getMaxUser(tempDto);
-            var newUsrId :String? = String()
+            val newUsrId :String?
             if(maxUserDto == null){
                 var commDto = Tblmi_comm_cdDto()
                 commDto.grp_id = "USR_GRP_CD"

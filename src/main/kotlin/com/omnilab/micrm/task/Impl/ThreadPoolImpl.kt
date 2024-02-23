@@ -1,9 +1,7 @@
 package com.omnilab.micrm.task.Impl
 
 import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.GroupUsr_SearchDto
-import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CommonDao
@@ -48,18 +46,18 @@ class ThreadPoolImpl : ThreadPool {
     // detailTask 스케 줄러 처리
     override fun insertDetailTargetTask(file: MultipartFile, dto: Tblmi_group_usrDto) {
         logger.error("[" + CommonUtils.getDateTimeNow().toString() + "] 타겟 엑셀 리스트 생성 시작")
-        val dto = dto as GroupUsr_SearchDto
+        val dt = dto as GroupUsr_SearchDto
         taskExecutor.submit {
             val excelFile = file.inputStream
             try{
-                memberDao.insertTargetGrp(file,excelFile,dto)
+                memberDao.insertTargetGrp(file,excelFile,dt)
             }catch(e : Exception){
                 logger.error("쓰레드 에러 {}",e.printStackTrace())
                 val failWorkDto = Tblmi_workDto()
-                failWorkDto.seq = dto.work_seq
-                failWorkDto.upd_id = dto.reg_id
+                failWorkDto.seq = dt.work_seq
+                failWorkDto.upd_id = dt.reg_id
                 failWorkDto.work_stat = "2"
-                failWorkDto.work_msg = "파일명 : " + file.originalFilename + "<br>" + "그룹 명 : " + dto.grp_nm + "<br>" + "파일 또는 서버 에러  " + e.message
+                failWorkDto.work_msg = "파일명 : " + file.originalFilename + "<br>" + "그룹 명 : " + dt.grp_nm + "<br>" + "파일 또는 서버 에러  " + e.message
                 workService.updateWorkHistory(failWorkDto)
             }
             logger.error("[" + CommonUtils.getDateTimeNow().toString() + "] 타겟 엑셀 리스트 생성 종료")

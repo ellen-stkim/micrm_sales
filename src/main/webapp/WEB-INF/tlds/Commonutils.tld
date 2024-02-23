@@ -84,7 +84,7 @@
         <description>escapeTextToHtml</description>
         <name>escapeTextToHtml</name>
         <function-class>com.omnilab.micrm.common.CommonUtils</function-class>
-        <function-signature>java.lang.String EscapeTextToHtml(java.lang.String)</function-signature>
+        <function-signature>java.lang.String escapeTextToHtml(java.lang.String)</function-signature>
         <example>${cutil:escapeTextToHtml()}</example>
     </function>
 

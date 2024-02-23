@@ -58,7 +58,7 @@ class CampaignEdmDaoImpl : CampaignSendDao {
         urlDto.cont_lst_cd = contentDto.seq
         val contentUrlLst = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", urlDto)
         for (urlLst in contentUrlLst) {
-            urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+            urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
         }
 
         val sendNomalLst = ArrayList<Camp_send_edm_tableDto>()
@@ -85,7 +85,7 @@ class CampaignEdmDaoImpl : CampaignSendDao {
                     etc = etc_per % e_size
 
                     var targetSubject = contentDto.cont_sub
-                    var targetBody = CommonUtils.EscapeTextToHtml(contentDto.cont_body)
+                    var targetBody = CommonUtils.escapeTextToHtml(contentDto.cont_body)
                     var targetBodyTop = contentDto.cont_top_body
 
                     val map = resultContext.resultObject as HashMap<String, Any>

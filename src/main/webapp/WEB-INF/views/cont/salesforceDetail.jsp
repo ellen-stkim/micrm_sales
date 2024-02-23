@@ -325,44 +325,6 @@
                                         </div>
                                         <div class="block">
                                             <div class="row">
-                                                <div class="th bottom-border">버튼 링크 제목</div>
-                                                <div class="td bottom-border">
-                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                        <input type="text" name="kko_btn_nm"
-                                                               class="txt_input width kakao_btn_name"
-                                                               value="${fn:escapeXml(list[0].kko_btn_nm)}" readonly
-                                                               onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                    </c:if>
-                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) == ''}">
-                                                        <input type="text" name="kko_btn_nm"
-                                                               class="txt_input width kakao_btn_name"
-                                                               placeholder="버튼 링크 제목을 입력해주세요."
-                                                               onkeyup="smsCreate.titleCount(this,'kakao')"
-                                                        />
-                                                    </c:if>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="th bottom-border">버튼 링크 주소</div>
-                                                <div class="td bottom-border">
-                                                    <input type="text" name="kko_btn_url"
-                                                           class="txt_input en_font kakao_btn_link"
-                                                            <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                                readonly
-                                                            </c:if>
-                                                           value="${list[0].kko_btn_url}"
-                                                           placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                    <input type="button" class="btn_sm_line kakaoLinkBtn"
-                                                            <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
-                                                                value ="생성"
-                                                            </c:if>
-                                                            <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
-                                                                value="삭제"
-                                                            </c:if>
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="th">추적 링크 생성</div>
                                                 <div class="td">
                                                     <input type="text" class="txt_input en_font" id="kakaoTracking"
@@ -372,6 +334,104 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
+                                        <div class="row flex_box">
+                                            <div class="th">버튼명</div>
+                                            <div class="td first-td right-border">
+                                                <c:choose>
+                                                    <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                        <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                            <div class="th">버튼 링크 주소</div>
+                                            <div class="td flex_box">
+                                                <input type="text" name="kkoBtnUrlLst"
+                                                       class="txt_input en_font kakao_btn_link"
+                                                        <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                            readonly
+                                                        </c:if>
+                                                       value="${list[0].kko_btn_url}"
+                                                       placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <div class="arrow arrow-down kakaoLinkArrow"></div>
+                                                <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                                <input type="button" class="btn_sm_line kakaoLinkBtn"
+                                                        <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
+                                                            value ="생성"
+                                                        </c:if>
+                                                        <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
+                                                            value="삭제"
+                                                        </c:if>
+                                                />
+                                            </div>
+                                        </div>
+                                        <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url2)}">
+                                            <div class="row flex_box">
+                                                <div class="th">버튼명</div>
+                                                <div class="td first-td right-border">
+                                                    <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm2}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                </div>
+                                                <div class="th">버튼 링크 주소</div>
+                                                <div class="td flex_box">
+                                                    <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url2}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <div class="arrow arrow-down kakaoLinkArrow"></div>
+                                                    <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                                    <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url3)}">
+                                            <div class="row flex_box">
+                                                <div class="th">버튼명</div>
+                                                <div class="td first-td right-border">
+                                                    <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm3}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                </div>
+                                                <div class="th">버튼 링크 주소</div>
+                                                <div class="td flex_box">
+                                                    <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url3}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <div class="arrow arrow-down kakaoLinkArrow"></div>
+                                                    <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                                    <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url4)}">
+                                            <div class="row flex_box">
+                                                <div class="th">버튼명</div>
+                                                <div class="td first-td right-border">
+                                                    <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm4}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                </div>
+                                                <div class="th">버튼 링크 주소</div>
+                                                <div class="td flex_box">
+                                                    <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url4}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <div class="arrow arrow-down kakaoLinkArrow"></div>
+                                                    <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                                    <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url5)}">
+                                            <div class="row flex_box">
+                                                <div class="th">버튼명</div>
+                                                <div class="td first-td right-border">
+                                                    <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm5}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                </div>
+                                                <div class="th">버튼 링크 주소</div>
+                                                <div class="td flex_box">
+                                                    <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url5}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <div class="arrow arrow-down kakaoLinkArrow"></div>
+                                                    <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                                    <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                    <div class="flex_box" style="justify-content: right;">
+                                        <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
                                     </div>
                                     <div class="input_area kko_area" id="kko_at" ${cont_tp eq "DMTP05"?'': 'hidden'}>
                                         <div class="block">
@@ -3862,6 +3922,96 @@
             $(this).addClass('on').siblings().removeClass('on');
             $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
             rcsSlideInit();
+        });
+
+        $(document).on('click', '.kakaoLinkBtn', function () {
+            let btnState = $(this).val();
+            let totalLen = $("#addKakaoLink").children().length;
+            let thisIdx = $(this).closest(".row.flex_box").index();
+            let link = $('.kakao_btn_link').eq(thisIdx);
+            let name = $('.kakao_btn_name').eq(thisIdx);
+            let btnLink = link.val();
+            let btnName = name.val();
+
+            if (btnState == '생성') {
+                if (btnName != '') {
+                    if (btnLink != '') {
+                        if (btnLink.substring(0, 4) == 'http') {
+                            $('#kakao_ft_viewer').find('.inner .round_box').children('a').remove();
+                            for(let i = 0; i < totalLen; i++){
+                                let setLink = $('.kakao_btn_link').eq(i).val();
+                                let setName = $('.kakao_btn_name').eq(i).val();
+                                $('#kakao_ft_viewer').find('.inner .round_box').append('<a href="' + setLink + '" class="kakao_link" target="_blank" rel="noopener">' + setName + '</a>');
+                            }
+                            name.attr('readonly', true);
+                            link.attr('readonly', true);
+                            $(this).val('삭제');
+                        } else {
+                            popup.popAlert('정확한 링크 URL을 입력해주세요.');
+                            return false;
+                        }
+                    } else {
+                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
+                        return false;
+                    }
+                } else {
+                    popup.popAlert('메시지에 노출될 링크 버튼의 이름을 입력해주세요!');
+                    return false;
+                }
+            } else {
+                $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx).remove();
+                if($("#addKakaoLink").children().length == 1){
+                    $(this).val('생성');
+                    link.val('');
+                    name.val('');
+                    name.attr('readonly', false);
+                    link.attr('readonly', false);
+                } else {
+                    $("#addKakaoLink").children().eq(thisIdx).remove();
+                }
+            }
+        });
+
+        // 카카오 행 이동 event
+        $(document).on('click', '.kakaoLinkArrow', function(){
+            let thisIdx = $(this).closest(".row.flex_box").index();
+            let totalLen = $("#addKakaoLink").children().length;
+            let row = $(this).closest(".row.flex_box");
+            let btnRow = $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx);
+            if($(this).hasClass("arrow-up")){
+                if(thisIdx !== 0){
+                    row.prev().before(row);
+                    btnRow.prev().before(btnRow);
+                }
+            } else if ($(this).hasClass("arrow-down")){
+                if(thisIdx !== totalLen-1){
+                    row.next().after(row);
+                    btnRow.next().after(btnRow);
+                }
+            }
+        });
+
+        $(document).on('click', '.addKakaoLinkRow', function(){
+            let totalLen = $("#addKakaoLink").children().length;
+            if(totalLen < 5){
+                let layout = '<div class="row flex_box">'+
+                    '<div class="th">버튼명</div>'+
+                    '<div class="td first-td right-border">'+
+                    '<input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" ' +
+                    'placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'+"'kakao'"+')"/>'+
+                    '</div>'+
+                    '<div class="th">버튼 링크 주소</div>'+
+                    '<div class="td flex_box">'+
+                    '<input type="text" name="kkoBtnUrlLst"'+
+                    'class="txt_input en_font kakao_btn_link"'+
+                    'placeholder="URL 입력 (http:// 또는 https://필수입력)"/>'+
+                    '<div class="arrow arrow-down kakaoLinkArrow"></div>'+
+                    '<div class="arrow arrow-up kakaoLinkArrow"></div>'+
+                    '<input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>'+
+                    '</div>'+
+                    '</div>';
+                $("#addKakaoLink").append(layout);
+            }
         });
 
 

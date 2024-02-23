@@ -283,24 +283,6 @@
                                     </div>
                                     <div class="block">
                                         <div class="row">
-                                            <div class="th bottom-border">버튼 링크 제목</div>
-                                            <div class="td bottom-border">
-                                                <input type="text"
-                                                       class="txt_input width kakao_btn_name"
-                                                       placeholder="버튼 링크 제목을 입력해주세요."
-                                                       onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                <input type="hidden" name="kko_btn_nm" id="kko_btn_nm"/>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="th bottom-border">버튼 링크 주소</div>
-                                            <div class="td bottom-border">
-                                                <input type="text" class="txt_input en_font kakao_btn_link" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                <input type="hidden" name="kko_btn_url" id="kko_btn_url" />
-                                                <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
-                                            </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="th">추적 링크 생성</div>
                                             <div class="td">
                                                 <input type="text" class="txt_input en_font" id="kakaoTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
@@ -308,6 +290,26 @@
                                                 <input type="hidden" name="kko_trackinglink"/>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
+                                        <div class="row flex_box">
+                                            <div class="th">버튼명</div>
+                                            <div class="td first-td right-border">
+                                                <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                            </div>
+                                            <div class="th">버튼 링크 주소</div>
+                                            <div class="td flex_box">
+                                                <input type="text" name="kkoBtnUrlLst"
+                                                       class="txt_input en_font kakao_btn_link"
+                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <div class="arrow arrow-down kakaoLinkArrow"></div>
+                                                <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                                <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex_box" style="justify-content: right;">
+                                        <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
                                     </div>
                                 </div>
                                 <div class="input_area kko_area" id="kko_at" hidden>
@@ -922,21 +924,21 @@
             let checkLength = $('.formatType').filter(':checked').length;
             let state = $(this).is(':checked');
 
-            if (state == true) {
+            if(state == true){
                 let tabInx = $('.formatType').index(this);
                 $('#js-smsTab li').eq(tabInx).show();
 
-                if (minInx === '' && minInx > tabInx) {
+                if(minInx === '' && minInx > tabInx){
                     minInx = tabInx;
                 }
                 $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
                 $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
             }
 
-            if (checkLength > 0) {
+            if(checkLength > 0){
                 $('.no_data').hide();
                 $('#js-btn-area').show();
-            } else {
+            }else{
                 $('.no_data').show();
                 $('#js-btn-area').hide();
             }
@@ -971,11 +973,11 @@
                     }
                 });
             }
-            if (checkLength > 0) {
+            if(checkLength > 0){
                 $('.no_data').hide();
                 $('#js-btn-area').show();
 
-            } else {
+            }else{
                 $('.no_data').show();
                 $('#js-btn-area').hide();
             }
@@ -984,8 +986,10 @@
         //카카오 링크 버튼 생성 event
         $(document).on('click', '.kakaoLinkBtn', function () {
             let btnState = $(this).val();
-            let link = $('.kakao_btn_link');
-            let name = $('.kakao_btn_name');
+            let totalLen = $("#addKakaoLink").children().length;
+            let thisIdx = $(this).closest(".row.flex_box").index();
+            let link = $('.kakao_btn_link').eq(thisIdx);
+            let name = $('.kakao_btn_name').eq(thisIdx);
             let btnLink = link.val();
             let btnName = name.val();
 
@@ -993,13 +997,12 @@
                 if (btnName != '') {
                     if (btnLink != '') {
                         if (btnLink.substring(0, 4) == 'http') {
-                            // <a href="http://localhost:8083/cont/mdmCreate.mi" target="_blank" class="sms_btn">모바일 컨텐츠 생성</a>
-                            $(this).parents('#kakao').find('.viewer_area .round_box').append('<a href="' + btnLink + '" class="kakao_link" target="_blank">' + btnName + '</a>');
-                            //name.attr('disabled', true);
-                            //link.attr('disabled', true);
-                            $('#kko_btn_url').val(btnLink);
-                            $('#kko_btn_nm').val(btnName);
-
+                            $('#kakao_ft_viewer').find('.inner .round_box').children('a').remove();
+                            for(let i = 0; i < totalLen; i++){
+                                let setLink = $('.kakao_btn_link').eq(i).val();
+                                let setName = $('.kakao_btn_name').eq(i).val();
+                                $('#kakao_ft_viewer').find('.inner .round_box').append('<a href="' + setLink + '" class="kakao_link" target="_blank" rel="noopener">' + setName + '</a>');
+                            }
                             name.attr('readonly', true);
                             link.attr('readonly', true);
                             $(this).val('삭제');
@@ -1016,18 +1019,58 @@
                     return false;
                 }
             } else {
-                $(this).val('생성');
-                $(this).parents('#kakao').find('.viewer_area .inner a.kakao_link').remove();
-                $(this).parents('#kakao_ft').find('.kakao_link').remove();
+                $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx).remove();
+                if($("#addKakaoLink").children().length == 1){
+                    $(this).val('생성');
+                    link.val('');
+                    name.val('');
+                    name.attr('readonly', false);
+                    link.attr('readonly', false);
+                } else {
+                    $("#addKakaoLink").children().eq(thisIdx).remove();
+                }
+            }
+        });
 
-                $('#kko_btn_url').val('');
-                $('#kko_btn_nm').val('');
-                link.val('');
-                name.val('');
-                //name.attr('disabled', false);
-                //link.attr('disabled', false);
-                name.attr('readonly', false);
-                link.attr('readonly', false);
+        // 카카오 행 이동 event
+        $(document).on('click', '.kakaoLinkArrow', function(){
+            let thisIdx = $(this).closest(".row.flex_box").index();
+            let totalLen = $("#addKakaoLink").children().length;
+            let row = $(this).closest(".row.flex_box");
+            let btnRow = $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx);
+            if($(this).hasClass("arrow-up")){
+                if(thisIdx !== 0){
+                    row.prev().before(row);
+                    btnRow.prev().before(btnRow);
+                }
+            } else if ($(this).hasClass("arrow-down")){
+                if(thisIdx !== totalLen-1){
+                    row.next().after(row);
+                    btnRow.next().after(btnRow);
+                }
+            }
+        });
+
+        $(document).on('click', '.addKakaoLinkRow', function(){
+            let totalLen = $("#addKakaoLink").children().length;
+            if(totalLen < 5){
+                let layout = '<div class="row flex_box">'+
+                    '<div class="th">버튼명</div>'+
+                    '<div class="td first-td right-border">'+
+                    '<input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" ' +
+                    'placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'+"'kakao'"+')"/>'+
+                    '</div>'+
+                    '<div class="th">버튼 링크 주소</div>'+
+                    '<div class="td flex_box">'+
+                    '<input type="text" name="kkoBtnUrlLst"'+
+                    'class="txt_input en_font kakao_btn_link"'+
+                    'placeholder="URL 입력 (http:// 또는 https://필수입력)"/>'+
+                    '<div class="arrow arrow-down kakaoLinkArrow"></div>'+
+                    '<div class="arrow arrow-up kakaoLinkArrow"></div>'+
+                    '<input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>'+
+                    '</div>'+
+                    '</div>';
+                $("#addKakaoLink").append(layout);
             }
         });
 
@@ -1072,6 +1115,7 @@
                 return false;
             }
         });
+
 
         // 추적 링크 생성 동작
         $(document).on('click', '.trackingLinkBtn', function () {
@@ -3539,7 +3583,6 @@
             }
         }
     }
-
 
     function openCreateAt(){
         $('#extId').val(dataExtensionId)

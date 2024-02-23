@@ -46,7 +46,7 @@ public class NeuQuant {
 	   unbiasnet();
 	   [write output image header, using writecolourmap(f)]
 	   inxbuild();
-	   write output image using inxsearch(b,g,r)      */
+	   write output image using inxsearch(b,css,g,r)      */
 
 	/* Network Definitions
 	   ------------------- */
@@ -397,7 +397,7 @@ public class NeuQuant {
 		}
 	}
 	
-	/* Move neuron i towards biased (b,g,r) by factor alpha
+	/* Move neuron i towards biased (b,css,g,r) by factor alpha
 	   ---------------------------------------------------- */
 	protected void altersingle(int alpha, int i, int b, int g, int r) {
 

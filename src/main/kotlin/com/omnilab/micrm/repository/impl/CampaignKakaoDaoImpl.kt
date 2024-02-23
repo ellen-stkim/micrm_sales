@@ -1,5 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
+import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
@@ -8,6 +9,7 @@ import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.Tblmicp_cont_url_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_send_callback_msgDto
+import com.omnilab.micrm.model.table.kakao.ButtonJsonDto
 import com.omnilab.micrm.model.table.kakao.Kko_msgDto
 import com.omnilab.micrm.repository.CampaignSendDao
 import org.apache.ibatis.session.SqlSession
@@ -64,38 +66,53 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val rcsBrnID = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("RCS_BRND_ID", dto.usr_grp_cd!!)).cd_val
 
         // 카카오 콘텐츠 URL 리스트 정보
-        val urlDto = Tblmicp_cont_url_lstDto()
-        urlDto.cont_lst_cd = kakaoCont.seq
-        val kakaoContUrlList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", urlDto)
         var kakaoBtnUrl: Tblmicp_cont_url_lstDto? = null
+        var kakaoBtnUrl2: Tblmicp_cont_url_lstDto? = null
+        var kakaoBtnUrl3: Tblmicp_cont_url_lstDto? = null
+        var kakaoBtnUrl4: Tblmicp_cont_url_lstDto? = null
+        var kakaoBtnUrl5: Tblmicp_cont_url_lstDto? = null
         var kakaoImgUrl: Tblmicp_cont_url_lstDto? = null
 
-        for (urlLst in kakaoContUrlList) {
-            urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
-            if("btn" == urlLst.url_tag?.lowercase(Locale.getDefault())){
-                kakaoBtnUrl = urlLst
-            }else if("img" == urlLst.url_tag?.lowercase(Locale.getDefault())){
-                kakaoImgUrl = urlLst
+        val kakaoContUrlBtnList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", Tblmicp_cont_url_lstDto(kakaoCont.seq!!, "btn"))
+        // 버튼 리스트
+        for (i in 0 until kakaoContUrlBtnList.size){
+            val urlLst = kakaoContUrlBtnList[i]
+            urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
+            when(i){
+                0 -> kakaoBtnUrl = urlLst
+                1 -> kakaoBtnUrl2 = urlLst
+                2 -> kakaoBtnUrl3 = urlLst
+                3 -> kakaoBtnUrl4 = urlLst
+                4 -> kakaoBtnUrl5 = urlLst
             }
         }
+        // 이미지 리스트
+        val kakaoContUrlImgList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", Tblmicp_cont_url_lstDto(kakaoCont.seq!!, "img"))
+        // 버튼 리스트
+        if(!kakaoContUrlImgList.isNullOrEmpty()){
+            kakaoImgUrl = kakaoContUrlImgList[0]
+        }
+
 
         // MDM 콘텐츠 URL 리스트 정보
         var mdmContUrlList: MutableList<Tblmicp_cont_url_lstDto>? = null
         if(mdmCont != null){
+            val urlDto = Tblmicp_cont_url_lstDto()
             urlDto.cont_lst_cd = mdmCont.seq
             mdmContUrlList = sqlSession.selectList("sel_tblmicp_cont_url_lst", urlDto)
             for (urlLst in mdmContUrlList) {
-                urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+                urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
             }
         }
         
         // RCS 콘텐츠 URL 리트스 정보
         var rcsContUrlList: MutableList<Tblmicp_cont_url_lstDto>? = null
         if(rcsCont != null){
+            val urlDto = Tblmicp_cont_url_lstDto()
             urlDto.cont_lst_cd = rcsCont.seq
             rcsContUrlList = sqlSession.selectList("sel_tblmicp_cont_url_lst", urlDto)
             for (urlLst in rcsContUrlList) {
-                urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+                urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
             }
         }
 
@@ -106,12 +123,12 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
 
         try {
             var targetSubject = kakaoCont.cont_sub
-            var targetBody = CommonUtils.EscapeTextToHtml(kakaoCont.cont_body)
+            var targetBody = CommonUtils.escapeTextToHtml(kakaoCont.cont_body)
             var mdmSubject: String? = null
             var mdmBody: String? = null
             if(mdmCont != null){
                 mdmSubject = mdmCont.cont_sub
-                mdmBody = CommonUtils.EscapeTextToHtml(mdmCont.cont_body)
+                mdmBody = CommonUtils.escapeTextToHtml(mdmCont.cont_body)
             }
             var rcsSubject: String? = null
             var rcsBody: String? = null
@@ -121,7 +138,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             var rcsBtnCont3: String? = null
             if(rcsCont != null){
                 rcsSubject = rcsCont.cont_sub
-                rcsBody = CommonUtils.EscapeTextToHtml(rcsCont.cont_body)
+                rcsBody = CommonUtils.escapeTextToHtml(rcsCont.cont_body)
                 rcsBtnObj = rcsCont.rcs_btn_obj
                 rcsBtnCont1 = rcsCont.rcs_btn_cont_1
                 rcsBtnCont2 = rcsCont.rcs_btn_cont_2
@@ -142,10 +159,10 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             }
 
             // KAKAO URL to TrackURL
-            if (!kakaoContUrlList.isNullOrEmpty()) {
-                for (urlLst in kakaoContUrlList) {
+            val kakaoContAList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", Tblmicp_cont_url_lstDto(kakaoCont.seq!!, "a"))
+            if (!kakaoContAList.isNullOrEmpty()) {
+                for (urlLst in kakaoContAList) {
                     val url = urlLst.url!!
-                    if ("a" == urlLst.url_tag) {
                         targetBody = targetBody.replaceFirst(("\\{\\{"
                                 + url.replace("(", "\\(")
                             .replace(")", "\\)")
@@ -160,8 +177,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
-                    }
+                            , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                 }
             }
 
@@ -286,12 +302,45 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
 
             if(kakaoBtnUrl != null){
-                //kkoMsgdto.button_json = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(HstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
-                //버튼 삭제정보가 업데이트 되지않아 임시 처리
-                if(!kakaoCont.kko_btn_nm.isNullOrEmpty()){
-                    kkoMsgdto.button_json = "[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]"
+                val gson = GsonBuilder().create()
+                val lst = ArrayList<ButtonJsonDto>()
+
+                lst.add(ButtonJsonDto(
+                    "${kakaoCont.kko_btn_nm}"
+                    , "WL"
+                    , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"
+                    , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"))
+                if(kakaoBtnUrl2 != null){
+                    lst.add(ButtonJsonDto(
+                        "${kakaoCont.kko_btn_nm2}"
+                        , "WL"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"))
                 }
+                if(kakaoBtnUrl3 != null){
+                    lst.add(ButtonJsonDto(
+                        "${kakaoCont.kko_btn_nm3}"
+                        , "WL"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"))
+                }
+                if(kakaoBtnUrl4 != null){
+                    lst.add(ButtonJsonDto(
+                        "${kakaoCont.kko_btn_nm4}"
+                        , "WL"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"))
+                }
+                if(kakaoBtnUrl5 != null){
+                    lst.add(ButtonJsonDto(
+                        "${kakaoCont.kko_btn_nm5}"
+                        , "WL"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"))
+                }
+                kkoMsgdto.button_json = gson.toJson(lst)
             }
+
             if(kakaoCont.kko_server_image_url != null){
                 if(kakaoCont.ch_tp == "IMGTP11"){  // 와이드 이미지
                     kkoMsgdto.type = "FW"
@@ -299,7 +348,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                     kkoMsgdto.type = "FI"
                 }
                 if(kakaoImgUrl != null) {
-                    kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoImgUrl?.seq.toString(), GlobalValues.encKey)}\"}"
+                    kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}\"}"
                 }else{
                     kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\"}"
                 }

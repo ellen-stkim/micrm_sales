@@ -433,7 +433,7 @@ class SysSettingServiceImpl : SysSettingService {
 
     override fun getKkoSettingList(dto: SetLst_searchDto): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
-        val searchDto = dto as SetLst_searchDto
+        val searchDto = dto
 
         val pageNo = if (searchDto.pageNo == null) {
             1

@@ -219,7 +219,7 @@ function slideLayout(type){
     var cnt = 0;
     var checkCnt = 0;
     for(let b = 0; b < total; b++){
-        if(b == 0){ // b : 1  -> b : 0
+        if(b == 0){ // b,css : 1  -> b,css : 0
             html += '<div class="rcs_slide_conts on">';
         }else{
             html += '<div class="rcs_slide_conts">';
@@ -286,7 +286,7 @@ function slideLayout(type){
                 + '<div class="row">'
                 + '<div class="th bottom-border">버튼 액션 선택</div>'
                 + '<div class="td bottom-border">'
-                //+ '<div class="select action_select" data="' + Number(b+1) + '">'
+                //+ '<div class="select action_select" data="' + Number(b,css+1) + '">'
                 + '<div class="select action_select" data="' + Number( c + 1) + '">'
                 + '<span id="btnHidden' + Number(++checkCnt) + '"></span>'
                 + '<div class="value" data="0">액션선택</div>'

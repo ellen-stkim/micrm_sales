@@ -63,7 +63,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             urlDto.cont_lst_cd = kakaoCont.seq
             kakaoContUrlList = sqlSession.selectList("sel_tblmicp_cont_url_lst", urlDto)
             for (urlLst in kakaoContUrlList) {
-                urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+                urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
                 if("btn" == urlLst.url_tag?.toLowerCase()){
                     kakaoBtnUrl = urlLst
                 }else if("img" == urlLst.url_tag?.toLowerCase()){
@@ -78,7 +78,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             urlDto.cont_lst_cd = mdmCont.seq
             mdmContUrlList = sqlSession.selectList("sel_tblmicp_cont_url_lst", urlDto)
             for (urlLst in mdmContUrlList) {
-                urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+                urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
             }
         }
         
@@ -87,7 +87,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
         urlDto.cont_lst_cd = rcsCont.seq
         rcsContUrlList = sqlSession.selectList("sel_tblmicp_cont_url_lst", urlDto)
         for (urlLst in rcsContUrlList) {
-            urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+            urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
         }
 
         // 발송 리스트
@@ -100,7 +100,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
 
         try {
             var targetSubject = rcsCont.cont_sub
-            var targetBody = CommonUtils.EscapeTextToHtml(rcsCont.cont_body)
+            var targetBody = CommonUtils.escapeTextToHtml(rcsCont.cont_body)
             var rcsBtnObj = rcsCont.rcs_btn_obj
             var rcsBtnCont1 = rcsCont.rcs_btn_cont_1
             var rcsBtnCont2 = rcsCont.rcs_btn_cont_2
@@ -109,14 +109,14 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             var mdmSubject: String? = null
             var mdmBody: String? = null
             if(mdmCont != null){
-                mdmSubject = CommonUtils.EscapeTextToHtml(mdmCont.cont_sub)
-                mdmBody = CommonUtils.EscapeTextToHtml(mdmCont.cont_body)
+                mdmSubject = CommonUtils.escapeTextToHtml(mdmCont.cont_sub)
+                mdmBody = CommonUtils.escapeTextToHtml(mdmCont.cont_body)
             }
             var kakaoSubject: String? = null
             var kakaoBody: String? = null
             if(kakaoCont != null){
-                kakaoSubject = CommonUtils.EscapeTextToHtml(kakaoCont.cont_sub)
-                kakaoBody =CommonUtils.EscapeTextToHtml(kakaoCont.cont_body)
+                kakaoSubject = CommonUtils.escapeTextToHtml(kakaoCont.cont_sub)
+                kakaoBody =CommonUtils.escapeTextToHtml(kakaoCont.cont_body)
             }
 
             val hstSeq = map["SEND_HST_SEQ"].toString()

@@ -209,40 +209,40 @@
 			, ifnull(a.upd_dt, a.reg_dt) as upd_dt
 			, a.cont_tp_lst
 			, a.cont_tp_lst_nm
-			, b.cont_tp
+			, b,css.cont_tp
 			, c.cd_nm AS cont_tp_nm
-			, b.CONT_SUB
-			, b.CONT_TOP_BODY
-			, b.CONT_BODY
-			, b.send_tp
+			, b,css.CONT_SUB
+			, b,css.CONT_TOP_BODY
+			, b,css.CONT_BODY
+			, b,css.send_tp
 			, d.cd_nm AS send_tp_nm
-			, b.send_to
-			, b.send_nm
-			, b.thm_url
-			, b.br_yn
-			, b.sup_yn
+			, b,css.send_to
+			, b,css.send_nm
+			, b,css.thm_url
+			, b,css.br_yn
+			, b,css.sup_yn
 			, a.msg_tp_lst
-			, b.msg_tp
-			, b.kko_img_cd
+			, b,css.msg_tp
+			, b,css.kko_img_cd
 			, e.IMG_URL AS kko_image_url
-			, b.kko_img_url
-			, b.kko_BTN_nm
-			, b.KKO_BTN_URL
+			, b,css.kko_img_url
+			, b,css.kko_BTN_nm
+			, b,css.KKO_BTN_URL
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, CONCAT_WS(',', img_1.IMG_NM, img_2.IMG_NM, img_3.IMG_NM, img_4.IMG_NM ,img_5.IMG_NM, img_6.IMG_NM) AS IMG_NM_LST
-			, b.RCS_BTN_INS_TP
-			, b.RCS_BTN_CNT
-			, b.RCS_BTN_OBJ
-			, b.RCS_BTN_1
-			, b.RCS_BTN_TP_1
-			, b.RCS_BTN_CONT_1
-			, b.RCS_BTN_2
-			, b.RCS_BTN_TP_2
-			, b.RCS_BTN_CONT_2
-			, b.RCS_BTN_3
-			, b.RCS_BTN_TP_3
-			, b.RCS_BTN_CONT_3
-			, b.RCS_FOOTER
+			, b,css.RCS_BTN_INS_TP
+			, b,css.RCS_BTN_CNT
+			, b,css.RCS_BTN_OBJ
+			, b,css.RCS_BTN_1
+			, b,css.RCS_BTN_TP_1
+			, b,css.RCS_BTN_CONT_1
+			, b,css.RCS_BTN_2
+			, b,css.RCS_BTN_TP_2
+			, b,css.RCS_BTN_CONT_2
+			, b,css.RCS_BTN_3
+			, b,css.RCS_BTN_TP_3
+			, b,css.RCS_BTN_CONT_3
+			, b,css.RCS_FOOTER
 		FROM (
 			SELECT mst.seq                                         AS seq
 				, mst.ch_tp                                        AS ch_tp
@@ -292,16 +292,16 @@
 			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
 		</if>
 		) AS a
-		INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
-		INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
-		INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
-		LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
-		LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
-		LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
-		LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
-		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
-		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
-		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+		INNER JOIN tblmi_cont_lst AS b,css ON a.lst_seq = b,css.SEQ
+		INNER JOIN tblmi_comm_cd AS c ON b,css.cont_tp = c.cd_id
+		INNER JOIN tblmi_comm_cd AS d ON b,css.send_tp = d.cd_id
+		LEFT JOIN tblmi_cont_img AS e ON b,css.kko_img_cd = e.seq
+		LEFT JOIN tblmi_cont_img AS img_1 ON b,css.IMG_CD_1 = img_1.seq
+		LEFT JOIN tblmi_cont_img AS img_2 ON b,css.IMG_CD_2 = img_2.seq
+		LEFT JOIN tblmi_cont_img AS img_3 ON b,css.IMG_CD_3 = img_3.seq
+		LEFT JOIN tblmi_cont_img AS img_4 ON b,css.IMG_CD_4 = img_4.seq
+		LEFT JOIN tblmi_cont_img AS img_5 ON b,css.IMG_CD_5 = img_5.seq
+		LEFT JOIN tblmi_cont_img AS img_6 ON b,css.IMG_CD_6 = img_6.seq
 	</select>-->
 
 	<select id="selectMobileContent" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">

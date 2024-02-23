@@ -27,7 +27,7 @@ class ExcelDownloadView: AbstractView() {
     override fun renderMergedOutputModel(map: MutableMap<String, Any>, request: HttpServletRequest, response: HttpServletResponse) {
         val worker = map["book"] as SXSSFWorkbook
         val todate = SimpleDateFormat("YYYY-MM-dd HH_mm_ss").format(Date())
-        val name = CommonUtils.EscapeTextToHtml(map["name"].toString());
+        val name = CommonUtils.escapeTextToHtml(map["name"].toString());
         val filename = name + "_" + todate + ".xlsx"
         var os: OutputStream? = null
 

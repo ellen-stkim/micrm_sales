@@ -97,7 +97,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         }
         val resultList = campaignDao.sel_tblmicp_campaign(cDto)
         for(j in resultList){
-            j.camp_nm = CommonUtils.EscapeTextToHtml(j.camp_nm)
+            j.camp_nm = CommonUtils.escapeTextToHtml(j.camp_nm)
         }
         map["list"] = campaignDao.sel_tblmicp_campaign(cDto)
 

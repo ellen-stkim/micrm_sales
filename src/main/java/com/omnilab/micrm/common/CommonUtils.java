@@ -277,7 +277,7 @@ public class CommonUtils {
         return String.valueOf(now.getTime());
     }
 
-    public static String EscapeTextToHtml(String t) {
+    public static String escapeTextToHtml(String t) {
         if (t != null) {
             t = t.replaceAll("&gt;", ">")
                     .replaceAll("&lt;", "<")

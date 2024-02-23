@@ -1,8 +1,6 @@
 package com.omnilab.micrm.model.table
 
 import org.apache.ibatis.type.Alias
-import org.springframework.web.multipart.MultipartFile
-import java.io.Serializable
 
 @Alias("Tblmi_cont_url_lstDto")
 open class Tblmi_cont_url_lstDto {
@@ -17,8 +15,15 @@ open class Tblmi_cont_url_lstDto {
     var map_cords:String? = null
 
     constructor()
-    constructor(cont_lst_cd: Int?){
-        this.cont_lst_cd = cont_lst_cd
+    constructor(contLstCd: Int?){
+        this.cont_lst_cd = contLstCd
+    }
+
+    constructor(urlTag: String, url: String, urlId: String, contLstCd: Int){
+        this.url_tag = urlTag
+        this.url = url
+        this.url_id = urlId
+        this.cont_lst_cd = contLstCd
     }
 
     override fun toString(): String {

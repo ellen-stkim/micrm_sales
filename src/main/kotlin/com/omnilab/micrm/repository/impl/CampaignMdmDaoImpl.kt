@@ -49,7 +49,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
         urlDto.cont_lst_cd = contentDto.seq
         val contentUrlLst = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", urlDto)
         for (urlLst in contentUrlLst) {
-            urlLst.url = CommonUtils.EscapeTextToHtml(urlLst.url)
+            urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
         }
         // 메세지 타입
         val msgTp = contDto.msg_tp
@@ -58,7 +58,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
 
         try {
             var targetSubject = contDto.cont_sub
-            var targetBody = CommonUtils.EscapeTextToHtml(contDto.cont_body)
+            var targetBody = CommonUtils.escapeTextToHtml(contDto.cont_body)
 
             val hstSeq = map["SEND_HST_SEQ"].toString()
 
