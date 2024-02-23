@@ -177,7 +177,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             .replace("?", "[?]")
                                 + "\\}\\}")
                             .toRegex()
-                            , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                 }
             }
 
@@ -308,35 +308,35 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                 lst.add(ButtonJsonDto(
                     "${kakaoCont.kko_btn_nm}"
                     , "WL"
-                    , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"
+                    , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"
                     , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"))
                 if(kakaoBtnUrl2 != null){
                     lst.add(ButtonJsonDto(
                         "${kakaoCont.kko_btn_nm2}"
                         , "WL"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"))
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"))
                 }
                 if(kakaoBtnUrl3 != null){
                     lst.add(ButtonJsonDto(
                         "${kakaoCont.kko_btn_nm3}"
                         , "WL"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"))
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"))
                 }
                 if(kakaoBtnUrl4 != null){
                     lst.add(ButtonJsonDto(
                         "${kakaoCont.kko_btn_nm4}"
                         , "WL"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"))
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"))
                 }
                 if(kakaoBtnUrl5 != null){
                     lst.add(ButtonJsonDto(
                         "${kakaoCont.kko_btn_nm5}"
                         , "WL"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"
-                        , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"))
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"))
                 }
                 kkoMsgdto.button_json = gson.toJson(lst)
             }

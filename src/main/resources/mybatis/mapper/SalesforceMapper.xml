@@ -77,6 +77,14 @@
              , a.KKO_IMG_URL
              , a.KKO_BTN_NM
              , a.KKO_BTN_URL
+             , a.KKO_BTN_NM2
+             , a.KKO_BTN_URL2
+             , a.KKO_BTN_NM3
+             , a.KKO_BTN_URL3
+             , a.KKO_BTN_NM4
+             , a.KKO_BTN_URL4
+             , a.KKO_BTN_NM5
+             , a.KKO_BTN_URL5
              , a.KKO_MSG_TP
              , a.KKO_BTN_OBJ
              , a.KKO_PRICE

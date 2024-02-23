@@ -814,7 +814,7 @@ class SalesforceController {
 
             // jwt 확인
             if (!validator.isValid(tokenWithoutSignature, signature)) {
-                logger.error("Could not verify JWT token integrity!")
+                logger.error("Could not verify JWT token integrity! {}", tokenWithoutSignature)
             } else {
                 val gson = GsonBuilder().create()
                 val data1 = gson.fromJson(payload, MutableMap::class.java)
