@@ -189,19 +189,13 @@ class ReportServiceImpl : ReportService {
         return response
     }
 
-    override fun getClickList(cont_id: Int): MutableList<HashMap<String, Any?>> {
-        var mapLst = mutableListOf<HashMap<String, Any?>>()
-
-        if (cont_id == null) {
-            return mapLst
-        }
-
-        val searchCont = Tblmicp_cont_mstDto(cont_id)
+    override fun getClickList(contId: Int): MutableList<HashMap<String, Any?>> {
+        val mapLst = mutableListOf<HashMap<String, Any?>>()
+        val searchCont = Tblmicp_cont_mstDto(contId)
         val contentDtoLst = campaignDao.getContentsViewList(searchCont)
 
         for (dto in contentDtoLst) {
-
-            var map = HashMap<String, Any?>()
+            val map = HashMap<String, Any?>()
             dto.cardSize = '1'.toString()
             if (dto.cont_tp.equals("DMTP04")) {
                 commonService.jsonOneContentsParsing(dto)

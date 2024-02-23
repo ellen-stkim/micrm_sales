@@ -193,8 +193,7 @@ class SalesforceController {
     }
 
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
-    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int
-                            , @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
+    fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         tblmiContMstdto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd

@@ -51,7 +51,7 @@
                     </c:if>
                     <div class="th">템플릿 명</div>
                     <div class="td right-border">
-                        <input type="text" class="txt_input template_name" name="cont_nm" value="${list[0].cont_nm}" placeholder="템플릿 명을 입력하세요."/>
+                        <input type="text" class="txt_input template_name" name="cont_nm" value="${fn:escapeXml(list[0].cont_nm)}" placeholder="템플릿 명을 입력하세요."/>
                     </div>
                     <div class="th">컨텐츠 포맷</div>
                     <div class="td flex_row">
@@ -107,7 +107,7 @@
 
                     <div class="th">캠페인 명</div>
                     <div class="td right-border">
-                        <input type="text" name="camp_nm" class="txt_input " value="${list[0].camp_nm}" placeholder="캠페인 명을 입력하세요.">
+                        <input type="text" name="camp_nm" class="txt_input " value="${fn:escapeXml(list[0].camp_nm)}" placeholder="캠페인 명을 입력하세요.">
                     </div>
                     <div class="left_flex">
                     <div class="th">팀 명</div>
@@ -207,7 +207,7 @@
                                         <input type="hidden" name="list_seq" value="${list[0].list_seq}"/>
                                         <div class="th">문자 제목</div>
                                         <div class="column_1">
-                                            <input type="text" class="title kakaoTitle" name="cont_sub_list" value="${list[0].cont_sub}"/>
+                                            <input type="text" class="title kakaoTitle" name="cont_sub_list" value="${fn:escapeXml(list[0].cont_sub)}"/>
                                             <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                         </div>
                                     </div>
@@ -330,7 +330,7 @@
                                                     <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                                         <input type="text" name="kko_btn_nm"
                                                                class="txt_input width kakao_btn_name"
-                                                               value="${list[0].kko_btn_nm}" readonly
+                                                               value="${fn:escapeXml(list[0].kko_btn_nm)}" readonly
                                                                onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                     </c:if>
                                                     <c:if test="${fn:trim(list[0].kko_btn_nm) == ''}">
@@ -569,7 +569,7 @@
                                             <div class="th">문자 제목</div>
                                             <div class="column_1">
                                                 <div class="column_5">
-                                                    <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="onchangePrevSmsTitle(this)" value="${list[1].cont_sub}"/>
+                                                    <input type="text" class="title type1 smsTitle" name="cont_sub_list" onkeyup="onchangePrevSmsTitle(this)" value="${fn:escapeXml(list[1].cont_sub)}"/>
                                                     <span class="title_byte en_font">(최대 40byte)</span>
                                                 </div>
                                                 <!-- select 영역 시작 -->
@@ -1663,7 +1663,7 @@
                                         <div class="row body">
                                             <div class="th">문자 제목</div>
                                             <div class="column_1">
-                                                <input type="text" class="title rcsTitle" name="cont_sub_list" value="${list[2].cont_sub}"
+                                                <input type="text" class="title rcsTitle" name="cont_sub_list" value="${fn:escapeXml(list[2].cont_sub)}"
                                                        onkeyup="rcsCreate.rcsTitle(this, 0);">
                                                 <div class="select column_4 left-border rcsTitleVal" name="edmDB">
                                                     <div class="value" data="0">개인화 변수</div>

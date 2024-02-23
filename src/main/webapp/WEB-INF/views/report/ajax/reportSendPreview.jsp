@@ -87,9 +87,9 @@
                         <c:if test="${cont_tp eq 'DMTP03'}">
                             <div class="scroll-box">
                                 <div class="round_box">
-                                    <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
+                                    <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
                                         <div class="sms">
-                                            <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
+                                            <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                         </div>
                                     </c:if>
                                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
@@ -107,9 +107,9 @@
                                         <div class="round_box head">
                                             <p>알림톡 도착</p>
                                         </div>
-                                        <c:if test="${!cutil:isEmptyObject(dto.kko_img_url)}">
+                                        <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
                                             <div class="sms">
-                                                <img src="${filePath}${dto.kko_img_url}" onerror="this.src = '/image/bg_none.png'" alt="kko">
+                                                <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                             </div>
                                         </c:if>
                                         <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
