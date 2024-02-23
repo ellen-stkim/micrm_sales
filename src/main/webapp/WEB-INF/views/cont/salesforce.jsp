@@ -345,7 +345,8 @@
                                     </div>
                                 </div>
                                 <div class="byte">
-                                    <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)<br><br>
+                                    <span class="en_font kakao_byte">0</span>
+                                    <span class="en_font">byte</span>(버튼제외)<br><br>
                                     <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
                                     <span class="en_font">※ 이미지 유형 최대 400자</span>
                                 </div>
