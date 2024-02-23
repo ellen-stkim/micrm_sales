@@ -189,7 +189,7 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
         contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        return salesforceService.updateContentList(contentListDto);
+        return salesforceService.updateContentList(contentListDto)
     }
 
     @PostMapping("/{usr_cd}/mobileInfo.ajax")

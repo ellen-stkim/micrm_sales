@@ -932,12 +932,14 @@ class MobileContentServiceImpl : ContentService {
         val len = contentListCreatedto.send_to_list!!.size - 1;
 
         for (i in 0..len) {
+            // 기존 URL 정보 삭제
+            contentDao.deleteRealContUrl(Tblmi_cont_url_lstDto(contentListCreatedto.list_seq!![i]))
             // 항상 3번 Insert 작업을 진행한다.
 
             // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
             val tblmiContLstdto = Tblmi_cont_lstDto()
 
-            tblmiContLstdto.seq = contentListCreatedto.list_seq!![i].toInt()
+            tblmiContLstdto.seq = contentListCreatedto.list_seq!![i]
             tblmiContLstdto.cont_cd = tblmiContMstDto.seq
             tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
             tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
@@ -1007,7 +1009,7 @@ class MobileContentServiceImpl : ContentService {
                     kkoDto.list_val = contentListCreatedto.key_id
                     val kkoSenderLst = contentDao.selectSenderList(kkoDto)
 
-                    if (kkoSenderLst.size > 0) {
+                    if (kkoSenderLst.isNotEmpty()) {
                         tblmiContLstdto.key_id = kkoSenderLst[0].list_val
                     }
 
@@ -1108,106 +1110,110 @@ class MobileContentServiceImpl : ContentService {
                 val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
                 val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
 
-                if (rcsFormatType == "text") {
-                    // RCS 텍스트 형의 경우
-                    if (rcsMsgType == "sms") {
-                        // SMS의 경우
-                        tblmiContLstdto.msg_tp = "DMCH205"
+                when (rcsFormatType) {
+                    "text" -> {
+                        // RCS 텍스트 형의 경우
+                        if (rcsMsgType == "sms") {
+                            // SMS의 경우
+                            tblmiContLstdto.msg_tp = "DMCH205"
 
-                        // RCS SMS key 값 설정
-                        val cdDto = Tblmi_comm_cdDto()
-                        cdDto.grp_id = "RCS_SMS_MSG_ID"
-                        cdDto.cd_id = userInfo.usr_grp_cd
+                            // RCS SMS key 값 설정
+                            val cdDto = Tblmi_comm_cdDto()
+                            cdDto.grp_id = "RCS_SMS_MSG_ID"
+                            cdDto.cd_id = userInfo.usr_grp_cd
 
-                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                        if (codeDto != null) {
-                            tblmiContLstdto.key_id = codeDto.cd_val
+                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                            if (codeDto != null) {
+                                tblmiContLstdto.key_id = codeDto.cd_val
+                            }
+
+                        } else if (rcsMsgType.equals("lms")) {
+                            // LMS의 경우
+                            tblmiContLstdto.msg_tp = "DMCH206"
+
+                            // RCS LMS Key 값 설정
+                            val cdDto = Tblmi_comm_cdDto()
+                            cdDto.grp_id = "RCS_LMS_MSG_ID"
+                            cdDto.cd_id = userInfo.usr_grp_cd
+
+                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                            if (codeDto != null) {
+                                tblmiContLstdto.key_id = codeDto.cd_val
+                            }
+                        }
+                        tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
+                    }
+                    // RCS 가로형 서비스 중단으로 인한 삭제 처리
+                    /*else if (rcsFormatType.equals("horizontal")) {
+                        if (rcsMsgType.equals("left")) {
+
+                            tblmiContLstdto.msg_tp = "DMCH209"
+                        } else if (rcsMsgType.equals("right")) {
+                            tblmiContLstdto.msg_tp = "DMCH210"
                         }
 
-                    } else if (rcsMsgType.equals("lms")) {
-                        // LMS의 경우
-                        tblmiContLstdto.msg_tp = "DMCH206"
+                        val jsonBody = JSONObject()
+                        jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
+                        jsonBody["description"] = contentListCreatedto.rcs_body
+                        tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
+                        tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
 
-                        // RCS LMS Key 값 설정
-                        val cdDto = Tblmi_comm_cdDto()
-                        cdDto.grp_id = "RCS_LMS_MSG_ID"
-                        cdDto.cd_id = userInfo.usr_grp_cd
+                    }*/
+                    "vertical" -> {
+                        // RCS 세로형의 경우
+                        if (rcsMsgType == "tall") {
+                            // tall형 인 경우
+                            tblmiContLstdto.msg_tp = "DMCH207"
 
-                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                        if (codeDto != null) {
-                            tblmiContLstdto.key_id = codeDto.cd_val
-                        }
-                    }
-                    tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
-                }
-                // RCS 가로형 서비스 중단으로 인한 삭제 처리
-                /*else if (rcsFormatType.equals("horizontal")) {
-                    if (rcsMsgType.equals("left")) {
+                            // RCS 세로형 Tall Key 값 설정
+                            val cdDto = Tblmi_comm_cdDto()
+                            cdDto.grp_id = "RCS_L_TALL_MSG_ID"
+                            cdDto.cd_id = userInfo.usr_grp_cd
 
-                        tblmiContLstdto.msg_tp = "DMCH209"
-                    } else if (rcsMsgType.equals("right")) {
-                        tblmiContLstdto.msg_tp = "DMCH210"
-                    }
+                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                            if (codeDto != null) {
+                                tblmiContLstdto.key_id = codeDto.cd_val
+                            }
 
-                    val jsonBody = JSONObject()
-                    jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                    jsonBody["description"] = contentListCreatedto.rcs_body
-                    tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
-                    tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
+                        } else if (rcsMsgType == "medium") {
+                            // medium인 경우
+                            tblmiContLstdto.msg_tp = "DMCH208"
 
-                }*/
-                else if (rcsFormatType == "vertical") {
-                    // RCS 세로형의 경우
-                    if (rcsMsgType == "tall") {
-                        // tall형 인 경우
-                        tblmiContLstdto.msg_tp = "DMCH207"
+                            // RCS 세로형 Medium Key 값 설정
+                            val cdDto = Tblmi_comm_cdDto()
+                            cdDto.grp_id = "RCS_L_MD_MSG_ID"
+                            cdDto.cd_id = userInfo.usr_grp_cd
 
-                        // RCS 세로형 Tall Key 값 설정
-                        val cdDto = Tblmi_comm_cdDto()
-                        cdDto.grp_id = "RCS_L_TALL_MSG_ID"
-                        cdDto.cd_id = userInfo.usr_grp_cd
+                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
+                            if (codeDto != null) {
+                                tblmiContLstdto.key_id = codeDto.cd_val
+                            }
 
-                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                        if (codeDto != null) {
-                            tblmiContLstdto.key_id = codeDto.cd_val
                         }
 
-                    } else if (rcsMsgType == "medium") {
-                        // medium인 경우
-                        tblmiContLstdto.msg_tp = "DMCH208"
+                        // Json 바디 형태로 저장
+                        val jsonBody = JSONObject()
+                        jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
+                        jsonBody["description"] = contentListCreatedto.rcs_body
+                        tblmiContLstdto.cont_body = jsonBody.toString()
+                        //.replace("\\r\\n", "\\\\r\\\\n")
+                        tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
 
-                        // RCS 세로형 Medium Key 값 설정
-                        val cdDto = Tblmi_comm_cdDto()
-                        cdDto.grp_id = "RCS_L_MD_MSG_ID"
-                        cdDto.cd_id = userInfo.usr_grp_cd
-
-                        val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                        if (codeDto != null) {
-                            tblmiContLstdto.key_id = codeDto.cd_val
+                    }
+                    "slide" -> {
+                        // 슬라이드 형의 경우 타입 설정
+                        if (rcsMsgType == "small") {
+                            tblmiContLstdto.msg_tp = "DMCH211"
+                        } else if (rcsMsgType == "medium") {
+                            tblmiContLstdto.msg_tp = "DMCH212"
                         }
-
+                        // RCS 슬라이드 관련 INSERT 처리
+                        rcsSlideSetting(contentListCreatedto, tblmiContLstdto)
                     }
-
-                    // Json 바디 형태로 저장
-                    val jsonBody = JSONObject()
-                    jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                    jsonBody["description"] = contentListCreatedto.rcs_body
-                    tblmiContLstdto.cont_body = jsonBody.toString()
-                    //.replace("\\r\\n", "\\\\r\\\\n")
-                    tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
-
-                } else if (rcsFormatType == "slide") {
-                    // 슬라이드 형의 경우 타입 설정
-                    if (rcsMsgType == "small") {
-                        tblmiContLstdto.msg_tp = "DMCH211"
-                    } else if (rcsMsgType == "medium") {
-                        tblmiContLstdto.msg_tp = "DMCH212"
+                    else -> {
+                        // 에러 발생
+                        logger.error("RCS TYPE 에러 발생")
                     }
-                    // RCS 슬라이드 관련 INSERT 처리
-                    rcsSlideSetting(contentListCreatedto, tblmiContLstdto)
-                } else {
-                    // 에러 발생
-                    logger.error("RCS TYPE 에러 발생")
                 }
 
                 // RCS 버튼 체크 기능 개발
