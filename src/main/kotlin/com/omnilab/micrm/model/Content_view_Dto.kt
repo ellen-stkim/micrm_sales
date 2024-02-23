@@ -27,6 +27,14 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var kko_btn_nm: String? = null  // (친구톡) 버튼 내용
     var kko_img_nm: String? = null // 카카오 이미지 명
     var kko_btn_url: String? = null    // (친구톡) 버튼 클릭 주소
+    var kko_btn_nm2: String? = null  // (친구톡) 버튼 내용
+    var kko_btn_url2: String? = null    // (친구톡) 버튼 클릭 주소
+    var kko_btn_nm3: String? = null  // (친구톡) 버튼 내용
+    var kko_btn_url3: String? = null    // (친구톡) 버튼 클릭 주소
+    var kko_btn_nm4: String? = null  // (친구톡) 버튼 내용
+    var kko_btn_url4: String? = null    // (친구톡) 버튼 클릭 주소
+    var kko_btn_nm5: String? = null  // (친구톡) 버튼 내용
+    var kko_btn_url5: String? = null    // (친구톡) 버튼 클릭 주소
     var kko_img_lst: String? = null //
     var coupon_seq: String? = null // 선택한 쿠폰 시퀀스
     var coupon_nm: String? = null // 선택한 쿠폰명

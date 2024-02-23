@@ -51,28 +51,28 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var mds_img_cd : Int ?= null
 
     // RCS 이미지 번호
-    var rcs_img_cd_1 : Integer ?= null
-    var rcs_img_cd_2 : Integer ?= null
-    var rcs_img_cd_3 : Integer ?= null
-    var rcs_img_cd_4 : Integer ?= null
-    var rcs_img_cd_5 : Integer ?= null
-    var rcs_img_cd_6 : Integer ?= null
+    var rcs_img_cd_1 : Int?= null
+    var rcs_img_cd_2 : Int?= null
+    var rcs_img_cd_3 : Int?= null
+    var rcs_img_cd_4 : Int?= null
+    var rcs_img_cd_5 : Int?= null
+    var rcs_img_cd_6 : Int?= null
 
     // Preview를 위한 카카오 이미지 URL
     var kko_view_img_url : String?= null
 
 
     // Preview를 위한 RCS 이미지 URL
-    var rcs_img_url_1 : String ?= null
-    var rcs_img_url_2 : String ?= null
-    var rcs_img_url_3 : String ?= null
-    var rcs_img_url_4 : String ?= null
-    var rcs_img_url_5 : String ?= null
-    var rcs_img_url_6 : String ?= null
+    var rcs_img_url_1 : String?= null
+    var rcs_img_url_2 : String?= null
+    var rcs_img_url_3 : String?= null
+    var rcs_img_url_4 : String?= null
+    var rcs_img_url_5 : String?= null
+    var rcs_img_url_6 : String?= null
 
     // 수정을 위한 list_seq
     var mst_seq : String?=null
-    var list_seq : List<Integer> ?= null
+    var list_seq : List<Int> ?= null
 
     // Json으로 저장하기 위한 버튼
     // 1. 복사하기 (RBTN01)
@@ -135,7 +135,56 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
 
     // 알림톡 템플릿
     var tmpl_nm: String? = null
-
+    var kkoBtnLst: MutableList<String>? = null
+        set(value) {
+            if(value != null){
+                for(i: Int in 0 until value.size){
+                    when (i) {
+                        0 -> {
+                            kko_btn_nm = value[i]
+                        }
+                        1 -> {
+                            kko_btn_nm2 = value[i]
+                        }
+                        2 -> {
+                            kko_btn_nm3 = value[i]
+                        }
+                        3 -> {
+                            kko_btn_nm4 = value[i]
+                        }
+                        4 -> {
+                            kko_btn_nm5 = value[i]
+                        }
+                    }
+                }
+            }
+            field = value
+        }
+    var kkoBtnUrlLst: MutableList<String>? = null
+        set(value) {
+            if(value != null){
+                for(i: Int in 0 until value.size){
+                    when (i) {
+                        0 -> {
+                            kko_btn_url = value[i]
+                        }
+                        1 -> {
+                            kko_btn_url2 = value[i]
+                        }
+                        2 -> {
+                            kko_btn_url3 = value[i]
+                        }
+                        3 -> {
+                            kko_btn_url4 = value[i]
+                        }
+                        4 -> {
+                            kko_btn_url5 = value[i]
+                        }
+                    }
+                }
+            }
+            field = value
+        }
 
 
     override fun toString(): String {
