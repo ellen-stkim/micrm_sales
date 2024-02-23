@@ -719,12 +719,16 @@ class MobileContentServiceImpl : ContentService {
         val paramMap: MutableMap<String, Any> = HashMap()
         val searchDto = dto as Contents_searchDto
 
-        if (searchDto.searchType == "cont_nm") {
-            searchDto.cont_nm = searchDto.searchValue
-        } else if (searchDto.searchType == "cont_sub") {
-            searchDto.cont_sub = searchDto.searchValue
-        } else if (searchDto.searchType == "use_yn") {
-            searchDto.use_yn = searchDto.searchValue
+        when (searchDto.searchType) {
+            "cont_nm" -> {
+                searchDto.cont_nm = searchDto.searchValue
+            }
+            "cont_sub" -> {
+                searchDto.cont_sub = searchDto.searchValue
+            }
+            "use_yn" -> {
+                searchDto.use_yn = searchDto.searchValue
+            }
         }
 
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 4, 4)

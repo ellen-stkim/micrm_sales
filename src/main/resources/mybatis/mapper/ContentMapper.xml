@@ -213,113 +213,6 @@
 			)
 	</select>
 
-
-	<!--<select id="selectMobileContent" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">
-		SELECT a.seq
-			, a.ch_tp
-			, a.cont_nm
-			, a.cont_grp_cd
-			, a.use_yn
-			, a.del_yn
-			, a.reg_dt
-			, ifnull(a.upd_dt, a.reg_dt) as upd_dt
-			, a.cont_tp_lst
-			, a.cont_tp_lst_nm
-			, b,css.cont_tp
-			, c.cd_nm AS cont_tp_nm
-			, b,css.CONT_SUB
-			, b,css.CONT_TOP_BODY
-			, b,css.CONT_BODY
-			, b,css.send_tp
-			, d.cd_nm AS send_tp_nm
-			, b,css.send_to
-			, b,css.send_nm
-			, b,css.thm_url
-			, b,css.br_yn
-			, b,css.sup_yn
-			, a.msg_tp_lst
-			, b,css.msg_tp
-			, b,css.kko_img_cd
-			, e.IMG_URL AS kko_image_url
-			, b,css.kko_img_url
-			, b,css.kko_BTN_nm
-			, b,css.KKO_BTN_URL
-			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
-			, CONCAT_WS(',', img_1.IMG_NM, img_2.IMG_NM, img_3.IMG_NM, img_4.IMG_NM ,img_5.IMG_NM, img_6.IMG_NM) AS IMG_NM_LST
-			, b,css.RCS_BTN_INS_TP
-			, b,css.RCS_BTN_CNT
-			, b,css.RCS_BTN_OBJ
-			, b,css.RCS_BTN_1
-			, b,css.RCS_BTN_TP_1
-			, b,css.RCS_BTN_CONT_1
-			, b,css.RCS_BTN_2
-			, b,css.RCS_BTN_TP_2
-			, b,css.RCS_BTN_CONT_2
-			, b,css.RCS_BTN_3
-			, b,css.RCS_BTN_TP_3
-			, b,css.RCS_BTN_CONT_3
-			, b,css.RCS_FOOTER
-		FROM (
-			SELECT mst.seq                                         AS seq
-				, mst.ch_tp                                        AS ch_tp
-				, mst.cont_nm                                       AS cont_nm
-				, mst.cont_grp_cd                                   AS cont_grp_cd
-				, mst.use_yn                                        AS use_yn
-				, mst.del_yn                                        AS del_yn
-				, mst.reg_dt                                        AS reg_dt
-				, mst.upd_dt                                        AS upd_dt
-				, GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
-				, Group_concat(lst.cont_tp)           			   AS cont_tp_lst
-				, Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
-				, Group_concat(lst.msg_tp)						   AS msg_tp_lst
-				, CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
-				WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
-				WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
-				ELSE lst.SEQ END 							   AS lst_seq
-			FROM   tblmi_cont_mst AS mst
-				LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
-				INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
-		<where>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
-				and mst.del_yn = #{del_yn}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-				and mst.use_yn = #{use_yn}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
-				and mst.cont_grp_cd = #{cont_grp_cd}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
-				and mst.ch_tp = #{ch_tp}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
-				and mst.CONT_NM like concat('%', #{cont_nm}, '%')
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
-				and lst.cont_sub like concat('%', #{cont_sub}, '%')
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
-				and mst.cont_grp_cd = #{cont_grp_cd}
-			</if>
-		</where>
-		GROUP  BY mst.seq
-		ORDER  BY mst.reg_dt DESC
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
-			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
-		</if>
-		) AS a
-		INNER JOIN tblmi_cont_lst AS b,css ON a.lst_seq = b,css.SEQ
-		INNER JOIN tblmi_comm_cd AS c ON b,css.cont_tp = c.cd_id
-		INNER JOIN tblmi_comm_cd AS d ON b,css.send_tp = d.cd_id
-		LEFT JOIN tblmi_cont_img AS e ON b,css.kko_img_cd = e.seq
-		LEFT JOIN tblmi_cont_img AS img_1 ON b,css.IMG_CD_1 = img_1.seq
-		LEFT JOIN tblmi_cont_img AS img_2 ON b,css.IMG_CD_2 = img_2.seq
-		LEFT JOIN tblmi_cont_img AS img_3 ON b,css.IMG_CD_3 = img_3.seq
-		LEFT JOIN tblmi_cont_img AS img_4 ON b,css.IMG_CD_4 = img_4.seq
-		LEFT JOIN tblmi_cont_img AS img_5 ON b,css.IMG_CD_5 = img_5.seq
-		LEFT JOIN tblmi_cont_img AS img_6 ON b,css.IMG_CD_6 = img_6.seq
-	</select>-->
-
 	<select id="selectMobileContent" parameterType="Tblmi_cont_mstDto" resultType="Contents_lstDto">
 		SELECT a.seq
 			, a.ch_tp
@@ -350,6 +243,14 @@
 			, b.kko_img_url
 			, b.kko_BTN_nm
 			, b.KKO_BTN_URL
+			, b.kko_BTN_nm2
+			, b.KKO_BTN_URL2
+			, b.kko_BTN_nm3
+			, b.KKO_BTN_URL3
+			, b.kko_BTN_nm4
+			, b.KKO_BTN_URL4
+			, b.kko_BTN_nm5
+			, b.KKO_BTN_URL5
 			, b.kko_btn_obj
 			, CONCAT(IFNULL(img_1.img_url,' '),',',IFNULL(img_2.img_url,' '),',',IFNULL(img_3.img_url,' '),',',IFNULL(img_4.img_url,' '),',',IFNULL( img_5.img_url,' '),',',IFNULL(img_6.img_url,' ')) AS IMG_LST
 			, CONCAT(IFNULL(img_1.img_nm,' '), ',' , IFNULL(img_2.img_nm,' '), ',' , IFNULL(img_3.img_nm,' '), ',' , IFNULL(img_4.img_nm,' '), ',' , IFNULL(img_5.img_nm,' '), ',' , IFNULL(img_6.img_nm,' ')) AS IMG_NM_LST
@@ -380,66 +281,66 @@
 			, tmpl.tmpl_msg_tp
 			, tmpl.button_json
 		FROM (
-		SELECT mst.seq                                         AS seq
-		, mst.ch_tp                                        AS ch_tp
-		, mst.cont_nm                                       AS cont_nm
-		, mst.cont_grp_cd                                   AS cont_grp_cd
-		, mst.use_yn                                        AS use_yn
-		, mst.del_yn                                        AS del_yn
-		, mst.reg_dt                                        AS reg_dt
-		, mst.upd_dt                                        AS upd_dt
-		, GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
-		, Group_concat(lst.cont_tp)           			   AS cont_tp_lst
-		, Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
-		, Group_concat(lst.msg_tp)						   AS msg_tp_lst
-		, CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
-		WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
-		WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
-		ELSE lst.SEQ END 							   AS lst_seq
-		, IF(Find_in_set('DMTP05', Group_concat(lst.cont_tp)),lst.KEY_ID,'')  AS key_id
-		FROM   tblmi_cont_mst AS mst
-		LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
-		INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
-		<where>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
-				and mst.del_yn = #{del_yn}
+			SELECT mst.seq                                         AS seq
+				, mst.ch_tp                                        AS ch_tp
+				, mst.cont_nm                                       AS cont_nm
+				, mst.cont_grp_cd                                   AS cont_grp_cd
+				, mst.use_yn                                        AS use_yn
+				, mst.del_yn                                        AS del_yn
+				, mst.reg_dt                                        AS reg_dt
+				, mst.upd_dt                                        AS upd_dt
+				, GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
+				, Group_concat(lst.cont_tp)           			   AS cont_tp_lst
+				, Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
+				, Group_concat(lst.msg_tp)						   AS msg_tp_lst
+				, CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+					WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+					WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+				ELSE lst.SEQ END 							   AS lst_seq
+				, IF(Find_in_set('DMTP05', Group_concat(lst.cont_tp)),lst.KEY_ID,'')  AS key_id
+			FROM   tblmi_cont_mst AS mst
+				LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
+				INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+			<where>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+					and mst.del_yn = #{del_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+					and mst.use_yn = #{use_yn}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+					and mst.cont_grp_cd = #{cont_grp_cd}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
+					and mst.ch_tp = #{ch_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
+					and mst.CONT_NM like concat('%', #{cont_nm}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
+					and lst.cont_sub like concat('%', #{cont_sub}, '%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
+					and mst.cont_grp_cd = #{cont_grp_cd}
+				</if>
+			</where>
+			GROUP  BY mst.seq
+			ORDER  BY mst.reg_dt DESC
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+				LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
 			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
-				and mst.use_yn = #{use_yn}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
-				and mst.cont_grp_cd = #{cont_grp_cd}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
-				and mst.ch_tp = #{ch_tp}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
-				and mst.CONT_NM like concat('%', #{cont_nm}, '%')
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_sub)">
-				and lst.cont_sub like concat('%', #{cont_sub}, '%')
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
-				and mst.cont_grp_cd = #{cont_grp_cd}
-			</if>
-		</where>
-		GROUP  BY mst.seq
-		ORDER  BY mst.reg_dt DESC
-		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
-			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
-		</if>
 		) AS a
-		INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
-		INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
-		INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
-		LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
-		LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
-		LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
-		LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
-		LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
-		LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
-		LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
-		LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON a.key_id = tmpl.tmpl_cd
+			INNER JOIN tblmi_cont_lst AS b ON a.lst_seq = b.SEQ
+			INNER JOIN tblmi_comm_cd AS c ON b.cont_tp = c.cd_id
+			INNER JOIN tblmi_comm_cd AS d ON b.send_tp = d.cd_id
+			LEFT JOIN tblmi_cont_img AS e ON b.kko_img_cd = e.seq
+			LEFT JOIN tblmi_cont_img AS img_1 ON b.IMG_CD_1 = img_1.seq
+			LEFT JOIN tblmi_cont_img AS img_2 ON b.IMG_CD_2 = img_2.seq
+			LEFT JOIN tblmi_cont_img AS img_3 ON b.IMG_CD_3 = img_3.seq
+			LEFT JOIN tblmi_cont_img AS img_4 ON b.IMG_CD_4 = img_4.seq
+			LEFT JOIN tblmi_cont_img AS img_5 ON b.IMG_CD_5 = img_5.seq
+			LEFT JOIN tblmi_cont_img AS img_6 ON b.IMG_CD_6 = img_6.seq
+			LEFT JOIN tblmi_kko_at_tmpl AS tmpl ON a.key_id = tmpl.tmpl_cd
 	</select>
 
 	<!-- 검색을 위해 상위,하위 컨텐츠 연결한 MoblieContent Cnt 뽑아내기 -->
