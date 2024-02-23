@@ -107,7 +107,19 @@
                                     ${cutil:replaceBr(content.cont_body)}
                                 </p>
                                 <c:if test="${not empty content.kko_btn_url}">
-                                <a href="${content.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${content.kko_btn_nm}</a>
+                                <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm}</a>
+                                </c:if>
+                                <c:if test="${not empty content.kko_btn_url2}">
+                                    <a href="${content.kko_btn_url2}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm2}</a>
+                                </c:if>
+                                <c:if test="${not empty content.kko_btn_url3}">
+                                    <a href="${content.kko_btn_url3}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm3}</a>
+                                </c:if>
+                                <c:if test="${not empty content.kko_btn_url4}">
+                                    <a href="${content.kko_btn_url4}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm4}</a>
+                                </c:if>
+                                <c:if test="${not empty content.kko_btn_url5}">
+                                    <a href="${content.kko_btn_url5}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm5}</a>
                                 </c:if>
                             </div>
                     </div>
