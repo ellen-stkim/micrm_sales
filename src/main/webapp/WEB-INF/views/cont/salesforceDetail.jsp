@@ -428,10 +428,10 @@
                                                     </div>
                                                 </div>
                                             </c:if>
+                                            <div class="flex_box" style="justify-content: right;">
+                                                <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="flex_box" style="justify-content: right;">
-                                        <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
                                     </div>
                                     <div class="input_area kko_area" id="kko_at" ${cont_tp eq "DMTP05"?'': 'hidden'}>
                                         <div class="block">
