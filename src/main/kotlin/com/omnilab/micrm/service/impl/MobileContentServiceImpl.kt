@@ -908,12 +908,7 @@ class MobileContentServiceImpl : ContentService {
      */
 
     override fun updateContentLst(dto: Tblmi_cont_lstDto): Map<String, Any> {
-
-
         val contentListCreatedto = dto as Content_list_CreateDto
-
-        //logger.error("UPDATE dto :" + contentListCreatedto.toString())
-
         val userInfo = UsefulUtils.sessionUser()
         val statusMap: MutableMap<String, Any> = HashMap()
         val tblmiContMstDto = Tblmi_cont_mstDto()
@@ -958,7 +953,6 @@ class MobileContentServiceImpl : ContentService {
 
             // 인덱스 번호 0 : 카카오
             if (i == 0) {
-
                 // 체크 여부에 따라 USE_YN 설정
                 if (formatList!!.contains("kakao")) {
                     tblmiContLstdto.use_yn = "Y"
@@ -967,10 +961,10 @@ class MobileContentServiceImpl : ContentService {
                 }
 
                 val kkoOption = contentListCreatedto.kko_option!!.trim()
-                if (kkoOption.equals("ad")) {
+                if (kkoOption == "ad") {
                     // 광고 처리
                     tblmiContLstdto.send_tp = "SENDTP01"
-                } else if (kkoOption.equals("guide")) {
+                } else if (kkoOption == "guide") {
                     // 안내 처리
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
@@ -1031,6 +1025,14 @@ class MobileContentServiceImpl : ContentService {
                     tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
                     tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
                     tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+                    tblmiContLstdto.kko_btn_nm2 = contentListCreatedto.kko_btn_nm2
+                    tblmiContLstdto.kko_btn_url2 = contentListCreatedto.kko_btn_url2
+                    tblmiContLstdto.kko_btn_nm3 = contentListCreatedto.kko_btn_nm3
+                    tblmiContLstdto.kko_btn_url3 = contentListCreatedto.kko_btn_url3
+                    tblmiContLstdto.kko_btn_nm4 = contentListCreatedto.kko_btn_nm4
+                    tblmiContLstdto.kko_btn_url4 = contentListCreatedto.kko_btn_url4
+                    tblmiContLstdto.kko_btn_nm5 = contentListCreatedto.kko_btn_nm5
+                    tblmiContLstdto.kko_btn_url5 = contentListCreatedto.kko_btn_url5
                 }
             }
 
@@ -1046,10 +1048,10 @@ class MobileContentServiceImpl : ContentService {
                 // SMS 광고 , 안내 유형 선택
                 val smsOption = contentListCreatedto.sms_option!!.trim()
 
-                if (smsOption.equals("ad")) {
+                if (smsOption == "ad") {
                     // 광고 처리
                     tblmiContLstdto.send_tp = "SENDTP01"
-                } else if (smsOption.equals("guide")) {
+                } else if (smsOption == "guide") {
                     // 안내 처리
                     tblmiContLstdto.send_tp = "SENDTP02"
                 }
@@ -1075,12 +1077,12 @@ class MobileContentServiceImpl : ContentService {
 
                 // RCS 포멧타입 변경에 따라 Key 값이 바뀔 수 있으므로 활성화 해준다
 
-                tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1?.toInt()
-                tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2?.toInt()
-                tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3?.toInt()
-                tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4?.toInt()
-                tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5?.toInt()
-                tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6?.toInt()
+                tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1
+                tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2
+                tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3
+                tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4
+                tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5
+                tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6
 
                 // USE_YN 처리
                 if (formatList!!.contains("rcs")) {
@@ -1106,9 +1108,9 @@ class MobileContentServiceImpl : ContentService {
                 val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
                 val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
 
-                if (rcsFormatType.equals("text")) {
+                if (rcsFormatType == "text") {
                     // RCS 텍스트 형의 경우
-                    if (rcsMsgType.equals("sms")) {
+                    if (rcsMsgType == "sms") {
                         // SMS의 경우
                         tblmiContLstdto.msg_tp = "DMCH205"
 
@@ -1154,9 +1156,9 @@ class MobileContentServiceImpl : ContentService {
                     tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
 
                 }*/
-                else if (rcsFormatType.equals("vertical")) {
+                else if (rcsFormatType == "vertical") {
                     // RCS 세로형의 경우
-                    if (rcsMsgType.equals("tall")) {
+                    if (rcsMsgType == "tall") {
                         // tall형 인 경우
                         tblmiContLstdto.msg_tp = "DMCH207"
 
@@ -1170,7 +1172,7 @@ class MobileContentServiceImpl : ContentService {
                             tblmiContLstdto.key_id = codeDto.cd_val
                         }
 
-                    } else if (rcsMsgType.equals("medium")) {
+                    } else if (rcsMsgType == "medium") {
                         // medium인 경우
                         tblmiContLstdto.msg_tp = "DMCH208"
 
@@ -1194,11 +1196,11 @@ class MobileContentServiceImpl : ContentService {
                     //.replace("\\r\\n", "\\\\r\\\\n")
                     tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
 
-                } else if (rcsFormatType.equals("slide")) {
+                } else if (rcsFormatType == "slide") {
                     // 슬라이드 형의 경우 타입 설정
-                    if (rcsMsgType.equals("small")) {
+                    if (rcsMsgType == "small") {
                         tblmiContLstdto.msg_tp = "DMCH211"
-                    } else if (rcsMsgType.equals("medium")) {
+                    } else if (rcsMsgType == "medium") {
                         tblmiContLstdto.msg_tp = "DMCH212"
                     }
                     // RCS 슬라이드 관련 INSERT 처리
@@ -1209,7 +1211,7 @@ class MobileContentServiceImpl : ContentService {
                 }
 
                 // RCS 버튼 체크 기능 개발
-                if (rcsFormatType.equals("slide")) {
+                if (rcsFormatType == "slide") {
                     // Slide 여러개 Button 처리
                     rcsButtonMakeJsonStringSlide(contentListCreatedto, tblmiContLstdto)
                 } else {
@@ -1235,37 +1237,38 @@ class MobileContentServiceImpl : ContentService {
             if (i == 0) {
                 // 카카오 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
-                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
-                    contUrlDto.url_tag = "img"
-                    contUrlDto.url = contentListCreatedto.kko_img_url
-                    contUrlDto.url_id = "kkoImg001"
-                    contUrlDto.cont_lst_cd = lastSeq
-                    contentDao.insertContentUrl(contUrlDto)
+                    insertContentUrl("img", contentListCreatedto.kko_img_url!!, "kkoImg001", lastSeq!!)
                 }
                 // btn 처리
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
-                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
-                    contUrlDto.url_tag = "btn"
-                    contUrlDto.url = contentListCreatedto.kko_btn_url
-                    contUrlDto.url_id = "kkoBtn001"
-                    contUrlDto.cont_lst_cd = lastSeq
-                    contentDao.insertContentUrl(contUrlDto)
+                    insertContentUrl("btn", contentListCreatedto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
                 }
-                // 카카오 본문 a 링크 저장 테스트
-                val url_kakao_body = contentListCreatedto.kakao_body
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url2)) {
+                    insertContentUrl("btn", contentListCreatedto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
+                }
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url3)) {
+                    insertContentUrl("btn", contentListCreatedto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
+                }
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url4)) {
+                    insertContentUrl("btn", contentListCreatedto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
+                }
+                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url5)) {
+                    insertContentUrl("btn", contentListCreatedto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
+                }
 
-                if (url_kakao_body?.contains("{{") == true) {
+                // 카카오 본문 a 링크 저장 테스트
+                val urlKakaoBody = contentListCreatedto.kakao_body
+                if (urlKakaoBody?.contains("{{") == true) {
 
                     //logger.error("contain url kakao_body : " + url_kakao_body)
 
                     val regex = "\\{\\{[^{]+}}"
                     val p = Pattern.compile(regex)
-                    val matcher = p.matcher(url_kakao_body)
+                    val matcher = p.matcher(urlKakaoBody)
 
                     var start = 0
                     var chk = true
-                    var i = 0
-                    var idx = 0;
+                    var idx = 0
 
                     while (chk) {
                         if (matcher.find(start)) {
@@ -1281,9 +1284,9 @@ class MobileContentServiceImpl : ContentService {
                                 contUrlDto.url_tag = "a"
                                 contUrlDto.url = url
                                 if (idx >= 10) {
-                                    contUrlDto.url_id = "kkoTrk0" + idx
+                                    contUrlDto.url_id = "kkoTrk0$idx"
                                 } else {
-                                    contUrlDto.url_id = "kkoTrk00" + idx
+                                    contUrlDto.url_id = "kkoTrk00$idx"
                                 }
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
@@ -1298,12 +1301,7 @@ class MobileContentServiceImpl : ContentService {
             if (i == 1) {
                 // 모바일 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
-                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
-                    contUrlDto.url_tag = "a"
-                    contUrlDto.url = contentListCreatedto.mms_imgurl
-                    contUrlDto.url_id = "mmsImg001"
-                    contUrlDto.cont_lst_cd = lastSeq
-                    contentDao.insertContentUrl(contUrlDto)
+                    insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq!!)
                 }
 
                 /*if (!CommonUtils.isEmptyObject(contentListCreatedto.sms_trackinglink)) {
@@ -1325,8 +1323,7 @@ class MobileContentServiceImpl : ContentService {
 
                     var start = 0
                     var chk = true
-                    var i = 0
-                    var idx = 0;
+                    var idx = 0
 
                     while (chk) {
                         if (matcher.find(start)) {
@@ -1359,41 +1356,25 @@ class MobileContentServiceImpl : ContentService {
 
             if (i == 2) {
                 //logger.error("rcs 버튼 url");
-                val urlLen = contentListCreatedto?.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
+                val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
 
                 if (urlLen != null) {
                     // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
-                    for (i in 0 until urlLen) {
-
-                        val urlValue = contentListCreatedto?.url_value?.get(i)?.trim()
-                        val fallback_url_position = contentListCreatedto?.fallback_url_04?.get(i)?.trim()
-                        val fallback_url_query = contentListCreatedto?.fallback_url_05?.get(i)?.trim()
+                    for (j in 0 until urlLen) {
+                        val urlValue = contentListCreatedto.url_value?.get(j)?.trim()
+                        val fallbackUrlPosition = contentListCreatedto.fallback_url_04?.get(j)?.trim()
+                        val fallbackUrlQuery = contentListCreatedto.fallback_url_05?.get(j)?.trim()
 
                         if (!CommonUtils.isEmptyObject(urlValue)) {
-                            val contUrlDto = Tblmi_cont_url_lstDto()
-                            contUrlDto.url_tag = "btn"
-                            contUrlDto.url = urlValue
-                            contUrlDto.url_id = "urlBtn" + (i + 1)
-                            contUrlDto.cont_lst_cd = lastSeq
-                            contentDao.insertContentUrl(contUrlDto)
+                            insertContentUrl("btn", urlValue!!, "urlBtn" + (j + 1), lastSeq!!)
                         }
 
-                        if (!CommonUtils.isEmptyObject(fallback_url_position)) {
-                            val contUrlDto = Tblmi_cont_url_lstDto()
-                            contUrlDto.url_tag = "btn"
-                            contUrlDto.url = fallback_url_position
-                            contUrlDto.url_id = "fallPosiBtn" + (i + 1)
-                            contUrlDto.cont_lst_cd = lastSeq
-                            contentDao.insertContentUrl(contUrlDto)
+                        if (!CommonUtils.isEmptyObject(fallbackUrlPosition)) {
+                            insertContentUrl("btn", fallbackUrlPosition!!, "fallPosiBtn" + (j + 1), lastSeq!!)
                         }
 
-                        if (!CommonUtils.isEmptyObject(fallback_url_query)) {
-                            val contUrlDto = Tblmi_cont_url_lstDto()
-                            contUrlDto.url_tag = "btn"
-                            contUrlDto.url = fallback_url_query
-                            contUrlDto.url_id = "fallQueryBtn" + (i + 1)
-                            contUrlDto.cont_lst_cd = lastSeq
-                            contentDao.insertContentUrl(contUrlDto)
+                        if (!CommonUtils.isEmptyObject(fallbackUrlQuery)) {
+                            insertContentUrl("btn", fallbackUrlQuery!!, "fallQueryBtn" + (j + 1), lastSeq!!)
                         }
                     }
                 }
@@ -2492,6 +2473,13 @@ class MobileContentServiceImpl : ContentService {
 
         return paramMap
     }
-
+    private fun insertContentUrl(urlTag: String, url: String, urlId: String, contLstCd: Int) {
+        val contUrlDto = Tblmi_cont_url_lstDto()
+        contUrlDto.url_tag = urlTag
+        contUrlDto.url = url
+        contUrlDto.url_id = urlId
+        contUrlDto.cont_lst_cd = contLstCd
+        contentDao.insertContentUrl(contUrlDto)
+    }
 }
 
