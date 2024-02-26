@@ -1410,11 +1410,12 @@ class ContentController  {
     @PostMapping("/kko/tmplUpate.service")
     fun tmplUpdateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
                           , @RequestBody dto : Kko_at_tmplDto, @RequestParam seq : Int
-                          , @RequestParam(value="img_seq", required = false) img_seq : String,
-                          @RequestParam(value="item_img_seq", required = false) item_img_seq :String , principal: Principal): Any? {
-        val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,principal.name,"Y")
-        var updDto  =Tblmi_kko_at_tmplDto(img_seq.toIntOrNull(),item_img_seq.toIntOrNull())
-        return kkoMsgService.updateTmpl(dto,tmplDto,updDto)
+                          , @RequestParam(value="img_seq", required = false) imgSeq : String
+                          , @RequestParam(value="item_img_seq", required = false) itemImgSeq :String
+                          , principal: Principal): Any? {
+        val tmplDto = AtTmpl_searchDto(seq, principal.name,"Y")
+        val updDto  =Tblmi_kko_at_tmplDto(imgSeq.toIntOrNull(), itemImgSeq.toIntOrNull())
+        return kkoMsgService.updateTmpl(dto, tmplDto,updDto)
     }
 
     /**
@@ -1453,8 +1454,7 @@ class ContentController  {
      */
     @ResponseBody
     @PostMapping("/kko/updTmplSt.service")
-    fun updTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
-                  , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+    fun updTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
         return kkoMsgService.updAtTmplData(searchDto,principal.name)
     }
 

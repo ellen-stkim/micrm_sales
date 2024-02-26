@@ -9,7 +9,6 @@ import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
-import com.omnilab.micrm.model.table.kakao.AtButtonDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.service.KkoMsgService
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 
 @Service("KkoMsgServiceImpl")
@@ -36,6 +34,8 @@ class KkoMsgServiceImpl : KkoMsgService {
     @Autowired
     @Qualifier("KkoRestApiServiceImpl")
     private lateinit var kkoRestApiService: KkoRestApiService
+
+    val gson :Gson = GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create()
 
     override fun selectAtTemplViewLst(dto: AtTmpl_searchDto): Map<String, Any> {
         val paramMap: MutableMap<String, Any> = HashMap()
@@ -203,14 +203,13 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     override fun updateTmpl( dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto, updDto: Tblmi_kko_at_tmplDto ): Map<String, Any> {
-        val map :MutableMap<String,Any> = mutableMapOf()
-        logger.error("{}",dto)
+        val map :MutableMap<String,Any> = HashMap<String, Any>()
         searchTmplDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto,kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
+        val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto, kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
 
         // 카카오 템플릿 변경
         val result:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(newDto)
-        val data:MutableMap<String,Any> = result.get("data") as MutableMap<String, Any>
+        val data:MutableMap<String,Any> = result["data"] as MutableMap<String, Any>
 
         try {
             if(result["result"] as Boolean){
@@ -267,7 +266,6 @@ class KkoMsgServiceImpl : KkoMsgService {
             map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
             map["msg"] = "템플릿 수정에 실패했습니다. 관리자에게 문의 바랍니다."
         }
-
         return map
     }
 
@@ -324,20 +322,15 @@ class KkoMsgServiceImpl : KkoMsgService {
         val map :MutableMap<String,Any> = mutableMapOf()
         try {
             val dto: Tblmi_kko_at_tmplDto? = kkoAtTmplDao.selKkoAtTmplByGrpCd(searchDto)
-
             if (!CommonUtils.isEmptyObject(dto)) {
                 // 비즈메세지 데이터 조회
                 val tmplResult: MutableMap<String, Any> = kkoRestApiService.getTmplDetail(dto!!.tmpl_cd, dto.send_key)
-
                 if (tmplResult["result"] as Boolean) {
                     val tempData: MutableMap<String, Any> = tmplResult["data"] as MutableMap<String, Any>
                     if ("API_200" == tempData["code"]) {
                         if(!CommonUtils.isEmptyObject(tempData["data"])){
                             val data: MutableMap<String, Any> = tempData["data"] as MutableMap<String, Any>
-
-                            val gson :Gson = GsonBuilder().create()
                             val cmtLstStr = data["templateComments"]
-
                             val tmplSt :String = data["templateStatus"] as String
                             val kepSt :String = data["kepStatus"] as String
                             val tmplDormant :String = if(data["templateDormant"] as Boolean) "Y" else "N"  //휴면
@@ -346,7 +339,6 @@ class KkoMsgServiceImpl : KkoMsgService {
                             val updDto = Tblmi_kko_at_tmplDto(dto.seq, tmplSt, kepSt,tmplDormant,tmplBlock)
                             updDto.cmt_json = gson.toJson(cmtLstStr)
                             updDto.upd_id = updId
-
                             kkoAtTmplDao.updTmplDtoBySeq(updDto)
 
                             map["status"] = HttpServletResponse.SC_OK
@@ -355,7 +347,7 @@ class KkoMsgServiceImpl : KkoMsgService {
                     } else {
                         logger.error("템플릿 업테이트 에러 {}", tmplResult)
                         map["status"] = HttpServletResponse.SC_BAD_REQUEST
-                        map["msg"] = tempData.get("message") as String
+                        map["msg"] = tempData["message"] as String
                     }
                 } else {
                     logger.error("템플릿 업테이트 에러 {}", tmplResult)
@@ -365,6 +357,7 @@ class KkoMsgServiceImpl : KkoMsgService {
             if(CommonUtils.isEmptyObject(map["status"])){
                 map["status"] = HttpServletResponse.SC_BAD_REQUEST
                 map["msg"] = "에러가 발생했습니다. 새로고침 후 다시 시도해주세요."
+                logger.error("status null {}", map)
             }
         } catch (e: Exception) {
             logger.error("", e)
@@ -523,7 +516,6 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     private fun getAtTmplDataByViewDto(dto: Kko_at_tmplDto, curDto: AtTmpl_viewDto): Kko_at_tmplDto {
-        val gson = GsonBuilder().create()
         dto.templateName =  curDto.tmpl_nm
         dto.templateCode =  curDto.tmpl_cd
         dto.templateContent =  curDto.tmpl_cont
@@ -543,10 +535,9 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.categoryCode =  curDto.cate_cd
         dto.templateHeader =  curDto.tmpl_header
 
-//        dto.buttons = gson.fromJson(curDto.button_json, object : TypeToken<MutableList<AtButtonDto>>() {}.type)
         dto.templateItem = gson.fromJson(curDto.item_json, object : TypeToken<HashMap<String, Any>>() {}.type)
         dto.templateItemHighlight =  gson.fromJson(curDto.item_highlight_json, object : TypeToken<HashMap<String, Any>>() {}.type)
-
+        logger.error("dto {}", dto)
         return dto
     }
 
@@ -574,7 +565,6 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     private fun getTmplDtoByKkoDto(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Tblmi_kko_at_tmplDto {
-        val gson = GsonBuilder().create()
         tmplDto.tmpl_nm = dto.templateName
         tmplDto.tmpl_cd = dto.templateCode
         tmplDto.send_key = dto.send_key
@@ -598,8 +588,6 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     private fun getTmplDtoByUpdKkoDto(dto: Kko_at_tmplDto, tmplDto: Tblmi_kko_at_tmplDto): Tblmi_kko_at_tmplDto {
-
-        val gson = GsonBuilder().create()
         tmplDto.tmpl_nm = dto.newTemplateName
         tmplDto.tmpl_cd = dto.newTemplateCode
         tmplDto.send_key = dto.send_key
