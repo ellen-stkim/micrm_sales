@@ -164,7 +164,6 @@ public class CommonUtils {
             }
         }
         int sum = en + ko + etc;
-        log.error("checkByteLength: {}, {}", str, sum);
         return (sum <= limitByte);
     }
 
