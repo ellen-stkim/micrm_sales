@@ -40,7 +40,6 @@ class SecurityConfig {
             // firewall.setAllowUrlEncodedPercent(true);
             firewall.setAllowUrlEncodedSlash(true)
             firewall.setAllowUrlEncodedDoubleSlash(true)
-
             web.httpFirewall(firewall)
         }
     }

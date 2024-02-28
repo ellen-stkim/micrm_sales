@@ -309,7 +309,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                     "${kakaoCont.kko_btn_nm}"
                     , "WL"
                     , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"
-                    , "$trackURL/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"))
+                    , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"))
                 if(kakaoBtnUrl2 != null){
                     lst.add(ButtonJsonDto(
                         "${kakaoCont.kko_btn_nm2}"

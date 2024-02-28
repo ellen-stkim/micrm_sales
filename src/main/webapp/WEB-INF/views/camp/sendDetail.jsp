@@ -319,8 +319,7 @@
                                         </span>
                                             </div>
                                             <div>
-                                                <input type="button" value="컨텐츠 미리보기" class="btn_sm_line size"
-                                                       onclick="preView('${g.cont_id}')"/>
+                                                <input type="button" value="컨텐츠 미리보기" class="btn_sm_line size" onclick="preView('${g.cont_id}')"/>
                                             </div>
                                         </td>
                                         <td>
@@ -614,7 +613,6 @@
         const res = function (response) {
             const $doc = new DOMParser().parseFromString(response, "text/html");
             $("#tpreview").html($("#content-analysis", $doc).html());
-
             checkSmsTap();
 
             // RCS일 경우 제목 넣어주기

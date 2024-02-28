@@ -65,7 +65,7 @@ class OtherConfig {
         executor.corePoolSize = 10
         executor.maxPoolSize = 100
         executor.keepAliveSeconds = 7200
-        executor.setQueueCapacity(30)
+        executor.queueCapacity = 30
         executor.setAllowCoreThreadTimeOut(false)
         executor.setWaitForTasksToCompleteOnShutdown(false)
         return executor

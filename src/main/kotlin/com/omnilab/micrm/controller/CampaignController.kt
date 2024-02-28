@@ -2,11 +2,7 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Contents_searchDto
-import com.omnilab.micrm.model.SendAuthLstDto
-import com.omnilab.micrm.model.SendCampaignDto
 import com.omnilab.micrm.model.Program_SearchDto
-import com.omnilab.micrm.model.Group_SearchDto
-import com.omnilab.micrm.model.SendTarget_lstDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.service.*
 import org.slf4j.LoggerFactory
@@ -18,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
-import kotlin.collections.HashMap
 
 
 @Controller
@@ -96,12 +91,12 @@ class CampaignController {
      * @title : 캠페인 상세
      */
     @GetMapping("/st/sendDetail.mi")
-    fun sendDetail(@RequestParam(value = "pid", required = true) pro_id: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd!!
+    fun sendDetail(@RequestParam(value = "proId", required = true) proId: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd!!
         val view = ModelAndView("camp/sendDetail")
-        val map = campaignServiceImpl.getProgramInfo(pro_id, usr_grp_cd, false)
+        val map = campaignServiceImpl.getProgramInfo(proId, usrGrpCd, false)
 
-        val reportCampIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()  // 결과 페이지 연결
+        val reportCampIds  = reportService.getCampMstContIdByProId(proId)!!.toTypedArray()  // 결과 페이지 연결
         view.addObject("reportSize",reportCampIds.size)
         
         view.addObject("dto", map["programDto"])
@@ -157,8 +152,8 @@ class CampaignController {
      * @title : 발송된 콘텐츠 미리보기
      */
     @PostMapping("/sendContcpPreview.ajax")
-    fun sendContcpPreview(@RequestParam("cont_id") cont_id: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val dto = Tblmicp_cont_mstDto(cont_id.toInt(), UsefulUtils.sessionUser().usr_grp_cd!!, "Y")
+    fun sendContcpPreview(@RequestParam("cont_id") contId: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        val dto = Tblmicp_cont_mstDto(contId.toInt(), UsefulUtils.sessionUser().usr_grp_cd!!, "Y")
         val view = ModelAndView("camp/ajax/sendPreview")
         view.addObject("list", campaignServiceImpl.getContentPreview(dto))
         view.addObject("filePath", sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val)

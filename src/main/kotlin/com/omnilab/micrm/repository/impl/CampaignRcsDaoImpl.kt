@@ -350,7 +350,9 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                     callbackDto.kko_body = kakaoBody
                     callbackDto.kko_key = kakaoKey
                     if(kakaoBtnUrl != null){
-                        callbackDto.kko_btn = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
+                        callbackDto.kko_btn = "{\"button\":[{\"name\":\"${kakaoCont.kko_btn_nm}\",\"type\":\"WL\"" +
+                                ",\"url_pc\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"" +
+                                ",\"url_mobile\":\"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}\"}]}"
                     }
                     if(kakaoCont.kko_image_file_nm != null){
                         callbackDto.kko_img_path = imgPath + kakaoCont.kko_image_file_nm

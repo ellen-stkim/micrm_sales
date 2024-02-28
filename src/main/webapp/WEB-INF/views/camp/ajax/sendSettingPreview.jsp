@@ -33,9 +33,9 @@
                 </c:when>
                 <c:when test="${dto.cont_tp eq 'DMTP03'}">
                 <div class="round_box">
-                    <c:if test="${!cutil:isEmptyObject(dto.kko_image_url)}">
+                    <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
                     <div class="sms">
-                        <img src="${filePath}${dto.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="sms">
+                        <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="sms">
                     </div>
                     </c:if>
                     <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
