@@ -43,7 +43,7 @@
 				AND hst.send_req_day <![CDATA[ <= ]]> #{end_dt}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(monthly_dt)">
-				AND hst.send_req_day >= #{monthly_dt} and hst.send_req_day <![CDATA[ < ]]> DATE_ADD(LAST_DAY(#{monthly_dt}), INTERVAL 1 DAY)
+				AND (hst.send_req_day >= DATE_ADD(DATE_ADD(LAST_DAY(#{monthly_dt}), INTERVAL 1 DAY), INTERVAL -1 MONTH) and hst.send_req_day <![CDATA[ < ]]> DATE_ADD(LAST_DAY(#{monthly_dt}), INTERVAL 1 DAY))
 			</if>
 		</where>
 		GROUP BY send_mon , hst.msg_tp
