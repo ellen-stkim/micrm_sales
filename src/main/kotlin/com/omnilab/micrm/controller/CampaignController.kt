@@ -91,14 +91,13 @@ class CampaignController {
      * @title : 캠페인 상세
      */
     @GetMapping("/st/sendDetail.mi")
-    fun sendDetail(@RequestParam(value = "proId", required = true) proId: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun sendDetail(@RequestParam(value = "pid", required = true) proId: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd!!
         val view = ModelAndView("camp/sendDetail")
         val map = campaignServiceImpl.getProgramInfo(proId, usrGrpCd, false)
 
         val reportCampIds  = reportService.getCampMstContIdByProId(proId)!!.toTypedArray()  // 결과 페이지 연결
         view.addObject("reportSize",reportCampIds.size)
-        
         view.addObject("dto", map["programDto"])
         view.addObject("targetDto", map["targetDto"])
         view.addObject("campLst", map["campaignLst"])
