@@ -175,7 +175,7 @@
                                             <p>${cutil:replaceBr(dto.cont_body)}</p>
                                             <c:forEach var="btn" items="${dto.cont_btn_json[0]['suggestions']}">
                                                 <div class="rcs_action">
-                                                        ${btn['action']['displayText']}
+                                                    ${btn['action']['displayText']}
                                                 </div>
                                             </c:forEach>
                                         </div>
@@ -255,70 +255,76 @@
             </div>
         </c:forEach>
     </div>
-    <div class="disnone"><textarea name="cont_body" id="cont_body" cols="30" rows="10"
-                                   style="visibility: hidden; display: none;">${dto.cont_body}</textarea></div>
-    <div class="click-data-table" id="click-data-table">
-        <table class="table target_tbl" summary="table">
-            <colgroup>
-                <col width="140"/>
-                <col width="140"/>
-                <col width="140"/>
-                <col width="140"/>
-            </colgroup>
-            <thead>
-            <tr>
-                <th>
-                    <span>클릭 영역
-                        <div class="help_box">
-                            <span class="help_btn" name="click-help"></span>
-                            <label class="disnone">클릭 시 해당 링크로 이동</label>
-                        </div>
-                    </span>
-                </th>
-                <th>
-                    <span>클릭 수
-                        <div class="help_box">
-                            <span class="help_btn" name="click-help"></span>
-                            <label class="disnone">특정 링크를 접속한 횟수의 총합</label>
-                        </div>
-                    </span>
-                </th>
-                <th>
-                    <span>클릭자 수
-                        <div class="help_box">
-                            <span class="help_btn" name="click-help"></span>
-                            <label class="disnone">특정 링크를 접속한 고객의 수 (중복 X)</label>
-                        </div>
-                    </span>
-                </th>
-                <th>
-                    <span>링크 당 클릭
-                        <div class="help_box">
-                            <span class="help_btn" name="click-help"></span>
-                            <label class="disnone">클릭수 / 클릭자 수</label>
-                        </div>
-                    </span>
-                </th>
-            </tr>
-            </thead>
-            <c:forEach var="listmap" items="${list}" varStatus="status">
-                <c:set var="cont_tp" value="${listmap.dto.cont_tp}"/>
-                <tbody id="tbody_${cont_tp}" class="${status.count ==1 ? "" : "disnone"}">
-                <c:forEach var="item" items="${listmap.url}">
+    <div class="disnone">
+        <textarea name="cont_body" id="cont_body" cols="30" rows="10"style="visibility: hidden; display: none;">${dto.cont_body}</textarea>
+    </div>
+    <%----%>
+    <div id="click-data-table">
+        <div class="click-data-table">
+            <table class="table target_tbl" summary="table">
+                <colgroup>
+                    <col style="width: 25%" span="4"/>
+                </colgroup>
+                <thead>
                     <tr>
-                        <td>
-                            <a href="${item.url}" class="help_box" target="_blank" rel="noopener">
-                                <span class="link_name" name="click-help">${item.url_id}</span>
-                                <label class="disnone">${item.url}</label>
-                            </a>
-                        </td>
-                        <td><span>${empty item.click_cnt ? 0: item.click_cnt} 회</span></td>
-                        <td><span>${empty item.per_cnt ? 0: item.per_cnt} 명</span></td>
-                        <td><span>${empty item.link_per_cnt ? 0.00: item.link_per_cnt} 회</span></td>
+                        <th>
+                            <span>클릭 영역
+                                <div class="help_box">
+                                    <span class="help_btn" name="click-help"></span>
+                                    <label class="disnone">클릭 시 해당 링크로 이동</label>
+                                </div>
+                            </span>
+                        </th>
+                        <th>
+                            <span>클릭 수
+                                <div class="help_box">
+                                    <span class="help_btn" name="click-help"></span>
+                                    <label class="disnone">특정 링크를 접속한 횟수의 총합</label>
+                                </div>
+                            </span>
+                        </th>
+                        <th>
+                            <span>클릭자 수
+                                <div class="help_box">
+                                    <span class="help_btn" name="click-help"></span>
+                                    <label class="disnone">특정 링크를 접속한 고객의 수 (중복 X)</label>
+                                </div>
+                            </span>
+                        </th>
+                        <th>
+                            <span>링크 당 클릭
+                                <div class="help_box">
+                                    <span class="help_btn" name="click-help"></span>
+                                    <label class="disnone">클릭수 / 클릭자 수</label>
+                                </div>
+                            </span>
+                        </th>
                     </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="click-data-table" style="overflow-y: auto; overflow-x: hidden;">
+            <table class="table target_tbl" summary="table" style="width: 100%; table-layout: fixed; border-spacing: 0; border-collapse: collapse;">
+                <c:forEach var="listmap" items="${list}" varStatus="status">
+                    <c:set var="cont_tp" value="${listmap.dto.cont_tp}"/>
+                    <tbody id="tbody_${cont_tp}" class="${status.count ==1 ? "" : "disnone"}">
+                    <c:forEach var="item" items="${listmap.url}">
+                        <tr style="table-layout: fixed; width: 100%; display: table-row;">
+                            <td>
+                                <a href="${item.url}" class="help_box" target="_blank" rel="noopener">
+                                    <span class="link_name" name="click-help">${item.url_id}</span>
+                                    <label class="disnone">${item.url}</label>
+                                </a>
+                            </td>
+                            <td><span>${empty item.click_cnt ? 0: item.click_cnt} 회</span></td>
+                            <td><span>${empty item.per_cnt ? 0: item.per_cnt} 명</span></td>
+                            <td><span>${empty item.link_per_cnt ? 0.00: item.link_per_cnt} 회</span></td>
+                        </tr>
+                    </c:forEach>
+
+                    </tbody>
                 </c:forEach>
-                </tbody>
-            </c:forEach>
-        </table>
+            </table>
+        </div>
     </div>
 </div>

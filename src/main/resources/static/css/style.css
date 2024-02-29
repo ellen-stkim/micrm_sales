@@ -7198,14 +7198,14 @@ table.report-tab-table td {
     width: 50%;
     height: 500px;
     border: solid 1px #dddddd;
-    margin: 0px 15px;
+    margin: 0 15px;
 }
 
 .click-chart-cover tbody {
     display: block;
     height: 460px;
-    width: 756px;
-    overflow-y: scroll;
+    width: 100%;
+    overflow-y: auto;
 }
 .click-chart-cover tbody td {
     width: 190px;
