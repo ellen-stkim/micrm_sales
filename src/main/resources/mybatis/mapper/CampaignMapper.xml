@@ -503,6 +503,7 @@
 	</select>
 
 	<select id="sel_tarck_open_cnt" parameterType="String" resultType="Map">
+		/* sel_tarck_open_cnt */
 		SELECT camp_id
 			, COUNT(*) AS cnt
 		FROM tblmicp_track_open
@@ -513,6 +514,7 @@
 	</select>
 
 	<select id="sel_tarck_url_cnt" parameterType="String" resultType="Map">
+		/* sel_tarck_url_cnt */
 		SELECT camp_id
 			, COUNT(*) AS cnt
 		FROM (
