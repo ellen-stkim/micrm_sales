@@ -440,23 +440,23 @@
     </select>
 
     <select id="getLinkClickCnt" resultType="HashMap">
-        SELECT a.seq
-               ,a.cont_lst_cd
-               ,a.url_tag
-               ,a.url
-               ,a.url_id
-               ,b.click_cnt
-               ,b.per_cnt
-               ,Round(b.click_cnt / b.click_cnt, 2) link_per_cnt
-        FROM   tblmicp_cont_url_lst AS a
-               LEFT JOIN (SELECT url_id
-                                 ,Count(*)       click_cnt
-                                 ,Count(send_to) per_cnt
-                          FROM   tblmicp_track_url
-                          GROUP  BY url_id) AS b
-                    ON b.url_id = a.seq
-        WHERE  cont_lst_cd = #{cont_id}
-          AND a.URL_ID != 'mmsIMG001'
+        SELECT *
+            , Round(click_cnt/per_cnt, 2) as link_per_cnt
+        FROM (
+            SELECT a.seq
+               , a.cont_lst_cd
+               , a.url_tag
+               , a.url
+               , a.url_id
+               , SUM(b.visit_cnt) AS click_cnt
+               , COUNT(b.tbl_lst_id) AS per_cnt
+            FROM   tblmicp_cont_url_lst AS a
+                INNER JOIN 	tblmicp_track_url AS b ON a.seq = b.url_id
+            WHERE cont_lst_cd = #{cont_id}
+             AND a.URL_ID != 'mmsIMG001'
+            GROUP BY a.url_id
+            ORDER BY NULL
+        ) AS z
     </select>
 
 </mapper>

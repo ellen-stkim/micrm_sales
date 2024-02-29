@@ -101,16 +101,15 @@ class ReportController {
     }
 
     @GetMapping("/report/proDt.mi")
-    fun proDt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam(required = true) pro_id : String): ModelAndView {
+    fun proDt(@RequestParam(required = true) pro_id : String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         if(CommonUtils.isEmptyObject(pro_id)){
             return ModelAndView("redirect:./all.mi")
         }
 
         val campIds  = reportService.getCampMstContIdByProId(pro_id)!!.toTypedArray()
-        if(campIds.size < 1){
+        if(campIds.isEmpty()){
             return ModelAndView("redirect:./all.mi")
         }
-
         val view = ModelAndView("report/campDt")
         val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(campIds)
         view.addObject("cont_seq", campIds)
@@ -128,7 +127,7 @@ class ReportController {
         }
 
         val view = ModelAndView("report/campDt")
-        var seqs: Array<String> = arrayOf(seq)
+        val seqs: Array<String> = arrayOf(seq)
 
         val map : MutableMap<String, Any> =  reportService.getCampMstTotalDetail(seqs)
         view.addObject("cont_seq", seqs)
@@ -140,7 +139,7 @@ class ReportController {
 
     @ResponseBody
     @PostMapping("/report/getSucTabAjax.ajax")
-    fun DetSuc(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_seq[]") cont_seq : Array<String>): List<SendReportDto> {
+    fun detSuc(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_seq[]") cont_seq : Array<String>): List<SendReportDto> {
         return  reportService.getSucTab(cont_seq)
     }
 
@@ -151,14 +150,14 @@ class ReportController {
     }
     @ResponseBody
     @PostMapping("/report/getClickTabAjax.ajax")
-    fun ClickTab(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @RequestParam( required = false,   value="cont_id") cont_id : Int
-                 , @RequestParam( required = false,   value="camp_nm") camp_nm : String ): ModelAndView {
-
+    fun clickTab(@RequestParam( required = false,   value="cont_id") contId : Int
+                 , @RequestParam( required = false,   value="camp_nm") campNm : String
+                 , req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view= ModelAndView("report/ajax/reportSendPreview")
-        val mapLst = reportService.getClickList(cont_id)
+        val mapLst = reportService.getClickList(contId)
         val filePath= sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val
-        view.addObject("cont_seq", cont_id)
-        view.addObject("camp_nm", camp_nm)
+        view.addObject("cont_seq", contId)
+        view.addObject("camp_nm", campNm)
         view.addObject("list", mapLst)
         view.addObject("filePath", filePath)
 

@@ -76,7 +76,6 @@ class CommonController {
      * @Method Decription : home 화면 캠페인 미리보기 가져오기
      * @title :
      */
-    @ResponseBody
     @PostMapping("/getMainCampView.ajax")
     fun getMainCampView(@ModelAttribute dto: Tblmicp_campaignDto): ModelAndView {
         val view = ModelAndView("camp/ajax/homeCampPreview")

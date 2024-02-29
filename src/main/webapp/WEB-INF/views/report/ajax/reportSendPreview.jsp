@@ -267,22 +267,38 @@
             </colgroup>
             <thead>
             <tr>
-                <th><span>클릭 영역
-          <div class="help_box"><span class="help_btn" name="click-help"></span>
-              <label class="disnone">클릭 시 해당 링크로 이동</label></div>
-      </span></th>
-                <th><span>클릭 수
-          <div class="help_box"><span class="help_btn" name="click-help"></span>
-          <label class="disnone">특정 링크를 접속한 횟수의 총합</label></div>
-      </span></th>
-                <th><span>클릭자 수
-          <div class="help_box"><span class="help_btn" name="click-help"></span>
-              <label class="disnone">특정 링크를 접속한 고객의 수 (중복 X)</label></div>
-      </span></th>
-                <th><span>링크 당 클릭
-          <div class="help_box"><span class="help_btn" name="click-help"></span>
-              <label class="disnone">클릭수 / 클릭자 수</label></div>
-      </span></th>
+                <th>
+                    <span>클릭 영역
+                        <div class="help_box">
+                            <span class="help_btn" name="click-help"></span>
+                            <label class="disnone">클릭 시 해당 링크로 이동</label>
+                        </div>
+                    </span>
+                </th>
+                <th>
+                    <span>클릭 수
+                        <div class="help_box">
+                            <span class="help_btn" name="click-help"></span>
+                            <label class="disnone">특정 링크를 접속한 횟수의 총합</label>
+                        </div>
+                    </span>
+                </th>
+                <th>
+                    <span>클릭자 수
+                        <div class="help_box">
+                            <span class="help_btn" name="click-help"></span>
+                            <label class="disnone">특정 링크를 접속한 고객의 수 (중복 X)</label>
+                        </div>
+                    </span>
+                </th>
+                <th>
+                    <span>링크 당 클릭
+                        <div class="help_box">
+                            <span class="help_btn" name="click-help"></span>
+                            <label class="disnone">클릭수 / 클릭자 수</label>
+                        </div>
+                    </span>
+                </th>
             </tr>
             </thead>
             <c:forEach var="listmap" items="${list}" varStatus="status">

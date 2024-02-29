@@ -33,7 +33,6 @@ class ReportServiceImpl : ReportService {
     @Autowired
     private lateinit var campaignReportDao: CampaignReportDao
 
-
     override fun getReportLst(usr_grp_cd: String): Map1<String, Any?> {
         val re_map = HashMap<String, Any?>()
         val tableau_url = sysSettingDao.getCommCD(Tblmi_comm_cdDto("TABLEAU_URL", usr_grp_cd))?.cd_val
@@ -54,48 +53,44 @@ class ReportServiceImpl : ReportService {
         }
     }
 
-
-    override fun getCampMstTotalDetail(contSeqs: Array<String>): kotlin.collections.MutableMap<String, Any> {
+    override fun getCampMstTotalDetail(pdto: Array<String>): MutableMap<String, Any> {
         val map = HashMap<String, Any>()
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
         val temp = HashMap<String, Any>()
 
         userInfo.usr_grp_cd?.let { temp.put("usr_grp_cd", it) }
-        contSeqs?.let { temp.put("list", it) }
+        pdto.let { temp.put("list", it) }
 
         val totalResult: Tblmire_camp_mstDto = campaignReportDao.getCampMstTotalDetail(temp)
         val programLst = campaignReportDao.getCampMstTotalList(temp)
 
         map["totalResult"] = totalResult
         map["programLst"] = campListToTotal(programLst)
-
-        return map;
+        return map
     }
 
-
-    override fun getTotalCampMstList(pdto: Tblmicp_programDto): MutableMap<String, Any> {
-
+    override fun getTotalCampMstList(dto: Tblmicp_programDto): MutableMap<String, Any> {
         val map = HashMap<String, Any>()
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
         val usr_grp_cd = userInfo.usr_grp_cd
-        pdto.usr_grp_cd = usr_grp_cd
-        val dto = pdto as Program_SearchDto
-        when (dto.searchType) {
-            "pro_nm" -> dto.pro_nm = dto.searchValue
-            "camp_nm" -> dto.camp_nm = dto.searchValue
-            "camp_ch" -> dto.camp_ch = dto.searchValue
-            "pro_st" -> dto.pro_st = dto.searchValue
+        dto.usr_grp_cd = usr_grp_cd
+        val dto1 = dto as Program_SearchDto
+        when (dto1.searchType) {
+            "pro_nm" -> dto1.pro_nm = dto1.searchValue
+            "camp_nm" -> dto1.camp_nm = dto1.searchValue
+            "camp_ch" -> dto1.camp_ch = dto1.searchValue
+            "pro_st" -> dto1.pro_st = dto1.searchValue
         }
 
-        val paginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 5)
-        dto.firstIndex = paginationInfo.firstRecordIndex
-        dto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = campaignReportDao.getCampMstSearchCnt(dto)
+        val paginationInfo = UsefulUtils.makePage(dto1.pageNo, 10, 5)
+        dto1.firstIndex = paginationInfo.firstRecordIndex
+        dto1.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = campaignReportDao.getCampMstSearchCnt(dto1)
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["listCnt"] = paginationInfo.totalRecordCount
 
-        val list = campaignReportDao.getCampMstList(dto)
+        val list = campaignReportDao.getCampMstList(dto1)
         if (list.isEmpty()) {
             map["programLst"] = listOf<Any>()
             return map
@@ -107,14 +102,12 @@ class ReportServiceImpl : ReportService {
 
     }
 
-    override fun getSucTab(contSeqs: Array<String>): List<SendReportDto> {
-
+    override fun getSucTab(seqs: Array<String>): List<SendReportDto> {
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
         val temp = HashMap<String, Any>()
         userInfo.usr_grp_cd?.let { temp.put("usr_grp_cd", it) }
-        temp["seq_list"] = contSeqs
+        temp["seq_list"] = seqs
         temp["send_rst"] = 1
-
         return campaignReportDao.getSendHstDetail(temp)
     }
 
@@ -125,67 +118,61 @@ class ReportServiceImpl : ReportService {
         map["usr_grp_cd"] = userInfo.usr_grp_cd!!
         map["list"] = seqs
 
-        val open_times = campaignReportDao.openTimingResult(map)
-        val open_result = HashMap<String, HashMap<String, Any?>>()
-        val open_title_map = HashMap<String, MutableList<Any>>()
+        val openTimes = campaignReportDao.openTimingResult(map)
+        val openResult = HashMap<String, HashMap<String, Any?>>()
+        val openTitleMap = HashMap<String, MutableList<Any>>()
         val tot: MutableList<HashMap<String, Any?>> = ArrayList()
         var total = 0
-        for (open_time in open_times) {
+        for (openTime in openTimes) {
+            val tm = TreeMap(openTime)
+            val set: Set<String> = tm.keys
 
-            if (open_time != null) {
-
-                val tm = TreeMap(open_time)
-                val set: Set<String> = tm.keys
-
-                for (key in set) {
-                    val result = HashMap<String, Any?>()
-                    if (key.length == 3) {
-                        val week = key.substring(0, 1)
-                        when (week) {
-                            "A" -> result["WEEK_DAY"] = "0"
-                            "B" -> result["WEEK_DAY"] = "1"
-                            "C" -> result["WEEK_DAY"] = "2"
-                            "D" -> result["WEEK_DAY"] = "3"
-                            "E" -> result["WEEK_DAY"] = "4"
-                            "F" -> result["WEEK_DAY"] = "5"
-                            "G" -> result["WEEK_DAY"] = "6"
-                        }
-                        result["TIME_BAND"] = key.substring(1)
-
-                        result["OPEN_CNT"] = open_time[key]
-                        val tempOpen = open_result.get(key)?.get("OPEN_CNT")
-                        if (tempOpen != null && tempOpen.toString() != "0") {
-                            result["OPEN_CNT"] =
-                                open_time[key].toString().toInt() + open_result.get(key)?.get("OPEN_CNT").toString()
-                                    .toInt()
-                        }
-
-                        // 오픈 데이터가 있는 캠페인명 리스트
-                        if (!"0".equals(open_time[key].toString())) {
-                            var open_title_lst = open_title_map.get(key)
-                            if (open_title_lst == null) {
-                                open_title_lst = ArrayList()
-                            }
-                            val titleMap = mutableMapOf<String, String>()
-                            titleMap.put("camp_nm", open_time.get("CAMP_NM").toString())
-                            titleMap.put("open_cnt", open_time[key].toString())
-                            open_title_lst?.add(titleMap)
-                            open_title_map.put(key, open_title_lst)
-                        }
-                        open_result.put(key, result)
-                        total += open_time[key].toString().toInt()
+            for (key in set) {
+                val result = HashMap<String, Any?>()
+                if (key.length == 3) {
+                    val week = key.substring(0, 1)
+                    when (week) {
+                        "A" -> result["WEEK_DAY"] = "0"
+                        "B" -> result["WEEK_DAY"] = "1"
+                        "C" -> result["WEEK_DAY"] = "2"
+                        "D" -> result["WEEK_DAY"] = "3"
+                        "E" -> result["WEEK_DAY"] = "4"
+                        "F" -> result["WEEK_DAY"] = "5"
+                        "G" -> result["WEEK_DAY"] = "6"
                     }
+                    result["TIME_BAND"] = key.substring(1)
+
+                    result["OPEN_CNT"] = openTime[key]
+                    val tempOpen = openResult[key]?.get("OPEN_CNT")
+                    if (tempOpen != null && tempOpen.toString() != "0") {
+                        result["OPEN_CNT"] =
+                            openTime[key].toString().toInt() + openResult.get(key)?.get("OPEN_CNT").toString()
+                                .toInt()
+                    }
+
+                    // 오픈 데이터가 있는 캠페인명 리스트
+                    if ("0" != openTime[key].toString()) {
+                        var openTitleLst = openTitleMap[key]
+                        if (openTitleLst == null) {
+                            openTitleLst = ArrayList()
+                        }
+                        val titleMap = mutableMapOf<String, String>()
+                        titleMap["camp_nm"] = openTime.get("CAMP_NM").toString()
+                        titleMap["open_cnt"] = openTime[key].toString()
+                        openTitleLst.add(titleMap)
+                        openTitleMap[key] = openTitleLst
+                    }
+                    openResult[key] = result
+                    total += openTime[key].toString().toInt()
                 }
             }
         }
         val t = HashMap<String, Any?>()
         t["total"] = total
         tot.add(t)
-
         response.add(tot)
-        response.add(TreeMap(open_result))
-        response.add(open_title_map)
-
+        response.add(TreeMap(openResult))
+        response.add(openTitleMap)
         return response
     }
 
@@ -193,7 +180,6 @@ class ReportServiceImpl : ReportService {
         val mapLst = mutableListOf<HashMap<String, Any?>>()
         val searchCont = Tblmicp_cont_mstDto(contId)
         val contentDtoLst = campaignDao.getContentsViewList(searchCont)
-
         for (dto in contentDtoLst) {
             val map = HashMap<String, Any?>()
             dto.cardSize = '1'.toString()
@@ -201,94 +187,94 @@ class ReportServiceImpl : ReportService {
                 commonService.jsonOneContentsParsing(dto)
             }
             map["dto"] = dto
-            map["url"] = campaignReportDao.getLinkClickCnt(dto.seq)
+            map["url"] = campaignReportDao.getLinkClickCnt(dto.list_seq)
             mapLst.add(map)
         }
         return mapLst
     }
 
-
     override fun getCampMstContIdByProId(proId: String): MutableList<String>? {
-
         return campaignReportDao.getCampMstContIdByProId(proId)
     }
 
     fun campListToTotal(programDtoList: List<kotlin.collections.Map<String, Any>>): MutableList<Any> {
-
-        var programLst = mutableListOf<Any>()
+        val programLst = mutableListOf<Any>()
         var tempProgram = mutableListOf<Any>()
-        var ch_total = ""
-        var t_total = 0
-        var s_total = 0
-        var o_total = 0
-        var cli_total = 0
+        var chTotal = ""
+        var tTotal = 0
+        var sTotal = 0
+        var oTotal = 0
+        var cliTotal = 0
         var rowCnt = 1
-        var pro_id = ""
-        var ch_nm = ""
+        var proId = ""
+        var chNm = ""
         val listSize = programDtoList.size
 
         for ((i, program) in programDtoList.withIndex()) {
             rowCnt++
-            t_total += program.get("total_cnt").toString().toInt()
-            s_total += program.get("suc_cnt").toString().toInt()
-            o_total += program.get("open_cnt").toString().toInt()
-            cli_total += program.get("click_cnt").toString().toInt()
-            pro_id = program.get("pro_id") as String
+            tTotal += program["total_cnt"].toString().toInt()
+            sTotal += program["suc_cnt"].toString().toInt()
+            oTotal += program["open_cnt"].toString().toInt()
+            cliTotal += program["click_cnt"].toString().toInt()
+            proId = program["pro_id"] as String
+            chNm = program["camp_ch"].toString()
 
-            ch_nm = program.get("camp_ch").toString()
-            if ("CH01".equals(ch_nm)) {
-                ch_nm = "이메일"
-            } else if ("CH02".equals(ch_nm)) {
-                ch_nm = "문자"
-            } else {
-                ch_nm = "세일즈포스"
+            chNm = when (chNm) {
+                "CH01" -> {
+                    "이메일"
+                }
+                "CH02" -> {
+                    "문자"
+                }
+                else -> {
+                    "세일즈포스"
+                }
             }
 
-            if (ch_total.indexOf(ch_nm) == -1) {
-                if (!"".equals(ch_total)) {
-                    ch_total += "/"
+            if (chTotal.indexOf(chNm) == -1) {
+                if ("" != chTotal) {
+                    chTotal += "/"
                 }
-                ch_total += ch_nm   //  CH00  => 이메일/문자
+                chTotal += chNm   //  CH00  => 이메일/문자
             }
             tempProgram.add(program)
 
             if (i < listSize-1) {
-                if (pro_id.contentEquals(programDtoList[i+1].get("pro_id").toString())) {
+                if (proId.contentEquals(programDtoList[i+1]["pro_id"].toString())) {
                     continue
                 }
             }
 
             val tempTotal = HashMap<String, Any>()
-            tempTotal["ch_total"] = ch_total
-            tempTotal["t_cnt"] = t_total
-            tempTotal["s_cnt"] = s_total
-            tempTotal["o_cnt"] = o_total
-            tempTotal["c_cnt"] = cli_total
+            tempTotal["ch_total"] = chTotal
+            tempTotal["t_cnt"] = tTotal
+            tempTotal["s_cnt"] = sTotal
+            tempTotal["o_cnt"] = oTotal
+            tempTotal["c_cnt"] = cliTotal
             tempTotal["rowCnt"] = rowCnt
-            tempTotal["pro_id"] = pro_id
+            tempTotal["pro_id"] = proId
 
-            tempTotal["pro_nm"] = program.get("pro_nm").toString()
-            tempTotal["pro_st_nm"] = program.get("pro_st_nm").toString()
-            tempTotal["start_dt"] = program.get("start_dt").toString()
+            tempTotal["pro_nm"] = program["pro_nm"].toString()
+            tempTotal["pro_st_nm"] = program["pro_st_nm"].toString()
+            tempTotal["start_dt"] = program["start_dt"].toString()
 
-            var tempRowMap = HashMap<String, Any>()
+            val tempRowMap = HashMap<String, Any>()
             tempRowMap["total"] = tempTotal
             tempRowMap["program"] =  tempProgram
             programLst.add(tempRowMap)
 
-            ch_total = ""
-            t_total = 0;
-            s_total = 0;
-            o_total = 0;
-            cli_total = 0;
-            rowCnt = 1;
-
-            tempProgram = mutableListOf<Any>()
+            chTotal = ""
+            tTotal = 0
+            sTotal = 0
+            oTotal = 0
+            cliTotal = 0
+            rowCnt = 1
+            tempProgram = mutableListOf()
         }
         return programLst
     }
 
-    override fun getCampMstList(pdto: Tblmicp_programDto): kotlin.collections.MutableMap<String, Any> {
+    override fun getCampMstList(pdto: Tblmicp_programDto): MutableMap<String, Any> {
 
         val map = HashMap<String, Any>()
         val userInfo: Tblmi_usrDto = UsefulUtils.sessionUser()
