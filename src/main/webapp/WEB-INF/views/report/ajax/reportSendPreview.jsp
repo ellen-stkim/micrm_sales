@@ -308,20 +308,19 @@
                 <c:forEach var="listmap" items="${list}" varStatus="status">
                     <c:set var="cont_tp" value="${listmap.dto.cont_tp}"/>
                     <tbody id="tbody_${cont_tp}" class="${status.count ==1 ? "" : "disnone"}">
-                    <c:forEach var="item" items="${listmap.url}">
-                        <tr style="table-layout: fixed; width: 100%; display: table-row;">
-                            <td>
-                                <a href="${item.url}" class="help_box" target="_blank" rel="noopener">
-                                    <span class="link_name" name="click-help">${item.url_id}</span>
-                                    <label class="disnone">${item.url}</label>
-                                </a>
-                            </td>
-                            <td><span>${empty item.click_cnt ? 0: item.click_cnt} 회</span></td>
-                            <td><span>${empty item.per_cnt ? 0: item.per_cnt} 명</span></td>
-                            <td><span>${empty item.link_per_cnt ? 0.00: item.link_per_cnt} 회</span></td>
-                        </tr>
-                    </c:forEach>
-
+                        <c:forEach var="item" items="${listmap.url}">
+                            <tr style="table-layout: fixed; width: 100%; display: table-row;">
+                                <td>
+                                    <a href="${item.url}" class="help_box" target="_blank" rel="noopener">
+                                        <span class="link_name" name="click-help">${item.url_id}</span>
+                                        <label class="disnone">${item.url}</label>
+                                    </a>
+                                </td>
+                                <td><span>${empty item.click_cnt ? 0: item.click_cnt} 회</span></td>
+                                <td><span>${empty item.per_cnt ? 0: item.per_cnt} 명</span></td>
+                                <td><span>${empty item.link_per_cnt ? 0.00: item.link_per_cnt} 회</span></td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </c:forEach>
             </table>

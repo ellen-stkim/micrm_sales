@@ -1,5 +1,6 @@
 package com.mablic.template_kotlin
 
+import com.omnilab.micrm.common.CommonUtils
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig
 import org.slf4j.Logger
@@ -24,13 +25,8 @@ fun main(args: Array<String>) {
     config.stringOutputType = "base64"
     enc.setConfig(config)
 
-    log.error("{}", enc.decrypt("21lqUOhX3y/sUiF7YltLs80q2pxzxaumeBA2Cvy8btHZLuczzFvq5qP5inQMulbOorWi+ugCyXQXtneOjzjWcSrOgjXxOHqka8C2IO6oBVg="))
-    //log.error("{}", enc.decrypt("0JPxMQULBj+YuzTgfI3weY3nP1RnRNhFuU0gTaBgOn3LJAqGEE1sy4KAsZxB+P61"))
-    //log.error("{}", enc.decrypt("DMwQUYtYxrDyDa/oTS+8xfuSQ007FK5N195RuX0D1Dzs/xu9xslJbvbEcW63Pl6K"))
+    log.error("{}", enc.encrypt("sslc_20241#"))
 
-    //log.error("{}", enc.decrypt("zQoP26ubMZ161bF/s+HPpLLp0/OQuBXHum1gXnUEC1PP9X4+IdxpOjZ2ldaQSW3sCz9gMOT1OnNqEd/czycfcmR5CfhDBWDsAjZ5iynk7rI="))
-    //log.error("{}", enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
-    //log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
-
+    log.error(CommonUtils.sha512("sslc_20241#"))
 
 }
