@@ -27,6 +27,6 @@ fun main(args: Array<String>) {
 
     log.error("{}", enc.encrypt("sslc_20241#"))
 
-    log.error(CommonUtils.sha512("sslc_20241#"))
+    log.error(CommonUtils.sha512("chosun_20241#"))
 
 }

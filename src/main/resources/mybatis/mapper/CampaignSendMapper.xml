@@ -28,61 +28,61 @@
 
 	<insert id="ins_camp_send_mms_lg" parameterType="LgMms_msgDto">
 		insert into ${list[0].m_server}.MMS_MSG
-			(
-				SUBJECT, PHONE, CALLBACK, STATUS, REQDATE, MSG, `TYPE`, etc1, etc2, etc3, id, post
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_cnt)">, FILE_CNT</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path1)">, FILE_PATH1</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path2)">, FILE_PATH2</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path3)">, FILE_PATH3</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path4)">, FILE_PATH4</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path5)">, FILE_PATH5</if>
-			)
+		(
+			SUBJECT, PHONE, CALLBACK, STATUS, REQDATE, MSG, `TYPE`, etc1, etc2, etc3, id, post
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_cnt)">, FILE_CNT</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path1)">, FILE_PATH1</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path2)">, FILE_PATH2</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path3)">, FILE_PATH3</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path4)">, FILE_PATH4</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path5)">, FILE_PATH5</if>
+		)
 		VALUES
 		<foreach collection="list" item="list" separator="," >
-			(
-				#{list.subject}, #{list.phone}, #{list.callback}, #{list.status}, #{list.reqdate}, #{list.msg}, #{list.type}, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.id}, #{list.post}
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_cnt)">, #{list.file_cnt}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path1)">, #{list.file_path1}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path2)">, #{list.file_path2}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path3)">, #{list.file_path3}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path4)">, #{list.file_path4}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path5)">, #{list.file_path5}</if>
-			)
+		(
+			#{list.subject}, #{list.phone}, #{list.callback}, #{list.status}, #{list.reqdate}, #{list.msg}, #{list.type}, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.id}, #{list.post}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_cnt)">, #{list.file_cnt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path1)">, #{list.file_path1}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path2)">, #{list.file_path2}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path3)">, #{list.file_path3}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path4)">, #{list.file_path4}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path5)">, #{list.file_path5}</if>
+		)
 		</foreach>
 	</insert>
 
 	<insert id="ins_camp_send_mms_cj" parameterType="CjMms_msgDto">
 		insert into ${list[0].m_server}.MMS_MSG
-			(
-				SUBJECT, PHONE, CALLBACK, STATUS, REQDATE, MSG, `TYPE`, etc1, etc2, etc3
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_cnt)">, FILE_CNT</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type1)">, FILE_TYPE1</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path1)">, FILE_PATH1</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type2)">, FILE_TYPE2</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path2)">, FILE_PATH2</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type3)">, FILE_TYPE3</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path3)">, FILE_PATH3</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type4)">, FILE_TYPE4</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path4)">, FILE_PATH4</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type5)">, FILE_TYPE5</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path5)">, FILE_PATH5</if>
-			)
+		(
+			SUBJECT, PHONE, CALLBACK, STATUS, REQDATE, MSG, `TYPE`, etc1, etc2, etc3
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_cnt)">, FILE_CNT</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type1)">, FILE_TYPE1</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path1)">, FILE_PATH1</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type2)">, FILE_TYPE2</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path2)">, FILE_PATH2</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type3)">, FILE_TYPE3</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path3)">, FILE_PATH3</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type4)">, FILE_TYPE4</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path4)">, FILE_PATH4</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_type5)">, FILE_TYPE5</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list[0].file_path5)">, FILE_PATH5</if>
+		)
 		VALUES
 		<foreach collection="list" item="list" separator="," >
-			(
-				#{list.subject}, #{list.phone}, #{list.callback}, #{list.status}, #{list.reqdate}, #{list.msg}, #{list.type}, #{list.etc1}, #{list.etc2}, #{list.etc3}
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_cnt)">, #{list.file_cnt}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type1)">, #{list.file_type1}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path1)">, #{list.file_path1}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type2)">, #{list.file_typ21}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path2)">, #{list.file_path2}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type3)">, #{list.file_type3}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path3)">, #{list.file_path3}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type4)">, #{list.file_type4}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path4)">, #{list.file_path4}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type5)">, #{list.file_type5}</if>
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path5)">, #{list.file_path5}</if>
-			)
+		(
+			#{list.subject}, #{list.phone}, #{list.callback}, #{list.status}, #{list.reqdate}, #{list.msg}, #{list.type}, #{list.etc1}, #{list.etc2}, #{list.etc3}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_cnt)">, #{list.file_cnt}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type1)">, #{list.file_type1}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path1)">, #{list.file_path1}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type2)">, #{list.file_typ21}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path2)">, #{list.file_path2}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type3)">, #{list.file_type3}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path3)">, #{list.file_path3}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type4)">, #{list.file_type4}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path4)">, #{list.file_path4}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_type5)">, #{list.file_type5}</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(list.file_path5)">, #{list.file_path5}</if>
+		)
 		</foreach>
 	</insert>
 
