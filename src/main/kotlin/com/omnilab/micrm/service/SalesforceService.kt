@@ -22,6 +22,6 @@ interface SalesforceService {
     fun campaingContent(dto: Tblmi_cont_mstDto): Boolean
     fun publish(dto: Tblmicp_cont_mstDto): Boolean
     fun sendCampaign(map: MutableMap<String, Any>): Boolean
-    fun getDataExtention(usr_cd: String, extentionId: String): HashMap<String,Any>
+    fun getDataExtention(usrCd: String, extentionId: String): MutableMap<String,Any>
     fun isCheckSender(usr_cd: String): Map<String, Any>
 }

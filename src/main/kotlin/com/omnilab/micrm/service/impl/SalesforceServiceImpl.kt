@@ -1880,53 +1880,56 @@ class SalesforceServiceImpl : SalesforceService {
         return true
     }
 
-    override fun getDataExtention(usr_cd: String, extentionId: String) : HashMap<String,Any> {
-        val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usr_cd,"SALESFORCE","SALESFORCE","Y"))
-        val configuration = ETConfiguration()
-        for (commCd in commCdList){
-            when (commCd.grp_id) {
-                "SALES_CID" -> configuration["clientId"] = commCd.cd_val
-                "SALES_SEC" ->  configuration["clientSecret"] = commCd.cd_val
-                "SALES_AUTH_URL" ->  configuration["authEndpoint"] = commCd.cd_val
-                "SALES_REST_URL" ->  configuration["endpoint"] = commCd.cd_val
-                "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
-            }
-        }
-        configuration["useOAuth2Authentication"] = "true"
-        val client = ETClient(configuration)
-
-        val filter = ETFilter()
-        val exp = ETExpression()
-
-        exp.property = "id"
-        exp.operator = ETExpression.Operator.EQUALS
-        exp.addValue(extentionId)
-
-        filter.expression = exp
-
-        val response = client.retrieve(ETDataExtension::class.java, filter)
-
-        val dataExtension = response.result.getObject()
-        val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
-
-        var totalCnt = 0
-        // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
-        try {
-            val data: MutableMap<String, Any>? = getTotalcnt(usr_cd, dataExtension.name)
-            if (!CommonUtils.isEmptyObject(data)) {
-                totalCnt = data!!["rowCount"].toString().toInt()
-            }else{
-                totalCnt = dataExtension.select().totalCount
-            }
-        } catch (e:Exception){
-            logger.error("{}",e)
-            totalCnt = dataExtension.select().totalCount
-        }
-
+    override fun getDataExtention(usrCd: String, extentionId: String) : MutableMap<String,Any> {
         val reMap = HashMap<String, Any>()
-        reMap["list"] = reList
-        reMap["totalCnt"] = totalCnt
+        val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usrCd,"SALESFORCE","SALESFORCE","Y"))
+        try{
+            val configuration = ETConfiguration()
+            for (commCd in commCdList){
+                when (commCd.grp_id) {
+                    "SALES_CID" -> configuration["clientId"] = commCd.cd_val
+                    "SALES_SEC" ->  configuration["clientSecret"] = commCd.cd_val
+                    "SALES_AUTH_URL" ->  configuration["authEndpoint"] = commCd.cd_val
+                    "SALES_REST_URL" ->  configuration["endpoint"] = commCd.cd_val
+                    "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
+                }
+            }
+            configuration["useOAuth2Authentication"] = "true"
+            val client = ETClient(configuration)
 
+            val filter = ETFilter()
+            val exp = ETExpression()
+
+            exp.property = "id"
+            exp.operator = ETExpression.Operator.EQUALS
+            exp.addValue(extentionId)
+
+            filter.expression = exp
+
+            val response = client.retrieve(ETDataExtension::class.java, filter)
+
+            val dataExtension = response.result.getObject()
+            val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
+
+            // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
+            val totalCnt = try {
+                val data: MutableMap<String, Any>? = getTotalcnt(usrCd, dataExtension.name)
+                if (!CommonUtils.isEmptyObject(data)) {
+                    data!!["rowCount"].toString().toInt()
+                }else{
+                    dataExtension.select().totalCount
+                }
+            } catch (e:Exception){
+                logger.error("getDataExtention",e)
+                dataExtension.select().totalCount
+            }
+            reMap["check"] = true
+            reMap["list"] = reList
+            reMap["totalCnt"] = totalCnt
+        }catch (e: Exception){
+            reMap["check"] = false
+            logger.error("getDataExtention ${usrCd}/${extentionId}", e)
+        }
         return reMap
     }
 

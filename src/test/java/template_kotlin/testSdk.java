@@ -11,16 +11,29 @@ public class testSdk {
         Logger logger = LoggerFactory.getLogger("this");
 
         ETConfiguration configuration = new ETConfiguration();
-        configuration.set("clientId", "jhivti6zdgxeo5l7stp469pk");
-        configuration.set("clientSecret", "gouyx2j369y0qqEAWkJICllp");
-        configuration.set("authEndpoint", "https://mcrv-yxmjfh7819-z8r-sry7vgq4.auth.marketingcloudapis.com");
-        configuration.set("endpoint", "https://mcrv-yxmjfh7819-z8r-sry7vgq4.rest.marketingcloudapis.com");
-        configuration.set("soapEndpoint", "https://mcrv-yxmjfh7819-z8r-sry7vgq4.soap.marketingcloudapis.com/service.asmx");
+        configuration.set("clientId", "a1bpjiy7elm3a5np52nb8wwu");
+        configuration.set("clientSecret", "vkc6QT6ip7NYgyNVH4dRURkt");
+        configuration.set("authEndpoint", "https://mcvwxvldc6v2wlp7lxxy629-j7g8.auth.marketingcloudapis.com/");
+        configuration.set("endpoint", "https://mcvwxvldc6v2wlp7lxxy629-j7g8.rest.marketingcloudapis.com/");
+        configuration.set("soapEndpoint", "https://mcvwxvldc6v2wlp7lxxy629-j7g8.soap.marketingcloudapis.com/");
         configuration.set("useOAuth2Authentication", "true");
+        String extentionId = "88d9cf84-9de1-ee11-a5cd-5cba2c1a4d08";
+
         ETClient client = new ETClient(configuration);
+        ETFilter filter = new ETFilter();
+        ETExpression exp = new ETExpression();
 
-        logger.error("?? : {}", org.codehaus.stax2.ri.EmptyIterator.getInstance());
+        exp.setProperty("id");
+        exp.setOperator(ETExpression.Operator.EQUALS);
+        exp.addValue(extentionId);
+        filter.setExpression(exp);
 
+        ETResponse<ETDataExtension> response = client.retrieve(ETDataExtension.class, filter);
+        logger.error("{}", response.getResult().getObject());
+
+        //logger.error("?? : {}", org.codehaus.stax2.ri.EmptyIterator.getInstance());
+         //
+        /*
         ETFilter etf = new ETFilter();
         etf.addProperty("id");
         etf.addProperty("key");
@@ -34,12 +47,9 @@ public class testSdk {
         exp.setOperator("=");
         exp.setValue("7245D760-DBFA-44CB-9553-F410F1FFB538");
         etf.setExpression(exp);
-
-        //ETResponse<ETDataExtension> response = client.retrieve(ETDataExtension.class, etf);
-
         ETDataExtension productDE = client.retrieveObject(ETDataExtension.class,etf);
 
         System.out.println("resp="+productDE);
-
+        */
     }
 }

@@ -879,17 +879,8 @@ class SalesforceController {
 
     @ResponseBody
     @GetMapping("/{usr_cd}/getDataExtension.ajax")
-    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any> {
-        return try{
-            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usr_cd, extentionId)
-            reMap["check"] = true
-            reMap
-        }catch (e: Exception){
-            logger.error("getDataExtension {}", e)
-            val reMap = HashMap<String, Any>()
-            reMap["check"] = false
-            reMap
-        }
+    fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usrCd: String): MutableMap<String, Any> {
+        return salesforceService.getDataExtention(usrCd, extentionId)
     }
 
     @GetMapping("/{usr_cd}/error")
