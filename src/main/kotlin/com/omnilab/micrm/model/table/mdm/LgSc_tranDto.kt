@@ -44,6 +44,7 @@ class LgSc_tranDto {
         this.tr_id = tr_id
     }
 
+
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }

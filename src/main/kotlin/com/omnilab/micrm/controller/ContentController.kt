@@ -1204,7 +1204,7 @@ class ContentController  {
             view.addObject("column", sysSettingService.getDBValue())
         } else {
             val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd
-            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usrGrpCd!!,extId)
+            val reMap = salesforceService.getDataExtention(usrGrpCd!!,extId)
             view.addObject("extention",reMap["list"])
         }
 
@@ -1378,7 +1378,7 @@ class ContentController  {
             view.addObject("column", sysSettingService.getDBValue())
         } else {
             val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-            val reMap : HashMap<String,Any> = salesforceService.getDataExtention(usr_grp_cd!!,extId)
+            val reMap = salesforceService.getDataExtention(usr_grp_cd!!,extId)
             view.addObject("extention",reMap["list"])
         }
 

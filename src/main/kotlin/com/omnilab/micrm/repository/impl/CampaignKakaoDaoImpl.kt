@@ -93,7 +93,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kakaoImgUrl = kakaoContUrlImgList[0]
         }
 
-
         // MDM 콘텐츠 URL 리스트 정보
         var mdmContUrlList: MutableList<Tblmicp_cont_url_lstDto>? = null
         if(mdmCont != null){
@@ -362,9 +361,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.currency_type = kakaoCont.kko_currency_type
             kkoMsgdto.title = kakaoCont.kko_title
             kkoMsgdto.header = kakaoCont.kko_header
-
             kkoMsgdto.failed_type = "NO"
-
             if(rcsCont != null || mdmCont != null){
                 val callbackDto = Tblmicp_send_callback_msgDto()
                 callbackDto.hst_seq = hstSeq.toInt()
@@ -428,7 +425,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                     }
                     callbackDto.mdm_server = mdmDb
                 }
-
                 callbackDto.usr_grp_cd = dto.usr_grp_cd
                 callbackDto.reg_id = dto.reg_id
                 callbackLst.add(callbackDto)
@@ -440,6 +436,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.etc3 = map["SEND_HST_SEQ"].toString()
             kkoMsgdto.etc4 = mdmDb
             kkoMsgdto.etc5 = rcsDb
+            kkoMsgdto.tax_cd1 = dto.usr_grp_cd
             kkoMsgdto.m_server = kakaoDb
 
             sendLst.add(kkoMsgdto)

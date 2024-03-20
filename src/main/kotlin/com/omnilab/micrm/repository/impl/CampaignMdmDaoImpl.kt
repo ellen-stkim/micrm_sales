@@ -156,7 +156,7 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     sqlSession.insert("ins_camp_send_mms_lg", sendLst)
                 }
             } else {  // sms
-                sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES"))
+                sendLst.add(LgSc_tranDto(dto.start_dt, "0", "0", map["SEND_TO"].toString(), contDto.send_to, targetBody, dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd))
                 sqlSession.insert("ins_camp_send_sms_lg", sendLst)
             }
 
@@ -175,17 +175,17 @@ class CampaignMdmDaoImpl : CampaignSendDao {
         val mdmInfo = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("MDM_DB", map["usr_grp_cd"].toString()))
         val mdmServerType = mdmInfo.cd_desc
         map["db"] = mdmInfo.cd_val!!
-        if(map["msgTp"] == "DMCH202" || "DMCH203" == map["msgTp"]){
+        cnt = if(map["msgTp"] == "DMCH202" || "DMCH203" == map["msgTp"]){
             if(mdmServerType == "CJ"){
-                cnt = sqlSession.update("upd_mms_send_cj", map)
+                sqlSession.update("upd_mms_send_cj", map)
             }else{
-                cnt = sqlSession.update("upd_mms_send_lg", map)
+                sqlSession.update("upd_mms_send_lg", map)
             }
         }else{
             if(mdmServerType == "CJ"){
-                cnt = sqlSession.update("upd_sms_send_cj", map)
+                sqlSession.update("upd_sms_send_cj", map)
             }else{
-                cnt = sqlSession.update("upd_sms_send_lg", map)
+                sqlSession.update("upd_sms_send_lg", map)
             }
         }
         return cnt
@@ -195,10 +195,10 @@ class CampaignMdmDaoImpl : CampaignSendDao {
         val cnt: Int
 
         map["db"] = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("MDM_DB", map["usr_grp_cd"].toString())).cd_val!!
-        if(map["msgTp"] == "DMCH202" || "DMCH203" == map["msgTp"]){
-            cnt = sqlSession.update("del_mms_send_lg", map)
+        cnt = if(map["msgTp"] == "DMCH202" || "DMCH203" == map["msgTp"]){
+            sqlSession.update("del_mms_send_lg", map)
         }else{
-            cnt = sqlSession.update("del_sms_send_lg", map)
+            sqlSession.update("del_sms_send_lg", map)
         }
         return cnt
     }

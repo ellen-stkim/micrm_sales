@@ -19,10 +19,10 @@
 
 	<insert id="ins_camp_send_sms_lg" parameterType="LgSc_tranDto">
 		insert into ${list[0].m_server}.SC_TRAN
-			(TR_SENDDATE, TR_SENDSTAT, TR_ID, TR_MSGTYPE, TR_PHONE, TR_CALLBACK, TR_MSG, TR_ETC1, TR_ETC2, TR_ETC3)
+			(TR_SENDDATE, TR_SENDSTAT, TR_ID, TR_MSGTYPE, TR_PHONE, TR_CALLBACK, TR_MSG, TR_ETC1, TR_ETC2, TR_ETC3, TR_ETC4)
 		VALUES
 		<foreach collection="list" item="list" separator="," >
-			(#{list.tr_senddate}, #{list.tr_sendstat}, #{list.tr_id}, #{list.tr_msgtype}, #{list.tr_phone}, #{list.tr_callback}, #{list.tr_msg}, #{list.tr_etc1}, #{list.tr_etc2}, #{list.tr_etc3})
+			(#{list.tr_senddate}, #{list.tr_sendstat}, #{list.tr_id}, #{list.tr_msgtype}, #{list.tr_phone}, #{list.tr_callback}, #{list.tr_msg}, #{list.tr_etc1}, #{list.tr_etc2}, #{list.tr_etc3}, #{list.tr_etc4})
 		</foreach>
 	</insert>
 
@@ -107,7 +107,7 @@
 			, `BUTTON_JSON`, `QUICK_REPLY_JSON`, `ITEM_HIGHLIGHT_JSON`, `ITEM_JSON`
 			, `PRICE`, `CURRENCY_TYPE`, `TITLE`, `HEADER`
 			, `IMAGE_JSON`, `AD_FLAG`, `TEMPLATE_CODE`
-			, `ETC1`, `ETC2`, `ETC3`, `ETC4`, `ETC5`, `ETC6`, `CID`, `REQDATE`
+			, `ETC1`, `ETC2`, `ETC3`, `ETC4`, `ETC5`, `ETC6`, `TAX_CD1`, `CID`, `REQDATE`
 		)
 		values
 		<foreach collection="list" item="list" separator="," >
@@ -116,7 +116,7 @@
 			, #{list.button_json}, #{list.quick_reply}, #{list.item_highlight}, #{list.item}
 			, #{list.price}, #{list.currency_type}, #{list.title}, #{list.header}
 			, #{list.img_url}, #{list.ad_flag}, #{list.template_code}
-			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.serialnum}, #{list.reqdate}
+			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.tax_cd1}, #{list.serialnum}, #{list.reqdate}
 		)
 		</foreach>
 	</insert>
