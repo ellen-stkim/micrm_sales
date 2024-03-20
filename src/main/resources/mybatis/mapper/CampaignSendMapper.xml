@@ -127,7 +127,7 @@
 			`status`, sendable, reqdate, phone, callback, `type`, msg_header, rcs_object, msg, msg_footer, msg_copyallowed
 			, brand_id, msgbase_id, fallback_yn, btn_cnt, btn_insert_type, btn_object
 			, btn_text_1, btn_type_1, btn_contents_1, btn_text_2, btn_type_2, btn_contents_2, btn_text_3, btn_type_3, btn_contents_3
-			, etc1, etc2, etc3, etc4, etc5, etc6, img_group_cnt, img_group_key
+			, etc1, etc2, etc3, etc4, etc5, etc6, img_group_cnt, img_group_key, dept_code
 		)
 		values
 		<foreach collection="list" item="list" separator="," >
@@ -135,7 +135,7 @@
 			#{list.status}, #{list.sendable}, #{list.reqdate}, #{list.phone}, #{list.callback}, #{list.type}, #{list.msg_header}, #{list.rcs_object}, #{list.msg}, #{list.msg_footer}, #{list.msg_copyallowed}
 			, #{list.brand_id}, #{list.msgbase_id}, #{list.fallback_yn}, #{list.btn_cnt}, #{list.btn_insert_type}, #{list.btn_object}
 			, #{list.btn_text_1}, #{list.btn_type_1}, #{list.btn_contents_1}, #{list.btn_text_2}, #{list.btn_type_2}, #{list.btn_contents_2}, #{list.btn_text_3}, #{list.btn_type_3}, #{list.btn_contents_3}
-			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.img_group_cnt}, #{list.img_group_key}
+			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.img_group_cnt}, #{list.img_group_key}, #{list.dept_code}
 		)
 		</foreach>
 	</insert>

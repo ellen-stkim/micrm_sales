@@ -277,10 +277,9 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 sendDto.img_group_cnt = list.size.toString()
                 sendDto.img_group_key = "GR_${dto.seq.toString()}"
 
-                val imgDto = LgRcs_imgDto("GR_${dto.seq.toString()}",rcsDb)
-                val imgDtoLst :List<LgRcs_imgDto> =  sqlSession.selectList("sel_camp_send_rcs_img_lg", imgDto)
-                for(imgDto in imgDtoLst){
-                    if(imgDto.sendable == "N"){
+                val imgDtoLst :List<LgRcs_imgDto> =  sqlSession.selectList("sel_camp_send_rcs_img_lg", LgRcs_imgDto("GR_${dto.seq.toString()}",rcsDb))
+                for(imgDto1 in imgDtoLst){
+                    if(imgDto1.sendable == "N"){
                         isSendable = "N"
                     }
                 }
@@ -330,13 +329,13 @@ class CampaignRcsDaoImpl : CampaignSendDao {
             sendDto.btn_contents_3 = rcsBtnCont3
             sendDto.btn_object = rcsBtnObj
 
+            sendDto.dept_code = dto.usr_grp_cd
             sendDto.etc1 = dto.pro_id
             sendDto.etc2 = dto.seq.toString()
             sendDto.etc3 = map["SEND_HST_SEQ"].toString()
             sendDto.etc4 = mdmDb
             sendDto.etc5 = kakaoDb
             sendDto.etc6 = "MICRM_SALES"
-
 
             sendDto.m_server = rcsDb
 
