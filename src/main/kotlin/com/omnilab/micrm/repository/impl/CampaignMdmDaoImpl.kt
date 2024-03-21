@@ -102,13 +102,12 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     sqlSession.insert("ins_camp_send_mms_lg", sendLst)
                 }
             } else if ("DMCH203" == msgTp) { //mms
-                val contentsLstDto = contDto
                 if(mdmServerType == "CJ"){
                     val mdmDto = CjMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "1", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, dto.usr_grp_cd)
-                    if (contentsLstDto.img_nm_lst.isNullOrBlank()) {
+                    if (contDto.img_nm_lst.isNullOrBlank()) {
                         mdmDto.file_cnt = 1
                     }else{
-                        val list = contentsLstDto.img_nm_lst!!.split(",")
+                        val list = contDto.img_nm_lst!!.split(",")
                         mdmDto.file_cnt = list.size + 1
                         for (i in list.indices) {
                             when (i) {
@@ -139,8 +138,8 @@ class CampaignMdmDaoImpl : CampaignSendDao {
                     sqlSession.insert("ins_camp_send_mms_cj", sendLst)
                 }else{
                     val mdmDto = LgMms_msgDto(targetSubject, map["SEND_TO"].toString(), contDto.send_to, "0", dto.start_dt, targetBody, "0", dto.pro_id, dto.seq.toString(), map["SEND_HST_SEQ"].toString(), mdmDb, "MICRM_SALES", dto.usr_grp_cd)
-                    if (!contentsLstDto.img_nm_lst.isNullOrBlank()) {
-                        val list = contentsLstDto.img_nm_lst!!.split(",")
+                    if (!contDto.img_nm_lst.isNullOrBlank()) {
+                        val list = contDto.img_nm_lst!!.split(",")
                         mdmDto.file_cnt = list.size
                         for (i in list.indices) {
                             when (i) {
