@@ -69,9 +69,7 @@
                 h.cd_desc  AS tmpl_status_nm,
                 i.cd_desc AS kep_status_nm
         from tblmi_kko_at_tmpl AS a
-                 INNER JOIN tblmi_set_lst AS b
-                            ON a.SEND_KEY = b.LIST_VAL
-                                AND b.use_yn ='Y'
+                 INNER JOIN tblmi_set_lst AS b ON a.SEND_KEY = b.LIST_VAL AND b.use_yn ='Y'
                  LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
                  LEFT JOIN tblmi_comm_cd AS d ON d.CD_ID = 'CATE_SUB' AND d.cd_val = a.CATE_CD
                  LEFT JOIN tblmi_comm_cd AS e ON e.CD_ID = 'CATE' AND e.cd_sn =  d.par_nm

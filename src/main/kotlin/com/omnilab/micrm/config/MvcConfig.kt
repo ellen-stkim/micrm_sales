@@ -73,7 +73,7 @@ class MvcConfig : WebMvcConfigurer {
     }
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
-        converters.add(StringConverter())
+        converters.add(stringConverter())
         converters.add(JacksonConverter())
         converters.add(byteArrayHttpMessageConverter())
         converters.add(ResourceHttpMessageConverter())
@@ -184,7 +184,7 @@ class MvcConfig : WebMvcConfigurer {
     }
 
     @Bean //String
-    fun StringConverter(): StringHttpMessageConverter {
+    fun stringConverter(): StringHttpMessageConverter {
         val converter = StringHttpMessageConverter(Charset.forName("UTF-8"))
         val mediatype = ArrayList<MediaType>()
         mediatype.add(MediaType.TEXT_HTML)

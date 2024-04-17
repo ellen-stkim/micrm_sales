@@ -1234,9 +1234,9 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/kko/tmplCreate.service")
     fun tmplCreateService(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,
-                          @RequestBody dto : Kko_at_tmplDto, @RequestParam(value="img_seq", required = false) img_seq : String,
-                          @RequestParam(value="item_img_seq", required = false) item_img_seq :String, principal: Principal): Any? {
-        val tmplDto : Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(img_seq.toIntOrNull(),item_img_seq.toIntOrNull())
+                          @RequestBody dto : Kko_at_tmplDto, @RequestParam(value="img_seq", required = false) imgSeq : String,
+                          @RequestParam(value="item_img_seq", required = false) itemImgSeq :String, principal: Principal): Any? {
+        val tmplDto = Tblmi_kko_at_tmplDto(imgSeq.toIntOrNull(),itemImgSeq.toIntOrNull())
         tmplDto.reg_id = principal.name
         val map = kkoMsgService.createTmpl(dto,tmplDto)
         return map
@@ -1259,20 +1259,15 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/kko/isCheckTmplNm.ajax")
     fun isCheckTmplNm(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto): MutableMap<String, Any> {
-
         val map :MutableMap<String,Any> = mutableMapOf()
-
         val dto: Tblmi_kko_at_tmplDto? =kkoMsgService.getKkoAtTmplDto(dto)
-
         if(!CommonUtils.isEmptyObject(dto)){   //
-            map.put("status" , HttpServletResponse.SC_BAD_REQUEST)
-            map.put("msg" , "이미 사용중인 템플릿명 입니다.")
+            map["status"] = HttpServletResponse.SC_BAD_REQUEST
+            map["msg"] = "이미 사용중인 템플릿명 입니다."
             return map
         }
-
-        map.put("status" , HttpServletResponse.SC_OK)
-        map.put("msg" , "사용가능한 템플릿명 입니다.")
-
+        map["status"] = HttpServletResponse.SC_OK
+        map["msg"] = "사용가능한 템플릿명 입니다."
         return map
     }
 

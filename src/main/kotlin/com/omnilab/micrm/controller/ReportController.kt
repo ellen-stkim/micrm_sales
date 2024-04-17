@@ -150,8 +150,8 @@ class ReportController {
     }
     @ResponseBody
     @PostMapping("/report/getClickTabAjax.ajax")
-    fun clickTab(@RequestParam( required = false,   value="cont_id") contId : Int
-                 , @RequestParam( required = false,   value="camp_nm") campNm : String
+    fun clickTab(@RequestParam( required = false, value="cont_id") contId : Int
+                 , @RequestParam( required = false, value="camp_nm") campNm : String
                  , req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view= ModelAndView("report/ajax/reportSendPreview")
         val mapLst = reportService.getClickList(contId)
