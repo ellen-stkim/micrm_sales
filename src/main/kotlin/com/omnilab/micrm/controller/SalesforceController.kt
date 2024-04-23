@@ -791,6 +791,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/execute.service")
     fun execute(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String): ResponseEntity<Any> {
+        Thread.sleep(130000)
         logger.info("/execute.service data: $data")
         /*
         val commonCDDto = Tblmi_comm_cdDto()

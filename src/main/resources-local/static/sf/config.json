@@ -15,7 +15,7 @@
     "execute": {
       "url": "https://sales.milvusapp.com/sf/execute.service",
       "useJwt": true,
-      "timeout": 600000,
+      "timeout": 100000,
       "concurrentRequests": 7,
       "retryCount": 5,
       "retryDelay": 10000

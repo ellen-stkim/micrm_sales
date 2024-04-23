@@ -15,7 +15,7 @@
     "execute": {
       "url": "https://sales.micrm.co.kr/sf/execute.service",
       "useJwt": true,
-      "timeout": 600000
+      "timeout": 100000
     }
   },
   "configurationArguments": {
