@@ -1806,14 +1806,14 @@ class SalesforceServiceImpl : SalesforceService {
                     val isCouponSend = contTpLst["DMTP02"] != null && !contTpLst["DMTP02"]?.coupon_seq.isNullOrBlank()
                     if (isCouponSend && map["couponIssuedLogDto"] != null) {
                         val couponIssuedLog = map["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-                        contTpLst["DMTP02"]!!.cont_body = contTpLst["DMTP02"]!!.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
+                        contTpLst["DMTP02"]?.cont_body = contTpLst["DMTP02"]?.cont_body?.replace("{쿠폰링크}", couponIssuedLog.short_url!!)
                     }
 
                     // 발송
                     when {
                         // 카카오 친구톡
                         contTpLst["DMTP03"] != null -> {
-                            val sendTo = inArguments[contTpLst["DMTP03"]!!.from_to]
+                            val sendTo = inArguments[contTpLst["DMTP03"]?.from_to]
                             if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
@@ -1827,7 +1827,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                         // 카카오 알림톡
                         contTpLst["DMTP05"] != null -> {
-                            val sendTo = inArguments[contTpLst["DMTP05"]!!.from_to]
+                            val sendTo = inArguments[contTpLst["DMTP05"]?.from_to]
                             if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
@@ -1841,7 +1841,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                         // RCS
                         contTpLst["DMTP04"] != null -> {
-                            val sendTo = inArguments[contTpLst["DMTP04"]!!.from_to]
+                            val sendTo = inArguments[contTpLst["DMTP04"]?.from_to]
                             if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
@@ -1855,7 +1855,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                         // 문자
                         else -> {
-                            val sendTo = inArguments[contTpLst["DMTP02"]!!.from_to]
+                            val sendTo = inArguments[contTpLst["DMTP02"]?.from_to]
                             if(sendTo == null){
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)

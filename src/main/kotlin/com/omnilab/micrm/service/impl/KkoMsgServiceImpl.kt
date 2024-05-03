@@ -195,17 +195,16 @@ class KkoMsgServiceImpl : KkoMsgService {
     }
 
     override fun selTmplDataBySeq(seq: Int): AtTmpl_viewDto {
-        val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val tmplDto :AtTmpl_searchDto = AtTmpl_searchDto(seq,usr_grp_cd)
+        val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd
+        val tmplDto = AtTmpl_searchDto(seq,usrGrpCd)
         tmplDto.use_yn = "Y"
-
         return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
     }
 
-    override fun updateTmpl( dto: Kko_at_tmplDto, searchTmplDto: AtTmpl_searchDto, updDto: Tblmi_kko_at_tmplDto ): Map<String, Any> {
-        val map :MutableMap<String,Any> = HashMap<String, Any>()
-        searchTmplDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto, kkoAtTmplDao.selTmplBytmplDto(searchTmplDto))
+    override fun updateTmpl(dto: Kko_at_tmplDto, searchDto: AtTmpl_searchDto, updDto: Tblmi_kko_at_tmplDto ): Map<String, Any> {
+        val map :MutableMap<String,Any> = HashMap()
+        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val newDto: Kko_at_tmplDto = getAtTmplDataByViewDto(dto, kkoAtTmplDao.selTmplBytmplDto(searchDto))
 
         // 카카오 템플릿 변경
         val result:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(newDto)
@@ -217,7 +216,7 @@ class KkoMsgServiceImpl : KkoMsgService {
                     //at_tmplDto 변경
                     val tmplDto = getTmplDtoByUpdKkoDto(dto, updDto)  //변경
                     tmplDto.kep_status = "I"   // 수정 후 자동 검수 요청
-                    tmplDto.seq = searchTmplDto.seq
+                    tmplDto.seq = searchDto.seq
                     tmplDto.use_yn = "Y"
 
                     //개인화 변수 파싱
@@ -249,17 +248,15 @@ class KkoMsgServiceImpl : KkoMsgService {
 
                 }else{
                     logger.error("카카오 알림톡 템플릿 수정 데이터 에러 {}",result)
-
-                    val code :String = data.get("code")?.toString()!!.replace("API_","")
+                    val code :String = data["code"]?.toString()!!.replace("API_","")
                     map["status"] = code.toInt()
-                    map["msg"] = data.get("message")!!
+                    map["msg"] = data["message"].toString()
                 }
             }else{
                 logger.error("카카오 알림톡 템플릿 수정 API 에러 {}",result)
-
-                val code :String = data.get("code")?.toString()!!.replace("API_","")
+                val code :String = data["code"]?.toString()!!.replace("API_","")
                 map["status"] = code.toInt()
-                map["msg"] = data.get("message")!!
+                map["msg"] = data["message"].toString()
             }
         }catch (e:Exception){
             logger.error("",e)

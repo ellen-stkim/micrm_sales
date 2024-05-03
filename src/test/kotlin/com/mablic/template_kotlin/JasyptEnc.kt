@@ -25,8 +25,6 @@ fun main(args: Array<String>) {
     config.stringOutputType = "base64"
     enc.setConfig(config)
 
-    log.error("{}", enc.encrypt("sslc_20241#"))
-
-    log.error(CommonUtils.sha512("chosun_20241#"))
+    log.error("{}", enc.decrypt("/hDJCGL/qLXfzqNWh9JNtvJ/yx09TBJsVLkI5CDqmhRrrnKhorJrLTcTMB6kxffMIxX7AM83GiHQ+e2MpWU1kTsVs1Zhj5r5njm3DDrk3bE="))
 
 }

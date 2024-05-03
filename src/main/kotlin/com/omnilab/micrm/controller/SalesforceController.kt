@@ -97,18 +97,18 @@ class SalesforceController {
 
     @ResponseBody
     @GetMapping("/{usr_cd}/config.json")
-    fun configJson(@PathVariable(value = "usr_cd") usr_cd: String): JSONObject {
+    fun configJson(@PathVariable(value = "usr_cd") usrCd: String): JSONObject {
         val resource: Resource = ClassPathResource("static/sf/config.json")
         val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
         val arguments: JSONObject = json["arguments"] as JSONObject
         val execute: JSONObject = arguments["execute"] as JSONObject
-        execute.replace("url", execute["url"].toString().replace("/sf", "/sf/$usr_cd"))
+        execute.replace("url", execute["url"].toString().replace("/sf", "/sf/$usrCd"))
 
         val configurationArguments: JSONObject = json["configurationArguments"] as JSONObject
         val keys = configurationArguments.keys
         for(i in keys){
             val temp = configurationArguments[i] as JSONObject
-            temp.replace("url", temp["url"].toString().replace("/sf", "/sf/$usr_cd"))
+            temp.replace("url", temp["url"].toString().replace("/sf", "/sf/$usrCd"))
         }
         return json
     }
@@ -292,11 +292,9 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/{usr_cd}/isCheckTmplateNm.ajax")
-    fun isCheckTemplateName(@ModelAttribute contMstdto: Tblmi_cont_mstDto, @PathVariable(value = "usr_cd") usr_cd: String) : HashMap<String,String>{
-
+    fun isCheckTemplateName(@ModelAttribute contMstdto: Tblmi_cont_mstDto, @PathVariable(value = "usr_cd") usrCd: String) : HashMap<String,String>{
         val result = salesforceService.checkContNm(contMstdto)
         val statusMap = HashMap<String,String>()
-
         if(result == 0) {
             statusMap["status"] = "true"
             statusMap["message"] = "모바일 컨텐츠 저장이 완료 되었습니다"
@@ -320,16 +318,14 @@ class SalesforceController {
      * @title : 모바일 발신자 리스트 가져오기
      */
     @PostMapping("/{usr_cd}/senderMobileList.ajax")
-    fun selectSenderMobileList(@ModelAttribute dto : SetLst_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
-        dto.usr_grp_cd = usr_cd
+    fun selectSenderMobileList(@ModelAttribute dto : SetLst_searchDto, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
+        dto.usr_grp_cd = usrCd
         val view = ModelAndView("cont/mobile/ajax/senderMobileListAjax")
         val senderMap = salesforceService.selectSenderList(dto)
-
         view.addObject("list", senderMap["list"])
         view.addObject("page", senderMap["page"])
         view.addObject("pageNo", senderMap["pageNo"])
         view.addObject("listCnt", senderMap["listCnt"])
-
         return view
     }
 
@@ -346,17 +342,14 @@ class SalesforceController {
      * @title : 모바일 수신거부 문자 리스트 가져오기
      */
     @PostMapping("/{usr_cd}/mobileRejectTextList.ajax")
-    fun mobileRejectTextList(@PathVariable(value = "usr_cd") usr_cd: String,@ModelAttribute dto : SetLst_searchDto): ModelAndView {
-        dto.usr_grp_cd = usr_cd
-
+    fun mobileRejectTextList(@PathVariable(value = "usr_cd") usrCd: String, @ModelAttribute dto : SetLst_searchDto): ModelAndView {
+        dto.usr_grp_cd = usrCd
         val view = ModelAndView("cont/mobile/ajax/mobileRejectTextListAjax")
         val senderMap = salesforceService.selectRejectTextList(dto)
-
         view.addObject("list", senderMap["list"])
         view.addObject("page", senderMap["page"])
         view.addObject("pageNo", senderMap["pageNo"])
         view.addObject("listCnt", senderMap["listCnt"])
-
         return view
     }
 
@@ -373,22 +366,18 @@ class SalesforceController {
      * @title : 이미지 팝업 리스트 가져오기
      */
     @PostMapping("/{usr_cd}/mobileImgList.ajax")
-    fun selectImgListForPopUp(@ModelAttribute tblmiContImgdto: Image_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): ModelAndView {
-
+    fun selectImgListForPopUp(@ModelAttribute tblmiContImgdto: Image_searchDto, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/mdmImgListAjax")
         val senderMap = salesforceService.selectImgForPopup(tblmiContImgdto)
-
         view.addObject("list", senderMap["list"])
         view.addObject("page", senderMap["page"])
         view.addObject("pageNo", senderMap["pageNo"])
         view.addObject("listCnt", senderMap["listCnt"])
-
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
         view.addObject("filePath", uploadPrefix?.cd_val)
-
         return view
     }
 
@@ -407,7 +396,7 @@ class SalesforceController {
      * @title : RCS 텍스트형 페이지
      */
     @GetMapping("/{usr_cd}/rcsText.ajax")
-    fun rcsText(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest , rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun rcsText(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsText")
         return view
     }
@@ -426,7 +415,7 @@ class SalesforceController {
      * @title : RCS 세로형 페이지
      */
     @GetMapping("/{usr_cd}/rcsVertical.ajax")
-    fun rcsVertical(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun rcsVertical(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsVertical")
         return view
     }
@@ -445,7 +434,7 @@ class SalesforceController {
      * @title : RCS 슬라이드형 페이지
      */
     @GetMapping("/{usr_cd}/rcsSlide.ajax")
-    fun rcsSlide(@PathVariable(value = "usr_cd") usr_cd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+    fun rcsSlide(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val view = ModelAndView("cont/mobile/ajax/rcsSlide")
         return view
     }
@@ -466,7 +455,7 @@ class SalesforceController {
      */
     @ResponseBody
     @RequestMapping("/{usr_cd}/contentUpload.ajax")
-    fun contentUpload(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam("file") file: MultipartFile, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
+    fun contentUpload(@PathVariable(value = "usr_cd") usrCd: String, @RequestParam("file") file: MultipartFile, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
         var map: MutableMap<String, Any> = hashMapOf()
         //이미지명 중복 체크 추가.
         val imgNmCh = salesforceService.getImgNmCh(dto)
@@ -632,7 +621,7 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/{usr_cd}/getUser.ajax")
-    fun getUser(@PathVariable(value = "usr_cd") usr_cd: String, @ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
+    fun getUser(@PathVariable(value = "usr_cd") usrCd: String, @ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
         return salesforceService.getUser(dto, session)
     }
 /*
@@ -656,7 +645,7 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/save.service")
-    fun save(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
+    fun save(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/save.service data: $data")
         val dto = Tblmi_cont_mstDto()
         dto.avo_id = data["activityObjectID"].toString()
@@ -677,7 +666,7 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/publish.service")
-    fun publish(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
+    fun publish(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/publish.service data: $data")
         val dto = Tblmicp_cont_mstDto()
         dto.avo_id = data["activityObjectID"].toString()
@@ -703,7 +692,7 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/unpublish.service")
-    fun unpublish(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
+    fun unpublish(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
         logger.info("/unpublish.service data: $data")
 
         val dto = Tblmicp_cont_mstDto()
@@ -744,14 +733,14 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/validate.service")
-    fun validate(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
+    fun validate(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
         logger.info("/validate.service data: $data")
         return ResponseEntity(null, HttpStatus.OK)
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/stop.service")
-    fun stop(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
+    fun stop(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>) {
         logger.info("/stop.service data: $data")
         val dto = Tblmicp_programDto()
         try{
@@ -768,14 +757,13 @@ class SalesforceController {
                 salesforceDao.upd_tblmicp_campaign(campDto)
             }
 
-            val dto = Tblmicp_cont_mstDto()
-            dto.inten_id = data["interactionId"].toString()
-            dto.orig_id = data["originalDefinitionId"].toString()
-            dto.inta_key = data["interactionKey"].toString()
-            dto.inta_ve = data["interactionVersion"].toString()
-            dto.pub_yn = "Y"
-            salesforceDao.upd_tblmicp_cont_mst_pub(dto)
-
+            val dto1 = Tblmicp_cont_mstDto()
+            dto1.inten_id = data["interactionId"].toString()
+            dto1.orig_id = data["originalDefinitionId"].toString()
+            dto1.inta_key = data["interactionKey"].toString()
+            dto1.inta_ve = data["interactionVersion"].toString()
+            dto1.pub_yn = "Y"
+            salesforceDao.upd_tblmicp_cont_mst_pub(dto1)
         }catch (e: Exception){
             logger.error("stop Service error : {}", dto)
         }
@@ -783,7 +771,7 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/TestSave.service")
-    fun TestSave(@PathVariable(value = "usr_cd") usr_cd: String, @RequestBody data : MutableMap<String, Any>) {
+    fun TestSave(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>) {
         logger.info("/TestSave.service data: $data")
     }
 
@@ -843,9 +831,9 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/kko/atTmplLst.ajax")
-    fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String) : ModelAndView {
+    fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usrCd: String) : ModelAndView {
         val view = ModelAndView("cont/kko/ajax/tmplListAjax")
-        dto.usr_grp_cd =usr_cd
+        dto.usr_grp_cd = usrCd
         val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
 
         view.addObject("list" , paramMap["list"])
@@ -864,9 +852,9 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/kko/getAtTmpl.ajax")
-    fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usr_cd: String): MutableMap<String, Any>? {
+    fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usrCd: String): MutableMap<String, Any>? {
         val map :MutableMap<String,Any> = mutableMapOf()
-        dto.usr_grp_cd = usr_cd
+        dto.usr_grp_cd = usrCd
         val dto1: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(dto)
         if(CommonUtils.isEmptyObject(dto1)){
             rep.status= HttpServletResponse.SC_BAD_REQUEST
@@ -884,7 +872,7 @@ class SalesforceController {
     }
 
     @GetMapping("/{usr_cd}/error")
-    fun error(@PathVariable(value = "usr_cd") usr_cd: String): String {
+    fun error(@PathVariable(value = "usr_cd") usrCd: String): String {
         logger.error("error")
         return "index"
     }
@@ -893,23 +881,21 @@ class SalesforceController {
      * 쿠폰 기능
      */
     @PostMapping("/{usr_cd}/coupon/getCouponListAtSales.ajax")
-    fun couponList(@PathVariable(value = "usr_cd") usr_cd: String, searchCouponDto: SearchCouponDto): ModelAndView {
+    fun couponList(@PathVariable(value = "usr_cd") usrCd: String, searchCouponDto: SearchCouponDto): ModelAndView {
         val view = ModelAndView("cont/coupon/couponListAjax")
-        val reMap = couponListService.getCouponListAtSales(searchCouponDto, usr_cd)
+        val reMap = couponListService.getCouponListAtSales(searchCouponDto, usrCd)
         view.addObject("couponList", reMap["list"])
         view.addObject("page", reMap["page"])
         view.addObject("pageNo", reMap["pageNo"])
         view.addObject("cnt", reMap["cnt"])
-
         return view
     }
 
     @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
-    fun couponPreview(@PathVariable(value = "usr_cd") usr_cd: String, @RequestParam seq: String): ModelAndView {
+    fun couponPreview(@PathVariable(value = "usr_cd") usrCd: String, @RequestParam seq: String): ModelAndView {
         val view = ModelAndView("cont/coupon/couponPreviewAjax")
 
         val couponListDto = couponListService.getCoupon(seq)
-
         couponListDto.daily_start_time = formattingTime(couponListDto.daily_start_time!!)
         couponListDto.daily_end_time = formattingTime(couponListDto.daily_end_time!!)
         couponListDto.expire_dt = formattingDate(couponListDto.expire_dt!!)
