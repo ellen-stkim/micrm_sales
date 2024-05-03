@@ -6599,6 +6599,7 @@ span.ellipsis.conts_name {
 }
 
 .extraction {
+    display: none;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -6606,11 +6607,9 @@ span.ellipsis.conts_name {
     right: 0;
     z-index: 100;
     background: rgba(255, 255, 255, 0.9);
-    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    display: none;
 }
 .extraction.active {
     display: block;
@@ -7102,7 +7101,6 @@ table.report-tab-table td {
     float: left;
 }
 #openTab input {
-    display: inline-block;
     display: inline-block;
     width: auto;
     padding: 0 20px;
