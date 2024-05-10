@@ -17,18 +17,18 @@ class AtTmpl_searchDto : Tblmi_kko_at_tmplDto {
 
     constructor()
 
-    constructor(seq:Int,usr_grp_cd:String?){
+    constructor(seq:Int, usr_grp_cd:String?){
         this.seq = seq
         this.usr_grp_cd = usr_grp_cd
     }
 
-    constructor(seq:Int?,upd_id:String?,use_yn:String?){
+    constructor(seq:Int?, upd_id:String?, use_yn:String?){
         this.seq = seq
         this.upd_id = upd_id
         this.use_yn = use_yn
     }
 
-    constructor(tmpl_cd:String?,tmpl_nm:String?,use_yn:String?){
+    constructor(tmpl_cd:String?, tmpl_nm:String?, use_yn:String?){
         this.tmpl_cd = tmpl_cd
         this.tmpl_nm = tmpl_nm
         this.use_yn = use_yn

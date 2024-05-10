@@ -402,7 +402,6 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
-
                         // 템플릿 조회
                         val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id, contentListCreatedto.tmpl_nm,"Y")
                         atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
