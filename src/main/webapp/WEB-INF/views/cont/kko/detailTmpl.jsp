@@ -275,8 +275,7 @@
                                                 <div class="th" style="line-height: 18px;">강조 표기<br>보조 문구 <span
                                                         class="color_red">*</span></div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input3" name="newTemplateSubtitle" ${!empty dto.tmpl_subtit ?'value="'+= dto.tmpl_subtit+= '"' :''}
-                                                           placeholder="강조 표기 보조 문구 입력 (최대 50자)">
+                                                    <input type="text" class="txt_input3" name="newTemplateSubtitle" ${!empty dto.tmpl_subtit ?'value="'+= dto.tmpl_subtit+= '"' :''} placeholder="강조 표기 보조 문구 입력 (최대 50자)">
                                                 </div>
                                             </div>
                                         </div>
@@ -2522,17 +2521,15 @@ function prevAtTmplImg(){
             break;
         case 'TEXT':
             contHtml +=  `<div class="at_msg_cont">
-                                  <div class="tmpl_subtit">`+ $('input[name="newTemplateTitle"]').val() +`</div>
-                                  <div class="tmpl_tit">`+ $('input[name="newTemplateSubtitle"]').val() +`</div>`
+                          <div class="tmpl_subtit">`+ $('input[name="newTemplateSubtitle"]').val() +`</div>
+                          <div class="tmpl_tit">`+ $('input[name="newTemplateTitle"]').val() +`</div>`
             break;
-
         case 'IMAGE':
             contHtml += `<div class="kko_img_box">
-                                <img src="` + imgUrl +`" onerror="this.src = '/image/bg_none.png'" alt="">
-                            </div>`
+                            <img src="` + imgUrl +`" onerror="this.src = '/image/bg_none.png'" alt="">
+                         </div>`
             contHtml +=  `<div class="at_msg_cont">`
             break;
-
         case 'ITEM_LIST':
             if($('#img_check').is(':checked')){
                 contHtml += `<div class="kko_img_box">
@@ -2545,9 +2542,9 @@ function prevAtTmplImg(){
             }
             if($('#highlight_check').is(':checked')){
                 contHtml += `<div class="tmpl_high">
-                                     <div>` + $('.highlight_div input[name="title"]').val() + `</div>
-                                     <div class="tmpl_subtit">` + $('.highlight_div input[name="description"]').val() + `</div>
-                                 </div>`
+                             <div>` + $('.highlight_div input[name="title"]').val() + `</div>
+                             <div class="tmpl_subtit">` + $('.highlight_div input[name="description"]').val() + `</div>
+                             </div>`
             }
             if($('#highlight_img_check').is(':checked')){
                 contHtml += `<div class="right_img_box">
@@ -2565,7 +2562,6 @@ function prevAtTmplImg(){
                 };
                 contHtml += `</div>`
             }
-
             //아이템 요약정보 넣어주기
             break;
     }

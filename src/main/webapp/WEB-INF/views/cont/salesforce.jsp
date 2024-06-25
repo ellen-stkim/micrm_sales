@@ -804,8 +804,7 @@
                 </div>
                 <div class="pop_error_txt blue_point_color"></div>
                 <div class="btn_row">
-                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장"
-                           onclick="imgSendSave();"/>
+                    <input type="button" class="btn_bg btn_size2 btn_center imageSave" value="저장" onclick="imgSendSave();"/>
                 </div>
             </div>
         </div>
@@ -906,7 +905,6 @@
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
         });//end
-
 
         let config = {baseUrl: "/js/"};
         let dependencies = ["customActivity"];

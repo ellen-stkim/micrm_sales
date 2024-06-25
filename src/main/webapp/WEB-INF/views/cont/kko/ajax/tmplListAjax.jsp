@@ -14,8 +14,8 @@
 <c:choose>
     <c:when test="${not empty list}">
         <c:forEach var="tmpl" items="${list}">
-            <c:if test="${tmpl.use_yn eq 'Y'}" >
-                <div class="column template_div" style="height: 632px;" >
+            <c:if test="${tmpl.use_yn eq 'Y'}">
+                <div class="column template_div" style="height: 632px;">
             </c:if>
             <c:if test="${tmpl.use_yn eq 'N'}">
                 <div class="column template_div off" style="height: 632px;">
@@ -49,10 +49,10 @@
                         </c:otherwise>
                     </c:choose>--%>
                 </div>
-                <!-- 카카오톡  -->
+                    <!-- 카카오톡  -->
                     <div class="row_body template_body">
-                        <input type="text" name="tmpl_seq" value="${tmpl.seq}"  hidden/>
-                        <div class="round_box" >
+                        <input type="text" name="tmpl_seq" value="${tmpl.seq}" hidden/>
+                        <div class="round_box">
                             <div class="round_box head">
                                 <p>알림톡 도착</p>
                             </div>
@@ -70,7 +70,6 @@
                                     <c:if test="${tmpl.tmpl_empsize_tp eq 'TEXT'}">
                                         <div class="tmpl_subtit">${tmpl.tmpl_subtit}</div>
                                         <div class="tmpl_tit">${tmpl.tmpl_tit}</div>
-
                                     </c:if>
                                     <%--  강조유형 아이템리스트형 --%>
                                     <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'}">
@@ -126,7 +125,8 @@
                                              <a class="sms_btn kakao_yellow">${btn.name}</a>
                                          </c:if>
                                          <c:if test="${btn.linkType ne 'AC'}">
-                                             <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
+                                             <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a>
+                                         </c:if>
                                      </c:forEach>
                                  </c:if>
                             </div>

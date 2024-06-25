@@ -2228,8 +2228,8 @@
                 break;
             case 'TEXT':
                 contHtml +=  `<div class="at_msg_cont">
-                                  <div class="tmpl_subtit">`+ $('input[name="templateTitle"]').val() +`</div>
-                                  <div class="tmpl_tit">`+ $('input[name="templateSubtitle"]').val() +`</div>`
+                              <div class="tmpl_subtit">`+ $('input[name="templateSubtitle"]').val() +`</div>
+                              <div class="tmpl_tit">`+ $('input[name="templateTitle"]').val() +`</div>`
                 break;
 
             case 'IMAGE':

@@ -1,6 +1,5 @@
 define(["postmonger"], function (Postmonger) {
 	"use strict";
-
 	let connection = new Postmonger.Session();
 	let payload = {};
 	let fuelapiRestHost = null;
@@ -33,10 +32,6 @@ define(["postmonger"], function (Postmonger) {
 		}, 1000);
 		 */
 	});
-	connection.on('requestedSchema', function (data) {
-		// save schema
-		console.log('*** Schema ***', JSON.stringify(data['schema']));
-	});
 
 	connection.on("initActivity", function (data) {
 		if (data) {
@@ -52,7 +47,6 @@ define(["postmonger"], function (Postmonger) {
 				}
 			});
 		});
-
 	});
 
 	connection.on("requestedTokens", function (tokens){

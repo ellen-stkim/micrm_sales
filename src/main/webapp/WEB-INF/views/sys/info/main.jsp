@@ -40,10 +40,12 @@
                 </div>
                 <table class="table management" summary="table">
                     <colgroup>
-                        <col style="width: 20%">
+                        <col style="width: 15%">
                         <col style="width: 10%">
-                        <col style="width: 30%">
                         <col style="width: 20%">
+                        <col style="width: 15%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
                         <col style="width: 10%">
                         <col style="width: 10%">
                     </colgroup>
@@ -53,6 +55,8 @@
                             <th>CD_ID</th>
                             <th>CD_VAL</th>
                             <th>CD_DESC</th>
+                            <th>부모코드</th>
+                            <th>부모코드명</th>
                             <th>등록일</th>
                             <th>수정일</th>
                         </tr>
@@ -75,6 +79,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[0].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[0].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[0].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -95,6 +105,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[1].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[1].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[1].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -114,6 +130,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[2].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[2].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[2].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -136,6 +158,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[3].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[3].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[3].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -155,6 +183,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[4].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[4].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[4].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -176,6 +210,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[5].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[5].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[5].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -195,6 +235,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[6].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[6].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[6].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -216,6 +262,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[7].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[7].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[7].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -235,6 +287,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[8].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[8].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[8].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -256,6 +314,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[9].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[9].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[9].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -275,6 +339,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[10].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[10].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[10].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -296,6 +366,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[11].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[11].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[11].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -315,6 +391,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[12].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[12].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[12].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -336,6 +418,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[13].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[13].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[13].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -356,6 +444,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[14].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[14].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[14].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -375,6 +469,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[15].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[15].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[15].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -397,6 +497,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[16].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[16].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[16].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -417,6 +523,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[17].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[17].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[17].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -436,6 +548,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[18].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[18].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[18].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -458,6 +576,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[19].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[19].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[19].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -479,6 +603,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[20].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[20].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[20].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -499,6 +629,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[21].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[21].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[21].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -518,6 +654,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[22].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[22].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[22].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -540,6 +682,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[23].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[23].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[23].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -560,6 +708,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[24].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[24].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[24].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -579,6 +733,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[25].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[25].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[25].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -601,6 +761,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[26].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[26].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[26].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -620,6 +786,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[27].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[27].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[27].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -641,6 +813,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[28].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[28].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[28].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -661,6 +839,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[29].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[29].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[29].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -680,6 +864,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[30].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[30].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[30].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -721,6 +911,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[32].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[32].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[32].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -740,6 +936,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[33].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[33].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[33].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -761,6 +963,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[34].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[34].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[34].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -780,6 +988,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[35].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[35].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[35].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -801,6 +1015,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[36].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[36].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[36].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -820,6 +1040,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[37].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[37].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[37].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -842,6 +1068,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[38].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[38].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[38].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -861,6 +1093,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[39].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[39].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[39].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -882,6 +1120,12 @@
                             <td>
                                 <input class="input_boarder" type="text" name="lst[40].cd_desc" value="">
                             </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[40].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[40].par_nm" value="">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -901,6 +1145,12 @@
                             </td>
                             <td>
                                 <input class="input_boarder" type="text" name="lst[41].cd_desc" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[41].par_id" value="">
+                            </td>
+                            <td>
+                                <input class="input_boarder" type="text" name="lst[41].par_nm" value="">
                             </td>
                             <td></td>
                             <td></td>
@@ -934,24 +1184,30 @@
                         $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(1)').find("input[name='lst["+ a +"].cd_id']").val(data.cd_id);
                         $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(2)').find("input[name='lst["+ a +"].cd_val']").val(data.cd_val);
                         $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(3)').find("input[name='lst["+ a +"].cd_desc']").val(data.cd_desc);
-                        $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(4)').html(data.reg_dt);
-                        $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(5)').html(data.upd_dt);
+                        $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(4)').find("input[name='lst["+ a +"].par_id']").val(data.par_id);
+                        $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(5)').find("input[name='lst["+ a +"].par_nm']").val(data.par_nm);
+                        $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(6)').html(data.reg_dt);
+                        $("#" + data.grp_id + "\\|" + data.cd_val).children('td:eq(7)').html(data.upd_dt);
                     } else if(data.grp_id == "NAVER_APP"){
                         let a = Number($("#" + data.grp_id + "\\|" + data.cd_nm).prevAll().length);
                         $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(0)').find("input[name='lst["+ a +"].seq']").val(data.seq);
                         $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(1)').find("input[name='lst["+ a +"].cd_id']").val(data.cd_id);
                         $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(2)').find("input[name='lst["+ a +"].cd_val']").val(data.cd_val);
                         $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(3)').find("input[name='lst["+ a +"].cd_desc']").val(data.cd_desc);
-                        $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(4)').html(data.reg_dt);
-                        $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(5)').html(data.upd_dt);
+                        $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(4)').find("input[name='lst["+ a +"].par_id']").val(data.par_id);
+                        $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(5)').find("input[name='lst["+ a +"].par_nm']").val(data.par_nm);
+                        $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(6)').html(data.reg_dt);
+                        $("#" + data.grp_id + "\\|" + data.cd_nm).children('td:eq(7)').html(data.upd_dt);
                     } else{
                         let a = Number($("#" + data.grp_id).prevAll().length);
                         $("#" + data.grp_id).children('td:eq(0)').find("input[name='lst["+ a +"].seq']").val(data.seq);
                         $("#" + data.grp_id).children('td:eq(1)').find("input[name='lst["+ a +"].cd_id']").val(data.cd_id);
                         $("#" + data.grp_id).children('td:eq(2)').find("input[name='lst["+ a +"].cd_val']").val(data.cd_val);
                         $("#" + data.grp_id).children('td:eq(3)').find("input[name='lst["+ a +"].cd_desc']").val(data.cd_desc);
-                        $("#" + data.grp_id).children('td:eq(4)').html(data.reg_dt);
-                        $("#" + data.grp_id).children('td:eq(5)').html(data.upd_dt);
+                        $("#" + data.grp_id).children('td:eq(4)').find("input[name='lst["+ a +"].par_id']").val(data.par_id);
+                        $("#" + data.grp_id).children('td:eq(5)').find("input[name='lst["+ a +"].par_nm']").val(data.par_nm);
+                        $("#" + data.grp_id).children('td:eq(6)').html(data.reg_dt);
+                        $("#" + data.grp_id).children('td:eq(7)').html(data.upd_dt);
                     }
                 }
             }

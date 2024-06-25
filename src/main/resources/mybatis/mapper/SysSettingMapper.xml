@@ -502,10 +502,17 @@
 	</insert>
 
 	<update id="upd_tblmi_comm_cd" parameterType="Tblmi_comm_cdDto" >
+		/* upd_tblmi_comm_cd */
 		update tblmi_comm_cd set
 			cd_id = #{cd_id}
 			, cd_val = #{cd_val}
 			, cd_desc = #{cd_desc}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(par_id)">
+				, par_id = #{par_id}
+		    </if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(par_nm)">
+				, par_nm = #{par_nm}
+			</if>
 			, upd_dt = now()
 		<where>
 			seq = #{seq}

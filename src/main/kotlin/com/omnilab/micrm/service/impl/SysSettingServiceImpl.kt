@@ -592,6 +592,7 @@ class SysSettingServiceImpl : SysSettingService {
                 sysSettingDao.insertSetLst(lstDto)
             }
         } else {
+            logger.error("insertKkoSenderKey : {}", result)
             result["status"] = 302
             result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
         }
