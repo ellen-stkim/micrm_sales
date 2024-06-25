@@ -219,9 +219,9 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     }
 
     override fun createSendProfile(map: MutableMap<String, Any>): MutableMap<String, Any> {
-        val result: MutableMap<String, Any> = mutableMapOf()
+        val result = HashMap<String, Any>()
         val token = getToken(url)
-        //        header 설정
+        // header 설정
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         headers.set("Authorization", "Bearer $token")
@@ -238,9 +238,9 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         bodyMap["channelKey"] = "base"
 
         val gson = GsonBuilder().create()
-
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(bodyMap), headers))
         val data = reMap["data"] as MutableMap<String, Any>
+        logger.info("createSendProfile {}", data)
 
         if ("API_200" == data["code"]) {
             result["status"] = 200
