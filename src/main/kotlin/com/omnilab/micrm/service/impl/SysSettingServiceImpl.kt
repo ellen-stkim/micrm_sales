@@ -809,12 +809,12 @@ class SysSettingServiceImpl : SysSettingService {
             val tempData = result["data"] as MutableMap<String, Any>
             result["data"] = tempData["data"] as MutableMap<String, Any>
         } catch (e: Exception) {
+            logger.error("createSenderKey ERR", e)
             // 발신 프로필 등록 후 데이터 등록 에러 발생시 프로필 리스트 조회 후 데이터 등록
             result = mutableMapOf()
             val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
             if(getTodaySendProfileResult["status"] == 200){
                 val todaySendProfileList:List<LinkedTreeMap<String, Any>> = getTodaySendProfileResult["data"] as List<LinkedTreeMap<String, Any>>
-
                 var sendKey = ""
                 for(sendProfile in todaySendProfileList){
                     if(sendProfile["channelId"] == chanId) {
@@ -824,10 +824,12 @@ class SysSettingServiceImpl : SysSettingService {
                 if(!CommonUtils.isEmptyObject(sendKey)){
                     result["status"] = 200
                     result["data"] = mutableMapOf("sendProfileKey" to sendKey)
+                }else{
+                    logger.error("getTodaySendProfileResult catch : {}", todaySendProfileList)
                 }
                 return result
             }else{
-                logger.error("getTodaySendProfileResult : {}", getTodaySendProfileResult)
+                logger.error("getTodaySendProfileResult catch : {}", getTodaySendProfileResult)
                 result["status"] = 302
                 result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
                 return result
