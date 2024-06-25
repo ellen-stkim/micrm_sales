@@ -4,12 +4,15 @@ import com.exacttarget.fuelsdk.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class testSdk {
 
 
     public static void main(String[] args) throws ETSdkException {
         Logger logger = LoggerFactory.getLogger("this");
-
+        /*
         ETConfiguration configuration = new ETConfiguration();
         configuration.set("clientId", "a1bpjiy7elm3a5np52nb8wwu");
         configuration.set("clientSecret", "vkc6QT6ip7NYgyNVH4dRURkt");
@@ -30,6 +33,7 @@ public class testSdk {
 
         ETResponse<ETDataExtension> response = client.retrieve(ETDataExtension.class, filter);
         logger.error("{}", response.getResult().getObject());
+        */
 
         //logger.error("?? : {}", org.codehaus.stax2.ri.EmptyIterator.getInstance());
          //
@@ -51,5 +55,6 @@ public class testSdk {
 
         System.out.println("resp="+productDE);
         */
+
     }
 }

@@ -805,8 +805,10 @@ class SysSettingServiceImpl : SysSettingService {
         // 발신 프로필 키 등록
         try {
             result = kkoRestApiService.createSendProfile(map)   // 발신프로필 키 등록 후 등록된 프로필 데이터 반환
-            val tempData = result["data"] as MutableMap<String, Any>
-            result["data"] = tempData["data"] as MutableMap<String, Any>
+            if(result["status"] == 200){
+                val tempData = result["data"] as MutableMap<String, Any>
+                result["data"] = tempData["data"] as MutableMap<String, Any>
+            }
         } catch (e: Exception) {
             logger.error("createSenderKey ERR", e)
             // 발신 프로필 등록 후 데이터 등록 에러 발생시 프로필 리스트 조회 후 데이터 등록
