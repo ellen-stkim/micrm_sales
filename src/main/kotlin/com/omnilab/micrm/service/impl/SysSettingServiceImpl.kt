@@ -575,12 +575,9 @@ class SysSettingServiceImpl : SysSettingService {
 
     override fun insertKkoSenderKey(param: HashMap<String, String>): Map<String, Any> {
         var result: MutableMap<String, Any> = createSenderKey(param)
-
         if (result["status"] == 200) {
-
             val data : MutableMap<String,Any> = result["data"] as MutableMap<String, Any>
             result = createClient(param, data["sendProfileKey"] as String)// 고객사 등록
-            
             // 데이터 저장
             if (result["status"] == 200) {
                 val userInfo = UsefulUtils.sessionUser()
@@ -588,11 +585,10 @@ class SysSettingServiceImpl : SysSettingService {
                 lstDto.reg_id = userInfo.usr_id
                 lstDto.list_nm = param["yellowId"]!!
                 lstDto.list_val =  data["sendProfileKey"] as String
-
                 sysSettingDao.insertSetLst(lstDto)
             }
         } else {
-            logger.error("insertKkoSenderKey : {}", result)
+            logger.error("insertKkoSenderKey : {}, {}", param, result)
             result["status"] = 302
             result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
         }
@@ -807,16 +803,12 @@ class SysSettingServiceImpl : SysSettingService {
             ,"yellowId" to chanId
             ,"phoneNumber" to param["phoneNumber"]!!
         )
-
         // 발신 프로필 키 등록
         try {
             result = kkoRestApiService.createSendProfile(map)   // 발신프로필 키 등록 후 등록된 프로필 데이터 반환
-
             val tempData = result["data"] as MutableMap<String, Any>
             result["data"] = tempData["data"] as MutableMap<String, Any>
-
         } catch (e: Exception) {
-
             // 발신 프로필 등록 후 데이터 등록 에러 발생시 프로필 리스트 조회 후 데이터 등록
             result = mutableMapOf()
             val getTodaySendProfileResult = kkoRestApiService.getSendProfile(map)
@@ -835,7 +827,7 @@ class SysSettingServiceImpl : SysSettingService {
                 }
                 return result
             }else{
-                logger.error("", getTodaySendProfileResult)
+                logger.error("getTodaySendProfileResult : {}", getTodaySendProfileResult)
                 result["status"] = 302
                 result["msg"] = "오류가 발생했습니다. 관리자에게 문의바랍니다."
                 return result
