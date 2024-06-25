@@ -795,7 +795,6 @@ class SysSettingServiceImpl : SysSettingService {
 
     private fun createSenderKey(param: HashMap<String, String>): MutableMap<String, Any> {
         var result: MutableMap<String, Any>
-
         val chanId= param["yellowId"]!!
         val map = mutableMapOf<String, Any>(
             "token" to param["token"]!!
