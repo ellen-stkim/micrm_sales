@@ -97,7 +97,7 @@
                     <td>
                         <span class="en_font" id="sendDefaultAddress">
                             <c:if test = "${list[0].def_yn == 'Y'}">
-                                ${cutil:numberToPhone(list[0].list_val)}
+                                ${list[0].list_val}
                             </c:if>
                         </span>
                     </td>

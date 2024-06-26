@@ -41,13 +41,13 @@
                                          checked
                                     </c:if>
                                  ><span>
-                              <input type ="hidden" name ="sendNumber" value ="${cutil:numberToPhone(item.list_val)}"/>
+                              <input type ="hidden" name ="sendNumber" value ="${item.list_val}"/>
                               <input type ="hidden" name ="sendNm" value ="${item.list_nm}"/>
                               </span>
                               </label>
                            </td>
                            <td>${item.list_nm}</td>
-                           <td class="en_font">${cutil:numberToPhone(item.list_val)}</td>
+                           <td class="en_font">${item.list_val}</td>
                         </tr>
                   </c:forEach>
                </c:when>

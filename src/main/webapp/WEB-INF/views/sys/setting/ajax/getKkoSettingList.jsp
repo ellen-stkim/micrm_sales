@@ -46,18 +46,14 @@
                         </c:if>
                     </td>
                     <td class="en_font">${n.list_nm}</td>
-                    <td class="en_font">${cutil:numberToPhone(n.list_val)}</td>
+                    <td class="en_font">${n.list_val}</td>
                     <td class="en_font">${n.reg_dt}</td>
                     <td class="en_font">
                         <c:if test = "${fn:trim(n.use_yn) == 'Y'}">
-                            <input type="button" class="use_state en_font btn_state" value="Y"
-                                   onclick="updateSmsLstYn('${n.seq}','${n.use_yn}')"
-                            />
+                            <input type="button" class="use_state en_font btn_state" value="Y" onclick="updateSmsLstYn('${n.seq}','${n.use_yn}')"/>
                         </c:if>
                         <c:if test = "${fn:trim(n.use_yn) == 'N'}">
-                            <input type="button" class="use_state en_font btn_state" value="N"
-                                   onclick="updateSmsLstYn('${n.seq}','${n.use_yn}')"
-                            />
+                            <input type="button" class="use_state en_font btn_state" value="N" onclick="updateSmsLstYn('${n.seq}','${n.use_yn}')"/>
                         </c:if>
                     </td>
                 </tr>

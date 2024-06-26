@@ -229,7 +229,7 @@
                                             <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
                                             <input type="text" class="sms_number smsNumber_kko" id="send_to"
                                                     <c:if test="${fn:trim(list[0].send_num) != ''}">
-                                                        value="${list[0].sender}(${cutil:numberToPhone(list[0].send_num)})" readonly
+                                                        value="${list[0].sender}(${list[0].send_num})" readonly
                                                     </c:if>
                                                     <c:if test="${fn:trim(list[0].send_num) == ''}">
                                                         placeholder="발신 프로필을 입력해주세요"

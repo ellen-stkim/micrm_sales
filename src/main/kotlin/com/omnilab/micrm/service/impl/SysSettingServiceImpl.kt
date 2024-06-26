@@ -433,34 +433,37 @@ class SysSettingServiceImpl : SysSettingService {
 
     override fun getKkoSettingList(dto: SetLst_searchDto): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
-        val searchDto = dto
 
-        val pageNo = if (searchDto.pageNo == null) {
+        val pageNo = if (dto.pageNo == null) {
             1
         } else {
-            searchDto.pageNo!!
+            dto.pageNo
         }
+        when (dto.searchType) {
+            "list_nm" -> {
+                dto.list_nm = dto.searchValue
+            }
 
-        if (searchDto.searchType == "list_nm") {
-            searchDto.list_nm = searchDto.searchValue
-        } else if (searchDto.searchType == "list_val") {
-            searchDto.list_val = searchDto.searchValue
-        } else if (searchDto.searchType == "use_yn") {
-            searchDto.use_yn = searchDto.searchValue
+            "list_val" -> {
+                dto.list_val = dto.searchValue
+            }
+
+            "use_yn" -> {
+                dto.use_yn = dto.searchValue
+            }
         }
-
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        searchDto.list_tp_id = "CH02"
-        searchDto.list_dt_id = "DMTP03"
+        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        dto.list_tp_id = "CH02"
+        dto.list_dt_id = "DMTP03"
 
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
 
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(searchDto)
+        dto.firstIndex = paginationInfo.firstRecordIndex
+        dto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = sysSettingDao.getSettingListCnt(dto)
 
         // 발신 채널 카테고리
-        var cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        val cdDto = Tblmi_comm_cdDto()
         cdDto.grp_id = "KAKAO_PROF_CATE"
         cdDto.cd_id = "PROF_CATE"
         val cataLst = sysSettingDao.getCommCDLst(cdDto)
@@ -474,11 +477,11 @@ class SysSettingServiceImpl : SysSettingService {
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getSettingList(searchDto)
+        map["list"] = sysSettingDao.getSettingList(dto)
         map["cateLst"] = cataLst
         map["cateMidLst"] = cataMidLst
         map["cateSubLst"] = cataSubLst
-        map["sendCate"] = sysSettingDao.getSettingList(searchDto)
+        map["sendCate"] = sysSettingDao.getSettingList(dto)
 
         return map;
     }

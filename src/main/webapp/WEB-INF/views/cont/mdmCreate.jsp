@@ -159,7 +159,7 @@
                                     <div class="column_1">
                                         <input type="text" class="sms_number smsNumber_kko" id="send_to"
                                                 <c:if test="${fn:trim(list[0].list_nm) != ''}">
-                                                    value="${list[0].list_nm}(${cutil:numberToPhone(list[0].list_val)})" readonly
+                                                    value="${list[0].list_nm}(${list[0].list_val})" readonly
                                                 </c:if>
                                                 <c:if test="${fn:trim(list[0].list_nm) == ''}">
                                                     placeholder ="발신 프로필을 선택해주세요"
