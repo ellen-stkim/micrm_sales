@@ -197,7 +197,7 @@ class KkoMsgServiceImpl : KkoMsgService {
     override fun selTmplDataBySeq(seq: Int): AtTmpl_viewDto {
         val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd
         val tmplDto = AtTmpl_searchDto(seq,usrGrpCd)
-        tmplDto.use_yn = "Y"
+        //tmplDto.use_yn = "Y"
         return  kkoAtTmplDao.selTmplViewByTmplDto(tmplDto)
     }
 

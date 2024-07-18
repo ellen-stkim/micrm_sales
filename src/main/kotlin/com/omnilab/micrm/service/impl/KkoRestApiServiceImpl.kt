@@ -325,7 +325,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return data["access_token"] as String
     }
 
-
     private fun restExchange(urlString: String, method: HttpMethod, httpEntity: HttpEntity<Any>): MutableMap<String, Any> {
         val result: ResponseEntity<String> = restTemplate.exchange(urlString, method, httpEntity, String::class.java)
         val status = result.statusCode.value()
@@ -340,6 +339,5 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         }
         return reMap
     }
-
 
 }

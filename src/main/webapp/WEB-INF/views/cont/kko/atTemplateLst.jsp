@@ -30,7 +30,7 @@
                         <!-- option -->
                         <ul class="option">
                             <li data="tmpl_nm">템플릿명</li>
-                            <li data="chan_id">채널명</li>
+                            <%--<li data="chan_id">채널명</li>--%>
                             <li data="kep_status">검수상태</li>
                             <li data="use_yn">휴면상태</li>
                             <li data="tmpl_status">템플릿상태</li>
