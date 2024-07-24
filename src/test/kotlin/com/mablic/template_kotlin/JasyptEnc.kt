@@ -30,5 +30,6 @@ fun main(args: Array<String>) {
 
     log.error("{}", CommonUtils.sha512("childfund2024#!"))
     log.error("{}", CommonUtils.sha512("milvus20241#!"))
-    log.error("{}", "")
+    log.error("{}", CommonUtils.sha512("9K32STixIJoaSFGUgF0X"))
+    log.error("{}", CommonUtils.sha512("rf8idAFl6KELpzx"))
 }
