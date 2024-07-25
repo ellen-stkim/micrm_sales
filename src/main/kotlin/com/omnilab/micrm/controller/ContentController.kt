@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 
-
 @Controller
 @RequestMapping("/cont")
 class ContentController  {
@@ -1134,8 +1133,8 @@ class ContentController  {
     fun updateUseYn(@ModelAttribute  dto : Tblmi_kko_at_tmplDto , principal: Principal): Int {
         dto.upd_id = principal.name
         val map = kkoMsgService.updTmplDto(dto)
-//        kkoAtTmplDao.updTmplDtoBySeq(updDto)
-        logger.error("{}",dto)
+        //kkoAtTmplDao.updTmplDtoBySeq(updDto)
+        //logger.error("{}",dto)
 
         return map
     }
