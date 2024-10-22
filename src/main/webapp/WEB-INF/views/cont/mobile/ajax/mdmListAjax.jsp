@@ -98,11 +98,11 @@
                             <div class="round_box">
                                 <c:if test="${not empty content.kko_image_url}">
                                 <div class="sms">
-                                    <img src="${filePath}${content.kko_image_url}"
-                                         onerror="this.src = '/image/bg_none.png'" alt="">
+                                    <img src="${filePath}${content.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="">
                                 </div>
                                 </c:if>
-                                <p class="sms_txt">
+                                <c:set var="btnStyle" value="${empty content.kko_btn_url ? 'max-height: 200px' : ''}" />
+                                <p class="sms_txt" style="${btnStyle}">
                                     ${content.cont_sub}<br/><br>
                                     ${cutil:replaceBr(content.cont_body)}
                                 </p>

@@ -149,7 +149,7 @@
             </div>
 
             <h2 class="table_tit">비밀번호 찾기</h2>
-            <form action="" id="pwInquiry">
+            <form:form action="" id="pwInquiry">
                 <table class="pop_table_type1" summary="비밀번호 찾기">
                     <colgroup>
                         <col width="102"/>
@@ -181,7 +181,7 @@
                     </tr>
                     </tbody>
                 </table>
-            </form>
+            </form:form>
             <div class="form_error" id="pwError"></div>
             <div class="btn_row">
                 <input type="button" class="btn_bg btn_pwInquiry" value="찾기"/>

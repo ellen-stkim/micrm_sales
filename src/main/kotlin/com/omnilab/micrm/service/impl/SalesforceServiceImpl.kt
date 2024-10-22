@@ -54,7 +54,6 @@ import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.streams.toList
 
 
 @Service("SalesforceServiceImpl")
@@ -325,12 +324,12 @@ class SalesforceServiceImpl : SalesforceService {
      */
 
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
-    override fun insertContentList(contentListCreatedto: Content_list_CreateDto): Map<String, Any> {
+    override fun insertContentList(dto: Content_list_CreateDto): Map<String, Any> {
         val statusMap: MutableMap<String, Any> = HashMap()
         val userInfo = UsefulUtils.sessionUser()
-        val contGrpCd = contentListCreatedto.cont_grp_cd
+        val contGrpCd = dto.cont_grp_cd
 
-        val isByte = isCheckByte(contentListCreatedto);
+        val isByte = isCheckByte(dto);
 
         if (!isByte) {
             statusMap["status"] = false
@@ -341,25 +340,25 @@ class SalesforceServiceImpl : SalesforceService {
         val tblmiContMstDto = Tblmi_cont_mstDto()
         try {
             tblmiContMstDto.ch_tp = "CH03"
-            tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
+            tblmiContMstDto.cont_nm = dto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
             tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
             tblmiContMstDto.cont_grp_cd = contGrpCd
-            tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
-            tblmiContMstDto.avo_id = contentListCreatedto.avo_id
-            tblmiContMstDto.inten_id = contentListCreatedto.inten_id
-            tblmiContMstDto.orig_id = contentListCreatedto.orig_id
-            tblmiContMstDto.inta_key = contentListCreatedto.inta_key
-            tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
-            tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
-            tblmiContMstDto.team_cd = contentListCreatedto.team_cd
-            tblmiContMstDto.usr_key = contentListCreatedto.usr_key
+            tblmiContMstDto.sales_nm = dto.sales_nm
+            tblmiContMstDto.avo_id = dto.avo_id
+            tblmiContMstDto.inten_id = dto.inten_id
+            tblmiContMstDto.orig_id = dto.orig_id
+            tblmiContMstDto.inta_key = dto.inta_key
+            tblmiContMstDto.inta_ve = dto.inta_ve
+            tblmiContMstDto.camp_nm = dto.camp_nm
+            tblmiContMstDto.team_cd = dto.team_cd
+            tblmiContMstDto.usr_key = dto.usr_key
 
             contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
 
             // 인덱스 값은 고정되서 넘어온다 [ 0번 인덱스 : kakao , 1번 인덱스 : sms , 2번 인덱스: rcs ]
-            val len = contentListCreatedto.send_to_list!!.size - 1;
+            val len = dto.send_to_list!!.size - 1;
 
             for (i in 0..len) {
                 // 항상 3번 Insert 작업을 진행한다.
@@ -367,9 +366,9 @@ class SalesforceServiceImpl : SalesforceService {
                 val tblmiContLstdto = Tblmi_cont_lstDto()
 
                 tblmiContLstdto.cont_cd = tblmiContMstDto.seq   // 마스터 코드 삽입
-                tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
-                tblmiContLstdto.from_to = contentListCreatedto.from_to
-                tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
+                tblmiContLstdto.cont_sub = dto.cont_sub_list!![i].trim()
+                tblmiContLstdto.from_to = dto.from_to
+                tblmiContLstdto.send_to = dto.send_to_list!![i]
                 tblmiContLstdto.send_nm = null
                 tblmiContLstdto.thm_url = null
                 tblmiContLstdto.br_yn = "N"
@@ -378,12 +377,12 @@ class SalesforceServiceImpl : SalesforceService {
                 tblmiContLstdto.cont_grp_cd = userInfo.usr_grp_cd
                 tblmiContLstdto.cont_grp_cd = contGrpCd
 
-                val formatList = contentListCreatedto.formatType
+                val formatList = dto.formatType
 
                 // 인덱스 번호 0 : 카카오
                 if (i == 0) {
                     // 제목 저장
-                    tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
+                    tblmiContLstdto.cont_sub = dto.cont_sub_list!![i].trim()
 
                     // 체크 여부에 따라 USE_YN 설정
                     if (formatList!!.contains("kakao")) {
@@ -392,7 +391,7 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.use_yn = "N"
                     }
 
-                    val kkoOption = contentListCreatedto.kko_option!!.trim()
+                    val kkoOption = dto.kko_option!!.trim()
                     if (kkoOption == "ad") {
                         // 광고 처리
                         tblmiContLstdto.send_tp = "SENDTP01"
@@ -401,10 +400,10 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
+                    if ("kko_at" == dto.kko_format_type) {  // 알림톡
                         // 템플릿 조회
-                        val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id, contentListCreatedto.tmpl_nm,"Y")
-                        atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
+                        val atDto =  AtTmpl_searchDto(dto.key_id, dto.tmpl_nm,"Y")
+                        atDto.usr_grp_cd =dto.cont_grp_cd
                         atDto.kep_status = "O"  // 승인완료
 
                         val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
@@ -436,7 +435,7 @@ class SalesforceServiceImpl : SalesforceService {
                         cdDto.cd_id = userInfo.usr_grp_cd
 
                         val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
-                        kkoDto.list_val = contentListCreatedto.key_id
+                        kkoDto.list_val = dto.key_id
                         val kkoSenderLst = contentDao.selectSenderList(kkoDto)
 
                         if (kkoSenderLst.isNotEmpty()) {
@@ -448,25 +447,25 @@ class SalesforceServiceImpl : SalesforceService {
 
 
                         // 카카오 이미지 처리
-                        if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
+                        if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                             tblmiContLstdto.kko_img_cd = null
                         } else {
-                            tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
+                            tblmiContLstdto.kko_img_cd = dto.kko_img_cd
                         }
 
 
-                        tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                        tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                        tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                        tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
-                        tblmiContLstdto.kko_btn_nm2 = contentListCreatedto.kko_btn_nm2
-                        tblmiContLstdto.kko_btn_url2 = contentListCreatedto.kko_btn_url2
-                        tblmiContLstdto.kko_btn_nm3 = contentListCreatedto.kko_btn_nm3
-                        tblmiContLstdto.kko_btn_url3 = contentListCreatedto.kko_btn_url3
-                        tblmiContLstdto.kko_btn_nm4 = contentListCreatedto.kko_btn_nm4
-                        tblmiContLstdto.kko_btn_url4 = contentListCreatedto.kko_btn_url4
-                        tblmiContLstdto.kko_btn_nm5 = contentListCreatedto.kko_btn_nm5
-                        tblmiContLstdto.kko_btn_url5 = contentListCreatedto.kko_btn_url5
+                        tblmiContLstdto.cont_body = dto.kakao_body
+                        tblmiContLstdto.kko_img_url = dto.kko_img_url
+                        tblmiContLstdto.kko_btn_nm = dto.kko_btn_nm
+                        tblmiContLstdto.kko_btn_url = dto.kko_btn_url
+                        tblmiContLstdto.kko_btn_nm2 = dto.kko_btn_nm2
+                        tblmiContLstdto.kko_btn_url2 = dto.kko_btn_url2
+                        tblmiContLstdto.kko_btn_nm3 = dto.kko_btn_nm3
+                        tblmiContLstdto.kko_btn_url3 = dto.kko_btn_url3
+                        tblmiContLstdto.kko_btn_nm4 = dto.kko_btn_nm4
+                        tblmiContLstdto.kko_btn_url4 = dto.kko_btn_url4
+                        tblmiContLstdto.kko_btn_nm5 = dto.kko_btn_nm5
+                        tblmiContLstdto.kko_btn_url5 = dto.kko_btn_url5
                     }
                 }
 
@@ -480,7 +479,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     tblmiContLstdto.cont_tp = "DMTP02"
                     // SMS 광고 , 안내 유형 선택
-                    val smsOption = contentListCreatedto.sms_option!!.trim()
+                    val smsOption = dto.sms_option!!.trim()
 
                     if (smsOption == "ad") {
                         // 광고 처리
@@ -490,7 +489,7 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    val smsMsgTp = contentListCreatedto.sms_msg_tp
+                    val smsMsgTp = dto.sms_msg_tp
 
                     // SMS 문자 타입 설정
                     if (smsMsgTp.equals("LMS")) {
@@ -498,32 +497,30 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.img_cd_1 = null
                     } else if (smsMsgTp.equals("MMS")) {
                         tblmiContLstdto.msg_tp = "DMCH203"
-                        tblmiContLstdto.img_cd_1 = contentListCreatedto.mds_img_cd
+                        tblmiContLstdto.img_cd_1 = dto.mds_img_cd
                     } else {
                         tblmiContLstdto.msg_tp = "DMCH201"
                         tblmiContLstdto.img_cd_1 = null
                     }
 
-                    if (!contentListCreatedto.coupon_seq.isNullOrEmpty()) {
-                        tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
+                    if (!dto.coupon_seq.isNullOrEmpty()) {
+                        tblmiContLstdto.coupon_seq = AES256.AES_Decode(dto.coupon_seq, GlobalValues.encKey)
                     }
 
                     // short url 사용 여부
-                    tblmiContLstdto.short_url_yn = contentListCreatedto.short_url_yn
-
-                    tblmiContLstdto.cont_body = contentListCreatedto.sms_body
+                    tblmiContLstdto.short_url_yn = dto.short_url_yn
+                    tblmiContLstdto.cont_body = dto.sms_body
                 }
 
                 // 인덱스 번호 2: RCS 분기 처리
                 if (i == 2) {
-
                     // 이미지 저장
-                    tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1?.toInt()
-                    tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2?.toInt()
-                    tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3?.toInt()
-                    tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4?.toInt()
-                    tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5?.toInt()
-                    tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6?.toInt()
+                    tblmiContLstdto.img_cd_1 = dto.rcs_img_cd_1
+                    tblmiContLstdto.img_cd_2 = dto.rcs_img_cd_2
+                    tblmiContLstdto.img_cd_3 = dto.rcs_img_cd_3
+                    tblmiContLstdto.img_cd_4 = dto.rcs_img_cd_4
+                    tblmiContLstdto.img_cd_5 = dto.rcs_img_cd_5
+                    tblmiContLstdto.img_cd_6 = dto.rcs_img_cd_6
 
                     // USE_YN 처리
                     if (formatList!!.contains("rcs")) {
@@ -533,10 +530,10 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     tblmiContLstdto.cont_tp = "DMTP04"
-                    tblmiContLstdto.rcs_footer = contentListCreatedto.rcs_footer
+                    tblmiContLstdto.rcs_footer = dto.rcs_footer
 
                     // rcs 광고 , 유형 선택
-                    val rcsOption = contentListCreatedto.rcs_option!!.trim()
+                    val rcsOption = dto.rcs_option!!.trim()
 
                     if (rcsOption == "ad") {
                         // 광고 처리
@@ -546,8 +543,8 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
-                    val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
+                    val rcsFormatType = dto.rcs_format_type!!.trim()   // rcs 포멧 타입
+                    val rcsMsgType = dto.rcs_msg_tp!!.trim() // rcs 메세지 타입
 
                     when (rcsFormatType) {
                         "text" -> {
@@ -565,7 +562,6 @@ class SalesforceServiceImpl : SalesforceService {
                                 if (codeDto != null) {
                                     tblmiContLstdto.key_id = codeDto.cd_val
                                 }
-
                             } else if (rcsMsgType == "lms") {
                                 // LMS의 경우
                                 tblmiContLstdto.msg_tp = "DMCH206"
@@ -579,9 +575,8 @@ class SalesforceServiceImpl : SalesforceService {
                                 if (codeDto != null) {
                                     tblmiContLstdto.key_id = codeDto.cd_val
                                 }
-
                             }
-                            tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
+                            tblmiContLstdto.cont_body = dto.rcs_body
                         }
                         // 2021-05-03 가로형 삭제로 인한 주석 처리
                         /*else if (rcsFormatType.equals("horizontal")) {
@@ -651,12 +646,12 @@ class SalesforceServiceImpl : SalesforceService {
                             }
 
                             val jsonBody = JSONObject()
-                            jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                            jsonBody["description"] = contentListCreatedto.rcs_body
+                            jsonBody["title"] = dto.cont_sub_list?.get(i)
+                            jsonBody["description"] = dto.rcs_body
                             // 공백 파싱 처리
                             //tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
                             tblmiContLstdto.cont_body = jsonBody.toString();
-                            tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
+                            tblmiContLstdto.img_cd_1 = dto.verticalImg
 
                         }
                         "slide" -> {
@@ -667,7 +662,7 @@ class SalesforceServiceImpl : SalesforceService {
                                 tblmiContLstdto.msg_tp = "DMCH212"
                             }
                             // RCS 슬라이드 관련 INSERT 처리
-                            rcsSlideSetting(contentListCreatedto, tblmiContLstdto)
+                            rcsSlideSetting(dto, tblmiContLstdto)
                         }
                         else -> {
                             // 에러 발생
@@ -677,10 +672,10 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // RCS 버튼 체크 기능 개발
                     if (rcsFormatType == "slide") {
-                        rcsButtonMakeJsonStringSlide(contentListCreatedto, tblmiContLstdto)
+                        rcsButtonMakeJsonStringSlide(dto, tblmiContLstdto)
                     } else {
                         // Button이 1개이상 존재할때 Json형태로 버튼 Insert
-                        rcsButtonMakeJsonString(contentListCreatedto, tblmiContLstdto)
+                        rcsButtonMakeJsonString(dto, tblmiContLstdto)
                     }
 
                 }
@@ -701,28 +696,28 @@ class SalesforceServiceImpl : SalesforceService {
 
                 if (i == 0) {
                     // 카카오 이미지 URL 링크 저장
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
-                        insertContentUrl("img", contentListCreatedto.kko_img_url!!, "kkoImg001", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.kko_img_url)) {
+                        insertContentUrl("img", dto.kko_img_url!!, "kkoImg001", lastSeq!!)
                     }
                     // 카카오 버튼 링크 저장
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
-                        insertContentUrl("btn", contentListCreatedto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url)) {
+                        insertContentUrl("btn", dto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
                     }
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url2)) {
-                        insertContentUrl("btn", contentListCreatedto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url2)) {
+                        insertContentUrl("btn", dto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
                     }
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url3)) {
-                        insertContentUrl("btn", contentListCreatedto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url3)) {
+                        insertContentUrl("btn", dto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
                     }
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url4)) {
-                        insertContentUrl("btn", contentListCreatedto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url4)) {
+                        insertContentUrl("btn", dto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
                     }
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url5)) {
-                        insertContentUrl("btn", contentListCreatedto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url5)) {
+                        insertContentUrl("btn", dto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
                     }
 
                     // 카카오 본문 a 링크 저장
-                    val urlKakaoBody = contentListCreatedto.kakao_body
+                    val urlKakaoBody = dto.kakao_body
                     if (urlKakaoBody?.contains("{{") == true) {
 
                         val regex = "\\{\\{[^{]+}}"
@@ -762,12 +757,12 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 if (i == 1) {
                     // 모바일 이미지 a 링크 저장 (이미지 경로)
-                    if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
-                        insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq!!)
+                    if (!CommonUtils.isEmptyObject(dto.mms_imgurl)) {
+                        insertContentUrl("a", dto.mms_imgurl!!, "mmsImg001", lastSeq!!)
                     }
 
                     // 모바일 본문 추적 a 링크 저장
-                    val urlSmsBody = contentListCreatedto.sms_body
+                    val urlSmsBody = dto.sms_body
                     if (urlSmsBody?.contains("{{") == true) {
                         val regex = "\\{\\{[^{]+}}"
                         val p = Pattern.compile(regex)
@@ -789,9 +784,9 @@ class SalesforceServiceImpl : SalesforceService {
                                     contUrlDto.url_tag = "a"
                                     contUrlDto.url = url
                                     if (idx >= 10) {
-                                        contUrlDto.url_id = "smsTrk0" + idx
+                                        contUrlDto.url_id = "smsTrk0$idx"
                                     } else {
-                                        contUrlDto.url_id = "smsTrk00" + idx
+                                        contUrlDto.url_id = "smsTrk00$idx"
                                     }
                                     contUrlDto.cont_lst_cd = lastSeq
                                     contentDao.insertContentUrl(contUrlDto)
@@ -803,13 +798,13 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
                 if (i == 2) {
-                    val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
+                    val urlLen = dto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
                     if (urlLen != null) {
                         // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
                         for (j in 0 until urlLen) {
-                            val urlValue = contentListCreatedto.url_value?.get(j)?.trim()
-                            val fallbackUrlPosition = contentListCreatedto.fallback_url_04?.get(j)?.trim()
-                            val fallbackUrlQuery = contentListCreatedto.fallback_url_05?.get(j)?.trim()
+                            val urlValue = dto.url_value?.get(j)?.trim()
+                            val fallbackUrlPosition = dto.fallback_url_04?.get(j)?.trim()
+                            val fallbackUrlQuery = dto.fallback_url_05?.get(j)?.trim()
 
                             if (!CommonUtils.isEmptyObject(urlValue)) {
                                 insertContentUrl("btn", urlValue!!, "urlBtn" + (j + 1), lastSeq!!)
@@ -1908,7 +1903,7 @@ class SalesforceServiceImpl : SalesforceService {
             val response = client.retrieve(ETDataExtension::class.java, filter)
 
             val dataExtension = response.result.getObject()
-            val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.toList()
+            val reList =  dataExtension.retrieveColumns().stream().map {column-> column.name.lowercase(Locale.getDefault()) }.collect(Collectors.toList())
 
             // cloudPage 조회 후 실패할 경우 dataExtension의 totalcnt를 조회한다. (최대 2500개까지 조회 가능)
             val totalCnt = try {

@@ -75,7 +75,8 @@
                                             <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
                                         </div>
                                     </c:if>
-                                    <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
+                                    <c:set var="btnStyle" value="${empty content.kko_btn_url && !cutil:isEmptyObject(dto.kko_img_lst) ? 'max-height: 200px' : ''}" />
+                                    <p class="sms_txt" style="${btnStyle}">${cutil:replaceBr(dto.cont_body)}</p>
                                     <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
                                         <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
                                     </c:if>

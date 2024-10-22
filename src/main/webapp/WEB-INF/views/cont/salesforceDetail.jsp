@@ -128,8 +128,7 @@
                         <c:if test="${fn:length(usrKeyLst) <= 0}">
                             <div class="select non_def" id="recv_usr_cd" name="edmDB">
                                 <!-- selected value -->
-                                <div class="value"
-                                     data="${list[0].usr_key}">${!empty list[0].usr_key ? list[0].usr_key : '회원번호'}</div>
+                                <div class="value" data="${list[0].usr_key}">${!empty list[0].usr_key ? list[0].usr_key : '회원번호'}</div>
                                 <ul class="option mappingLst"></ul>
                             </div>
                         </c:if>

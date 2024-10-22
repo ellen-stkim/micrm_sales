@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 
 import org.springframework.context.annotation.Bean
-import org.springframework.http.client.BufferingClientHttpRequestFactory
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.mail.javamail.JavaMailSenderImpl
@@ -34,10 +33,10 @@ import java.util.*
 class OtherConfig {
 
     @Value("\${variable.mail-username}")
-    private val mail_username: String? = null
+    private val mailUsername: String? = null
 
     @Value("\${variable.mail-password}")
-    private val mail_password: String? = null
+    private val mailPassword: String? = null
 
     // MAIL 설정
     @Bean(name = ["javaMailSender"])
@@ -45,8 +44,8 @@ class OtherConfig {
         val mailSender = JavaMailSenderImpl()
         mailSender.host = "smtp.gmail.com"
         mailSender.port = 465
-        mailSender.username = mail_username
-        mailSender.password = mail_password
+        mailSender.username = mailUsername
+        mailSender.password = mailPassword
         val javaMailProperties = Properties()
         javaMailProperties.setProperty("mail.transport.protocol", "smtp")
         javaMailProperties.setProperty("mail.smtp.ssl.enable", "true")
