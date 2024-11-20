@@ -47,12 +47,12 @@ variable:
   static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
-  biz-url: ENC(d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY=)
-  biz-msg-url: ENC(E61c3eAA5KnRsxfXBjTAlcsCe8QU8ws5Xq38DRBES4UW2yenht4i9bCLsOw5nRurga6Vid3k3PQGs6a85ji6bvXU/XG709kt74MrT0uDLaU=)
-  biz-version: v1
-  biz-Auth: ENC(X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX)
-
   coupon-image-path: "sales/dev"
+
+  biz-url: https://stg-bizmsg-web.dktechinmsg.com/mng
+  biz-msg-url: https://stg-bizmsg-web.dktechinmsg.com
+  biz-version: v1
+  biz-Auth: ENC(kO6zwBtVbCe9kwwg6lUrqtfMpN/MMK5n6LA0vHV8+pGGrShBcnGtLniK6zdAzF/+0CodDLN52UFiH86BMcrQ+C/Ucbzhe/gYYc3XFg1tAKXDyzBy6vm1n6HxnY/x/9vP)
 
 upload:
   src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"

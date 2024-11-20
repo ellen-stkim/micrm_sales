@@ -1,6 +1,7 @@
 package template_kotlin;
 
 import com.exacttarget.fuelsdk.*;
+import com.omnilab.micrm.common.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +56,8 @@ public class testSdk {
 
         System.out.println("resp="+productDE);
         */
+
+        logger.error("{}", CommonUtils.sha512("amore13579!"));
 
     }
 }
