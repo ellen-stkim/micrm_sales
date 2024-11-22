@@ -623,7 +623,7 @@ class MobileContentServiceImpl : ContentService {
         val smsMsgTp = dto.sms_msg_tp
 
         // 문자의 경우 제목 byte 체크 필요
-        if (!CommonUtils.checkByteLength(sms_cont_sub, 40)) {
+        if (!CommonUtils.checkByteLength(sms_cont_sub, 80)) {
             logger.error("SMS Title 40Byte Error")
             return false;
         }

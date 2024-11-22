@@ -29,9 +29,12 @@ fun main(args: Array<String>) {
     //log.error("{}", enc.decrypt("/hDJCGL/qLXfzqNWh9JNtvJ/yx09TBJsVLkI5CDqmhRrrnKhorJrLTcTMB6kxffMIxX7AM83GiHQ+e2MpWU1kTsVs1Zhj5r5njm3DDrk3bE="))
     //log.error("{}", enc.decrypt("UCDTUfq9eiO9WAwR1j/Lnuk2DGIgaBKt3NfR17fgv1EpW5nvZ27plSQiHS/ZcxckGE7nN4m70wZozqh/JKwNTWxcYTflIDQiMBkPqTJwQ+E="))
 
-    log.error("{}", enc.encrypt("Basic R000000015 R000000015_E/jCo2C/RHyasTHeFBsjpQ"))
+    log.error("{}", enc.decrypt("d5lxtEHn5fou6ly19wPcwaFpFFlvSOWaObcpSLfgzhOwecBPl+rskzDxiXgN6qCLCMnxoyaPZD0gzfOc7QzvdHwOEpLBADJAwgclKlHEAUY="))
+    log.error("{}", enc.decrypt("E61c3eAA5KnRsxfXBjTAlcsCe8QU8ws5Xq38DRBES4UW2yenht4i9bCLsOw5nRurga6Vid3k3PQGs6a85ji6bvXU/XG709kt74MrT0uDLaU="))
+    log.error("{}", enc.decrypt("X6uhU/rJNia1o35WMtm164I1kF1G8nyTy/4K/sQi4EtyCbX0ywbpyhUji9TWs4NvG/NbMNNfkEmccYAEN9gWHmdt0oB4yWUtDNl2UMXwDJ2iw80QIBE3mrDDGhHhSAJX"))
 
-    log.error("{}", enc.decrypt("zQoP26ubMZ161bF/s+HPpLLp0/OQuBXHum1gXnUEC1PP9X4+IdxpOjZ2ldaQSW3sCz9gMOT1OnNqEd/czycfcmR5CfhDBWDsAjZ5iynk7rI="))
-    log.error("{}", enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
-    log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+    log.error("{}", enc.encrypt("https://web1.dktechinmsg.com/mng"))
+    log.error("{}", enc.encrypt("https://web1.dktechinmsg.com"))
+    log.error("{}", enc.encrypt("Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw"))
+
 }

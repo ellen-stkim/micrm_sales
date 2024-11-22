@@ -2029,7 +2029,7 @@ class SalesforceServiceImpl : SalesforceService {
         val smsMsgTp = dto.sms_msg_tp
 
         // 문자의 경우 제목 byte 체크 필요
-        if (!CommonUtils.checkByteLength(smsContSub, 40)) {
+        if (!CommonUtils.checkByteLength(smsContSub, 80)) {
             logger.error("SMS Title 40Byte Error")
             return false
         }
