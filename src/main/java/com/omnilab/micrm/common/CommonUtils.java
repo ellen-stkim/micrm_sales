@@ -26,6 +26,8 @@ import org.springframework.beans.MutablePropertyValues;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.springframework.integration.graph.LinkNode.Type.input;
+
 
 /**
  * @author : OMNILAB

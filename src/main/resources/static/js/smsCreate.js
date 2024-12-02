@@ -115,7 +115,7 @@ let smsCreate = {
         if(code != 8 && count > 40){
             for(b=i=0;c=newTitle.charCodeAt(i);) {
                 b += c >> 7 ? 2:2;
-                if (b > 40){
+                if (b > 80){
                     if(type == 'sms'){
                         popup.popAlert('문자 제목은 40byte를 초과할 수 없습니다.');
                         $(title).val(newTitle.substring(0,i));
