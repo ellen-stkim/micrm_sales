@@ -303,7 +303,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
 
             if(kakaoBtnUrl != null){
-                val gson = GsonBuilder().create()
+                val gson = GsonBuilder().disableHtmlEscaping().create()
                 val lst = ArrayList<ButtonJsonDto>()
 
                 if(containsTemplateVariable(kakaoBtnUrl.url)){
