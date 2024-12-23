@@ -1,6 +1,7 @@
 package com.omnilab.micrm.controller
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
@@ -43,6 +44,7 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
+import kotlin.collections.HashMap
 
 
 @Controller
@@ -95,22 +97,32 @@ class SalesforceController {
     @Value("\${upload.content}")
     private val filePath: String? = null
 
+    fun getUsrGrpCd(usrGrpCd: String): Tblmi_comm_cdDto?{
+        val dto = Tblmi_comm_cdDto("USR_GRP_CD", usrGrpCd)
+        dto.use_yn = "Y"
+        return sysSettingDao.getCommCD(dto)
+    }
+
     @ResponseBody
     @GetMapping("/{usr_cd}/config.json")
     fun configJson(@PathVariable(value = "usr_cd") usrCd: String): JSONObject {
-        val resource: Resource = ClassPathResource("static/sf/config.json")
-        val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
-        val arguments: JSONObject = json["arguments"] as JSONObject
-        val execute: JSONObject = arguments["execute"] as JSONObject
-        execute.replace("url", execute["url"].toString().replace("/sf", "/sf/$usrCd"))
+        if(getUsrGrpCd(usrCd) != null){
+            val resource: Resource = ClassPathResource("static/sf/config.json")
+            val json: JSONObject = JSONParser().parse(InputStreamReader(resource.inputStream, "UTF-8")) as JSONObject
+            val arguments: JSONObject = json["arguments"] as JSONObject
+            val execute: JSONObject = arguments["execute"] as JSONObject
+            execute.replace("url", execute["url"].toString().replace("/sf", "/sf/$usrCd"))
 
-        val configurationArguments: JSONObject = json["configurationArguments"] as JSONObject
-        val keys = configurationArguments.keys
-        for(i in keys){
-            val temp = configurationArguments[i] as JSONObject
-            temp.replace("url", temp["url"].toString().replace("/sf", "/sf/$usrCd"))
+            val configurationArguments: JSONObject = json["configurationArguments"] as JSONObject
+            val keys = configurationArguments.keys
+            for(i in keys){
+                val temp = configurationArguments[i] as JSONObject
+                temp.replace("url", temp["url"].toString().replace("/sf", "/sf/$usrCd"))
+            }
+            return json
+        }else{
+            return JSONObject()
         }
-        return json
     }
 
     /**
@@ -126,29 +138,34 @@ class SalesforceController {
      */
     @GetMapping("/{usr_cd}/index.mi")
     fun mdmCreate(@PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
-        val view =  ModelAndView("cont/salesforce")
-        view.addObject("usr_cd", usrCd)
+        if(getUsrGrpCd(usrCd) != null){
+            val view =  ModelAndView("cont/salesforce")
+            view.addObject("usr_cd", usrCd)
 
-        val searchDto = SetLst_searchDto()
-        searchDto.usr_grp_cd = usrCd
-        searchDto.list_tp_id = "CH05"
-        searchDto.list_dt_id = "TEAM01"
-        searchDto.use_yn = "Y"
-        view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
+            val searchDto = SetLst_searchDto()
+            searchDto.usr_grp_cd = usrCd
+            searchDto.list_tp_id = "CH05"
+            searchDto.list_dt_id = "TEAM01"
+            searchDto.use_yn = "Y"
+            view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
 
-        val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usrCd)
-        temp.list_nm = "USR_KEY"
-        view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
+            val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usrCd)
+            temp.list_nm = "USR_KEY"
+            view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
 
-        temp.list_nm = "from_to"
-        view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
+            temp.list_nm = "from_to"
+            view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
-        val cntMap = salesforceService.isCheckSender(usrCd)
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
+            val cntMap = salesforceService.isCheckSender(usrCd)
+            view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+            view.addObject("smsCnt", cntMap["smsCnt"])
+            view.addObject("rcsCnt", cntMap["rcsCnt"])
 
-        return view
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
+        }
+
     }
 
     // =================================================== Mobile ========================================================= //
@@ -169,8 +186,12 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileInsert.service")
     fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
-        contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        return salesforceService.insertContentList(contentListDto)
+        return if(getUsrGrpCd(usrCd) != null){
+            contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            salesforceService.insertContentList(contentListDto)
+        }else{
+            HashMap()
+        }
     }
 
     /**
@@ -188,59 +209,67 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
-        contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        return salesforceService.updateContentList(contentListDto)
+        return if(getUsrGrpCd(usrCd) != null){
+            contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            salesforceService.updateContentList(contentListDto)
+        }else{
+            HashMap()
+        }
     }
 
     @PostMapping("/{usr_cd}/mobileInfo.ajax")
     fun selectMobileContent(@RequestParam(value = "seq", required = true) seq: Int, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
-        val tblmiContMstdto = Tblmi_cont_mstDto()
-        tblmiContMstdto.seq = seq
-        tblmiContMstdto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        tblmiContMstdto.reg_dt = UsefulUtils.sessionUser().usr_grp_cd
-        val view = ModelAndView("/cont/salesforceDetail")
-        val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
-        val cntMap = salesforceService.isCheckSender(usrCd)
+        if(getUsrGrpCd(usrCd) != null){
+            val tblmiContMstdto = Tblmi_cont_mstDto()
+            tblmiContMstdto.seq = seq
+            tblmiContMstdto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            tblmiContMstdto.reg_dt = UsefulUtils.sessionUser().usr_grp_cd
+            val view = ModelAndView("/cont/salesforceDetail")
+            val listMap = mobileContentService.selectOneContentView(tblmiContMstdto)
+            val cntMap = salesforceService.isCheckSender(usrCd)
 
-        val list = listMap["list"] as MutableList<Content_view_Dto>
-        if(list.isNotEmpty()){
-            val rejDto = SetLst_searchDto()
-            rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-            rejDto.list_tp_id = "CH04"
-            rejDto.list_dt_id = "REJT01"
-            rejDto.def_yn = "Y"
-            val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
+            val list = listMap["list"] as MutableList<Content_view_Dto>
+            if(list.isNotEmpty()){
+                val rejDto = SetLst_searchDto()
+                rejDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+                rejDto.list_tp_id = "CH04"
+                rejDto.list_dt_id = "REJT01"
+                rejDto.def_yn = "Y"
+                val smsRejectTextMap = mobileContentService.selectRejectTextList(rejDto)
 
-            view.addObject("rejectText",smsRejectTextMap["list"])
+                view.addObject("rejectText",smsRejectTextMap["list"])
+                view.addObject("kakaoCnt", cntMap["kakaoCnt"])
+                view.addObject("smsCnt", cntMap["smsCnt"])
+                view.addObject("rcsCnt", cntMap["rcsCnt"])
+
+                val commonCDDto = Tblmi_comm_cdDto()
+                commonCDDto.grp_id = "COMMON"
+                commonCDDto.cd_id = "UPURL01"
+                val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+                view.addObject("filePath", uploadPrefix?.cd_val)
+
+                val searchDto = SetLst_searchDto()
+                searchDto.usr_grp_cd = usrCd
+                searchDto.list_tp_id = "CH05"
+                searchDto.list_dt_id = "TEAM01"
+                searchDto.use_yn = "Y"
+                view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
+
+                val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usrCd)
+                temp.list_nm = "USR_KEY"
+                view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
+
+                temp.list_nm = "from_to"
+                view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
+            }
+            view.addObject("list" , listMap["list"])
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
             view.addObject("rcsCnt", cntMap["rcsCnt"])
-
-            val commonCDDto = Tblmi_comm_cdDto()
-            commonCDDto.grp_id = "COMMON"
-            commonCDDto.cd_id = "UPURL01"
-            val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-            view.addObject("filePath", uploadPrefix?.cd_val)
-
-            val searchDto = SetLst_searchDto()
-            searchDto.usr_grp_cd = usrCd
-            searchDto.list_tp_id = "CH05"
-            searchDto.list_dt_id = "TEAM01"
-            searchDto.use_yn = "Y"
-            view.addObject("teamLst", sysSettingDao.getMappingSettingListSort(searchDto))
-
-            val temp = SetLst_searchDto("CH03", "SPTP01", "Y", usrCd)
-            temp.list_nm = "USR_KEY"
-            view.addObject("usrKeyLst", sysSettingDao.getMappingSettingList(temp))
-
-            temp.list_nm = "from_to"
-            view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
         }
-        view.addObject("list" , listMap["list"])
-        view.addObject("kakaoCnt", cntMap["kakaoCnt"])
-        view.addObject("smsCnt", cntMap["smsCnt"])
-        view.addObject("rcsCnt", cntMap["rcsCnt"])
-        return view
     }
 
     /** @Method Name  : previewService
@@ -262,20 +291,24 @@ class SalesforceController {
 
     @PostMapping("/{usr_cd}/preview.ajax")
     fun previewService(@ModelAttribute dto : Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String) : ModelAndView {
-        val view = ModelAndView("cont/mobile/ajax/mdmPreview")
-        val formatList = dto.formatType
-        if(formatList!!.contains("rcs")) {
-            // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
-            val map = mobileContentService.previewJsonService(dto)
-            view.addObject("jsonContent", map["jsonContent"])
+        if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/mdmPreview")
+            val formatList = dto.formatType
+            if(formatList!!.contains("rcs")) {
+                // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
+                val map = mobileContentService.previewJsonService(dto)
+                view.addObject("jsonContent", map["jsonContent"])
+            }
+            view.addObject("content", dto);
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "COMMON"
+            commonCDDto.cd_id = "UPURL01"
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+            view.addObject("filePath", uploadPrefix?.cd_val)
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
         }
-        view.addObject("content", dto);
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        view.addObject("filePath", uploadPrefix?.cd_val)
-        return view;
     }
 
     /**
@@ -293,16 +326,20 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/isCheckTmplateNm.ajax")
     fun isCheckTemplateName(@ModelAttribute contMstdto: Tblmi_cont_mstDto, @PathVariable(value = "usr_cd") usrCd: String) : HashMap<String,String>{
-        val result = salesforceService.checkContNm(contMstdto)
-        val statusMap = HashMap<String,String>()
-        if(result == 0) {
-            statusMap["status"] = "true"
-            statusMap["message"] = "모바일 컨텐츠 저장이 완료 되었습니다"
-        } else {
-            statusMap["status"] = "false"
-            statusMap["message"] = "중복된 컨텐츠 이름이 존재합니다"
+        if(getUsrGrpCd(usrCd) != null){
+            val result = salesforceService.checkContNm(contMstdto)
+            val statusMap = HashMap<String,String>()
+            if(result == 0) {
+                statusMap["status"] = "true"
+                statusMap["message"] = "모바일 컨텐츠 저장이 완료 되었습니다"
+            } else {
+                statusMap["status"] = "false"
+                statusMap["message"] = "중복된 컨텐츠 이름이 존재합니다"
+            }
+            return statusMap
+        }else{
+            return HashMap()
         }
-        return statusMap
     }
 
     /**
@@ -319,14 +356,18 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/senderMobileList.ajax")
     fun selectSenderMobileList(@ModelAttribute dto : SetLst_searchDto, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
-        dto.usr_grp_cd = usrCd
-        val view = ModelAndView("cont/mobile/ajax/senderMobileListAjax")
-        val senderMap = salesforceService.selectSenderList(dto)
-        view.addObject("list", senderMap["list"])
-        view.addObject("page", senderMap["page"])
-        view.addObject("pageNo", senderMap["pageNo"])
-        view.addObject("listCnt", senderMap["listCnt"])
-        return view
+        if(getUsrGrpCd(usrCd) != null){
+            dto.usr_grp_cd = usrCd
+            val view = ModelAndView("cont/mobile/ajax/senderMobileListAjax")
+            val senderMap = salesforceService.selectSenderList(dto)
+            view.addObject("list", senderMap["list"])
+            view.addObject("page", senderMap["page"])
+            view.addObject("pageNo", senderMap["pageNo"])
+            view.addObject("listCnt", senderMap["listCnt"])
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
+        }
     }
 
     /**
@@ -343,14 +384,18 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/mobileRejectTextList.ajax")
     fun mobileRejectTextList(@PathVariable(value = "usr_cd") usrCd: String, @ModelAttribute dto : SetLst_searchDto): ModelAndView {
-        dto.usr_grp_cd = usrCd
-        val view = ModelAndView("cont/mobile/ajax/mobileRejectTextListAjax")
-        val senderMap = salesforceService.selectRejectTextList(dto)
-        view.addObject("list", senderMap["list"])
-        view.addObject("page", senderMap["page"])
-        view.addObject("pageNo", senderMap["pageNo"])
-        view.addObject("listCnt", senderMap["listCnt"])
-        return view
+        if(getUsrGrpCd(usrCd) != null){
+            dto.usr_grp_cd = usrCd
+            val view = ModelAndView("cont/mobile/ajax/mobileRejectTextListAjax")
+            val senderMap = salesforceService.selectRejectTextList(dto)
+            view.addObject("list", senderMap["list"])
+            view.addObject("page", senderMap["page"])
+            view.addObject("pageNo", senderMap["pageNo"])
+            view.addObject("listCnt", senderMap["listCnt"])
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
+        }
     }
 
     /**
@@ -367,18 +412,22 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/mobileImgList.ajax")
     fun selectImgListForPopUp(@ModelAttribute tblmiContImgdto: Image_searchDto, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
-        val view = ModelAndView("cont/mobile/ajax/mdmImgListAjax")
-        val senderMap = salesforceService.selectImgForPopup(tblmiContImgdto)
-        view.addObject("list", senderMap["list"])
-        view.addObject("page", senderMap["page"])
-        view.addObject("pageNo", senderMap["pageNo"])
-        view.addObject("listCnt", senderMap["listCnt"])
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        view.addObject("filePath", uploadPrefix?.cd_val)
-        return view
+        if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/mdmImgListAjax")
+            val senderMap = salesforceService.selectImgForPopup(tblmiContImgdto)
+            view.addObject("list", senderMap["list"])
+            view.addObject("page", senderMap["page"])
+            view.addObject("pageNo", senderMap["pageNo"])
+            view.addObject("listCnt", senderMap["listCnt"])
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "COMMON"
+            commonCDDto.cd_id = "UPURL01"
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+            view.addObject("filePath", uploadPrefix?.cd_val)
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
+        }
     }
 
     /**
@@ -397,8 +446,12 @@ class SalesforceController {
      */
     @GetMapping("/{usr_cd}/rcsText.ajax")
     fun rcsText(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val view = ModelAndView("cont/mobile/ajax/rcsText")
-        return view
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/rcsText")
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
     }
 
     /** @Method Name  : rcsVertical
@@ -416,8 +469,12 @@ class SalesforceController {
      */
     @GetMapping("/{usr_cd}/rcsVertical.ajax")
     fun rcsVertical(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val view = ModelAndView("cont/mobile/ajax/rcsVertical")
-        return view
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/rcsVertical")
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
     }
 
     /** @Method Name  : rcsSlide
@@ -435,8 +492,12 @@ class SalesforceController {
      */
     @GetMapping("/{usr_cd}/rcsSlide.ajax")
     fun rcsSlide(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
-        val view = ModelAndView("cont/mobile/ajax/rcsSlide")
-        return view
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/rcsSlide")
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
     }
 
     /**
@@ -456,153 +517,161 @@ class SalesforceController {
     @ResponseBody
     @RequestMapping("/{usr_cd}/contentUpload.ajax")
     fun contentUpload(@PathVariable(value = "usr_cd") usrCd: String, @RequestParam("file") file: MultipartFile, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
-        var map: MutableMap<String, Any> = hashMapOf()
-        //이미지명 중복 체크 추가.
-        val imgNmCh = salesforceService.getImgNmCh(dto)
-        if(imgNmCh > 0 ){
-            map["imgCheck"] = 0
-            map["imgCheckErr"] = "중복된 이미지명입니다."
-            return map
-        }
-        // 파일 타입 체크
-        if(dto.ch_tp == "IMGTP01"){
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE){
+        if(getUsrGrpCd(usrCd) != null){
+            var map: MutableMap<String, Any> = hashMapOf()
+            //이미지명 중복 체크 추가.
+            val imgNmCh = salesforceService.getImgNmCh(dto)
+            if(imgNmCh > 0 ){
                 map["imgCheck"] = 0
-                map["imgCheckErr"] = "모바일은 jpg 파일만 업로드 가능 합니다."
+                map["imgCheckErr"] = "중복된 이미지명입니다."
                 return map
             }
-        }else{
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_PNG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_GIF_VALUE
-            ){
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "jpg, png, gif 파일만 업로드 가능 합니다."
-                return map
-            }
-        }
-        try {
-            map["imgCheck"] = 1
-            val userInfo = UsefulUtils.sessionUser()
-            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(userInfo.usr_grp_cd!!, file)
-
-            if(map["uploaded"].toString() == "0"){
-                logger.info("File Upload fail")
+            // 파일 타입 체크
+            if(dto.ch_tp == "IMGTP01"){
+                if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE){
+                    map["imgCheck"] = 0
+                    map["imgCheckErr"] = "모바일은 jpg 파일만 업로드 가능 합니다."
+                    return map
+                }
             }else{
-                if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
-                    val fileName = map["file_nm"]
-                    val image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.width
-                    val imageHeight: Int = image.width
-                    if(imageWidth < 500 || imageHeight < 250) {
-                        val newWidth = 500
-                        val newHeight = 500
-                        val ratio: Double
-                        val w: Int
-                        var h: Int
+                if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE
+                    && file.contentType != MimeTypeUtils.IMAGE_PNG_VALUE
+                    && file.contentType != MimeTypeUtils.IMAGE_GIF_VALUE
+                ){
+                    map["imgCheck"] = 0
+                    map["imgCheckErr"] = "jpg, png, gif 파일만 업로드 가능 합니다."
+                    return map
+                }
+            }
+            try {
+                map["imgCheck"] = 1
+                val userInfo = UsefulUtils.sessionUser()
+                val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
+                map = fileUpload.upload(userInfo.usr_grp_cd!!, file)
 
-                        if (imageWidth > imageHeight) {
-                            ratio = newWidth.toDouble() / imageWidth.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else if (imageHeight > imageWidth) {
-                            ratio = newHeight.toDouble() / imageHeight.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else {
-                            w = newWidth
-                            h = newHeight
-                        }
-                        if(h < 250){
-                            h = 250
-                        }
-                        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
-                        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-                        val g = newImage.graphics
-                        g.drawImage(resizeImage, 0, 0, null)
-                        g.dispose()
+                if(map["uploaded"].toString() == "0"){
+                    logger.info("File Upload fail")
+                }else{
+                    if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
+                        val fileName = map["file_nm"]
+                        val image : BufferedImage = ImageIO.read(file.inputStream)
+                        val imageWidth: Int = image.width
+                        val imageHeight: Int = image.width
+                        if(imageWidth < 500 || imageHeight < 250) {
+                            val newWidth = 500
+                            val newHeight = 500
+                            val ratio: Double
+                            val w: Int
+                            var h: Int
 
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath(contentFilePath + "/" + fileName), FilenameUtils.getName(contentFilePath + "/" + fileName)))
-                        resizeImage.flush()
-                        image.flush()
-                    }
-                    var resultMap: MutableMap<String, Any>? = null
-                    when (dto.ch_tp) {
-                        "IMGTP09" -> {    // 카카오 알림톡 이미지
-                            resultMap = kkoRestApiService.uploadTmplImg(file)
-                        }
-                        "IMGTP10" -> {
-                            resultMap = kkoRestApiService.uploadTmplItemImg(file)
-                        }
-                        "IMGTP03", "IMGTP11" -> {    // 카카오 친구톡 이미지
-                            resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
-                        }
-                    }
+                            if (imageWidth > imageHeight) {
+                                ratio = newWidth.toDouble() / imageWidth.toDouble()
+                                w = (imageWidth * ratio).toInt()
+                                h = (imageHeight * ratio).toInt()
+                            } else if (imageHeight > imageWidth) {
+                                ratio = newHeight.toDouble() / imageHeight.toDouble()
+                                w = (imageWidth * ratio).toInt()
+                                h = (imageHeight * ratio).toInt()
+                            } else {
+                                w = newWidth
+                                h = newHeight
+                            }
+                            if(h < 250){
+                                h = 250
+                            }
+                            val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
+                            val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+                            val g = newImage.graphics
+                            g.drawImage(resizeImage, 0, 0, null)
+                            g.dispose()
 
-                    if(!CommonUtils.isEmptyObject(resultMap)){
-                        if(resultMap!!["result"] as Boolean){
-                            val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
-                            if(data["code"] != "API_200" ){
+                            ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath(contentFilePath + "/" + fileName), FilenameUtils.getName(contentFilePath + "/" + fileName)))
+                            resizeImage.flush()
+                            image.flush()
+                        }
+                        var resultMap: MutableMap<String, Any>? = null
+                        when (dto.ch_tp) {
+                            "IMGTP09" -> {    // 카카오 알림톡 이미지
+                                resultMap = kkoRestApiService.uploadTmplImg(file)
+                            }
+                            "IMGTP10" -> {
+                                resultMap = kkoRestApiService.uploadTmplItemImg(file)
+                            }
+                            "IMGTP03", "IMGTP11" -> {    // 카카오 친구톡 이미지
+                                resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
+                            }
+                        }
+
+                        if(!CommonUtils.isEmptyObject(resultMap)){
+                            if(resultMap!!["result"] as Boolean){
+                                val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
+                                if(data["code"] != "API_200" ){
+                                    map["uploaded"] = 0
+                                    map["message"] = "파일 저장에 실패하였습니다."
+                                    logger.info("File DB insert fail")
+                                    return map
+                                }
+
+                                dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
+                            }else{
                                 map["uploaded"] = 0
                                 map["message"] = "파일 저장에 실패하였습니다."
                                 logger.info("File DB insert fail")
                                 return map
                             }
-
-                            dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
-                        }else{
-                            map["uploaded"] = 0
-                            map["message"] = "파일 저장에 실패하였습니다."
-                            logger.info("File DB insert fail")
-                            return map
                         }
+
                     }
-
                 }
-            }
 
-            dto.reg_id = userInfo.usr_id
-            dto.usr_grp_cd = userInfo.usr_grp_cd
-            dto.img_org_nm = map["fileName"].toString()
-            dto.img_file_nm = map["file_nm"].toString()
-            dto.img_url = map["url"].toString()
-            val returnMap = imageService.contentUpload(dto)
-            if(returnMap["message"].toString() == "0"){
+                dto.reg_id = userInfo.usr_id
+                dto.usr_grp_cd = userInfo.usr_grp_cd
+                dto.img_org_nm = map["fileName"].toString()
+                dto.img_file_nm = map["file_nm"].toString()
+                dto.img_url = map["url"].toString()
+                val returnMap = imageService.contentUpload(dto)
+                if(returnMap["message"].toString() == "0"){
+                    map["uploaded"] = 0
+                    map["message"] = "파일 저장에 실패하였습니다."
+                    logger.info("File DB insert fail")
+                }
+            }catch (e:Exception){
                 map["uploaded"] = 0
                 map["message"] = "파일 저장에 실패하였습니다."
                 logger.info("File DB insert fail")
+                return map
             }
-        }catch (e:Exception){
-            map["uploaded"] = 0
-            map["message"] = "파일 저장에 실패하였습니다."
-            logger.info("File DB insert fail")
             return map
+        }else{
+            return HashMap()
         }
-        return map
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileList.ajax")
-    fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
-        dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        dto.use_yn = "Y"
-        val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
-        val paramMap = mobileContentService.selectContentView(dto)
+    fun selectMobileContent(@PathVariable(value = "usr_cd") usrCd: String, @ModelAttribute dto: Contents_searchDto) : ModelAndView {
+        if(getUsrGrpCd(usrCd) != null){
+            dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            dto.use_yn = "Y"
+            val view = ModelAndView("cont/mobile/ajax/salesMdmListAjax")
+            val paramMap = mobileContentService.selectContentView(dto)
 
-        view.addObject("list" , paramMap["list"])
-        view.addObject("page", paramMap["page"])
-        view.addObject("pageNo", paramMap["pageNo"])
-        view.addObject("nextCk", paramMap["nextCk"])
-        view.addObject("titleList",paramMap["titleList"])
+            view.addObject("list" , paramMap["list"])
+            view.addObject("page", paramMap["page"])
+            view.addObject("pageNo", paramMap["pageNo"])
+            view.addObject("nextCk", paramMap["nextCk"])
+            view.addObject("titleList",paramMap["titleList"])
 
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        view.addObject("filePath", uploadPrefix?.cd_val)
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "COMMON"
+            commonCDDto.cd_id = "UPURL01"
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+            view.addObject("filePath", uploadPrefix?.cd_val)
 
-        return view
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
+        }
     }
 
 
@@ -622,7 +691,11 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/getUser.ajax")
     fun getUser(@PathVariable(value = "usr_cd") usrCd: String, @ModelAttribute dto: SalesforceDto, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): Map<String, Any> {
-        return salesforceService.getUser(dto, session)
+        if(getUsrGrpCd(usrCd) != null){
+            return salesforceService.getUser(dto, session)
+        }else{
+            return HashMap()
+        }
     }
 /*
     *//**
@@ -646,46 +719,54 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/save.service")
     fun save(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
-        logger.info("/save.service data: $data")
-        val dto = Tblmi_cont_mstDto()
-        dto.avo_id = data["activityObjectID"].toString()
-        dto.inten_id = data["interactionId"].toString()
-        dto.orig_id = data["originalDefinitionId"].toString()
-        dto.inta_key = data["interactionKey"].toString()
-        dto.inta_ve = data["interactionVersion"].toString()
-        val save = salesforceDao.upd_tblmi_cont_mst(dto)
-        return ResponseEntity(null, HttpStatus.OK)
-        /*
-        return if(save == 1){
+        return if(getUsrGrpCd(usrCd) != null){
+            logger.info("/save.service data: $data")
+            val dto = Tblmi_cont_mstDto()
+            dto.avo_id = data["activityObjectID"].toString()
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            val save = salesforceDao.upd_tblmi_cont_mst(dto)
             ResponseEntity(null, HttpStatus.OK)
+            /*
+            return if(save == 1){
+                ResponseEntity(null, HttpStatus.OK)
+            }else{
+                ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+             */
         }else{
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
-         */
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/publish.service")
     fun publish(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
-        logger.info("/publish.service data: $data")
-        val dto = Tblmicp_cont_mstDto()
-        dto.avo_id = data["activityObjectID"].toString()
-        dto.inten_id = data["interactionId"].toString()
-        dto.orig_id = data["originalDefinitionId"].toString()
-        dto.inta_key = data["interactionKey"].toString()
-        dto.inta_ve = data["interactionVersion"].toString()
-        dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-        val cont = salesforceService.campaingContent(dto)
-        return if(cont) {
-            val save = salesforceService.publish(dto)
-            if(save){
-                ResponseEntity(null, HttpStatus.OK)
+        return if(getUsrGrpCd(usrCd) != null){
+            logger.info("/publish.service data: $data")
+            val dto = Tblmicp_cont_mstDto()
+            dto.avo_id = data["activityObjectID"].toString()
+            dto.inten_id = data["interactionId"].toString()
+            dto.orig_id = data["originalDefinitionId"].toString()
+            dto.inta_key = data["interactionKey"].toString()
+            dto.inta_ve = data["interactionVersion"].toString()
+            dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
+            val cont = salesforceService.campaingContent(dto)
+            return if(cont) {
+                val save = salesforceService.publish(dto)
+                if(save){
+                    ResponseEntity(null, HttpStatus.OK)
+                }else{
+                    logger.error("{}", "publish save ERROR")
+                    ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+                }
             }else{
-                logger.error("{}", "publish save ERROR")
+                logger.error("{}", "publish cont ERROR")
                 ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
             }
         }else{
-            logger.error("{}", "publish cont ERROR")
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -693,40 +774,44 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/unpublish.service")
     fun unpublish(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>): ResponseEntity<Any> {
-        logger.info("/unpublish.service data: $data")
+        return if(getUsrGrpCd(usrCd) != null){
+            logger.info("/unpublish.service data: $data")
 
-        val dto = Tblmicp_cont_mstDto()
-        var save = 0
-        try{
-            val prgDto = Tblmicp_programDto()
-            prgDto.inten_id = data["interactionId"].toString()
-            prgDto.orig_id = data["originalDefinitionId"].toString()
-            prgDto.inta_key = data["interactionKey"].toString()
-            prgDto.inta_ve = data["interactionVersion"].toString()
-            prgDto.pro_st = "04"
-            salesforceDao.upd_tblmicp_program_sales(prgDto)
-            if(prgDto.pro_id != null){
-                val campDto = Tblmicp_campaignDto()
-                campDto.pro_id = prgDto.pro_id
-                campDto.camp_st = "04"
-                salesforceDao.upd_tblmicp_campaign(campDto)
+            val dto = Tblmicp_cont_mstDto()
+            var save = 0
+            try{
+                val prgDto = Tblmicp_programDto()
+                prgDto.inten_id = data["interactionId"].toString()
+                prgDto.orig_id = data["originalDefinitionId"].toString()
+                prgDto.inta_key = data["interactionKey"].toString()
+                prgDto.inta_ve = data["interactionVersion"].toString()
+                prgDto.pro_st = "04"
+                salesforceDao.upd_tblmicp_program_sales(prgDto)
+                if(prgDto.pro_id != null){
+                    val campDto = Tblmicp_campaignDto()
+                    campDto.pro_id = prgDto.pro_id
+                    campDto.camp_st = "04"
+                    salesforceDao.upd_tblmicp_campaign(campDto)
+                }
+
+                dto.inten_id = data["interactionId"].toString()
+                dto.orig_id = data["originalDefinitionId"].toString()
+                dto.inta_key = data["interactionKey"].toString()
+                dto.inta_ve = data["interactionVersion"].toString()
+                dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
+                save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
+            }catch (e: Exception){
+                logger.error("unpublish Service error : {}", dto)
+                logger.error("unpublish Service error", e)
             }
 
-            dto.inten_id = data["interactionId"].toString()
-            dto.orig_id = data["originalDefinitionId"].toString()
-            dto.inta_key = data["interactionKey"].toString()
-            dto.inta_ve = data["interactionVersion"].toString()
-            dto.pub_yn = if(data["isPublished"] as Boolean) { "Y" } else { "N" }
-            save = salesforceDao.upd_tblmicp_cont_mst_pub(dto)
-        }catch (e: Exception){
-            logger.error("unpublish Service error : {}", dto)
-            logger.error("unpublish Service error", e)
-        }
-
-        return if(save > 0){
-            ResponseEntity(null, HttpStatus.OK)
+            if(save > 0){
+                ResponseEntity(null, HttpStatus.OK)
+            }else{
+                logger.error("{}", "unpublish ERROR")
+                ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
         }else{
-            logger.error("{}", "unpublish ERROR")
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -734,97 +819,111 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/validate.service")
     fun validate(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
-        logger.info("/validate.service data: $data")
-        return ResponseEntity(null, HttpStatus.OK)
+        return if(getUsrGrpCd(usrCd) != null){
+            logger.info("/validate.service data: $data")
+             ResponseEntity(null, HttpStatus.OK)
+        }else{
+            ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/stop.service")
     fun stop(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>) {
-        logger.info("/stop.service data: $data")
-        val dto = Tblmicp_programDto()
-        try{
-            dto.inten_id = data["interactionId"].toString()
-            dto.orig_id = data["originalDefinitionId"].toString()
-            dto.inta_key = data["interactionKey"].toString()
-            dto.inta_ve = data["interactionVersion"].toString()
-            dto.pro_st = "04"
-            salesforceDao.upd_tblmicp_program_sales(dto)
-            if(dto.pro_id != null){
-                val campDto = Tblmicp_campaignDto()
-                campDto.pro_id = dto.pro_id
-                campDto.camp_st = "04"
-                salesforceDao.upd_tblmicp_campaign(campDto)
-            }
+        if(getUsrGrpCd(usrCd) != null){
+            logger.info("/stop.service data: $data")
+            val dto = Tblmicp_programDto()
+            try{
+                dto.inten_id = data["interactionId"].toString()
+                dto.orig_id = data["originalDefinitionId"].toString()
+                dto.inta_key = data["interactionKey"].toString()
+                dto.inta_ve = data["interactionVersion"].toString()
+                dto.pro_st = "04"
+                salesforceDao.upd_tblmicp_program_sales(dto)
+                if(dto.pro_id != null){
+                    val campDto = Tblmicp_campaignDto()
+                    campDto.pro_id = dto.pro_id
+                    campDto.camp_st = "04"
+                    salesforceDao.upd_tblmicp_campaign(campDto)
+                }
 
-            val dto1 = Tblmicp_cont_mstDto()
-            dto1.inten_id = data["interactionId"].toString()
-            dto1.orig_id = data["originalDefinitionId"].toString()
-            dto1.inta_key = data["interactionKey"].toString()
-            dto1.inta_ve = data["interactionVersion"].toString()
-            dto1.pub_yn = "Y"
-            salesforceDao.upd_tblmicp_cont_mst_pub(dto1)
-        }catch (e: Exception){
-            logger.error("stop Service error : {}", dto)
+                val dto1 = Tblmicp_cont_mstDto()
+                dto1.inten_id = data["interactionId"].toString()
+                dto1.orig_id = data["originalDefinitionId"].toString()
+                dto1.inta_key = data["interactionKey"].toString()
+                dto1.inta_ve = data["interactionVersion"].toString()
+                dto1.pub_yn = "Y"
+                salesforceDao.upd_tblmicp_cont_mst_pub(dto1)
+            }catch (e: Exception){
+                logger.error("stop Service error : {}", dto)
+            }
         }
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/TestSave.service")
     fun TestSave(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>) {
-        logger.info("/TestSave.service data: $data")
+        if(getUsrGrpCd(usrCd) != null){
+            logger.info("/TestSave.service data: $data")
+        }else{
+            logger.info("/TestSave.service data: $data")
+        }
     }
 
     // done 동작
     @ResponseBody
     @PostMapping("/{usr_cd}/execute.service")
     fun execute(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, @RequestBody data: String): ResponseEntity<Any> {
-        logger.info("/execute.service data: $data")
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "SALES_JWT"
-        commonCDDto.cd_id = usrCd
-        val jwtCode = sysSettingService.getCommCD(commonCDDto)
-        val secretKey = jwtCode?.cd_val
+        if(getUsrGrpCd(usrCd) != null){
+            logger.info("/execute.service data: $data")
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "SALES_JWT"
+            commonCDDto.cd_id = usrCd
+            val jwtCode = sysSettingService.getCommCD(commonCDDto)
+            val secretKey = jwtCode?.cd_val
 
-        var payload: String? = null
-        try {
-            // jwt
-            val chunks: List<String> = data.split(".")
-            val decoder: Base64.Decoder = Base64.getUrlDecoder()
-            payload = String(decoder.decode(chunks[1]))
-            //logger.info("payload: $payload")
+            var payload: String? = null
+            try {
+                // jwt
+                val chunks: List<String> = data.split(".")
+                val decoder: Base64.Decoder = Base64.getUrlDecoder()
+                payload = String(decoder.decode(chunks[1]))
+                //logger.info("payload: $payload")
 
-            val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
-            val secretKeySpec = SecretKeySpec(secretKey?.toByteArray(), sa.jcaName)
-            val tokenWithoutSignature = chunks[0] + "." + chunks[1]
-            val signature = chunks[2]
-            val validator = DefaultJwtSignatureValidator(sa, secretKeySpec)
+                val sa: SignatureAlgorithm = SignatureAlgorithm.HS256
+                val secretKeySpec = SecretKeySpec(secretKey?.toByteArray(), sa.jcaName)
+                val tokenWithoutSignature = chunks[0] + "." + chunks[1]
+                val signature = chunks[2]
+                val validator = DefaultJwtSignatureValidator(sa, secretKeySpec)
 
-            // jwt 확인
-            if (!validator.isValid(tokenWithoutSignature, signature)) {
-                logger.error("Could not verify JWT token integrity! {}", tokenWithoutSignature)
-            } else {
-                val gson = GsonBuilder().create()
-                val data1 = gson.fromJson(payload, MutableMap::class.java)
-                logger.error("data : {}", data1)
-                var couponIssuedLogDto = couponIssueService.createCouponLink(data1 as MutableMap<String, Any>)
-                if (couponIssuedLogDto != null) data1["couponIssuedLogDto"] = couponIssuedLogDto
+                // jwt 확인
+                if (!validator.isValid(tokenWithoutSignature, signature)) {
+                    logger.error("Could not verify JWT token integrity! {}", tokenWithoutSignature)
+                } else {
+                    val gson = GsonBuilder().create()
+                    val data1 = gson.fromJson(payload, MutableMap::class.java)
+                    logger.error("data : {}", data1)
+                    var couponIssuedLogDto = couponIssueService.createCouponLink(data1 as MutableMap<String, Any>)
+                    if (couponIssuedLogDto != null) data1["couponIssuedLogDto"] = couponIssuedLogDto
 
-                salesforceService.sendCampaign(data1)
+                    salesforceService.sendCampaign(data1)
 
-                if (couponIssuedLogDto != null) {
-                    couponIssuedLogDto = data1["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
-                    couponIssueService.issueCouponAtSales(couponIssuedLogDto)
+                    if (couponIssuedLogDto != null) {
+                        couponIssuedLogDto = data1["couponIssuedLogDto"] as Tblmicou_coupon_issued_logDto
+                        couponIssueService.issueCouponAtSales(couponIssuedLogDto)
+                    }
                 }
+                return ResponseEntity(null, HttpStatus.OK)
+            } catch (e: Exception) {
+                logger.error("excep {}", e.javaClass)
+                if(e is SQLIntegrityConstraintViolationException || e is DuplicateKeyException){
+                    logger.error("execute.service SQLIntegrityConstraintViolationException : {} | {}", e.message, payload)
+                }else{
+                    logger.error("execute.service", e)
+                }
+                return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
             }
-            return ResponseEntity(null, HttpStatus.OK)
-        } catch (e: Exception) {
-            logger.error("excep {}", e.javaClass)
-            if(e is SQLIntegrityConstraintViolationException || e is DuplicateKeyException){
-                logger.error("execute.service SQLIntegrityConstraintViolationException : {} | {}", e.message, payload)
-            }else{
-                logger.error("execute.service", e)
-            }
+        }else{
             return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -832,43 +931,55 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/kko/atTmplLst.ajax")
     fun selectKkoAtTmplLst(@ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usrCd: String) : ModelAndView {
-        val view = ModelAndView("cont/kko/ajax/tmplListAjax")
-        dto.usr_grp_cd = usrCd
-        val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
+        if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/kko/ajax/tmplListAjax")
+            dto.usr_grp_cd = usrCd
+            val paramMap = kkoMsgService.selectAtTemplViewLst(dto)
 
-        view.addObject("list" , paramMap["list"])
-        view.addObject("page", paramMap["page"])
-        view.addObject("pageNo", paramMap["pageNo"])
-        view.addObject("nextCk", paramMap["nextCk"])
+            view.addObject("list" , paramMap["list"])
+            view.addObject("page", paramMap["page"])
+            view.addObject("pageNo", paramMap["pageNo"])
+            view.addObject("nextCk", paramMap["nextCk"])
 
-        val commonCDDto = Tblmi_comm_cdDto()
-        commonCDDto.grp_id = "COMMON"
-        commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
-        view.addObject("filePath", uploadPrefix?.cd_val)
+            val commonCDDto = Tblmi_comm_cdDto()
+            commonCDDto.grp_id = "COMMON"
+            commonCDDto.cd_id = "UPURL01"
+            val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
+            view.addObject("filePath", uploadPrefix?.cd_val)
 
-        return view
+            return view
+        }else{
+            return ModelAndView("redirect:/html/not.html")
+        }
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/kko/getAtTmpl.ajax")
     fun getAtTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute dto: AtTmpl_searchDto, @PathVariable(value = "usr_cd") usrCd: String): MutableMap<String, Any>? {
-        val map :MutableMap<String,Any> = mutableMapOf()
-        dto.usr_grp_cd = usrCd
-        val dto1: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(dto)
-        if(CommonUtils.isEmptyObject(dto1)){
-            rep.status= HttpServletResponse.SC_BAD_REQUEST
-            return null
+        if(getUsrGrpCd(usrCd) != null){
+            val map :MutableMap<String,Any> = mutableMapOf()
+            dto.usr_grp_cd = usrCd
+            val dto1: Tblmi_kko_at_tmplDto? = kkoMsgService.getKkoAtTmplDto(dto)
+            if(CommonUtils.isEmptyObject(dto1)){
+                rep.status= HttpServletResponse.SC_BAD_REQUEST
+                return null
+            }
+            map["status"] = HttpServletResponse.SC_OK
+            map["dto"] = dto1!!
+            return map
+        }else{
+            return HashMap()
         }
-        map["status"] = HttpServletResponse.SC_OK
-        map["dto"] = dto1!!
-        return map
     }
 
     @ResponseBody
     @GetMapping("/{usr_cd}/getDataExtension.ajax")
     fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usrCd: String): MutableMap<String, Any> {
-        return salesforceService.getDataExtention(usrCd, extentionId)
+        return if(getUsrGrpCd(usrCd) != null){
+            salesforceService.getDataExtention(usrCd, extentionId)
+        }else{
+            HashMap()
+        }
     }
 
     @GetMapping("/{usr_cd}/error")
@@ -882,33 +993,45 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/coupon/getCouponListAtSales.ajax")
     fun couponList(@PathVariable(value = "usr_cd") usrCd: String, searchCouponDto: SearchCouponDto): ModelAndView {
-        val view = ModelAndView("cont/coupon/couponListAjax")
-        val reMap = couponListService.getCouponListAtSales(searchCouponDto, usrCd)
-        view.addObject("couponList", reMap["list"])
-        view.addObject("page", reMap["page"])
-        view.addObject("pageNo", reMap["pageNo"])
-        view.addObject("cnt", reMap["cnt"])
-        return view
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/coupon/couponListAjax")
+            val reMap = couponListService.getCouponListAtSales(searchCouponDto, usrCd)
+            view.addObject("couponList", reMap["list"])
+            view.addObject("page", reMap["page"])
+            view.addObject("pageNo", reMap["pageNo"])
+            view.addObject("cnt", reMap["cnt"])
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
     }
 
     @PostMapping("/{usr_cd}/coupon/getCouponAtSales.ajax")
     fun couponPreview(@PathVariable(value = "usr_cd") usrCd: String, @RequestParam seq: String): ModelAndView {
-        val view = ModelAndView("cont/coupon/couponPreviewAjax")
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/coupon/couponPreviewAjax")
 
-        val couponListDto = couponListService.getCoupon(seq)
-        couponListDto.daily_start_time = formattingTime(couponListDto.daily_start_time!!)
-        couponListDto.daily_end_time = formattingTime(couponListDto.daily_end_time!!)
-        couponListDto.expire_dt = formattingDate(couponListDto.expire_dt!!)
+            val couponListDto = couponListService.getCoupon(seq)
+            couponListDto.daily_start_time = formattingTime(couponListDto.daily_start_time!!)
+            couponListDto.daily_end_time = formattingTime(couponListDto.daily_end_time!!)
+            couponListDto.expire_dt = formattingDate(couponListDto.expire_dt!!)
 
-        view.addObject("coupon", couponListDto)
-        view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
-        return view
+            view.addObject("coupon", couponListDto)
+            view.addObject("couponImageDomain", couponListService.getCouponImageCdnDomain())
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
     }
 
     @ResponseBody
     @PostMapping("/{usr_cd}/coupon/checkNaverApi.ajax")
     fun checkNaverApi(@PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
-        return sysSettingService.isExistNaverApi(usrCd)
+        return if(getUsrGrpCd(usrCd) != null){
+            sysSettingService.isExistNaverApi(usrCd)
+        }else{
+            HashMap()
+        }
     }
 
     private fun formattingDate(time: String): String {

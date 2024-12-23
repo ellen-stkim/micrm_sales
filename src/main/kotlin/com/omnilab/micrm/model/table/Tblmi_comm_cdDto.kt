@@ -29,21 +29,21 @@ class Tblmi_comm_cdDto {
     constructor(grp_id: String){
         this.grp_id = grp_id
     }
-    constructor(grp_id: String, cd_id: String){
-        this.grp_id = grp_id
-        this.cd_id = cd_id
+    constructor(grpId: String, cdId: String){
+        this.grp_id = grpId
+        this.cd_id = cdId
     }
-    constructor(grp_id: String, cd_id: String, cd_desc: String){
-        this.grp_id = grp_id
-        this.cd_id = cd_id
-        this.cd_desc = cd_desc
+    constructor(grpId: String, cdId: String, cdDesc: String){
+        this.grp_id = grpId
+        this.cd_id = cdId
+        this.cd_desc = cdDesc
     }
 
-    constructor(cd_id: String?, par_id: String?, par_nm: String?, use_yn: String?) {
-        this.cd_id = cd_id
-        this.par_id = par_id
-        this.par_nm = par_nm
-        this.use_yn = use_yn
+    constructor(cdId: String?, parId: String?, parNm: String?, useYn: String?) {
+        this.cd_id = cdId
+        this.par_id = parId
+        this.par_nm = parNm
+        this.use_yn = useYn
     }
 
 

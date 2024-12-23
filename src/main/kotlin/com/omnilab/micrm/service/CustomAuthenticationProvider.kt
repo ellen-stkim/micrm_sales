@@ -87,7 +87,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             blockDto.block_target = ip
             blockDto.block_grp_cd = userInfo.usr_grp_cd
             val ipBlockDto : List<Tblmi_block_lstDto> = sqlSession.selectList("getBlockBlockDto", blockDto)
-            if(!ipBlockDto.isNullOrEmpty()){
+            if(ipBlockDto.isNotEmpty()){
                 sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(userInfo.usr_grp_cd!!, userInfo.usr_id!!, userInfo.usr_email!!, ip, "1"))
                 throw BadCredentialsException("현재 접속하신 IP[$ip]는 현재 차단된 상태입니다. 소속 그룹 관리자 또는 Milvus로 문의해 주세요.")
             }
