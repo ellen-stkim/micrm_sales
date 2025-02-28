@@ -211,12 +211,10 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             contentLst[0]
         }
     }
-
-
-    override fun getContentPreview(searchCont: Tblmicp_cont_mstDto): MutableList<HashMap<String, Any?>> {
+    override fun getContentPreview(dto: Tblmicp_cont_mstDto): MutableList<HashMap<String, Any?>> {
         val mapLst = mutableListOf<HashMap<String, Any?>>()
 
-        val contentDtoLst = campaignDao.getContentsViewList(searchCont)
+        val contentDtoLst = campaignDao.getContentsViewList(dto)
 
         for (contentDto in contentDtoLst) {
             val map = HashMap<String, Any?>()

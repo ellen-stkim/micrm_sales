@@ -235,6 +235,9 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ex_tmpl_nm)">
                 and a.tmpl_nm like CONCAT('%', #{ex_tmpl_nm},'%')
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_nm)">
+                and a.tmpl_nm like CONCAT('%', #{tmpl_nm},'%')
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(chan_id)">
                 and a.chan_id = #{chan_id}
             </if>
