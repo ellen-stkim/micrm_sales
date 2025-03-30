@@ -8,6 +8,7 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
+import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Service("KkoMsgServiceImpl")
@@ -48,10 +50,10 @@ class KkoMsgServiceImpl : KkoMsgService {
             "tmpl_nm" -> dto.tmpl_nm = dto.searchValue
             "chan_id" -> dto.chan_id = dto.searchValue
             "kep_status" -> dto.kep_status = dto.searchValue
-            "use_yn" -> dto.use_yn = dto.searchValue
+            "use_yn" -> dto.tmpl_dormant = dto.searchValue
             "tmpl_status" -> dto.tmpl_status = dto.searchValue
         }
-
+        dto.del_yn = "N"
         dto.firstIndex = paginationInfo.firstRecordIndex
         dto.recordCountPerPage = paginationInfo.recordCountPerPage
 
@@ -511,6 +513,27 @@ class KkoMsgServiceImpl : KkoMsgService {
         }*/
         return map
     }
+
+    override fun delTmplLst(list: MutableList<String>): MutableMap<String, Any> {
+        val paramMap = HashMap<String, Any>()
+        val deleteMobileDto = Tblmi_kko_at_tmplDto()
+        val usrId = UsefulUtils.sessionUser().usr_id
+        var delCnt = 0
+
+        for (i in list) {
+            deleteMobileDto.tmpl_cd = i
+            deleteMobileDto.use_yn = "N"
+            deleteMobileDto.del_yn = "Y"
+            deleteMobileDto.upd_id = usrId
+            kkoAtTmplDao.delTmpl(deleteMobileDto)
+            delCnt++
+        }
+        paramMap["message"] = delCnt.toString() + "개의 모바일 컨텐츠가 삭제 되었습니다"
+        paramMap["status"] = "true"
+        return paramMap
+    }
+
+
 
     private fun getAtTmplDataByViewDto(dto: Kko_at_tmplDto, curDto: AtTmpl_viewDto): Kko_at_tmplDto {
         dto.templateName =  curDto.tmpl_nm

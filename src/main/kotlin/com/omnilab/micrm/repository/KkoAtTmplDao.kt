@@ -16,6 +16,6 @@ interface KkoAtTmplDao {
     fun updTmplDto(tmplDto: Tblmi_kko_at_tmplDto): Int
     fun updTmplDtoBySeq(tmplDto: Tblmi_kko_at_tmplDto): Int
     fun selKkoAtTmplByGrpCd(dto: AtTmpl_searchDto): Tblmi_kko_at_tmplDto?
-
+    fun delTmpl(dto: Tblmi_kko_at_tmplDto): Int
 
 }

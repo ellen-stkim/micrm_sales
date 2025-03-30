@@ -57,5 +57,7 @@ class KkoAtTmplDaoImpl : KkoAtTmplDao {
         return sqlSession.selectOne("selKkoAtTmplByGrpCd",dto)
     }
 
-
+    override fun delTmpl(dto: Tblmi_kko_at_tmplDto): Int {
+        return sqlSession.update("delTmpl", dto)
+    }
 }

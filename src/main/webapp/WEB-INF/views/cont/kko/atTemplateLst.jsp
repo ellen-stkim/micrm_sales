@@ -39,8 +39,7 @@
                     <div class="left" id="typeArea"></div>
                     <input type="hidden" name="searchType" id="searchType"/>
                     <!-- select 영역 끝 -->
-                    <input type="text" class="searchInp left-border" name="searchValue" id="searchValue"
-                           placeholder="검색어입력"/>
+                    <input type="text" class="searchInp left-border" name="searchValue" id="searchValue" placeholder="검색어입력"/>
                     <%-- 검수 상태--%>
                     <span id="kep_st_area" class="left" name="subOption" hidden>
                         <div class="select style1 left-border right-border">
@@ -57,12 +56,12 @@
                         <div class="select style1 left-border right-border">
                             <div class="value searchSelect searchTarget">휴면해제</div>
                             <ul class="option">
-                                <li>휴면해제</li>
-                                <li>휴면</li>
+                                <li data="N">휴면해제</li>
+                                <li data="Y">휴면</li>
                             </ul>
                         </div>
                     </span>
-                        <%--  템플릿상태  --%>
+                    <%--  템플릿상태  --%>
                     <span id="tmpl_st_area" class="left" name="subOption" hidden>
                         <div class="select style1 left-border right-border">
                             <div class="value searchSelect searchTarget">${tmplSt[0].cd_desc}</div>
@@ -83,8 +82,9 @@
         <div class="row bottom-border cf">
             <div class="left">
                 <form:form action="./kko/tmplCreate.mi" method="post" style="float: left;">
-                <input type="submit" class="btn_basic smsCreate left right-border" value="알림톡 템플릿 생성"/>
+                    <input type="submit" class="btn_basic smsCreate left right-border" value="알림톡 템플릿 생성"/>
                 </form:form>
+                <input type="button" class="btn_basic delete left right-border" onclick="deleteMobileList('campaign','');" value="삭제">
             </div>
         </div>
         <!-- row 영역 끝 -->
@@ -180,6 +180,7 @@
         $(document).on('click','[name="subOption"]  ul li',function(){
             let data = $(this).attr("data");
             $('#searchValue').val(data);
+            console.log($('#searchValue').val());
         });
     })
 
@@ -189,12 +190,12 @@
     function selectMobileList(pageNo) {
         let standard = $('.searchSelect').attr('data');
         let searchValue = $("#searchValue").val().trim();
-
+        /*
         if (standard == 'use_yn') {
             let yn_data = $("#yn_select").attr('data');
             $("#searchValue").val(yn_data)
         }
-
+        */
         let res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
             $('.row_grid').html($("#body", $doc).html());
@@ -219,19 +220,12 @@
     }
 
     // 모바일 리스트 삭제 처리
-    function deleteMobileList(type, state) {
+    function deleteMobileList() {
         let count = $('.custom_check1').not('.all').find('input:checked').length;
-        if (type != '' && type != "undefined") {
-            if (type == 'image') {
-                listType = "이미지";
-            } else {
-                listType = "컨텐츠";
-            }
-        }
         if (count == 0) {
-            deleteMobilePopUp('false', "삭제할 " + listType + " 를 선택해주세요.");
+            deleteMobilePopUp('false', "삭제할 컨텐츠를 선택해주세요.");
         } else {
-            deleteMobilePopUp('true', count + "개의 " + listType + " 를 삭제하시겠습니까?");
+            deleteMobilePopUp('true', count + "개의 컨텐츠를 삭제하시겠습니까?");
         }
     }
 
@@ -265,11 +259,11 @@
 
     // 모바일 리스트 삭제하기
     function deleteMobile() {
-        var nowPage = $("#nowPageNo").val();
-        var checkList = [];
-        var checkLength = $('.custom_check1 input[name="tmpl_cd"]:checked').length;
+        let nowPage = $("#nowPageNo").val();
+        let checkList = [];
+        let checkLength = $('.custom_check1 input[name="tmpl_cd"]:checked').length;
 
-        var res = function (response) {
+        let res = function (response) {
             if (response.status == "true") {
                 popup.popAlert("삭제 되었습니다");
             } else {
@@ -281,9 +275,9 @@
         for (var i = 0; i < checkLength; i++) {
             checkList.push($('.custom_check1 input[name="tmpl_cd"]:checked').eq(i).val());
         }
-        var param = {checkList: checkList};
-        com_ajax.ajax('post', '${baseURL}/cont/deleteMobileContent.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
-    };
+        let param = {checkList: checkList};
+        com_ajax.ajax('post', '${baseURL}/cont/kko/updateDelYn.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
 
     // 모바일 리스트 가져오기
     function searchMobileList() {
@@ -324,8 +318,6 @@
     }
 
     let type = ['kakao', 'MMS', 'SMS', 'rcsText', 'rcsHorizontalLeft', 'rcsHorizontalRight', 'rcsVerticalTall', 'rcsVerticalMedium', 'rcsSlideSmall', 'rcsSlideMedium'];
-
-
     function updAtTmpl(seq){
         $("#extentionForm").attr("action", "/cont/kko/tmplDetail.mi?seq="+seq);
         $('#extentionForm').submit();

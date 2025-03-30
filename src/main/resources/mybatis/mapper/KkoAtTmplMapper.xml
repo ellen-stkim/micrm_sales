@@ -136,9 +136,7 @@
 
     <select id="selTotalAtTmplCnt" resultType="Integer" parameterType="AtTmpl_searchDto">
         SELECT COUNT(*) FROM tblmi_kko_at_tmpl AS a
-        INNER JOIN tblmi_set_lst AS b
-        ON a.SEND_KEY = b.LIST_VAL
-        AND b.use_yn ='Y'
+            INNER JOIN tblmi_set_lst AS b ON a.SEND_KEY = b.LIST_VAL AND b.use_yn ='Y'
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
                 and a.send_key = #{send_key}
@@ -155,8 +153,14 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
                 and a.kep_status = #{kep_status}
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_dormant)">
+                and a.tmpl_dormant = #{tmpl_dormant}
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
                 and a.use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+                and a.del_yn = #{del_yn}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
                 and a.tmpl_status = #{tmpl_status}
@@ -178,56 +182,56 @@
 
     <select id="selAtTmplLst" resultType="AtTmpl_viewDto" parameterType="AtTmpl_searchDto">
         SELECT a.seq AS seq,
-                a.tmpl_cd AS tmpl_cd,
-                a.send_key AS send_key,
-                a.TMPL_NM AS tmpl_nm,
-                a.tmpl_cont AS tmpl_cont,
-                a.secur_flag AS secur_flag,
-                d.cd_desc  AS tmpl_status_nm,
-                a.kep_status  AS kep_status,
-                e.cd_desc  AS kep_status_nm,
-                a.tmpl_msg_tp AS tmpl_msg_tp,
-                a.tmpl_ext AS tmpl_ext,
-                a.tmpl_ad AS tmpl_ad,
-                a.tmpl_tit AS tmpl_tit,
-                a.tmpl_subtit AS tmpl_subtit,
-                a.tmpl_empsize_tp AS tmpl_empsize_tp,
-                a.cate_cd AS cate_cd,
-                a.tmpl_header AS tmpl_header,
-                a.button_json AS button_json,
-                a.quick_repl_json AS  quick_repl_json,
-                a.item_highlight_json AS  item_highlight_json,
-                a.item_img_seq AS item_img_seq,
-                a.item_img_seq AS  item_img_seq,
-                a.item_json AS  item_json,
-                a.use_yn AS use_yn,
-                a.etc_1 AS etc_1,
-                a.etc_2 AS etc_2,
-                a.etc_3 AS etc_3,
-                a.etc_4 AS etc_4,
-                a.etc_5 AS etc_5,
-                a.etc_6 AS etc_6,
-                a.etc_7 AS etc_7,
-                a.etc_8 AS etc_8,
-                a.etc_9 AS etc_9,
-                a.etc_10 AS etc_10,
-                a.reg_id AS reg_id,
-                a.reg_dt AS reg_dt,
-                a.upd_id AS upd_id,
-                a.upd_dt AS upd_dt,
-                CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
-                a.img_seq,
-                c.img_nm,
-                c.img_org_nm,
-                c.img_url,
-                c.kko_img_url
-            FROM tblmi_kko_at_tmpl AS a
-                INNER JOIN tblmi_set_lst AS b
-                    ON a.SEND_KEY = b.LIST_VAL
-                        AND b.use_yn ='Y'
-                LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
-                LEFT JOIN tblmi_comm_cd AS d ON d.CD_ID = 'TMPL_ST' AND d.cd_val = a.tmpl_status
-                LEFT JOIN tblmi_comm_cd AS e ON e.CD_ID = 'KEP_ST' AND e.cd_val = a.kep_status
+            a.tmpl_cd AS tmpl_cd,
+            a.send_key AS send_key,
+            a.TMPL_NM AS tmpl_nm,
+            a.tmpl_cont AS tmpl_cont,
+            a.secur_flag AS secur_flag,
+            d.cd_desc  AS tmpl_status_nm,
+            a.kep_status  AS kep_status,
+            e.cd_desc  AS kep_status_nm,
+            a.tmpl_msg_tp AS tmpl_msg_tp,
+            a.tmpl_ext AS tmpl_ext,
+            a.tmpl_ad AS tmpl_ad,
+            a.tmpl_tit AS tmpl_tit,
+            a.tmpl_subtit AS tmpl_subtit,
+            a.tmpl_empsize_tp AS tmpl_empsize_tp,
+            a.cate_cd AS cate_cd,
+            a.tmpl_header AS tmpl_header,
+            a.button_json AS button_json,
+            a.quick_repl_json AS  quick_repl_json,
+            a.item_highlight_json AS  item_highlight_json,
+            a.item_img_seq AS item_img_seq,
+            a.item_img_seq AS  item_img_seq,
+            a.item_json AS  item_json,
+            a.use_yn AS use_yn,
+            a.etc_1 AS etc_1,
+            a.etc_2 AS etc_2,
+            a.etc_3 AS etc_3,
+            a.etc_4 AS etc_4,
+            a.etc_5 AS etc_5,
+            a.etc_6 AS etc_6,
+            a.etc_7 AS etc_7,
+            a.etc_8 AS etc_8,
+            a.etc_9 AS etc_9,
+            a.etc_10 AS etc_10,
+            a.reg_id AS reg_id,
+            a.reg_dt AS reg_dt,
+            a.upd_id AS upd_id,
+            a.upd_dt AS upd_dt,
+            CONCAT(b.list_nm ,'(',a.SEND_KEY,')') AS sender,
+            a.img_seq,
+            c.img_nm,
+            c.img_org_nm,
+            c.img_url,
+            c.kko_img_url
+        FROM tblmi_kko_at_tmpl AS a
+            INNER JOIN tblmi_set_lst AS b
+                ON a.SEND_KEY = b.LIST_VAL
+                    AND b.use_yn ='Y'
+            LEFT JOIN tblmi_cont_img AS c ON a.IMG_SEQ = c.SEQ
+            LEFT JOIN tblmi_comm_cd AS d ON d.CD_ID = 'TMPL_ST' AND d.cd_val = a.tmpl_status
+            LEFT JOIN tblmi_comm_cd AS e ON e.CD_ID = 'KEP_ST' AND e.cd_val = a.kep_status
         <where>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_key)">
                 and a.send_key = #{send_key}
@@ -244,8 +248,14 @@
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kep_status)">
                 and a.kep_status = #{kep_status}
             </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_dormant)">
+                and a.tmpl_dormant = #{tmpl_dormant}
+            </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
                 and a.use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(del_yn)">
+                and a.del_yn = #{del_yn}
             </if>
             <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(tmpl_status)">
                 and a.tmpl_status = #{tmpl_status}
@@ -373,7 +383,7 @@
                , now())
     </insert>
 
-<!-- null 값도 update -->
+    <!-- null 값도 update -->
     <update id="updTmplDto" parameterType="Tblmi_kko_at_tmplDto">
         UPDATE tblmi_kko_at_tmpl
             SET tmpl_cd = #{tmpl_cd},
@@ -451,6 +461,15 @@
                 <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(etc_10)">, etc_10 = #{etc_10}</if>
             </trim>
         WHERE seq = #{seq}
+    </update>
+
+    <update id="delTmpl" parameterType="Tblmi_kko_at_tmplDto">
+        UPDATE tblmi_kko_at_tmpl SET
+            use_yn = #{use_yn}
+          , del_yn = #{del_yn}
+          , upd_id = #{upd_id}
+          , upd_dt = now()
+        WHERE tmpl_cd = #{tmpl_cd}
     </update>
 </mapper>
 

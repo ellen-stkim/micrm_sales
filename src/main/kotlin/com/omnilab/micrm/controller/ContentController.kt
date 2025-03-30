@@ -1109,8 +1109,8 @@ class ContentController  {
         val view = ModelAndView("cont/kko/atTemplateLst")
         val map = kkoMsgService.getTmplSearchLst()
 
-        view.addObject("tmplSt",map.get("tmplSt"))
-        view.addObject("kepSt",map.get("kepSt"))
+        view.addObject("tmplSt", map["tmplSt"])
+        view.addObject("kepSt", map["kepSt"])
 
         return view
     }
@@ -1139,6 +1139,23 @@ class ContentController  {
         return map
     }
 
+    /**
+     * @Method Name  : updateUseYn
+     * @Since    : 2022. 10. 11.
+     * @author   : Belisa
+     * @param    : dto :
+     * @return   :
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 카카오 알림톡 템플릿 삭제 여부 변경
+     * @title : 카카오 알림톡 템플릿 삭제 여부 변경
+     */
+    @ResponseBody
+    @PostMapping("/kko/updateDelYn.ajax")
+    fun updateDelYn(@RequestParam("checkList[]") list: MutableList<String>) : MutableMap<String, Any> {
+        return kkoMsgService.delTmplLst(list)
+    }
 
     /**
      * @Method Name  : selectKkoAtTmplLst

@@ -70,8 +70,7 @@
                                             <div class="td template_check_td">
                                                 <input type="checkbox" name="securityFlag" value="true"
                                                        id="template_check">
-                                                <label for="template_check">보안 템플릿 설정 시, 메인 디바이스 모바일 외 모든 서브 디바이스에서는 메시지
-                                                    내용이 노출되지 않습니다.</label>
+                                                <label for="template_check">보안 템플릿 설정 시, 메인 디바이스 모바일 외 모든 서브 디바이스에서는 메시지 내용이 노출되지 않습니다.</label>
                                             </div>
                                         </div>
                                     </div>
