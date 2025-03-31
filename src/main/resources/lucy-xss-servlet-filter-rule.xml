@@ -156,5 +156,11 @@
         <url-rule>
             <url disable="true">/sf/16/mobileUpdate.service</url>
         </url-rule>
+        <url-rule>
+            <url disable="true">/sf/17/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/17/mobileUpdate.service</url>
+        </url-rule>
     </url-rule-set>
 </config>

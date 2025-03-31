@@ -57,7 +57,8 @@ public class testSdk {
         System.out.println("resp="+productDE);
         */
 
-        logger.error("{}", CommonUtils.sha512("amore13579!"));
+        logger.error("{}", CommonUtils.sha512("monster2025(!"));
+        logger.error("{}", CommonUtils.sha512("milvus2025##"));
 
     }
 }

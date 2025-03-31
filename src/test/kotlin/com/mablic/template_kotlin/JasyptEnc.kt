@@ -16,8 +16,8 @@ private val log: Logger = LoggerFactory.getLogger("JasyptEnc")
 fun main(args: Array<String>) {
     val enc = PooledPBEStringEncryptor()
     val config = SimpleStringPBEConfig()
-    //config.password = "milvuslucas"
-    config.password = "milvussteve"
+    config.password = "milvuslucas"
+    //config.password = "milvussteve"
     //config.password = "yMIJPg9VBS7OSnM"
     config.algorithm = "PBEWITHHMACSHA512ANDAES_256"
     config.poolSize = 1
@@ -30,5 +30,6 @@ fun main(args: Array<String>) {
     //Basic R000000029 R000000029_n6LtN7z7ReeOJaduoQgG+w
     //log.error("{}", enc.decrypt("NgQrA60fspkLGY4ERU5eYFvgfHRpbNQV6zcE0Q7BLdPk8m7/Dsx9NE2FnLCuP3Eo50verDtOlinxyOZzerTijCXh4Bdx7uRYpQqaniY5LNCf0UKMNj4UB9QP/uH7BGo1"))
     //Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw
-    log.error("{}",enc.encrypt("Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw"))
+    log.error("{}", enc.encrypt("Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw"))
+    log.error("{}", enc.decrypt("NgQrA60fspkLGY4ERU5eYFvgfHRpbNQV6zcE0Q7BLdPk8m7/Dsx9NE2FnLCuP3Eo50verDtOlinxyOZzerTijCXh4Bdx7uRYpQqaniY5LNCf0UKMNj4UB9QP/uH7BGo1"))
 }
