@@ -162,5 +162,35 @@
         <url-rule>
             <url disable="true">/sf/17/mobileUpdate.service</url>
         </url-rule>
+        <url-rule>
+            <url disable="true">/sf/18/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/18/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/19/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/19/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/20/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/20/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/21/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/21/mobileUpdate.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/22/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/22/mobileUpdate.service</url>
+        </url-rule>
     </url-rule-set>
 </config>
