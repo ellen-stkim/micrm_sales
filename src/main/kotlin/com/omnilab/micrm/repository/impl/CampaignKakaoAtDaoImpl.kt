@@ -320,6 +320,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             }
             kkoMsgdto.currency_type = kakaoCont.kko_currency_type
             kkoMsgdto.title = kakaoCont.kko_title
+            kkoMsgdto.kko_title = kakaoCont.kko_title
             kkoMsgdto.header = kakaoCont.kko_header
 
             if(rcsCont == null && mdmCont != null && "cj" == mdmDbType?.lowercase(Locale.getDefault())){

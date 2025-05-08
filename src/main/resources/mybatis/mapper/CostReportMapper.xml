@@ -12,24 +12,21 @@
 			, SUM( CAST((cd.cd_desc * hst.send_cnt) AS DECIMAL(12,1))) AS total_cost
 			, team.LIST_NM
 		FROM   tblmire_send_hst AS hst
-			LEFT JOIN tblmicp_program AS prg
-				ON prg.PRO_ID = hst.PRO_ID
-			LEFT JOIN tblmicp_campaign AS camp
-				ON camp.PRO_ID = hst.PRO_ID
-					AND camp.seq = hst.camp_id
-			LEFT JOIN tblmi_set_lst AS team
-				ON team.LIST_TP_ID = 'CH05'
-					AND team.LIST_DT_ID = 'TEAM01'
-					AND team.LIST_VAL = camp.TEAM_CD
-					AND team.USR_GRP_CD = camp.USR_GRP_CD
-			LEFT JOIN tblmi_comm_cd AS cd
-				ON cd.grp_id = 'API_PRICE'
-					AND cd.cd_id = hst.usr_grp_cd
-					AND cd.cd_val = hst.msg_tp
+			LEFT JOIN tblmicp_program AS prg ON prg.PRO_ID = hst.PRO_ID
+			LEFT JOIN tblmicp_campaign AS camp ON camp.PRO_ID = hst.PRO_ID
+				AND camp.seq = hst.camp_id
+			LEFT JOIN tblmi_set_lst AS team ON team.LIST_TP_ID = 'CH05'
+				AND team.LIST_DT_ID = 'TEAM01'
+				AND team.LIST_VAL = camp.TEAM_CD
+				AND team.USR_GRP_CD = camp.USR_GRP_CD
+			LEFT JOIN tblmi_comm_cd AS cd ON cd.grp_id = 'API_PRICE'
+				AND cd.cd_id = hst.usr_grp_cd
+				AND cd.cd_val = hst.msg_tp
 		<where>
 			hst.send_rst = '0'
 			AND hst.usr_grp_cd = #{usr_grp_cd}
 			AND hst.send_req_day IS NOT null
+			AND hst.msg_tp is not null
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
 				AND prg.pro_nm like concat('%', #{pro_nm}, '%')
 			</if>
@@ -52,25 +49,20 @@
 
 	<select id="selDailySendCostLst" parameterType="SearchSendCostDto"  resultType="SendCostDto">
 		SELECT hst.MSG_TP
-				, date_format(hst.send_req_day, '%Y-%m-%d') AS send_mon
-				, Sum(hst.send_cnt) AS total_cnt
-				, SUM( CAST((cd.cd_desc * hst.send_cnt) AS DECIMAL(12,1))) AS total_cost
-				, team.LIST_NM
+			, date_format(hst.send_req_day, '%Y-%m-%d') AS send_mon
+			, Sum(hst.send_cnt) AS total_cnt
+			, SUM( CAST((cd.cd_desc * hst.send_cnt) AS DECIMAL(12,1))) AS total_cost
+			, team.LIST_NM
 		FROM   tblmire_send_hst AS hst
-			LEFT JOIN tblmicp_program AS prg
-				ON prg.PRO_ID = hst.PRO_ID
-			LEFT JOIN tblmicp_campaign AS camp
-				ON camp.PRO_ID = hst.PRO_ID
-					AND camp.seq = hst.camp_id
-			LEFT JOIN tblmi_set_lst AS team
-				ON team.LIST_TP_ID = 'CH05'
-					AND team.LIST_DT_ID = 'TEAM01'
-					AND team.LIST_VAL = camp.TEAM_CD
-					AND team.USR_GRP_CD = camp.USR_GRP_CD
-			LEFT JOIN tblmi_comm_cd AS cd
-				ON cd.grp_id = 'API_PRICE'
-					AND cd.cd_id = hst.usr_grp_cd
-					AND cd.cd_val = hst.msg_tp
+			LEFT JOIN tblmicp_program AS prg ON prg.PRO_ID = hst.PRO_ID
+			LEFT JOIN tblmicp_campaign AS camp ON camp.PRO_ID = hst.PRO_ID AND camp.seq = hst.camp_id
+			LEFT JOIN tblmi_set_lst AS team ON team.LIST_TP_ID = 'CH05'
+				AND team.LIST_DT_ID = 'TEAM01'
+				AND team.LIST_VAL = camp.TEAM_CD
+				AND team.USR_GRP_CD = camp.USR_GRP_CD
+			LEFT JOIN tblmi_comm_cd AS cd ON cd.grp_id = 'API_PRICE'
+				AND cd.cd_id = hst.usr_grp_cd
+				AND cd.cd_val = hst.msg_tp
 		<where>
 			hst.send_rst = '0'
 			AND hst.usr_grp_cd = #{usr_grp_cd}

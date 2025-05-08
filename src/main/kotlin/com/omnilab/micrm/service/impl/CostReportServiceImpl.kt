@@ -55,10 +55,10 @@ class CostReportServiceImpl : CostReportService {
             var totalCost =  BigDecimal("0")
             var totalCnt =  0L
             val sendTypeMap = hashMapOf<String,HashMap<String,Any?>>()
-            for(dto in list){
-                sendTypeMap[dto.msg_tp!!] = hashMapOf( "total_cnt" to dto.total_cnt, "total_cost" to dto.total_cost )
-                totalCost = totalCost.plus(dto.total_cost!!)
-                totalCnt += dto.total_cnt!!
+            for(dto1 in list){
+                sendTypeMap[dto1.msg_tp!!] = hashMapOf( "total_cnt" to dto1.total_cnt, "total_cost" to dto1.total_cost )
+                totalCost = totalCost.plus(dto1.total_cost!!)
+                totalCnt += dto1.total_cnt!!
             }
             sendMap[mon] = sendTypeMap
             totalMap[mon] = mapOf("totalCost" to totalCost, "totalCnt" to totalCnt)
