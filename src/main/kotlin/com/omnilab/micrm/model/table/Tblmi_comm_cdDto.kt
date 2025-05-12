@@ -24,7 +24,7 @@ class Tblmi_comm_cdDto {
     var upd_dt: String? = null
 
     var grpIdLst: MutableList<String>? = null
-
+    var extra: String? = null
     constructor()
     constructor(grp_id: String){
         this.grp_id = grp_id

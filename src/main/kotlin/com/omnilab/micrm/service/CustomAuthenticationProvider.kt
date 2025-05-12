@@ -52,7 +52,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             val segments = uri.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (segments.size > 2) {
                 val id = segments[2]
-                commDto.cd_val = id
+                commDto. extra = id
             }
 
 

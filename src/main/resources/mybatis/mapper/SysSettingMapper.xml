@@ -100,15 +100,15 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(par_id)">
 				and PAR_ID = #{par_id}
 			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_val)">
-				and cd_val = #{cd_val}
-			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grpIdLst)">
 				and GRP_ID in
 				<foreach collection="grpIdLst" item="list" separator="," open="(" close=")">
 					#{list}
 				</foreach>
 				or (grp_id = 'SALES_MID' AND cd_val = #{cd_val})
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(extra)">
+				and cd_val = #{extra}
 			</if>
 		</where>
 		order by cd_sn
