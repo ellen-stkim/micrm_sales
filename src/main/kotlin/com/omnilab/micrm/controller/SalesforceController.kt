@@ -118,7 +118,15 @@ class SalesforceController {
             for(i in keys){
                 val temp = configurationArguments[i] as JSONObject
                 temp.replace("url", temp["url"].toString().replace("/sf", "/sf/$usrCd"))
-                temp.replace("name", temp["name"].toString().replace("SMS/KAKAO", "micrmApi"))
+            }
+
+            if(usrCd == "22"){
+                val configurationArguments: JSONObject = json["lang"] as JSONObject
+                val keys = configurationArguments.keys
+                for(i in keys){
+                    val temp = configurationArguments[i] as JSONObject
+                    temp.replace("name", temp["name"].toString().replace("SMS/KAKAO", "micrmApi"))
+                }
             }
             return json
         }else{
