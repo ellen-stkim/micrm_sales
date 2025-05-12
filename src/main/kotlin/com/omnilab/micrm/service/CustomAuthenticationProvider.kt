@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.servlet.http.HttpServletRequest
-import kotlin.jvm.Throws
 
 
 @Component("customAuthenticationProvider")
@@ -34,7 +33,6 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         val usrEmail = auth.principal.toString()
         val usrPw = auth.credentials.toString()
 
-
         if(usrEmail.trim().isEmpty() || usrPw.trim().isEmpty()){
             throw BadCredentialsException("BAD")
         }
@@ -50,6 +48,14 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             commDto.par_id = "SALESFORCE"
             commDto.grp_id = "SALES_MID"
             commDto.cd_id = usrEmail
+            val uri = request.requestURI
+            val segments = uri.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            if (segments.size > 2) {
+                val id = segments[2]
+                commDto.cd_val = id
+            }
+
+
             val usrGrpCd = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", commDto)
 
             if(usrGrpCd == null){
