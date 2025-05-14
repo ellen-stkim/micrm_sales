@@ -79,7 +79,7 @@ class CommonController {
     @PostMapping("/getMainCampView.ajax")
     fun getMainCampView(@ModelAttribute dto: Tblmicp_campaignDto): ModelAndView {
         val view = ModelAndView("camp/ajax/homeCampPreview")
-        val resultMap =  campaignService.getMainCampView(dto);
+        val resultMap =  campaignService.getMainCampView(dto)
         view.addObject("startDt", dto.start_dt)
         view.addObject("tarCnt", dto.tar_cnt)
         view.addObject("campId", dto.seq)

@@ -29,7 +29,10 @@
         <!-- row 영역 끝 -->
         <div class="row bottom-border cf">
             <div class="left">
-                <input type="button" class="btn_basic delete left right-border" onclick="excelDown();" value="엑셀 다운로드">
+                <input type="button" class="btn_basic delete left right-border" onclick="excelDown();" value="발송 비용 다운로드">
+            </div>
+            <div class="left">
+                <input type="button" class="btn_basic delete left right-border" onclick="excelDown2();" value="캠페인 리스트 다운로드">
             </div>
         </div>
         <!--
@@ -77,7 +80,7 @@
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_SMS.total_cnt? val.RCS_SMS.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_LMS.total_cnt? val.RCS_LMS.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_MMS.total_cnt? val.RCS_MMS.total_cnt : 0 }" pattern="#,###" /></div>
-                                    <div class="li"><fmt:formatNumber value="${!empty val.RCS_TEPLATE.total_cnt? val.RCS_TEPLATE.total_cnt : 0 }" pattern="#,###" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.RCS_TEMPLATE.total_cnt? val.RCS_TEMPLATE.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.SMS.total_cnt? val.SMS.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.LMS.total_cnt? val.LMS.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.MMS.total_cnt? val.MMS.total_cnt : 0 }" pattern="#,###" /></div>
@@ -95,7 +98,7 @@
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_SMS.total_cnt? typeTotalMap.RCS_SMS.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_LMS.total_cnt? typeTotalMap.RCS_LMS.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_MMS.total_cnt? typeTotalMap.RCS_MMS.total_cnt : 0 }" pattern="#,###" /></div>
-                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_TEPLATE.total_cnt? typeTotalMap.RCS_TEPLATE.total_cnt : 0 }" pattern="#,###" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_TEMPLATE.total_cnt? typeTotalMap.RCS_TEMPLATE.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.SMS.total_cnt? typeTotalMap.SMS.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.LMS.total_cnt? typeTotalMap.LMS.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.MMS.total_cnt? typeTotalMap.MMS.total_cnt : 0 }" pattern="#,###" /></div>
@@ -144,7 +147,7 @@
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_SMS.total_cost? val.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_LMS.total_cost? val.RCS_LMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_MMS.total_cost? val.RCS_MMS.total_cost : 0 }" pattern="#,###.#" /></div>
-                                    <div class="li"><fmt:formatNumber value="${!empty val.RCS_TEPLATE.total_cost? val.RCS_TEPLATE.total_cost : 0 }" pattern="#,###.#" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.RCS_TEMPLATE.total_cost? val.RCS_TEMPLATE.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.SMS.total_cost? val.SMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.LMS.total_cost? val.LMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.MMS.total_cost? val.MMS.total_cost : 0 }" pattern="#,###.#" /></div>
@@ -162,7 +165,7 @@
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_SMS.total_cost? typeTotalMap.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_LMS.total_cost? typeTotalMap.RCS_LMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_MMS.total_cost? typeTotalMap.RCS_MMS.total_cost : 0 }" pattern="#,###.#" /></div>
-                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_TEPLATE.total_cost? typeTotalMap.RCS_TEPLATE.total_cost : 0 }" pattern="#,###.#" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_TEMPLATE.total_cost? typeTotalMap.RCS_TEMPLATE.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.SMS.total_cost? typeTotalMap.SMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.LMS.total_cost? typeTotalMap.LMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.MMS.total_cost? typeTotalMap.MMS.total_cost : 0 }" pattern="#,###.#" /></div>
@@ -296,7 +299,7 @@
                                                 <p>RCS SMS : <fmt:formatNumber value="${!empty prg.RCS_SMS.total_cnt? prg.RCS_SMS.total_cnt : 0 }" pattern="#,##0" /></p>
                                                 <p>RCS LMS : <fmt:formatNumber value="${!empty prg.RCS_LMS.total_cnt? prg.RCS_LMS.total_cnt : 0 }" pattern="#,##0" /></p>
                                                 <p>RCS MMS : <fmt:formatNumber value="${!empty prg.RCS_MMS.total_cnt? prg.RCS_MMS.total_cnt : 0 }" pattern="#,##0" /></p>
-                                                <p>RCS 템플릿 : <fmt:formatNumber value="${!empty prg.RCS_TEPLATE.total_cnt? prg.RCS_TEPLATE.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>RCS 템플릿 : <fmt:formatNumber value="${!empty prg.RCS_TEMPLATE.total_cnt? prg.RCS_TEMPLATE.total_cnt : 0 }" pattern="#,##0" /></p>
                                             </div>
                                             <div>
                                                 <p>SMS : <fmt:formatNumber value="${!empty prg.SMS.total_cnt? prg.SMS.total_cnt : 0 }" pattern="#,##0" /></p>
@@ -318,7 +321,7 @@
                                                 <p>RCS SMS : <fmt:formatNumber value="${!empty prg.RCS_SMS.total_cost? prg.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></p>
                                                 <p>RCS LMS : <fmt:formatNumber value="${!empty prg.RCS_LMS.total_cost? prg.RCS_LMS.total_cost : 0 }" pattern="#,###.#" /></p>
                                                 <p>RCS MMS : <fmt:formatNumber value="${!empty prg.RCS_MMS.total_cost? prg.RCS_MMS.total_cost : 0 }" pattern="#,###.#" /></p>
-                                                <p>RCS 템플릿 : <fmt:formatNumber value="${!empty prg.RCS_TEPLATE.total_cost? prg.RCS_TEPLATE.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>RCS 템플릿 : <fmt:formatNumber value="${!empty prg.RCS_TEMPLATE.total_cost? prg.RCS_TEMPLATE.total_cost : 0 }" pattern="#,###.#" /></p>
                                             </div>
                                             <div>
                                                 <p>SMS : <fmt:formatNumber value="${!empty prg.SMS.total_cost? prg.SMS.total_cost : 0 }" pattern="#,###.#" /></p>
@@ -501,7 +504,7 @@
                 let rcsSms =map.RCS_SMS
                 let rcsLms =map.RCS_LMS
                 let rcsMms =map.RCS_MMS
-                let rcsTemp =map.RCS_TEPLATE
+                let rcsTemp =map.RCS_TEMPLATE
                 let sms =map.SMS
                 let lms =map.LMS
                 let mms =map.MMS
@@ -624,13 +627,27 @@
             com_ajax.ajax('get', './programList.ajax', $('#searchForm').serializeArray(), res);
         }
 
-
         function excelDown(){
             let frm = common.create_form('dummy', 'POST', '/cost/costReportDown.service', 'popup_down');
             common.add_input(frm, "start_dt", '${param.start_dt}');
             common.add_input(frm, "end_dt", '${param.end_dt}');
             common.add_input(frm, "pro_nm", '${param.pro_nm}');
             common.add_input(frm, "team_nm", '${param.team_nm}');
+            common.add_input(frm, "monthly_dt", '${param.monthly_dt}');
+            let message = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>miCRM</title></head><body><img src="/image/excelDown.jpg" alt="" style="width:100%;"></body></html>';
+            common.popview('', 'popup_down', '661', '423', message);
+            document.body.insertBefore(frm, null);
+            frm.submit();
+            frm.remove();
+        }
+
+        function excelDown2(){
+            let frm = common.create_form('dummy', 'POST', '/cost/costReportLstDown.service', 'popup_down');
+            common.add_input(frm, "start_dt", '${param.start_dt}');
+            common.add_input(frm, "end_dt", '${param.end_dt}');
+            common.add_input(frm, "pro_nm", '${param.pro_nm}');
+            common.add_input(frm, "team_nm", '${param.team_nm}');
+            common.add_input(frm, "monthly_dt", '${param.monthly_dt}');
             let message = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>miCRM</title></head><body><img src="/image/excelDown.jpg" alt="" style="width:100%;"></body></html>';
             common.popview('', 'popup_down', '661', '423', message);
             document.body.insertBefore(frm, null);

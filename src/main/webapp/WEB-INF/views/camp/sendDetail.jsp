@@ -256,7 +256,7 @@
                                                 <td><span class="en_font">${priceMap.SMS}</span>원</td>
                                                 <td><span class="en_font">${priceMap.LMS}</span>원</td>
                                                 <td><span class="en_font">${priceMap.MMS}</span>원</td>
-                                                <td><span class="en_font">${priceMap.RCS_TEPLATE}</span>원</td>
+                                                <td><span class="en_font">${priceMap.RCS_TEMPLATE}</span>원</td>
                                             </tr>
                                             </tbody>
                                         </table>

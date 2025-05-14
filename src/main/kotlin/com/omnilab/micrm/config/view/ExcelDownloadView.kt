@@ -30,9 +30,7 @@ class ExcelDownloadView: AbstractView() {
         val name = CommonUtils.escapeTextToHtml(map["name"].toString());
         val filename = name + "_" + todate + ".xlsx"
         var os: OutputStream? = null
-
         try {
-
             response.contentType = this.contentType
             val header = request.getHeader("User-Agent")
             if (header.contains("Edge")) {
@@ -43,7 +41,6 @@ class ExcelDownloadView: AbstractView() {
                 response.setHeader("Content-Disposition", "attachment; fileName=" + URLEncoder.encode(filename, "UTF-8").replace("\\+", "%20") + ";")
             }
             response.setHeader("Content-Transfer-encoding", "binary")
-
             os = response.outputStream
             worker.write(os)
             os.flush()
@@ -63,7 +60,6 @@ class ExcelDownloadView: AbstractView() {
             } catch (e1: IOException) {
                 logger.error("엑셀 다운로드 리스폰스 에러", e)
             }
-
         } finally {
             try {
                 if (os != null) {

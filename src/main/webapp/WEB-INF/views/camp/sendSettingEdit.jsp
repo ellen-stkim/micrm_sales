@@ -1137,7 +1137,7 @@
                         <td><span class="en_font">${apiPrice["sms"]}/${apiPrice["rcs_sms"]}</span>원</td>
                         <td><span class="en_font">${apiPrice["lms"]}/${apiPrice["rcs_lms"]}</span>원</td>
                         <td><span class="en_font">${apiPrice["mms"]}/${apiPrice["rcs_mms"]}</span>원</td>
-                        <td><span class="en_font">${apiPrice["rcs_teplate"]}</span>원</td>
+                        <td><span class="en_font">${apiPrice["RCS_TEMPLATE"]}</span>원</td>
                     </tr>
                     </tbody>
                 </table>
@@ -1160,7 +1160,7 @@
     let rcs_lms_price = '${apiPrice["rcs_lms"]}';
     let mms_price = '${apiPrice["mms"]}';
     let rcs_mms_price = '${apiPrice["rcs_mms"]}';
-    let rcs_teplate_price = '${apiPrice["rcs_teplate"]}';
+    let RCS_TEMPLATE_price = '${apiPrice["RCS_TEMPLATE"]}';
     let contLst = [
     <c:forEach var="g" items="${contLst}" varStatus="st">
         <c:if test="${st.index ne 0}">, </c:if>

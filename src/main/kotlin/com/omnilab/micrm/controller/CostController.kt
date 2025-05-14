@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
+import kotlin.math.log
 
 @RequestMapping("/cost")
 @Controller
@@ -51,6 +52,15 @@ class CostController {
     @PostMapping("/costReportDown.service")
     fun costReportDown(@ModelAttribute dto: SearchSendCostDto): ModelAndView {
         val map = costReportService.costReportDownloadExcel(dto)
+        val view = ModelAndView("ExcelDownView")
+        view.addObject("name", map["name"])
+        view.addObject("book", map["book"])
+        return view
+    }
+
+    @PostMapping("/costReportLstDown.service")
+    fun costReportLstDown(@ModelAttribute dto: SearchSendCostDto): ModelAndView {
+        val map = costReportService.costLstDownloadExcel(dto)
         val view = ModelAndView("ExcelDownView")
         view.addObject("name", map["name"])
         view.addObject("book", map["book"])
