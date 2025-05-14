@@ -392,13 +392,11 @@ class CostReportServiceImpl : CostReportService {
                 sendCnt[channel.msg_tp.toString()] = channel.total_cnt!!
                 sendCosts[channel.msg_tp.toString()] = channel.total_cost!!
             }
-
-            logger.error("sheet.lastRowNum + 1 {}", sheet.lastRowNum + 1)
             val row = sheet.createRow(sheet.lastRowNum + 1)
             row.createCell(0).setCellValue(proNm)
             row.createCell(1).setCellValue(startDt)
-            //발송 건수
 
+            //발송 건수
             if(sendCnt["KKO_AT"] != null) row.createCell(2).setCellValue(sendCnt["KKO_AT"].toString()) else { row.createCell(2).setCellValue("0") }
             if(sendCnt["KKO_FT_TXT"] != null) row.createCell(3).setCellValue(sendCnt["KKO_FT_TXT"].toString()) else { row.createCell(3).setCellValue("0") }
             if(sendCnt["KKO_FT_IMG"] != null) row.createCell(4).setCellValue(sendCnt["KKO_FT_IMG"].toString()) else { row.createCell(4).setCellValue("0") }
