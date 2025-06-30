@@ -578,3 +578,21 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif; f
 .red_border{border: solid 1px #ff7a7a;}
 .red_color{color: #ff7a7a!important;}
 .red_color p{color: #ff7a7a!important;}
+
+.btn_switch.coupon input:checked ~ span::after {
+    background: #618cd3;
+}
+
+.modal {position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #00000066; z-index: 9999;}
+.modal-box {background: #fff; padding: 20px 25px; width: 350px; border: 1px solid var(--gray-color2); display: flex; flex-direction: column; gap: 10px;}
+.modal-title { font-weight: 600; }
+.modal-body { font-size: 14px; line-height: 1.6; word-break: keep-all;}
+.modal-footer { margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: right; gap: 20px; }
+.modal-cancel-btn { height: auto; background: none; padding: 0; font-size: 14px; font-weight: 400; color: var(--gray-color6); cursor: pointer; }
+.modal-confirm-btn { height: auto; background: none; padding: 0; font-size: 14px; font-weight: 700; color: var(--gray-color7); cursor: pointer; }
+.modal-close-wrap { width: 100%; padding: 10px 17px; display: flex; justify-content: space-between; align-items: center; background: #fff; border-bottom: 1px solid var(--gray-color4);}
+.modal-close-btn { font-size: 20px; font-weight: 400; color: var(--gray-color7); cursor: pointer; }
+#addrModalWrap { width: 500px;}
+@media (max-width: 600px) {
+    #addrModalWrap { width: auto;}
+}

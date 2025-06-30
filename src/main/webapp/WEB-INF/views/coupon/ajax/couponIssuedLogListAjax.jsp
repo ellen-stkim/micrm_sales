@@ -90,9 +90,9 @@
                     ${log.coupon_nm}
                     <article class="coupon_detail">
                         <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
-                        <section class="modal coupon">
+                        <section class="modal coupon" style="min-width: 300px; max-width: 500px;">
                             <div class="coupon_image">
-                                <img src="${couponImageDomain}${log.img_url}" alt="쿠폰" />
+                                <img src="${couponImageDomain}${log.img_url}" alt="쿠폰" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                             </div>
                         </section>
                     </article>

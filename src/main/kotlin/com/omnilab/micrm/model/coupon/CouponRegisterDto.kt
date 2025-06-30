@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter
 
 @Alias("CouponRegisterDto")
 class CouponRegisterDto : Tblmicou_couponDto() {
-
-
     var imgFile: MultipartFile? = null
     var encodedSeq: String? = null
     var usr_grp_cd: String? = null

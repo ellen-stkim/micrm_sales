@@ -6,6 +6,7 @@
 	<cache />
 
 	<select id="select_tblmicou_category" parameterType="String" resultType="Tblmicou_categoryDto">
+		/* select_tblmicou_category */
 		SELECT *
 		FROM tblmicou_category
 		WHERE company_grp_cd = #{grp_cd}
@@ -262,6 +263,7 @@
 	</select>
 
 	<insert id="insert_coupon_img" parameterType="Tblmicou_img_fileDto" useGeneratedKeys="true" keyProperty="seq" >
+		/* insert_coupon_img */
 		INSERT INTO tblmicou_img_file (
 		    img_url,
 		    img_org_name,
@@ -280,6 +282,7 @@
 
 
 	<insert id="insert_coupon" parameterType="CouponRegisterDto" >
+		/* insert_coupon */
 		INSERT INTO tblmicou_coupon (
 			category_seq,
 			nm,
@@ -292,6 +295,8 @@
 			available_day,
 			img_file_seq,
 			content,
+			password,
+			qr_yn,
 			usr_grp_cd,
 			reg_id
 		) VALUES (
@@ -306,6 +311,8 @@
 			#{available_day},
 			#{img_file_seq},
 			#{content},
+			#{password},
+			#{qr_yn},
 			#{usr_grp_cd},
 			#{reg_id}
 	  	);
@@ -411,8 +418,7 @@
 	</update>
 
 	<update id="update_coupon" parameterType="CouponRegisterDto">
-		UPDATE  tblmicou_coupon as A
-		SET
+		UPDATE  tblmicou_coupon as A SET
 		    A.category_seq = #{category_seq},
 			A.nm = #{nm},
 			A.title = #{title},
@@ -426,6 +432,8 @@
 				A.img_file_seq = #{img_file_seq},
 			</if>
 			A.content = #{content},
+			A.password = #{password},
+			A.qr_yn = #{qr_yn},
 			A.upd_id = #{upd_id}
 		WHERE A.seq = #{seq}
 	</update>

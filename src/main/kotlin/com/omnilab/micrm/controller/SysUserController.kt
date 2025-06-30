@@ -43,7 +43,7 @@ class SysUserController {
         val view = ModelAndView("sys/user/userManagement")
 
         //권한 목록 가져오기
-        var cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        val cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
         cdDto.grp_id = "ROLE_CD"
         val cdList = sysSettingService.getCommCDLst(cdDto);
         view.addObject("cdDto", cdList)

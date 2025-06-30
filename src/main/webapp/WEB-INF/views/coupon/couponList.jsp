@@ -103,4 +103,8 @@
             this.checked = deleteAllChk.is(':checked');
         });
     }
+
+    function viewQR(url){
+        showModal({title: '', body: '<img src="'+ url +'">', showCancel: false });
+    }
 </script>

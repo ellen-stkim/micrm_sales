@@ -69,5 +69,16 @@
 		<div class="layer_pop" id="commonLoading">
 			<img src="/image/loading.svg" alt="" />
 		</div>
+		<!-- 공통 모달 -->
+		<div id="commonModal" class="modal" style="display: none;">
+			<div class="modal-box">
+				<h2 class="modal-title"></h2>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button class="modal-cancel-btn">취소</button>
+					<button class="modal-confirm-btn">확인</button>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

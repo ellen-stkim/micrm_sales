@@ -2,15 +2,11 @@ package com.omnilab.micrm.common
 
 import com.omnilab.micrm.model.table.Tblmi_usrDto
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
-import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 import java.io.PrintWriter
-import java.lang.reflect.Field
 import java.util.regex.Pattern
-import java.util.*
 import javax.servlet.http.HttpServletResponse
-import kotlin.reflect.full.memberProperties
 
 
 class UsefulUtils {
@@ -59,6 +55,7 @@ class UsefulUtils {
             out.flush()
             out.close()
         }
+
     }
 
 

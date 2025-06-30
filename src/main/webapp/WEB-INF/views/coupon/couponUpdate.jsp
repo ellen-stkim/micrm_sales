@@ -46,7 +46,16 @@
             <section class="left">
                 <ul class="input_field">
                     <li>
-                        <h6 class="label_name">이미지 등록</h6>
+                        <h6 class="label_name">QR 사용</h6>
+                        <article class="components al_center" style="justify-content: flex-end; ">
+                            <label class="btn_switch coupon">
+                                <input type="checkbox" name="qr_yn" id="qr_yn"  value="Y" <c:if test="${coupon.qr_yn eq 'Y'}">checked</c:if>/>
+                                <span></span>
+                            </label>
+                        </article>
+                    </li>
+                    <li>
+                        <h6 class="label_name">쿠폰 이미지 등록</h6>
                         <article class="components file">
                             <section class="value">
                                 <span>이미지를 등록해주세요.</span>
@@ -90,6 +99,14 @@
                     </li>
                 </ul>
                 <ul class="input_field period">
+                    <li>
+                        <article class="part full">
+                            <h6 class="label_name">사용 처리 비밀번호</h6>
+                            <section class="components">
+                                <input type="text" style="padding: 0" maxlength="20" name="password" value="${coupon.password}" placeholder="쿠폰 사용시 인증 비밀번호를 입력해주세요." autocomplete="off">
+                            </section>
+                        </article>
+                    </li>
                     <li>
                         <article class="part">
                             <h6 class="label_name">Expiry Date</h6>
@@ -150,7 +167,7 @@
             <section class="right">
                 <article class="preview" style="height: 268px;">
                     <section class="image">
-                        <img alt="이미지 없음" src="${couponImageDomain}${coupon.img_url}" class="noimage modifyImg" />
+                        <img alt="이미지 없음" src="${couponImageDomain}${coupon.img_url}" class="noimage modifyImg" style="width: 100%;" />
                     </section>
                     <section class="contents"  style="display: none">
                         <textarea name="content" id="content" cols="30" rows="10" placeholder="문자 메시지 내용과 쿠폰 링크를 삽입해주세요.">${fn:replace(coupon.content, "<br/>", newLineChar)}</textarea>
@@ -336,12 +353,12 @@
             return
         }
 
-        var data = new FormData();
-        var insertForm = $('#updateCouponForm').serializeArray();
-        for (var i = 0; i < insertForm.length; i++ ) {
+        let data = new FormData();
+        let insertForm = $('#updateCouponForm').serializeArray();
+        for (let i = 0; i < insertForm.length; i++ ) {
             data.append(insertForm[i].name, insertForm[i].value);
         }
-        var img = $('#imgFile')[0].files[0];
+        let img = $('#imgFile')[0].files[0];
         if (img != null) {
             data.append('imgFile', img);
         }

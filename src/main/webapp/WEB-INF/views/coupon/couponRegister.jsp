@@ -42,10 +42,19 @@
             <section class="left">
                 <ul class="input_field">
                     <li>
-                        <h6 class="label_name">이미지 등록</h6>
+                        <h6 class="label_name">QR 사용</h6>
+                        <article class="components al_center" style="justify-content: flex-end; ">
+                            <label class="btn_switch coupon">
+                                <input type="checkbox" name="qr_yn" id="qr_yn"  value="Y" checked/>
+                                <span></span>
+                            </label>
+                        </article>
+                    </li>
+                    <li>
+                        <h6 class="label_name">쿠폰 이미지 등록</h6>
                         <article class="components file">
                             <section class="value">
-                                <span>이미지를 등록해주세요.</span>
+                                <span>쿠폰 이미지를 등록해주세요.</span>
                                 <button type="button" class="btn del" onclick="delImage(this)"></button>
                             </section>
                             <label class="file label">
@@ -54,13 +63,6 @@
                             </label>
                         </article>
                     </li>
-<%--                    <li>--%>
-<%--                        <h6 class="label_name">쿠폰 링크</h6>--%>
-<%--                        <article class="components al_center">--%>
-<%--                            <input type="text" name="" id="" placeholder="URL" value="{쿠폰링크}" readonly/>--%>
-<%--                            <button type="button" class="btn insert" onclick="insertCouponLinkText()">삽입</button>--%>
-<%--                        </article>--%>
-<%--                    </li>--%>
                 </ul>
                 <ul class="input_field text">
                     <li>
@@ -86,6 +88,14 @@
                     </li>
                 </ul>
                 <ul class="input_field period">
+                    <li>
+                        <article class="part full">
+                            <h6 class="label_name">사용 처리 비밀번호</h6>
+                            <section class="components">
+                                <input type="text" style="padding: 0" maxlength="20" name="password" placeholder="쿠폰 사용시 인증 비밀번호를 입력해주세요." autocomplete="off">
+                            </section>
+                        </article>
+                    </li>
                     <li>
                         <article class="part">
                             <h6 class="label_name">Expiry Date</h6>
@@ -271,7 +281,6 @@
                 }
             }
         });
-
         $.validator.addMethod("vali_expire_date", function (value) {
             return /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value) || value === "";
         });

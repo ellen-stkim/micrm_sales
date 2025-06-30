@@ -18,8 +18,8 @@
         <col width="206" />
         <col width="*" />
         <col width="208" />
-<%--        <col width="224" />--%>
-        <col width="243" />
+        <col width="120" />
+        <col width="120" />
     </colgroup>
     <thead>
     <tr>
@@ -32,7 +32,7 @@
         <th>카테고리</th>
         <th>쿠폰명</th>
         <th>유효 기간</th>
-<%--        <th>쿠폰 발급</th>--%>
+        <th>QR 코드</th>
         <th>쿠폰 수정</th>
     </tr>
     </thead>
@@ -50,18 +50,20 @@
                 ${coupon.nm}
                 <article class="coupon_detail">
                     <button type="button" class="btn detail" onclick="viewCoupon(this)"></button>
-                    <section class="modal coupon">
+                    <section class="modal coupon" style="min-width: 300px; max-width: 500px;">
                         <div class="coupon_image">
-                            <img src="${couponImageDomain}${coupon.img_url}" alt="쿠폰"/>
+                            <img src="${couponImageDomain}${coupon.img_url}" alt="쿠폰" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                         </div>
                     </section>
                 </article>
             </td>
             <td>${coupon.expire_dt}</td>
-<%--            <td>--%>
-<%--                <a href="${baseUrl}/coupon/couponIssue.mi?seq=${coupon.encodedSeq}" class="btn coupon">쿠폰 발급</a>--%>
-<%--            </td>--%>
             <td>
+                <article class="coupon_detail">
+                    <button type="button" class="btn detail" onclick="viewQR('/image/QRCode.png')"></button>
+                </article>
+            </td>
+            <td style="padding-left: 7px">
                 <a href="${baseURL}/coupon/couponUpdate.mi?seq=${coupon.encodedSeq}" class="btn coupon" >쿠폰 수정</a>
             </td>
         </tr>

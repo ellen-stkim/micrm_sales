@@ -178,10 +178,9 @@ class CouponController {
     }
 
     private fun createResponseMap(status: HttpStatus, message: String?): MutableMap<String, Any> {
-        var reMap: MutableMap<String, Any> = HashMap()
+        val reMap: MutableMap<String, Any> = HashMap()
         reMap["status"] = status
         reMap["message"] = message ?: ""
-
         return reMap
     }
 

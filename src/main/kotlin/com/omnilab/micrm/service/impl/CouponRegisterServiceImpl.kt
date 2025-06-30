@@ -26,8 +26,8 @@ class CouponRegisterServiceImpl: CouponRegisterService {
     @Autowired
     private lateinit var fileUploadUtils: CouponImageUploadUtils
 
-    override fun getCategory(grp_cd: String): MutableList<Tblmicou_categoryDto> {
-        return couponDao.selectCategory(grp_cd)
+    override fun getCategory(usrID: String): MutableList<Tblmicou_categoryDto> {
+        return couponDao.selectCategory(usrID)
     }
 
     override fun registerCoupon(dto: CouponRegisterDto, request: HttpServletRequest) {
@@ -106,29 +106,15 @@ class CouponRegisterServiceImpl: CouponRegisterService {
         if (dto.title.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Title을 입력해주세요.")
         if (dto.descr.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Description을 입력해주세요.")
         if (dto.notice.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "Temps & Condition을 입력해주세요.")
-        if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(
-            HttpStatus.BAD_REQUEST,
-            "Expiry Date를 선택해주세요."
-        )
-        if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(
-            HttpStatus.BAD_REQUEST,
-            "Expiry Time을 선택해주세요."
-        )
-        if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(
-            HttpStatus.BAD_REQUEST,
-            "Daily Start Time을 선택해주세요."
-        )
-        if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(
-            HttpStatus.BAD_REQUEST,
-            "Daily End Time을 선택해주세요."
-        )
-        if (dto.daily_start_time!!.replace(":", "") == dto.daily_end_time!!.replace(":", "")) {
-            throw CouponException(HttpStatus.BAD_REQUEST, "Daily Time의 시간 간격이 없습니다.")
-        }
+        if (CommonUtils.isEmptyObject(dto.expire_date)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Date를 선택해주세요.")
+        if (CommonUtils.isEmptyObject(dto.expire_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Expiry Time을 선택해주세요.")
+        if (CommonUtils.isEmptyObject(dto.daily_start_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Start Time을 선택해주세요.")
+        if (CommonUtils.isEmptyObject(dto.daily_end_time)) throw CouponException(HttpStatus.BAD_REQUEST, "Daily End Time을 선택해주세요.")
+        if (dto.daily_start_time!!.replace(":", "") == dto.daily_end_time!!.replace(":", "")) throw CouponException(HttpStatus.BAD_REQUEST, "Daily Time의 시간 간격이 없습니다.")
         if (CommonUtils.isEmptyObject(dto.available_day)) throw CouponException(HttpStatus.BAD_REQUEST, "Date를 선택해주세요.")
         if (dto.content.isNullOrBlank()) throw CouponException(HttpStatus.BAD_REQUEST, "문자 메시지 내용을 입력해주세요.")
-        if (!(dto.content ?: "").contains("{쿠폰링크}")) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰링크를 삽입해주세요.")
-
+        if (!(dto.content ?: "").contains("{쿠폰링크}")) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 링크를 삽입해주세요.")
+        if(!CommonUtils.isEmptyObject(dto.password) && !CommonUtils.isValid(dto.password)) throw CouponException(HttpStatus.BAD_REQUEST, "쿠폰 비밀번호는 영문,한글,숫자 만 가능합니다.")
     }
 
     private fun isImageFile(file: MultipartFile): Boolean {

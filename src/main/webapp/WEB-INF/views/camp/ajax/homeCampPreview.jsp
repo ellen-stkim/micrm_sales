@@ -19,8 +19,7 @@
             <div class="btn_hide">닫기</div>
             <h3>캠페인 요약</h3>
             <div class="padding_inner">
-                <!-- [state1 : eDM 발송취소],[state2 : eDM 발송대기],[state3 : eDM 발송완료],[state4 : eDM 승인대기]
-        [state5 : mms 발송취소],[state6 : mms 발송대기],[state7 : mms 발송대기],[state8 : mms 승인대기]    -->
+                <!-- [state1 : eDM 발송취소],[state2 : eDM 발송대기],[state3 : eDM 발송완료],[state4 : eDM 승인대기],[state5 : mms 발송취소],[state6 : mms 발송대기],[state7 : mms 발송대기],[state8 : mms 승인대기]    -->
                 <div class="title ellipsis state${campST}CH01">${cutil:escapeTextToHtml(campTitle)}</div>
                 <div class="sum_info cf">
                     <!-- 발송 날짜 영역 -->

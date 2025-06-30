@@ -783,6 +783,7 @@
                                                         <!-- <button type="button" class="btn preview" onclick="couponPreview('disable');">미리보기</button> -->
                                                     </div>
                                                 </div>
+                                                <%--
                                                 <div class="row">
                                                     <div class="th">Short URL 사용</div>
                                                     <div class="td">
@@ -790,6 +791,7 @@
                                                         <label class="custom_radio">사용안함<input class="" name="short_url_yn" type="radio" value="N" <c:if test="${fn:trim(list[1].short_url_yn) ne 'Y'}">checked</c:if>/><span></span></label>
                                                     </div>
                                                 </div>
+                                                --%>
                                             </div>
                                         </div>
                                     </div>

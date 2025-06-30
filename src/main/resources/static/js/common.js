@@ -344,4 +344,43 @@ Date.prototype.addMonths = function (value) {
     return this;
 };
 
+function showModal(options) {
+    const defaults = {
+        title: '알림',
+        body: '',
+        showCancel: true,
+        confirmText: '확인',
+        cancelText: '취소',
+        onConfirm: null,
+        onCancel: null
+    };
+
+    const config = $.extend({}, defaults, options);
+    const $modal = $('#commonModal');
+
+    $modal.find('.modal-title').text(config.title);
+    $modal.find('.modal-body').html(config.body.replace(/\n/g, "<br>"));
+    $modal.find('.modal-confirm-btn').text(config.confirmText);
+    $modal.find('.modal-cancel-btn').text(config.cancelText);
+
+    if (config.showCancel) {
+        $modal.find('.modal-cancel-btn').show();
+    } else {
+        $modal.find('.modal-cancel-btn').hide();
+    }
+
+    // 기존 이벤트 제거 후 바인딩
+    $modal.find('.modal-confirm-btn').off('click').on('click', function () {
+        $modal.hide();
+        if (typeof config.onConfirm === 'function') config.onConfirm();
+    });
+
+    $modal.find('.modal-cancel-btn').off('click').on('click', function () {
+        $modal.hide();
+        if (typeof config.onCancel === 'function') config.onCancel();
+    });
+
+    $modal.show();
+}
+
 
