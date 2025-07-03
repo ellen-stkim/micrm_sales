@@ -911,7 +911,6 @@ class SalesforceController {
                 } else {
                     val gson = GsonBuilder().create()
                     val data1 = gson.fromJson(payload, MutableMap::class.java)
-                    logger.error("data : {}", data1)
                     var couponIssuedLogDto = couponIssueService.createCouponLink(data1 as MutableMap<String, Any>)
                     if (couponIssuedLogDto != null) data1["couponIssuedLogDto"] = couponIssuedLogDto
 

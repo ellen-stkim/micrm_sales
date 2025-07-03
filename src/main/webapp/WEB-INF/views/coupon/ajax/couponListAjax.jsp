@@ -60,7 +60,7 @@
             <td>${coupon.expire_dt}</td>
             <td>
                 <article class="coupon_detail">
-                    <button type="button" class="btn detail" onclick="viewQR('/image/QRCode.png')"></button>
+                    <button type="button" class="btn detail" onclick="viewQR('${coupon.encodedSeq}')"></button>
                 </article>
             </td>
             <td style="padding-left: 7px">

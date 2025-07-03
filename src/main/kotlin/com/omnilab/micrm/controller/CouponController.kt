@@ -1,5 +1,8 @@
 package com.omnilab.micrm.controller
 
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.qrcode.QRCodeWriter
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.config.error.CouponException
@@ -7,9 +10,11 @@ import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.coupon.CouponRegisterDto
 import com.omnilab.micrm.model.coupon.SearchCouponDto
 import com.omnilab.micrm.model.coupon.SearchCouponIssuedLogDto
+import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.service.CouponIssueService
 import com.omnilab.micrm.service.CouponListService
 import com.omnilab.micrm.service.CouponRegisterService
+import com.omnilab.micrm.service.SysSettingService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -18,6 +23,10 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import java.util.*
+import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -29,10 +38,15 @@ class CouponController {
 
     @Autowired
     private lateinit var couponListService: CouponListService
+
     @Autowired
     private lateinit var couponRegisterService: CouponRegisterService
+
     @Autowired
     private lateinit var couponIssueService: CouponIssueService
+
+    @Autowired
+    lateinit var sysSettingService: SysSettingService
 
     @GetMapping("/couponList.mi")
     fun couponList(searchCouponDto: SearchCouponDto): ModelAndView {
@@ -176,6 +190,37 @@ class CouponController {
 
         return view
     }
+
+
+    @ResponseBody
+    @PostMapping("/getCouponQr.ajax")
+    fun extractExcel(@RequestParam sq: String): String {
+        val trackUrl = sysSettingService.getCommCD(Tblmi_comm_cdDto("TRACKURL", UsefulUtils.sessionUser().usr_grp_cd!!))?.cd_val
+        val data = "$trackUrl/c/rt/$sq"
+
+        // QR 코드 생성 옵션 설정
+        val hints = Hashtable<EncodeHintType, Any?>()
+        hints[EncodeHintType.MARGIN] = 1 // QR 코드의 여백 설정
+
+        // QR 코드 생성
+        val qrCodeWriter = QRCodeWriter()
+        val bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 300, 300, hints) // 300x300 크기로 생성
+
+        // BitMatrix를 BufferedImage로 변환
+        val image = BufferedImage(bitMatrix.width, bitMatrix.height, BufferedImage.TYPE_INT_RGB)
+        for (x in 0 until bitMatrix.getWidth()) {
+            for (y in 0 until bitMatrix.height) {
+                image.setRGB(x, y, if (bitMatrix[x, y]) 0x000000 else 0xFFFFFF) // 검은색(0x000000) 또는 흰색(0xFFFFFF)
+            }
+        }
+
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        ImageIO.write(image, "PNG", byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.getEncoder().encodeToString(byteArray)
+    }
+
+
 
     private fun createResponseMap(status: HttpStatus, message: String?): MutableMap<String, Any> {
         val reMap: MutableMap<String, Any> = HashMap()

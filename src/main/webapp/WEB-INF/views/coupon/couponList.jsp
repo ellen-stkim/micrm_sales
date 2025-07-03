@@ -61,7 +61,6 @@
     });
 
     function getCouponList(pageNo) {
-
         var data = $('#searchCouponListForm').serializeArray();
         data.push({name: "pageNo", value: pageNo});
         const res = function (response) {
@@ -73,7 +72,6 @@
     }
 
     function deleteCoupon() {
-
         var checkArr = [];
         $('input[name="deleteChk"]:checked').each(function () {
             checkArr.push(this.value)
@@ -105,6 +103,10 @@
     }
 
     function viewQR(url){
-        showModal({title: '', body: '<img src="'+ url +'">', showCancel: false });
+        let data = { "sq": url }
+        const res = function (response) {
+            showModal({title: '', body: '<img src="data:image/png;base64,'+ response +'">', showCancel: false });
+        };
+        com_ajax.ajax('post', '/coupon/getCouponQr.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 </script>
