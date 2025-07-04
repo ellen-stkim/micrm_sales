@@ -762,7 +762,7 @@
             <!-- 오류 메시지 영역 -->
             <div class="pop_error_txt blue_point_color" id="targetError"></div>
             <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_center" onclick="targetCheck(this);" value="확인" />
+                <input type="button" class="btn_bg btn_size2 btn_center" id="couponListOk" onclick="targetCheck(this);" value="확인" />
             </div>
         </div>
     </div>
@@ -3652,14 +3652,15 @@
     const chkCoupon = (seq, nm, item) => {
         if (item.classList.contains('selected') || couponSelectSeq == seq) {
             item.classList.remove('selected');
-            couponCancel();
+            showModal({title: '알림', body: '쿠폰 선택이 취소되었습니다.', showCancel: false, onConfirm: function () { couponCancel(); } });
         } else {
             $('#send_tg_tbody .couponClickBtn').each(function () {
-                    $(this).removeClass('selected');
+                $(this).removeClass('selected');
             });
             item.classList.add('selected');
             couponNm = nm;
             couponSelectSeq = seq;
+            targetCheck($("#couponListOk")[0]);
         }
     };
 
