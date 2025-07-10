@@ -111,7 +111,7 @@
                                                 </p>
                                                 <c:forEach var="guideMsg" items="${cateSubGidLst}">
                                                     <p class="template_category_p gid_${guideMsg.par_nm}" hidden>
-                                                            ${guideMsg.cd_desc}
+                                                        ${guideMsg.cd_desc}
                                                     </p>
                                                 </c:forEach>
                                             </div>
@@ -121,9 +121,7 @@
                                         <div class="row">
                                             <div class="th">템플릿명 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <input type="text" class="txt_input" name="templateName"
-                                                       style="width: 100%;"
-                                                       placeholder="템플릿명 입력 (최대 200자)"/>
+                                                <input type="text" class="txt_input" name="templateName" style="width: 100%;" placeholder="템플릿명 입력 (최대 200자)"/>
                                             </div>
                                         </div>
                                     </div>
@@ -131,8 +129,7 @@
                                         <div class="row template_textarea">
                                             <div class="th">템플릿내용 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <textarea name="templateContent"  cols="30"
-                                                          rows="10"></textarea>
+                                                <textarea name="templateContent"  cols="30" rows="10"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -142,14 +139,12 @@
                                                 <div class="th">개인화 변수</div>
                                                 <div class="td">
                                                     <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span><br>
-                                                    <span class="color_red" style="font-size: 9px">   ※ 개인화 변수는 최대 10개까지 사용할 수 있습니다.</span>
+                                                    <span class="color_red" style="font-size: 9px">※ 개인화 변수는 최대 10개까지 사용할 수 있습니다.</span>
                                                     <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;">
-                                                        <c:forEach var="item" items="${column}"
-                                                                   varStatus="status">
+                                                        <c:forEach var="item" items="${column}" varStatus="status">
                                                             <input type="button" data="\#{${item.list_val}}" value="${item.list_nm}" class="drag-button" draggable="true">
                                                         </c:forEach>
-                                                        <c:forEach var="item" items="${extention}"
-                                                                   varStatus="status">
+                                                        <c:forEach var="item" items="${extention}" varStatus="status">
                                                             <input type="button" data="\#{${item}}" value="${item}" class="drag-button" draggable="true">
                                                         </c:forEach>
                                                     </div>
@@ -648,6 +643,14 @@
 
 
 <script>
+
+    $(function(){
+        $("input").on("blur", function(){
+            prevAtTmplImg();
+        });
+    });
+
+
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
 

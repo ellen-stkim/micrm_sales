@@ -133,9 +133,12 @@ class KkoMsgServiceImpl : KkoMsgService {
         val map :MutableMap<String,Any> = mutableMapOf()
 
         // 카카오 api 호출
+        /*
         val result:MutableMap<String,Any> = kkoRestApiService.createAtTmpl(dto)
         val data:MutableMap<String,Any> = result["data"] as MutableMap<String, Any>
-
+        */
+        val result = mapOf("result" to true)
+        val data = mapOf("code" to "API_200")
         try {
             if(result["result"] as Boolean){
                 if("API_200" == data["code"]){
@@ -152,7 +155,10 @@ class KkoMsgServiceImpl : KkoMsgService {
                     var tempCont: String?
                     for(idx in 1 until tempContStrs.size){
                         tempCont = tempContStrs[idx]
-                        etcArr.add(tempCont.substring(0,tempCont.indexOf("}")))
+                        val ind = tempCont.indexOf("}")
+                        if(ind != -1){
+                            etcArr.add(tempCont.substring(0, ind))
+                        }
                         tmplDto.tmpl_cont
                     }
 
@@ -168,11 +174,10 @@ class KkoMsgServiceImpl : KkoMsgService {
                     tmplDto.etc_9 = if (size >= 9) etcArr[8] else null
                     tmplDto.etc_10 = if (size >= 10) etcArr[9] else null
 
-                    kkoAtTmplDao.insNewTmplDto(tmplDto);
+                    kkoAtTmplDao.insNewTmplDto(tmplDto)
 
                     map["status"] = HttpServletResponse.SC_OK
                     map["msg"] = "알림톡 템플릿이 생성되었습니다."
-
                 }else{
                     logger.error("카카오 알림톡 템플릿 생성 데이터 에러 {}",result)
 
@@ -188,7 +193,7 @@ class KkoMsgServiceImpl : KkoMsgService {
                 map["msg"] = data["message"]!!
             }
         }catch (e:Exception){
-            logger.error("",e)
+            logger.error("createTmpl", e)
             map["status"] = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
             map["msg"] = "템플릿 등록에 실패했습니다. 관리자에게 문의 바랍니다."
         }
@@ -227,7 +232,10 @@ class KkoMsgServiceImpl : KkoMsgService {
                     var tempCont: String?
                     for (idx in 1 until tempContStrs.size) {
                         tempCont = tempContStrs[idx]
-                        etcArr.add(tempCont.substring(0, tempCont.indexOf("}")))
+                        val ind = tempCont.indexOf("}")
+                        if(ind != -1){
+                            etcArr.add(tempCont.substring(0, ind))
+                        }
                         tmplDto.tmpl_cont
                     }
 

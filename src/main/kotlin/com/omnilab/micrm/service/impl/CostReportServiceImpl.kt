@@ -45,19 +45,21 @@ class CostReportServiceImpl : CostReportService {
     lateinit var sysSettingDao : SysSettingDao
     override fun getCostReport(hstDto : SearchSendCostDto): HashMap<String, Any?> {
         hstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        if(hstDto.usr_grp_cd == "16"
+            || hstDto.usr_grp_cd == "22"
+        ){
+            hstDto.lstCd = listOf("16", "22")
+        }
         val searchDto = setDateDefault(hstDto)   // 조회 날짜 체크 후 기본값 설정
-
         val totalLst : List<SendCostDto> = costReportDao.selSendCostLst(searchDto)
 
         // 발송 건수, 비용 월별 합계
         val groupMap = totalLst.stream().collect(groupingBy(SendCostDto::send_mon, { TreeMap() }, toList()))
-
         val sendMap = mutableMapOf<String,Any>()
         val totalMap = mutableMapOf<String,Any>()
         for(data in groupMap){
             val mon = data.key as String
             val list = data.value
-
             var totalCost =  BigDecimal("0")
             var totalCnt =  0L
             val sendTypeMap = hashMapOf<String,HashMap<String,Any?>>()
@@ -69,11 +71,9 @@ class CostReportServiceImpl : CostReportService {
             sendMap[mon] = sendTypeMap
             totalMap[mon] = mapOf("totalCost" to totalCost, "totalCnt" to totalCnt)
         }
-
         // 그래프
         val gson = GsonBuilder().create()
         val jsonMap = gson.toJson(sendMap)
-
         // 총합 계산
         val typeTotalMap = mutableMapOf<String,Any>()
         val typeTotal = totalLst.stream().collect(groupingBy(SendCostDto::msg_tp))
@@ -82,20 +82,16 @@ class CostReportServiceImpl : CostReportService {
         for(data in typeTotal){
             val type = data.key as String
             val list = data.value
-
             var totalCost =  BigDecimal("0")
             var totalCnt  = 0L
             for(dto1 in list){
                 totalCost = totalCost.plus(dto1.total_cost!!)
                 totalCnt += dto1.total_cnt!!
             }
-
             typeTotalMap[type] = mapOf("total_cost" to totalCost, "total_cnt" to totalCnt )
-
             allTotalCost = allTotalCost.plus(totalCost)
             allTotalCnt += totalCnt
         }
-
         typeTotalMap["ALL"] = mapOf("total_cost" to allTotalCost, "total_cnt" to allTotalCnt )
 
         // 프로그램 당 발송 디테일
@@ -108,21 +104,27 @@ class CostReportServiceImpl : CostReportService {
             format.format(cal.time)
         }
 
-        return hashMapOf("startDt" to searchDto.start_dt
-                        , "endDt" to searchDto.end_dt
-                        , "monthlyDt" to  cal.time
-                        , "jsonMap" to jsonMap
-                        , "sendMap" to sendMap
-                        , "totalMap" to totalMap
-                        , "typeTotalMap" to typeTotalMap
-                        , "programMap" to prgMap["programMap"]
-                        , "page" to prgMap["page"]
+        return hashMapOf(
+            "startDt" to searchDto.start_dt
+            , "endDt" to searchDto.end_dt
+            , "monthlyDt" to  cal.time
+            , "jsonMap" to jsonMap
+            , "sendMap" to sendMap
+            , "totalMap" to totalMap
+            , "typeTotalMap" to typeTotalMap
+            , "programMap" to prgMap["programMap"]
+            , "page" to prgMap["page"]
         )
     }
 
 
     override fun getPrgCostReport(dto: SearchSendCostDto): HashMap<String, Any?> {
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        if(dto.usr_grp_cd == "16"
+            || dto.usr_grp_cd == "22"
+        ){
+            dto.lstCd = listOf("16", "22")
+        }
         val searchDto = setDateDefault(dto)
 
         return getProgramCostLst(searchDto)
@@ -139,6 +141,12 @@ class CostReportServiceImpl : CostReportService {
         labelList.clear()
 
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        if(dto.usr_grp_cd == "16"
+            || dto.usr_grp_cd == "22"
+        ){
+            dto.lstCd = listOf("16", "22")
+        }
+
         val searchDto = setDateDefault(dto)   // 조회 날짜 체크 후 기본값 설정
 
         val dailyTotalLst : List<SendCostDto> = costReportDao.selDailySendCostLst(searchDto)
@@ -258,7 +266,6 @@ class CostReportServiceImpl : CostReportService {
 
         val workbook: Workbook = SXSSFWorkbook(1000)
         val sheet = workbook.createSheet("Report")
-
         val centerStyle = workbook.createCellStyle().apply {
             alignment = HorizontalAlignment.CENTER
             verticalAlignment = VerticalAlignment.CENTER
@@ -311,6 +318,11 @@ class CostReportServiceImpl : CostReportService {
 
         // 프로그램 당 발송 디테일
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        if(dto.usr_grp_cd == "16"
+            || dto.usr_grp_cd == "22"
+        ){
+            dto.lstCd = listOf("16", "22")
+        }
         val searchDto = setDateDefault(dto)
         var prgMap = getProgramCostLst(searchDto)
         if(!CommonUtils.isEmptyObject(prgMap["programMap"])){

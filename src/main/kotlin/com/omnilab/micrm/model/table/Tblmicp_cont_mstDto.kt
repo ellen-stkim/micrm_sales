@@ -9,6 +9,7 @@ open class Tblmicp_cont_mstDto: Tblmi_cont_mstDto {
 
     var cont_seq: Int? = null
     var avo_nm: String? = null
+    var lstCd: List<String>? = null
 
     constructor()
     constructor(seq: Int?){

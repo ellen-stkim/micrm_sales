@@ -36,6 +36,8 @@ open class Tblmicp_programDto {
     var inta_key: String? = null
     var inta_ve: String? = null
 
+    var lstCd: List<String>? = null
+
     constructor()
     constructor(pro_id: String?){
         this.pro_id = pro_id

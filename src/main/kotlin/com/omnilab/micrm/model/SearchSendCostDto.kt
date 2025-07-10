@@ -17,6 +17,8 @@ class SearchSendCostDto : SendCostDto {
     var firstIndex : Int? = 0
     var recordCountPerPage : Int = 10
 
+    var lstCd: List<String>? = null
+
     constructor() : super()
 
     override fun toString(): String {

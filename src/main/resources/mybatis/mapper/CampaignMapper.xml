@@ -270,7 +270,17 @@
 				and inten_id = #{inten_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_grp_cd)">
-				and cont_grp_cd = #{cont_grp_cd}
+				<choose>
+					<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(lstCd)">
+						AND cont_grp_cd in
+						<foreach collection="lstCd" item="list" separator=" , " open="( " close=" )">
+							#{list}
+						</foreach>
+					</when>
+					<otherwise>
+						AND cont_grp_cd = #{usr_grp_cd}
+					</otherwise>
+				</choose>
 			</if>
 		</where>
 		Limit 1
@@ -327,7 +337,17 @@
 				and pro_st = #{pro_st}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
-				and usr_grp_cd = #{usr_grp_cd}
+				<choose>
+					<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(lstCd)">
+						AND usr_grp_cd in
+						<foreach collection="lstCd" item="list" separator=" , " open="( " close=" )">
+							#{list}
+						</foreach>
+					</when>
+					<otherwise>
+						AND usr_grp_cd = #{usr_grp_cd}
+					</otherwise>
+				</choose>
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(appr_id)">
 				and appr_id = #{appr_id}
@@ -867,8 +887,19 @@
 			INNER JOIN tblmi_comm_cd AS comm_co ON comm_co.grp_id = 'COMST' and prg.PRO_ST = comm_co.CD_ID
 			INNER JOIN tblmi_comm_cd AS comm_tg ON comm_tg.grp_id = 'TGTP' and prg.PRO_TG_TP = comm_tg.cd_id
 		<where>
-			prg.usr_grp_cd = #{usr_grp_cd}
+			<choose>
+				<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(lstCd)">
+					AND prg.usr_grp_cd in
+					<foreach collection="lstCd" item="list" separator=" , " open="( " close=" )">
+						#{list}
+					</foreach>
+				</when>
+				<otherwise>
+					prg.usr_grp_cd = #{usr_grp_cd}
+				</otherwise>
+			</choose>
 			and prg.del_yn = 'N'
+			and prg.pro_tp != 'API'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
 				and prg.pro_nm like CONCAT('%',  #{pro_nm},'%')
 			</if>
@@ -892,8 +923,7 @@
 			</if>
 		</where>
 		group by prg.pro_id
-		order by  FIELD(prg.pro_st, '98') DESC
-		, prg.min_start_dt desc
+		order by  FIELD(prg.pro_st, '98') DESC, prg.min_start_dt desc
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
 			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
 		</if>
@@ -902,37 +932,36 @@
 	<select id="getProgramSearchCnt" parameterType="Program_SearchDto" resultType="int">
 		select count(*)
 		from (
-		SELECT  a.pro_id
-		FROM tblmicp_program AS a
-		INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
-		INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
-		<where>
-			a.usr_grp_cd = #{usr_grp_cd}
-			and a.del_yn = 'N'
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
-				and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_nm)">
-				and b.cd_nm like CONCAT('%',  #{cd_nm},'%')
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
-				and a.pro_tg_tp = #{pro_tg_tp}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
-				and a.pro_tp = #{pro_tp}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
-				and a.pro_st = #{pro_st}
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
-				and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
-			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
-				and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
-			</if>
-
-		</where>
-		group by pro_id
+			SELECT  a.pro_id
+			FROM tblmicp_program AS a
+				INNER JOIN tblmi_comm_cd AS b ON b.grp_id = 'COMST' and a.PRO_ST = b.CD_ID
+				INNER JOIN tblmi_comm_cd AS e ON e.grp_id = 'TGTP' and a.PRO_TG_TP = e.cd_id
+			<where>
+				a.usr_grp_cd = #{usr_grp_cd}
+				and a.del_yn = 'N'
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_nm)">
+					and a.pro_nm like CONCAT('%',  #{pro_nm},'%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cd_nm)">
+					and b.cd_nm like CONCAT('%',  #{cd_nm},'%')
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tg_tp)">
+					and a.pro_tg_tp = #{pro_tg_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_tp)">
+					and a.pro_tp = #{pro_tp}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_st)">
+					and a.pro_st = #{pro_st}
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+					and a.min_start_dt <![CDATA[ >= #{st_dt} ]]>
+				</if>
+				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+					and a.min_start_dt <![CDATA[ <= date_add(#{end_dt}, interval 1 day)  ]]>
+				</if>
+			</where>
+			group by pro_id
 		) as z
 	</select>
 
@@ -968,8 +997,8 @@
 			</choose>
 		</if>
 		where
-		prg.USR_GRP_CD = #{usr_grp_cd}
-		and prg.del_yn = 'N'
+			prg.USR_GRP_CD = #{usr_grp_cd}
+			and prg.del_yn = 'N'
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(pro_id)">
 			and prg.pro_id like CONCAT('%',  #{pro_id},'%')
 		</if>

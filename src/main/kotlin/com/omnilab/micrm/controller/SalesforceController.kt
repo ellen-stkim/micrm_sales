@@ -830,7 +830,7 @@ class SalesforceController {
     fun validate(@PathVariable(value = "usr_cd") usrCd: String, @RequestBody data : MutableMap<String, Any>, req: HttpServletRequest): ResponseEntity<Any> {
         return if(getUsrGrpCd(usrCd) != null){
             logger.info("/validate.service data: $data")
-             ResponseEntity(null, HttpStatus.OK)
+            ResponseEntity(null, HttpStatus.OK)
         }else{
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }

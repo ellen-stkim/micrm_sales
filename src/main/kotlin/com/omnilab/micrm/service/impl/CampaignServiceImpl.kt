@@ -137,6 +137,11 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
     override fun getProgramSearch(pdto: Tblmicp_programDto): Map<String, Any> {
         pdto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        if(pdto.usr_grp_cd == "16"
+            || pdto.usr_grp_cd == "22"
+        ){
+            pdto.lstCd = listOf("16", "22")
+        }
         val dto = pdto as Program_SearchDto
 
         when (dto.searchType) {
@@ -162,7 +167,11 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         val map = HashMap<String, Any>()
         val searchDto = Tblmicp_programDto(pro_id)
         searchDto.usr_grp_cd = usr_grp_cd
-
+        if(searchDto.usr_grp_cd == "16"
+            || searchDto.usr_grp_cd == "22"
+        ){
+            searchDto.lstCd = listOf("16", "22")
+        }
         val programDto = campaignDao.sel_tblmicp_programOne(searchDto)
         map["programDto"] = programDto
 
@@ -179,7 +188,14 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
 
             val contMap = HashMap<String, Any>()
             for (camp in campLSt) {
-                val tempDt = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(camp.cont_id!!, usr_grp_cd, null))
+                val campDto = Tblmicp_cont_mstDto(camp.cont_id!!, usr_grp_cd, null)
+                if(campDto.cont_grp_cd == "16"
+                    || campDto.cont_grp_cd == "22"
+                ){
+                    campDto.lstCd = listOf("16", "22")
+                }
+
+                val tempDt = campaignDao.sel_camp_cont_mst(campDto)
                 val tempTblDto = campaignDao.sel_ContentsList(Contents_searchDto(tempDt?.cont_seq))
                 if (tempTblDto.isNotEmpty()) {
                     contMap[camp.cont_id.toString()] = tempTblDto[0]
