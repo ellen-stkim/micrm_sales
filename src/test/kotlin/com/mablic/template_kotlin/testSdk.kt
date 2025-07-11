@@ -55,7 +55,9 @@ object testSdk {
         )
         val result = processJson(jsonInput, keyMap)
 
-        logger.error(result)
+        val gson = GsonBuilder().create()
+        val btnData: MutableMap<String, Any> = gson.fromJson(result, MutableMap::class.java) as MutableMap<String, Any>
+        logger.error(btnData["button"].toString())
     }
 
     fun processJson(jsonStr: String, keyMap: Map<String, String>): String {

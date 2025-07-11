@@ -300,7 +300,8 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                         btnData = btnData.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
                     */
-                    kkoMsgdto.button_json = result
+                    val btnData: MutableMap<String, Any> = gson.fromJson(result, MutableMap::class.java) as MutableMap<String, Any>
+                    kkoMsgdto.button_json = btnData["button"].toString()
                 }
                 if(objMap["quick_reply"] != null){
                     kkoMsgdto.quick_reply = gson.toJson(objMap["quick_reply"])
