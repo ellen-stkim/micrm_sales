@@ -45,6 +45,11 @@ public class CommonUtils {
 
     public static final Logger log = LoggerFactory.getLogger(CommonUtils.class);
 
+    private static final Pattern SIMPLE_PATTERN = Pattern.compile("^#\\{[^}]+}$");
+    private static final Pattern HTTPS_PATTERN = Pattern.compile("^https://#\\{[^}]+}$");
+    private static final Pattern HTTP_PATTERN = Pattern.compile("^http://#\\{[^}]+}$");
+
+
     /**
      * @param : HttpServletRequest
      * @return : String ip
@@ -608,5 +613,11 @@ public class CommonUtils {
         return Pattern.matches(regex, input);
     }
 
-
+    // 정규식 패턴 정의
+    public static boolean matchesPattern(String input) {
+        if (input == null) return false;
+        return SIMPLE_PATTERN.matcher(input).matches()
+            || HTTPS_PATTERN.matcher(input).matches()
+            || HTTP_PATTERN.matcher(input).matches();
+    }
 }

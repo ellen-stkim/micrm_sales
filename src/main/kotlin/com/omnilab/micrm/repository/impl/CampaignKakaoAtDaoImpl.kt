@@ -1,6 +1,7 @@
 package com.omnilab.micrm.repository.impl
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
@@ -20,8 +21,8 @@ import kotlin.collections.ArrayList
 
 @Repository("CampaignKakaoAtDaoImpl")
 class CampaignKakaoAtDaoImpl : CampaignSendDao {
-
     val logger = LoggerFactory.getLogger(this::class.java)
+
     val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS")
 
     @Autowired
@@ -293,10 +294,13 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
 
                 if(objMap["button"] != null){
                     var btnData = gson.toJson(objMap["button"])
+                    val result = processJson(btnData, map)
+                    /*
                     for (key in map.keys) {
                         val reg = Regex("#\\{(?i)${key}}")
                         btnData = btnData.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
+                    */
                     kkoMsgdto.button_json = btnData
                 }
                 if(objMap["quick_reply"] != null){
@@ -441,4 +445,71 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         map["db"] = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_DB", map["usr_grp_cd"].toString())).cd_val!!
         return sqlSession.update("del_kko_send_cj", map)
     }
+
+    fun processJson(jsonStr: String, keyMap: MutableMap<String, Any>): String {
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val jsonObject = JsonParser.parseString(jsonStr).asJsonObject
+        val buttons = jsonObject["button"].asJsonArray
+
+        for (button in buttons) {
+           val obj = button.asJsonObject
+           for ((field, valueElement) in obj.entrySet()) {
+               if (!valueElement.isJsonPrimitive || !valueElement.asJsonPrimitive.isString) continue
+               val value = valueElement.asString
+
+               val newValue = when (field) {
+                   "linkMo", "linkPc" -> processLinkField(value, keyMap)
+                   else -> replacePlainTemplate(value, keyMap)
+               }
+               obj.addProperty(field, newValue)
+           }
+        }
+        return gson.toJson(jsonObject)
+    }
+
+    fun processLinkField(value: String, keyMap: MutableMap<String, Any>): String {
+        val regex = Regex("^(https?://)?#\\{([^}]+)}$")
+        val match = regex.matchEntire(value)
+        if (match != null) {
+            val protocol = match.groupValues[1].ifBlank { null }
+            val key = match.groupValues[2]
+            return transform(key, protocol, keyMap)
+        }
+        return replaceTemplateInString(value, keyMap)
+    }
+
+    fun replaceTemplateInString(input: String, keyMap: MutableMap<String, Any>): String {
+        val pattern = Regex("#\\{([^}]+)}")
+        return pattern.replace(input) { match ->
+            val key = match.groupValues[1]
+            val value = keyMap[key] ?: return@replace match.value
+
+            // 앞 문맥 확인 (최대 10자 앞)
+            val startIdx = match.range.first
+            val prefix = input.substring(0, startIdx).takeLast(10).lowercase()
+
+            // URL 또는 쿼리스트링 내 템플릿이라면 https:// 생략
+            return@replace if (prefix.endsWith("=") || prefix.endsWith("?") ||
+                prefix.contains("http://") || prefix.contains("https://")) ({
+                value
+            }).toString()
+            else {
+                "https://$value"
+            }
+        }
+    }
+
+    fun replacePlainTemplate(input: String, keyMap: MutableMap<String, Any>): String {
+        val pattern = Regex("#\\{([^}]+)}")
+        return pattern.replace(input) { match ->
+            val key = match.groupValues[1]
+            (keyMap[key] ?: match.value).toString()
+        }
+    }
+
+    fun transform(key: String, protocol: String?, keyMap: MutableMap<String, Any>): String {
+        val value = keyMap[key] ?: return "#{$key}"  // 치환값 없으면 그대로 유지
+        return if (protocol != null) "$protocol$value" else "https://$value"
+    }
+
 }
