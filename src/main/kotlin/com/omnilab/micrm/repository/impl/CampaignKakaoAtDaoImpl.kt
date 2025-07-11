@@ -291,17 +291,16 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
             if(kakaoCont.kko_btn_obj != null){
                 val gson = GsonBuilder().create()
                 val objMap: MutableMap<String, Any> = gson.fromJson(kakaoCont.kko_btn_obj, MutableMap::class.java) as MutableMap<String, Any>
-
-                if(objMap["button"] != null){
-                    var btnData = gson.toJson(objMap["button"])
-                    val result = processJson(btnData, map)
+                if(objMap["button"] != null && objMap["button"].toString() != "{}"){
+                    val result = processJson(kakaoCont.kko_btn_obj!!, map, trackURL!!, hstSeq)
                     /*
+                    val btnData = gson.toJson(objMap["button"])
                     for (key in map.keys) {
                         val reg = Regex("#\\{(?i)${key}}")
                         btnData = btnData.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
                     */
-                    kkoMsgdto.button_json = btnData
+                    kkoMsgdto.button_json = result
                 }
                 if(objMap["quick_reply"] != null){
                     kkoMsgdto.quick_reply = gson.toJson(objMap["quick_reply"])
@@ -446,7 +445,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         return sqlSession.update("del_kko_send_cj", map)
     }
 
-    fun processJson(jsonStr: String, keyMap: MutableMap<String, Any>): String {
+    fun processJson(jsonStr: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
         val gson = GsonBuilder().setPrettyPrinting().create()
         val jsonObject = JsonParser.parseString(jsonStr).asJsonObject
         val buttons = jsonObject["button"].asJsonArray
@@ -458,7 +457,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                val value = valueElement.asString
 
                val newValue = when (field) {
-                   "linkMo", "linkPc" -> processLinkField(value, keyMap)
+                   "linkMo", "linkPc" -> processLinkField(value, keyMap, trackURL, hstSeq)
                    else -> replacePlainTemplate(value, keyMap)
                }
                obj.addProperty(field, newValue)
@@ -467,13 +466,13 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         return gson.toJson(jsonObject)
     }
 
-    fun processLinkField(value: String, keyMap: MutableMap<String, Any>): String {
+    fun processLinkField(value: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
         val regex = Regex("^(https?://)?#\\{([^}]+)}$")
         val match = regex.matchEntire(value)
         if (match != null) {
             val protocol = match.groupValues[1].ifBlank { null }
             val key = match.groupValues[2]
-            return transform(key, protocol, keyMap)
+            return transform(key, protocol, keyMap, trackURL, hstSeq)
         }
         return replaceTemplateInString(value, keyMap)
     }
@@ -483,11 +482,9 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         return pattern.replace(input) { match ->
             val key = match.groupValues[1]
             val value = keyMap[key] ?: return@replace match.value
-
             // 앞 문맥 확인 (최대 10자 앞)
             val startIdx = match.range.first
             val prefix = input.substring(0, startIdx).takeLast(10).lowercase()
-
             // URL 또는 쿼리스트링 내 템플릿이라면 https:// 생략
             return@replace if (prefix.endsWith("=") || prefix.endsWith("?") ||
                 prefix.contains("http://") || prefix.contains("https://")) ({
@@ -507,9 +504,13 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         }
     }
 
-    fun transform(key: String, protocol: String?, keyMap: MutableMap<String, Any>): String {
+    fun transform(key: String, protocol: String?, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
         val value = keyMap[key] ?: return "#{$key}"  // 치환값 없으면 그대로 유지
-        return if (protocol != null) "$protocol$value" else "https://$value"
+        return if (protocol != null){
+            "$trackURL/s/a/${AES256.AES_Encode("$hstSeq§$protocol$value", GlobalValues.encKey)}"
+        }else{
+            "$trackURL/s/a/${AES256.AES_Encode("$hstSeq§https://$value", GlobalValues.encKey)}"
+        }
     }
 
 }

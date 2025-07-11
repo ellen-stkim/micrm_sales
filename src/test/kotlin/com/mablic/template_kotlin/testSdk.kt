@@ -68,12 +68,10 @@ object testSdk {
            for ((field, valueElement) in obj.entrySet()) {
                if (!valueElement.isJsonPrimitive || !valueElement.asJsonPrimitive.isString) continue
                val value = valueElement.asString
-
                val newValue = when (field) {
                    "linkMo", "linkPc" -> processLinkField(value, keyMap)
                    else -> replacePlainTemplate(value, keyMap)
                }
-
                obj.addProperty(field, newValue)
            }
         }
@@ -100,7 +98,6 @@ object testSdk {
             // 앞 문맥 확인 (최대 10자 앞)
             val startIdx = match.range.first
             val prefix = input.substring(0, startIdx).takeLast(10).lowercase()
-
             // URL 또는 쿼리스트링 내 템플릿이라면 https:// 생략
             return@replace if (prefix.endsWith("=") || prefix.endsWith("?") ||
                 prefix.contains("http://") || prefix.contains("https://")) {
@@ -120,7 +117,10 @@ object testSdk {
     }
 
     fun transform(key: String, protocol: String?, keyMap: Map<String, String>): String {
+        val logger = LoggerFactory.getLogger("this")
         val value = keyMap[key] ?: return "#{$key}"  // 치환값 없으면 그대로 유지
+
+        logger.error("{}, {}", key, value)
         return if (protocol != null) "$protocol$value" else "https://$value"
     }
 
