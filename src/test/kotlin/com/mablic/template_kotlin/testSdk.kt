@@ -3,9 +3,9 @@ package com.mablic.template_kotlin
 import com.exacttarget.fuelsdk.ETSdkException
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.omnilab.micrm.common.CommonUtils
 import org.slf4j.LoggerFactory
-import java.util.regex.Pattern
+import kotlin.math.log
+
 
 object testSdk {
     @Throws(ETSdkException::class)
@@ -54,10 +54,11 @@ object testSdk {
             "sec" to "보안"
         )
         val result = processJson(jsonInput, keyMap)
+        logger.error("result {}", result)
 
-        val gson = GsonBuilder().create()
-        val btnData: MutableMap<String, Any> = gson.fromJson(result, MutableMap::class.java) as MutableMap<String, Any>
-        logger.error(btnData["button"].toString())
+        val obj = JsonParser.parseString(result).asJsonObject
+        val buttons = obj.getAsJsonArray("button")
+        logger.error("{}", buttons)
     }
 
     fun processJson(jsonStr: String, keyMap: Map<String, String>): String {
