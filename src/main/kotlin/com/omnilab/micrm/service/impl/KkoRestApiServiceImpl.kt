@@ -16,6 +16,7 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.multipart.MultipartFile
 import java.net.HttpURLConnection
+import kotlin.math.log
 
 
 @Service("KkoRestApiServiceImpl")
@@ -44,7 +45,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
 
     override fun createAtTmpl(dto: Kko_at_tmplDto): MutableMap<String, Any> {
-        val token = getToken(url);
+        val token = getToken(url)
 
         //        header 설정
         val headers = HttpHeaders()
@@ -61,7 +62,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
     override fun updateAtTmpl(newDto: Kko_at_tmplDto): MutableMap<String, Any> {
         val token = getToken(url)
-
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         headers.set("Authorization", "Bearer $token")
@@ -70,7 +70,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
 
         val urlString = "$url/$version/resell/template/modify/${newDto.send_key}"
         val gson = GsonBuilder().create()
-
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.PUT, HttpEntity(gson.toJson(newDto), headers))
         return reMap
     }
@@ -102,7 +101,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         val map = LinkedMultiValueMap<String, Any>()
         val resource = FilenameAwareInputStreamResource(file.inputStream, file.size, file.originalFilename.toString())
         map["image"] = resource
-
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(map, headers))
         return reMap
 
@@ -116,7 +114,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("Authorization", "Bearer $token")
         headers.set("version", version)
         headers.set("accept", MediaType.ALL_VALUE)
-
         val urlString = "$url/$version/upload/image/alimtalk/itemHighlight"
 
         val map = LinkedMultiValueMap<String, Any>()
@@ -307,7 +304,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     }
 
     private fun getToken(thisUrl:String): String {
-
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
         headers.set("Authorization", auth)

@@ -44,9 +44,7 @@
                                         <div class="row">
                                             <div class="th">발신 프로필 <span class="color_red">*</span></div>
                                             <div class="td">
-                                                <input type="text" class="sms_number smsNumber" id="kko_send_to"
-                                                       style="width: 90%; height: 100%;"
-                                                       placeholder="발신 프로필을 선택해주세요." readonly/>
+                                                <input type="text" class="sms_number smsNumber" id="kko_send_to" style="width: 90%; height: 100%;" placeholder="발신 프로필을 선택해주세요." readonly/>
                                                 <input type="hidden" name="send_key" id="send_key" value=""/>
                                                 <span class="btn_sm_line"
                                                       onclick="mobileSenderPopup('1','sms')">변경</span>

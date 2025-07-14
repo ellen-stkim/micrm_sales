@@ -31,11 +31,9 @@
         </div>
         <div class="row tooltip_area bottom-border min-width cf">
             <div class="right tmplAcDiv">
-                <p id="updTmplBtn"
-                   class="btn_basic checkDelete left left-border">상태 업데이트</p>
+                <p id="updTmplBtn" class="btn_basic checkDelete left left-border">상태 업데이트</p>
                 <p id="reqCancleBtn" class="btn_basic rejection left left-border ${dto.kep_status eq 'I'? '' : 'display-none'}">검수요청 취소</p>
-                <p id="reqTmplBtn"
-                   class="btn_basic ico_test left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}">템플릿 검수요청</p>
+                <p id="reqTmplBtn" class="btn_basic ico_test left left-border ${dto.kep_status eq 'I'? 'display-none' : ''}">템플릿 검수요청</p>
                  <%--<p id="appCancleBtn"
                     class="btn_basic delete left left-border " >승인 취소</p>--%>
                <%-- <p id="delTmplBtn"

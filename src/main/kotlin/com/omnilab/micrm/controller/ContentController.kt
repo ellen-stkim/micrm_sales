@@ -1485,8 +1485,7 @@ class ContentController  {
      */
     @ResponseBody
     @PostMapping("/kko/updReqTmplSt.service")
-    fun updReqTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
-                     , @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
+    fun updReqTmplSt(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute searchDto: AtTmpl_searchDto, principal: Principal): Any? {
         return kkoMsgService.reqTmplST(searchDto,principal.name)
     }
 

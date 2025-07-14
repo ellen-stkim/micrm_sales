@@ -374,14 +374,14 @@ class KkoMsgServiceImpl : KkoMsgService {
         val map :MutableMap<String,Any> = mutableMapOf()
         try {
             val dto: AtTmpl_viewDto = kkoAtTmplDao.selTmplBytmplDto(searchDto)
-
             if (!CommonUtils.isEmptyObject(dto)) {
                 if ("N" == dto.kep_status || "R" == dto.kep_status) {   // 검수 요청 전이거나 반려상태의 경우에만
-
                     // 템플릿 내용 수정 후 자동 검수요청
-                    var updTmpl: Kko_at_tmplDto = getAtTmplDataByViewDto(Kko_at_tmplDto(),dto)
+                    var updTmpl: Kko_at_tmplDto = getAtTmplDataByViewDto(Kko_at_tmplDto(), dto)
                     updTmpl.send_key = dto.send_key
-                    updTmpl = getNewAtTmpl(updTmpl, updTmpl)
+                    updTmpl = getNewAtTmpl(Kko_at_tmplDto(), updTmpl)
+
+                    logger.error("updTmpl {}", updTmpl)
 
                     // 검수 요청 상태 반영
                     val updResult:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(updTmpl)
@@ -409,7 +409,6 @@ class KkoMsgServiceImpl : KkoMsgService {
                     } else {
                         logger.error("템플릿 검수요청 에러 {}", updResult)
                     }
-
                 } else {
                     map["status"] = HttpServletResponse.SC_BAD_REQUEST
                     map["msg"] = "템플릿 검수상태가 등록 또는 반려인 경우에만 요청이 가능합니다"
@@ -534,8 +533,6 @@ class KkoMsgServiceImpl : KkoMsgService {
         return paramMap
     }
 
-
-
     private fun getAtTmplDataByViewDto(dto: Kko_at_tmplDto, curDto: AtTmpl_viewDto): Kko_at_tmplDto {
         dto.templateName =  curDto.tmpl_nm
         dto.templateCode =  curDto.tmpl_cd
@@ -558,7 +555,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         dto.templateItem = gson.fromJson(curDto.item_json, object : TypeToken<HashMap<String, Any>>() {}.type)
         dto.templateItemHighlight =  gson.fromJson(curDto.item_highlight_json, object : TypeToken<HashMap<String, Any>>() {}.type)
-        logger.error("dto {}", dto)
+        dto.buttons = gson.fromJson(curDto.button_json, object : TypeToken<MutableList<HashMap<String, Any>>>() {}.type)
         return dto
     }
 
@@ -581,6 +578,7 @@ class KkoMsgServiceImpl : KkoMsgService {
 
         dto.newTemplateItemHighlight =  updDto.templateItemHighlight
         dto.newTemplateItem =  updDto.templateItem
+        dto.buttons =  updDto.buttons
 
         return dto
     }
