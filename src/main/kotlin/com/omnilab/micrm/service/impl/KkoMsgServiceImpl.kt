@@ -133,12 +133,8 @@ class KkoMsgServiceImpl : KkoMsgService {
         val map :MutableMap<String,Any> = mutableMapOf()
 
         // 카카오 api 호출
-        /*
         val result:MutableMap<String,Any> = kkoRestApiService.createAtTmpl(dto)
         val data:MutableMap<String,Any> = result["data"] as MutableMap<String, Any>
-        */
-        val result = mapOf("result" to true)
-        val data = mapOf("code" to "API_200")
         try {
             if(result["result"] as Boolean){
                 if("API_200" == data["code"]){

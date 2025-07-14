@@ -278,7 +278,7 @@
 						</foreach>
 					</when>
 					<otherwise>
-						AND cont_grp_cd = #{usr_grp_cd}
+						AND cont_grp_cd = #{cont_grp_cd}
 					</otherwise>
 				</choose>
 			</if>
