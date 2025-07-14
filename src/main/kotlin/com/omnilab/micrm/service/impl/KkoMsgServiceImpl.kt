@@ -8,7 +8,6 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 
 @Service("KkoMsgServiceImpl")
@@ -138,12 +136,11 @@ class KkoMsgServiceImpl : KkoMsgService {
         try {
             if(result["result"] as Boolean){
                 if("API_200" == data["code"]){
-
                     // tmplDto 저장
-                    val tmplDto = getTmplDtoByKkoDto(dto,tmplDto)
-                    tmplDto.use_yn = "Y"
-                    tmplDto.tmpl_status = "N"
-                    tmplDto.kep_status = "I"   // 등록 후 자동 검수 요청
+                    val tmplDto1 = getTmplDtoByKkoDto(dto,tmplDto)
+                    tmplDto1.use_yn = "Y"
+                    tmplDto1.tmpl_status = "N"
+                    tmplDto1.kep_status = "I"   // 등록 후 자동 검수 요청
 
                     //개인화 변수 파싱
                     val tempContStrs = dto.templateContent!!.split("#\\{".toRegex())
@@ -155,22 +152,22 @@ class KkoMsgServiceImpl : KkoMsgService {
                         if(ind != -1){
                             etcArr.add(tempCont.substring(0, ind))
                         }
-                        tmplDto.tmpl_cont
+                        tmplDto1.tmpl_cont
                     }
 
                     val size = etcArr.size
-                    tmplDto.etc_1 =  if (size >= 1) etcArr[0] else null
-                    tmplDto.etc_2 = if (size >= 2) etcArr[1] else null
-                    tmplDto.etc_3 = if (size >= 3) etcArr[2] else null
-                    tmplDto.etc_4 = if (size >= 4) etcArr[3] else null
-                    tmplDto.etc_5 = if (size >= 5) etcArr[4] else null
-                    tmplDto.etc_6 = if (size >= 6) etcArr[5] else null
-                    tmplDto.etc_7 = if (size >= 7) etcArr[6] else null
-                    tmplDto.etc_8 = if (size >= 8) etcArr[7] else null
-                    tmplDto.etc_9 = if (size >= 9) etcArr[8] else null
-                    tmplDto.etc_10 = if (size >= 10) etcArr[9] else null
+                    tmplDto1.etc_1 =  if (size >= 1) etcArr[0] else null
+                    tmplDto1.etc_2 = if (size >= 2) etcArr[1] else null
+                    tmplDto1.etc_3 = if (size >= 3) etcArr[2] else null
+                    tmplDto1.etc_4 = if (size >= 4) etcArr[3] else null
+                    tmplDto1.etc_5 = if (size >= 5) etcArr[4] else null
+                    tmplDto1.etc_6 = if (size >= 6) etcArr[5] else null
+                    tmplDto1.etc_7 = if (size >= 7) etcArr[6] else null
+                    tmplDto1.etc_8 = if (size >= 8) etcArr[7] else null
+                    tmplDto1.etc_9 = if (size >= 9) etcArr[8] else null
+                    tmplDto1.etc_10 = if (size >= 10) etcArr[9] else null
 
-                    kkoAtTmplDao.insNewTmplDto(tmplDto)
+                    kkoAtTmplDao.insNewTmplDto(tmplDto1)
 
                     map["status"] = HttpServletResponse.SC_OK
                     map["msg"] = "알림톡 템플릿이 생성되었습니다."
