@@ -83,7 +83,6 @@
                         <div class="contents_type">안내</div>
                     </c:if>
                     <!-- 제목 -->
-                    <%--<h4>${content.cont_sub}</h4>--%>
                     <c:choose>
                         <c:when test="${content.msg_tp eq 'DMCH211' || content.msg_tp eq 'DMCH212'}">
                             <h4>${content.slideTitle[0]}</h4>
@@ -95,116 +94,115 @@
                 </div>
                 <!-- 카카오톡 친구톡 -->
                 <c:if test="${content.cont_tp eq 'DMTP03'}">
-                        <div class="row_body">
-                            <div class="round_box">
-                                <c:if test="${not empty content.kko_image_url}">
-                                <div class="sms">
-                                    <img src="${filePath}${content.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="">
-                                </div>
-                                </c:if>
-                                <p class="sms_txt">
-<%--                                    ${content.cont_sub}<br/><br>--%>
-                                    ${cutil:replaceBr(content.cont_body)}
-                                </p>
-                                <c:if test="${not empty content.kko_btn_url}">
-                                <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm}</a>
-                                </c:if>
-                                <c:if test="${not empty content.kko_btn_url2}">
-                                    <a href="${content.kko_btn_url2}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm2}</a>
-                                </c:if>
-                                <c:if test="${not empty content.kko_btn_url3}">
-                                    <a href="${content.kko_btn_url3}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm3}</a>
-                                </c:if>
-                                <c:if test="${not empty content.kko_btn_url4}">
-                                    <a href="${content.kko_btn_url4}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm4}</a>
-                                </c:if>
-                                <c:if test="${not empty content.kko_btn_url5}">
-                                    <a href="${content.kko_btn_url5}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm5}</a>
-                                </c:if>
+                    <div class="row_body">
+                        <div class="round_box">
+                            <c:if test="${not empty content.kko_image_url}">
+                            <div class="sms">
+                                <img src="${filePath}${content.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="">
                             </div>
+                            </c:if>
+                            <p class="sms_txt">
+                                ${cutil:replaceBr(content.cont_body)}
+                            </p>
+                            <c:if test="${not empty content.kko_btn_url}">
+                                <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm}</a>
+                            </c:if>
+                            <c:if test="${not empty content.kko_btn_url2}">
+                                <a href="${content.kko_btn_url2}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm2}</a>
+                            </c:if>
+                            <c:if test="${not empty content.kko_btn_url3}">
+                                <a href="${content.kko_btn_url3}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm3}</a>
+                            </c:if>
+                            <c:if test="${not empty content.kko_btn_url4}">
+                                <a href="${content.kko_btn_url4}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm4}</a>
+                            </c:if>
+                            <c:if test="${not empty content.kko_btn_url5}">
+                                <a href="${content.kko_btn_url5}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm5}</a>
+                            </c:if>
+                        </div>
                     </div>
                 </c:if>
                 <!-- 카카오톡 알림톡 -->
                 <c:if test="${content.cont_tp eq 'DMTP05'}">
                     <div class="row_body template_body">
-                            <div class="round_box">
-                                <div class="round_box head">
-                                       <p>알림톡 도착</p>
-                                </div>
-                                <div class="at_tmpl_data">
-                                <!-- 이미지형  아이템리스트형 -->
-                                    <c:if test="${content.tmpl_empsize_tp eq 'ITEM_LIST'  || content.tmpl_empsize_tp eq 'IMAGE'}">
-                                        <c:if test="${!empty content.kko_img_cd}">
-                                            <div class="kko_img_box">
-                                                <img src="${content.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
-                                            </div>
+                        <div class="round_box">
+                            <div class="round_box head">
+                               <p>알림톡 도착</p>
+                            </div>
+                            <div class="at_tmpl_data">
+                            <!-- 이미지형  아이템리스트형 -->
+                                <c:if test="${content.tmpl_empsize_tp eq 'ITEM_LIST'  || content.tmpl_empsize_tp eq 'IMAGE'}">
+                                    <c:if test="${!empty content.kko_img_cd}">
+                                        <div class="kko_img_box">
+                                            <img src="${content.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
+                                        </div>
+                                    </c:if>
+                                </c:if>
+                                 <div class="at_msg_cont">
+                                    <%--  강조유형 강조표기형 --%>
+                                    <c:if test="${content.tmpl_empsize_tp eq 'TEXT'}">
+                                        <div class="tmpl_subtit">${content.tmpl_subtit}</div>
+                                        <div class="tmpl_tit">${content.tmpl_tit}</div>
+                                    </c:if>
+                                    <%--  강조유형 아이템리스트형 --%>
+                                    <c:if test="${content.tmpl_empsize_tp eq 'ITEM_LIST'}">
+                                        <c:if test="${!empty content.item_highlight_json}">
+                                            <c:set var="highlight" value="${content.highlight_json}"/>
+                                            <div class="tmpl_header">${content.tmpl_header}</div>
+                                            <div class="item_high_div">
+                                                <div class="tmpl_high">
+                                                    <div>${highlight.title}</div>
+                                                    <div class="tmpl_subtit">${highlight.description}</div>
+                                                </div>
+                                                <c:if test="${fn:contains(content.item_highlight_json,'\"imageUrl\"')}">
+                                                    <div class="right_img_box">
+                                                        <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                    </div>
+                                                </c:if>
+                                            <div>
+                                        </c:if>
+                                        <c:if test="${fn:contains(content.item_json,'\"list\"') ||fn:contains(content.item_json,'\"summary\"')}">
+                                        <div class="item_div">
+                                            <c:if test="${fn:contains(content.item_json,'\"list\"')}">
+                                                <div class="item_table">
+                                                    <c:forEach var="item" items="${content.item_list_json.list}">
+                                                        <div>
+                                                            <span class="th">${item.title}</span>
+                                                            <span class="td">${item.description}</span>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${fn:contains(content.item_json,'\"summary\"')}">
+                                                 <div class="item_summary">
+                                                      <span class="th">${content.item_list_json.summary.title}</span>
+                                                      <span class="td">${content.item_list_json.summary.description}</span>
+                                                 </div>
+                                            </c:if>
+                                        </div>
                                         </c:if>
                                     </c:if>
-                                     <div class="at_msg_cont">
-                                        <%--  강조유형 강조표기형 --%>
-                                        <c:if test="${content.tmpl_empsize_tp eq 'TEXT'}">
-                                            <div class="tmpl_subtit">${content.tmpl_subtit}</div>
-                                            <div class="tmpl_tit">${content.tmpl_tit}</div>
-
-                                        </c:if>
-                                        <%--  강조유형 아이템리스트형 --%>
-                                        <c:if test="${content.tmpl_empsize_tp eq 'ITEM_LIST'}">
-                                            <c:if test="${!empty content.item_highlight_json}">
-                                                <c:set var="highlight" value="${content.highlight_json}"/>
-                                                <div class="tmpl_header">${content.tmpl_header}</div>
-                                                <div class="item_high_div">
-                                                        <div class="tmpl_high">
-                                                            <div>${highlight.title}</div>
-                                                            <div class="tmpl_subtit">${highlight.description}</div>
-                                                        </div>
-                                                        <c:if test="${fn:contains(content.item_highlight_json,'\"imageUrl\"')}">
-                                                            <div class="right_img_box">
-                                                                <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
-                                                            </div>
-                                                        </c:if>
-                                                       </div>
-                                            </c:if>
-                                            <c:if test="${fn:contains(content.item_json,'\"list\"') ||fn:contains(content.item_json,'\"summary\"')}">
-                                            <div class="item_div">
-                                                <c:if test="${fn:contains(content.item_json,'\"list\"')}">
-                                                    <div class="item_table">
-                                                        <c:forEach var="item" items="${content.item_list_json.list}">
-                                                            <div>
-                                                                <span class="th">${item.title}</span>
-                                                                <span class="td">${item.description}</span>
-                                                            </div>
-                                                        </c:forEach>
-                                                        </div>
-                                                </c:if>
-                                                <c:if test="${fn:contains(content.item_json,'\"summary\"')}">
-                                                     <div class="item_summary">
-                                                          <span class="th">${content.item_list_json.summary.title}</span>
-                                                          <span class="td">${content.item_list_json.summary.description}</span>
-                                                     </div>
-                                                </c:if>
-                                            </div>
-                                            </c:if>
-                                        </c:if>
-                                         <div class="cont">${content.cont_body}</div>
+                                    <div class="cont">
+                                        ${cutil:replaceBr(content.cont_body)}
+                                    </div>
                                         <%--     부가 정보--%>
-                                            <c:if test="${content.tmpl_msg_tp eq 'EX'}">
-                                                <div class="etx">${content.tmpl_ext}</div>
-                                            </c:if>
-                                             <c:if test="${content.tmpl_msg_tp eq 'AD'}">
-                                                 <div class="ad">${content.tmpl_ad}</div>
-                                             </c:if>
-
-                                     </div>
-                                     <c:if test="${!empty content.button_json}">
-                                         <c:forEach var="btn" items="${content.btn_json}">
-                                             <c:if test="${btn.linkType eq 'AC'}">
-                                                 <a class="sms_btn kakao_yellow">${btn.name}</a>
-                                             </c:if>
-                                             <c:if test="${btn.linkType ne 'AC'}">
-                                                 <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
-                                         </c:forEach>
-                                     </c:if>
-                                </div>
+                                    <c:if test="${content.tmpl_msg_tp eq 'EX'}">
+                                        <div class="etx">${content.tmpl_ext}</div>
+                                    </c:if>
+                                    <c:if test="${content.tmpl_msg_tp eq 'AD'}">
+                                         <div class="ad">${content.tmpl_ad}</div>
+                                    </c:if>
+                                 </div>
+                                 <c:if test="${!empty content.button_json}">
+                                     <c:forEach var="btn" items="${content.btn_json}">
+                                         <c:if test="${btn.linkType eq 'AC'}">
+                                             <a class="sms_btn kakao_yellow">${btn.name}</a>
+                                         </c:if>
+                                         <c:if test="${btn.linkType ne 'AC'}">
+                                             <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
+                                     </c:forEach>
+                                 </c:if>
+                            </div>
                         </div>
                     </div>
                 </c:if>
@@ -392,7 +390,7 @@
         <input type="hidden" id="nowPageNo" name="nowPageNo" value="${pageNo}"/>
     </c:when>
     <c:otherwise>
-        <div class="none list_ht bottom-border">
+        <div class="bottom-border" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 300px;">
             조회된 결과가 없습니다.
         </div>
     </c:otherwise>

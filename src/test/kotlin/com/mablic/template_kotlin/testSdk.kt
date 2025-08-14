@@ -48,7 +48,7 @@ object testSdk {
 
         val keyMap = mapOf(
             "link" to "aaa",
-            "url" to "bbb",
+            "url1" to "bbb",
             "name" to "홍길동",
             "channel" to "카카오채널",
             "sec" to "보안"
@@ -112,6 +112,7 @@ object testSdk {
     }
 
     fun replacePlainTemplate(input: String, keyMap: Map<String, String>): String {
+        val logger = LoggerFactory.getLogger("this")
         val pattern = Regex("#\\{([^}]+)}")
         return pattern.replace(input) { match ->
             val key = match.groupValues[1]

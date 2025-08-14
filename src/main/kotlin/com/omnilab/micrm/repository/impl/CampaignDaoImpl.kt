@@ -112,9 +112,9 @@ class CampaignDaoImpl : CampaignDao {
 
             sqlSession.select("sel_programSendHst", sendHstDto, object : ResultHandler<Any> {
                 override fun handleResult(resultContext: ResultContext<*>) {
-                    val dto = resultContext.resultObject as Tblmicp_send_hstDto
-                    if (!dto.send_to.isNullOrEmpty()) {
-                        insLst.add(dto)
+                    val dto1 = resultContext.resultObject as Tblmicp_send_hstDto
+                    if (!dto1.send_to.isNullOrEmpty()) {
+                        insLst.add(dto1)
                     }
                     if (insLst.isNotEmpty() && (insLst.size % 1000) == 0) {
                         sqlSession.insert("ins_programSendHst", insLst)

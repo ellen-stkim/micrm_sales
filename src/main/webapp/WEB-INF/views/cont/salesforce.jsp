@@ -38,7 +38,7 @@
         <!-- row 영역 끝 -->
         <!-- section 영역 시작 -->
         <div class="section">
-            <form:form id="form" action="#" method="post">
+            <form:form id="form" action="#" method="post" onsubmit="return false;">
             <input type="hidden" id="seq" name="mst_seq" value=""/>
             <input type="hidden" id="usr_grp_cd" name="usr_grp_cd"/>
             <input type="hidden" id="cont_grp_cd" name="cont_grp_cd"/>
@@ -196,20 +196,20 @@
                                 <div class="row body">
                                     <div class="th">타입</div>
                                     <div class="column_2">
-                                        <label class="type_check"><input type="radio" name="kko_format_type"
-                                                                         class="kkoType"
-                                                                         value="kko_ft"
-                                                                         checked/><span>친구톡</span></label>
-                                        <label class="type_check"><input type="radio" name="kko_format_type"
-                                                                         class="kkoType"
-                                                                         value="kko_at"/><span>알림톡</span></label>
+                                        <label class="type_check">
+                                            <input type="radio" name="kko_format_type" class="kkoType" value="kko_ft" checked/>
+                                            <span>친구톡</span>
+                                        </label>
+                                        <label class="type_check">
+                                            <input type="radio" name="kko_format_type" class="kkoType" value="kko_at"/>
+                                            <span>알림톡</span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="row body">
                                     <div class="th">발신 프로필</div>
                                     <div class="column_1">
-                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder ="발신 프로필을 선택해주세요"
-                                               readonly/>
+                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder ="발신 프로필을 선택해주세요" readonly/>
                                         <input type="hidden" name="send_key" id="send_key"/>
                                         <input type="hidden" name="send_to_list" id="kakao_send_to_num" />
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
@@ -226,7 +226,6 @@
                                                 <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly/>
                                                 <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" id="kakao_img_cd" name="kko_img_cd" value="">
-                                                <!--임시 히든값 -->
                                                 <input type="hidden" id="kko_view_img_url" name="kko_view_img_url" maxlength="" value="">
                                                 <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
@@ -234,9 +233,7 @@
                                         <div class="row">
                                             <div class="th top-border">이미지 링크 주소</div>
                                             <div class="td top-border">
-                                                <input type="text" class="txt_input en_font width kakaoImgLink"
-                                                       name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                             </div>
                                         </div>
                                         <div class="row flex_row">
@@ -252,26 +249,26 @@
                                                 <div class="th bottom-border">개인화 변수</div>
                                                 <div class="td bottom-border">
                                                     <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                    <div id="kakaoValue"
-                                                         style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
+                                                    <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row" style="height:150px;">
                                             <div class="th bottom-border">내용</div>
-                                            <div class="td bottom-border">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                        onkeyup="onchangePrevKkoTxt(this)"></textarea></div>
+                                            <div class="td bottom-border">
+                                                <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevKkoTxt(this)"></textarea>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">
                                                 <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
-                                                        <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
-                                                        </c:if>
-                                                        <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
-                                                            placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
-                                                        </c:if>
+                                                    <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                        value="${cutil:numberToPhone(rejectText[0].list_val)}"
+                                                    </c:if>
+                                                    <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                        placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                    </c:if>
                                                 />
                                                 <div style="display: flex; width: 110px">
                                                     <span class="btn_sm_line btn_inline" onclick="addRejectText('kko_ft')">사용</span>
@@ -292,18 +289,29 @@
                                         </div>
                                     </div>
                                     <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
-                                        <div class="row flex_box">
-                                            <div class="th">버튼명</div>
+                                        <div class="row flex_box double">
+                                            <div class="th" style="line-height: 72px;">버튼명</div>
                                             <div class="td first-td right-border">
                                                 <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                             </div>
-                                            <div class="th">버튼 링크 주소</div>
-                                            <div class="td flex_box">
-                                                <input type="text" name="kkoBtnUrlLst"
-                                                       class="txt_input en_font kakao_btn_link"
-                                                       placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                <div class="arrow arrow-down kakaoLinkArrow"></div>
-                                                <div class="arrow arrow-up kakaoLinkArrow"></div>
+                                            <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                            <div class="td flex_box" style="flex-direction: column;">
+                                                <div class="row flex_box" style="width: 100%;">
+                                                    <div class="th">Pc 링크</div>
+                                                    <div class="td flex_box">
+                                                        <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row flex_box" style="width: 100%;">
+                                                    <div class="th">Mobile 링크</div>
+                                                    <div class="td flex_box">
+                                                        <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
                                                 <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
                                             </div>
                                         </div>
@@ -323,9 +331,11 @@
                                                 <input type="text" class="txt_input en_font at_tmpl_data" name="tmpl_nm" id="tmplNm" placeholder="템플릿을 선택해 주세요." readonly/>
                                                 <input type="text" name="key_id" id="templateCode" class="at_tmpl_data" readonly hidden/>
                                                 <span class="btn_sm_line" data="kakaoImage" onclick="tmplListPopUp('1')">선택</span>
+                                                <%--
                                                 <!--임시 히든값 -->
                                                 <input type="hidden" name="kko_img_cd" value="">
                                                 <input type="hidden" name="kko_view_img_url" value="">
+                                                --%>
                                                 <input type="hidden" name="kko_btn_obj" id="kko_btn_obj" value="">
                                                 <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
@@ -370,7 +380,8 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- kakao end-->
+                </div>
+                <!-- kakao end-->
                 <div class="tab_contents">
                     <div class="sms_form cover" id="sms">
                         <input type="hidden" name="list_seq" value=""/>
@@ -381,12 +392,7 @@
                                     <div class="th">문자 제목</div>
                                     <div class="column_1">
                                         <div class="column_5">
-                                                <%--<input type="text" class="title type1 smsTitle" name="cont_sub"
-                                                       onkeyup="smsCreate.titleCount(this);" placeholder="문자 제목을 입력하세요." />--%>
-                                            <input type="text" class="title type1 smsTitle" name="cont_sub_list" id="sms_title"
-                                                   onkeyup="onchangePrevSmsTitle(this)"
-                                                   value="(광고)"
-                                                   placeholder="문자 제목을 입력하세요."/>
+                                            <input type="text" class="title type1 smsTitle" name="cont_sub_list" id="sms_title" onkeyup="onchangePrevSmsTitle(this)" value="(광고)" placeholder="문자 제목을 입력하세요."/>
                                             <span class="title_byte en_font">(최대 40byte)</span>
                                         </div>
                                         <!-- select 영역 시작 -->
@@ -401,8 +407,7 @@
                                 <div class="row body">
                                     <div class="th">발신 번호</div>
                                     <div class="column_1">
-                                        <input type="text" class="sms_number smsNumber" id="sms_send_to"
-                                               placeholder="발신 번호를 선택 해주세요." readonly/>
+                                        <input type="text" class="sms_number smsNumber" id="sms_send_to" placeholder="발신 번호를 선택 해주세요." readonly/>
                                         <input type="hidden" name="send_to_list" id="sms_send_to_num" value=""/>
                                         <span class="btn_sm_line" onclick="mobileSenderPopup('1','sms')">변경</span>
                                     </div>
@@ -412,16 +417,18 @@
                                         <div class="row">
                                             <div class="th">문자 종류</div>
                                             <div class="td">
-                                                <label class="custom_radio">LMS<input class="smsType" name="sms_msg_tp"
-                                                                                      type="radio"
-                                                                                      value="LMS"
-                                                                                      checked/><span></span></label>
-                                                <label class="custom_radio">MMS<input class="smsType" name="sms_msg_tp"
-                                                                                      type="radio"
-                                                                                      value="MMS"/><span></span></label>
-                                                <label class="custom_radio">SMS<input class="smsType" name="sms_msg_tp"
-                                                                                      type="radio"
-                                                                                      value="SMS"/><span></span></label>
+                                                <label class="custom_radio">LMS
+                                                    <input class="smsType" name="sms_msg_tp" type="radio" value="LMS" checked/>
+                                                    <span></span>
+                                                </label>
+                                                <label class="custom_radio">MMS
+                                                    <input class="smsType" name="sms_msg_tp" type="radio" value="MMS"/>
+                                                    <span></span>
+                                                </label>
+                                                <label class="custom_radio">SMS
+                                                    <input class="smsType" name="sms_msg_tp" type="radio" value="SMS"/>
+                                                    <span></span>
+                                                </label>
                                             </div>
                                             <input type="hidden" name="mms_imgurl"/>
                                         </div>
@@ -432,11 +439,9 @@
                                                     <!--<img src="../../image/btn_delete1.png" alt="삭제">-->
                                                     <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                 </div>
-                                                <input type="text" class="txt_input" name="" id="smsImage"
-                                                       placeholder="이미지를 선택해 주세요." readonly/>
+                                                <input type="text" class="txt_input" name="" id="smsImage" placeholder="이미지를 선택해 주세요." readonly/>
                                                 <input type="hidden" id="mds_img_cd" name="mds_img_cd" value=""/>
-                                                <span class="btn_sm_line" data="smsImage"
-                                                      onclick="imageListPopUp('1', 'smsImage');">선택</span>
+                                                <span class="btn_sm_line" data="smsImage" onclick="imageListPopUp('1', 'smsImage');">선택</span>
                                             </div>
                                         </div>
                                         <div class="row flex_row input-img">
@@ -451,8 +456,7 @@
                                             <div class="th bottom-border">개인화 변수</div>
                                             <div class="td bottom-border">
                                                 <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                <div id="smsContsVal"
-                                                     style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
+                                                <div id="smsContsVal" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
                                             </div>
                                         </div>
                                         <div class="row"  style="height:150px;">
@@ -465,12 +469,12 @@
                                             <div class="th">수신거부 문구</div>
                                             <div class="td">
                                                 <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
-                                                        <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
-                                                        </c:if>
-                                                        <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
-                                                            placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
-                                                        </c:if>
+                                                    <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                        value="${cutil:numberToPhone(rejectText[0].list_val)}"
+                                                    </c:if>
+                                                    <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                        placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                    </c:if>
                                                 />
                                                 <div style="display: flex; width: 110px">
                                                     <span class="btn_sm_line btn_inline" onclick="addRejectText('sms')">사용</span>
@@ -568,15 +572,16 @@
                                     <div class="row body">
                                         <div class="th">카드 양식</div>
                                         <div class="column_1">
-                                            <label class="custom_radio en_font">SMS<input name="rcs_msg_tp"
-                                                                                          class="lowType"
-                                                                                          type="radio" value="sms"
-                                                                                          checked
-                                            /><span></span></label>
-                                            <label class="custom_radio en_font">LMS<input name="rcs_msg_tp"
-                                                                                          class="lowType"
-                                                                                          type="radio" value="lms"
-                                            /><span></span></label>
+                                            <label class="custom_radio en_font">
+                                                SMS
+                                                <input name="rcs_msg_tp" class="lowType" type="radio" value="sms" checked />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                LMS
+                                                <input name="rcs_msg_tp" class="lowType" type="radio" value="lms" />
+                                                <span></span>
+                                            </label>
                                         </div>
                                     </div>
                                     <span id="js-title-area">
@@ -584,11 +589,9 @@
                                     <div class="row body">
                                         <div class="th">발신 번호</div>
                                         <div class="column_1" id="send_text_column">
-                                            <input type="text" class="sms_number smsNumber" id="send_text_rcs"
-                                                   placeholder="발신 번호를 선택 해주세요." readonly/>
+                                            <input type="text" class="sms_number smsNumber" id="send_text_rcs" placeholder="발신 번호를 선택 해주세요." readonly/>
                                             <input type="hidden" name="send_to_list" id="text_send_num" value=""/>
-                                            <span class="btn_sm_line"
-                                                  onclick="mobileSenderPopup('1','textrcs')">변경</span>
+                                            <span class="btn_sm_line" onclick="mobileSenderPopup('1','textrcs')">변경</span>
                                         </div>
                                     </div>
                                     <div class="input_area left">
@@ -608,9 +611,7 @@
                                             <div class="row rcs_textarea">
                                                 <div class="th top-border">내용</div>
                                                 <div class="td top-border">
-                                                    <textarea class="rcsContents" name="rcs_body" cols="30" rows="10"
-                                                              placeholder="내용을 입력해주세요."
-                                                              onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
+                                                    <textarea class="rcsContents" name="rcs_body" cols="30" rows="10" placeholder="내용을 입력해주세요." onkeyup="rcsCreate.rcsContents(this, 0);"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -672,31 +673,31 @@
                                     <div class="rcs_inner text">
                                         <div class="rcs_head">[WEB발신]광고</div>
                                         <span id="js-txt-replace">
-                                                    <div class="text_type">
-                                                        <div class="scroll_txt">
-                                                            <p class="rcs_area" id="textArea0">내용 영역</p>
-                                                        </div>
-                                                        <div class="rcs_btn_wrap">
-                                                        </div>
-                                                    </div>
-                                                    <div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>
-                                                    <div class="text_count">
-                                                        <span class="num en_font"><span
-                                                                id="textByte0">0</span>/100</span>
-                                                        <p>※ 본문내용 : <span class="en_font">100</span>글자 이내</p>
-                                                    </div>
-                                                </span>
+                                            <div class="text_type">
+                                                <div class="scroll_txt">
+                                                    <p class="rcs_area" id="textArea0">내용 영역</p>
+                                                </div>
+                                                <div class="rcs_btn_wrap">
+                                                </div>
+                                            </div>
+                                            <div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>
+                                            <div class="text_count">
+                                                <span class="num en_font">
+                                                    <span id="textByte0">0</span>/100</span>
+                                                <p>※ 본문내용 : <span class="en_font">100</span>글자 이내</p>
+                                            </div>
+                                        </span>
                                     </div>
                                 </div>
                                 <!-- end -->
                             </div>
                         </div>
                         <!-- hidden 값 추가 --> <!-- 기본 Default시 추가하고 scrpit 클릭시 비활성화 -->
-                            <%--<input type ="hidden" name ="cont_sub" value ="" id ="rcs_cont_sub">--%>
+                        <%--<input type ="hidden" name ="cont_sub" value ="" id ="rcs_cont_sub">--%>
                         <input type="hidden" name="cont_sub_list" value="" id="rcs_cont_sub">
-                    </div><!-- RCS end-->
+                    </div>
+                    <!-- RCS end-->
                 </div>
-                    <%--                    </div>--%>
                 </form:form>
                 <div class="btn_row bottom-border" id="js-btn-area">
                     <input type="button" class="btn_save btn_bg btn_center btn_size1" id="previewBtn" value="저장"/>
@@ -730,8 +731,8 @@
                 <div class="form_search">
                     <div class="radio_type">
                         <label class="block_radio" for="month1">
-                            <input type="radio" name="Cperiod" value="1" id="month1" onclick="checkClicked()" checked/>
-                            <span>1개월</span>
+                            <input type="radio" name="Cperiod" value="12000" id="month1" onclick="checkClicked()" checked/>
+                            <span>전체</span>
                         </label>
                         <label class="block_radio" for="month3">
                             <input type="radio" name="Cperiod" value="3" id="month3" onclick="checkClicked()" />
@@ -989,24 +990,41 @@
             let btnState = $(this).val();
             let totalLen = $("#addKakaoLink").children().length;
             let thisIdx = $(this).closest(".row.flex_box").index();
-            let link = $('.kakao_btn_link').eq(thisIdx);
             let name = $('.kakao_btn_name').eq(thisIdx);
-            let btnLink = link.val();
+            let linkPc = $('.kakao_btn_linkPc').eq(thisIdx);
+            let linkMo = $('.kakao_btn_linkMo').eq(thisIdx);
+            let btnLinkPc = linkPc.val();
+            let btnLinkMo = linkMo.val();
             let btnName = name.val();
+            let rmLst = Array();
 
             if (btnState == '생성') {
                 if (btnName != '') {
-                    if (btnLink != '') {
-                        if (btnLink.substring(0, 4) == 'http') {
+                    if (btnLinkPc != '' && btnLinkMo != '') {
+                        if (btnLinkPc.substring(0, 4) == 'http' && btnLinkMo.substring(0, 4) == 'http') {
                             $('#kakao_ft_viewer').find('.inner .round_box').children('a').remove();
                             for(let i = 0; i < totalLen; i++){
-                                let setLink = $('.kakao_btn_link').eq(i).val();
-                                let setName = $('.kakao_btn_name').eq(i).val();
-                                $('#kakao_ft_viewer').find('.inner .round_box').append('<a href="' + setLink + '" class="kakao_link" target="_blank" rel="noopener">' + setName + '</a>');
+                                let lnkNm = $('.kakao_btn_name').eq(i);
+                                let lnkPc = $('.kakao_btn_linkPc').eq(i);
+                                let lnkMo = $('.kakao_btn_linkMo').eq(i);
+                                if(lnkNm.val() != ''
+                                    && lnkPc.val() != ''
+                                    && lnkMo.val() != ''
+                                    && (lnkPc.val().substring(0, 4) == 'http' && lnkMo.val().substring(0, 4) == 'http')
+                                ){
+                                    $('#kakao_ft_viewer').find('.inner .round_box').append('<a href="' + lnkMo.val() + '" class="kakao_link" target="_blank" rel="noopener">' + lnkNm.val() + '</a>');
+                                    lnkNm.attr('readonly', true);
+                                    lnkPc.attr('readonly', true);
+                                    lnkMo.attr('readonly', true);
+                                    $('.kakaoLinkBtn').eq(i).val('삭제');
+                                }else{
+                                    rmLst.push($("#addKakaoLink").children().eq(i))
+                                }
                             }
-                            name.attr('readonly', true);
-                            link.attr('readonly', true);
-                            $(this).val('삭제');
+
+                            for(const val of rmLst){
+                                val.remove();
+                            }
                         } else {
                             popup.popAlert('정확한 링크 URL을 입력해주세요.');
                             return false;
@@ -1023,10 +1041,12 @@
                 $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx).remove();
                 if($("#addKakaoLink").children().length == 1){
                     $(this).val('생성');
-                    link.val('');
+                    linkPc.val('');
+                    linkMo.val('');
                     name.val('');
                     name.attr('readonly', false);
-                    link.attr('readonly', false);
+                    linkPc.attr('readonly', false);
+                    linkMo.attr('readonly', false);
                 } else {
                     $("#addKakaoLink").children().eq(thisIdx).remove();
                 }
@@ -1055,22 +1075,32 @@
         $(document).on('click', '.addKakaoLinkRow', function(){
             let totalLen = $("#addKakaoLink").children().length;
             if(totalLen < 5){
-                let layout = '<div class="row flex_box">'+
-                    '<div class="th">버튼명</div>'+
-                    '<div class="td first-td right-border">'+
-                    '<input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" ' +
-                    'placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'+"'kakao'"+')"/>'+
-                    '</div>'+
-                    '<div class="th">버튼 링크 주소</div>'+
-                    '<div class="td flex_box">'+
-                    '<input type="text" name="kkoBtnUrlLst"'+
-                    'class="txt_input en_font kakao_btn_link"'+
-                    'placeholder="URL 입력 (http:// 또는 https://필수입력)"/>'+
-                    '<div class="arrow arrow-down kakaoLinkArrow"></div>'+
-                    '<div class="arrow arrow-up kakaoLinkArrow"></div>'+
-                    '<input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>'+
-                    '</div>'+
-                    '</div>';
+                let layout = '<div class="row flex_box double">'
+                    + '<div class="th" style="line-height: 72px;">버튼명</div>'
+                    + '<div class="td first-td right-border">'
+                    + '<input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,\'kakao\')"/>'
+                    + '</div>'
+                    + '<div class="th" style="line-height: 72px;">버튼 링크 주소</div>'
+                    + '<div class="td flex_box" style="flex-direction: column;">'
+                    + '<div class="row flex_box" style="width: 100%;">'
+                    + '<div class="th">Pc 링크</div>'
+                    + '<div class="td flex_box">'
+                    + '<input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="row flex_box" style="width: 100%;">'
+                    + '<div class="th">Mobile 링크</div>'
+                    + '<div class="td flex_box">'
+                    + '<input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="td flex_box" style="width: 273px; align-items: center;">'
+                    + '<div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>'
+                    + '<div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>'
+                    + '<input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>'
+                    + '</div>'
+                    + '</div>';
                 $("#addKakaoLink").append(layout);
             }
         });
@@ -1624,7 +1654,6 @@
     // 정보 조회
     function mobileInfo(seq) {
         const res = function (response) {
-
             const $doc = new DOMParser().parseFromString(response, "text/html");
             if($(".nodataCheck", $doc).html() == "NULL"){
                 alert("사용할 수 없는 컨텐츠입니다. 삭제 후 다시 생성해주세요.");
@@ -2295,7 +2324,7 @@
     }
 
 
-    // 템플릿 명 유효성 검사 //salesforce에서는 이름 중복확인 안함
+    // 템플릿 명 유효성 검사
     function isCheckTemplateName() {
         let cont_nm = $("input[name='cont_nm']").val();
         let rcsType = $("input[name='rcs_format_type']:checked").val();
@@ -2306,24 +2335,6 @@
             buttonHiddenAdd()
         }
         preview();
-
-        /*const res = function (response) {
-            if (response.status == "true") {
-                // buttonHiddenAdd()
-                if (rcsType === 'slide') {
-                    btnHiddenRcsSlide()
-                } else {
-                    buttonHiddenAdd()
-                }
-                preview();
-                //$("#form").submit();
-            } else {
-                // 중복된 명칭 존재
-                popup.popAlert(response.message)
-            }
-        }
-        let param = {cont_nm: cont_nm, cont_grp_cd: $('#cont_grp_cd').val(), seq: mstSeq}
-        com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')*/
     }
 
     // 버튼 타입 Hidden 값 추가
@@ -3722,6 +3733,7 @@
         } else {
             selectedExpireMonth = clickNumber;
         }
+        getCouponListAtSales('1');
     }
 
     function couponCancel() {

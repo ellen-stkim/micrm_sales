@@ -310,6 +310,7 @@ class ContentController  {
     @PostMapping("/mobileList.ajax")
     fun selectMobileContent(@ModelAttribute dto: Contents_searchDto) : ModelAndView {
         dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        //val view = ModelAndView("cont/mobile/ajax/mdmListAjax")
         val view = ModelAndView("cont/mobile/ajax/mdmListAjax")
         val paramMap = mobileContentService.selectContentView(dto)
 

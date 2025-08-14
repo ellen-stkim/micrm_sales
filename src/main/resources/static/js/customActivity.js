@@ -13,7 +13,6 @@ define(["postmonger"], function (Postmonger) {
 
 	$(window).ready(function (){
 		_connection = connection;
-		// 최초 호출 시 initActivity를 호출하고 payload 전달
 		connection.trigger('ready');
 		connection.trigger('requestTokens');
 		connection.trigger('requestEndpoints');
@@ -21,7 +20,6 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
 
-		// refresh
 		connection.trigger('ready');
 
 		/** 에러페이지 리턴이 필요하면
@@ -50,7 +48,6 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("requestedTokens", function (tokens){
-		//console.log("tokens == " + JSON.stringify(tokens));
 		if(tokens) {
 			fuel2token = tokens.fuel2token;
 			token = tokens.token;
@@ -68,7 +65,6 @@ define(["postmonger"], function (Postmonger) {
 	});
 
 	connection.on("requestedEndpoints", function(endpoints){
-		//console.log("endpoints == " + JSON.stringify(endpoints));
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;
 			cnt++;

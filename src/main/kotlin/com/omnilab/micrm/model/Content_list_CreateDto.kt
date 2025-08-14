@@ -160,7 +160,33 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
             }
             field = value
         }
-    var kkoBtnUrlLst: MutableList<String>? = null
+    var kkoBtnUrlLstPc: MutableList<String>? = null
+        set(value) {
+            if(value != null){
+                for(i: Int in 0 until value.size){
+                    when (i) {
+                        0 -> {
+                            kko_btn_urlPc = value[i]
+                        }
+                        1 -> {
+                            kko_btn_urlPc2 = value[i]
+                        }
+                        2 -> {
+                            kko_btn_urlPc3 = value[i]
+                        }
+                        3 -> {
+                            kko_btn_urlPc4 = value[i]
+                        }
+                        4 -> {
+                            kko_btn_urlPc5 = value[i]
+                        }
+                    }
+                }
+            }
+            field = value
+        }
+
+    var kkoBtnUrlLstMo: MutableList<String>? = null
         set(value) {
             if(value != null){
                 for(i: Int in 0 until value.size){
@@ -186,10 +212,8 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
             field = value
         }
 
-
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }
-
 
 }

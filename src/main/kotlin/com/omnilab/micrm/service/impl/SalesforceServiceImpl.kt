@@ -329,7 +329,7 @@ class SalesforceServiceImpl : SalesforceService {
         val userInfo = UsefulUtils.sessionUser()
         val contGrpCd = dto.cont_grp_cd
 
-        val isByte = isCheckByte(dto);
+        val isByte = isCheckByte(dto)
 
         if (!isByte) {
             statusMap["status"] = false
@@ -458,14 +458,19 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.kko_img_url = dto.kko_img_url
                         tblmiContLstdto.kko_btn_nm = dto.kko_btn_nm
                         tblmiContLstdto.kko_btn_url = dto.kko_btn_url
+                        tblmiContLstdto.kko_btn_urlPc = dto.kko_btn_urlPc
                         tblmiContLstdto.kko_btn_nm2 = dto.kko_btn_nm2
                         tblmiContLstdto.kko_btn_url2 = dto.kko_btn_url2
+                        tblmiContLstdto.kko_btn_urlPc2 = dto.kko_btn_urlPc2
                         tblmiContLstdto.kko_btn_nm3 = dto.kko_btn_nm3
                         tblmiContLstdto.kko_btn_url3 = dto.kko_btn_url3
+                        tblmiContLstdto.kko_btn_urlPc3 = dto.kko_btn_urlPc3
                         tblmiContLstdto.kko_btn_nm4 = dto.kko_btn_nm4
                         tblmiContLstdto.kko_btn_url4 = dto.kko_btn_url4
+                        tblmiContLstdto.kko_btn_urlPc4 = dto.kko_btn_urlPc4
                         tblmiContLstdto.kko_btn_nm5 = dto.kko_btn_nm5
                         tblmiContLstdto.kko_btn_url5 = dto.kko_btn_url5
+                        tblmiContLstdto.kko_btn_urlPc5 = dto.kko_btn_urlPc5
                     }
                 }
 
@@ -578,42 +583,6 @@ class SalesforceServiceImpl : SalesforceService {
                             }
                             tblmiContLstdto.cont_body = dto.rcs_body
                         }
-                        // 2021-05-03 가로형 삭제로 인한 주석 처리
-                        /*else if (rcsFormatType.equals("horizontal")) {
-                            if (rcsMsgType.equals("left")) {
-                                tblmiContLstdto.msg_tp = "DMCH209"
-
-                                val cdDto = Tblmi_comm_cdDto()
-                                cdDto.grp_id = "RCS_W_LEFT_MSG_ID"
-                                cdDto.cd_id = userInfo.usr_grp_cd
-
-                                val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                                if (codeDto != null) {
-                                    tblmiContLstdto.key_id = codeDto.cd_val
-                                }
-
-                            } else if (rcsMsgType.equals("right")) {
-                                tblmiContLstdto.msg_tp = "DMCH210"
-
-                                val cdDto = Tblmi_comm_cdDto()
-                                cdDto.grp_id = "RCS_W_RIGHT_MSG_ID"
-                                cdDto.cd_id = userInfo.usr_grp_cd
-
-                                val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                                if (codeDto != null) {
-                                    tblmiContLstdto.key_id = codeDto.cd_val
-                                }
-
-                            }
-                            val jsonBody = JSONObject()
-
-                            jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                            jsonBody["description"] = contentListCreatedto.rcs_body
-
-                            tblmiContLstdto.cont_body = jsonBody.toJSONString().replace("\\r\\n","\\\\r\\\\n")
-                            tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
-
-                        }*/
                         "vertical" -> {
                             // RCS 세로형의 경우
                             if (rcsMsgType == "tall") {
@@ -702,24 +671,28 @@ class SalesforceServiceImpl : SalesforceService {
                     // 카카오 버튼 링크 저장
                     if (!CommonUtils.isEmptyObject(dto.kko_btn_url)) {
                         insertContentUrl("btn", dto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
+                        insertContentUrl("btn", dto.kko_btn_urlPc!!, "kkoBtnPc001", lastSeq)
                     }
                     if (!CommonUtils.isEmptyObject(dto.kko_btn_url2)) {
                         insertContentUrl("btn", dto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
+                        insertContentUrl("btn", dto.kko_btn_urlPc2!!, "kkoBtnPc002", lastSeq)
                     }
                     if (!CommonUtils.isEmptyObject(dto.kko_btn_url3)) {
                         insertContentUrl("btn", dto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
+                        insertContentUrl("btn", dto.kko_btn_urlPc3!!, "kkoBtnPc003", lastSeq)
                     }
                     if (!CommonUtils.isEmptyObject(dto.kko_btn_url4)) {
                         insertContentUrl("btn", dto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
+                        insertContentUrl("btn", dto.kko_btn_urlPc4!!, "kkoBtnPc004", lastSeq)
                     }
                     if (!CommonUtils.isEmptyObject(dto.kko_btn_url5)) {
                         insertContentUrl("btn", dto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
+                        insertContentUrl("btn", dto.kko_btn_urlPc5!!, "kkoBtnPc005", lastSeq)
                     }
 
                     // 카카오 본문 a 링크 저장
                     val urlKakaoBody = dto.kakao_body
                     if (urlKakaoBody?.contains("{{") == true) {
-
                         val regex = "\\{\\{[^{]+}}"
                         val p = Pattern.compile(regex)
                         val matcher = p.matcher(urlKakaoBody)

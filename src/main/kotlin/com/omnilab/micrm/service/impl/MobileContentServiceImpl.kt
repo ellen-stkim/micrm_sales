@@ -75,7 +75,6 @@ class MobileContentServiceImpl : ContentService {
         val tblmiContMstDto = Tblmi_cont_mstDto()
 
         try {
-
             tblmiContMstDto.ch_tp = "CH03"
             tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
             tblmiContMstDto.reg_id = userInfo.usr_id
@@ -126,8 +125,7 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
 
-                    if ("kko_at".equals(contentListCreatedto.kko_format_type)) {  // 알림톡
-
+                    if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
                         // 템플릿 조회
                         val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id,contentListCreatedto.tmpl_nm,"Y")
                         atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
@@ -135,7 +133,7 @@ class MobileContentServiceImpl : ContentService {
 
                         val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
-                            tblmiContLstdto.key_id = resultDto!!.tmpl_cd
+                            tblmiContLstdto.key_id = resultDto.tmpl_cd
 
                             val g = GsonBuilder().create()
                             val obj = JsonObject()
@@ -155,7 +153,6 @@ class MobileContentServiceImpl : ContentService {
 
                             tblmiContLstdto.cont_body = resultDto.tmpl_cont
                         }
-
                     } else {
                         // key_id 로 발신키 유효한지 확인
                         val cdDto = Tblmi_comm_cdDto()
@@ -166,13 +163,11 @@ class MobileContentServiceImpl : ContentService {
                         kkoDto.list_val = contentListCreatedto.key_id
                         val kkoSenderLst = contentDao.selectSenderList(kkoDto)
 
-                        if (kkoSenderLst.size > 0) {
+                        if (kkoSenderLst.isNotEmpty()) {
                             tblmiContLstdto.key_id = kkoSenderLst[0].list_val
                         }
-
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
                         tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
-
 
                         // 카카오 이미지 처리
                         if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
@@ -229,12 +224,12 @@ class MobileContentServiceImpl : ContentService {
                 if (i == 2) {
 
                     // 이미지 저장
-                    tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1?.toInt()
-                    tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2?.toInt()
-                    tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3?.toInt()
-                    tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4?.toInt()
-                    tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5?.toInt()
-                    tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6?.toInt()
+                    tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1
+                    tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2
+                    tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3
+                    tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4
+                    tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5
+                    tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6
 
                     // USE_YN 처리
                     if (formatList!!.contains("rcs")) {
@@ -248,11 +243,10 @@ class MobileContentServiceImpl : ContentService {
 
                     // rcs 광고 , 유형 선택
                     val rcsOption = contentListCreatedto.rcs_option!!.trim()
-
-                    if (rcsOption.equals("ad")) {
+                    if (rcsOption == "ad") {
                         // 광고 처리
                         tblmiContLstdto.send_tp = "SENDTP01"
-                    } else if (rcsOption.equals("guide")) {
+                    } else if (rcsOption == "guide") {
                         // 안내 처리
                         tblmiContLstdto.send_tp = "SENDTP02"
                     }
@@ -260,12 +254,11 @@ class MobileContentServiceImpl : ContentService {
                     val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
                     val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
 
-                    if (rcsFormatType.equals("text")) {
+                    if (rcsFormatType == "text") {
                         // RCS 텍스트 형의 경우
-                        if (rcsMsgType.equals("sms")) {
+                        if (rcsMsgType == "sms") {
                             // SMS의 경우
                             tblmiContLstdto.msg_tp = "DMCH205"
-
                             // SMS Key 값 설정
                             val cdDto = Tblmi_comm_cdDto()
                             cdDto.grp_id = "RCS_SMS_MSG_ID"
@@ -275,7 +268,6 @@ class MobileContentServiceImpl : ContentService {
                             if (codeDto != null) {
                                 tblmiContLstdto.key_id = codeDto.cd_val
                             }
-
                         } else if (rcsMsgType.equals("lms")) {
                             // LMS의 경우
                             tblmiContLstdto.msg_tp = "DMCH206"
@@ -289,7 +281,6 @@ class MobileContentServiceImpl : ContentService {
                             if (codeDto != null) {
                                 tblmiContLstdto.key_id = codeDto.cd_val
                             }
-
                         }
                         tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
                     }
@@ -329,9 +320,9 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
 
                     }*/
-                    else if (rcsFormatType.equals("vertical")) {
+                    else if (rcsFormatType == "vertical") {
                         // RCS 세로형의 경우
-                        if (rcsMsgType.equals("tall")) {
+                        if (rcsMsgType == "tall") {
                             // tall형 인 경우
                             tblmiContLstdto.msg_tp = "DMCH207"
 
@@ -345,7 +336,7 @@ class MobileContentServiceImpl : ContentService {
                                 tblmiContLstdto.key_id = codeDto.cd_val
                             }
 
-                        } else if (rcsMsgType.equals("medium")) {
+                        } else if (rcsMsgType == "medium") {
                             // Medium 경우
                             tblmiContLstdto.msg_tp = "DMCH208"
 
@@ -370,11 +361,11 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.cont_body = jsonBody.toString();
                         tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
 
-                    } else if (rcsFormatType.equals("slide")) {
+                    } else if (rcsFormatType == "slide") {
                         // 슬라이드 형의 경우 타입 설정
-                        if (rcsMsgType.equals("small")) {
+                        if (rcsMsgType == "small") {
                             tblmiContLstdto.msg_tp = "DMCH211"
-                        } else if (rcsMsgType.equals("medium")) {
+                        } else if (rcsMsgType == "medium") {
                             tblmiContLstdto.msg_tp = "DMCH212"
                         }
                         // RCS 슬라이드 관련 INSERT 처리
@@ -391,7 +382,6 @@ class MobileContentServiceImpl : ContentService {
                         // Button이 1개이상 존재할때 Json형태로 버튼 Insert
                         rcsButtonMakeJsonString(contentListCreatedto, tblmiContLstdto)
                     }
-
                 }
                 contentDao.insertContent(tblmiContLstdto)
 
@@ -408,20 +398,18 @@ class MobileContentServiceImpl : ContentService {
                  */
 
                 if (i == 0) {
-
                     // 카카오 이미지 URL 링크 저장
                     if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
-                        val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                        val contUrlDto = Tblmi_cont_url_lstDto()
                         contUrlDto.url_tag = "img"
                         contUrlDto.url = contentListCreatedto.kko_img_url
                         contUrlDto.url_id = "kkoImg001"
                         contUrlDto.cont_lst_cd = lastSeq
                         contentDao.insertContentUrl(contUrlDto)
                     }
-
                     // 카카오 버튼 링크 저장
                     if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
-                        val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
+                        val contUrlDto = Tblmi_cont_url_lstDto()
                         contUrlDto.url_tag = "btn"
                         contUrlDto.url = contentListCreatedto.kko_btn_url
                         contUrlDto.url_id = "kkoBtn001"
@@ -430,12 +418,11 @@ class MobileContentServiceImpl : ContentService {
                     }
 
                     // 카카오 본문 a 링크 저장
-                    val url_kakao_body = contentListCreatedto.kakao_body
-                    if (url_kakao_body?.contains("{{") == true) {
-
+                    val urlKakaoBody = contentListCreatedto.kakao_body
+                    if (urlKakaoBody?.contains("{{") == true) {
                         val regex = "\\{\\{[^{]+}}"
                         val p = Pattern.compile(regex)
-                        val matcher = p.matcher(url_kakao_body)
+                        val matcher = p.matcher(urlKakaoBody)
 
                         var start = 0
                         var chk = true
@@ -482,12 +469,12 @@ class MobileContentServiceImpl : ContentService {
                     }
 
                     // 모바일 본문 추적 a 링크 저장
-                    val url_sms_body = contentListCreatedto.sms_body
-                    if (url_sms_body?.contains("{{") == true) {
+                    val urlSmsBody = contentListCreatedto.sms_body
+                    if (urlSmsBody?.contains("{{") == true) {
 
                         val regex = "\\{\\{[^{]+}}"
                         val p = Pattern.compile(regex)
-                        val matcher = p.matcher(url_sms_body)
+                        val matcher = p.matcher(urlSmsBody)
 
                         var start = 0
                         var chk = true
@@ -529,10 +516,9 @@ class MobileContentServiceImpl : ContentService {
                     if (urlLen != null) {
                         // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
                         for (i in 0 until urlLen) {
-
-                            val urlValue = contentListCreatedto?.url_value?.get(i)?.trim()
-                            val fallback_url_position = contentListCreatedto?.fallback_url_04?.get(i)?.trim()
-                            val fallback_url_query = contentListCreatedto?.fallback_url_05?.get(i)?.trim()
+                            val urlValue = contentListCreatedto.url_value?.get(i)?.trim()
+                            val fallbackUrlPosition = contentListCreatedto.fallback_url_04?.get(i)?.trim()
+                            val fallbackUrlQuery = contentListCreatedto.fallback_url_05?.get(i)?.trim()
 
                             if (!CommonUtils.isEmptyObject(urlValue)) {
                                 val contUrlDto = Tblmi_cont_url_lstDto()
@@ -543,19 +529,19 @@ class MobileContentServiceImpl : ContentService {
                                 contentDao.insertContentUrl(contUrlDto)
                             }
 
-                            if (!CommonUtils.isEmptyObject(fallback_url_position)) {
+                            if (!CommonUtils.isEmptyObject(fallbackUrlPosition)) {
                                 val contUrlDto = Tblmi_cont_url_lstDto()
                                 contUrlDto.url_tag = "btn"
-                                contUrlDto.url = fallback_url_position
+                                contUrlDto.url = fallbackUrlPosition
                                 contUrlDto.url_id = "fallPosiBtn" + (i + 1)
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
                             }
 
-                            if (!CommonUtils.isEmptyObject(fallback_url_query)) {
+                            if (!CommonUtils.isEmptyObject(fallbackUrlQuery)) {
                                 val contUrlDto = Tblmi_cont_url_lstDto()
                                 contUrlDto.url_tag = "btn"
-                                contUrlDto.url = fallback_url_query
+                                contUrlDto.url = fallbackUrlQuery
                                 contUrlDto.url_id = "fallQueryBtn" + (i + 1)
                                 contUrlDto.cont_lst_cd = lastSeq
                                 contentDao.insertContentUrl(contUrlDto)
@@ -566,8 +552,7 @@ class MobileContentServiceImpl : ContentService {
 
             }
         } catch (e: Exception) {
-            logger.error("마스터 코드 " + tblmiContMstDto.seq);
-            e.printStackTrace()
+            logger.error("마스터 코드 " + tblmiContMstDto.seq, e)
             // url 삭제하기
             val lstSeqDto = Tblmi_cont_lstDto()
             lstSeqDto.cont_cd = tblmiContMstDto.seq
@@ -619,11 +604,11 @@ class MobileContentServiceImpl : ContentService {
             }
         }
 
-        val sms_cont_sub = dto.cont_sub_list!![1].trim()
+        val smsContSub = dto.cont_sub_list!![1].trim()
         val smsMsgTp = dto.sms_msg_tp
 
         // 문자의 경우 제목 byte 체크 필요
-        if (!CommonUtils.checkByteLength(sms_cont_sub, 80)) {
+        if (!CommonUtils.checkByteLength(smsContSub, 80)) {
             logger.error("SMS Title 40Byte Error")
             return false;
         }
@@ -664,7 +649,6 @@ class MobileContentServiceImpl : ContentService {
      */
 
     override fun selectSenderList(tblmiSetLstDto: Tblmi_set_lstDto): Map<String, Any> {
-
         val searchDto = tblmiSetLstDto as SetLst_searchDto
         val paramMap: MutableMap<String, Any> = HashMap()
         val paginationInfo: PaginationInfo = UsefulUtils.makePage(searchDto.pageNo, 10, 5)
@@ -890,10 +874,8 @@ class MobileContentServiceImpl : ContentService {
 
     override fun selectOneContentView(dto: Tblmi_cont_mstDto): Map<String, Any> {
         val paramMap: MutableMap<String, Any> = HashMap()
-
         //paramMap["list"] = contentDao.detailMobileContent(dto)
         paramMap["list"] = selectOneMobileContent(dto)
-
         return paramMap
     }
 
@@ -1080,9 +1062,7 @@ class MobileContentServiceImpl : ContentService {
 
             // 인덱스 번호 2: RCS 분기 처리
             if (i == 2) {
-
                 // RCS 포멧타입 변경에 따라 Key 값이 바뀔 수 있으므로 활성화 해준다
-
                 tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1
                 tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2
                 tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3
@@ -1269,9 +1249,7 @@ class MobileContentServiceImpl : ContentService {
                 // 카카오 본문 a 링크 저장 테스트
                 val urlKakaoBody = contentListCreatedto.kakao_body
                 if (urlKakaoBody?.contains("{{") == true) {
-
                     //logger.error("contain url kakao_body : " + url_kakao_body)
-
                     val regex = "\\{\\{[^{]+}}"
                     val p = Pattern.compile(regex)
                     val matcher = p.matcher(urlKakaoBody)
@@ -1448,23 +1426,23 @@ class MobileContentServiceImpl : ContentService {
     private fun jsonOneContentsParsing(dto: Tblmi_cont_mstDto) {
         // 수정 페이지 json 파싱하기
         val jsonParser = JsonParser()
-        val dto = dto as Content_view_Dto
-        val rcsMsgTp = dto.msg_tp
+        val dto1 = dto as Content_view_Dto
+        val rcsMsgTp = dto1.msg_tp
 
         if (rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH210")) {
             // 가로, 세로형 이라면 cont_body Json 형태 파싱
-            if (dto.cont_body != null) {
-                val jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
-                dto.cont_body = jsonObject.get("description").toString()
+            if (dto1.cont_body != null) {
+                val jsonObject = jsonParser.parse(dto1.cont_body).asJsonObject
+                dto1.cont_body = jsonObject.get("description").toString()
                     .replace("\\\\r\\\\n", "<br/>")
                     .replace("\\r\\n", "<br/>")
                     .replace("\"", "")
             }
         }
         if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
-            val slideJsonObject = jsonParser.parse(dto.cont_body).asJsonObject
+            val slideJsonObject = jsonParser.parse(dto1.cont_body).asJsonObject
             val len = slideJsonObject.size() / 2  // title과 description이 하나의 쌍이 되기에 나눠준다
-            dto.cardSize = len.toString()
+            dto1.cardSize = len.toString()
 
             var idx = 0
             for (i in 0 until len) {
@@ -1473,14 +1451,14 @@ class MobileContentServiceImpl : ContentService {
                 val title = "title" + idx
                 val description = "description" + idx
 
-                dto.slideTitle.add(
+                dto1.slideTitle.add(
                     slideJsonObject.get(title).toString()
                         .replace("\\\\r\\\\n", "<br/>")
                         .replace("\\r\\n", "<br/>")
                         .replace("\"", "")
                 )
 
-                dto.slideBody.add(
+                dto1.slideBody.add(
                     slideJsonObject.get(description).toString()
                         .replace("\\\\r\\\\n", "<br/>")
                         .replace("\\r\\n", "<br/>")
@@ -1503,8 +1481,8 @@ class MobileContentServiceImpl : ContentService {
      */
     private fun jsonButtonParsing(dto: Tblmi_cont_mstDto) {
         val jsonParser = JsonParser()
-        val dto = dto as Content_view_Dto
-        val rcsMsgTp = dto.msg_tp
+        val dto1 = dto as Content_view_Dto
+        val rcsMsgTp = dto1.msg_tp
 
         if (rcsMsgTp.equals("DMCH205") || rcsMsgTp.equals("DMCH206") ||
             rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH209")
@@ -1512,7 +1490,7 @@ class MobileContentServiceImpl : ContentService {
         ) {
             // 슬라이드 형태가 아닌 것들 Json 파싱
             // 초기 Suggestion Json 배열은 1개이다
-            val jsonBtnArray = jsonParser.parse(dto.rcs_btn_obj).asJsonArray
+            val jsonBtnArray = jsonParser.parse(dto1.rcs_btn_obj).asJsonArray
             val jsonSuggestArray = jsonBtnArray.get(0).asJsonObject.get("suggestions").asJsonArray
             val len = jsonSuggestArray.size()
 
@@ -1535,10 +1513,9 @@ class MobileContentServiceImpl : ContentService {
                     val textData = (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
 
                     //logger.error("복사 데이터가 존재한다 : " + dataJsonObj.toString());
-
-                    dto.btnData?.add(listOf(textData.toString()))
-                    dto.btnType?.add(BtnValueUtils.clipBoardAction)
-                    dto.btnText?.add(displayText.toString()
+                    dto1.btnData?.add(listOf(textData.toString()))
+                    dto1.btnType?.add(BtnValueUtils.clipBoardAction)
+                    dto1.btnText?.add(displayText.toString()
                         .replace("\"", ""));
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.urlAction))) {
@@ -1550,9 +1527,9 @@ class MobileContentServiceImpl : ContentService {
                     //logger.error("URL 데이터가 존재한다 : " + dataJsonObj.toString());
                     //logger.error("urlData : " + urlData.toString())
 
-                    dto.btnType?.add(BtnValueUtils.urlAction)
-                    dto.btnData?.add(listOf(urlData.toString()))
-                    dto.btnText?.add(displayText.toString()
+                    dto1.btnType?.add(BtnValueUtils.urlAction)
+                    dto1.btnData?.add(listOf(urlData.toString()))
+                    dto1.btnText?.add(displayText.toString()
                         .replace("\"", ""))
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.dialerAction))) {
@@ -1564,9 +1541,9 @@ class MobileContentServiceImpl : ContentService {
                     //logger.error("전화 데이터가 존재한다 : " + dataJsonObj.toString())
                     // logger.error("phoneNumber : " + phoneNumber.toString())
 
-                    dto.btnType?.add(BtnValueUtils.dialerAction)
-                    dto.btnData?.add(listOf(phoneNumber.toString()))
-                    dto.btnText?.add(displayText.toString().replace("\"", ""))
+                    dto1.btnType?.add(BtnValueUtils.dialerAction)
+                    dto1.btnData?.add(listOf(phoneNumber.toString()))
+                    dto1.btnText?.add(displayText.toString().replace("\"", ""))
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.mapAction))) {
                     // MapAction의 경우 3가지가 존재한다 ( 1. 좌표 입력 , 2. 쿼리 입력 , 3. 내 위치 보내기)
@@ -1579,9 +1556,9 @@ class MobileContentServiceImpl : ContentService {
 
                     if (jsonDataMap.containsKey(BtnValueUtils.requestLocationPush)) {
                         logger.error("requestLocationPush !! : 현재 위치 ")
-                        dto.btnType?.add(BtnValueUtils.requestLocationPush)
-                        dto.btnData?.add(listOf(""))
-                        dto.btnText?.add(displayText.toString().replace("\"", ""))
+                        dto1.btnType?.add(BtnValueUtils.requestLocationPush)
+                        dto1.btnData?.add(listOf(""))
+                        dto1.btnText?.add(displayText.toString().replace("\"", ""))
                     } else {
                         logger.error("nothing : 좌표 or 쿼리 입력")
                         val fallbackUrl = (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.fallbackUrl).toString()
@@ -1593,9 +1570,9 @@ class MobileContentServiceImpl : ContentService {
                             // 좌표 쿼리가 존재하는 Json 버튼 데이터
                             val query = location[BtnValueUtils.query].toString()
                             // logger.error("좌표 쿼리 존재1 " + query);
-                            dto.btnData?.add(listOf(query, fallbackUrl))
-                            dto.btnText?.add(displayText.toString().replace("\"", ""))
-                            dto.btnType?.add(BtnValueUtils.query)
+                            dto1.btnData?.add(listOf(query, fallbackUrl))
+                            dto1.btnText?.add(displayText.toString().replace("\"", ""))
+                            dto1.btnType?.add(BtnValueUtils.query)
 
                         } else {
                             // 좌표 쿼리가 존재하지 않는 Json 버튼 데이터
@@ -1607,9 +1584,9 @@ class MobileContentServiceImpl : ContentService {
                             logger.error("좌표 쿼리 존재 X " + longitude);
                             logger.error("좌표 쿼리 존재 X " + label);
 
-                            dto.btnData?.add(listOf(latitude, longitude, label, fallbackUrl))
-                            dto.btnText?.add(displayText.toString().replace("\"", ""))
-                            dto.btnType?.add(BtnValueUtils.latitude)
+                            dto1.btnData?.add(listOf(latitude, longitude, label, fallbackUrl))
+                            dto1.btnText?.add(displayText.toString().replace("\"", ""))
+                            dto1.btnType?.add(BtnValueUtils.latitude)
                         }
                     }
 
@@ -1671,9 +1648,9 @@ class MobileContentServiceImpl : ContentService {
                     val endTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.endTime).toString().split("T")
                     val title = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.title).toString()
 
-                    dto.btnData?.add(listOf(startTime[0], endTime[0], title, description))
-                    dto.btnText?.add(displayText.toString().replace("\"", ""))
-                    dto.btnType?.add(BtnValueUtils.calendarAction)
+                    dto1.btnData?.add(listOf(startTime[0], endTime[0], title, description))
+                    dto1.btnText?.add(displayText.toString().replace("\"", ""))
+                    dto1.btnType?.add(BtnValueUtils.calendarAction)
 
 
                     /* logger.error("dataJsonObj 캘린더 : " + dataJsonObj);
@@ -1689,9 +1666,9 @@ class MobileContentServiceImpl : ContentService {
                     val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber).toString()
                     val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.text).toString()
 
-                    dto.btnData?.add(listOf(phoneNumber, text))
-                    dto.btnText?.add(displayText.toString().replace("\"", ""))
-                    dto.btnType?.add(BtnValueUtils.composeAction)
+                    dto1.btnData?.add(listOf(phoneNumber, text))
+                    dto1.btnText?.add(displayText.toString().replace("\"", ""))
+                    dto1.btnType?.add(BtnValueUtils.composeAction)
 
                     //logger.error("text : " + text);
                     //logger.error("phoneNumber : " + phoneNumber);
@@ -1702,9 +1679,9 @@ class MobileContentServiceImpl : ContentService {
                 logger.error("suggestObj : $suggestObj");
                 logger.error("버튼명 : $displayText")
 
-                logger.error("btnText : " + dto.btnText);
-                logger.error("버튼 타입: " + dto.btnType);
-                logger.error("버튼데이터 : " + dto.btnData);
+                logger.error("btnText : " + dto1.btnText);
+                logger.error("버튼 타입: " + dto1.btnType);
+                logger.error("버튼데이터 : " + dto1.btnData);
             }
         }
     }
@@ -1779,12 +1756,9 @@ class MobileContentServiceImpl : ContentService {
         var slideCnt = 0
 
         if (len != 0) {
-
             val jsonTitle = JSONObject()
             val jsonBody = JSONObject()
-
             for (i in 0 until len!!) {
-
                 slideCnt++
                 val titleIdx = "title" + slideCnt
                 val descriptionIdx = "description" + slideCnt
@@ -1797,13 +1771,11 @@ class MobileContentServiceImpl : ContentService {
                 jsonBody[descriptionIdx] = contentListCreatedto.slide_cont_body?.get(i)
 
             }
-
             val title = jsonTitle.toString()
             val body = jsonBody.toString()
 
             tblmiContLstdto.cont_body = body
             tblmiContLstdto.cont_sub = title
-
             // 슬라이드 형 개수에 따른 Key 값 설정
             val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim()
 
@@ -1844,7 +1816,6 @@ class MobileContentServiceImpl : ContentService {
                     }
                 }
             }
-
             val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
             if (codeDto != null) {
                 tblmiContLstdto.key_id = codeDto.cd_val
@@ -1883,7 +1854,7 @@ class MobileContentServiceImpl : ContentService {
         if (len != 0 && len != null) {
             //logger.error("버튼 check");
             // 버튼을 체크하지 않았을 경우를 처리 한다.
-            for (i in 0 until len!!) {
+            for (i in 0 until len) {
                 val jsonMainObject = JSONObject()
                 val jsonActionObject = JSONObject()
                 val jsonTitleObject = JSONObject()
@@ -2297,7 +2268,7 @@ class MobileContentServiceImpl : ContentService {
                 }
 
                 jsonMainBtn1Object["action"] = jsonActionBtn1Object
-                jsonActionBtn1Object["displayText"] = contentListCreatedto?.slide_rcs_btn_1!![idx]
+                jsonActionBtn1Object["displayText"] = contentListCreatedto.slide_rcs_btn_1!![idx]
                 jsonActionBtn1Object["postback"] = jsonPostBtn1Back
                 jsonBtnArray.add(jsonMainBtn1Object)
                 //logger.error("slide jsonObject 버튼1 : " + jsonMainBtn1Object.toJSONString())

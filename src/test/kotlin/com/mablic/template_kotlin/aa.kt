@@ -38,3 +38,4 @@ fun main() {
 
     logger.error("aa {}", tmplDto.tmpl_cont)
 }
+

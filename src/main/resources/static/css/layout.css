@@ -225,6 +225,7 @@ body {width:100%; height:100%; font-family:"NotoSansCJKkr", Arial, sans-serif; f
 .contents {width:100%; /*height:100%;*/}
 
 .row {width:100%; height:36px;}
+.row.double {width:100%; height:73px;}
 .row > .left, .row > .right {height:inherit;}
 
 /* location */

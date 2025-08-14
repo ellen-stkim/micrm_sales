@@ -30,5 +30,6 @@ fun main(args: Array<String>) {
     //Basic R000000029 R000000029_n6LtN7z7ReeOJaduoQgG+w
     //log.error("{}", enc.decrypt("NgQrA60fspkLGY4ERU5eYFvgfHRpbNQV6zcE0Q7BLdPk8m7/Dsx9NE2FnLCuP3Eo50verDtOlinxyOZzerTijCXh4Bdx7uRYpQqaniY5LNCf0UKMNj4UB9QP/uH7BGo1"))
     //Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw
-    log.error("{}", enc.decrypt("NgQrA60fspkLGY4ERU5eYFvgfHRpbNQV6zcE0Q7BLdPk8m7/Dsx9NE2FnLCuP3Eo50verDtOlinxyOZzerTijCXh4Bdx7uRYpQqaniY5LNCf0UKMNj4UB9QP/uH7BGo1"))
+    log.error("{}", enc.decrypt("U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE"))
+    log.error("{}", enc.decrypt("21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ"))
 }

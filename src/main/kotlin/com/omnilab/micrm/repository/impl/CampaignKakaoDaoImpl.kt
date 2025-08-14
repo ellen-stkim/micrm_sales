@@ -31,6 +31,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
     private lateinit var sqlSession: SqlSession
 
     private val regex = Regex("""\{\{[^{}]*\}\}""")
+    val gson = GsonBuilder().disableHtmlEscaping().create()
 
     override fun ins_send(dto: Tblmicp_campaignDto, contTpLst: MutableMap<String, Contents_lstDto>, map: MutableMap<String, Any>): Int {
         var cnt = 0
@@ -67,27 +68,20 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         // RCS 브랜드 ID
         val rcsBrnID = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("RCS_BRND_ID", dto.usr_grp_cd!!)).cd_val
 
-        // 카카오 콘텐츠 URL 리스트 정보
-        var kakaoBtnUrl: Tblmicp_cont_url_lstDto? = null
-        var kakaoBtnUrl2: Tblmicp_cont_url_lstDto? = null
-        var kakaoBtnUrl3: Tblmicp_cont_url_lstDto? = null
-        var kakaoBtnUrl4: Tblmicp_cont_url_lstDto? = null
-        var kakaoBtnUrl5: Tblmicp_cont_url_lstDto? = null
-        var kakaoImgUrl: Tblmicp_cont_url_lstDto? = null
-
         val kakaoContUrlBtnList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", Tblmicp_cont_url_lstDto(kakaoCont.seq!!, "btn"))
-        // 버튼 리스트
-        for (i in 0 until kakaoContUrlBtnList.size){
-            val urlLst = kakaoContUrlBtnList[i]
-            urlLst.url = CommonUtils.escapeTextToHtml(urlLst.url)
-            when(i){
-                0 -> kakaoBtnUrl = urlLst
-                1 -> kakaoBtnUrl2 = urlLst
-                2 -> kakaoBtnUrl3 = urlLst
-                3 -> kakaoBtnUrl4 = urlLst
-                4 -> kakaoBtnUrl5 = urlLst
-            }
-        }
+        // 카카오 콘텐츠 URL 리스트 정보
+        val kakaoBtnUrl: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtn001" }
+        val kakaoBtnUrl2: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtn002" }
+        val kakaoBtnUrl3: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtn003" }
+        val kakaoBtnUrl4: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtn004" }
+        val kakaoBtnUrl5: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtn005" }
+        val kakaoBtnUrlPc: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc001" }
+        val kakaoBtnUrlPc2: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc002" }
+        val kakaoBtnUrlPc3: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc003" }
+        val kakaoBtnUrlPc4: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc004" }
+        val kakaoBtnUrlPc5: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc005" }
+
+        var kakaoImgUrl: Tblmicp_cont_url_lstDto? = null
         // 이미지 리스트
         val kakaoContUrlImgList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", Tblmicp_cont_url_lstDto(kakaoCont.seq!!, "img"))
         // 버튼 리스트
@@ -303,7 +297,17 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
 
             if(kakaoBtnUrl != null){
-                val gson = GsonBuilder().disableHtmlEscaping().create()
+                val lst = ArrayList<ButtonJsonDto>()
+
+                buildButtonDto(kakaoCont.kko_btn_nm , kakaoBtnUrl , kakaoBtnUrlPc , trackURL!!, hstSeq, map)?.let(lst::add)
+                buildButtonDto(kakaoCont.kko_btn_nm2, kakaoBtnUrl2, kakaoBtnUrlPc2, trackURL, hstSeq, map)?.let(lst::add)
+                buildButtonDto(kakaoCont.kko_btn_nm3, kakaoBtnUrl3, kakaoBtnUrlPc3, trackURL, hstSeq, map)?.let(lst::add)
+                buildButtonDto(kakaoCont.kko_btn_nm4, kakaoBtnUrl4, kakaoBtnUrlPc4, trackURL, hstSeq, map)?.let(lst::add)
+                buildButtonDto(kakaoCont.kko_btn_nm5, kakaoBtnUrl5, kakaoBtnUrlPc5, trackURL, hstSeq, map)?.let(lst::add)
+
+                kkoMsgdto.button_json = gson.toJson(lst)
+
+                /*
                 val lst = ArrayList<ButtonJsonDto>()
 
                 if(containsTemplateVariable(kakaoBtnUrl.url)){
@@ -311,17 +315,20 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                         val reg = Regex("\\{\\{(?i)${key}}}")
                         kakaoBtnUrl.url = kakaoBtnUrl.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
-                    lst.add(ButtonJsonDto(
-                    "${kakaoCont.kko_btn_nm}"
-                    , "WL"
-                    , kakaoBtnUrl.url
-                    , kakaoBtnUrl.url))
+                    lst.add(
+                        ButtonJsonDto(
+                            "${kakaoCont.kko_btn_nm}"
+                            , "WL"
+                            , kakaoBtnUrl.url
+                            , if(kakaoBtnUrlPc == null) { kakaoBtnUrl.url } else { kakaoBtnUrlPc.url }
+                        )
+                    )
                 }else{
                     lst.add(ButtonJsonDto(
                         "${kakaoCont.kko_btn_nm}"
                         , "WL"
                         , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"
-                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"))
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc?.seq?.toString() ?: kakaoBtnUrl.seq.toString()), GlobalValues.encKey)}"))
                 }
 
                 if(kakaoBtnUrl2 != null){
@@ -330,17 +337,20 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             val reg = Regex("\\{\\{(?i)${key}}}")
                             kakaoBtnUrl2.url = kakaoBtnUrl2.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
                         }
-                        lst.add(ButtonJsonDto(
-                        "${kakaoCont.kko_btn_nm2}"
-                        , "WL"
-                        , kakaoBtnUrl2.url
-                        , kakaoBtnUrl2.url))
+                        lst.add(
+                            ButtonJsonDto(
+                                "${kakaoCont.kko_btn_nm2}"
+                                , "WL"
+                                , kakaoBtnUrl2.url
+                                , if(kakaoBtnUrlPc2 == null) { kakaoBtnUrl2.url } else { kakaoBtnUrlPc2.url }
+                            )
+                        )
                     }else {
                         lst.add(ButtonJsonDto(
                             "${kakaoCont.kko_btn_nm2}"
                             , "WL"
                             , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"))
+                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc2?.seq?.toString() ?: kakaoBtnUrl2.seq.toString()), GlobalValues.encKey)}"))
                     }
                 }
                 if(kakaoBtnUrl3 != null){
@@ -349,17 +359,20 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             val reg = Regex("\\{\\{(?i)${key}}}")
                             kakaoBtnUrl3.url = kakaoBtnUrl3.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
                         }
-                        lst.add(ButtonJsonDto(
-                        "${kakaoCont.kko_btn_nm3}"
-                        , "WL"
-                        , kakaoBtnUrl3.url
-                        , kakaoBtnUrl3.url))
+                        lst.add(
+                            ButtonJsonDto(
+                                "${kakaoCont.kko_btn_nm3}"
+                                , "WL"
+                                , kakaoBtnUrl3.url
+                                , if(kakaoBtnUrlPc3 == null) { kakaoBtnUrl3.url } else { kakaoBtnUrlPc3.url }
+                            )
+                        )
                     }else {
                         lst.add(ButtonJsonDto(
                             "${kakaoCont.kko_btn_nm3}"
                             , "WL"
                             , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"))
+                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" +  (kakaoBtnUrlPc3?.seq?.toString() ?: kakaoBtnUrl3.seq.toString()), GlobalValues.encKey)}"))
                     }
                 }
                 if(kakaoBtnUrl4 != null){
@@ -368,17 +381,20 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             val reg = Regex("\\{\\{(?i)${key}}}")
                             kakaoBtnUrl4.url = kakaoBtnUrl4.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
                         }
-                        lst.add(ButtonJsonDto(
-                        "${kakaoCont.kko_btn_nm4}"
-                        , "WL"
-                        , kakaoBtnUrl4.url
-                        , kakaoBtnUrl4.url))
+                        lst.add(
+                            ButtonJsonDto(
+                                "${kakaoCont.kko_btn_nm4}"
+                                , "WL"
+                                , kakaoBtnUrl4.url
+                                , if(kakaoBtnUrlPc4 == null) { kakaoBtnUrl4.url } else { kakaoBtnUrlPc4.url }
+                            )
+                        )
                     }else {
                         lst.add(ButtonJsonDto(
                             "${kakaoCont.kko_btn_nm4}"
                             , "WL"
                             , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"))
+                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc4?.seq?.toString() ?: kakaoBtnUrl4.seq.toString()), GlobalValues.encKey)}"))
                     }
                 }
                 if(kakaoBtnUrl5 != null){
@@ -387,20 +403,24 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                             val reg = Regex("\\{\\{(?i)${key}}}")
                             kakaoBtnUrl5.url = kakaoBtnUrl5.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
                         }
-                        lst.add(ButtonJsonDto(
-                        "${kakaoCont.kko_btn_nm5}"
-                        , "WL"
-                        , kakaoBtnUrl5.url
-                        , kakaoBtnUrl5.url))
+                        lst.add(
+                            ButtonJsonDto(
+                                "${kakaoCont.kko_btn_nm5}"
+                                , "WL"
+                                , kakaoBtnUrl5.url
+                                , if(kakaoBtnUrlPc5 == null) { kakaoBtnUrl5.url } else { kakaoBtnUrlPc5.url }
+                            )
+                        )
                     }else {
                         lst.add(ButtonJsonDto(
                             "${kakaoCont.kko_btn_nm5}"
                             , "WL"
                             , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"))
+                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc5?.seq?.toString() ?: kakaoBtnUrl5.seq.toString()), GlobalValues.encKey)}"))
                     }
                 }
                 kkoMsgdto.button_json = gson.toJson(lst)
+                 */
             }
 
             if(kakaoCont.kko_server_image_url != null){
@@ -530,6 +550,47 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             regex.containsMatchIn(input)
         }
     }
+
+    fun buildButtonDto(
+        name: String?,
+        mobile: Tblmicp_cont_url_lstDto?,
+        pcData: Tblmicp_cont_url_lstDto?,
+        trackURL: String,
+        hstSeq: String,
+        map: Map<String, Any>
+    ): ButtonJsonDto? {
+        if (name.isNullOrBlank() || mobile == null) return null
+        val pc = pcData ?: mobile
+
+        if (containsTemplateVariable(mobile.url) || containsTemplateVariable(pc.url)) {
+            var mobileUrl = mobile.url
+            for ((k, v) in map) {
+                val reg = Regex("\\{\\{(?i)${Regex.escape(k)}}}")
+                mobileUrl = mobileUrl?.replace(reg, CommonUtils.stringValueOf(v))
+            }
+            var pcUrl = pc.url
+            for ((k, v) in map) {
+                val reg = Regex("\\{\\{(?i)${Regex.escape(k)}}}")
+                pcUrl = pcUrl?.replace(reg, CommonUtils.stringValueOf(v))
+            }
+            return ButtonJsonDto(
+                name,
+                "WL",
+                mobileUrl,
+                pcUrl
+            )
+        } else {
+            val mobileTracked = "$trackURL/s/k/${AES256.AES_Encode("$hstSeq/${mobile.seq}", GlobalValues.encKey)}"
+            val pcTracked = "$trackURL/s/k/${AES256.AES_Encode("$hstSeq/${pc.seq}", GlobalValues.encKey)}"
+            return ButtonJsonDto(
+                name,
+                "WL",
+                mobileTracked,
+                pcTracked
+            )
+        }
+    }
+
 
 
 }

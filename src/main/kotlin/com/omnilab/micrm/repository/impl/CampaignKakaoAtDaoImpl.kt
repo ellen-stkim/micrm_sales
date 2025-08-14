@@ -300,7 +300,6 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                         btnData = btnData.replace(reg, CommonUtils.stringValueOf(map[key]))
                     }
                     */
-
                     val obj = JsonParser.parseString(result).asJsonObject
                     val buttons = obj.getAsJsonArray("button")
                     kkoMsgdto.button_json = buttons.toString()
@@ -485,15 +484,15 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         return pattern.replace(input) { match ->
             val key = match.groupValues[1]
             val value = keyMap[key] ?: return@replace match.value
+
             // 앞 문맥 확인 (최대 10자 앞)
             val startIdx = match.range.first
             val prefix = input.substring(0, startIdx).takeLast(10).lowercase()
             // URL 또는 쿼리스트링 내 템플릿이라면 https:// 생략
             return@replace if (prefix.endsWith("=") || prefix.endsWith("?") ||
-                prefix.contains("http://") || prefix.contains("https://")) ({
-                value
-            }).toString()
-            else {
+                prefix.contains("http://") || prefix.contains("https://")) {
+                value.toString()
+            } else {
                 "https://$value"
             }
         }

@@ -37,14 +37,19 @@
 			, b.kko_img_url
 			, b.kko_BTN_nm
 			, b.KKO_BTN_URL
+			, b.KKO_BTN_URLPC
 			, b.kko_BTN_nm2
 			, b.KKO_BTN_URL2
+			, b.KKO_BTN_URLPC2
 			, b.kko_BTN_nm3
 			, b.KKO_BTN_URL3
+			, b.KKO_BTN_URLPC3
 			, b.kko_BTN_nm4
 			, b.KKO_BTN_URL4
+			, b.KKO_BTN_URLPC4
 			, b.kko_BTN_nm5
 			, b.KKO_BTN_URL5
+			, b.KKO_BTN_URLPC5
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, b.RCS_BTN_INS_TP
 			, b.RCS_BTN_CNT
@@ -60,24 +65,25 @@
 			, b.RCS_BTN_CONT_3
 			, b.RCS_FOOTER
 		FROM (
-			SELECT mst.seq                                         AS seq
-			    , mst.ch_tp                                        AS ch_tp
-			   , mst.cont_nm                                       AS cont_nm
-			   , mst.cont_grp_cd                                   AS cont_grp_cd
-			   , mst.use_yn                                        AS use_yn
-			   , mst.del_yn                                        AS del_yn
-			   , mst.reg_dt                                        AS reg_dt
-			   , mst.upd_dt                                        AS upd_dt
-			   , GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
-			   , Group_concat(lst.cont_tp)           			   AS cont_tp_lst
-			   , Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
-			   , CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
-					  WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
-					  WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
-					ELSE lst.SEQ END 							   AS lst_seq
-			FROM   tblmi_cont_mst AS mst
-				   LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
-				   INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
+			SELECT mst.seq						AS seq
+			     , mst.ch_tp					AS ch_tp
+			     , mst.cont_nm					AS cont_nm
+				 , mst.cont_grp_cd				AS cont_grp_cd
+				 , mst.use_yn					AS use_yn
+				 , mst.del_yn					AS del_yn
+				 , mst.reg_dt					AS reg_dt
+				 , mst.upd_dt					AS upd_dt
+				 , GROUP_CONCAT(lst.SEQ)		AS lst_SEQS
+				 , Group_concat(lst.cont_tp)	AS cont_tp_lst
+				 , Group_concat(cd_cont.cd_nm)	AS cont_tp_lst_nm
+				 , CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+				     WHEN FIND_IN_SET('DMTP05', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP05', Group_concat(lst.cont_tp))), ',', -1)
+				     WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+				     WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+				 ELSE lst.SEQ END	AS lst_seq
+			FROM tblmi_cont_mst AS mst
+			    LEFT JOIN tblmi_cont_lst AS lst ON lst.cont_cd = mst.seq AND lst.USE_YN = 'Y'
+			    INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id
 			<where>
 				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 					and mst.seq = #{seq}
@@ -163,14 +169,19 @@
 			, b.kko_img_url
 			, b.kko_BTN_nm
 			, b.KKO_BTN_URL
+			, b.KKO_BTN_URLPC
 			, b.kko_BTN_nm2
 			, b.KKO_BTN_URL2
+			, b.KKO_BTN_URLPC2
 			, b.kko_BTN_nm3
 			, b.KKO_BTN_URL3
+			, b.KKO_BTN_URLPC3
 			, b.kko_BTN_nm4
 			, b.KKO_BTN_URL4
+			, b.KKO_BTN_URLPC4
 			, b.kko_BTN_nm5
 			, b.KKO_BTN_URL5
+			, b.KKO_BTN_URLPC5
 			, CONCAT_WS(',', img_1.IMG_URL, img_2.IMG_URL, img_3.IMG_URL, img_4.IMG_URL, img_5.IMG_URL, img_6.IMG_URL) AS IMG_LST
 			, b.RCS_BTN_INS_TP
 			, b.RCS_BTN_CNT
@@ -186,19 +197,20 @@
 			, b.RCS_BTN_CONT_3
 			, b.RCS_FOOTER
 		FROM (
-			SELECT mst.seq                                         AS seq
-				, mst.ch_tp                                        AS ch_tp
-			   , mst.cont_nm                                       AS cont_nm
-			   , mst.cont_grp_cd                                   AS cont_grp_cd
-			   , mst.reg_dt                                        AS reg_dt
-			   , mst.upd_dt                                        AS upd_dt
-			   , GROUP_CONCAT(lst.SEQ)							   AS lst_SEQS
-			   , Group_concat(lst.cont_tp)           			   AS cont_tp_lst
-			   , Group_concat(cd_cont.cd_nm)         			   AS cont_tp_lst_nm
-			   , CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
-					  WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
-					  WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
-					ELSE lst.SEQ END 							   AS lst_seq
+			SELECT mst.seq								AS seq
+			     , mst.ch_tp							AS ch_tp
+			     , mst.cont_nm							AS cont_nm
+			     , mst.cont_grp_cd						AS cont_grp_cd
+			     , mst.reg_dt							AS reg_dt
+			     , mst.upd_dt							AS upd_dt
+			     , GROUP_CONCAT(lst.SEQ)				AS lst_SEQS
+			     , Group_concat(lst.cont_tp)			AS cont_tp_lst
+			     , Group_concat(cd_cont.cd_nm)			AS cont_tp_lst_nm
+			     , CASE WHEN FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP04', Group_concat(lst.cont_tp))), ',', -1)
+						WHEN FIND_IN_SET('DMTP05', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP05', Group_concat(lst.cont_tp))), ',', -1)
+					  	WHEN FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP03', Group_concat(lst.cont_tp))), ',', -1)
+					  	WHEN FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp)) != 0 then SUBSTRING_INDEX(SUBSTRING_INDEX(GROUP_CONCAT(lst.SEQ), ',', FIND_IN_SET('DMTP02', Group_concat(lst.cont_tp))), ',', -1)
+				 ELSE lst.SEQ END 							   AS lst_seq
 			FROM   tblmicp_cont_mst AS mst
 				   LEFT JOIN tblmicp_cont_lst AS lst ON lst.cont_cd = mst.seq
 				   INNER JOIN tblmi_comm_cd AS cd_cont ON lst.cont_tp = cd_cont.cd_id

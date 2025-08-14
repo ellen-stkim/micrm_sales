@@ -58,11 +58,18 @@
                            </div>
                               <div class="row_body">
                                  <div class="round_box">
-                                    <c:if test="${not empty fn:trim(content.kko_view_img_url) and fn:trim(content.kko_view_img_url) ne ',' }">
-                                    <div class="sms">
-                                       <img src="${content.kko_view_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
-                                    </div>
-                                    </c:if>
+                                    <c:choose>
+                                       <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:contains(content.kko_view_img_url, ',') }">
+                                          <div class="sms">
+                                             <img src="${fn:split(content.kko_view_img_url, ',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                          </div>
+                                       </c:when>
+                                       <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:trim(content.kko_view_img_url) ne ',' }">
+                                          <div class="sms">
+                                             <img src="${content.kko_view_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                          </div>
+                                       </c:when>
+                                    </c:choose>
                                     <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
                                     <c:if test="${not empty content.kko_btn_url}">
                                        <a href="${content.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${content.kko_btn_nm}</a>

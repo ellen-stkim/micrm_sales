@@ -213,13 +213,14 @@
                                     <div class="row body">
                                         <div class="th">타입</div>
                                         <div class="column_2">
-                                            <label class="type_check"><input type="radio" name="kko_format_type"
-                                                                             class="kkoType"
-                                                                             value="kko_ft" ${cont_tp eq "DMTP03"?'checked': '' }
-                                                                             /><span>친구톡</span></label>
-                                            <label class="type_check"><input type="radio" name="kko_format_type"
-                                                                             class="kkoType" ${cont_tp eq "DMTP05"?'checked': '' }
-                                                                             value="kko_at"/><span>알림톡</span></label>
+                                            <label class="type_check">
+                                                <input type="radio" name="kko_format_type" class="kkoType" value="kko_ft" ${cont_tp eq "DMTP03"?'checked': '' } />
+                                                <span>친구톡</span>
+                                            </label>
+                                            <label class="type_check">
+                                                <input type="radio" name="kko_format_type" class="kkoType" ${cont_tp eq "DMTP05"?'checked': '' } value="kko_at"/>
+                                                <span>알림톡</span>
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="row body">
@@ -227,17 +228,16 @@
                                         <div class="column_1">
                                             <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
                                             <input type="text" class="sms_number smsNumber_kko" id="send_to"
-                                                    <c:if test="${fn:trim(list[0].send_num) != ''}">
-                                                        value="${list[0].sender}(${list[0].send_num})" readonly
-                                                    </c:if>
-                                                    <c:if test="${fn:trim(list[0].send_num) == ''}">
-                                                        placeholder="발신 프로필을 입력해주세요"
-                                                    </c:if>
+                                                <c:if test="${fn:trim(list[0].send_num) != ''}">
+                                                    value="${list[0].sender}(${list[0].send_num})" readonly
+                                                </c:if>
+                                                <c:if test="${fn:trim(list[0].send_num) == ''}">
+                                                    placeholder="발신 프로필을 입력해주세요"
+                                                </c:if>
                                             />
                                             <input type="hidden" name="send_key" id="send_key" value="${list[0].send_num}"/>
                                             <input type="hidden" name="send_to_list" id="kakao_send_to_num" value="${list[0].send_to}"/>
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
-
                                         </div>
                                     </div>
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
@@ -300,19 +300,19 @@
                                             </div>
                                             <div class="row" style="height:150px;">
                                                 <div class="th bottom-border">내용</div>
-                                                <div class="td bottom-border">  <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;"
-                                                                            onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea></div>
+                                                <div class="td bottom-border">
+                                                    <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea></div>
                                             </div>
                                             <div class="row">
                                                 <div class="th">수신거부 문구</div>
                                                 <div class="td">
                                                     <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
-                                                            <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                                value="${cutil:numberToPhone(rejectText[0].list_val)}"
-                                                            </c:if>
-                                                            <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
-                                                                placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
-                                                            </c:if>
+                                                        <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
+                                                        </c:if>
+                                                        <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                            placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                        </c:if>
                                                     />
                                                     <div style="display: flex; width: 110px">
                                                         <span class="btn_sm_line btn_inline" onclick="addRejectText('kko_ft')">사용</span>
@@ -326,104 +326,170 @@
                                             <div class="row">
                                                 <div class="th">추적 링크 생성</div>
                                                 <div class="td">
-                                                    <input type="text" class="txt_input en_font" id="kakaoTracking"
-                                                           placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                    <input type="text" class="txt_input en_font" id="kakaoTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
                                                     <span class="btn_sm_line trackingLinkBtn">생성</span>
                                                     <input type="hidden" name="kko_trackinglink"/>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
-                                            <div class="row flex_box">
-                                                <div class="th">버튼명</div>
+                                            <div class="row flex_box double">
+                                                <div class="th" style="line-height: 72px;">버튼명</div>
                                                 <div class="td first-td right-border">
                                                     <c:choose>
                                                         <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
-                                                <div class="th">버튼 링크 주소</div>
-                                                <div class="td flex_box">
-                                                    <input type="text" name="kkoBtnUrlLst"
-                                                           class="txt_input en_font kakao_btn_link"
-                                                            <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                                readonly
-                                                            </c:if>
-                                                           value="${list[0].kko_btn_url}"
-                                                           placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                    <div class="arrow arrow-down kakaoLinkArrow"></div>
-                                                    <div class="arrow arrow-up kakaoLinkArrow"></div>
-                                                    <input type="button" class="btn_sm_line kakaoLinkBtn"
+                                                <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                <div class="td flex_box" style="flex-direction: column;">
+                                                    <div class="row flex_box" style="width: 100%;">
+                                                        <div class="th">Pc 링크</div>
+                                                        <div class="td flex_box">
+                                                            <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}"
+                                                                <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                                    readonly
+                                                                </c:if>
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row flex_box" style="width: 100%;">
+                                                        <div class="th">Mobile 링크</div>
+                                                        <div class="td flex_box">
+                                                            <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}"
+                                                                <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                                    readonly
+                                                                </c:if>
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <input type="button" class="btn_sm_line kakaoLinkBtn"
                                                             <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
                                                                 value ="생성"
                                                             </c:if>
                                                             <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
                                                                 value="삭제"
                                                             </c:if>
-                                                    />
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                             <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url2)}">
-                                                <div class="row flex_box">
-                                                    <div class="th">버튼명</div>
+                                                <div class="row flex_box double">
+                                                    <div class="th" style="line-height: 72px;">버튼명</div>
                                                     <div class="td first-td right-border">
                                                         <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm2}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                     </div>
-                                                    <div class="th">버튼 링크 주소</div>
-                                                    <div class="td flex_box">
-                                                        <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url2}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                        <div class="arrow arrow-down kakaoLinkArrow"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                    <div class="td flex_box" style="flex-direction: column;">
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Pc 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url2}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Mobile 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc2}" readonly/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </c:if>
                                             <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url3)}">
-                                                <div class="row flex_box">
-                                                    <div class="th">버튼명</div>
+                                                <div class="row flex_box double">
+                                                    <div class="th" style="line-height: 72px;">버튼명</div>
                                                     <div class="td first-td right-border">
                                                         <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm3}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                     </div>
-                                                    <div class="th">버튼 링크 주소</div>
-                                                    <div class="td flex_box">
-                                                        <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url3}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                        <div class="arrow arrow-down kakaoLinkArrow"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                    <div class="td flex_box" style="flex-direction: column;">
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Pc 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url3}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Mobile 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc3}" readonly/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </c:if>
                                             <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url4)}">
-                                                <div class="row flex_box">
-                                                    <div class="th">버튼명</div>
+                                                <div class="row flex_box double">
+                                                    <div class="th" style="line-height: 72px;">버튼명</div>
                                                     <div class="td first-td right-border">
                                                         <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm4}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                     </div>
-                                                    <div class="th">버튼 링크 주소</div>
-                                                    <div class="td flex_box">
-                                                        <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url4}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                        <div class="arrow arrow-down kakaoLinkArrow"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                    <div class="td flex_box" style="flex-direction: column;">
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Pc 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url4}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Mobile 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc4}" readonly/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </c:if>
                                             <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url5)}">
-                                                <div class="row flex_box">
-                                                    <div class="th">버튼명</div>
+                                                <div class="row flex_box double">
+                                                    <div class="th" style="line-height: 72px;">버튼명</div>
                                                     <div class="td first-td right-border">
                                                         <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm5}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                                     </div>
-                                                    <div class="th">버튼 링크 주소</div>
-                                                    <div class="td flex_box">
-                                                        <input type="text" name="kkoBtnUrlLst" class="txt_input en_font kakao_btn_link" readonly value="${list[0].kko_btn_url5}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                        <div class="arrow arrow-down kakaoLinkArrow"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제" />
+                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                    <div class="td flex_box" style="flex-direction: column;">
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Pc 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url5}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row flex_box" style="width: 100%;">
+                                                            <div class="th">Mobile 링크</div>
+                                                            <div class="td flex_box">
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc5}" readonly/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </c:if>
@@ -3734,7 +3800,6 @@
                             </div>
                         </div>
                         </c:if>
-
                     </div> <!-- RCS end-->
                 </div>
             </div>
@@ -3744,1047 +3809,8 @@
         </div>
     </div>
     </form:form>
-    </div>
     <footer class="footer">
         &copy; Milvus Corp.
     </footer>
-    <!-- section 영역 끝 -->
-    </div>
-    <!-- 컨텐츠 영역 끝 -->
-    <!-- footer 영역 시작 -->
-
-    <!-- footer 영역 끝 -->
 </section>
-<!-- container 영역 끝 -->
-</div>
-
-
-<!-- 새 이미지 파일 업로드 팝업 영역 시작 -->
-<span id="imgListHtml"></span>
-<!-- 새 이미지 파일 업로드 팝업 영역 끝 -->
-
-<form:form id="tblmisetForm" name="tblmisetForm" onsubmit="return false">
-    <span id="callPopUp">
-    </span>
-</form:form>
-
-<form:form id="imgSetForm" name="imgSetForm" onsubmit="return false">
-<span id="imgPopUp">
-    <div class="layer_pop imagePopup">
-        <div class="pop_container popup_size2">
-            <input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>
-            <div class="pop_title">이미지 선택</div>
-            <div class="pop_inner">
-                <div class="form_search">
-                    <!-- 검색 영역 시작 -->
-                    <input type="text" class="calendar" name="reg_dt" id="from" placeholder="등록일 선택"/>
-                    <span class="hyphen"></span>
-                    <input type="text" class="calendar" name="reg_dt_range" id="to" placeholder="등록일 선택"/>
-                    <div class="input_txt left-border-none">
-                        <input type="text" name='img_nm' placeholder="이미지 명 입력"/>
-                        <input type="button" class="btn_search" onclick="imageListPaging('1')" value="검색"/>
-                    </div>
-                    <!-- 검색 영역 끝 -->
-
-                    <!-- 새 이미지 등록 버튼 -->
-                    <div class="btn_new_image" onclick="imgUploadPop();">새 이미지 등록</div>
-                </div>
-                <h1 class="pop_msg"><span></span> 양식에 맞는 이미지만 보여집니다.</h1>
-                <form action="" id="imagePop">
-                    <div class="image_container" id="bodyDom">
-                    </div>
-            </form>
-            <div class="btn_row bottom-border left-border right-border">
-                <ul class="pager" id="pagingDom">
-                </ul>
-                <input type="hidden" id="imgType" name="imgType" value=""/>
-            </div>
-            <div class="pop_error_txt blue_point_color"></div>
-            <div class="btn_row">
-                <input type="button" class="btn_bg btn_size2 btn_center imageSave" id="" value="저장"
-                       onclick="imgSendSave();"/>
-            </div>
-        </div>
-    </div>
-    </div>
-</span>
-</form:form>
-
-<form:form id="saveForm" name="saveForm" onsubmit="return false">
-    <span id="preview"></span>
-</form:form>
-
-
-<script>
-    let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
-    let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
-
-    function mdmLoad() {
-        console.log("ewaewaeaeaweawewaeawewe");
-        //load 시 byte 계산
-        let kakaoTxt = $('#kakao .textarea');
-        let smsTxt = $('#sms .textarea');
-        smsCreate.byteCount(kakaoTxt, 'kakao');
-        smsCreate.byteCount(smsTxt, 'sms');
-
-        const kakaoUseYn = '${list[0].list_use_yn}';
-        const mailUseYn = '${list[1].list_use_yn}';
-        const rcsUseYn = '${list[2].list_use_yn}';
-
-        let minIx = "";
-
-        // 컨텐츠 USE_YN 값에 따른 minInx 변경
-
-        if (kakaoUseYn == "Y") {
-            minInx = 0;
-        } else if (kakaoUseYn == "N" && mailUseYn == "Y") {
-            minInx = 1;
-        } else if (kakaoUseYn == "N" && mailUseYn == "N" && rcsUseYn == "Y") {
-            minInx = 2;
-        }
-
-        // load 시 컨텐츠 포맷 체크 후 주요 옵션 표시
-        // 초기 랜딩시 on,off 여부
-        $('.formatType').each(function () {
-
-            let checkLength = $('.formatType').filter(':checked').length;
-            let state = $(this).is(':checked');
-
-            if (state == true) {
-                let tabInx = $('.formatType').index(this);
-                $('#js-smsTab li').eq(tabInx).show();
-
-                /*if (minInx === '' && minInx >= tabInx) {
-                    minInx = tabInx;
-                }*/
-                //minInx = 1;
-
-                // console.log("tbaInx : " + tabInx);
-                // console.log("minInx : " + minInx);
-
-                // $('#js-smsTab li').eq(minInx).addClass('on');
-                //$('#js-smsTab li').eq(1).addClass('on').siblings().removeClass('on');
-
-                $('#js-smsTab li').eq(minInx).addClass('on').siblings().removeClass('on');
-                $('.tab_contents').eq(minInx).addClass('active').siblings().removeClass('active');
-            }
-            if (checkLength > 0) {
-                $('.no_data').hide();
-                $('#js-btn-area').show();
-            } else {
-                $('.no_data').show();
-                $('#js-btn-area').hide();
-            }
-        });
-
-        rcsSlideInit();
-    }
-
-    function rcsSlideInit() {
-
-        let rcsLength = $('.rcsContents').length;
-
-        for (let c = 0; c < rcsLength; c++) {
-            rcsObject = $('.rcsContents').eq(c)[0];
-            rcsCreate.rcsContents(rcsObject, c);
-        }
-
-        let swiperEl = $('.slideSwiper').length;
-        if (swiperEl > 0) {
-            var mySwiper = new Swiper('.slideSwiper', {
-                direction: 'horizontal',
-                pagination: {
-                    el: '.rcs_paging',
-                    type: 'fraction',
-                },
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.rcs_next',
-                    prevEl: '.rcs_prev',
-                },
-            });
-        }
-    }
-
-
-    $(function () {
-
-        // 포맷 Tab
-        $('#js-smsTab > li').on('click', function () {
-            let tab = $('#js-smsTab > li').index(this);
-            //console.log("tab : " + tab);
-            $(this).addClass('on').siblings().removeClass('on');
-            $('.tab_contents').eq(tab).addClass('active').siblings().removeClass('active');
-            rcsSlideInit();
-        });
-
-        $(document).on('click', '.kakaoLinkBtn', function () {
-            let btnState = $(this).val();
-            let totalLen = $("#addKakaoLink").children().length;
-            let thisIdx = $(this).closest(".row.flex_box").index();
-            let link = $('.kakao_btn_link').eq(thisIdx);
-            let name = $('.kakao_btn_name').eq(thisIdx);
-            let btnLink = link.val();
-            let btnName = name.val();
-
-            if (btnState == '생성') {
-                if (btnName != '') {
-                    if (btnLink != '') {
-                        if (btnLink.substring(0, 4) == 'http') {
-                            $('#kakao_ft_viewer').find('.inner .round_box').children('a').remove();
-                            for(let i = 0; i < totalLen; i++){
-                                let setLink = $('.kakao_btn_link').eq(i).val();
-                                let setName = $('.kakao_btn_name').eq(i).val();
-                                $('#kakao_ft_viewer').find('.inner .round_box').append('<a href="' + setLink + '" class="kakao_link" target="_blank" rel="noopener">' + setName + '</a>');
-                            }
-                            name.attr('readonly', true);
-                            link.attr('readonly', true);
-                            $(this).val('삭제');
-                        } else {
-                            popup.popAlert('정확한 링크 URL을 입력해주세요.');
-                            return false;
-                        }
-                    } else {
-                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
-                        return false;
-                    }
-                } else {
-                    popup.popAlert('메시지에 노출될 링크 버튼의 이름을 입력해주세요!');
-                    return false;
-                }
-            } else {
-                $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx).remove();
-                if($("#addKakaoLink").children().length == 1){
-                    $(this).val('생성');
-                    link.val('');
-                    name.val('');
-                    name.attr('readonly', false);
-                    link.attr('readonly', false);
-                } else {
-                    $("#addKakaoLink").children().eq(thisIdx).remove();
-                }
-            }
-        });
-
-        // 카카오 행 이동 event
-        $(document).on('click', '.kakaoLinkArrow', function(){
-            let thisIdx = $(this).closest(".row.flex_box").index();
-            let totalLen = $("#addKakaoLink").children().length;
-            let row = $(this).closest(".row.flex_box");
-            let btnRow = $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx);
-            if($(this).hasClass("arrow-up")){
-                if(thisIdx !== 0){
-                    row.prev().before(row);
-                    btnRow.prev().before(btnRow);
-                }
-            } else if ($(this).hasClass("arrow-down")){
-                if(thisIdx !== totalLen-1){
-                    row.next().after(row);
-                    btnRow.next().after(btnRow);
-                }
-            }
-        });
-
-        $(document).on('click', '.addKakaoLinkRow', function(){
-            let totalLen = $("#addKakaoLink").children().length;
-            if(totalLen < 5){
-                let layout = '<div class="row flex_box">'+
-                    '<div class="th">버튼명</div>'+
-                    '<div class="td first-td right-border">'+
-                    '<input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" ' +
-                    'placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'+"'kakao'"+')"/>'+
-                    '</div>'+
-                    '<div class="th">버튼 링크 주소</div>'+
-                    '<div class="td flex_box">'+
-                    '<input type="text" name="kkoBtnUrlLst"'+
-                    'class="txt_input en_font kakao_btn_link"'+
-                    'placeholder="URL 입력 (http:// 또는 https://필수입력)"/>'+
-                    '<div class="arrow arrow-down kakaoLinkArrow"></div>'+
-                    '<div class="arrow arrow-up kakaoLinkArrow"></div>'+
-                    '<input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>'+
-                    '</div>'+
-                    '</div>';
-                $("#addKakaoLink").append(layout);
-            }
-        });
-
-
-        // 카카오 이미지 삭제
-        $('.kko_delete_img').on('click', function () {
-            let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
-            let imgcount = imgElement.length;
-            let imgUrl = $(this).next('.txt_input').val();
-
-            if (imgcount > 0 || imgUrl != '') {
-                $("#kakaoImage").val('');
-                $("#kko_img_cd").val('');
-                $("input[name='kko_view_img_url']").val('');
-                // $("input[name='kko_img_url']").val(''); // 이미지 삭제시 링크 주소 삭제
-                $("#js-kakao-img").empty();
-            } else {
-                return false;
-            }
-        });
-
-        // sms_delete_img
-        $('.sms_delete_img').on('click', function () {
-            //console.log("delete sms image")
-            let imgElement = $(this).parents('.sms_form').find('.sms_img').children();
-            let imgcount = imgElement.length;
-            let imgUrl = $(this).next('.txt_input').val();
-            if (imgcount > 0 || imgUrl != '') {
-                $(this).next('.txt_input').val('');
-                $("#mds_img_cd").val('');
-                if ($("input[name='mms_imgurl']") != '') {
-                    // mms_imgurl 초기화
-                    $("input[name='mms_imgurl']").val('');
-                    $("input[name='mds_img_cd']").val('');
-                    $("#js-sms-img").empty();
-                }
-                imgElement.remove();
-            } else {
-                return false;
-            }
-        });
-
-
-        //RCS 광고/안내 체크
-        /*$(document).on('change', '.radioAd', function () {
-            let valueAd = $(this).val();
-            if (valueAd == 'ad') {
-                $('.rcs_head').html('[WEB발신]광고');
-            } else {
-                $('.rcs_head').html('[WEB발신]');
-            }
-        });*/
-
-        // 시작일,종료일
-        $(document).find(".start_date").removeClass('hasDatepicker').datepicker({
-            onSelect: function (selected) {
-                $('.start_date').next('.end_date').datepicker("option", "minDate", selected);
-            }
-        });
-        $(document).find(".end_date").removeClass('hasDatepicker').datepicker({
-            onSelect: function (selected) {
-                $('.end_date').prev('.start_date').datepicker("option", "maxDate", selected);
-            }
-        });
-
-
-
-        //슬라이드형 카드 양식 선택 event
-        $(document).on('click', '.slide_type .option li', function (event) {
-            event.stopPropagation();
-            typeValue = $(this).attr('data');
-
-            if (slideData != typeValue) {
-                let message = "카드양식을 이동하시면 내용이 초기화됩니다. 이동하시겠습니까?";
-                let html = '';
-                html +=
-                    '<div class="layer_pop alert active">' +
-                    '<div class="pop_container popup_size3">' +
-                    '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
-                    '<div class="pop_title">카드 양식 변경</div>' +
-                    '<div class="pop_inner">' +
-                    '<div class="alert_txt">' + message + '</div>' +
-                    '<div class="btn_row">' +
-                    '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="rcsSlideChange(typeValue);" value="확인" />' +
-                    '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                $('body .layer_pop.alert').remove();
-                $('body').append(html);
-            }
-            if (slideData == typeValue) {
-                $('.slide_type .option').stop().slideUp();
-            }
-            let dataTest = $('.slide_type .option li[data="' + slideData + '"]').text();
-            $('.slide_type').find('.value').attr('data', slideData);
-            $('.slide_type').find('.value').text(dataTest);
-        });
-
-
-        // 컨텐츠 별 옵션 체크 및 표시
-        $('.kakaoOption').on('change', function () {
-            smsCreate.kakaoAdCheck();
-        });
-
-        /*$('.smsOption').on('change', function () {
-            smsCreate.smsAdCheck();
-        });*/
-
-        $(document).on('change', '.radioAd', function () {
-            rcsCreate.rcsAdCheck();
-        });
-
-        $('.smsType').on('change', function () {
-            //smsCreate.smsTypeCheck();
-            let smsType = $(this).val();
-            if (smsType != 'MMS') {
-                $(this).parents('.row').siblings('.input-img').removeClass('on');
-            } else {
-                $(this).parents('.row').siblings('.input-img').addClass('on');
-            }
-
-        });
-
-
-        // RCS 슬라이드형 카드 Tab click event
-        $(document).on('click', '.slide_tab > div', function () {
-            let nowIndex = $('.slide_tab > div').index(this);
-            $(this).addClass('on').siblings().removeClass('on');
-            $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
-        });
-
-
-        let beforeType = $('input[name="rcs_format_type"]:checked').val();
-
-        // RCS 포맷카드 변경시 초기화 알림
-        $('input[name="rcs_format_type"]').on('click', function (event) {
-            event.preventDefault();
-            check = $('input[name="rcs_format_type"]:checked');
-            let nowVal = $('input[name="rcs_format_type"]:checked').val();
-
-            if (beforeType != nowVal) {
-                let message = "포맷카드를 변경 할 경우 입력한 내용이 초기화됩니다.<br/>변경 하시겠습니까?";
-                let html = '';
-                html +=
-                    '<div class="layer_pop alert active">' +
-                    '<div class="pop_container popup_size3">' +
-                    '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
-                    '<div class="pop_title">포맷 카드 변경</div>' +
-                    '<div class="pop_inner">' +
-                    '<div class="alert_txt">' + message + '</div>' +
-                    '<div class="btn_row">' +
-                    '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="rcsChangeFormat(check);" value="확인" />' +
-                    '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                $('body .layer_pop.alert').remove();
-                $('body').append(html);
-            }
-            beforeType = nowVal;
-        });
-
-        // RCS 포맷카드 변경시 초기화 알림
-        $('input[name="rcs_format_type"]').on('click', function (event) {
-            event.preventDefault();
-            check = $('input[name="rcs_format_type"]:checked');
-            let nowVal = $('input[name="rcs_format_type"]:checked').val();
-
-            if (beforeType != nowVal) {
-                let message = "포맷카드를 변경 할 경우 입력한 내용이 초기화됩니다.<br/>변경 하시겠습니까?";
-                let html = '';
-                html +=
-                    '<div class="layer_pop alert active">' +
-                    '<div class="pop_container popup_size3">' +
-                    '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
-                    '<div class="pop_title">포맷 카드 변경</div>' +
-                    '<div class="pop_inner">' +
-                    '<div class="alert_txt">' + message + '</div>' +
-                    '<div class="btn_row">' +
-                    '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="rcsChangeFormat(check);" value="확인" />' +
-                    '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                $('body .layer_pop.alert').remove();
-                $('body').append(html);
-            }
-            beforeType = nowVal;
-        });
-
-    });
-
-
-    // RCS 포맷카드 변경
-    function rcsChangeFormat(type) {
-        let checkType = $(type)[0];
-        $(type).prop('checked', true);
-        $('.layer_pop').removeClass('active');
-        rcsCreate.layout(checkType);
-        type.value != 'slide' ? beforeSub = $('input[name="rcs_msg_tp"]:checked').val() : beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
-        let formatType = rcsCreate.rcsTypeCheck();
-        if (formatType != 'slide') {
-            rcsCreate.rcsLowTypeCheck();
-        } else {
-            rcsCreate.rcsSlideTypeCheck();
-        }
-        rcsCreate.rcsAdCheck();
-    }
-
-
-    // RCS 카드 양식 변경
-    function rcsLowTypeChange(type) {
-        let checkType = $(type)[0];
-        let radioVal = checkType.value;
-        $(type).prop('checked', true);
-        beforeSub = radioVal;
-        $('.layer_pop').removeClass('active');
-        let view = '';
-
-        $('#rcs input[name="cont_sub_list"]').val('');  // RCS만 초기화
-        $('textarea[name="rcs_body"]').val('');
-        $('input[name="rcs_footer"]').val('');
-        $('#rejectionArea').html('');
-        $('.rcsContsVal[name="edmDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-        $('.rcsContsVal[name="defaultDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-        $('.rcsTitle[name="edmDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-        $('.rcsTitle[name="defaultDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-
-        if (radioVal == 'sms') {
-            buttonReplace('text', 1, 17);
-            $('#js-txt-replace').html(
-                '<div class="text_type">'
-                + '<div class="scroll_txt">'
-                + '<p class="rcs_area" id="textArea0">내용 영역</p>'
-                + '</div>'
-                + '<div class="rcs_btn_wrap"></div>'
-                + '</div>'
-                + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                + '<div class="text_count">'
-                + '<span class="num en_font"><span id="textByte0">0</span>/100</span>'
-                + '<p>※ 본문내용 : <span class="en_font">100</span>글자 이내</p>'
-                + '</div>'
-            );
-        }
-        if (radioVal == 'lms') {
-
-            buttonReplace('text', 3, 17);
-            $('#js-title-area').html(
-                '<div class="row body">'
-                + '<div class="th">문자 제목</div>'
-                + '<div class="column_1">'
-                + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
-                + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
-                + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option mappingLst"></ul>'
-                + '</div>'
-                + '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
-                + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option" id=""></ul>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-            );
-            $('#js-txt-replace').html(
-                '<div class="text_type">'
-                + '<h3 class="rcs_title" id="titleArea0">제목 영역</h3>'
-                + '<div class="scroll_txt">'
-                + '<p class="rcs_area" id="textArea0">내용 영역</p>'
-                + '</div>'
-                + '<div class="rcs_btn_wrap"></div>'
-                + '</div>'
-                + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                + '<div class="text_count">'
-                + '<span class="num en_font"><span id="textByte0">0</span>/1300</span>'
-                + '<p>※ 본문내용 : <span class="en_font">1300</span>글자 이내</p>'
-                + '</div>'
-            );
-        }
-        if (radioVal == 'tall' || radioVal == 'medium') {
-            $('#verticalImage').val('');
-            $('input[name="verticalImg"]').val('');
-
-            buttonReplace('vertical', 2, 17);
-            view += '<div class="img_area"></div>'
-                + '<div class="txt_area">'
-                + '<h3 id="titleArea0">제목 영역</h3>'
-                + '<p id="textArea0">내용 영역</p>'
-                + '<div class="rcs_btn_wrap"></div>'
-                + '</div>';
-
-            if (radioVal == 'tall') {
-                $('#js-vt-replace').html(
-                    '<div class="rcs_vertical tall cf">'
-                    + view
-                    + '</div>'
-                    + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                    + '<div class="text_count">'
-                    + '<span class="num en_font"><span id="textByte0">0</span>/1300</span>'
-                    + '<p>※ 본문내용 : <span class="en_font">1300</span>글자 이내<br>본문길이 : 최대 96줄</p>'
-                    + '</div>'
-                );
-            } else {
-                $('#js-vt-replace').html(
-                    '<div class="rcs_vertical medium cf">'
-                    + view
-                    + '</div>'
-                    + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                    + '<div class="text_count">'
-                    + '<span class="num en_font"><span id="textByte0">0</span>/1300</span>'
-                    + '<p>※ 본문내용 : <span class="en_font">1300</span>글자 이내<br>본문길이 : 최대 96줄</p>'
-                    + '</div>'
-                );
-            }
-        }
-        mappingLst()
-        adTypeCheck();
-    }
-
-
-
-    // 템플릿 명 유효성 검사
-    function isCheckTemplateName() {
-        let cont_nm = $("input[name='cont_nm']").val();
-        let seq = $("input[name='mst_seq']").val();
-        var rcsType = $("input[name='rcs_format_type']:checked").val();
-
-        var res = function (response) {
-            if (response.status == "true") {
-                if (rcsType === 'slide') {
-                    btnHiddenRcsSlide()
-                } else {
-                    buttonHiddenAdd()
-                }
-                preview();
-                //$("#form").submit();
-            } else {
-                // 중복된 명칭 존재
-                popup.popAlert(response.message)
-            }
-        }
-        var param = {cont_nm: cont_nm, seq: seq}
-
-        com_ajax.ajax('post', '${baseURL}/cont/isCheckTmplateNm.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}')
-    }
-
-
-    // 버튼 타입 Hidden 값 추가
-    function buttonHiddenAdd() {
-        var rcsType = $("input[name='rcs_format_type']:checked").val();
-        var checkType = $("input[name='rcs_msg_tp']:checked").val();
-
-        var valueCheck1 = $("input[name='rcs_btn_tp_1']").val();
-        var valueCheck2 = $("input[name='rcs_btn_tp_2']").val();
-        var valueCheck3 = $("input[name='rcs_btn_tp_3']").val();
-
-
-        var layout = '<input type="hidden" name="phone_value_03"  value=" "/>' +
-            '<input type ="hidden" name="copy_value" value=" "/>' +
-            '<input type="hidden" name="url_value" value=" "/>' +
-            '<input type ="hidden" name ="latitude_value" value=" "/>' +
-            '<input type ="hidden" name ="longitude_value" value=" "/>' +
-            '<input type ="hidden" name ="location_value_04" value=" "/>' +
-            '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-            '<input type ="hidden" name ="location_value_05" value=" "/>' +
-            '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-            '<input type ="hidden" name ="start_date" value=" "/>' +
-            '<input type ="hidden" name ="end_date" value=" "/>' +
-            '<input type ="hidden" name ="calendar_title" value=" "/>' +
-            '<input type ="hidden" name ="calendar_body" value=" "/>' +
-            '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-            '<input type ="hidden" name ="message_value" value=" "/>';
-
-        if (checkType == 'lms') {
-            // lms 버튼인경우 Hidden 값 추가
-            if (valueCheck1 == 0 || valueCheck1 == "" || valueCheck1 == null) {
-                $("#btnHidden1").html(layout);
-            }
-            if (valueCheck2 == 0 || valueCheck2 == "" || valueCheck2 == null) {
-                $("#btnHidden2").html(layout);
-            }
-            if (valueCheck3 == 0 || valueCheck3 == "" || valueCheck3 == null) {
-                $("#btnHidden3").html(layout);
-            }
-        } else if (checkType != "sms" && checkType != "lms") {
-            // 체크타입이 sms,lms가 아니면 버튼이 두개이다
-            if (valueCheck1 == 0 || valueCheck1 == "" || valueCheck1 == null) {
-                $("#btnHidden1").html(layout);
-            }
-            if (valueCheck2 == 0 || valueCheck2 == "" || valueCheck2 == null) {
-                $("#btnHidden2").html(layout);
-            }
-        }
-    }
-
-    // RCS 버튼 슬라이드 Hidden 값 처리
-    function btnHiddenRcsSlide() {
-
-        let rcsType = $("input[name='rcs_format_type']").val();
-        let checkType = $("input[name='rcs_msg_tp']:checked").val();
-
-        let layout = '<input type="hidden" name="phone_value_03"  value=" "/>' +
-            '<input type ="hidden" name="copy_value" value=" "/>' +
-            '<input type="hidden" name="url_value" value=" "/>' +
-            '<input type ="hidden" name ="latitude_value" value=" "/>' +
-            '<input type ="hidden" name ="longitude_value" value=" "/>' +
-            '<input type ="hidden" name ="location_value_04" value=" "/>' +
-            '<input type ="hidden" name ="fallback_url_04" value=" "/>' +
-            '<input type ="hidden" name ="location_value_05" value=" "/>' +
-            '<input type ="hidden" name ="fallback_url_05" value=" "/>' +
-            '<input type ="hidden" name ="start_date" value=" "/>' +
-            '<input type ="hidden" name ="end_date" value=" "/>' +
-            '<input type ="hidden" name ="calendar_title" value=" "/>' +
-            '<input type ="hidden" name ="calendar_body" value=" "/>' +
-            '<input type ="hidden" name ="phone_value_08" value=" "/>' +
-            '<input type ="hidden" name ="message_value" value=" "/>';
-
-
-        let valueArr = []
-        for (let i = 0; i < 12; i++) {
-            // 12번 반복문을 통해 hidden 값을 체크한다.
-            let valueCheck = $("#slide_rcs_btn_tp_" + Number(i + 1)).val();
-            //console.log("valueCheck " + Number(i + 1) + valueCheck);
-            if ((valueCheck == 0 || valueCheck == "" || valueCheck == null) && typeof valueCheck != "undefined") {
-                //console.log("value is Not exist : " + valueCheck);
-                $("#btnHidden" + Number(i + 1)).html(layout);
-                //console.log(("#btnHidden" + Number(i + 1)));
-            }
-        }
-    }
-
-
-    // 발신자 리스트 불러오기
-    function mobileSenderPopup(nowPage, type) {
-
-        if (typeof type == "undefined") {
-            // Type이 정의 되어 있지 않다면 페이징에서 넘겨주지 않았으므로 type 변경
-            type = $("#mSendType").val();
-        }
-        var res = function (response) {
-            $("#callPopUp").html(response);
-            $("#mSendType").val(type);
-        };
-
-        var param = $("#tblmisetForm").serializeArray();
-
-        if (type === 'sms') {
-            // 타입이 SMS 라면 (모바일)
-            param.push({name: 'list_tp_id', value: 'CH02'});
-            param.push({name: 'list_dt_id', value: 'DMTP02'});
-        } else {
-            // 타입이 RCS 라면
-            param.push({name: 'list_tp_id', value: 'CH02'});
-            param.push({name: 'list_dt_id', value: 'DMTP04'});
-        }
-
-        param.push({name: 'pageNo', value: nowPage})
-
-        com_ajax.ajax('post', '${baseURL}/cont/senderMobileList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
-
-    // 발신자 번호 input 저장하기
-    function mobileSendSave(type) {
-
-        let send_to = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNumber"]').val();  // 보낼 번호
-        let send_nm = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNm"]').val(); // 발신자 명
-        let send_number = $('input[name="callNumber"]:checked').val();
-        let send_to_type = $('#mSendType').val();
-        let sender = send_nm + "(" + send_to + ")";
-
-        if (send_to_type === 'sms') {
-            $("#sms_send_to").val(send_to);
-            $("#sms_send_to_num").val(send_number);
-        } else if (send_to_type === 'horizonrcs') {
-            $("#send_horizon_rcs").val(send_to);
-            $("#horizon_send_num").val(send_number);
-        } else if (send_to_type === 'textrcs') {
-            $("#send_text_rcs").val(send_to);
-            $("#text_send_num").val(send_number);
-        } else if (send_to_type === 'verticalrcs') {
-            $("#send_vertical_rcs").val(send_to);
-            $("#vertical_send_num").val(send_number);
-        } else if (send_to_type === 'slidercs') {
-            $("#send_slice_rcs").val(send_to);
-            $("#slide_send_num").val(send_number);
-        }
-        $('.mobilePopup').removeClass('active');
-    }
-
-    // 이미지 리스트 팝업
-    function imageListPopUp(nowPage, type) {
-        $('#imgType').val(type);
-        imageListPaging(nowPage);
-    }
-
-    // 이미지 리스트 페이징
-    function imageListPaging(nowPage) {
-        let type = $('#imgType').val();
-        let msg;
-
-        const res = function (response) {
-            $('.imagePopup').addClass('active');
-            $('#imgSetForm .pop_msg span').html(msg);
-            let $doc = new DOMParser().parseFromString(response, "text/html");
-            $("#bodyDom").html($("#bodyDom", $doc).html());
-            $("#pagingDom").html($("#pagingDom", $doc).html());
-            $('#imgType').val(type);
-        };
-
-        let param = $("#imgSetForm").serializeArray();
-
-        if (type === 'kakaoImage') {
-            // 이미지 타입 : Kakao Image
-            param.push({name: 'ch_tp', value: 'IMGTP_FT'});
-            msg = "친구톡"
-        } else if (type === 'smsImage') {
-            // 이미지 타입 : 문자(MMS)
-            param.push({name: 'ch_tp', value: 'IMGTP02'});
-            msg = "모바일"
-        } else if (type === 'horizontalImage') {
-            // 이미지 타입 : RCS 가로형
-            param.push({name: 'ch_tp', value: 'IMGTP04'});
-            msg = "RCS 가로형"
-        } else if (type === 'verticalImage') {
-            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').filter(':checked').val();
-            if (rcs_msg_tp === 'tall') {
-                // 이미지 타입 : RCS 세로형 Tall
-                param.push({name: 'ch_tp', value: 'IMGTP05'});
-                msg = "RCS 세로형 Tall"
-            } else if (rcs_msg_tp === 'medium') {
-                // 이미지 타입 : RCS 세로형 Medium
-                param.push({name: 'ch_tp', value: 'IMGTP06'});
-                msg = "RCS 세로형 Medium"
-            }
-        } else if (type === 'slideRcsImage') {
-            let rcs_msg_tp = $('input[name="rcs_msg_tp"]').val();
-            if (rcs_msg_tp === 'small') {
-                // 이미지 타입 : RCS 슬라이드 small
-                param.push({name: 'ch_tp', value: 'IMGTP07'})
-                msg = "RCS 슬라이드 small"
-            } else if (rcs_msg_tp === 'medium') {
-                // 이미지 타입 : RCS 슬라이드 medium
-                param.push({name: 'ch_tp', value: 'IMGTP08'});
-                msg = "RCS 슬라이드 medium"
-            }
-        }
-        param.push({name: 'pageNo', value: nowPage});
-        com_ajax.ajax('post', '${baseURL}/cont/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
-
-    // 이미지 리스트 Input 저장하기
-    function imgSendSave(seq) {
-
-        let imgType = $("#imgType").val();  // 이미지 파일 타입
-        let imgLength = $('input[name="contentsImg"]:checked').length;
-        let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
-        let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
-        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
-
-        if (imgLength > 0) {
-            let popParents = $(form).parents('.layer_pop').attr('data');
-            $('#' + popParents).val(imgUrl);
-            $(form).parents('.layer_pop').removeClass('active');
-            imageCreate(imgType, imgUrl, ImgNm, imgCheck);
-            $('#imagePop').siblings('.pop_error_txt').html('');
-            $('.imagePopup').removeClass('active');
-        } else {
-            return false;
-        }
-    }
-
-    // 이미지 생성 하기
-    function imageCreate(type, imageUrl, ImgNm, imgCheck) {
-        let imageType = imageUrl
-        let kakaoImgLink = $('.kakaoImgLink').val();
-
-        if (imageType != '') {
-            if (type == 'kakaoImage') {
-                if (kakaoImgLink == '') {
-                    $("input[name='kko_view_img_url']").val(imageUrl);
-                    $("#kakaoImage").val(ImgNm);
-                    $('input[name="kko_img_cd"]').val(imgCheck);
-                    $('#kakaoImage').parent('.td').removeClass('outline');
-                    //$('#kakao').find('.sms_img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>' + '</a>');
-                    $('#js-kakao-img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
-                } else {
-                    $("input[name='kko_view_img_url']").val(imageUrl);
-                    $("#kakaoImage").val(ImgNm);
-                    $('input[name="kko_img_cd"]').val(imgCheck);
-                    $('#kakaoImage').parent('.td').removeClass('outline');
-                    //$('#kakao').find('.sms_img').html('<a href="' + kakaoImgLink + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>' + '</a>');
-                    $('#js-kakao-img').html('<a href="' + kakaoImgLink + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
-                }
-            } else if (type == 'smsImage') {
-                $("#smsImage").val(ImgNm);
-                $('input[name="mds_img_cd"]').val(imgCheck);
-                $('#smsImage').parent('.td').removeClass('outline');
-                //$('#sms').find('.sms_img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>');
-                $('#js-sms-img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'"/>');
-                $('input[name="mms_imgurl"]').val(imageType);
-            } else if (type == 'horizontalImage') {
-                $("#horizontalImage").val(ImgNm);
-                $("#horizonImg").val(imgCheck);
-                $('#horizontalImage').parent('.td').removeClass('outline');
-                $('.horizontal').find('.img_area').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>');
-            } else if (type == 'verticalImage') {
-                $('input[name="rcs_img_url_1"]').val(imageUrl);
-                $("#verticalImage").val(ImgNm);
-                $("#verticalImg").val(imgCheck);
-                $('#verticalImage').parent('.td').removeClass('outline');
-                $('#vertical').find('.img_area').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>');
-            } else {
-                let index = $('.cardOn.on').index();
-                $('.swiper-slide').eq(index).find('.img_area').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>');
-                if (index == 0) {
-                    $("#slide0").val(ImgNm);
-                    $('input[name="rcs_img_url_1"]').val(imageUrl);
-                    $('input[name="rcs_img_cd_1"]').val(imgCheck);
-                } else if (index == 1) {
-                    $("#slide1").val(ImgNm);
-                    $('input[name="rcs_img_url_2"]').val(imageUrl);
-                    $('input[name="rcs_img_cd_2"]').val(imgCheck);
-                } else if (index == 2) {
-                    $("#slide2").val(ImgNm);
-                    $('input[name="rcs_img_url_3"]').val(imageUrl);
-                    $('input[name="rcs_img_cd_3"]').val(imgCheck);
-                } else if (index == 3) {
-                    $("#slide3").val(ImgNm);
-                    $('input[name="rcs_img_url_4"]').val(imageUrl);
-                    $('input[name="rcs_img_cd_4"]').val(imgCheck);
-                } else if (index == 4) {
-                    $("#slide4").val(ImgNm);
-                    $('input[name="rcs_img_url_5"]').val(imageUrl);
-                    $('input[name="rcs_img_cd_5"]').val(imgCheck);
-                } else if (index == 5) {
-                    $("#slide5").val(ImgNm);
-                    $('input[name="rcs_img_url_6"]').val(imageUrl);
-                    $('input[name="rcs_img_cd_6"]').val(imgCheck);
-                }
-            }
-        } else {
-            if (type == 'kakaoImage') {
-                $('#kakao').find('.sms_img').children().remove();
-            } else if (type == 'smsImage') {
-                $('#sms').find('.sms_img').children().remove();
-            }
-        }
-    }
-
-
-    // RCS 카드양식 변경
-    function rcsLowTypeChange(type) {
-        let checkType = $(type)[0];
-        let radioVal = checkType.value;
-        $(type).prop('checked', true);
-        beforeSub = radioVal;
-        $('.layer_pop').removeClass('active');
-        let view = '';
-
-        $('input[name="cont_sub_list"]').val('');
-        $('textarea[name="rcs_body"]').val('');
-        $('input[name="rcs_footer"]').val('');
-        $('#rejectionArea').html('');
-        $('.rcsContsVal[name="edmDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-        $('.rcsContsVal[name="defaultDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-        $('.rcsTitle[name="edmDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-        $('.rcsTitle[name="defaultDB"] .value').attr('data', '0').text('개인화 변수').css('color', '#cccccc');
-
-        if (radioVal == 'sms') {
-            buttonReplace('text', 1, 17);
-            $('#js-txt-replace').html(
-                '<div class="text_type">'
-                + '<div class="scroll_txt">'
-                + '<p class="rcs_area" id="textArea0">내용 영역</p>'
-                + '</div>'
-                + '<div class="rcs_btn_wrap"></div>'
-                + '</div>'
-                + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                + '<div class="text_count">'
-                + '<span class="num en_font"><span id="textByte0">0</span>/100</span>'
-                + '<p>※ 본문내용 : <span class="en_font">100</span>글자 이내</p>'
-                + '</div>'
-            );
-        }
-        if (radioVal == 'lms') {
-            buttonReplace('text', 3, 17);
-            $('#js-title-area').html(
-                '<div class="row body">'
-                + '<div class="th">문자 제목</div>'
-                + '<div class="column_1">'
-                + '<input type="text" class="title rcsTitle" name="cont_sub_list" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this, 0);">'
-                + '<div class="select column_4 left-border rcsTitleVal" name="edmDB">'
-                + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option mappingLst"></ul>'
-                + '</div>'
-                + '<div class="select column_4 left-border rcsTitleVal" name="defaultDB">'
-                + '<div class="value" data="0">개인화 변수</div>'
-                + '<ul class="option mappingLst" id=""></ul>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-            );
-            $('#js-txt-replace').html(
-                '<div class="text_type">'
-                + '<h3 class="rcs_title" id="titleArea0">제목 영역</h3>'
-                + '<div class="scroll_txt">'
-                + '<p class="rcs_area" id="textArea0">내용 영역</p>'
-                + '</div>'
-                + '<div class="rcs_btn_wrap"></div>'
-                + '</div>'
-                + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                + '<div class="text_count">'
-                + '<span class="num en_font"><span id="textByte0">0</span>/1300</span>'
-                + '<p>※ 본문내용 : <span class="en_font">1300</span>글자 이내</p>'
-                + '</div>'
-            );
-        }
-        if (radioVal == 'tall' || radioVal == 'medium') {
-            $('#verticalImage').val('');
-            $('input[name="verticalImg"]').val('');
-
-            buttonReplace('vertical', 2, 17);
-            view += '<div class="img_area"></div>'
-                + '<div class="txt_area">'
-                + '<h3 id="titleArea0">제목 영역</h3>'
-                + '<p id="textArea0">내용 영역</p>'
-                + '<div class="rcs_btn_wrap"></div>'
-                + '</div>';
-
-            if (radioVal == 'tall') {
-                $('#js-vt-replace').html(
-                    '<div class="rcs_vertical tall cf">'
-                    + view
-                    + '</div>'
-                    + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                    + '<div class="text_count">'
-                    + '<span class="num en_font"><span id="textByte0">0</span>/1300</span>'
-                    + '<p>※ 본문내용 : <span class="en_font">1300</span>글자 이내<br>본문길이 : 최대 96줄</p>'
-                    + '</div>'
-                );
-            } else {
-                $('#js-vt-replace').html(
-                    '<div class="rcs_vertical medium cf">'
-                    + view
-                    + '</div>'
-                    + '<div class="rcs_register">무료 수신거부 : <span id="rejectionArea"></span></div>'
-                    + '<div class="text_count">'
-                    + '<span class="num en_font"><span id="textByte0">0</span>/1300</span>'
-                    + '<p>※ 본문내용 : <span class="en_font">1300</span>글자 이내<br>본문길이 : 최대 96줄</p>'
-                    + '</div>'
-                );
-            }
-        }
-        mappingLst();
-        adTypeCheck();
-    }
-
-
-    // 프리뷰 서비스 랜딩 하기
-    function preview() {
-        const res = function (response) {
-            const $doc = new DOMParser().parseFromString(response, "text/html");
-            let html = $("#js-area-popup", $doc).html();
-            let dynamic = $("#preview").html(html);
-            $("#smsContentsPopup").addClass("active");
-            previewSlideLoad();
-        }
-        let data = $("#form").serializeArray();
-        com_ajax.ajax('post', '${baseURL}/cont/preview.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}')
-    }
-
-    // 프리뷰에서 저장 버튼 누르기
-    $(document).on('click', '#saveBtn', function () {
-        $("#form").submit();
-    });
-
-</script>
-
-
 
