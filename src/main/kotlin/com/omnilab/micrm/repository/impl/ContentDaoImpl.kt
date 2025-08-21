@@ -153,4 +153,8 @@ class ContentDaoImpl : ContentDao {
     override fun sel_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto> {
         return sqlSession.selectList("sel_tblmicp_cont_url_lst", dto)
     }
+
+    override fun del_tblmi_cont_url_lst(dto: Tblmi_cont_url_lstDto): Int {
+        return sqlSession.delete("del_tblmi_cont_url_lst", dto)
+    }
 }

@@ -865,7 +865,6 @@ class SalesforceServiceImpl : SalesforceService {
         contentDao.updateMobileMst(tblmiContMstDto);
 
         val contListDto = Tblmi_cont_lstDto()
-
         contListDto.cont_cd = contentListCreatedto.mst_seq!!.toInt()
         val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
 
@@ -978,14 +977,19 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
                     tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
                     tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+                    tblmiContLstdto.kko_btn_urlPc = contentListCreatedto.kko_btn_urlPc
                     tblmiContLstdto.kko_btn_nm2 = contentListCreatedto.kko_btn_nm2
                     tblmiContLstdto.kko_btn_url2 = contentListCreatedto.kko_btn_url2
+                    tblmiContLstdto.kko_btn_urlPc2 = contentListCreatedto.kko_btn_urlPc2
                     tblmiContLstdto.kko_btn_nm3 = contentListCreatedto.kko_btn_nm3
                     tblmiContLstdto.kko_btn_url3 = contentListCreatedto.kko_btn_url3
+                    tblmiContLstdto.kko_btn_urlPc3 = contentListCreatedto.kko_btn_urlPc3
                     tblmiContLstdto.kko_btn_nm4 = contentListCreatedto.kko_btn_nm4
                     tblmiContLstdto.kko_btn_url4 = contentListCreatedto.kko_btn_url4
+                    tblmiContLstdto.kko_btn_urlPc4 = contentListCreatedto.kko_btn_urlPc4
                     tblmiContLstdto.kko_btn_nm5 = contentListCreatedto.kko_btn_nm5
                     tblmiContLstdto.kko_btn_url5 = contentListCreatedto.kko_btn_url5
+                    tblmiContLstdto.kko_btn_urlPc5 = contentListCreatedto.kko_btn_urlPc5
                 }
 
             }
@@ -1103,22 +1107,6 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                         tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
                     }
-                    // RCS 가로형 서비스 중단으로 인한 삭제 처리
-                    /*else if (rcsFormatType.equals("horizontal")) {
-                        if (rcsMsgType.equals("left")) {
-
-                            tblmiContLstdto.msg_tp = "DMCH209"
-                        } else if (rcsMsgType.equals("right")) {
-                            tblmiContLstdto.msg_tp = "DMCH210"
-                        }
-
-                        val jsonBody = JSONObject()
-                        jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                        jsonBody["description"] = contentListCreatedto.rcs_body
-                        tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
-                        tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
-
-                    }*/
                     "vertical" -> {
                         // RCS 세로형의 경우
                         if (rcsMsgType == "tall") {
@@ -1148,7 +1136,6 @@ class SalesforceServiceImpl : SalesforceService {
                             if (codeDto != null) {
                                 tblmiContLstdto.key_id = codeDto.cd_val
                             }
-
                         }
 
                         // Json 바디 형태로 저장
@@ -1190,7 +1177,6 @@ class SalesforceServiceImpl : SalesforceService {
             contentDao.updateMobileContent(tblmiContLstdto)
 
             val lastSeq = tblmiContLstdto.seq
-
             /**
              *  URL 저장하기 로직
              *  카카오, 모바일 같은 경우 알맞게 저장된다
@@ -1201,6 +1187,12 @@ class SalesforceServiceImpl : SalesforceService {
              */
 
             if (i == 0) {
+                //기존 링크 삭제
+                val dd = Tblmi_cont_url_lstDto()
+                dd.cont_lst_cd = lastSeq!!
+                dd.url_id = "kko"
+                contentDao.del_tblmi_cont_url_lst(dd)
+
                 // 카카오 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
                     insertContentUrl("img", contentListCreatedto.kko_img_url!!, "kkoImg001", lastSeq!!)
@@ -1208,18 +1200,23 @@ class SalesforceServiceImpl : SalesforceService {
                 // btn 처리
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
                     insertContentUrl("btn", contentListCreatedto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
+                    insertContentUrl("btn", dto.kko_btn_urlPc!!, "kkoBtnPc001", lastSeq)
                 }
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url2)) {
                     insertContentUrl("btn", contentListCreatedto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
+                    insertContentUrl("btn", dto.kko_btn_urlPc2!!, "kkoBtnPc002", lastSeq)
                 }
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url3)) {
                     insertContentUrl("btn", contentListCreatedto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
+                    insertContentUrl("btn", dto.kko_btn_urlPc3!!, "kkoBtnPc003", lastSeq)
                 }
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url4)) {
                     insertContentUrl("btn", contentListCreatedto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
+                    insertContentUrl("btn", dto.kko_btn_urlPc4!!, "kkoBtnPc004", lastSeq)
                 }
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url5)) {
                     insertContentUrl("btn", contentListCreatedto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
+                    insertContentUrl("btn", dto.kko_btn_urlPc5!!, "kkoBtnPc005", lastSeq)
                 }
                 // 카카오 본문 a 링크 저장 테스트
                 val urlKakaoBody = contentListCreatedto.kakao_body
@@ -1262,9 +1259,14 @@ class SalesforceServiceImpl : SalesforceService {
                 }
             }
             if (i == 1) {
+                //기존 링크 삭제
+                val dd = Tblmi_cont_url_lstDto()
+                dd.cont_lst_cd = lastSeq!!
+                dd.url_id = "mms"
+                contentDao.del_tblmi_cont_url_lst(dd)
                 // 모바일 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
-                    insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq!!)
+                    insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq)
                 }
 
                 val urlSmsBody = contentListCreatedto.sms_body
@@ -1305,7 +1307,6 @@ class SalesforceServiceImpl : SalesforceService {
 
                 }
             }
-
             if (i == 2) {
                 val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
 
@@ -1957,9 +1958,6 @@ class SalesforceServiceImpl : SalesforceService {
         val result: ResponseEntity<String> = restTemplate.exchange(urlString, HttpMethod.GET, org.springframework.http.HttpEntity(null, headers), String::class.java)
         val status = result.statusCode.value()
         return if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
-            logger.error("+----------------------------------------------------")
-            logger.error("{}",result.body)
-            logger.error("{}",urlString)
             if(CommonUtils.isEmptyObject(result.body)){
                 logger.error("getTotalCnt url : {}",urlString)
             }

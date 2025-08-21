@@ -77,4 +77,6 @@ interface ContentDao {
     fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int
 
     fun sel_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto>
+
+    fun del_tblmi_cont_url_lst(dto: Tblmi_cont_url_lstDto): Int
 }

@@ -76,10 +76,8 @@
                                             <span class="bar">|</span>
                                         </c:if>
                                         <div class="icon">
-                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png"
-                                                                                     alt=""/></c:if>
-                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png"
-                                                                                     alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png" alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png" alt=""/></c:if>
                                         </div>
                                         <c:if test="${!empty g.team_nm}">
                                             <span>팀 명 : ${g.team_nm}</span>

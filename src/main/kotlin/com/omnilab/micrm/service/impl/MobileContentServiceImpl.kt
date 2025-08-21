@@ -181,6 +181,7 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
                         tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
                         tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
+                        tblmiContLstdto.kko_btn_urlPc = contentListCreatedto.kko_btn_urlPc
                     }
                 }
 
@@ -284,42 +285,6 @@ class MobileContentServiceImpl : ContentService {
                         }
                         tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
                     }
-                    // 2021-05-03 가로형 삭제로 인한 주석 처리
-                    /*else if (rcsFormatType.equals("horizontal")) {
-                        if (rcsMsgType.equals("left")) {
-                            tblmiContLstdto.msg_tp = "DMCH209"
-
-                            val cdDto = Tblmi_comm_cdDto()
-                            cdDto.grp_id = "RCS_W_LEFT_MSG_ID"
-                            cdDto.cd_id = userInfo.usr_grp_cd
-
-                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                            if (codeDto != null) {
-                                tblmiContLstdto.key_id = codeDto.cd_val
-                            }
-
-                        } else if (rcsMsgType.equals("right")) {
-                            tblmiContLstdto.msg_tp = "DMCH210"
-
-                            val cdDto = Tblmi_comm_cdDto()
-                            cdDto.grp_id = "RCS_W_RIGHT_MSG_ID"
-                            cdDto.cd_id = userInfo.usr_grp_cd
-
-                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                            if (codeDto != null) {
-                                tblmiContLstdto.key_id = codeDto.cd_val
-                            }
-
-                        }
-                        val jsonBody = JSONObject()
-
-                        jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                        jsonBody["description"] = contentListCreatedto.rcs_body
-
-                        tblmiContLstdto.cont_body = jsonBody.toJSONString().replace("\\r\\n","\\\\r\\\\n")
-                        tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
-
-                    }*/
                     else if (rcsFormatType == "vertical") {
                         // RCS 세로형의 경우
                         if (rcsMsgType == "tall") {

@@ -350,7 +350,7 @@
                                                     <div class="row flex_box" style="width: 100%;">
                                                         <div class="th">Pc 링크</div>
                                                         <div class="td flex_box">
-                                                            <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}"
+                                                            <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}"
                                                                 <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                                                     readonly
                                                                 </c:if>
@@ -360,25 +360,25 @@
                                                     <div class="row flex_box" style="width: 100%;">
                                                         <div class="th">Mobile 링크</div>
                                                         <div class="td flex_box">
-                                                            <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}"
+                                                            <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}"
                                                                 <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                                                     readonly
                                                                 </c:if>
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn"
-                                                            <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
-                                                                value ="생성"
-                                                            </c:if>
-                                                            <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
-                                                                value="삭제"
-                                                            </c:if>
-                                                        />
-                                                    </div>
+                                                </div>
+                                                <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                    <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                    <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                    <input type="button" class="btn_sm_line kakaoLinkBtn"
+                                                        <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
+                                                            value ="생성"
+                                                        </c:if>
+                                                        <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
+                                                            value="삭제"
+                                                        </c:if>
+                                                    />
                                                 </div>
                                             </div>
                                             <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url2)}">
@@ -392,20 +392,20 @@
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Pc 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url2}"/>
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc2}" readonly/>
                                                             </div>
                                                         </div>
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Mobile 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc2}" readonly/>
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url2}" readonly/>
                                                             </div>
                                                         </div>
-                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
-                                                        </div>
+                                                    </div>
+                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                     </div>
                                                 </div>
                                             </c:if>
@@ -420,20 +420,20 @@
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Pc 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url3}"/>
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc3}" readonly/>
                                                             </div>
                                                         </div>
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Mobile 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc3}" readonly/>
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url3}" readonly/>
                                                             </div>
                                                         </div>
-                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
-                                                        </div>
+                                                    </div>
+                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                     </div>
                                                 </div>
                                             </c:if>
@@ -448,20 +448,20 @@
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Pc 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url4}"/>
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc4}" readonly/>
                                                             </div>
                                                         </div>
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Mobile 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc4}" readonly/>
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url4}" readonly/>
                                                             </div>
                                                         </div>
-                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
-                                                        </div>
+                                                    </div>
+                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                     </div>
                                                 </div>
                                             </c:if>
@@ -476,20 +476,20 @@
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Pc 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url5}"/>
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc5}" readonly/>
                                                             </div>
                                                         </div>
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Mobile 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc5}" readonly/>
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url5}" readonly/>
                                                             </div>
                                                         </div>
-                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
-                                                        </div>
+                                                    </div>
+                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                     </div>
                                                 </div>
                                             </c:if>

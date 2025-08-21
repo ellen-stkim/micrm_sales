@@ -870,6 +870,7 @@
 
 	<!-- 버튼 , img는 있다가 없어질 수 있으므로 null 처리 제거 -->
 	<update id="updateMobileContent" parameterType="Tblmi_cont_lstDto">
+		/* updateMobileContent */
 		update tblmi_cont_lst set
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_tp)">
 				CONT_TP = #{cont_tp},
@@ -1277,6 +1278,12 @@
 			and img.USR_GRP_CD = #{usr_grp_cd}
 		</if>
 	</select>
+
+	<delete id ="del_tblmi_cont_url_lst" parameterType="Tblmi_cont_url_lstDto">
+		DELETE FROM tblmi_cont_url_lst
+		where cont_lst_cd = #{cont_lst_cd}
+			and url_id like concat(#{url_id}, '%')
+	</delete>
 </mapper>
 
 
