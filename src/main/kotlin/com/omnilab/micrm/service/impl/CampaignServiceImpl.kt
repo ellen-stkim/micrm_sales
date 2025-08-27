@@ -202,8 +202,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
                 }
             }
             map["contDto"] = contMap
-
-            map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
+            //map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
             map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
             map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
             map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)

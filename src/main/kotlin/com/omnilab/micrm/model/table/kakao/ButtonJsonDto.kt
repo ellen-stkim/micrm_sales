@@ -8,8 +8,8 @@ import org.apache.ibatis.type.Alias
 data class ButtonJsonDto(
     var name: String?
     , var type: String?
-    , var url_pc: String?
     , var url_mobile: String?
+    , var url_pc: String?
 ) {
 
     constructor(): this(null, null, null, null)
