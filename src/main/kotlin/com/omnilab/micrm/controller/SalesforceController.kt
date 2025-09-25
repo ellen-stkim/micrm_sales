@@ -173,7 +173,6 @@ class SalesforceController {
         }else{
             return ModelAndView("redirect:/html/not.html")
         }
-
     }
 
     // =================================================== Mobile ========================================================= //

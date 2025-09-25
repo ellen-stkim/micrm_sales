@@ -45,11 +45,12 @@ class CostReportServiceImpl : CostReportService {
     lateinit var sysSettingDao : SysSettingDao
     override fun getCostReport(hstDto : SearchSendCostDto): HashMap<String, Any?> {
         hstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        if(hstDto.usr_grp_cd == "16"
-            || hstDto.usr_grp_cd == "22"
-        ){
-            hstDto.lstCd = listOf("16", "22")
+
+        val cdLst = UsefulUtils.sessionGrpCd()
+        if(cdLst.size >= 2){
+            hstDto.lstCd = cdLst
         }
+
         val searchDto = setDateDefault(hstDto)   // 조회 날짜 체크 후 기본값 설정
         val totalLst : List<SendCostDto> = costReportDao.selSendCostLst(searchDto)
 
@@ -120,13 +121,11 @@ class CostReportServiceImpl : CostReportService {
 
     override fun getPrgCostReport(dto: SearchSendCostDto): HashMap<String, Any?> {
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        if(dto.usr_grp_cd == "16"
-            || dto.usr_grp_cd == "22"
-        ){
-            dto.lstCd = listOf("16", "22")
+        val cdLst = UsefulUtils.sessionGrpCd()
+        if(cdLst.size >= 2){
+            dto.lstCd = cdLst
         }
         val searchDto = setDateDefault(dto)
-
         return getProgramCostLst(searchDto)
     }
 
@@ -141,14 +140,12 @@ class CostReportServiceImpl : CostReportService {
         labelList.clear()
 
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        if(dto.usr_grp_cd == "16"
-            || dto.usr_grp_cd == "22"
-        ){
-            dto.lstCd = listOf("16", "22")
+        val cdLst = UsefulUtils.sessionGrpCd()
+        if(cdLst.size >= 2){
+            dto.lstCd = cdLst
         }
 
         val searchDto = setDateDefault(dto)   // 조회 날짜 체크 후 기본값 설정
-
         val dailyTotalLst : List<SendCostDto> = costReportDao.selDailySendCostLst(searchDto)
         // 발송 건수, 비용 월별 합계
         val groupMap = dailyTotalLst.stream().collect(groupingBy(SendCostDto::send_mon, { TreeMap() }, toList()))
@@ -318,11 +315,11 @@ class CostReportServiceImpl : CostReportService {
 
         // 프로그램 당 발송 디테일
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        if(dto.usr_grp_cd == "16"
-            || dto.usr_grp_cd == "22"
-        ){
-            dto.lstCd = listOf("16", "22")
+        val cdLst = UsefulUtils.sessionGrpCd()
+        if(cdLst.size >= 2){
+            dto.lstCd = cdLst
         }
+
         val searchDto = setDateDefault(dto)
         var prgMap = getProgramCostLst(searchDto)
         if(!CommonUtils.isEmptyObject(prgMap["programMap"])){
@@ -341,7 +338,6 @@ class CostReportServiceImpl : CostReportService {
         reMap["book"] = workbook
         return reMap
     }
-
 
     private fun getProgramCostLst(searchDto: SearchSendCostDto): HashMap<String, Any?> {
         // 프로그램 당 발송 디테일

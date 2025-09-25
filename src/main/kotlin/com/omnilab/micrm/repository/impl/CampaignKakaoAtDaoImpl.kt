@@ -453,66 +453,59 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         val buttons = jsonObject["button"].asJsonArray
 
         for (button in buttons) {
-           val obj = button.asJsonObject
-           for ((field, valueElement) in obj.entrySet()) {
-               if (!valueElement.isJsonPrimitive || !valueElement.asJsonPrimitive.isString) continue
-               val value = valueElement.asString
+            val obj = button.asJsonObject
+            for ((field, valueElement) in obj.entrySet()) {
+                if (!valueElement.isJsonPrimitive || !valueElement.asJsonPrimitive.isString) continue
+                val value = valueElement.asString
 
-               val newValue = when (field) {
-                   "linkMo", "linkPc" -> processLinkField(value, keyMap, trackURL, hstSeq)
-                   else -> replacePlainTemplate(value, keyMap)
-               }
-               obj.addProperty(field, newValue)
-           }
+                val newValue = if (field == "linkMo" || field == "linkPc") {
+                    processLinkField(value, keyMap, trackURL, hstSeq)
+                } else {
+                    replaceTemplate(value, keyMap, urlContext = false)
+                }
+                obj.addProperty(field, newValue)
+            }
         }
         return gson.toJson(jsonObject)
     }
 
     fun processLinkField(value: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
-        val regex = Regex("^(https?://)?#\\{([^}]+)}$")
+        val regex = Regex("^((?:https?|http)://)?#\\{([^}]+)}$")
         val match = regex.matchEntire(value)
         if (match != null) {
-            val protocol = match.groupValues[1].ifBlank { null }
+            val protocol = match.groupValues[1].ifBlank { "https://" }
             val key = match.groupValues[2]
             return transform(key, protocol, keyMap, trackURL, hstSeq)
         }
-        return replaceTemplateInString(value, keyMap)
+        return replaceTemplate(value, keyMap, urlContext = true)
     }
 
-    fun replaceTemplateInString(input: String, keyMap: MutableMap<String, Any>): String {
+    fun replaceTemplate(input: String, keyMap: MutableMap<String, Any>, urlContext: Boolean): String {
         val pattern = Regex("#\\{([^}]+)}")
-        return pattern.replace(input) { match ->
-            val key = match.groupValues[1]
-            val value = keyMap[key] ?: return@replace match.value
+        return pattern.replace(input) { m ->
+            val key = m.groupValues[1]
+            val raw = keyMap[key]?.toString() ?: return@replace m.value
 
-            // 앞 문맥 확인 (최대 10자 앞)
-            val startIdx = match.range.first
-            val prefix = input.substring(0, startIdx).takeLast(10).lowercase()
-            // URL 또는 쿼리스트링 내 템플릿이라면 https:// 생략
-            return@replace if (prefix.endsWith("=") || prefix.endsWith("?") ||
-                prefix.contains("http://") || prefix.contains("https://")) {
-                value.toString()
-            } else {
-                "https://$value"
+            val prefix = input.substring(0, m.range.first)
+            val isAbsolute = raw.startsWith("http://", true) || raw.startsWith("https://", true)
+            val isExplicitScheme = prefix.endsWith("http://") || prefix.endsWith("https://")
+            val prev = prefix.lastOrNull()
+            val isPathOrQueryContext = prev in listOf('/', '?', '&', '=', '#')
+
+            when {
+                isAbsolute -> raw
+                isExplicitScheme -> raw
+                isPathOrQueryContext -> raw
+                urlContext -> raw          // 링크 필드라면 기본은 raw
+                else -> "https://$raw"     // 일반 텍스트라면 보강
             }
         }
     }
 
-    fun replacePlainTemplate(input: String, keyMap: MutableMap<String, Any>): String {
-        val pattern = Regex("#\\{([^}]+)}")
-        return pattern.replace(input) { match ->
-            val key = match.groupValues[1]
-            (keyMap[key] ?: match.value).toString()
-        }
-    }
 
-    fun transform(key: String, protocol: String?, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
-        val value = keyMap[key] ?: return "#{$key}"  // 치환값 없으면 그대로 유지
-        return if (protocol != null){
-            "$trackURL/s/a/${AES256.AES_Encode("$hstSeq§$protocol$value", GlobalValues.encKey)}"
-        }else{
-            "$trackURL/s/a/${AES256.AES_Encode("$hstSeq§https://$value", GlobalValues.encKey)}"
-        }
+    fun transform(key: String, protocol: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
+        val value = keyMap[key] ?: return "#{$key}"
+        return "$trackURL/s/a/" + AES256.AES_Encode("$hstSeq§$protocol$value", GlobalValues.encKey)
     }
 
 }

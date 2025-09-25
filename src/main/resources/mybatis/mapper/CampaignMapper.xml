@@ -615,7 +615,18 @@
 			LEFT JOIN tblmi_comm_cd AS c ON c.grp_id = 'SENDRESULT' AND a.send_rst_det = c.CD_ID and a.M_SERVER = c.cd_nm AND a.send_rst_tp = c.par_id
 		<where>
 			a.pro_id = #{pro_id}
-			and a.usr_grp_cd = #{usr_grp_cd}
+
+			<choose>
+				<when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(lstCd)">
+					AND a.usr_grp_cd in
+					<foreach collection="lstCd" item="list" separator=" , " open="( " close=" )">
+						#{list}
+					</foreach>
+				</when>
+				<otherwise>
+					and a.usr_grp_cd = #{usr_grp_cd}
+				</otherwise>
+			</choose>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_rst)">
 				and a.send_rst = #{send_rst}
 			</if>

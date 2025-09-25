@@ -2307,6 +2307,27 @@
 
     // 프리뷰 서비스 랜딩 하기
     function preview() {
+        let stop = false;
+        const selectedValue = $('input[name="kko_format_type"]:checked').val();
+        if(selectedValue == "kko_ft"){
+            //카카오 버튼 체크
+            $('#addKakaoLink .row.flex_box.double').each(function () {
+                const $row = $(this);
+                const $name = $row.find('input.kakaoLinkBtn');
+                const btnName = $row.find('input[name=kkoBtnLst]').val();
+                const pcUrl = $row.find('input[name=kkoBtnUrlLstPc]').val();
+                const moUrl = $row.find('input[name=kkoBtnUrlLstMo]').val();
+                if ((btnName != '' || pcUrl != '' || moUrl != '') && $($name).val() === "생성") {
+                    stop = true;
+                    popup.popAlert('카카오톡 버튼 생성이 완료 되지 않았습니다!');
+                    return false;
+                }
+            });
+        }
+        if (stop) {
+          return;
+        }
+
         const res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
             let html = $("#js-area-popup", $doc).html();

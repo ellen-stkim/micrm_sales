@@ -288,7 +288,7 @@ class KkoMsgServiceImpl : KkoMsgService {
                     if (tmplResult!!["result"] as Boolean) {
                         val data: MutableMap<String, Any> = tmplResult["data"] as MutableMap<String, Any>
                         if ("API_200" == data.get("code")) { // 요청 취소 성공
-                            val updDto: Tblmi_kko_at_tmplDto = Tblmi_kko_at_tmplDto(dto.seq, updId, null)
+                            val updDto = Tblmi_kko_at_tmplDto(dto.seq, updId, null)
                             updDto.kep_status = "N"
                             kkoAtTmplDao.updTmplDtoBySeq(updDto)
 
@@ -380,9 +380,6 @@ class KkoMsgServiceImpl : KkoMsgService {
                     var updTmpl: Kko_at_tmplDto = getAtTmplDataByViewDto(Kko_at_tmplDto(), dto)
                     updTmpl.send_key = dto.send_key
                     updTmpl = getNewAtTmpl(Kko_at_tmplDto(), updTmpl)
-
-                    logger.error("updTmpl {}", updTmpl)
-
                     // 검수 요청 상태 반영
                     val updResult:MutableMap<String,Any> = kkoRestApiService.updateAtTmpl(updTmpl)
                     if (updResult["result"] as Boolean) {
@@ -402,7 +399,6 @@ class KkoMsgServiceImpl : KkoMsgService {
                             map["msg"] = "검수요청이 등록되었습니다."
 
                         } else {
-                            logger.error("템플릿 검수요청 에러 {}", updResult)
                             map["status"] = HttpServletResponse.SC_BAD_REQUEST
                             map["msg"] = tempData["message"] as String
                         }
@@ -580,6 +576,7 @@ class KkoMsgServiceImpl : KkoMsgService {
         dto.newTemplateItem =  updDto.templateItem
         dto.buttons =  updDto.buttons
 
+        dto.send_key = updDto.send_key
         return dto
     }
 

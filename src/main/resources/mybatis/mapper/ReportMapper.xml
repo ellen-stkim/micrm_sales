@@ -169,8 +169,7 @@
             ,Sum(roi) AS roi
             ,Min(start_dt) AS start_dt
             ,Max(start_dt) AS end_dt
-            ,REPLACE(REPLACE(REPLACE(GROUP_CONCAT(
-                DISTINCT camp_ch  SEPARATOR  ' / '),'CH01','이메일'),'CH02','문자'),'CH03','세일즈포스') AS camp_ch
+            ,REPLACE(REPLACE(REPLACE(GROUP_CONCAT(DISTINCT camp_ch  SEPARATOR  ' / '),'CH01','이메일'),'CH02','문자'),'CH03','세일즈포스') AS camp_ch
         FROM tblmire_camp_mst
         <where> seq IN
                     <foreach item="item" index="index" collection="list"

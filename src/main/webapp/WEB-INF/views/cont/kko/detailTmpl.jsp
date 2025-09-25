@@ -832,7 +832,7 @@
                                                                 </c:forEach>
                                                                     </td>
                                                             <td style="line-height: 1.5;">
-                                                                    ${comment.commentContent}
+                                                                ${cutil:replaceBr(comment.commentContent)}
                                                             </td>
                                                         </tr>
                                                     </c:forEach>

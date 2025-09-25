@@ -14,6 +14,8 @@ class SendResult_lstDto: Tblmicp_send_hstDto {
     var firstIndex: Int? = null
     var recordCountPerPage: Int? = null
 
+    var lstCd: List<String>? = null
+
     constructor()
     constructor(pro_id: String?, usr_grp_cd: String?){
         this.pro_id = pro_id

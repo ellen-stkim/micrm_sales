@@ -285,7 +285,7 @@
                                                       <c:set var="idx" value="${i+1}"/>
                                                       <c:set var="title" value="title${idx}"/>
                                                       <c:set var="description" value="description${idx}"/>
-                                                      <!-- JsonArray 안의 첫번째 값 가져와서 파싱 -->
+                                                      <!-- JsonArray 안의 첫번째 값 가져 와서 파싱 -->
                                                       <div class="txt_area">
                                                          <h3>${rcsLst[0][title]}</h3>
                                                          <p>${cutil:replaceBr(rcsLst[0][description])}</p>

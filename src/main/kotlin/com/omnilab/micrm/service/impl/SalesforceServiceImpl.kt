@@ -1698,8 +1698,8 @@ class SalesforceServiceImpl : SalesforceService {
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun sendCampaign(map: MutableMap<String, Any>): Boolean {
         val inArguments = mutableMapOf<String,Any>()
-        val _inArguments = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
-        _inArguments.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
+        val inArgumentsChil = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
+        inArgumentsChil.forEach{ tempMap -> inArguments[tempMap.key.lowercase(Locale.getDefault())] = tempMap.value }
 
         val avoId: String = map["activityId"].toString()
         val intenId = map["journeyId"].toString()
@@ -1761,7 +1761,9 @@ class SalesforceServiceImpl : SalesforceService {
                     sendHstDto.reg_id = campaignDto.reg_id
                     sendHstDto.camp_ch = campaignDto.camp_ch
                     sendHstDto.camp_dt = yyyymmddFormat.format(date)
-                    sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
+                    if(!CommonUtils.isEmptyObject(inArguments[contMst.usr_key])){
+                        sendHstDto.usr_key = inArguments[contMst.usr_key]?.toString() // 회원 정보 추가
+                    }
 
                     //컨텐츠 리스트
                     val contLst = campaignDao.sel_tblmicp_cont_lst(Tblmicp_cont_lstDto(campaignDto.cont_id, campaignDto.reg_id, campaignDto.usr_grp_cd))
@@ -1985,12 +1987,12 @@ class SalesforceServiceImpl : SalesforceService {
         if (!CommonUtils.isEmptyObject(dto.kakao_body)) {
             if (!CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 400)) {
-                    logger.error("KaKao 400Byte Error")
+                    logger.error("KaKao 400Byte Error {}, {}", dto.kakao_body?.length, dto.kakao_body)
                     return false;
                 }
             } else if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
-                    logger.error("KaKao 2000Byte Error")
+                    logger.error("KaKao 2000Byte Error {}, {}", dto.kakao_body?.length, dto.kakao_body)
                     return false;
                 }
             }

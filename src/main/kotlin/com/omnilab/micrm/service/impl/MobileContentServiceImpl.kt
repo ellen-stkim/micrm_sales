@@ -558,12 +558,12 @@ class MobileContentServiceImpl : ContentService {
 
             if (!CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 400)) {
-                    logger.error("KaKao 400Byte Error")
+                    logger.error("KaKao 400Byte Error {}, {}", dto.kakao_body?.length, dto.kakao_body)
                     return false;
                 }
             } else if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                 if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
-                    logger.error("KaKao 2000Byte Error")
+                    logger.error("KaKao 2000Byte Error {}, {}", dto.kakao_body?.length, dto.kakao_body)
                     return false;
                 }
             }
@@ -596,7 +596,7 @@ class MobileContentServiceImpl : ContentService {
                 return false
             }
         }
-        return true;
+        return true
     }
 
 

@@ -448,7 +448,7 @@ class ContentController  {
         val formatList = dto.formatType
         if(formatList!!.contains("rcs")) {
             // 넘어 오는 Preview 데이터에 RCS가 있으면 파싱후 뿌려 준다 -> RCS Json Parsing
-            val map = mobileContentService.previewJsonService(dto);
+            val map = mobileContentService.previewJsonService(dto)
             //logger.error("jsonContent : " + map["jsonContent"])
             view.addObject("jsonContent", map["jsonContent"])
         }

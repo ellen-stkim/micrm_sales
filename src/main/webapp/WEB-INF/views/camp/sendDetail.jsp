@@ -297,11 +297,11 @@
                                             <c:choose>
                                                 <c:when test="${empty targetDto}">
                                                     <div><span class="th">계산일 : </span><span
-                                                            class="en_font">${cutil:getDateTimeNow()}</span></div>
+                                                            class="en_font">${g.upd_dt}</span></div>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <div><span class="th">계산일 : </span><span
-                                                            class="en_font">${cutil:stringDatetimeParse(targetDto.reg_dt)}</span>
+                                                            class="en_font">${cutil:stringDatetimeParse(targetDto.upd_dto)}</span>
                                                     </div>
                                                 </c:otherwise>
                                             </c:choose>

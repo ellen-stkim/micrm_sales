@@ -20,6 +20,21 @@ class UsefulUtils {
             return loginDto
         }
 
+        fun sessionGrpCd(): List<String> {
+            val authentication = SecurityContextHolder.getContext().authentication
+            val loginDto: Tblmi_usrDto = authentication.details as Tblmi_usrDto
+
+            val usrGrpCd = loginDto.usr_grp_cd.toString()
+
+            return if(usrGrpCd == "16" || usrGrpCd == "22"){
+                //초록 우산 임시처리
+                listOf("16", "22")
+            }  else {
+                listOf(usrGrpCd)
+            }
+        }
+
+
         fun makePage(currentPageNo: Int, pageSize: Int, recordCounterPage: Int): PaginationInfo {
             val pagination = PaginationInfo()
 
