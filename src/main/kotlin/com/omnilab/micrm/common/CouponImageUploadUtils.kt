@@ -56,7 +56,7 @@ class CouponImageUploadUtils {
                 fileName = "$digits.$fileExe"
 
                 if (fileupload(curFilePath,file, fileName)) {
-                    val minioClient = MinioClient.builder().endpoint("https://" + shareUrl).credentials(shareUsername, sharePassword).build()
+                    val minioClient = MinioClient.builder().endpoint(shareUrl).credentials(shareUsername, sharePassword).build()
                     minioClient.uploadObject(
                         UploadObjectArgs.builder()
                             .bucket(shareBucket)

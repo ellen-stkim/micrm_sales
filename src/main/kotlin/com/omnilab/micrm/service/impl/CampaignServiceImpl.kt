@@ -162,10 +162,10 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     }
 
 
-    override fun getProgramInfo(pro_id: String, usr_grp_cd: String, check: Boolean): MutableMap<String, Any> {
+    override fun getProgramInfo(proId: String, usrGrpCd: String, check: Boolean): MutableMap<String, Any> {
         val map = HashMap<String, Any>()
-        val searchDto = Tblmicp_programDto(pro_id)
-        searchDto.usr_grp_cd = usr_grp_cd
+        val searchDto = Tblmicp_programDto(proId)
+        searchDto.usr_grp_cd = usrGrpCd
         val cdLst = UsefulUtils.sessionGrpCd()
         if(cdLst.size >= 2){
             searchDto.lstCd = cdLst
@@ -179,19 +179,19 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         } else {
             map["status"] = true
             if (programDto.pro_tg_tp == "TG02") {
-                map["targetDto"] = campaignDao.sel_tblmi_traget_grp(Tblmi_target_grpDto(programDto.pro_tg_id?.toInt(), usr_grp_cd, null))
+                map["targetDto"] = campaignDao.sel_tblmi_traget_grp(Tblmi_target_grpDto(programDto.pro_tg_id?.toInt(), usrGrpCd, null))
             }
 
-            val campLSt = campaignDao.sel_campaign_data(Tblmicp_campaignDto(pro_id))
+            val campLSt = campaignDao.sel_campaign_data(Tblmicp_campaignDto(proId))
             map["campaignLst"] = campLSt
 
             val contMap = HashMap<String, Any>()
             for (camp in campLSt) {
-                val campDto = Tblmicp_cont_mstDto(camp.cont_id!!, usr_grp_cd, null)
+                val campDto = Tblmicp_cont_mstDto(camp.cont_id!!, usrGrpCd, null)
 
-                val cdLst = UsefulUtils.sessionGrpCd()
-                if(cdLst.size >= 2){
-                    campDto.lstCd = cdLst
+                val cdLst1 = UsefulUtils.sessionGrpCd()
+                if(cdLst1.size >= 2){
+                    campDto.lstCd = cdLst1
                 }
                 val tempDt = campaignDao.sel_camp_cont_mst(campDto)
                 val tempTblDto = campaignDao.sel_ContentsList(Contents_searchDto(tempDt?.cont_seq))
@@ -201,12 +201,12 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
             }
             map["contDto"] = contMap
             //map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
-            map["sendCnt"] = campaignDao.sel_send_status_cnt(pro_id)
-            map["openCnt"] = campaignDao.sel_tarck_open_cnt(pro_id)
-            map["trackCnt"] = campaignDao.sel_tarck_url_cnt(pro_id)
+            map["sendCnt"] = campaignDao.sel_send_status_cnt(proId)
+            map["openCnt"] = campaignDao.sel_tarck_open_cnt(proId)
+            map["trackCnt"] = campaignDao.sel_tarck_url_cnt(proId)
 
             val cdDto = Tblmi_comm_cdDto()
-            cdDto.cd_id = usr_grp_cd
+            cdDto.cd_id = usrGrpCd
             cdDto.grp_id = "API_PRICE"
             val priceLst = sysSettingDao.getCommCDLst(cdDto)
             val priceMap = priceLst.stream().collect(Collectors.toMap(Tblmi_comm_cdDto::cd_val, Tblmi_comm_cdDto::cd_desc))
