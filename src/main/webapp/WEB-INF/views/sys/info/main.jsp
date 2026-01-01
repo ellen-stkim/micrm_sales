@@ -974,7 +974,7 @@
                         </tr>
                         <tr id="API_PRICE|KKO_FT_TXT">
                             <td>
-                                모듈 가격 카카오 친구톡
+                                모듈 가격 카카오 브랜드톡
                                 <input type="hidden" name="lst[35].seq" value="">
                                 <input type="hidden" name="lst[35].grp_id" value="API_PRICE">
                                 <input type="hidden" name="lst[35].grp_nm" value="모듈 가격">
@@ -1000,7 +1000,7 @@
                         </tr>
                         <tr id="API_PRICE|KKO_FT_IMG">
                             <td>
-                                모듈 가격 카카오 친구톡(이미지)
+                                모듈 가격 카카오 브랜드톡(이미지)
                                 <input type="hidden" name="lst[36].seq" value="">
                                 <input type="hidden" name="lst[36].grp_id" value="API_PRICE">
                                 <input type="hidden" name="lst[36].grp_nm" value="모듈 가격">
@@ -1026,7 +1026,7 @@
                         </tr>
                         <tr id="API_PRICE|KKO_FT_WID">
                             <td>
-                                모듈 가격 카카오 친구톡(와이드 이미지)
+                                모듈 가격 카카오 브랜드톡(와이드 이미지)
                                 <input type="hidden" name="lst[37].seq" value="">
                                 <input type="hidden" name="lst[37].grp_id" value="API_PRICE">
                                 <input type="hidden" name="lst[37].grp_nm" value="모듈 가격">

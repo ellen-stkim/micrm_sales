@@ -443,7 +443,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }
 
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                        tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+                        tblmiContLstdto.msg_tp = "DMCH204" // 브랜드톡
 
 
                         // 카카오 이미지 처리
@@ -964,7 +964,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+                    tblmiContLstdto.msg_tp = "DMCH204" // 브랜드톡
 
                     // 카카오 이미지 처리
                     if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
@@ -1781,7 +1781,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 발송
                     when {
-                        // 카카오 친구톡
+                        // 카카오 브랜드톡
                         contTpLst["DMTP03"] != null -> {
                             val sendTo = inArguments[contTpLst["DMTP03"]?.from_to]
                             if(sendTo == null){

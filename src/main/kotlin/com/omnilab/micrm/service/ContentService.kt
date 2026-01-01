@@ -1,6 +1,5 @@
 package com.omnilab.micrm.service
 
-import com.omnilab.micrm.model.Content_list_CreateDto
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
@@ -31,7 +30,7 @@ interface ContentService {
 
     fun isCheckSender() : Map<String,Any>
 
-    fun contents_thumbnail_save(map: MutableMap<String, Any>) : Boolean
+    fun contentsThumbnailSave(map: MutableMap<String, Any>) : Boolean
 
     fun previewJsonService(dto : Tblmi_cont_lstDto) : Map<String,Any>
 

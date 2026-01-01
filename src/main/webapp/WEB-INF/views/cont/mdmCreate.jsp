@@ -148,7 +148,7 @@
                                         <label class="type_check"><input type="radio" name="kko_format_type"
                                                                          class="kkoType"
                                                                          value="kko_ft"
-                                                                         checked/><span>친구톡</span></label>
+                                                                         checked/><span>브랜드톡</span></label>
                                         <label class="type_check"><input type="radio" name="kko_format_type"
                                                                          class="kkoType"
                                                                          value="kko_at"/><span>알림톡</span></label>
@@ -296,7 +296,7 @@
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_ft_viewer">
-                                <div class="top">친구톡 미리보기</div>
+                                <div class="top">브랜드톡 미리보기</div>
                                 <div class="inner">
                                     <div class="row_body">
                                         <div class="round_box">
@@ -1755,7 +1755,7 @@
                     }
                     return true;
                 }
-                else {   //친구톡
+                else {   //브랜드톡
                     if (kakaoTxt.val() != '') {
                         let type = kakaoTypeValidate();
                         if (type == true) {

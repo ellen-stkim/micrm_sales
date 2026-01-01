@@ -342,7 +342,7 @@ class EmailContentServiceImpl : ContentService {
         return paramMap
     }
 
-    override fun contents_thumbnail_save(map: MutableMap<String, Any>): Boolean {
+    override fun contentsThumbnailSave(map: MutableMap<String, Any>): Boolean {
         try {
             val file = map["file"] as MultipartFile?
             val path = FilenameUtils.getFullPath(map["filename"].toString())

@@ -32,5 +32,11 @@ fun main(args: Array<String>) {
     //Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw
     //log.error("{}", enc.decrypt("U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE"))
     //log.error("{}", enc.decrypt("21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ"))
-    log.error("{}", enc.encrypt(""))
+    log.error("{}", enc.decrypt("zQoP26ubMZ161bF/s+HPpLLp0/OQuBXHum1gXnUEC1PP9X4+IdxpOjZ2ldaQSW3sCz9gMOT1OnNqEd/czycfcmR5CfhDBWDsAjZ5iynk7rI="))
+    log.error("{}", enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
+    log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+
+    log.error("{}", enc.decrypt("OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p"))
+    log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+
 }

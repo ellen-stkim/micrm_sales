@@ -54,9 +54,9 @@
                                 <div class="title2">발송건수</div>
                                 <div class="sub-title-wrap">
                                     <div class="li">알림톡</div>
-                                    <div class="li">친구톡(txt)</div>
-                                    <div class="li">친구톡(img)</div>
-                                    <div class="li">친구톡(wid)</div>
+                                    <div class="li">브랜드톡(txt)</div>
+                                    <div class="li">브랜드톡(img)</div>
+                                    <div class="li">브랜드톡(wid)</div>
                                     <div class="li">RCS SMS</div>
                                     <div class="li">RCS LMS</div>
                                     <div class="li">RCS MMS</div>
@@ -122,9 +122,9 @@
                                 <div class="title2">발송금액</div>
                                 <div class="sub-title-wrap">
                                     <div class="li">알림톡</div>
-                                    <div class="li">친구톡(txt)</div>
-                                    <div class="li">친구톡(img)</div>
-                                    <div class="li">친구톡(wid)</div>
+                                    <div class="li">브랜드톡(txt)</div>
+                                    <div class="li">브랜드톡(img)</div>
+                                    <div class="li">브랜드톡(wid)</div>
                                     <div class="li">RCS SMS</div>
                                     <div class="li">RCS LMS</div>
                                     <div class="li">RCS MMS</div>
@@ -291,9 +291,9 @@
                                         <div class="flex-div">
                                             <div>
                                                 <p>알림톡 : <fmt:formatNumber value="${!empty prg.KKO_AT.total_cnt ? prg.KKO_AT.total_cnt : 0 }" pattern="#,##0" /></p>
-                                                <p>친구톡(txt) : <fmt:formatNumber value="${!empty prg.KKO_FT_TXT.total_cnt? prg.KKO_FT_TXT.total_cnt : 0 }" pattern="#,##0" /></p>
-                                                <p>친구톡(img) : <fmt:formatNumber value="${!empty prg.KKO_FT_IMG.total_cnt? prg.KKO_FT_IMG.total_cnt : 0 }" pattern="#,##0" /></p>
-                                                <p>친구톡(wid) : <fmt:formatNumber value="${!empty prg.KKO_FT_WID.total_cnt? prg.KKO_FT_WID.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(txt) : <fmt:formatNumber value="${!empty prg.KKO_FT_TXT.total_cnt? prg.KKO_FT_TXT.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(img) : <fmt:formatNumber value="${!empty prg.KKO_FT_IMG.total_cnt? prg.KKO_FT_IMG.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(wid) : <fmt:formatNumber value="${!empty prg.KKO_FT_WID.total_cnt? prg.KKO_FT_WID.total_cnt : 0 }" pattern="#,##0" /></p>
                                             </div>
                                             <div>
                                                 <p>RCS SMS : <fmt:formatNumber value="${!empty prg.RCS_SMS.total_cnt? prg.RCS_SMS.total_cnt : 0 }" pattern="#,##0" /></p>
@@ -313,9 +313,9 @@
                                         <div class="flex-div">
                                             <div>
                                                 <p>알림톡 : <fmt:formatNumber value="${!empty prg.KKO_AT.total_cost? prg.KKO_AT.total_cost : 0 }" pattern="#,###.#" /></p>
-                                                <p>친구톡(txt) : <fmt:formatNumber value="${!empty prg.KKO_FT_TXT.total_cost? prg.KKO_FT_TXT.total_cost : 0 }" pattern="#,###.#" /></p>
-                                                <p>친구톡(img) : <fmt:formatNumber value="${!empty prg.KKO_FT_IMG.total_cost? prg.KKO_FT_IMG.total_cost : 0 }" pattern="#,###.#" /></p>
-                                                <p>친구톡(wid) : <fmt:formatNumber value="${!empty prg.KKO_FT_WID.total_cost? prg.KKO_FT_WID.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(txt) : <fmt:formatNumber value="${!empty prg.KKO_FT_TXT.total_cost? prg.KKO_FT_TXT.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(img) : <fmt:formatNumber value="${!empty prg.KKO_FT_IMG.total_cost? prg.KKO_FT_IMG.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(wid) : <fmt:formatNumber value="${!empty prg.KKO_FT_WID.total_cost? prg.KKO_FT_WID.total_cost : 0 }" pattern="#,###.#" /></p>
                                             </div>
                                             <div>
                                                 <p>RCS SMS : <fmt:formatNumber value="${!empty prg.RCS_SMS.total_cost? prg.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></p>
@@ -535,17 +535,17 @@
                             backgroundColor: 'rgba(29, 33, 132, 1)'
                         },
                         {
-                            label: '친구톡(txt)',
+                            label: '브랜드톡(txt)',
                             data: ftTextData,
                             backgroundColor: 'rgba(40, 69, 156, 1)'
                         },
                         {
-                            label: '친구톡(img)',
+                            label: '브랜드톡(img)',
                             data: ftImgData,
                             backgroundColor: 'rgba(97, 140, 211, 1)'
                         },
                         {
-                            label: '친구톡(wid)',
+                            label: '브랜드톡(wid)',
                             data: ftWideData,
                             backgroundColor: 'rgba(118, 177, 225, 1)'
                         },

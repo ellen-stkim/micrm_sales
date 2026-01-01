@@ -51,8 +51,9 @@ variable:
 
   biz-url: https://stg-bizmsg-web.dktechinmsg.com/mng
   biz-msg-url: https://stg-bizmsg-web.dktechinmsg.com
-  biz-version: v1
+  biz-version: v2
   biz-Auth: ENC(kO6zwBtVbCe9kwwg6lUrqtfMpN/MMK5n6LA0vHV8+pGGrShBcnGtLniK6zdAzF/+0CodDLN52UFiH86BMcrQ+C/Ucbzhe/gYYc3XFg1tAKXDyzBy6vm1n6HxnY/x/9vP)
+  biz-id: R000000015
 
 upload:
   src : "D:/work/micrm_sales/src/main/resources/static/image/upload/notice"

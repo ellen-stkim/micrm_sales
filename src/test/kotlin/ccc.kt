@@ -12,7 +12,7 @@ class ccc {
 fun main() {
     val logger = LoggerFactory.getLogger("ccc")
 
-    val sendTypes = listOf("알림톡", "친구톡(txt)", "친구톡(img)", "친구톡(wid)", "SMS", "LMS", "MMS", "RCS SMS", "RCS LMS", "RCS MMS", "RCS 템플릿")
+    val sendTypes = listOf("알림톡", "브랜드톡(txt)", "브랜드톡(img)", "브랜드톡(wid)", "SMS", "LMS", "MMS", "RCS SMS", "RCS LMS", "RCS MMS", "RCS 템플릿")
 
     val workbook: Workbook = SXSSFWorkbook(1000)
     val sheet = workbook.createSheet("Report")

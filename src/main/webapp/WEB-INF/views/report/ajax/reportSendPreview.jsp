@@ -14,7 +14,7 @@
         <c:set var="list" value="${list}"/>
         <c:set var="cont_tp" value="${list[0].dto.cont_tp}"/>
         <ul class="tab_row ${cont_tp eq 'DMTP01'? "disnone" : ""} " id="smsTab">
-            <li class="${cont_tp eq 'DMTP03' ? "on" : ""}" style="display: list-item;" id="DMTP03"><span>친구톡</span> </li>
+            <li class="${cont_tp eq 'DMTP03' ? "on" : ""}" style="display: list-item;" id="DMTP03"><span>브랜드톡</span> </li>
             <li class="${cont_tp eq 'DMTP05' ? "on" : ""}" style="display: list-item;" id="DMTP05"><span>알림톡</span> </li>
             <li class="${cont_tp eq 'DMTP02' ? "on" : ""}" style="display: list-item;" id="DMTP02"><span>문자</span></li>
             <li class="${cont_tp eq 'DMTP04' ? "on" : ""}" style="display: list-item;" id="DMTP04"><span>RCS</span></li>
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
                         </c:if>
-                        <!-- 친구톡 -->
+                        <!-- 브랜드톡 -->
                         <c:if test="${cont_tp eq 'DMTP03'}">
                             <div class="scroll-box">
                                 <div class="round_box">

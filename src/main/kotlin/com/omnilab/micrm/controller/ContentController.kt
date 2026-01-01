@@ -10,21 +10,15 @@ import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.service.*
-import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
-import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
-import java.awt.Image
-import java.awt.image.BufferedImage
-import java.io.File
 import java.security.Principal
-import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
@@ -60,7 +54,7 @@ class ContentController  {
     private lateinit var kkoMsgService: KkoMsgService
 
     @Autowired
-    lateinit var fileUpload: FileUploadUtils;
+    lateinit var fileUpload: FileUploadUtils
 
     @Autowired
     @Qualifier("KkoRestApiServiceImpl")
@@ -70,7 +64,7 @@ class ContentController  {
     lateinit var salesforceService: SalesforceService;
 
     @Value("\${upload.content}")
-    private val filePath: String? = null
+    lateinit var filePath: String
 
 
 
@@ -565,7 +559,7 @@ class ContentController  {
         val commonCDDto = Tblmi_comm_cdDto()
         commonCDDto.grp_id = "COMMON"
         commonCDDto.cd_id = "UPURL01"
-        val uploadPrefix = sysSettingService.getCommCD(commonCDDto);
+        val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
         view.addObject("filePath", uploadPrefix?.cd_val)
 
         return view
@@ -595,7 +589,7 @@ class ContentController  {
         paramMap["templist"] = param.templist!!
 
         val sb = StringBuilder()
-        if (emailContentService.contents_thumbnail_save(paramMap)) {
+        if (emailContentService.contentsThumbnailSave(paramMap)) {
             sb.append("이메일 템플릿이 저장 되었습니다.")
         } else {
             sb.append("이메일 템플릿 저장에 실패 하였습니다.")
@@ -678,136 +672,7 @@ class ContentController  {
     @ResponseBody
     @RequestMapping("/contentUpload.ajax")
     fun contentUpload(@RequestParam("file") file: MultipartFile, @ModelAttribute dto: Tblmi_cont_imgDto, request: HttpServletRequest): Map<String, Any> {
-        var map: MutableMap<String, Any> = hashMapOf()
-        //이미지명 중복 체크 추가.
-        val imgNmCh = imageService.getImgNmCh(dto)
-        if(imgNmCh > 0 ){
-            map["imgCheck"] = 0
-            map["imgCheckErr"] = "중복된 이미지명입니다."
-            return map
-        }
-        // 파일 타입 체크
-        if(dto.ch_tp == "IMGTP01"){
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE){
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "모바일은 jpg 파일만 업로드 가능 합니다."
-                return map
-            }
-        }else{
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_PNG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_GIF_VALUE
-            ){
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "jpg, png, gif 파일만 업로드 가능 합니다."
-                return map
-            }
-        }
-        try {
-            map["imgCheck"] = 1
-            val userInfo = UsefulUtils.sessionUser()
-            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(userInfo.usr_grp_cd!!, file)
-            if(map["uploaded"].toString() == "0"){
-                logger.info("File Upload fail")
-                map["uploaded"] = 0
-                map["message"] = "파일 저장에 실패하였습니다."
-                logger.info("File DB insert fail")
-                return map
-            }else{
-                if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
-                    val fileName = map["file_nm"]
-                    val image : BufferedImage = ImageIO.read(file.inputStream)
-                    val imageWidth: Int = image.width
-                    val imageHeight: Int = image.width
-                    if(image.width < 500 || image.height < 250) {
-
-                        val newWidth = 500
-                        val newHeight = 500
-                        val ratio: Double
-                        val w: Int
-                        var h: Int
-
-                        if (imageWidth > imageHeight) {
-                            ratio = newWidth.toDouble() / imageWidth.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else if (imageHeight > imageWidth) {
-                            ratio = newHeight.toDouble() / imageHeight.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else {
-                            w = newWidth
-                            h = newHeight
-                        }
-                        if(h < 250){
-                            h = 250
-                        }
-                        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
-                        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-                        val g = newImage.graphics
-                        g.drawImage(resizeImage, 0, 0, null)
-                        g.dispose()
-
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
-
-                        resizeImage.flush()
-                        image.flush()
-                    }
-                }
-                var resultMap: MutableMap<String, Any>? = null
-                when (dto.ch_tp) {
-                    "IMGTP09" -> {    // 카카오 알림톡 이미지
-                        resultMap = kkoRestApiService.uploadTmplImg(file)
-                    }
-                    "IMGTP10" -> {
-                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
-                    }
-                    "IMGTP03", "IMGTP11" -> {    // 카카오 친구톡 이미지
-                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
-                    }
-                }
-
-                if(!CommonUtils.isEmptyObject(resultMap)){
-                    if(resultMap!!["result"] as Boolean){
-                        val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
-                        if(data["code"] != "API_200" ){
-                            map["uploaded"] = 0
-                            map["message"] = "파일 저장에 실패하였습니다."
-                            logger.info("File DB insert fail")
-                            return map
-                        }
-
-                        dto.kko_img_url = data["image"].toString() // 카카오 이미지 넣어주기
-                    }else{
-                        map["uploaded"] = 0
-                        map["message"] = "파일 저장에 실패하였습니다."
-                        logger.info("File DB insert fail")
-                        return map
-                    }
-                }
-
-            }
-
-            dto.reg_id = userInfo.usr_id
-            dto.usr_grp_cd = userInfo.usr_grp_cd
-            dto.img_org_nm = map["fileName"].toString()
-            dto.img_file_nm = map["file_nm"].toString()
-            dto.img_url = map["url"].toString()
-            val returnMap = imageService.contentUpload(dto)
-            if(returnMap["message"].toString() == "0"){
-                map["uploaded"] = 0
-                map["message"] = "파일 저장에 실패하였습니다."
-                logger.info("File DB insert fail")
-            }
-
-        }catch (e:Exception){
-            map["uploaded"] = 0
-            map["message"] = "파일 저장에 실패하였습니다."
-            logger.info("File DB insert fail")
-            return map
-        }
-        return map
+        return imageService.mobileUpload(file, dto)
     }
     /**
      * @Method Name  : getImgList

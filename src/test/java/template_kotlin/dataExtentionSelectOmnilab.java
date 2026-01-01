@@ -31,20 +31,20 @@ public class dataExtentionSelectOmnilab {
         ETExpression exp = new ETExpression();
         exp.setProperty("id");
         exp.setOperator("=");
-        exp.setValue("cce071c7-4680-ed11-ba43-5cba2c19aa40");
+        exp.setValue("88d24efc-b9d5-f011-a5da-5cba2c19fe48");
         etf.setExpression(exp);
 
 //        ETClient client  = new ETClient("/fuelSdk.properties");
 
-        System.out.println("---------------------ETDataExtension------------------------");
+        logger.error("---------------------ETDataExtension------------------------");
         ETResponse<ETDataExtension> response = client.retrieve(ETDataExtension.class, "id=cce071c7-4680-ed11-ba43-5cba2c19aa40");
         ETResult<ETDataExtension> result = response.getResult();
         ETDataExtension dataExtension = result.getObject();
 
         ETResponse<ETDataExtensionRow> res = dataExtension.select();
 
-        System.out.println(res.getObject().getColumnNames());
+        logger.error("{}", res.getObject().getColumnNames());
 
-        System.out.println("---------------------ETDataExtension------------------------");
+        logger.error("---------------------ETDataExtension------------------------");
     }
 }

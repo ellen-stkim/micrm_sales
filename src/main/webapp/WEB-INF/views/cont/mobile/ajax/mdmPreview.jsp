@@ -43,7 +43,7 @@
                         <c:if test="${!fn:contains(content.kko_format_type,'kko_at')}">
                         <div class="column">
                            <div class="sms_head bg_color cf">
-                              친구톡
+                              브랜드톡
                            </div>
                            <div class="row_top cf">
                               <div class="contents_type">

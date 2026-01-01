@@ -49,13 +49,13 @@
                                 <li>RCS 슬라이드 Medium</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH204'}">
-                                <li>친구톡</li>
+                                <li>브랜드톡</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH217'}">
-                                <li>친구톡 이미지</li>
+                                <li>브랜드톡 이미지</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH218'}">
-                                <li>친구톡 와이드 이미지</li>
+                                <li>브랜드톡 와이드 이미지</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH216'}">
                                 <li>알림톡</li>
@@ -92,7 +92,7 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <!-- 카카오톡 친구톡 -->
+                <!-- 카카오톡 브랜드톡 -->
                 <c:if test="${content.cont_tp eq 'DMTP03'}">
                     <div class="row_body">
                         <div class="round_box">

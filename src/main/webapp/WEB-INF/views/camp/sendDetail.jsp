@@ -220,9 +220,9 @@
                                             <thead>
                                             <tr>
                                                 <th class="en_font">알림톡</th>
-                                                <th class="en_font">친구톡(txt)</th>
-                                                <th class="en_font">친구톡(img)</th>
-                                                <th class="en_font">친구톡(wid)</th>
+                                                <th class="en_font">브랜드톡(txt)</th>
+                                                <th class="en_font">브랜드톡(img)</th>
+                                                <th class="en_font">브랜드톡(wid)</th>
                                             </tr>
                                             </thead>
                                             <tbody>

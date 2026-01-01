@@ -44,10 +44,8 @@
             <!-- row 영역 시작 -->
             <div class="row bottom-border cf">
                 <div class="left">
-                    <a href="javascript:void(0);" class="btn_basic imageCreate left right-border"
-                       onclick="imgUploadPop();">새 이미지 파일 업로드</a>
-                    <input type="button" class="btn_basic delete left right-border"
-                           onclick="deleteImgList();" value="삭제" />
+                    <a href="javascript:void(0);" class="btn_basic imageCreate left right-border" onclick="imgUploadPop();">새 이미지 파일 업로드</a>
+                    <input type="button" class="btn_basic delete left right-border" onclick="deleteImgList();" value="삭제" />
                 </div>
             </div>
             <!-- row 영역 끝 -->
@@ -104,7 +102,6 @@
                                     </div>
                                 </div>
                                 </c:forEach>
-
                             </div>
                         </div>
                         <!-- list_container 영역 끝 -->
@@ -167,8 +164,7 @@
             '<tr>'+
             '<th>채널</th>'+
             '<td>'+
-            '<label class="custom_radio">친구톡<input name="ch_tp" type="radio" value="IMGTP03" checked><span></span></label>'+
-            // '<label class="custom_radio">친구톡(와이드)<input name="ch_tp" type="radio" value="IMGTP11"><span></span></label>'+
+            '<label class="custom_radio">브랜드톡<input name="ch_tp" type="radio" value="FT" checked><span></span></label>'+
             '<label class="custom_radio">알림톡<input name="ch_tp" type="radio" value="IMGTP09"><span></span></label>'+
             '<label class="custom_radio">알림톡(아이템)<input name="ch_tp" type="radio" value="IMGTP10"><span></span></label>' +
             '<label class="custom_radio">모바일<input name="ch_tp" type="radio" value="IMGTP02"><span></span></label>'+
@@ -182,11 +178,28 @@
             '<div class="value" data="">RCS 양식 선택</div>'+
             '<ul class="option">'+
             '<li data="0">RCS 양식 선택</li>'+
-            '<li data="IMGTP04">가로형</li>'+
             '<li data="IMGTP05">세로형 / Tall</li>'+
             '<li data="IMGTP06">세로형 / Medium</li>'+
             '<li data="IMGTP07">슬라이드형 / Small</li>'+
             '<li data="IMGTP08">슬라이드형 / Medium</li>'+
+            '</ul>'+
+            '</div>'+
+            '</td>'+
+            '</tr>'+
+            '<tr class="rcsImgForm ft_option">'+
+            '<th>양식</th>'+
+            '<td>'+
+            '<div class="select style1 ft_select">'+
+            '<div class="value" data="IMGTP03">일반</div>'+
+            '<ul class="option">'+
+            '<li data="IMGTP03">일반</li>'+
+            '<li data="IMGTP11">와이드 이미지</li>'+
+            /*
+            '<li data="IMGTP12">와이드 리스트 (첫번째 이미지)</li>'+
+            '<li data="IMGTP13">와이드 리스트</li>'+
+            '<li data="IMGTP14">캐러셀 커머스</li>'+
+            '<li data="IMGTP15">캐러셀 피드</li>'+
+            */
             '</ul>'+
             '</div>'+
             '</td>'+
@@ -207,25 +220,38 @@
             '</tbody>'+
             '</table>'+
             '<ul class="guide_txt guide_lst">'+
-            '<li class="on">※ 가로형 : 1MB 이하</li>'+
-            '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>'+
-            '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>'+
+                '<li>※ 세로형 : ① Tall : 568 X 528 (1MB 이하), ② Medium : 568 X 336 (1MB 이하)</li>'+
+                '<li>※ 슬라이드형 : ① Small : 360 X 336, ② Medium : 696 X 504, 최대 사이즈 360 X 1569 , 1MB 이하</li>'+
             '</ul>'+
             '<ul class="at_guide1 guide_lst" hidden>'+
-                '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
-                '<li>※ 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</li>'+
-                '</ul>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 500px 이상, 세로 250px 이상이며 가로:세로 비율이 2:1 이어야 합니다.</li>'+
+            '</ul>'+
             '<ul class="at_guide2 guide_lst" hidden>'+
-                '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
-                '<li>※ 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 108px 이상이며 가로:세로 비율이 1:1 이어야 합니다.</li>'+
             '</ul>'+
             '<ul class="ft_guide1 guide_lst">'+
-            '<li>※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
-            '<li>※ 이미지 파일은 가로 500px 이상이며 또는 가로:세로 비율이 2:1 또는 3:4 이어야 합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 500KB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 500px 이상이며 </li>'+
+                '<li style="color: #666666;">   가로:세로 비율이 2:1 ~ 3:4 또는 세로:가로 비율이 1:2 ~ 4:3 이어야 합니다.</li>'+
             '</ul>'+
             '<ul class="ft_guide2 guide_lst" hidden>'+
-            '<li>※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
-            '<li>※ 이미지 파일은 가로 800px 세로 600px 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 800px(500px 이상) 세로 600px 파일만 등록 가능합니다.</li>'+
+            '</ul>'+
+            '<ul class="ft_guide3 guide_lst" hidden>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 500px 이상 이며 가로:세로 비율이 2:1 이어야 합니다.</li>'+
+            '</ul>'+
+            '<ul class="ft_guide4 guide_lst" hidden>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 500px 이상 이며 가로:세로 비율이 1:1 이어야 합니다.</li>'+
+            '</ul>'+
+            '<ul class="ft_guide5 guide_lst" hidden>'+
+                '<li style="color: #666666;">※ 이미지 파일은 용량이 2MB 이하인 jpg, png 파일만 등록 가능합니다.</li>'+
+                '<li style="color: #666666;">※ 이미지 파일은 가로 500px 이상이며 또는 가로:세로 비율이 2:1 또는 3:4 이어야 합니다.</li>'+
+                '<li style="color: #666666;">※ 권장사이즈 800x600px 또는 800x400px.</li>'+
             '</ul>'+
             '<div class="left pop_error_txt other_guide guide_lst" hidden>※ 모바일 : Jpg(200KB 이하), 이메일 : jpg, png, gif</div>'+
             '<div class="right pop_error_txt blue_point_color"></div>'+
@@ -274,7 +300,6 @@
         }
 
         let res = function(response){
-            //TO-DO
             //리스트 새로 불러오기
             if(response.imgCheck == 0){
                 popup.popAlert(response.imgCheckErr);
@@ -294,11 +319,12 @@
         let ch_tp = $("input[name=ch_tp]:checked").val();
         if(ch_tp == 'RCS') {
             data.append("ch_tp", $('.rcs_select .value').attr('data'));
+        } else if(ch_tp == 'FT') {
+            data.append("ch_tp", $('.ft_select .value').attr('data'));
         } else{
             data.append("ch_tp", ch_tp);
         }
         data.append("img_nm", imgNm);
-
         com_ajax.ajax_file('${baseURL}/cont/contentUpload.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
     }
 

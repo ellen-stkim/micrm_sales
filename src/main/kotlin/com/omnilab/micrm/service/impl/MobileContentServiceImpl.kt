@@ -167,7 +167,7 @@ class MobileContentServiceImpl : ContentService {
                             tblmiContLstdto.key_id = kkoSenderLst[0].list_val
                         }
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                        tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+                        tblmiContLstdto.msg_tp = "DMCH204" // 브랜드톡
 
                         // 카카오 이미지 처리
                         if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
@@ -762,7 +762,7 @@ class MobileContentServiceImpl : ContentService {
     }
 
     // ContentService를 위한 임시 로직
-    override fun contents_thumbnail_save(map: MutableMap<String, Any>): Boolean {
+    override fun contentsThumbnailSave(map: MutableMap<String, Any>): Boolean {
         TODO("Not yet implemented")
     }
 
@@ -965,7 +965,7 @@ class MobileContentServiceImpl : ContentService {
                     }
 
                     tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                    tblmiContLstdto.msg_tp = "DMCH204" // 친구톡
+                    tblmiContLstdto.msg_tp = "DMCH204" // 브랜드톡
 
                     // 카카오 이미지 처리
                     if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {

@@ -46,9 +46,10 @@ $(function () {
                 // 이미지 유효성 검사
                 atImageUpload(this,type)
             }
-        } else if (type == 'IMGTP03' || type =='IMGTP11') {  // 친구톡
+        } else if (type == 'FT') {  // 브랜드톡
+            let ftType = $('.ft_select .value').attr('data');
             if (!(ex == "jpg" || ex == "png")) {
-                popup.popAlert('친구톡의 경우 jpg, png 파일만 업로드 가능 합니다.');
+                popup.popAlert('브랜드톡의 경우 jpg, png 파일만 업로드 가능 합니다.');
                 $(this).val('');
                 $("#file").val();
                 $(".img_viewer").children().remove();
@@ -56,7 +57,7 @@ $(function () {
                 return false;
             } else {
                 // 이미지 유효성 검사
-                ftImageUpload(this,type)
+                ftImageUpload(this, ftType)
             }
         } else if(type == 'IMGTP01') {
             if (!(ex == "jpg" || ex == "png" || ex == "gif")) {
@@ -71,7 +72,7 @@ $(function () {
                 setThumbnail();
             }
         } else if(type == 'RCS') {
-            let type = $('.rcs_select .value').attr('data');
+            let rcsType = $('.rcs_select .value').attr('data');
             if (!(ex == "jpg" || ex == "png" || ex == "gif")) {
                 popup.popAlert('RCS의 경우 jpg, png, gif 파일만 업로드 가능 합니다.');
                 $("#file").val();
@@ -80,19 +81,19 @@ $(function () {
                 $(this).val('');
                 return false;
             } else {
-                if(type == 'IMGTP04'){
+                if(rcsType == 'IMGTP04'){
                     horizontal(this);
                     return false;
-                }else if(type == 'IMGTP05'){
+                }else if(rcsType == 'IMGTP05'){
                     verticalTall(this);
                     return false;
-                }else if(type == 'IMGTP06'){
+                }else if(rcsType == 'IMGTP06'){
                     verticalMedium(this);
                     return false;
-                }else if(type == 'IMGTP07'){
+                }else if(rcsType == 'IMGTP07'){
                     slideSmall(this);
                     return false;
-                }else if(type == 'IMGTP08'){
+                }else if(rcsType == 'IMGTP08'){
                     slideMedium(this);
                     return false;
                 }else{
@@ -113,32 +114,32 @@ $(function () {
         $('#fileName').val('');
         $('.file').val('');
         $('.img_viewer').find('img').remove();
-
+        $(".guide_lst").css('display', 'none');
         if(channel == 'RCS'){
             $('.guide_lst').css('display','none');
             $('tr.rcs_option').css('display','table-row');
             $('.guide_txt').css('display','block');
-
+            $('tr.ft_option').css('display','none');
         } else if(channel == 'IMGTP09'){   //알림톡 아이템리스트 이미지
             $('.guide_lst').css('display','none');
             $('.at_guide1').css('display','block');
             $('tr.rcs_option').css('display','none');
+            $('tr.ft_option').css('display','none');
         } else if(channel == 'IMGTP10'){  // 알림톡 아이템리스트 이미지
             $('.guide_lst').css('display','none');
             $('.at_guide2').css('display','block');
             $('tr.rcs_option').css('display','none');
-        } else if(channel == 'IMGTP03'){   // 친구톡 이미지
+            $('tr.ft_option').css('display','none');
+        } else if(channel == 'FT'){   // 브랜드톡 이미지
             $('.guide_lst').css('display','none');
             $('.ft_guide1').css('display','block');
             $('tr.rcs_option').css('display','none');
-        } else if(channel == 'IMGTP11'){   // 친구톡 와이드 이미지
-            $('.guide_lst').css('display','none');
-            $('.ft_guide2').css('display','block');
-            $('tr.rcs_option').css('display','none');
-        } else{
+            $('tr.ft_option').css('display','table-row');
+        }  else{
             $('.guide_lst').css('display','none');
             $('tr.rcs_option').css('display','none');
             $('.other_guide').css('display','block');
+            $('tr.ft_option').css('display','none');
         }
     });
 
@@ -169,6 +170,27 @@ $(function () {
         }*/
 
         $('.guide_txt li').eq(num).addClass('on').siblings().removeClass('on');
+    });
+
+    $(document).on('click','.ft_select ul li', function(){
+        let type = $(this).attr('data');
+        $('input[name="img_nm"]').val('');
+        $('#fileName').val('');
+        $('.file').val('');
+        $('.img_viewer').children().remove();
+
+        $('.guide_lst').css('display','none');
+        if(type == 'IMGTP03') {
+            $('.ft_guide1').css('display','block');
+        } else if(type == 'IMGTP11') {
+            $('.ft_guide2').css('display','block');
+        } else if (type == 'IMGTP12') {
+            $('.ft_guide3').css('display','block');
+        } else if (type == 'IMGTP13') {
+            $('.ft_guide4').css('display','block');
+        } else if (type == 'IMGTP14' || type == 'IMGTP15') {
+            $('.ft_guide5').css('display','block');
+        }
     });
 
     // 이미지 form 유효성 검사
@@ -385,121 +407,88 @@ function atImageUpload(addImage,type) {
         }
     }
 }
-// 친구톡 이미지 유효성 체크
-function ftImageUpload(addImage,type) {
-
+// 브랜드톡 이미지 유효성 체크
+function ftImageUpload(addImage, type) {
     let file = $(addImage)[0].files[0];
-    img = new Image();
-    let imgWidth = 0;
-    let imgHeight = 0;
+    if (!file) return;
 
+    // 파일 형식 체크 (jpg, png)
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!validTypes.includes(file.type)) {
+        popup.popAlert("jpg, png 파일만 등록 가능합니다.");
+        resetUploadForm();
+        return false;
+    }
+
+    let img = new Image();
     img.src = URL.createObjectURL(file);
     img.onload = function () {
-        imgWidth = this.width;
-        imgHeight = this.height;
+        const imgWidth = this.width;
+        const imgHeight = this.height;
+        const ratio = imgHeight / imgWidth; // 세로 / 가로 비율
+        const fileSize = file.size;
+        const maxFileSize = 2 * 1024 * 1024; // 모든 타입 공통 2MB
 
+        const common = gcd(imgWidth, imgHeight);
+        const ratioW = imgWidth / common;
+        const ratioH = imgHeight / common;
+        const ratioText = `${ratioW}:${ratioH}`; // 예: "4:3"
 
-        if(type == 'IMGTP03'){
-            let minWidth = 500;
-            let ratio = "2:1 또는 3:4";
+        let isValid = false;
+        let errorMsg = "";
 
-            let temp_gcd = gcdlcm(imgWidth, imgHeight);
-            let a = temp_gcd[0];
-            let r_width = 0;
-            let r_height = 0;
-            if (a == 1) {
-                if (imgWidth > imgHeight) {
-                    r_width = imgWidth / imgHeight;
-                    r_height = 1;
-                } else {
-                    r_width = 1;
-                    r_height = imgWidth / imgHeight;
-                }
-            } else {
-                r_width = imgWidth / a;
-                r_height = imgHeight / a;
-            }
+        // 타입별 조건 설정
+        switch (type) {
+            case 'IMGTP03':
+            case 'IMGTP14':
+            case 'IMGTP15':
+                if (imgWidth >= 500 && ratio >= 0.5 && ratio <= 1.333) isValid = true;
+                else errorMsg = "가로 500px 이상, 비율(세로/가로) 0.5 ~ 1.333 이내여야 합니다.";
+                break;
+            case 'IMGTP11':
+                if (imgWidth >= 500 && ratio >= 0.5 && ratio <= 1.0) isValid = true;
+                else errorMsg = "가로 500px 이상, 비율(세로/가로) 0.5 ~ 1.0 이내여야 합니다.";
+                break;
+            case 'IMGTP12':
+                if (imgWidth >= 500 && Math.abs(ratio - 0.5) < 0.01) isValid = true;
+                else errorMsg = "가로 500px 이상, 비율(세로/가로)이 2:1이어야 합니다.";
+                break;
 
-            if((r_width == 1 && r_height == 1)  || (r_width == 2 && r_height == 1) ||(r_width == 3 && r_height == 4)){
-                if (minWidth > imgWidth) {
-                    popup.popAlert("이미지 해상도가 가로 최소 "+ minWidth +" 입니다.\n현재 이미지 해상도\n가로 : " + imgWidth + ", 세로 : " + imgHeight);
-                    $("#fileName").val('');
-                    $('.img_viewer').addClass('noImg');
-                    $('.img_viewer').find('img').remove();
-                    $("#form")[0].reset();
-                    return false;
-                }else {
-                    let maxSize = 500 * 1024;
-                    let fileSize = 0;
-                    let browser = navigator.appName;
-                    let sVal = $('.file')[0];
-                    if (browser == "Microsoft Internet Explorer") {
-                        let oas = new ActiveXObject("Scripting.FileSystemObject");
-                        fileSize = oas.getFilr(sVal.value.value).size;
-                    } else {
-                        fileSize = sVal.files[0].size;
-                    }
-                    if (fileSize > maxSize) {
-                        $('.file').val('');
-                        popup.popAlert("첨부파일 사이즈는 500KB 이내로 등록 가능 합니다.");
-                        $("#form")[0].reset();
-                        $("#file").val();
-                        $(".img_viewer").children().remove();
-                        $(".img_view").addClass('noImg');
-                        return false;
-                    } else {
-                        $('#fileName').val(file.name);
-                        $('.img_viewer').removeClass('noImg');
-                        $('.img_viewer').html('<img src="' + img.src + '"/>');
-                        return false;
-                    }
-                }
-            } else{    //비율이 안맞을 경우
-                $('.file').val('');
-                popup.popAlert("이미지 비율은 "+ratio+"만 가능 합니다.\n현재 비율 " + r_width + " : " + r_height);
-                $("#fileName").val('');
-                $('.img_viewer').addClass('noImg');
-                $('.img_viewer').find('img').remove();
-                $("#form")[0].reset();
-            }
-        }else {    // 친구톡 와이드 이미지
-            const width = 800
-            const height =600
-            if (width != imgWidth || height != imgHeight) {
-                popup.popAlert("이미지 해상도가 가로 "+ width +" 세로 "+height+" 파일만 등록 가능합니다.\n현재 이미지 해상도\n가로 : " + imgWidth + ", 세로 : " + imgHeight);
-                $("#fileName").val('');
-                $('.img_viewer').addClass('noImg');
-                $('.img_viewer').find('img').remove();
-                $("#form")[0].reset();
-                return false;
-            }else {
-                let maxSize = 2 * 1024 * 1024;
-                let fileSize = 0;
-                let browser = navigator.appName;
-                let sVal = $('.file')[0];
-                if (browser == "Microsoft Internet Explorer") {
-                    let oas = new ActiveXObject("Scripting.FileSystemObject");
-                    fileSize = oas.getFilr(sVal.value.value).size;
-                } else {
-                    fileSize = sVal.files[0].size;
-                }
-                if (fileSize > maxSize) {
-                    $('.file').val('');
-                    popup.popAlert("첨부파일 사이즈는 2MB 이내로 등록 가능 합니다.");
-                    $("#form")[0].reset();
-                    $("#file").val();
-                    $(".img_viewer").children().remove();
-                    $(".img_view").addClass('noImg');
-                    return false;
-                } else {
-                    $('#fileName').val(file.name);
-                    $('.img_viewer').removeClass('noImg');
-                    $('.img_viewer').html('<img src="' + img.src + '"/>');
-                    return false;
-                }
-            }
+            case 'IMGTP13':
+                if (imgWidth >= 500 && Math.abs(ratio - 1.0) < 0.01) isValid = true;
+                else errorMsg = "가로 500px 이상, 비율(세로/가로)이 1:1이어야 합니다.";
+                break;
+            default:
+                isValid = true; // 기타 타입은 기본 허용 혹은 별도 처리
         }
-    }
+        if (!isValid) {
+            const displayRatio = ratio.toFixed(3);
+            let conditionText = `이미지 제한 조건을 확인해주세요.<br>` +
+                           `허용 범위: ${errorMsg} (가로 500px 이상)<br><br>` +
+                           `<b>현재 상태</b><br>` +
+                           `- 해상도: ${imgWidth} x ${imgHeight}<br>`+
+                           `- 현재 비율: <span style="color:red;">${ratioText}</span> (수치: ${ratio.toFixed(3)})`;
+            popup.popAlert(conditionText);
+            resetUploadForm();
+            return false;
+        }
+
+        // 2. 공통 용량 체크 (2MB)
+        if (fileSize > maxFileSize) {
+            popup.popAlert("첨부파일 사이즈는 2MB 이내로 등록 가능합니다.");
+            resetUploadForm();
+            return false;
+        }
+        // 3. 통과 시 이미지 미리보기 및 파일명 노출
+        $('#fileName').val(file.name);
+        $('.img_viewer').removeClass('noImg').html('<img src="' + img.src + '"/>');
+    };
+}
+function resetUploadForm() {
+    $(addImage).val('');
+    $("#fileName").val('');
+    $('.img_viewer').addClass('noImg').find('img').remove();
+    if ($("#form")[0]) $("#form")[0].reset();
 }
 
 function gcdlcm(a, b) {

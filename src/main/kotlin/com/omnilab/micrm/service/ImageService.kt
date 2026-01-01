@@ -1,6 +1,7 @@
 package com.omnilab.micrm.service
 
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
+import org.springframework.web.multipart.MultipartFile
 
 interface ImageService {
 
@@ -15,4 +16,7 @@ interface ImageService {
     fun updateImgYn(dto: Tblmi_cont_imgDto) : Int
 
     fun getImgNmCh(dto:Tblmi_cont_imgDto): Int
+
+    fun mobileUpload(file: MultipartFile, dto : Tblmi_cont_imgDto) : Map<String,Any>
+
 }
