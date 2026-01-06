@@ -1,5 +1,6 @@
 package com.mablic.template_kotlin
 
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import org.slf4j.LoggerFactory
 
@@ -8,7 +9,7 @@ class aa {
 
 fun main() {
     val logger = LoggerFactory.getLogger("aa")
-
+    /*
     val tmplDto = Tblmi_kko_at_tmplDto()
 
     val sttt = "[컴패션] 후원자님, #{param1} 함께했던 #{param2}기억하시나요?\n" +
@@ -37,5 +38,11 @@ fun main() {
     }
 
     logger.error("aa {}", tmplDto.tmpl_cont)
+    */
+
+    logger.error("{}", CommonUtils.sha512("sony2026$!@"))
+    logger.error("{}", CommonUtils.sha512("milvus2026$!@"))
+
+
 }
 

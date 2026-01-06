@@ -438,28 +438,29 @@ function ftImageUpload(addImage, type) {
         let errorMsg = "";
 
         // 타입별 조건 설정
+        const checkRatio = Number(ratio.toFixed(3));
         switch (type) {
             case 'IMGTP03':
             case 'IMGTP14':
             case 'IMGTP15':
-                if (imgWidth >= 500 && ratio >= 0.5 && ratio <= 1.333) isValid = true;
-                else errorMsg = "가로 500px 이상, 비율(세로/가로) 0.5 ~ 1.333 이내여야 합니다.";
+                if (imgWidth >= 500 && checkRatio >= 0.500 && checkRatio <= 1.333) isValid = true;
+                else errorMsg = "가로:세로 비율이 2:1 ~ 3:4 또는 세로:가로 비율이 1:2 ~ 4:3 이어야 합니다.";
                 break;
             case 'IMGTP11':
-                if (imgWidth >= 500 && ratio >= 0.5 && ratio <= 1.0) isValid = true;
-                else errorMsg = "가로 500px 이상, 비율(세로/가로) 0.5 ~ 1.0 이내여야 합니다.";
+                if (imgWidth >= 500 && checkRatio >= 0.500 && checkRatio <= 1.000) isValid = true;
+                else errorMsg = "이미지 비율은 2:1(가로형) 또는 1:1(정사각형) 이여야 합니다";
                 break;
             case 'IMGTP12':
-                if (imgWidth >= 500 && Math.abs(ratio - 0.5) < 0.01) isValid = true;
-                else errorMsg = "가로 500px 이상, 비율(세로/가로)이 2:1이어야 합니다.";
+                // Math.abs를 사용하여 0.5 근사값 체크
+                if (imgWidth >= 500 && Math.abs(checkRatio - 0.5) <= 0.001) isValid = true;
+                else errorMsg = "비율(가로:세로) 2:1 (세로/가로 0.5) 이어야 합니다.";
                 break;
-
             case 'IMGTP13':
-                if (imgWidth >= 500 && Math.abs(ratio - 1.0) < 0.01) isValid = true;
-                else errorMsg = "가로 500px 이상, 비율(세로/가로)이 1:1이어야 합니다.";
+                if (imgWidth >= 500 && Math.abs(checkRatio - 1.0) <= 0.001) isValid = true;
+                else errorMsg = "비율(가로:세로) 1:1 이어야 합니다.";
                 break;
             default:
-                isValid = true; // 기타 타입은 기본 허용 혹은 별도 처리
+                isValid = true;
         }
         if (!isValid) {
             const displayRatio = ratio.toFixed(3);
@@ -467,19 +468,16 @@ function ftImageUpload(addImage, type) {
                            `허용 범위: ${errorMsg} (가로 500px 이상)<br><br>` +
                            `<b>현재 상태</b><br>` +
                            `- 해상도: ${imgWidth} x ${imgHeight}<br>`+
-                           `- 현재 비율: <span style="color:red;">${ratioText}</span> (수치: ${ratio.toFixed(3)})`;
+                           `- 현재 비율: <span style="color:red;">${ratioText}</span> (수치: ${checkRatio})`;
             popup.popAlert(conditionText);
             resetUploadForm();
             return false;
         }
-
-        // 2. 공통 용량 체크 (2MB)
         if (fileSize > maxFileSize) {
             popup.popAlert("첨부파일 사이즈는 2MB 이내로 등록 가능합니다.");
             resetUploadForm();
             return false;
         }
-        // 3. 통과 시 이미지 미리보기 및 파일명 노출
         $('#fileName').val(file.name);
         $('.img_viewer').removeClass('noImg').html('<img src="' + img.src + '"/>');
     };

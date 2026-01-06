@@ -210,7 +210,8 @@ class ImageServiceImpl : ImageService {
         val imgWidth: Int = image.width
         val imgHeight: Int = image.height
         val fileSize = file.size
-        val ratio = imgHeight.toDouble() / imgWidth.toDouble()
+        val ratioRaw = imgHeight.toDouble() / imgWidth.toDouble()
+        val ratio = Math.round(ratioRaw * 1000) / 1000.0
 
         // 비율 텍스트 계산 (GCD 활용)
         val common = gcd(imgWidth, imgHeight)
@@ -231,10 +232,9 @@ class ImageServiceImpl : ImageService {
                 } else if (imgWidth < 500) {
                     errorMsg = "가로 길이는 최소 500px 이상이어야 합니다."; isValid = false
                 } else if (ratio < 0.5 || ratio > 1.333) {
-                    errorMsg = "허용 비율(세로/가로)은 0.5 ~ 1.333 이내여야 합니다."; isValid = false
+                    errorMsg = "가로:세로 비율이 2:1 ~ 3:4 또는 세로:가로 비율이 1:2 ~ 4:3 이어야 합니다."; isValid = false
                 }
             }
-
             "IMGTP11" -> {
                 if (!isJpgPng) {
                     errorMsg = "jpg, png 파일만 업로드 가능합니다."; isValid = false
@@ -243,10 +243,9 @@ class ImageServiceImpl : ImageService {
                 } else if (imgWidth < 500) {
                     errorMsg = "가로 길이는 최소 500px 이상이어야 합니다."; isValid = false
                 } else if (ratio < 0.5 || ratio > 1.0) {
-                    errorMsg = "허용 비율(세로/가로)은 0.5 ~ 1.0 이내여야 합니다."; isValid = false
+                    errorMsg = "이미지 비율은 2:1(가로형) 또는 1:1(정사각형) 이여야 합니다."; isValid = false
                 }
             }
-
             "IMGTP12" -> {
                 // 비율 딱 0.5 (오차범위 0.01 허용)
                 if (!isJpgPng) {
@@ -256,10 +255,9 @@ class ImageServiceImpl : ImageService {
                 } else if (imgWidth < 500) {
                     errorMsg = "가로 길이는 최소 500px 이상이어야 합니다."; isValid = false
                 } else if (Math.abs(ratio - 0.5) > 0.01) {
-                    errorMsg = "비율(세로/가로)이 0.5(2:1)여야 합니다."; isValid = false
+                    errorMsg = "비율(가로:세로) 2:1 (세로/가로 0.5) 이어야 합니다."; isValid = false
                 }
             }
-
             "IMGTP13" -> {
                 // 비율 딱 1.0 (오차범위 0.01 허용)
                 if (!isJpgPng) {
@@ -269,17 +267,15 @@ class ImageServiceImpl : ImageService {
                 } else if (imgWidth < 500) {
                     errorMsg = "가로 길이는 최소 500px 이상이어야 합니다."; isValid = false
                 } else if (Math.abs(ratio - 1.0) > 0.01) {
-                    errorMsg = "비율(세로/가로)이 1.0(1:1)이어야 합니다."; isValid = false
+                    errorMsg = "비율(가로:세로) 1:1 이어야 합니다."; isValid = false
                 }
             }
-
             "IMGTP01" -> {
                 if (file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE) {
                     errorMsg = "모바일은 jpg 파일만 업로드 가능 합니다."
                     isValid = false
                 }
             }
-
             else -> {
                 // 기타 기본 체크
                 if (file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE &&
