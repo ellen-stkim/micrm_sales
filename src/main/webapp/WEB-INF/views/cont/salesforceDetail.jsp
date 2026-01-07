@@ -215,7 +215,7 @@
                                         <div class="column_2">
                                             <label class="type_check">
                                                 <input type="radio" name="kko_format_type" class="kkoType" value="kko_ft" ${cont_tp eq "DMTP03"?'checked': '' } />
-                                                <span>친구톡</span>
+                                                <span>브랜드톡</span>
                                             </label>
                                             <label class="type_check">
                                                 <input type="radio" name="kko_format_type" class="kkoType" ${cont_tp eq "DMTP05"?'checked': '' } value="kko_at"/>
@@ -517,7 +517,7 @@
                                 </div>
                                 <c:if test="${cont_tp eq 'DMTP03'}">
                                     <div class="viewer_area" id="kakao_ft_viewer" >
-                                        <div class="top">친구톡 미리보기</div>
+                                        <div class="top">브랜드톡 미리보기</div>
                                         <div class="inner">
                                             <div class="row_body">
                                                 <div class="round_box">
@@ -586,7 +586,7 @@
                                 </c:if>
                                 <c:if test="${cont_tp eq 'DMTP05'}">
                                     <div class="viewer_area" id="kakao_ft_viewer" hidden>
-                                        <div class="top">친구톡 미리보기</div>
+                                        <div class="top">브랜드톡 미리보기</div>
                                         <div class="inner">
                                             <div class="row_body">
                                                 <div class="round_box">

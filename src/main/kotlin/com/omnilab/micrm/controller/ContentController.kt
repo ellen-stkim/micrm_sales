@@ -952,7 +952,7 @@ class ContentController  {
     @ResponseBody
     @PostMapping("/getDBValue.ajax")
     fun getDBValue(@ModelAttribute  dto : Tblmi_cont_imgDto): MutableList<SalesforceDto> {
-        return sysSettingService.getDBValue();
+        return sysSettingService.getDBValue()
     }
 
 

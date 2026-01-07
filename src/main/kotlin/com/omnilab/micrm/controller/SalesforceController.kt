@@ -165,6 +165,7 @@ class SalesforceController {
             temp.list_nm = "from_to"
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
+            /*임시 주석*/
             val cntMap = salesforceService.isCheckSender(usrCd)
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
@@ -501,6 +502,52 @@ class SalesforceController {
     fun rcsSlide(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         return if(getUsrGrpCd(usrCd) != null){
             val view = ModelAndView("cont/mobile/ajax/rcsSlide")
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
+    }
+
+    /** @Method Name  : brandNormal
+     * @Since    : 2026. 01. 07.
+     * @author   : lucas
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 브랜드톡 일반 페이지
+     * @title : 브랜드톡 일반 페이지
+     */
+    @GetMapping("/{usr_cd}/brandNormal.ajax")
+    fun brandNormal(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/brandNormal")
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
+    }
+
+    /** @Method Name  : brandNormal
+     * @Since    : 2026. 01. 07.
+     * @author   : lucas
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 브랜드톡 일반 페이지
+     * @title : 브랜드톡 일반 페이지
+     */
+    @GetMapping("/{usr_cd}/brandVideo.ajax")
+    fun brandVideo(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/brandVideo")
             view
         }else{
             ModelAndView("redirect:/html/not.html")

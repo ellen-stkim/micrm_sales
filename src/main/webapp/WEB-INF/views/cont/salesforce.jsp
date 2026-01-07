@@ -198,11 +198,41 @@
                                     <div class="column_2">
                                         <label class="type_check">
                                             <input type="radio" name="kko_format_type" class="kkoType" value="kko_ft" checked/>
-                                            <span>친구톡</span>
+                                            <span>브랜드톡</span>
                                         </label>
                                         <label class="type_check">
                                             <input type="radio" name="kko_format_type" class="kkoType" value="kko_at"/>
                                             <span>알림톡</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row body">
+                                    <div class="th">브랜드톡 양식</div>
+                                    <div class="column_1">
+                                        <label class="custom_radio en_font">
+                                            텍스트/이미지/와이드이미지
+                                            <input name="kko_msg_tp" class="lowType" type="radio" value="0" checked />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font">
+                                            와이드 리스트형
+                                            <input name="kko_msg_tp" class="lowType" type="radio" value="1" />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font">
+                                            캐러셀 커머스형
+                                            <input name="kko_msg_tp" class="lowType" type="radio" value="2" />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font">
+                                            캐러셀 피드형
+                                            <input name="kko_msg_tp" class="lowType" type="radio" value="3" />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font">
+                                            프리미엄 동영상형
+                                            <input name="kko_msg_tp" class="lowType" type="radio" value="4" />
+                                            <span></span>
                                         </label>
                                     </div>
                                 </div>
@@ -344,12 +374,12 @@
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_ft_viewer">
-                                <div class="top">친구톡 미리보기</div>
+                                <div class="top">브랜드톡 미리보기</div>
                                 <div class="inner">
                                     <div class="row_body">
                                         <div class="round_box">
-                                            <div class="kakao_ft" id="prev_ft_img">
-                                            </div>
+                                            <div class="kakao_ft" id="prev_ft_img"></div>
+                                            <div class="kakao_ft" id="prev_ft_video"></div>
                                             <p class="kakao_txt" id="prev_ft_txt"></p>
                                         </div>
                                     </div>
@@ -897,6 +927,7 @@
 <script>
     let usr_cd = '${usr_cd}';
     let _connection;
+    let kakaoBeforeSub = $('input[name="kko_msg_tp"]:checked').val();
     let beforeSub = $('input[name="rcs_msg_tp"]:checked').val();
     let slideData = $('.slide_type').find('.value').attr('data') == undefined ? '0' : $('.slide_type').find('.value').attr('data');
     let firstLoad = true;
@@ -1147,7 +1178,6 @@
             }
         });
 
-
         // 추적 링크 생성 동작
         $(document).on('click', '.trackingLinkBtn', function () {
             let link = $(this).prev('input').val();
@@ -1179,6 +1209,33 @@
                 }
             } else {
                 popup.popAlert('추적 링크를 입력해주세요.');
+            }
+        });
+
+        $(document).on('click', 'input[name="kko_msg_tp"]', function (event) {
+            event.preventDefault();
+            check = $('input[name="kko_msg_tp"]:checked');
+            let nowSub = $('input[name="kko_msg_tp"]:checked').val();
+
+            if (kakaoBeforeSub != nowSub) {
+                let message = "브랜드톡 양식을 변경 할 경우 입력한 내용이 초기화됩니다. 변경 하시겠습니까?";
+                let html = '';
+                html +=
+                    '<div class="layer_pop alert active">' +
+                    '<div class="pop_container popup_size3">' +
+                    '<input type="button" value="닫기" class="btn_pop_close" onclick="popupClose(this);"/>' +
+                    '<div class="pop_title">브랜드톡 양식 변경</div>' +
+                    '<div class="pop_inner">' +
+                    '<div class="alert_txt">' + message + '</div>' +
+                    '<div class="btn_row">' +
+                    '<input type="button" class="btn_bg btn_size2 btn_inline" onclick="kkoLowTypeChange(check);" value="확인" />' +
+                    '<input type="button" class="btn_bg2 btn_size2 btn_inline" onclick="popupClose(this);" value="취소" />' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('body .layer_pop.alert').remove();
+                $('body').append(html);
             }
         });
 
@@ -1342,7 +1399,6 @@
         });
 
         //이미지 선택 팝업 저장 event
-
         $(document).on('click', '.imageSave', function () {
             $('#imagePop').submit();
         });
@@ -1745,8 +1801,21 @@
 
         let param = {seq: seq}
         com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}',true)
-
     }
+
+    $(document).on('blur', 'input[name="kko_video_url"]', function () {
+        const input = $.trim($(this).val());
+        if (input != '' && input.indexOf('https://tv.kakao.com') !== 0) {
+            alert('동영상 URL 은 https://tv.kakao.com 으로 시작 하는 URL만 입력 가능합니다.');
+            $(this).val('');
+            return false;
+        }else {
+            const id = input.split('/').pop();
+            let vUrl = 'https://play-tv.kakao.com/embed/player/cliplink/'+ id +'?service=player_share';
+            let videoHtml = '<iframe src="'+ vUrl +'" width="100%" preload="metadata" >';
+            $("#prev_ft_video").html(videoHtml);
+        }
+    });
 
     // 카카오, SMS 유효성 검사
     function kakaoValidate() {
@@ -2537,6 +2606,7 @@
         $('#imgType').val(type);
         imageListPaging(nowPage);
     }
+
     // 이미지 리스트 팝업
     function imageListPaging(nowPage) {
         let type = $('#imgType').val();
@@ -2552,11 +2622,10 @@
         };
 
         let param = $("#imgSetForm").serializeArray();
-
         if (type === 'kakaoImage') {
             // 이미지 타입 : Kakao Image
             param.push({name: 'ch_tp', value: 'IMGTP_FT'});
-            msg = "친구톡"
+            msg = "브랜드톡"
         } else if (type === 'smsImage') {
             // 이미지 타입 : 문자(MMS)
             param.push({name: 'ch_tp', value: 'IMGTP02'});
@@ -2601,9 +2670,11 @@
         let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
 
         if (imgLength > 0) {
+            /*
             let popParents = $(form).parents('.layer_pop').attr('data');
             $('#' + popParents).val(imgUrl);
             $(form).parents('.layer_pop').removeClass('active');
+            */
             imageCreate(imgType, imgUrl, ImgNm, imgCheck);
             $('#imagePop').siblings('.pop_error_txt').html('');
             $('.imagePopup').removeClass('active');
@@ -2634,6 +2705,10 @@
                     //$('#kakao').find('.sms_img').html('<a href="' + kakaoImgLink + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'" />' + '</a>');
                     $('#js-kakao-img').html('<a href="' + kakaoImgLink + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
                 }
+            } else if(type == 'kakaoVideoImg'){
+                $("#kakaoVideoImg").val(ImgNm);
+                $('input[name="kko_thumbnail_img_cd"]').val(imgCheck);
+                $('#kakaoVideoImg').parent('.td').removeClass('outline');
             } else if (type == 'smsImage') {
                 $("#smsImage").val(ImgNm);
                 $('input[name="mds_img_cd"]').val(imgCheck);
@@ -3005,12 +3080,10 @@
             '<ul class="option">'+
             '<li data="IMGTP03">일반</li>'+
             '<li data="IMGTP11">와이드 이미지</li>'+
-            /*
             '<li data="IMGTP12">와이드 리스트 (첫번째 이미지)</li>'+
             '<li data="IMGTP13">와이드 리스트</li>'+
             '<li data="IMGTP14">캐러셀 커머스</li>'+
             '<li data="IMGTP15">캐러셀 피드</li>'+
-            */
             '</ul>'+
             '</div>'+
             '</td>'+
@@ -3535,7 +3608,6 @@
         }
     }
 
-
     // 카카오 타입 변경
     let beforeKkoType = "ft";
     $(document).on('click','input[name="kko_format_type"]', function (event) {
@@ -3587,6 +3659,7 @@
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
+
             $('#kakao_at_viewer .at_tmpl_data').val('');
             $('#kakao_at_viewer .at_tmpl_data').html('');
             $('#tmplNm').val('');
@@ -3628,6 +3701,12 @@
     }
 
     function onchangePrevKkoTxt(e){
+        if(kakaoBeforeSub == '4'){
+            if ($(e).val().length > 76) {
+              alert('최대 76글자까지 입력 가능합니다.');
+              $(e).val($(e).val().substring(0, 76));
+            }
+        }
         smsCreate.byteCount(e, 'kakao');
         $('#prev_ft_txt').html($(e).val().replaceAll("\n", "<br/>"));
     }
@@ -3826,5 +3905,26 @@
         el.closest(".inner_modal").classList.remove("open");
     };
 
+    function kkoLowTypeChange(type) {
+        let checkType = $(type)[0];
+        let radioVal = checkType.value;
+        $(type).prop('checked', true);
+        $('.layer_pop').removeClass('active');
+
+        let res = function (response) {
+            let $doc = new DOMParser().parseFromString(response, "text/html");
+            let html = $("#bodyArea", $doc).html();
+            $('#kko_ft').html(html);
+        }
+        if(radioVal === "0"){
+            com_ajax.ajax('get', '/sf/${usr_cd}/brandNormal.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
+        }else if(radioVal === "4"){
+            com_ajax.ajax('get', '/sf/${usr_cd}/brandVideo.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
+        }
+
+        kakaoBeforeSub = radioVal;
+        mappingLst();
+        adTypeCheck();
+    }
 </script>
 

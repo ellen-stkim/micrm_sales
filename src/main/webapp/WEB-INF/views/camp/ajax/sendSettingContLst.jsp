@@ -217,7 +217,6 @@
                                     <div class="rcs_slide_inner">
                                        <c:set var="img_lst" value="${fn:split(g.img_lst,',')}" />
                                        <!-- RCS Array 가 아닌 RCS Object Type으로 넘어오기에 수정 -->
-                                       <!-- Lucas가 작성한 Server 로직과 관련될 수 있기에 임시 주석처리 -->
                                        <%--<c:forEach var="rcsLst" items="${g.cont_body_json}" varStatus="st">
                                        <div class="slide small cf">
                                            <c:if test="${fn:length(img_lst) > st.index}">

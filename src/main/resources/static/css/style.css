@@ -2312,9 +2312,11 @@
 .column_2 .type_check:last-of-type input:checked + span {
     border-right: 1px solid #999999;
 }
+#kakao .column_1,
 #rcs .column_1 {
     line-height: 35px;
 }
+#kakao .column_1 .custom_radio,
 #rcs .column_1 .custom_radio {
     margin-left: 5px;
     margin-right: 19px;
