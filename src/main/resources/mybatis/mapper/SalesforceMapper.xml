@@ -233,6 +233,7 @@
     </insert>
 
     <insert id="ins_tblmicp_cont_lst" parameterType="Tblmicp_cont_lstDto" useGeneratedKeys="true" keyProperty="seq">
+        /* ins_tblmicp_cont_lst */
         insert into tblmicp_cont_lst
             (CONT_CD, CONT_TP, CONT_SUB, CONT_TOP_BODY, CONT_BODY, FROM_TO, SEND_TP, SEND_TO, SEND_NM, THM_URL, BR_YN, SUP_YN, MSG_TP, KKO_IMG_CD, KKO_IMG_URL
             , KKO_BTN_NM
