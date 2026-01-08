@@ -105,7 +105,9 @@
 			cont_grp_cd,
 			use_yn,
 			reg_id,
-			reg_dt
+			reg_dt,
+			kko_video_url,
+			kko_thumbnail_img_cd
 		)
 		values (
 			#{cont_cd},
@@ -169,7 +171,9 @@
 			#{cont_grp_cd},
 			#{use_yn},
 			#{reg_id},
-			now()
+			now(),
+			#{kko_video_url},
+			#{kko_thumbnail_img_cd}
 		)
 	</insert>
 
