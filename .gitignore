@@ -101,3 +101,5 @@ buildNumber.properties
 *.iml
 
 rebel.xml
+/src/test/kotlin/com/mablic/template_kotlin/PatternChecker.kt
+/src/test/java/template_kotlin/qrCode.java
