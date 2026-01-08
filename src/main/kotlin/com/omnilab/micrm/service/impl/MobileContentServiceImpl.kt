@@ -153,7 +153,7 @@ class MobileContentServiceImpl : ContentService {
                         }
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
 
-                        when (tblmiContLstdto.kko_msg_tp) {
+                        when (dto.kko_msg_tp) {
                             "1" -> {
                                 tblmiContLstdto.msg_tp = "DMCH220"
                             }

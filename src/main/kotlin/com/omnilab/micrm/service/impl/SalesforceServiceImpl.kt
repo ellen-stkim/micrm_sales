@@ -330,7 +330,6 @@ class SalesforceServiceImpl : SalesforceService {
         val contGrpCd = dto.cont_grp_cd
 
         val isByte = isCheckByte(dto)
-
         if (!isByte) {
             statusMap["status"] = false
             return statusMap
@@ -354,7 +353,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.team_cd = dto.team_cd
             tblmiContMstDto.usr_key = dto.usr_key
 
-            contentDao.insertContentMaster(tblmiContMstDto);// 마스터 코드 리턴
+            contentDao.insertContentMaster(tblmiContMstDto)// 마스터 코드 리턴
             statusMap["seq"] = tblmiContMstDto.seq as Int
 
             // 인덱스 값은 고정되서 넘어온다 [ 0번 인덱스 : kakao , 1번 인덱스 : sms , 2번 인덱스: rcs ]
@@ -443,7 +442,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }
 
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                        when (tblmiContLstdto.kko_msg_tp) {
+                        when (dto.kko_msg_tp) {
                             "1" -> {
                                 tblmiContLstdto.msg_tp = "DMCH220"
                             }
