@@ -443,17 +443,38 @@ class SalesforceServiceImpl : SalesforceService {
                         }
 
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                        tblmiContLstdto.msg_tp = "DMCH204" // 브랜드톡
-
-
+                        when (tblmiContLstdto.kko_msg_tp) {
+                            "1" -> {
+                                tblmiContLstdto.msg_tp = "DMCH220"
+                            }
+                            "2" -> {
+                                tblmiContLstdto.msg_tp = "DMCH221"
+                            }
+                            "3" -> {
+                                tblmiContLstdto.msg_tp = "DMCH222"
+                            }
+                            "4" -> {
+                                tblmiContLstdto.msg_tp = "DMCH223"
+                            }
+                            else -> {
+                                if(CommonUtils.isEmptyObject(dto.kko_img_cd)){
+                                    tblmiContLstdto.msg_tp = "DMCH204"
+                                }else{
+                                    val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(dto.kko_img_cd!!))
+                                    if(imgDto.ch_tp == "IMGTP11"){
+                                        tblmiContLstdto.msg_tp = "DMCH218"
+                                    } else {
+                                        tblmiContLstdto.msg_tp = "DMCH217"
+                                    }
+                                }
+                            }
+                        }
                         // 카카오 이미지 처리
                         if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
                             tblmiContLstdto.kko_img_cd = null
                         } else {
                             tblmiContLstdto.kko_img_cd = dto.kko_img_cd
                         }
-
-
                         tblmiContLstdto.cont_body = dto.kakao_body
                         tblmiContLstdto.kko_img_url = dto.kko_img_url
                         tblmiContLstdto.kko_btn_nm = dto.kko_btn_nm
@@ -471,6 +492,8 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.kko_btn_nm5 = dto.kko_btn_nm5
                         tblmiContLstdto.kko_btn_url5 = dto.kko_btn_url5
                         tblmiContLstdto.kko_btn_urlPc5 = dto.kko_btn_urlPc5
+                        tblmiContLstdto.kko_video_url = dto.kko_video_url
+                        tblmiContLstdto.kko_thumbnail_img_cd = dto.kko_thumbnail_img_cd
                     }
                 }
 
