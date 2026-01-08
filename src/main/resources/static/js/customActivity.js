@@ -205,15 +205,14 @@ define(["postmonger"], function (Postmonger) {
         }
 		//임시 주석
         let data = $("#form").serializeArray();
-		//data.push({name: 'sales_nm', value: model.name});
-		//data.push({name: 'inten_id', value: model.definitionId});
-		//data.push({name: 'orig_id', value: model.id});
-		//data.push({name: 'inta_key', value: model.key});
-		//data.push({name: 'inta_ve', value: model.version});
+		data.push({name: 'sales_nm', value: model.name});
+		data.push({name: 'inten_id', value: model.definitionId});
+		data.push({name: 'orig_id', value: model.id});
+		data.push({name: 'inta_key', value: model.key});
+		data.push({name: 'inta_ve', value: model.version});
 		data.push({name: 'team_cd', value: $('#team_cd_sel').attr("data")});
 		data.push({name: 'usr_key', value: $('#recv_usr_cd .value').attr("data")});
-		console.log(data);
-		//com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
+		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
     }
 
     // 수정
@@ -253,8 +252,8 @@ let dataExtensionCnt;
 
 // 개인화 변수 조회
 function mappingLst() {
-	// 임시 주석
-	// $('#commonLoading').addClass('active');
+	//임시 주석
+	$('#commonLoading').addClass('active');
 	const res = function(e) {
 		if(e.check) {
 			dataExtensionCnt = e.totalCnt;
@@ -280,5 +279,5 @@ function mappingLst() {
 	}
 	let param = {}
 	//임시 주석
-	// com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
+	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
 }

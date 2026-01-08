@@ -1,5 +1,6 @@
 package com.mablic.template_kotlin
 
+import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import org.slf4j.LoggerFactory
@@ -43,6 +44,13 @@ fun main() {
     logger.error("{}", CommonUtils.sha512("sony2026$!@"))
     logger.error("{}", CommonUtils.sha512("milvus2026$!@"))
 
+
+    val map = HashMap<String, Any?>()
+    map["a"] = "a"
+    map["b"] = null
+
+    val g = GsonBuilder().create()
+    logger.error("{}", g.toJson(map))
 
 }
 

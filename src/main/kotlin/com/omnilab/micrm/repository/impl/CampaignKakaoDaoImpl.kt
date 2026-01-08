@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 @Repository("CampaignKakaoDaoImpl")
@@ -293,6 +294,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.profile_key = kakaoCont.send_to
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
 
+
             if(kakaoBtnUrl != null){
                 val lst = ArrayList<ButtonJsonDto>()
                 buildButtonDto(kakaoCont.kko_btn_nm , kakaoBtnUrl , kakaoBtnUrlPc , trackURL!!, hstSeq, map)?.let(lst::add)
@@ -305,24 +307,28 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
 
             when (kakaoCont.kko_msg_tp) {
                "DMCH220" -> {
-                   kkoMsgdto.type = "FL"
+                   kkoMsgdto.type = "U_FL"
                }
                "DMCH221" -> {
-                   kkoMsgdto.type = "FA"
+                   kkoMsgdto.type = "U_FA"
                }
                "DMCH222" -> {
-                   kkoMsgdto.type = "FC"
+                   kkoMsgdto.type = "U_FC"
                }
                "DMCH223" -> {
-                   kkoMsgdto.type = "FP"
+                   kkoMsgdto.type = "U_FP"
+                   val videoMap = HashMap<String, Any?>()
+                   videoMap["video_url"] = kakaoCont.kko_video_url
+                   videoMap["thumbnail_url"] = kakaoCont.kko_server_image_url_video
+                   kkoMsgdto.video_json = gson.toJson(videoMap)
                }
                else -> {
                    // 이전 버전 호환용
                    if(kakaoCont.kko_server_image_url != null){
                        if(kakaoCont.ch_tp == "IMGTP11"){  // 와이드 이미지
-                           kkoMsgdto.type = "FW"
+                           kkoMsgdto.type = "U_FW"
                        }else{
-                           kkoMsgdto.type = "FI"
+                           kkoMsgdto.type = "U_FI"
                        }
                        if(kakaoImgUrl != null) {
                            kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}\"}"

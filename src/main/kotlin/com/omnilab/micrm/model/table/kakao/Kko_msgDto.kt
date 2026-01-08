@@ -31,6 +31,16 @@ class Kko_msgDto {
     var img_path: String? = null
     var img_url: String? = null
     var button_json: String? = null
+    var image_json: String? = null
+    var quick_reply_json: String? = null
+    var item_highlight_json: String? = null
+    var item_json: String? = null
+    var coupon_json: String? = null
+    var commerce_json: String? = null
+    var video_json: String? = null
+    var head_json: String? = null
+    var carousel_json: String? = null
+    var tail_json: String? = null
     var ad_flag: String? = null
     var etc1: String? = null
     var etc2: String? = null

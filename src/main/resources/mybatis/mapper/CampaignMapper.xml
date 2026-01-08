@@ -462,10 +462,12 @@
 			, e.KKO_IMG_URL as kko_server_image_url
 			, d.cd_nm AS send_tp_nm
 			, f.cd_val as msg_tp_val
+			, g.kko_img_url AS kko_server_image_url_video
 		from tblmicp_cont_lst as a
 			INNER JOIN tblmi_comm_cd AS d ON a.send_tp = d.cd_id
 			LEFT JOIN tblmi_cont_img AS e ON a.kko_img_cd = e.seq
 			INNER JOIN tblmi_comm_cd AS f ON a.msg_tp = f.cd_id
+			LEFT JOIN tblmi_cont_img AS g ON a.kko_thumbnail_img_cd = g.seq
 			LEFT JOIN tblmi_cont_img AS img_1 ON a.IMG_CD_1 = img_1.seq
 			LEFT JOIN tblmi_cont_img AS img_2 ON a.IMG_CD_2 = img_2.seq
 			LEFT JOIN tblmi_cont_img AS img_3 ON a.IMG_CD_3 = img_3.seq
