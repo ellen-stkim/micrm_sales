@@ -89,6 +89,8 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.reg_dt = tblmiContLstdto.reg_dt
         this.upd_id = tblmiContLstdto.upd_id
         this.upd_dt = tblmiContLstdto.upd_dt
+        this.kko_video_url = tblmiContLstdto.kko_video_url
+        this.kko_thumbnail_img_cd = tblmiContLstdto.kko_thumbnail_img_cd
     }
 
     override fun toString(): String {

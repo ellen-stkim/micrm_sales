@@ -60,6 +60,7 @@
     </select>
 
     <select id="sel_tblmi_cont_lst" parameterType="Tblmi_cont_lstDto" resultType="Tblmi_cont_lstDto">
+        /* sel_tblmi_cont_lst */
         select  a.seq
              , a.CONT_TP
              , a.CONT_SUB
