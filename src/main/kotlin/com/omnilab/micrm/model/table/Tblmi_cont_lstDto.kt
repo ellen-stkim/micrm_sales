@@ -38,6 +38,8 @@ open class Tblmi_cont_lstDto {
     var kko_btn_nm5 : String?= null  // (브랜드톡) 버튼 내용
     var kko_btn_url5 : String ?= null    // (브랜드톡) 버튼 클릭 주소
     var kko_btn_urlPc5 : String ?= null    // (브랜드톡) 버튼 클릭 주소
+    var kko_video_url: String? = null // (브랜드톡) 비디오 url
+    var kko_thumbnail_img_cd: String? = null // (브랜드톡) 비디오 이미지 cd
     var kko_msg_tp : String ?= null    // (알림톡) 메세지 타입
     var kko_btn_obj : String ?= null    // (알림톡) 버튼 내용
     var kko_price : Int ?= null    // (알림톡) message 내 포함된 가격/금액/결제금액

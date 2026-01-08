@@ -146,7 +146,10 @@
                                 <div class="select non_def" id="recv_phone_to" name="edmDB">
                                     <!-- selected value -->
                                     <div class="value" data="">개인화 변수</div>
-                                    <ul class="option mappingLst"></ul>
+                                    <ul class="option mappingLst">
+                                            <%-- 임시 주석 --%>
+                                        <li data="phone">phone</li>
+                                    </ul>
                                 </div>
                                 <input type="hidden" id="recv_phone" class="sel_value" name="from_to"/>
                             </c:if>
@@ -1809,11 +1812,13 @@
             alert('동영상 URL 은 https://tv.kakao.com 으로 시작 하는 URL만 입력 가능합니다.');
             $(this).val('');
             return false;
-        }else {
-            const id = input.split('/').pop();
-            let vUrl = 'https://play-tv.kakao.com/embed/player/cliplink/'+ id +'?service=player_share';
-            let videoHtml = '<iframe src="'+ vUrl +'" width="100%" preload="metadata" >';
-            $("#prev_ft_video").html(videoHtml);
+        } else {
+            if(input != ''){
+                const id = input.split('/').pop();
+                let vUrl = 'https://play-tv.kakao.com/embed/player/cliplink/'+ id +'?service=player_share';
+                let videoHtml = '<iframe src="'+ vUrl +'" width="100%" >';
+                $("#prev_ft_video").html(videoHtml);
+            }
         }
     });
 

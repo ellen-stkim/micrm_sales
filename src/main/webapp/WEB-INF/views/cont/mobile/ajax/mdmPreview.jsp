@@ -58,6 +58,14 @@
                            </div>
                               <div class="row_body">
                                  <div class="round_box">
+                                    <c:if test="${content.kko_msg_tp eq '4'}">
+                                       <c:set var="parts" value="${fn:split(content.kko_video_url, '/')}" />
+                                       <c:set var="videoId" value="${parts[fn:length(parts) - 1]}" />
+                                       <c:set var="convertedUrl" value="https://play-tv.kakao.com/embed/player/cliplink/${videoId}?service=player_share" />
+                                       <div class="">
+                                          <iframe src="${convertedUrl}" width="100%"></iframe>
+                                       </div>
+                                    </c:if>
                                     <c:choose>
                                        <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:contains(content.kko_view_img_url, ',') }">
                                           <div class="sms">

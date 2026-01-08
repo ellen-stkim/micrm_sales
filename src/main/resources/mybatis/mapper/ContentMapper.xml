@@ -170,7 +170,7 @@
 			#{use_yn},
 			#{reg_id},
 			now()
-			)
+		)
 	</insert>
 
 	<insert id="insertContentUrl" parameterType="Tblmi_cont_url_lstDto">
@@ -423,7 +423,7 @@
 
 	<select id="getImgList" parameterType="Tblmi_cont_imgDto" resultType="Tblmi_cont_imgDto">
 		SELECT *
-		FROM   TBLMI_CONT_IMG AS img
+		FROM TBLMI_CONT_IMG AS img
 		LEFT JOIN TBLMI_COMM_CD AS chcd
 			ON chcd.cd_id = img.ch_tp
 		WHERE  img.del_yn = 'N'
@@ -474,7 +474,7 @@
 
 	<select id="getImgListCnt" parameterType="Tblmi_cont_imgDto" resultType="Int">
 		SELECT Count(*)
-		FROM   TBLMI_CONT_IMG AS img
+		FROM TBLMI_CONT_IMG AS img
 			LEFT JOIN TBLMI_COMM_CD AS chcd
 				ON chcd.cd_id = img.ch_tp
 		WHERE  img.del_yn = 'N'
@@ -1266,10 +1266,10 @@
 	</delete>
 
 	<select id="getImgNmCh" parameterType="Tblmi_cont_imgDto" resultType="Int">
+		/* getImgNmCh */
 		SELECT Count(*)
-		FROM   TBLMI_CONT_IMG AS img
-		LEFT JOIN TBLMI_COMM_CD AS chcd
-		ON chcd.cd_id = img.ch_tp
+		FROM TBLMI_CONT_IMG AS img
+			LEFT JOIN TBLMI_COMM_CD AS chcd ON chcd.cd_id = img.ch_tp
 		WHERE  img.del_yn = 'N'
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(img_nm)">
 			and img.img_nm = #{img_nm}
@@ -1284,6 +1284,16 @@
 		where cont_lst_cd = #{cont_lst_cd}
 			and url_id like concat(#{url_id}, '%')
 	</delete>
+
+	<select id="selTblmiContImg" parameterType="Tblmi_cont_imgDto" resultType="Tblmi_cont_imgDto">
+		/* selTblmiContImg */
+		select *
+		from Tblmi_cont_imgDto
+		<where>
+			seq = #{seq}
+		</where>
+	</select>
+
 </mapper>
 
 

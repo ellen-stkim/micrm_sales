@@ -1,5 +1,6 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.service.MemberService
@@ -135,10 +136,21 @@ class CommonController {
             logger.error("The request URI: {}", requestUri)
             logger.error("ERROR : ", throwable)
             logger.error("#########################")
+            return if(requestUri.contains(".ajax")){
+                rep.status = 401
+                val sb = StringBuilder()
+                sb.append("<script>")
+                sb.append("alert('접속시간이 오래되어 세션이 만료되었습니다.');")
+                sb.append("window.location.reload();")
+                sb.append("</script>")
+                sb.toString()
+            }else{
+                "redirect:/home.mi"
+            }
         }catch (e: Exception) {
             logger.error("EROOR Controller", e)
+            return "redirect:/home.mi"
         }
-        return "redirect:/home.mi"
     }
 
 }

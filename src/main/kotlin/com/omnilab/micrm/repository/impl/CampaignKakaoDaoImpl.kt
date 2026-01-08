@@ -5,10 +5,7 @@ import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.Contents_lstDto
-import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
-import com.omnilab.micrm.model.table.Tblmicp_campaignDto
-import com.omnilab.micrm.model.table.Tblmicp_cont_url_lstDto
-import com.omnilab.micrm.model.table.Tblmicp_send_callback_msgDto
+import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.kakao.ButtonJsonDto
 import com.omnilab.micrm.model.table.kakao.Kko_msgDto
 import com.omnilab.micrm.repository.CampaignSendDao
@@ -298,146 +295,46 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
 
             if(kakaoBtnUrl != null){
                 val lst = ArrayList<ButtonJsonDto>()
-
                 buildButtonDto(kakaoCont.kko_btn_nm , kakaoBtnUrl , kakaoBtnUrlPc , trackURL!!, hstSeq, map)?.let(lst::add)
                 buildButtonDto(kakaoCont.kko_btn_nm2, kakaoBtnUrl2, kakaoBtnUrlPc2, trackURL, hstSeq, map)?.let(lst::add)
                 buildButtonDto(kakaoCont.kko_btn_nm3, kakaoBtnUrl3, kakaoBtnUrlPc3, trackURL, hstSeq, map)?.let(lst::add)
                 buildButtonDto(kakaoCont.kko_btn_nm4, kakaoBtnUrl4, kakaoBtnUrlPc4, trackURL, hstSeq, map)?.let(lst::add)
                 buildButtonDto(kakaoCont.kko_btn_nm5, kakaoBtnUrl5, kakaoBtnUrlPc5, trackURL, hstSeq, map)?.let(lst::add)
-
                 kkoMsgdto.button_json = gson.toJson(lst)
-
-                /*
-                val lst = ArrayList<ButtonJsonDto>()
-
-                if(containsTemplateVariable(kakaoBtnUrl.url)){
-                    for (key in map.keys) {
-                        val reg = Regex("\\{\\{(?i)${key}}}")
-                        kakaoBtnUrl.url = kakaoBtnUrl.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
-                    }
-                    lst.add(
-                        ButtonJsonDto(
-                            "${kakaoCont.kko_btn_nm}"
-                            , "WL"
-                            , kakaoBtnUrl.url
-                            , if(kakaoBtnUrlPc == null) { kakaoBtnUrl.url } else { kakaoBtnUrlPc.url }
-                        )
-                    )
-                }else{
-                    lst.add(ButtonJsonDto(
-                        "${kakaoCont.kko_btn_nm}"
-                        , "WL"
-                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl.seq.toString(), GlobalValues.encKey)}"
-                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc?.seq?.toString() ?: kakaoBtnUrl.seq.toString()), GlobalValues.encKey)}"))
-                }
-
-                if(kakaoBtnUrl2 != null){
-                    if(containsTemplateVariable(kakaoBtnUrl2.url)){
-                        for (key in map.keys) {
-                            val reg = Regex("\\{\\{(?i)${key}}}")
-                            kakaoBtnUrl2.url = kakaoBtnUrl2.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
-                        }
-                        lst.add(
-                            ButtonJsonDto(
-                                "${kakaoCont.kko_btn_nm2}"
-                                , "WL"
-                                , kakaoBtnUrl2.url
-                                , if(kakaoBtnUrlPc2 == null) { kakaoBtnUrl2.url } else { kakaoBtnUrlPc2.url }
-                            )
-                        )
-                    }else {
-                        lst.add(ButtonJsonDto(
-                            "${kakaoCont.kko_btn_nm2}"
-                            , "WL"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl2.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc2?.seq?.toString() ?: kakaoBtnUrl2.seq.toString()), GlobalValues.encKey)}"))
-                    }
-                }
-                if(kakaoBtnUrl3 != null){
-                    if(containsTemplateVariable(kakaoBtnUrl3.url)){
-                        for (key in map.keys) {
-                            val reg = Regex("\\{\\{(?i)${key}}}")
-                            kakaoBtnUrl3.url = kakaoBtnUrl3.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
-                        }
-                        lst.add(
-                            ButtonJsonDto(
-                                "${kakaoCont.kko_btn_nm3}"
-                                , "WL"
-                                , kakaoBtnUrl3.url
-                                , if(kakaoBtnUrlPc3 == null) { kakaoBtnUrl3.url } else { kakaoBtnUrlPc3.url }
-                            )
-                        )
-                    }else {
-                        lst.add(ButtonJsonDto(
-                            "${kakaoCont.kko_btn_nm3}"
-                            , "WL"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl3.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" +  (kakaoBtnUrlPc3?.seq?.toString() ?: kakaoBtnUrl3.seq.toString()), GlobalValues.encKey)}"))
-                    }
-                }
-                if(kakaoBtnUrl4 != null){
-                    if(containsTemplateVariable(kakaoBtnUrl4.url)){
-                        for (key in map.keys) {
-                            val reg = Regex("\\{\\{(?i)${key}}}")
-                            kakaoBtnUrl4.url = kakaoBtnUrl4.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
-                        }
-                        lst.add(
-                            ButtonJsonDto(
-                                "${kakaoCont.kko_btn_nm4}"
-                                , "WL"
-                                , kakaoBtnUrl4.url
-                                , if(kakaoBtnUrlPc4 == null) { kakaoBtnUrl4.url } else { kakaoBtnUrlPc4.url }
-                            )
-                        )
-                    }else {
-                        lst.add(ButtonJsonDto(
-                            "${kakaoCont.kko_btn_nm4}"
-                            , "WL"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl4.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc4?.seq?.toString() ?: kakaoBtnUrl4.seq.toString()), GlobalValues.encKey)}"))
-                    }
-                }
-                if(kakaoBtnUrl5 != null){
-                    if(containsTemplateVariable(kakaoBtnUrl5.url)){
-                        for (key in map.keys) {
-                            val reg = Regex("\\{\\{(?i)${key}}}")
-                            kakaoBtnUrl5.url = kakaoBtnUrl5.url?.replace(reg, CommonUtils.stringValueOf(map[key]))
-                        }
-                        lst.add(
-                            ButtonJsonDto(
-                                "${kakaoCont.kko_btn_nm5}"
-                                , "WL"
-                                , kakaoBtnUrl5.url
-                                , if(kakaoBtnUrlPc5 == null) { kakaoBtnUrl5.url } else { kakaoBtnUrlPc5.url }
-                            )
-                        )
-                    }else {
-                        lst.add(ButtonJsonDto(
-                            "${kakaoCont.kko_btn_nm5}"
-                            , "WL"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoBtnUrl5.seq.toString(), GlobalValues.encKey)}"
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + (kakaoBtnUrlPc5?.seq?.toString() ?: kakaoBtnUrl5.seq.toString()), GlobalValues.encKey)}"))
-                    }
-                }
-                kkoMsgdto.button_json = gson.toJson(lst)
-                 */
             }
 
-            if(kakaoCont.kko_server_image_url != null){
-                if(kakaoCont.ch_tp == "IMGTP11"){  // 와이드 이미지
-                    kkoMsgdto.type = "FW"
-                }else{
-                    kkoMsgdto.type = "FI"
-                }
-                if(kakaoImgUrl != null) {
-                    kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}\"}"
-                }else{
-                    kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\"}"
-                }
-            }else{
-                kkoMsgdto.type = "FT"
+            when (kakaoCont.kko_msg_tp) {
+               "DMCH220" -> {
+                   kkoMsgdto.type = "FL"
+               }
+               "DMCH221" -> {
+                   kkoMsgdto.type = "FA"
+               }
+               "DMCH222" -> {
+                   kkoMsgdto.type = "FC"
+               }
+               "DMCH223" -> {
+                   kkoMsgdto.type = "FP"
+               }
+               else -> {
+                   // 이전 버전 호환용
+                   if(kakaoCont.kko_server_image_url != null){
+                       if(kakaoCont.ch_tp == "IMGTP11"){  // 와이드 이미지
+                           kkoMsgdto.type = "FW"
+                       }else{
+                           kkoMsgdto.type = "FI"
+                       }
+                       if(kakaoImgUrl != null) {
+                           kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\", \"img_link\": \"$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + kakaoImgUrl.seq.toString(), GlobalValues.encKey)}\"}"
+                       }else{
+                           kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\"}"
+                       }
+                   }else{
+                       kkoMsgdto.type = "FT"
+                   }
+               }
             }
-            
+
             if(kakaoCont.kko_price != null){
                 kkoMsgdto.price = kakaoCont.kko_price.toString()
             }

@@ -23,9 +23,9 @@ class AuthenticationHandler: AuthenticationEntryPoint, AccessDeniedHandler {
         logger.error("commence {}, {} | {}", CommonUtils.clientip(req), req.requestURI, authException.message)
         req.characterEncoding = "UTF-8"
         rep.contentType = "text/html; charset=UTF-8"
-
         when {
             req.requestURI.contains(".ajax") -> {
+                rep.status = 401
                 rep.sendError(HttpServletResponse.SC_UNAUTHORIZED, "session was not found.")
             }
             else -> {
@@ -50,6 +50,7 @@ class AuthenticationHandler: AuthenticationEntryPoint, AccessDeniedHandler {
                 rep.sendRedirect("/${GlobalValues.indexpage}")
             }
             req.requestURI.contains(".ajax") -> {
+                rep.status = 401
                 rep.sendError(HttpServletResponse.SC_UNAUTHORIZED, "session was not found.")
             }
             else -> {

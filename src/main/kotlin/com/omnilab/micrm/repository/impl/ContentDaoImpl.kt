@@ -150,11 +150,15 @@ class ContentDaoImpl : ContentDao {
         return sqlSession.selectOne("getImgNmCh", dto)
     }
 
-    override fun sel_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto> {
+    override fun selTblmicpContUrlLst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto> {
         return sqlSession.selectList("sel_tblmicp_cont_url_lst", dto)
     }
 
-    override fun del_tblmi_cont_url_lst(dto: Tblmi_cont_url_lstDto): Int {
+    override fun delTblmiContUrlLst(dto: Tblmi_cont_url_lstDto): Int {
         return sqlSession.delete("del_tblmi_cont_url_lst", dto)
+    }
+
+    override fun selTblmiContImg(dto: Tblmi_cont_imgDto): Tblmi_cont_imgDto {
+        return sqlSession.selectOne("selTblmiContImg", dto)
     }
 }

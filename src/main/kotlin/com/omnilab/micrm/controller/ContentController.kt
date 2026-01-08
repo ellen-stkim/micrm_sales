@@ -90,21 +90,17 @@ class ContentController  {
      */
 
     @PostMapping("/mobileInsert.service")
-    fun insertMoblieContent(@ModelAttribute content_list_dto: Content_list_CreateDto, response: HttpServletResponse): ModelAndView {
-        content_list_dto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-
-        val statusMap = mobileContentService.insertContentList(content_list_dto);
-        //mobileContentService.insertContentList(content_list_dto);
-
+    fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, response: HttpServletResponse): ModelAndView {
+        contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+        val statusMap = mobileContentService.insertContentList(contentListDto)
+        //mobileContentService.insertContentList(contentListDto)
         val view = ModelAndView("redirect:/cont/mdmLst.mi")
-
         if(statusMap["status"] == false) {
             val errorView = ModelAndView("error")
-            UsefulUtils.alertPopUp(response,"모바일 컨텐츠 저장 도중 오류가 났습니다. \\n관리자에게 문의 바랍니다.");
-            return errorView;
+            UsefulUtils.alertPopUp(response,"모바일 컨텐츠 저장 도중 오류가 났습니다. \\n관리자에게 문의 바랍니다.")
+            return errorView
         }
-        return view;
-
+        return view
     }
 
 

@@ -1191,7 +1191,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val dd = Tblmi_cont_url_lstDto()
                 dd.cont_lst_cd = lastSeq!!
                 dd.url_id = "kko"
-                contentDao.del_tblmi_cont_url_lst(dd)
+                contentDao.delTblmiContUrlLst(dd)
 
                 // 카카오 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
@@ -1263,7 +1263,7 @@ class SalesforceServiceImpl : SalesforceService {
                 val dd = Tblmi_cont_url_lstDto()
                 dd.cont_lst_cd = lastSeq!!
                 dd.url_id = "mms"
-                contentDao.del_tblmi_cont_url_lst(dd)
+                contentDao.delTblmiContUrlLst(dd)
                 // 모바일 url 링크 저장
                 if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
                     insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq)
@@ -1704,7 +1704,6 @@ class SalesforceServiceImpl : SalesforceService {
         val avoId: String = map["activityId"].toString()
         val intenId = map["journeyId"].toString()
         val keyValue = map["keyValue"].toString()
-
         val exMap = HashMap<String, Any>(map)
         exMap["inArguments"] = (map["inArguments"] as MutableList<MutableMap<String, Any>>)[0]
 

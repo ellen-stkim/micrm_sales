@@ -1,6 +1,5 @@
 package com.omnilab.micrm.repository
 
-import com.omnilab.micrm.model.Content_list_CreateDto
 import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.*
@@ -76,7 +75,10 @@ interface ContentDao {
 
     fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int
 
-    fun sel_tblmicp_cont_url_lst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto>
+    fun selTblmicpContUrlLst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto>
 
-    fun del_tblmi_cont_url_lst(dto: Tblmi_cont_url_lstDto): Int
+    fun delTblmiContUrlLst(dto: Tblmi_cont_url_lstDto): Int
+
+    fun selTblmiContImg(dto: Tblmi_cont_imgDto): Tblmi_cont_imgDto
+
 }

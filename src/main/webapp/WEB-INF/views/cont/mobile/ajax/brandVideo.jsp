@@ -88,9 +88,11 @@
                    </div>
                </div>
            </div>
+           <div class="td flex_box" style="width: 273px; align-items: center;">
+               <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+               <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+               <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
+           </div>
        </div>
-   </div>
-   <div class="flex_box" style="justify-content: right;">
-       <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
    </div>
 </div>
