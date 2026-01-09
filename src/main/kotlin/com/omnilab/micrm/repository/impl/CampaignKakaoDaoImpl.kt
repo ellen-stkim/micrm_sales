@@ -307,7 +307,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                 kkoMsgdto.button_json = gson.toJson(lst)
             }
 
-            when (kakaoCont.kko_msg_tp) {
+            when (kakaoCont.msg_tp) {
                "DMCH220" -> {
                    kkoMsgdto.type = "U_FL"
                }
