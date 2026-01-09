@@ -37,6 +37,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val kakaoCont = contTpLst["DMTP03"]!!
         val rcsCont = contTpLst["DMTP04"]
 
+        logger.error("{}", kakaoCont)
+
         // 카카오 발송 서버 정보
         val kakaoDbDto = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_DB", dto.usr_grp_cd!!))
         val kakaoDb = kakaoDbDto.cd_val
@@ -336,7 +338,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                            kkoMsgdto.img_url = "{\"img_url\": \"${kakaoCont.kko_server_image_url}\"}"
                        }
                    }else{
-                       kkoMsgdto.type = "FT"
+                       kkoMsgdto.type = "U_FT"
                    }
                }
             }
