@@ -253,7 +253,7 @@ let dataExtensionCnt;
 // 개인화 변수 조회
 function mappingLst() {
 	//임시 주석
-	$('#commonLoading').addClass('active');
+	//$('#commonLoading').addClass('active');
 	const res = function(e) {
 		if(e.check) {
 			dataExtensionCnt = e.totalCnt;
@@ -279,5 +279,5 @@ function mappingLst() {
 	}
 	let param = {}
 	//임시 주석
-	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
+	//com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
 }

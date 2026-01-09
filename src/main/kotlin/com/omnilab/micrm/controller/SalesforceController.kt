@@ -166,10 +166,12 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
             //임시 주석
+            /*
             val cntMap = salesforceService.isCheckSender(usrCd)
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
             view.addObject("rcsCnt", cntMap["rcsCnt"])
+             */
             return view
         }else{
             return ModelAndView("redirect:/html/not.html")
@@ -217,7 +219,7 @@ class SalesforceController {
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileUpdate.service")
     fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
-        return if(getUsrGrpCd(usrCd) != null){
+        return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
             salesforceService.updateContentList(contentListDto)
         }else{

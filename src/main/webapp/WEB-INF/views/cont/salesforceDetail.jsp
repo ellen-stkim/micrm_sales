@@ -38,17 +38,17 @@
         <!-- section 영역 시작 -->
         <div class="section">
             <form:form id="form" action="#" method="post">
+            <input type="hidden" id="seq" name="mst_seq" value="${list[0].seq}"/>
+            <input type="hidden" id="usr_grp_cd" name="usr_grp_cd" value="${list[0].cont_grp_cd}"/>
+            <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
+            <c:if test="${list[1].coupon_seq != null}">
+               <input type="hidden" id="coupon_seq" name="coupon_seq" value="${list[1].coupon_seq}"/>
+           </c:if>
+           <c:if test="${list[1].coupon_seq == null}">
+               <input type="hidden" id="coupon_seq" name="coupon_seq" value=""/>
+           </c:if>
             <div class="create_sms cf">
                 <div class="row head bottom-border">
-                    <input type="hidden" id="seq" name="mst_seq" value="${list[0].seq}"/>
-                    <input type="hidden" id="usr_grp_cd" name="usr_grp_cd" value="${list[0].cont_grp_cd}"/>
-                    <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
-                    <c:if test="${list[1].coupon_seq != null}">
-                        <input type="hidden" id="coupon_seq" name="coupon_seq" value="${list[1].coupon_seq}"/>
-                    </c:if>
-                    <c:if test="${list[1].coupon_seq == null}">
-                        <input type="hidden" id="coupon_seq" name="coupon_seq" value=""/>
-                    </c:if>
                     <div class="th">템플릿 명</div>
                     <div class="td right-border">
                         <input type="text" class="txt_input template_name" name="cont_nm" value="${fn:escapeXml(list[0].cont_nm)}" placeholder="템플릿 명을 입력하세요."/>
@@ -100,11 +100,9 @@
                                 <input type="hidden" name="rcs_option" class="radioAd" value="${list[0].send_tp eq 'SENDTP01' ? 'ad' : 'guide'}"/>
                             </div>
                         </div>
-
                     </div>
                 </div><!-- //row end -->
                 <div class="row head bottom-border">
-
                     <div class="th">캠페인 명</div>
                     <div class="td right-border">
                         <input type="text" name="camp_nm" class="txt_input " value="${fn:escapeXml(list[0].camp_nm)}" placeholder="캠페인 명을 입력하세요.">
@@ -122,7 +120,7 @@
                             </ul>
                         </div>
                     </div>
-                    <%--           grp_cd 05일 경우 기본값 설정 후 변경x               --%>
+                    <%-- grp_cd 05일 경우 기본값 설정 후 변경x --%>
                     <div class="th left-border">회원 번호</div>
                     <div class="td cf" style="width: 100%;">
                         <c:if test="${fn:length(usrKeyLst) <= 0}">
@@ -164,7 +162,6 @@
                             </div>
                             <input type="hidden" id="recv_phone"  name="from_to" value="${fromToLst[0].list_val}"/>
                         </c:if>
-
                         <c:if test="${fn:length(fromToLst) > 0 and list[0].cont_grp_cd eq '05'}">
                             <div class="select" id="recv_phone_to">
                                 <!-- selected value -->
@@ -224,6 +221,36 @@
                                         </div>
                                     </div>
                                     <div class="row body">
+                                        <div class="th">브랜드톡 양식</div>
+                                        <div class="column_1">
+                                            <label class="custom_radio en_font">
+                                                텍스트/이미지/와이드이미지
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="0" <c:if test='${list[0].msg_tp ne "DMCH220" and list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222" and list[0].msg_tp ne "DMCH223"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                와이드 리스트형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="1" <c:if test='${list[0].msg_tp eq "DMCH220"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                캐러셀 커머스형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="2" <c:if test='${list[0].msg_tp eq "DMCH221"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                캐러셀 피드형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="3" <c:if test='${list[0].msg_tp eq "DMCH222"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                프리미엄 동영상형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="4" <c:if test='${list[0].msg_tp eq "DMCH223"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row body">
                                         <div class="th">발신 프로필</div>
                                         <div class="column_1">
                                             <!-- 발신 번호 후에 세팅한 값으로 변경 필요 -->
@@ -242,51 +269,74 @@
                                     </div>
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="block">
-                                            <div class="row">
-                                                <div class="th">이미지 선택</div>
-                                                <div class="td">
-                                                    <div class="kko_delete_img" data="kakao">
-                                                        <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
-                                                    </div>
-                                                    <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>
-                                                    <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
-                                                    <!-- 카카오 이미지 저장 넘버 -->
-                                                    <input type="hidden" name="kko_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_img_cd: ''}"/>
-                                                    <!-- 프리뷰를 위한 이미지 URL -->
-                                                    <input type="hidden" name="kko_view_img_url"
-                                                    <c:if test="${cont_tp eq 'DMTP03'  &&list[0].kko_img_lst ne null}">
-                                                           value="${filePath}${list[0].kko_img_lst}"
-                                                    </c:if>
-                                                    >
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="th top-border">이미지 링크 주소</div>
-                                                <div class="td top-border">
-                                                    <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${cont_tp eq 'DMTP03'? list[0].kko_img_url : ''}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                </div>
-                                            </div>
-                                            <div class="row flex_row">
-                                                <div class="th top-border">이미지 미리보기</div>
-                                                <div class="td top-border">
-                                                    <div class="col_img" id="js-kakao-img">
-                                                        <!-- 이미지는 있고, 이미지 링크는 없을때 -->
-                                                        <c:if test="${cont_tp eq 'DMTP03'}">
-                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                                <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
-                                                                </a>
+                                            <c:choose>
+                                                <c:when test="${list[0].msg_tp eq 'DMCH223'}">
+                                                    <div class="row">
+                                                       <div class="th">동영상 URL</div>
+                                                       <div class="td">
+                                                           <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다." value="${list[0].kko_video_url}" />
+                                                       </div>
+                                                   </div>
+                                                   <div class="row">
+                                                       <div class="th top-border">썸네일</div>
+                                                       <div class="td top-border">
+                                                           <div class="delete_img" data="kakao">
+                                                               <img src="/image/btn_delete1.png" alt="삭제">
+                                                           </div>
+                                                           <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_nm : ''}" readonly/>
+                                                           <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoVideoImg')">선택</span>
+                                                           <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_cd: ''}">
+                                                       </div>
+                                                   </div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="row">
+                                                        <div class="th">이미지 선택</div>
+                                                        <div class="td">
+                                                            <div class="kko_delete_img" data="kakao">
+                                                                <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
+                                                            </div>
+                                                            <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>
+                                                            <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                            <!-- 카카오 이미지 저장 넘버 -->
+                                                            <input type="hidden" name="kko_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_img_cd: ''}"/>
+                                                            <!-- 프리뷰를 위한 이미지 URL -->
+                                                            <input type="hidden" name="kko_view_img_url"
+                                                            <c:if test="${cont_tp eq 'DMTP03'  &&list[0].kko_img_lst ne null}">
+                                                                   value="${filePath}${list[0].kko_img_lst}"
                                                             </c:if>
-                                                            <!-- 이미지는 있고, 이미지 링크도 있을때 -->
-                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                                <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
-                                                                </a>
-                                                            </c:if>
-                                                        </c:if>
+                                                            >
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                    <div class="row">
+                                                        <div class="th top-border">이미지 링크 주소</div>
+                                                        <div class="td top-border">
+                                                            <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${cont_tp eq 'DMTP03'? list[0].kko_img_url : ''}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row flex_row">
+                                                        <div class="th top-border">이미지 미리보기</div>
+                                                        <div class="td top-border">
+                                                            <div class="col_img" id="js-kakao-img">
+                                                                <!-- 이미지는 있고, 이미지 링크는 없을때 -->
+                                                                <c:if test="${cont_tp eq 'DMTP03'}">
+                                                                    <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
+                                                                        <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
+                                                                            <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                                        </a>
+                                                                    </c:if>
+                                                                    <!-- 이미지는 있고, 이미지 링크도 있을때 -->
+                                                                    <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
+                                                                        <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
+                                                                            <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                                        </a>
+                                                                    </c:if>
+                                                                </c:if>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="block">
                                             <div class="row flex_row">
@@ -537,6 +587,16 @@
                                                             </c:if>
                                                         </c:if>
                                                     </div>
+                                                    <div class="kakao_ft" id="prev_ft_video">
+                                                        <c:if test='${list[0].msg_tp eq "DMCH223"}'>
+                                                            <c:set var="parts" value="${fn:split(list[0].kko_video_url, '/')}" />
+                                                       <c:set var="videoId" value="${parts[fn:length(parts) - 1]}" />
+                                                       <c:set var="convertedUrl" value="https://play-tv.kakao.com/embed/player/cliplink/${videoId}?service=player_share" />
+                                                       <div class="">
+                                                          <iframe src="${convertedUrl}" width="100%"></iframe>
+                                                       </div>
+                                                        </c:if>
+                                                    </div>
                                                     <p class="kakao_txt" id="prev_ft_txt">${cutil:replaceBr(list[0].cont_body)}</p>
                                                     <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                                         <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
@@ -590,8 +650,7 @@
                                         <div class="inner">
                                             <div class="row_body">
                                                 <div class="round_box">
-                                                    <div class="kakao_ft sms_img_box" id="prev_ft_img">
-                                                    </div>
+                                                    <div class="kakao_ft sms_img_box" id="prev_ft_img"></div>
                                                     <p class="kakao_txt" id="prev_ft_txt"></p>
                                                 </div>
                                             </div>

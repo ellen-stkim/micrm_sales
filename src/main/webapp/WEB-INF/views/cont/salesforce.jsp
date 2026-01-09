@@ -147,8 +147,8 @@
                                     <!-- selected value -->
                                     <div class="value" data="">개인화 변수</div>
                                     <ul class="option mappingLst">
-                                            <%-- 임시 주석 --%>
-                                        <%--<li data="phone">phone</li>--%>
+                                        <%-- 임시 주석 --%>
+                                        <li data="phone">phone</li>
                                     </ul>
                                 </div>
                                 <input type="hidden" id="recv_phone" class="sel_value" name="from_to"/>
@@ -190,9 +190,7 @@
                                 <div class="row body">
                                     <div class="th">문자 제목</div>
                                     <div class="column_1">
-                                        <input type="text" class="title kakaoTitle" name="cont_sub_list"
-                                               value="(광고)"
-                                               placeholder="문자 제목을 입력하세요."/>
+                                        <input type="text" class="title kakaoTitle" name="cont_sub_list" value="(광고)" placeholder="문자 제목을 입력하세요."/>
                                         <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
                                     </div>
                                 </div>
@@ -939,9 +937,12 @@
     let bindList = [];
 
     $(function () {
+        //임시 주석
+        mobileInfo(2682);
+
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
-        });//end
+        });
 
         let config = {baseUrl: "/js/"};
         let dependencies = ["customActivity"];

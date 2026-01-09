@@ -210,6 +210,10 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
         } else{
             ArrayList()
         }
+
+    var kko_video_url:String? = null
+    var kko_thumbnail_img_cd:String? = null
+    var kko_thumbnail_img_nm:String? = null
 }
 
 

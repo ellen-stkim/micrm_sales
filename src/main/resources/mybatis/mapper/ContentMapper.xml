@@ -1210,6 +1210,9 @@
 			, tmpl.item_json
 			, tmpl.tmpl_msg_tp
 			, tmpl.button_json
+			, l.kko_video_url
+			, l.kko_thumbnail_img_cd
+			, img_video.img_nm																			AS kko_thumbnail_img_nm
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
 		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq
@@ -1225,6 +1228,7 @@
 											AND set_cd.list_dt_id = 'TEAM01'
 											AND set_cd.usr_grp_cd = #{cont_grp_cd}
 											AND set_cd.list_val = m.TEAM_CD
+		   LEFT JOIN tblmi_cont_img AS img_video ON l.kko_thumbnail_img_cd = img_video.seq
 		WHERE  m.seq = #{seq} and m.cont_grp_cd = #{cont_grp_cd}
 		ORDER  BY l.seq;
 	</select>

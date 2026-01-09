@@ -884,7 +884,7 @@ class SalesforceServiceImpl : SalesforceService {
         tblmiContMstDto.team_cd = contentListCreatedto.team_cd
         tblmiContMstDto.usr_key = contentListCreatedto.usr_key
 
-        contentDao.updateMobileMst(tblmiContMstDto);
+        contentDao.updateMobileMst(tblmiContMstDto)
 
         val contListDto = Tblmi_cont_lstDto()
         contListDto.cont_cd = contentListCreatedto.mst_seq!!.toInt()
@@ -926,7 +926,6 @@ class SalesforceServiceImpl : SalesforceService {
 
             // 인덱스 번호 0 : 카카오
             if (i == 0) {
-
                 // 체크 여부에 따라 USE_YN 설정
                 if (formatList!!.contains("kakao")) {
                     tblmiContLstdto.use_yn = "Y"
@@ -986,8 +985,32 @@ class SalesforceServiceImpl : SalesforceService {
                     }
 
                     tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                    tblmiContLstdto.msg_tp = "DMCH204" // 브랜드톡
-
+                    when (contentListCreatedto.kko_msg_tp) {
+                        "1" -> {
+                            tblmiContLstdto.msg_tp = "DMCH220"
+                        }
+                        "2" -> {
+                            tblmiContLstdto.msg_tp = "DMCH221"
+                        }
+                        "3" -> {
+                            tblmiContLstdto.msg_tp = "DMCH222"
+                        }
+                        "4" -> {
+                            tblmiContLstdto.msg_tp = "DMCH223"
+                        }
+                        else -> {
+                            if(CommonUtils.isEmptyObject(dto.kko_img_cd)){
+                                tblmiContLstdto.msg_tp = "DMCH204"
+                            }else{
+                                val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(dto.kko_img_cd!!))
+                                if(imgDto.ch_tp == "IMGTP11"){
+                                    tblmiContLstdto.msg_tp = "DMCH218"
+                                } else {
+                                    tblmiContLstdto.msg_tp = "DMCH217"
+                                }
+                            }
+                        }
+                    }
                     // 카카오 이미지 처리
                     if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
                         tblmiContLstdto.kko_img_cd = null
@@ -1012,6 +1035,8 @@ class SalesforceServiceImpl : SalesforceService {
                     tblmiContLstdto.kko_btn_nm5 = contentListCreatedto.kko_btn_nm5
                     tblmiContLstdto.kko_btn_url5 = contentListCreatedto.kko_btn_url5
                     tblmiContLstdto.kko_btn_urlPc5 = contentListCreatedto.kko_btn_urlPc5
+                    tblmiContLstdto.kko_video_url = contentListCreatedto.kko_video_url
+                    tblmiContLstdto.kko_thumbnail_img_cd = contentListCreatedto.kko_thumbnail_img_cd
                 }
 
             }
@@ -1062,15 +1087,13 @@ class SalesforceServiceImpl : SalesforceService {
 
             // 인덱스 번호 2: RCS 분기 처리
             if (i == 2) {
-
                 // RCS 포멧타입 변경에 따라 Key 값이 바뀔 수 있으므로 활성화 해준다
-
-                tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1?.toInt()
-                tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2?.toInt()
-                tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3?.toInt()
-                tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4?.toInt()
-                tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5?.toInt()
-                tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6?.toInt()
+                tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1
+                tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2
+                tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3
+                tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4
+                tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5
+                tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6
 
                 // USE_YN 처리
                 if (formatList!!.contains("rcs")) {
