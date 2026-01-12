@@ -148,7 +148,7 @@
                                     <div class="value" data="">개인화 변수</div>
                                     <ul class="option mappingLst">
                                         <%-- 임시 주석 --%>
-                                        <li data="phone">phone</li>
+                                        <%--<li data="phone">phone</li>--%>
                                     </ul>
                                 </div>
                                 <input type="hidden" id="recv_phone" class="sel_value" name="from_to"/>
@@ -938,7 +938,7 @@
 
     $(function () {
         //임시 주석
-        mobileInfo(2682);
+        //mobileInfo(2682);
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();

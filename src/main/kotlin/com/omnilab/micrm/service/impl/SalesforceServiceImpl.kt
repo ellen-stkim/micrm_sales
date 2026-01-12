@@ -1081,7 +1081,6 @@ class SalesforceServiceImpl : SalesforceService {
 
                 // short url 사용 여부
                 tblmiContLstdto.short_url_yn = contentListCreatedto.short_url_yn
-
                 tblmiContLstdto.cont_body = contentListCreatedto.sms_body
             }
 
