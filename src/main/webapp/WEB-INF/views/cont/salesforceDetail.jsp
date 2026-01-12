@@ -293,7 +293,7 @@
                                                     <div class="row">
                                                         <div class="th">이미지 선택</div>
                                                         <div class="td">
-                                                            <div class="kko_delete_img" data="kakao">
+                                                            <div class="delete_img" data="kakao">
                                                                 <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
                                                             </div>
                                                             <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>

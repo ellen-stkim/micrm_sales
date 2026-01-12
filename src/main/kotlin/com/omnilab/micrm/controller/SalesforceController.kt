@@ -166,10 +166,12 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
             //임시 주석
+            /*
             val cntMap = salesforceService.isCheckSender(usrCd)
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
             view.addObject("rcsCnt", cntMap["rcsCnt"])
+             */
             return view
         }else{
             return ModelAndView("redirect:/html/not.html")
