@@ -2732,9 +2732,10 @@
         let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
         let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
         let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
+        let kkoImgurl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val(); // 이미지 파일 url
 
         if (imgLength > 0) {
-            imageCreate(imgType, imgUrl, ImgNm, imgCheck);
+            imageCreate(imgType, imgUrl, ImgNm, imgCheck, kkoImgurl);
             $('#imagePop').siblings('.pop_error_txt').html('');
             $('.imagePopup').removeClass('active');
         } else {
@@ -2742,7 +2743,7 @@
         }
     }
 
-    function imageCreate(type, imageUrl, ImgNm, imgCheck) {
+    function imageCreate(type, imageUrl, ImgNm, imgCheck, kkoImgurl) {
         let imageType = imageUrl;
         let kakaoImgLink = $('.kakaoImgLink').val();
 
@@ -2771,14 +2772,14 @@
             } else if(type == 'kakaoImageItemFirst'){
                 $("#kakaoImageItemFirst").val(ImgNm);
                 $('input[name="kakao_item_img_cd_1"]').val(imgCheck);
-                $('input[name="kko_view_item_img_url_1"]').val(imageUrl);
+                $('input[name="kko_view_item_img_url_1"]').val(kkoImgurl);
                 $('#kakaoImageItemFirst').parent('.td').removeClass('outline');
                 $("#prev_ft_wide_lst_img1").attr("src", imageUrl);
             } else if (type.startsWith('kakaoImageItem')) {
                 const idx = type.replace('kakaoImageItem', '');
                 $('#' + type).val(ImgNm);
                 $('input[name="kakao_item_img_cd_' + idx + '"]').val(imgCheck);
-                $('input[name="kko_view_item_img_url_' + idx + '"]').val(imageUrl);
+                $('input[name="kko_view_item_img_url_' + idx + '"]').val(kkoImgurl);
                 $('#' + type).parent('.td').removeClass('outline');
                 $("#prev_ft_wide_lst_img" + idx).attr("src", imageUrl);
             } else if (type == 'smsImage') {

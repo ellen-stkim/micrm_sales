@@ -326,7 +326,7 @@ class SalesforceServiceImpl : SalesforceService {
 
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun insertContentList(dto: Content_list_CreateDto): ReturnDto {
-        val re = ReturnDto()
+        val re = ReturnDto(true)
         val userInfo = UsefulUtils.sessionUser()
         val contGrpCd = dto.cont_grp_cd
 
@@ -479,12 +479,12 @@ class SalesforceServiceImpl : SalesforceService {
                                 }
                                 tblmiContLstdto.msg_tp = "DMCH220"
                                 val itemLst = arrayListOf(
-                                    ItemInfoDto(dto.kkoItemLst1!!, dto.kakao_item_img_cd_1!!, dto.kkoItemUrlLstMo1!!, dto.kkoItemUrlLstPc1!!),
-                                    ItemInfoDto(dto.kkoItemLst2!!, dto.kakao_item_img_cd_2!!, dto.kkoItemUrlLstMo2!!, dto.kkoItemUrlLstPc2!!),
-                                    ItemInfoDto(dto.kkoItemLst3!!, dto.kakao_item_img_cd_3!!, dto.kkoItemUrlLstMo3!!, dto.kkoItemUrlLstPc3!!)
+                                    ItemInfoDto(dto.kkoItemLst1!!, dto.kko_view_item_img_url_1!!, dto.kkoItemUrlLstMo1!!, dto.kkoItemUrlLstPc1!!),
+                                    ItemInfoDto(dto.kkoItemLst2!!, dto.kko_view_item_img_url_2!!, dto.kkoItemUrlLstMo2!!, dto.kkoItemUrlLstPc2!!),
+                                    ItemInfoDto(dto.kkoItemLst3!!, dto.kko_view_item_img_url_3!!, dto.kkoItemUrlLstMo3!!, dto.kkoItemUrlLstPc3!!)
                                 ).apply {
                                     if (hasAll) {
-                                        add(ItemInfoDto(dto.kkoItemLst4!!, dto.kakao_item_img_cd_4!!, dto.kkoItemUrlLstMo4!!, dto.kkoItemUrlLstPc4!!))
+                                        add(ItemInfoDto(dto.kkoItemLst4!!, dto.kko_view_item_img_url_4!!, dto.kkoItemUrlLstMo4!!, dto.kkoItemUrlLstPc4!!))
                                     }
                                 }
                                 tblmiContLstdto.kko_item_json = GsonBuilder().create().toJson(itemLst)
@@ -546,11 +546,9 @@ class SalesforceServiceImpl : SalesforceService {
                     } else {
                         tblmiContLstdto.use_yn = "N"
                     }
-
                     tblmiContLstdto.cont_tp = "DMTP02"
                     // SMS 광고 , 안내 유형 선택
                     val smsOption = dto.sms_option!!.trim()
-
                     if (smsOption == "ad") {
                         // 광고 처리
                         tblmiContLstdto.send_tp = "SENDTP01"
