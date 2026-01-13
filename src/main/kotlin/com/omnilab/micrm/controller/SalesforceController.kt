@@ -166,12 +166,10 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
             //임시 주석
-            /*
             val cntMap = salesforceService.isCheckSender(usrCd)
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
             view.addObject("rcsCnt", cntMap["rcsCnt"])
-             */
             return view
         }else{
             return ModelAndView("redirect:/html/not.html")
@@ -195,12 +193,12 @@ class SalesforceController {
 
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileInsert.service")
-    fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
+    fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): ReturnDto {
         return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
             salesforceService.insertContentList(contentListDto)
         }else{
-            HashMap()
+            ReturnDto(false)
         }
     }
 
@@ -218,12 +216,12 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileUpdate.service")
-    fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): Map<String, Any> {
+    fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): ReturnDto {
         return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
             salesforceService.updateContentList(contentListDto)
         }else{
-            HashMap()
+            ReturnDto(false)
         }
     }
 
@@ -300,7 +298,10 @@ class SalesforceController {
      */
 
     @PostMapping("/{usr_cd}/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto
+                       , @PathVariable(value = "usr_cd") usrCd: String
+                       , req: HttpServletRequest
+    ) : ModelAndView {
         if(getUsrGrpCd(usrCd) != null){
             val view = ModelAndView("cont/mobile/ajax/mdmPreview")
             val formatList = dto.formatType
@@ -550,6 +551,30 @@ class SalesforceController {
     fun brandVideo(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         return if(getUsrGrpCd(usrCd) != null){
             val view = ModelAndView("cont/mobile/ajax/brandVideo")
+            view
+        }else{
+            rep.status = 401
+            ModelAndView("redirect:/html/not.html")
+        }
+    }
+
+    /** @Method Name  : brandNormal
+     * @Since    : 2026. 01. 07.
+     * @author   : lucas
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 브랜드톡 일반 페이지
+     * @title : 브랜드톡 일반 페이지
+     */
+    @GetMapping("/{usr_cd}/brandWideLst.ajax")
+    fun brandWide(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/mobile/ajax/brandWideLst")
             view
         }else{
             rep.status = 401

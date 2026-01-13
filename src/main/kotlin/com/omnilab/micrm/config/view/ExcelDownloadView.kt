@@ -54,7 +54,7 @@ class ExcelDownloadView: AbstractView() {
             val out: PrintWriter
             try {
                 out = response.writer
-                out.print("<script type='text/javascript'>alert('파일 생성 도중 오류가 났습니다.\\n관리자에게 문의 바랍니다.'); window.open('about:blank', '_self').close();</script>")
+                out.print("<script type='text/javascript'>alert('파일 생성 도중 오류가 발생했습니다.\\n관리자에게 문의 바랍니다.'); window.open('about:blank', '_self').close();</script>")
                 out.flush()
                 out.close()
             } catch (e1: IOException) {

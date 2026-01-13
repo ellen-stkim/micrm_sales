@@ -211,6 +211,26 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
             }
             field = value
         }
+    var kakao_item_img_cd_1: String? = null
+    var kakao_item_img_cd_2: String? = null
+    var kakao_item_img_cd_3: String? = null
+    var kakao_item_img_cd_4: String? = null
+    var kko_view_item_img_url_1: String? = null
+    var kko_view_item_img_url_2: String? = null
+    var kko_view_item_img_url_3: String? = null
+    var kko_view_item_img_url_4: String? = null
+    var kkoItemLst1: String? = null
+    var kkoItemLst2: String? = null
+    var kkoItemLst3: String? = null
+    var kkoItemLst4: String? = null
+    var kkoItemUrlLstPc1: String? = null
+    var kkoItemUrlLstPc2: String? = null
+    var kkoItemUrlLstPc3: String? = null
+    var kkoItemUrlLstPc4: String? = null
+    var kkoItemUrlLstMo1: String? = null
+    var kkoItemUrlLstMo2: String? = null
+    var kkoItemUrlLstMo3: String? = null
+    var kkoItemUrlLstMo4: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

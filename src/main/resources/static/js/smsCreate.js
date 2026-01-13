@@ -3,9 +3,9 @@ let smsCreate = {
         let textVal = $(textCount).val();
         let text = new String(textVal);
         let textLength = text.length;
-        let stringAt ;
-        let count;
-        count = 0;
+        let count = 0;
+        /*
+        let stringAt;
         for(let i = 0; i < textLength; i++){
             stringAt = text.charAt(i);
             if (escape(stringAt) == '%0D'){}
@@ -15,13 +15,15 @@ let smsCreate = {
                 count++;
             }
         }
+        */
+        count = textLength;
         if(type == 'kakao'){
             let limetCnt = 1000;
             $(textCount).removeClass("red_border");
             $('.kakao_byte').parent('.byte').removeClass("red_color");
 
             if($('#kakao_img_cd').val()){
-                limetCnt =400;
+                limetCnt = 400;
             }
             if(count>limetCnt){
                 $(textCount).addClass("red_border");
@@ -106,6 +108,32 @@ let smsCreate = {
         if(event.ctrlKey && event.which === 67){
             return false;
         }
+
+        if(type === "kakao_wide_lst_first"){
+            const sliced = newTitle.substring(0, 25);
+            if(newTitle.length > 25){
+                popup.popAlert('최대 25자까지 입력할 수 있습니다.');
+                $("#prev_ft_wide_lst_txt1").html(sliced);
+                $("input[name='kkoItemLst1']").val(sliced);
+                return false;
+            }else{
+                $("#prev_ft_wide_lst_txt1").html(newTitle);
+                return true;
+            }
+        }
+        if(type.startsWith("kakao_wide_lst")){
+            const idx = type.replace('kakao_wide_lst', '');
+            const sliced = newTitle.substring(0, 30);
+            if(newTitle.length > 30){
+                popup.popAlert('최대 30자까지 입력할 수 있습니다.');
+                $("#prev_ft_wide_lst_txt" + idx).html(sliced);
+                $("input[name='kkoItemLst"+ idx +"']").val(sliced);
+                return false;
+            } else {
+                $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
+                return false;
+            }
+        }
         if(type == 'sms'){
             let value = $('.smsType').filter(':checked').val().trim();
             if(value != 'SMS') {
@@ -113,23 +141,26 @@ let smsCreate = {
             }
         }
         if(code != 8 && count > 40){
-            for(b=i=0;c=newTitle.charCodeAt(i);) {
-                b += c >> 7 ? 2:2;
-                if (b > 80){
-                    if(type == 'sms'){
+            let byteCount = 0;
+            let i = 0;
+            while (i < newTitle.length) {
+                const charCode = newTitle.charCodeAt(i);
+                // 기존 로직 그대로 유지 (항상 2byte)
+                byteCount += 2;
+                if (byteCount > 80) {
+                    const sliced = newTitle.substring(0, i);
+                    if (type === 'sms') {
                         popup.popAlert('문자 제목은 40byte를 초과할 수 없습니다.');
-                        $(title).val(newTitle.substring(0,i));
-                        $('#sms_title').text(newTitle.substring(0,i));
-                        break;
+                        $(title).val(sliced);
+                        $('#sms_title').text(sliced);
                     }
-                    if(type == 'kakao'){
+                    if (type === 'kakao') {
                         popup.popAlert('카카오톡 버튼 링크 제목은 최대 20글자까지<br/> 입력할 수 있습니다.');
-                        $(title).val(newTitle.substring(0,i));
-                        break;
+                        $(title).val(sliced);
                     }
-                }else{
-                    i++;
+                    break;
                 }
+                i++;
             }
         }
     }
@@ -142,7 +173,7 @@ let smsCreate = {
         $('.imagePopup').attr('data', imageType);
         $('.imagePopup').find('input[name="contentsImg"]').prop('checked',false);
     }
-    , imageLinkAdd : function(link){
+    , imageLinkAdd : function(link, type){
         let linkVal = $(link).val();
         if(linkVal != ''){
             if(linkVal.substring(0,4) == 'http'){
@@ -153,7 +184,12 @@ let smsCreate = {
                     }
             }else{
                 popup.popAlert('정확한 링크 URL을 입력해 주세요.');
+                $(link).val('');
                 return false;
+            }
+
+            if(type){
+                $("#" + type).attr('src', link);
             }
         }else{
             return false;

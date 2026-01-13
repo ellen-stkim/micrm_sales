@@ -107,7 +107,8 @@
 			reg_id,
 			reg_dt,
 			kko_video_url,
-			kko_thumbnail_img_cd
+			kko_thumbnail_img_cd,
+			kko_item_json
 		)
 		values (
 			#{cont_cd},
@@ -173,7 +174,8 @@
 			#{reg_id},
 			now(),
 			#{kko_video_url},
-			#{kko_thumbnail_img_cd}
+			#{kko_thumbnail_img_cd},
+		    #{kko_item_json}
 		)
 	</insert>
 
@@ -479,8 +481,7 @@
 	<select id="getImgListCnt" parameterType="Tblmi_cont_imgDto" resultType="Int">
 		SELECT Count(*)
 		FROM TBLMI_CONT_IMG AS img
-			LEFT JOIN TBLMI_COMM_CD AS chcd
-				ON chcd.cd_id = img.ch_tp
+			LEFT JOIN TBLMI_COMM_CD AS chcd ON chcd.cd_id = img.ch_tp
 		WHERE  img.del_yn = 'N'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and img.USR_GRP_CD = #{usr_grp_cd}

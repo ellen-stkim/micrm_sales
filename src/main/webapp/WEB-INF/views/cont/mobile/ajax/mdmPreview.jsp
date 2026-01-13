@@ -58,25 +58,82 @@
                            </div>
                               <div class="row_body">
                                  <div class="round_box">
-                                    <c:if test="${content.kko_msg_tp eq '4'}">
-                                       <c:set var="parts" value="${fn:split(content.kko_video_url, '/')}" />
-                                       <c:set var="videoId" value="${parts[fn:length(parts) - 1]}" />
-                                       <c:set var="convertedUrl" value="https://play-tv.kakao.com/embed/player/cliplink/${videoId}?service=player_share" />
-                                       <div class="">
-                                          <iframe src="${convertedUrl}" width="100%"></iframe>
-                                       </div>
-                                    </c:if>
                                     <c:choose>
-                                       <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:contains(content.kko_view_img_url, ',') }">
-                                          <div class="sms">
-                                             <img src="${fn:split(content.kko_view_img_url, ',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                       <c:when test="${content.kko_msg_tp eq '1'}">
+                                          <div class="kakao_wide_lst" style="display: block">
+                                             <strong class="kakao_wide_lst_strong">
+                                                 <span class="kakao_wide_lst_title">${content.cont_sub_list[0]}</span>
+                                             </strong>
+                                             <div class="kakao_wide_lst_main_div">
+                                                 <ul class="kakao_wide_lst_ul">
+                                                     <li class="kakao_wide_lst_li_first">
+                                                         <div class="kakao_wide_lst_li_first_div">
+                                                             <a href="${content.kkoItemUrlLstMo1}" target="_blank" class="kakao_wide_lst_li_first_a" >
+                                                                 <img src="${content.kko_view_item_img_url_1}" alt="" role="presentation" style="min-height: 41px;">
+                                                             </a>
+                                                         </div>
+                                                         <p class="kakao_wide_lst_li_first_p">
+                                                             <span class="kakao_wide_lst_li_first_span">${content.kkoItemLst1}</span>
+                                                         </p>
+                                                     </li>
+                                                     <li class="kakao_wide_lst_li">
+                                                         <div class="kakao_wide_lst_li_div">
+                                                             <a href="${content.kkoItemUrlLstMo2}" target="_blank" class="kakao_wide_lst_li_a">
+                                                                 <img src="${content.kko_view_item_img_url_2}" alt="" role="presentation" style="min-height: 41px;">
+                                                             </a>
+                                                         </div>
+                                                         <p class="kakao_wide_lst_li_p">
+                                                             <span class="kakao_wide_lst_li_span">${content.kkoItemLst2}</span>
+                                                         </p>
+                                                     </li>
+                                                     <li class="kakao_wide_lst_li">
+                                                         <div class="kakao_wide_lst_li_div">
+                                                             <a href="${content.kkoItemUrlLstMo3}" target="_blank" class="kakao_wide_lst_li_a">
+                                                                 <img src="${content.kko_view_item_img_url_3}" alt="" role="presentation" style="min-height: 41px;">
+                                                             </a>
+                                                         </div>
+                                                         <p class="kakao_wide_lst_li_p">
+                                                            <span class="kakao_wide_lst_li_span">${content.kkoItemLst3}</span>
+                                                         </p>
+                                                     </li>
+                                                     <c:if test="${!cutil:isEmptyObject(content.kkoItemLst4)}">
+                                                        <li class="kakao_wide_lst_li">
+                                                           <div class="kakao_wide_lst_li_div">
+                                                               <a href="${content.kkoItemUrlLstMo4}" target="_blank" class="kakao_wide_lst_li_a">
+                                                                   <img src="${content.kko_view_item_img_url_4}" alt="" role="presentation" style="min-height: 41px;">
+                                                               </a>
+                                                           </div>
+                                                           <p class="kakao_wide_lst_li_p">
+                                                              <span class="kakao_wide_lst_li_span">${content.kkoItemLst4}</span>
+                                                           </p>
+                                                       </li>
+                                                     </c:if>
+                                                 </ul>
+                                             </div>
+                                         </div>
+                                       </c:when>
+                                       <c:when test="${content.kko_msg_tp eq '4'}">
+                                          <c:set var="parts" value="${fn:split(content.kko_video_url, '/')}" />
+                                          <c:set var="videoId" value="${parts[fn:length(parts) - 1]}" />
+                                          <c:set var="convertedUrl" value="https://play-tv.kakao.com/embed/player/cliplink/${videoId}?service=player_share" />
+                                          <div class="">
+                                             <iframe src="${convertedUrl}" width="100%"></iframe>
                                           </div>
                                        </c:when>
-                                       <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:trim(content.kko_view_img_url) ne ',' }">
-                                          <div class="sms">
-                                             <img src="${content.kko_view_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
-                                          </div>
-                                       </c:when>
+                                       <c:otherwise>
+                                          <c:choose>
+                                             <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:contains(content.kko_view_img_url, ',') }">
+                                                <div class="sms">
+                                                   <img src="${fn:split(content.kko_view_img_url, ',')[0]}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                </div>
+                                             </c:when>
+                                             <c:when test="${not empty fn:trim(content.kko_view_img_url) and fn:trim(content.kko_view_img_url) ne ',' }">
+                                                <div class="sms">
+                                                   <img src="${content.kko_view_img_url}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                </div>
+                                             </c:when>
+                                          </c:choose>
+                                       </c:otherwise>
                                     </c:choose>
                                     <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
                                     <c:if test="${not empty content.kko_btn_url}">

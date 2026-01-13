@@ -270,6 +270,27 @@
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="block">
                                             <c:choose>
+                                                <c:when test="${list[0].msg_tp eq 'DMCH220'}">
+                                                    <%--
+                                                    <div class="row">
+                                                       <div class="th">동영상 URL</div>
+                                                       <div class="td">
+                                                           <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다." value="${list[0].kko_video_url}" />
+                                                       </div>
+                                                   </div>
+                                                   <div class="row">
+                                                       <div class="th top-border">썸네일</div>
+                                                       <div class="td top-border">
+                                                           <div class="delete_img" data="kakao">
+                                                               <img src="/image/btn_delete1.png" alt="삭제">
+                                                           </div>
+                                                           <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_nm : ''}" readonly/>
+                                                           <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoVideoImg')">선택</span>
+                                                           <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_cd: ''}">
+                                                       </div>
+                                                   </div>
+                                                    --%>
+                                                </c:when>
                                                 <c:when test="${list[0].msg_tp eq 'DMCH223'}">
                                                     <div class="row">
                                                        <div class="th">동영상 URL</div>

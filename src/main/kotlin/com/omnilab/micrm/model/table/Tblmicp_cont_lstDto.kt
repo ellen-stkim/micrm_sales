@@ -91,11 +91,11 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.upd_dt = tblmiContLstdto.upd_dt
         this.kko_video_url = tblmiContLstdto.kko_video_url
         this.kko_thumbnail_img_cd = tblmiContLstdto.kko_thumbnail_img_cd
+        this.kko_item_json = tblmiContLstdto.kko_item_json
     }
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }
-
 
 }

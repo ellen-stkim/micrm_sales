@@ -18,7 +18,7 @@
                    <img src="/image/btn_delete1.png" alt="삭제">
                </div>
                <input type="text" class="txt_input en_font" name="" id="kakaoImage" placeholder="이미지를 선택해 주세요." readonly/>
-               <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
+               <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImageItem')">선택</span>
                <input type="hidden" id="kakao_img_cd" name="kko_img_cd" value="">
                <input type="hidden" id="kko_view_img_url" name="kko_view_img_url" maxlength="" value="">
            </div>

@@ -190,8 +190,8 @@
                                 <div class="row body">
                                     <div class="th">문자 제목</div>
                                     <div class="column_1">
-                                        <input type="text" class="title kakaoTitle" name="cont_sub_list" value="(광고)" placeholder="문자 제목을 입력하세요."/>
-                                        <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
+                                        <input type="text" class="title kakaoTitle" name="cont_sub_list" value="(광고)" placeholder="문자 제목을 입력하세요." maxlength="20"/>
+                                        <span class="ex_txt">※ 와이드 리스트형을 제외한 발송에는 반영되지 않습니다.</span>
                                     </div>
                                 </div>
                                 <div class="row body">
@@ -382,12 +382,61 @@
                                             <div class="kakao_ft" id="prev_ft_img"></div>
                                             <div class="kakao_ft" id="prev_ft_video"></div>
                                             <p class="kakao_txt" id="prev_ft_txt"></p>
+                                            <div class="kakao_wide_lst" id="prev_ft_wide_lst">
+                                                <strong class="kakao_wide_lst_strong">
+                                                    <span class="kakao_wide_lst_title" id="prev_ft_wide_lst_title">(광고)</span>
+                                                </strong>
+                                                <div class="kakao_wide_lst_main_div">
+                                                    <ul class="kakao_wide_lst_ul">
+                                                        <li class="kakao_wide_lst_li_first">
+                                                            <div class="kakao_wide_lst_li_first_div">
+                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_first_a" id="prev_ft_wide_lst_img_url1">
+                                                                    <img id="prev_ft_wide_lst_img1" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                </a>
+                                                            </div>
+                                                            <p class="kakao_wide_lst_li_first_p">
+                                                                <span class="kakao_wide_lst_li_first_span" id="prev_ft_wide_lst_txt1" >리스트 항목 1 내용</span>
+                                                            </p>
+                                                        </li>
+                                                        <li class="kakao_wide_lst_li">
+                                                            <div class="kakao_wide_lst_li_div">
+                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url2">
+                                                                    <img id="prev_ft_wide_lst_img2" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                </a>
+                                                            </div>
+                                                            <p class="kakao_wide_lst_li_p">
+                                                                <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt2">리스트 항목 2 내용</span>
+                                                            </p>
+                                                        </li>
+                                                        <li class="kakao_wide_lst_li">
+                                                            <div class="kakao_wide_lst_li_div">
+                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url3">
+                                                                    <img id="prev_ft_wide_lst_img3" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                </a>
+                                                            </div>
+                                                            <p class="kakao_wide_lst_li_p">
+                                                                <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt3">리스트 항목 3 내용</span>
+                                                            </p>
+                                                        </li>
+                                                        <li class="kakao_wide_lst_li">
+                                                            <div class="kakao_wide_lst_li_div">
+                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url4">
+                                                                    <img id="prev_ft_wide_lst_img4" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                </a>
+                                                            </div>
+                                                            <p class="kakao_wide_lst_li_p">
+                                                                <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt4">리스트 항목 4 내용</span>
+                                                            </p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="byte">
                                     <span class="en_font kakao_byte">0</span>
-                                    <span class="en_font">byte</span>(버튼제외)<br><br>
+                                    <span class="en_font">자</span>(버튼제외)<br><br>
                                     <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
                                     <span class="en_font">※ 이미지 유형 최대 400자</span>
                                 </div>
@@ -562,7 +611,7 @@
                                     <div class="text_box"><p class="scroll_txt_area" id="smsTextArea">내용 영역</p></div>
                                 </div>
                                 <div class="byte"  style="width: 270px">
-                                    <span class="en_font sms_byte">0</span><span class="en_font">byte</span>
+                                    <span class="en_font sms_byte">0</span><span class="en_font">자</span>
                                     <br> <br>
                                     <span class="en_font">※ LMS 유형 최대 2000자</span> <br>
                                     <span class="en_font">※ MMS 유형 최대 1000자</span> <br>
@@ -1671,6 +1720,10 @@
             dropTarget.val("");
             dropTarget.val(value);
         });
+
+        $(document).on('input', '.kakaoTitle[name="cont_sub_list"]', function (ev) {
+            $("#prev_ft_wide_lst_title").html($(this).val());
+        });
     });
 
     // 정보 조회
@@ -1790,9 +1843,10 @@
         let kakaoOption = $('input[name="kko_option"]').val();
         let kakaoTitle = $('.kakaoTitle');
         let kkoType = $("input[name='kko_format_type']:checked").val();
-        let kakaoTxt = null;
+        let kakaoTxt, kakaoFtType;
         if(kkoType == "kko_ft"){
             kakaoTxt = $("textarea.kakao_txt");
+            kakaoFtType = $("input[name='kko_msg_tp']:checked").val();
         }else{
             kakaoTxt =  $("input.kakao_txt");
         }
@@ -1807,7 +1861,7 @@
         if (kakaoOption == 'ad') {
             if (kakaoTitle.val().indexOf('(광고)') != -1) {
                 if (kakaoTxt.val() != '') {
-                    let type = kakaoTypeValidate();
+                    let type = kakaoTypeValidate(kakaoFtType);
                     if (type == true) {
                         $('.kakao_txt').removeAttr("name");
                         $(kakaoTxt).attr("name",'kakao_body');
@@ -1876,24 +1930,57 @@
     }
 
     //카카오 유효성 검사
-    function kakaoTypeValidate() {
-        // 카카오의 경우 이미지 필수 -> 이미지 선택으로 바뀜
-        let kakaoByte = Number($('.kakao_byte').html());
-        let kakaoImage = $('#kakaoImage');
-        let kakaoTxt = $('.kakao_txt');
+    function kakaoTypeValidate(kakaoFtType) {
+        if(kakaoFtType === "1"){
+            const REQUIRED_IDX = [1, 2, 3];
+            const FIELD_LABEL = {
+                item:   '리스트 항목명',
+                img:    '이미지',
+                pcUrl:  'PC 링크 URL',
+                moUrl:  '모바일 링크 URL'
+            };
+            for (const i of REQUIRED_IDX) {
+                const item  = $("input[name='kkoItemLst"+ i +"']").val();
+                const img   = $("#kakao_item_img_cd_" + i).val();
+                const pcUrl = $("input[name='kkoItemUrlLstPc"+ i +"']").val();
+                const moUrl = $("input[name='kkoItemUrlLstMo"+ i +"']").val();
 
-        // 본문 byte 체크
-        if (kakaoImage.val() == '' || kakaoImage.val() == null) {
-            if (kakaoByte > 2000) {
-                kakaoTxt.focus();
-                popup.popAlert("카카오톡 본문 내용이 2000byte를 초과할 수 없습니다.");
-                return false;
+                if (!item) {
+                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.item +'을(를) 입력해 주세요.');
+                    return false;
+                }
+                if (!img) {
+                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.img +'을(를) 입력해 주세요.');
+                    return false;
+                }
+                if (!pcUrl) {
+                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.pcUrl +'을(를) 입력해 주세요.');
+                    return false;
+                }
+                if (!moUrl) {
+                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.moUrl +'을(를) 입력해 주세요.');
+                    return false;
+                }
             }
-        } else if (kakaoImage.val() != '' || kakaoImage.val() != null) {
-            if (kakaoByte > 400) {
-                kakaoTxt.focus();
-                popup.popAlert("카카오톡 본문 내용이 400byte를 초과할 수 없습니다.");
-                return false;
+            return true;
+        } else {
+            let txt = $("textarea[name='kakao_body']").val()
+            let kakaoByte = txt.length;
+            let kakaoImage = $('#kakaoImage');
+            let kakaoTxt = $('.kakao_txt');
+            // 본문 byte 체크
+            if (kakaoImage.val() == '' || kakaoImage.val() == null) {
+                if (kakaoByte > 2000) {
+                    kakaoTxt.focus();
+                    popup.popAlert("카카오톡 본문 내용은 1000자를 초과할 수 없습니다.");
+                    return false;
+                }
+            } else if (kakaoImage.val() != '' || kakaoImage.val() != null) {
+                if (kakaoByte > 400) {
+                    kakaoTxt.focus();
+                    popup.popAlert("카카오톡 본문 내용이 400자를 초과할 수 없습니다.");
+                    return false;
+                }
             }
         }
         return true;
@@ -2594,6 +2681,12 @@
             // 이미지 타입 : Kakao Image
             param.push({name: 'ch_tp', value: 'IMGTP_FT'});
             msg = "브랜드톡"
+        } else if (type === 'kakaoImageItemFirst') {
+            param.push({name: 'ch_tp', value: 'IMGTP12'});
+            msg = "브랜드톡 와이드 리스트(첫번째)"
+        } else if (type.startsWith('kakaoImageItem')) {
+            param.push({name: 'ch_tp', value: 'IMGTP13'});
+            msg = "브랜드톡 와이드 리스트"
         } else if (type === 'smsImage') {
             // 이미지 타입 : 문자(MMS)
             param.push({name: 'ch_tp', value: 'IMGTP02'});
@@ -2624,6 +2717,9 @@
                 param.push({name: 'ch_tp', value: 'IMGTP08'});
                 msg = "RCS 슬라이드 medium"
             }
+        } else{
+            param.push({name: 'ch_tp', value: '-'})
+            msg = "-"
         }
         param.push({name: 'pageNo', value: nowPage, usr_grp_cd: $('#usr_grp_cd').val()});
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/mobileImgList.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -2638,11 +2734,6 @@
         let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
 
         if (imgLength > 0) {
-            /*
-            let popParents = $(form).parents('.layer_pop').attr('data');
-            $('#' + popParents).val(imgUrl);
-            $(form).parents('.layer_pop').removeClass('active');
-            */
             imageCreate(imgType, imgUrl, ImgNm, imgCheck);
             $('#imagePop').siblings('.pop_error_txt').html('');
             $('.imagePopup').removeClass('active');
@@ -2677,6 +2768,19 @@
                 $("#kakaoVideoImg").val(ImgNm);
                 $('input[name="kko_thumbnail_img_cd"]').val(imgCheck);
                 $('#kakaoVideoImg').parent('.td').removeClass('outline');
+            } else if(type == 'kakaoImageItemFirst'){
+                $("#kakaoImageItemFirst").val(ImgNm);
+                $('input[name="kakao_item_img_cd_1"]').val(imgCheck);
+                $('input[name="kko_view_item_img_url_1"]').val(imageUrl);
+                $('#kakaoImageItemFirst').parent('.td').removeClass('outline');
+                $("#prev_ft_wide_lst_img1").attr("src", imageUrl);
+            } else if (type.startsWith('kakaoImageItem')) {
+                const idx = type.replace('kakaoImageItem', '');
+                $('#' + type).val(ImgNm);
+                $('input[name="kakao_item_img_cd_' + idx + '"]').val(imgCheck);
+                $('input[name="kko_view_item_img_url_' + idx + '"]').val(imageUrl);
+                $('#' + type).parent('.td').removeClass('outline');
+                $("#prev_ft_wide_lst_img" + idx).attr("src", imageUrl);
             } else if (type == 'smsImage') {
                 $("#smsImage").val(ImgNm);
                 $('input[name="mds_img_cd"]').val(imgCheck);
@@ -3883,11 +3987,26 @@
             let $doc = new DOMParser().parseFromString(response, "text/html");
             let html = $("#bodyArea", $doc).html();
             $('#kko_ft').html(html);
+
+            if(radioVal === "1"){
+                $("#prev_ft_img").hide();
+                $("#prev_ft_video").hide();
+                $("#prev_ft_txt").hide();
+                $("#prev_ft_wide_lst").show();
+            }else{
+                $("#prev_ft_img").show();
+                $("#prev_ft_video").show();
+                $("#prev_ft_txt").show();
+                $("#prev_ft_wide_lst").hide();
+            }
         }
-        if(radioVal === "0"){
-            com_ajax.ajax('get', '/sf/${usr_cd}/brandNormal.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
+
+        if(radioVal === "1"){
+            com_ajax.ajax('get', '/sf/${usr_cd}/brandWideLst.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }else if(radioVal === "4"){
             com_ajax.ajax('get', '/sf/${usr_cd}/brandVideo.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
+        }else {
+            com_ajax.ajax('get', '/sf/${usr_cd}/brandNormal.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }
 
         kakaoBeforeSub = radioVal;

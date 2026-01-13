@@ -97,7 +97,7 @@ class ContentController  {
         val view = ModelAndView("redirect:/cont/mdmLst.mi")
         if(statusMap["status"] == false) {
             val errorView = ModelAndView("error")
-            UsefulUtils.alertPopUp(response,"모바일 컨텐츠 저장 도중 오류가 났습니다. \\n관리자에게 문의 바랍니다.")
+            UsefulUtils.alertPopUp(response,"모바일 컨텐츠 저장 도중 오류가 발생했습니다. \\n관리자에게 문의 바랍니다.")
             return errorView
         }
         return view
@@ -189,7 +189,7 @@ class ContentController  {
 
         if(statusMap["status"] == false){
             val errorView = ModelAndView("error")
-            UsefulUtils.alertPopUp(response,"Byte가 일치하지 않아 모바일 컨텐츠 저장 도중 오류가 났습니다. \\n관리자에게 문의 바랍니다.");
+            UsefulUtils.alertPopUp(response,"Byte가 일치하지 않아 모바일 컨텐츠 저장 도중 오류가 발생했습니다. \\n관리자에게 문의 바랍니다.");
             return errorView;
         }
         return view

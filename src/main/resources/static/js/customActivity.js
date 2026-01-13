@@ -196,15 +196,14 @@ define(["postmonger"], function (Postmonger) {
 				connection.trigger("destroy");
 			}else{
 				if(response.status) {
-					mstSeq = response.seq
+					mstSeq = response.data
 					save();
 				} else {
-					popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다.");
+					popup.popAlert(response.errMsg);
 				}
 			}
         }
 		//임시 주석
-		/*
         let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
@@ -214,7 +213,6 @@ define(["postmonger"], function (Postmonger) {
 		data.push({name: 'team_cd', value: $('#team_cd_sel').attr("data")});
 		data.push({name: 'usr_key', value: $('#recv_usr_cd .value').attr("data")});
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileInsert.service', data, res, null, null);
- 		*/
     }
 
     // 수정
@@ -227,7 +225,7 @@ define(["postmonger"], function (Postmonger) {
 				if(response.status) {
 					save();
 				} else {
-					popup.popAlert("모바일 컨텐츠 저장 도중 오류가 났습니다. \n동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다.");
+					popup.popAlert("모바일 컨텐츠 저장 도중 오류가 발생했습니다. \n동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다.");
 				}
 			}
 		}
@@ -254,7 +252,7 @@ let dataExtensionCnt;
 // 개인화 변수 조회
 function mappingLst() {
 	//임시 주석
-	//$('#commonLoading').addClass('active');
+	$('#commonLoading').addClass('active');
 	const res = function(e) {
 		if(e.check) {
 			dataExtensionCnt = e.totalCnt;
@@ -280,5 +278,5 @@ function mappingLst() {
 	}
 	let param = {}
 	//임시 주석
-	//com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
+	com_ajax.ajax('get', `/sf/${usr_cd}/getDataExtension.ajax?extentionId=${dataExtensionId}`, param, res, null, null,false)
 }

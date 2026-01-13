@@ -12,6 +12,7 @@ import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.kakao.ItemInfoDto
 import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
@@ -324,18 +325,15 @@ class SalesforceServiceImpl : SalesforceService {
      */
 
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
-    override fun insertContentList(dto: Content_list_CreateDto): Map<String, Any> {
-        val statusMap: MutableMap<String, Any> = HashMap()
+    override fun insertContentList(dto: Content_list_CreateDto): ReturnDto {
+        val re = ReturnDto()
         val userInfo = UsefulUtils.sessionUser()
         val contGrpCd = dto.cont_grp_cd
 
         val isByte = isCheckByte(dto)
-        if (!isByte) {
-            statusMap["status"] = false
-            return statusMap
+        if (!isByte.status!!) {
+            return isByte
         }
-        statusMap["status"] = true
-
         val tblmiContMstDto = Tblmi_cont_mstDto()
         try {
             tblmiContMstDto.ch_tp = "CH03"
@@ -354,7 +352,7 @@ class SalesforceServiceImpl : SalesforceService {
             tblmiContMstDto.usr_key = dto.usr_key
 
             contentDao.insertContentMaster(tblmiContMstDto)// 마스터 코드 리턴
-            statusMap["seq"] = tblmiContMstDto.seq as Int
+            re.data = tblmiContMstDto.seq.toString()
 
             // 인덱스 값은 고정되서 넘어온다 [ 0번 인덱스 : kakao , 1번 인덱스 : sms , 2번 인덱스: rcs ]
             val len = dto.send_to_list!!.size - 1;
@@ -444,7 +442,52 @@ class SalesforceServiceImpl : SalesforceService {
                         tblmiContLstdto.cont_tp = "DMTP03" // 카카오
                         when (dto.kko_msg_tp) {
                             "1" -> {
+                                val requiredMap = linkedMapOf(
+                                    "리스트 1 항목명" to dto.kkoItemLst1,
+                                    "리스트 2 항목명" to dto.kkoItemLst2,
+                                    "리스트 3 항목명" to dto.kkoItemLst3,
+                                    "리스트 1 이미지" to dto.kakao_item_img_cd_1,
+                                    "리스트 2 이미지" to dto.kakao_item_img_cd_2,
+                                    "리스트 3 이미지" to dto.kakao_item_img_cd_3,
+                                    "리스트 1 PC URL" to dto.kkoItemUrlLstPc1,
+                                    "리스트 2 PC URL" to dto.kkoItemUrlLstPc2,
+                                    "리스트 3 PC URL" to dto.kkoItemUrlLstPc3,
+                                    "리스트 1 모바일 URL" to dto.kkoItemUrlLstMo1,
+                                    "리스트 2 모바일 URL" to dto.kkoItemUrlLstMo2,
+                                    "리스트 3 모바일 URL" to dto.kkoItemUrlLstMo3
+                                )
+                                for ((label, value) in requiredMap) {
+                                    if (CommonUtils.isEmptyObject(value)) {
+                                        re.status = false
+                                        re.errMsg = "$label 이(가) 누락되었습니다."
+                                        return re
+                                    }
+                                }
+
+                                val group4 = listOf(
+                                    dto.kkoItemLst4,
+                                    dto.kakao_item_img_cd_4,
+                                    dto.kkoItemUrlLstPc4,
+                                    dto.kkoItemUrlLstMo4
+                                )
+                                val hasAny = group4.any { !CommonUtils.isEmptyObject(it) }
+                                val hasAll = group4.all { !CommonUtils.isEmptyObject(it) }
+                                if (hasAny && !hasAll) {
+                                    re.status = false
+                                    re.errMsg = "리스트 4번 항목은 하나라도 입력 시 모든 값이 필수 입니다."
+                                    return re
+                                }
                                 tblmiContLstdto.msg_tp = "DMCH220"
+                                val itemLst = arrayListOf(
+                                    ItemInfoDto(dto.kkoItemLst1!!, dto.kakao_item_img_cd_1!!, dto.kkoItemUrlLstMo1!!, dto.kkoItemUrlLstPc1!!),
+                                    ItemInfoDto(dto.kkoItemLst2!!, dto.kakao_item_img_cd_2!!, dto.kkoItemUrlLstMo2!!, dto.kkoItemUrlLstPc2!!),
+                                    ItemInfoDto(dto.kkoItemLst3!!, dto.kakao_item_img_cd_3!!, dto.kkoItemUrlLstMo3!!, dto.kkoItemUrlLstPc3!!)
+                                ).apply {
+                                    if (hasAll) {
+                                        add(ItemInfoDto(dto.kkoItemLst4!!, dto.kakao_item_img_cd_4!!, dto.kkoItemUrlLstMo4!!, dto.kkoItemUrlLstPc4!!))
+                                    }
+                                }
+                                tblmiContLstdto.kko_item_json = GsonBuilder().create().toJson(itemLst)
                             }
                             "2" -> {
                                 tblmiContLstdto.msg_tp = "DMCH221"
@@ -834,10 +877,12 @@ class SalesforceServiceImpl : SalesforceService {
             val lstDto = Tblmi_cont_lstDto()
             lstDto.cont_cd = tblmiContMstDto.seq
             contentDao.deleteRealContLst(lstDto)
-            statusMap["status"] = false
-            return statusMap
+            re.status = false
+            re.errMsg = "모바일 컨텐츠 저장 도중 오류가 발생 했습니다. \n" +
+                    "동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다."
+            return re
         }
-        return statusMap
+        return re
     }
 
     /**
@@ -853,19 +898,16 @@ class SalesforceServiceImpl : SalesforceService {
      * @title  : 모바일 컨텐츠 수정
      */
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
-    override fun updateContentList(dto: Tblmi_cont_lstDto): Map<String, Any> {
+    override fun updateContentList(dto: Tblmi_cont_lstDto): ReturnDto {
         val contentListCreatedto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
         val usrId: String = userInfo.usr_id!!
         val usrGrpCd = contentListCreatedto.cont_grp_cd
-        val statusMap: MutableMap<String, Any> = HashMap()
         val tblmiContMstDto = Tblmi_cont_mstDto()
 
-        val isByte = isCheckByte(contentListCreatedto);
-
-        if (!isByte) {
-            statusMap["status"] = false
-            return statusMap
+        val isByte = isCheckByte(contentListCreatedto)
+        if (!isByte.status!!) {
+            return isByte
         }
 
         tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
@@ -1376,8 +1418,9 @@ class SalesforceServiceImpl : SalesforceService {
                 }
             }
         }
-        statusMap["status"] = true
-        return statusMap
+        val re = ReturnDto()
+        re.status = true
+        return re
     }
 
     /**
@@ -1958,23 +2001,23 @@ class SalesforceServiceImpl : SalesforceService {
      * @Method Decription : 카카오 발신자 체크 하기
      * @title  카카오 발신자 체크
      */
-    override fun isCheckSender(usr_cd: String): Map<String, Any> {
+    override fun isCheckSender(usrCd: String): Map<String, Any> {
         val paramMap: MutableMap<String, Any> = java.util.HashMap()
 
         val tblmiDto = Tblmi_set_lstDto()
         tblmiDto.list_tp_id = "CH02"
         tblmiDto.list_dt_id = "DMTP03"
-        tblmiDto.usr_grp_cd = usr_cd
+        tblmiDto.usr_grp_cd = usrCd
 
         val smsMiDto = Tblmi_set_lstDto()
         smsMiDto.list_tp_id = "CH02"
         smsMiDto.list_dt_id = "DMTP02"
-        smsMiDto.usr_grp_cd = usr_cd
+        smsMiDto.usr_grp_cd = usrCd
 
         val rcsMiDto = Tblmi_set_lstDto()
         rcsMiDto.list_tp_id = "CH02"
         rcsMiDto.list_dt_id = "DMTP04"
-        rcsMiDto.usr_grp_cd = usr_cd
+        rcsMiDto.usr_grp_cd = usrCd
 
         paramMap["kakaoCnt"] = contentDao.selectSenderListCnt(tblmiDto)
         paramMap["smsCnt"] = contentDao.selectSenderListCnt(smsMiDto)
@@ -2025,18 +2068,25 @@ class SalesforceServiceImpl : SalesforceService {
      * @Method Decription : 앞단에서 체크하지 못한 byte 체크를 백단에서 체크한다
      * @title : 모바일 컨텐츠 바이트 체크
      */
-    private fun isCheckByte(dto: Content_list_CreateDto): Boolean {
+    private fun isCheckByte(dto: Content_list_CreateDto): ReturnDto {
+        val re = ReturnDto()
         // 카카오의 본문 body byte를 체크한다
         if (!CommonUtils.isEmptyObject(dto.kakao_body)) {
             if (!CommonUtils.isEmptyObject(dto.kko_img_cd)) {
-                if (!CommonUtils.checkByteLength(dto.kakao_body, 400)) {
+                //if (!CommonUtils.checkByteLength(dto.kakao_body, 400)) {
+                if (dto.kakao_body!!.length > 400) {
                     logger.error("KaKao 400Byte Error {}, {}", dto.kakao_body?.length, dto.kakao_body)
-                    return false;
+                    re.status = false
+                    re.errMsg = "카카오 메시지 본문이 400자를 초과 합니다."
+                    return re
                 }
             } else if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
-                if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
+                //if (!CommonUtils.checkByteLength(dto.kakao_body, 2000)) {
+                if (dto.kakao_body!!.length > 1000) {
                     logger.error("KaKao 2000Byte Error {}, {}", dto.kakao_body?.length, dto.kakao_body)
-                    return false;
+                    re.status = false
+                    re.errMsg = "카카오 메시지 본문이 1000자를 초과 합니다."
+                    return re
                 }
             }
         }
@@ -2047,28 +2097,36 @@ class SalesforceServiceImpl : SalesforceService {
         // 문자의 경우 제목 byte 체크 필요
         if (!CommonUtils.checkByteLength(smsContSub, 80)) {
             logger.error("SMS Title 40Byte Error")
-            return false
+            re.status = false
+            re.errMsg = "문자 제목이 40Byte를 초과 합니다."
+            return re
         }
 
         if (smsMsgTp.equals("LMS")) {     // LMS의 경우 본문 Byte 2000 제한
             if (!CommonUtils.checkByteLength(dto.sms_body, 2000)) {
                 logger.error("LMS 2000 Byte Error")
-                return false;
+                re.status = false
+                re.errMsg = "문자 내용이 2000Byte를 초과 합니다."
+                return re
             }
         } else if (smsMsgTp.equals("MMS")) {
             //  MMS의 경우 본문 2000 Byte 제한
             // 단, 이미지가 1개일때만 2000Byte 까지 제한하고, 여러개면 1000Byte로 제한한다
             if (!CommonUtils.checkByteLength(dto.sms_body, 2000)) {
-                logger.error("MMS 2000 Byte Error")
-                return false;
+                re.status = false
+                re.errMsg = "문자 내용이 2000Byte를 초과 합니다."
+                return re
             }
         } else if (smsMsgTp.equals("SMS")) { // SMS 의 경우 본문 90 Byte 제한
             if (!CommonUtils.checkByteLength(dto.sms_body, 90)) {
                 logger.error("SMS 90 Byte Error")
-                return false
+                re.status = false
+                re.errMsg = "문자 내용이 90Byte를 초과 합니다."
+                return re
             }
         }
-        return true
+        re.status = true
+        return re
     }
 
     /**
