@@ -294,7 +294,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.profile_key = kakaoCont.send_to
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
 
-
             if(kakaoBtnUrl != null){
                 val lst = ArrayList<ButtonJsonDto>()
                 buildButtonDto(kakaoCont.kko_btn_nm , kakaoBtnUrl , kakaoBtnUrlPc , trackURL!!, hstSeq, map)?.let(lst::add)
@@ -308,6 +307,9 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             when (kakaoCont.msg_tp) {
                "DMCH220" -> {
                    kkoMsgdto.type = "U_FL"
+                   kkoMsgdto.header = kakaoCont.cont_sub?.let {
+                       if (it.length > 20) it.substring(0, 20) else it
+                   }
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
