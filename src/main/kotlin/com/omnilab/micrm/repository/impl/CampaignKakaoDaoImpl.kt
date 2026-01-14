@@ -426,6 +426,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.tax_cd1 = dto.usr_grp_cd
             kkoMsgdto.m_server = kakaoDb
             sendLst.add(kkoMsgdto)
+            logger.error("kakaoCont {}", kakaoCont)
             logger.error("kkoMsgdto {}", kkoMsgdto)
             sqlSession.insert("ins_camp_send_kko_enter", sendLst)
             cnt++
