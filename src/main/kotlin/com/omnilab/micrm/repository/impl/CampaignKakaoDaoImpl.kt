@@ -308,7 +308,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             when (kakaoCont.msg_tp) {
                "DMCH220" -> {
                    kkoMsgdto.type = "U_FL"
-                   kkoMsgdto.item = kakaoCont.item_json
+                   kkoMsgdto.item = kakaoCont.kko_item_json
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
