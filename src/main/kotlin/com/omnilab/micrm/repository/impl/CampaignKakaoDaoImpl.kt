@@ -308,9 +308,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             when (kakaoCont.msg_tp) {
                "DMCH220" -> {
                    kkoMsgdto.type = "U_FL"
-                   kkoMsgdto.header = kakaoCont.cont_sub?.let {
-                       if (it.length > 20) it.substring(0, 20) else it
-                   }
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"

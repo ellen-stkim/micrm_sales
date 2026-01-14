@@ -380,7 +380,6 @@ class SalesforceServiceImpl : SalesforceService {
                 if (i == 0) {
                     // 제목 저장
                     tblmiContLstdto.cont_sub = dto.cont_sub_list!![i].trim()
-
                     // 체크 여부에 따라 USE_YN 설정
                     if (formatList!!.contains("kakao")) {
                         tblmiContLstdto.use_yn = "Y"
@@ -488,6 +487,9 @@ class SalesforceServiceImpl : SalesforceService {
                                     }
                                 }
                                 tblmiContLstdto.kko_item_json = GsonBuilder().create().toJson(itemLst)
+                                tblmiContLstdto.kko_header = tblmiContLstdto.cont_sub?.let {
+                                    if (it.length > 20) it.substring(0, 20) else it
+                                }
                             }
                             "2" -> {
                                 tblmiContLstdto.msg_tp = "DMCH221"
