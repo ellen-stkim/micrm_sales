@@ -311,8 +311,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    kkoMsgdto.header = kakaoCont.cont_sub?.let {
                        if (it.length > 20) it.substring(0, 20) else it
                    }
-                   logger.error("kakaoCont.cont_sub {}", kakaoCont.cont_sub)
-                   logger.error("kakaoCont {}", kakaoCont)
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
@@ -430,6 +428,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.tax_cd1 = dto.usr_grp_cd
             kkoMsgdto.m_server = kakaoDb
             sendLst.add(kkoMsgdto)
+            logger.error("kkoMsgdto {}", kkoMsgdto)
             sqlSession.insert("ins_camp_send_kko_enter", sendLst)
             cnt++
         } catch (e: Exception) {
