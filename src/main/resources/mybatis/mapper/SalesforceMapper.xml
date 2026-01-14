@@ -284,6 +284,7 @@
             , REG_ID
             , KKO_VIDEO_URL
             , KKO_THUMBNAIL_IMG_CD
+            , KKO_ITEM_JSON
         )
         values
             (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}
@@ -334,6 +335,7 @@
             , #{reg_id}
             , #{kko_video_url}
             , #{kko_thumbnail_img_cd}
+            , #{kko_item_json}
         )
     </insert>
 
