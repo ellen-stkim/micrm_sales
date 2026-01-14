@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Repository("CampaignKakaoDaoImpl")
@@ -310,6 +311,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    kkoMsgdto.header = kakaoCont.cont_sub?.let {
                        if (it.length > 20) it.substring(0, 20) else it
                    }
+                   logger.error("kakaoCont.cont_sub {}", kakaoCont.cont_sub)
+                   logger.error("kakaoCont {}", kakaoCont)
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
