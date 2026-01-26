@@ -315,6 +315,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                }
                "DMCH222" -> {
                    kkoMsgdto.type = "U_FC"
+                   kkoMsgdto.carousel_json = kakaoCont.kko_carousel_json
                }
                "DMCH223" -> {
                    kkoMsgdto.type = "U_FP"
