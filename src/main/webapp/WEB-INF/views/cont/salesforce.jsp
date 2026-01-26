@@ -459,6 +459,61 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="viewer_area" id="kakao_brand_viewer" hidden="hidden">
+                                <div class="rcs_inner kko_slide">
+                                    <div class="slide_area">
+                                        <div class="kko_prev">
+                                            <img src="/image/ico_rcs_prev.png" alt="">
+                                        </div>
+                                        <div class="kko_next">
+                                            <img src="/image/ico_rcs_next.png" alt="">
+                                        </div>
+                                        <div class="swiper-container medium kkoBrandFcSwiper">
+                                            <div class="swiper-wrapper">
+                                                <c:forEach var="idx" begin="1" end="6">
+                                                    <div class="swiper-slide slide${idx}">
+                                                        <section>
+                                                            <div class="img_area">
+                                                                <img id="brandFcImgArea${idx}" src="" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                            </div>
+                                                            <c:set var="imgIdx" value="${idx+1}"/>
+                                                            <div class="txt_area">
+                                                                <h3 id="brandFctitleArea${idx}">
+                                                                    타이틀을 입력해주세요.
+                                                                </h3>
+                                                                <div style=" display: block; width: 100%; height: 1px; margin: 8px 1px; background-color: rgba(0, 0, 0, 0.08);"></div>
+                                                                <p id="brandFctextArea${idx}" style="padding-top: 10px; overflow-wrap: anywhere; word-break: break-word; white-space: normal;">
+                                                                    내용을 입력해주세요.
+                                                                </p>
+                                                                <div id="brandFcBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
+                                                                    <div class="kakao_link" id="brandFcBtn${idx}_1" data="1" style="display: none"></div>
+                                                                    <div class="kakao_link" id="brandFcBtn${idx}_2" data="2" style="display: none"></div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <div class="text_count">
+                                                            <span class="num en_font">
+                                                                <span id="brandFctextByte${idx}">0</span>/180
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                            <div class="kko_paging en_font">1/6</div>
+                                            <div class="kko_register">수신거부 | 홈 > 친구차단</div>
+                                            <div class="text_count">
+                                                <p>※ 본문내용 : 카드 당
+                                                    <span class="en_font">180</span>
+                                                    글자 이내
+                                                    <br>
+                                                    본문길이 : 최대 3줄
+                                                    <br>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -986,7 +1041,7 @@
 
     $(function () {
         //임시 주석
-        mobileInfo(2688);
+        //mobileInfo(2688);
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -1003,7 +1058,6 @@
         smsCreate.byteCount(smsTxt, 'sms');
 
         let minInx = '';
-
         //load 시 컨텐츠 포맷 체크 후 주요 옵션 표시
         $('.formatType').each(function () {
             let checkLength = $('.formatType').filter(':checked').length;
@@ -1767,6 +1821,20 @@
 
         $(document).on('input', '.kakaoTitle[name="cont_sub_list"]', function (ev) {
             $("#prev_ft_wide_lst_title").html($(this).val());
+        });
+
+        kkoBrandFcSwiper = new Swiper('.kkoBrandFcSwiper', {
+            direction: 'horizontal',
+            centeredSlides: true,
+            slidesPerView: 1.2,
+            pagination: {
+                el: '.kko_paging',
+                type: 'fraction',
+            },
+            navigation: {
+                nextEl: '.kko_next',
+                prevEl: '.kko_prev',
+            },
         });
     });
 
@@ -4122,9 +4190,7 @@
                 $("input:radio[name='short_url_yn']:radio[value='Y']").prop('checked', false); // 선택하기
                 $("input:radio[name='short_url_yn']:radio[value='N']").prop('checked', true);
                 popup.popAlert('MiCRM 시스템 관리 환경에서 네이버 Short URL 설정이 필요합니다.');
-
             }
-
         }
         var data = {};
         com_ajax.ajax('post', '${baseURL}/sf/${usr_cd}/coupon/checkNaverApi.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
@@ -4143,10 +4209,29 @@
         let radioVal = checkType.value;
         $(type).prop('checked', true);
         $('.layer_pop').removeClass('active');
+
         let res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
             let html = $("html", $doc).prop("outerHTML");
             $('#kko_ft').html(html);
+
+            $("#prev_ft_txt").html("");
+            $("#prev_ft_img").html("");
+            $("#prev_ft_video").html("");
+            $(".kakao_byte").html("0");
+            $('#kakao_ft_viewer').find('.inner .round_box a.kakao_link').remove();
+
+            $("#prev_ft_wide_lst_title").html("(광고)");
+            for(let i=1; i<=4; i++) {
+                $('#prev_ft_wide_lst_img' + i).attr("src", "");
+                $('#prev_ft_wide_lst_txt' + i).html("리스트 항목 " + i + " 내용");
+            }
+            for(let i=1; i<=6; i++) {
+                $('#brandFcImgArea' + i).attr("src", "");
+                $('#brandFctitleArea' + i).html("타이틀을 입력해주세요.");
+                $('#brandFctextArea' + i).html("내용을 입력해주세요.");
+                $('#brandFcBtn' + i + '_1, #brandFcBtn' + i + '_2').hide().html("");
+            }
             if(radioVal === "1"){
                 $("#kakao_ft_viewer").show();
                 $("#kakao_brand_viewer").hide();
@@ -4155,6 +4240,14 @@
                 $("#prev_ft_txt").hide();
                 $("#prev_ft_wide_lst").show();
             } else if(radioVal === "2" || radioVal === "3"){
+                if(kkoBrandFcSwiper) kkoBrandFcSwiper.destroy();
+                kkoBrandFcSwiper = new Swiper('.kkoBrandFcSwiper', {
+                    direction: 'horizontal',
+                    centeredSlides: true,
+                    slidesPerView: 1.2,
+                    pagination: { el: '.kko_paging', type: 'fraction' },
+                    navigation: { nextEl: '.kko_next', prevEl: '.kko_prev' },
+                });
                 $("#kakao_ft_viewer").hide();
                 $("#kakao_brand_viewer").show();
             } else {

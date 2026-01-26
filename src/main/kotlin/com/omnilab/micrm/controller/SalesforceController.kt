@@ -159,12 +159,10 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
             //임시 주석
-            /*
             val cntMap = salesforceService.isCheckSender(usrCd)
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
             view.addObject("rcsCnt", cntMap["rcsCnt"])
-            */
             return view
         }else{
             return ModelAndView("redirect:/html/not.html")
@@ -189,8 +187,6 @@ class SalesforceController {
     @PostMapping("/{usr_cd}/mobileInsert.service")
     fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): ReturnDto {
         return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
-            //임시 주석
-            logger.error("contentListDto {}", contentListDto)
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
             salesforceService.insertContentList(contentListDto)
         }else{

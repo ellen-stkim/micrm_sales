@@ -10,10 +10,11 @@ data class ButtonJsonDto(
     , var type: String?
     , var url_mobile: String?
     , var url_pc: String?
+    , var scheme_android: String?
+    , var scheme_ios: String?
 ) {
-
-    constructor(): this(null, null, null, null)
-
+    constructor(): this(null, null, null, null, null, null)
+    constructor(name:String, type: String, urlMobile: String?, urlPc: String?): this(name, type, urlMobile, urlPc, null, null)
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
     }

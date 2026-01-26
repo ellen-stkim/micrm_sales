@@ -12,7 +12,7 @@ import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.model.table.kakao.ItemInfoDto
+import com.omnilab.micrm.model.table.kakao.*
 import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.*
 import com.omnilab.micrm.service.ContentService
@@ -117,6 +117,7 @@ class SalesforceServiceImpl : SalesforceService {
     private lateinit var customAuthenticationProvider: AuthenticationProvider
 
     private val yyyymmddFormat = SimpleDateFormat("YYYY-MM-dd")
+    private val gson = GsonBuilder().create()
 
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun getUser(dto: SalesforceDto, session: HttpSession): Map<String, Any> {
@@ -587,7 +588,6 @@ class SalesforceServiceImpl : SalesforceService {
             val cid = urlInfo.stream().filter{ it.grp_id.equals("SALES_CID") }.findAny().orElse(null)
             val sec = urlInfo.stream().filter{ it.grp_id.equals("SALES_SEC") }.findAny().orElse(null)
 
-            val g: Gson = GsonBuilder().create()
             val postData = HashMap<String, String>()
             postData["grant_type"] = "client_credentials"
             postData["client_id"] =  cid.cd_val.toString()
@@ -599,13 +599,13 @@ class SalesforceServiceImpl : SalesforceService {
             acceptableMediaType.add(MediaType.APPLICATION_JSON)
             headers.accept = acceptableMediaType
 
-            val tokenResult = connection("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, g.toJson(postData), null)
+            val tokenResult = connection("${authUrl!!.cd_val}/v2/token", HttpMethod.POST, gson.toJson(postData), null)
             if(tokenResult["result"] as Boolean){
-                val tokenMap = g.fromJson(tokenResult["data"].toString(), MutableMap::class.java)
+                val tokenMap = gson.fromJson(tokenResult["data"].toString(), MutableMap::class.java)
                 val token = tokenMap["access_token"].toString()
                 val result = connection("${restUrl!!.cd_val}/interaction/v1/interactions/${dto.orig_id}?versionNumber=${dto.inta_ve}", HttpMethod.GET, null, token)
                 if(result["result"] as Boolean){
-                    val data = g.fromJson(result["data"].toString(), MutableMap::class.java)
+                    val data = gson.fromJson(result["data"].toString(), MutableMap::class.java)
                     val activities = data["activities"] as MutableList<MutableMap<String, Any>>
                     val fillterActivities = activities.stream().filter {
                         it["type"].toString() == "REST" && it["id"] == dto.avo_id
@@ -1087,7 +1087,7 @@ class SalesforceServiceImpl : SalesforceService {
                 logger.error("getTotalCnt url : {}",urlString)
             }
             val body = result.body!!
-            GsonBuilder().create().fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
+            gson.fromJson(body, object : TypeToken<Map<String, Any>>() {}.type)
         }else {
             null
         }
@@ -1868,14 +1868,13 @@ class SalesforceServiceImpl : SalesforceService {
                     kko_header = result.tmpl_header
                     kko_msg_tp = if (result.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
 
-                    val g = GsonBuilder().create()
                     val obj = JsonObject().apply {
-                        add("button", g.fromJson(result.button_json, JsonArray::class.java))
-                        add("quick_reply", g.fromJson(result.quick_repl_json, JsonArray::class.java))
-                        add("item_highlight", g.fromJson(result.item_highlight_json, JsonObject::class.java))
-                        add("item", g.fromJson(result.item_json, JsonObject::class.java))
+                        add("button", gson.fromJson(result.button_json, JsonArray::class.java))
+                        add("quick_reply", gson.fromJson(result.quick_repl_json, JsonArray::class.java))
+                        add("item_highlight", gson.fromJson(result.item_highlight_json, JsonObject::class.java))
+                        add("item", gson.fromJson(result.item_json, JsonObject::class.java))
                     }
-                    kko_btn_obj = g.toJson(obj)
+                    kko_btn_obj = gson.toJson(obj)
                 }
             }
         } else {
@@ -1890,9 +1889,86 @@ class SalesforceServiceImpl : SalesforceService {
                     listDto.kko_item_json = createKakaoItemJson(dto)
                     listDto.kko_header = listDto.cont_sub?.let { if (it.length > 20) it.substring(0, 20) else it }
                 }
-
                 "2" -> listDto.msg_tp = "DMCH221"
-                "3" -> listDto.msg_tp = "DMCH222"
+                "3" -> {
+                    val img = listOf(dto.kakao_item_img_cd_1, dto.kakao_item_img_cd_2, dto.kakao_item_img_cd_3, dto.kakao_item_img_cd_4, dto.kakao_item_img_cd_5, dto.kakao_item_img_cd_6)
+                    val header = listOf(dto.kkoHeader1, dto.kkoHeader2, dto.kkoHeader3, dto.kkoHeader4, dto.kkoHeader5, dto.kkoHeader6)
+                    val body = listOf(dto.kkoBody1, dto.kkoBody2, dto.kkoBody3, dto.kkoBody4, dto.kkoBody5, dto.kkoBody6)
+
+                    val btn1Nm = listOf(dto.kkoBtnLst1_1, dto.kkoBtnLst2_1, dto.kkoBtnLst3_1, dto.kkoBtnLst4_1, dto.kkoBtnLst5_1, dto.kkoBtnLst6_1)
+                    val btn1Pc = listOf(dto.kkoBtnUrlLstPc1_1, dto.kkoBtnUrlLstPc2_1, dto.kkoBtnUrlLstPc3_1, dto.kkoBtnUrlLstPc4_1, dto.kkoBtnUrlLstPc5_1, dto.kkoBtnUrlLstPc6_1)
+                    val btn1Mo = listOf(dto.kkoBtnUrlLstMo1_1, dto.kkoBtnUrlLstMo2_1, dto.kkoBtnUrlLstMo3_1, dto.kkoBtnUrlLstMo4_1, dto.kkoBtnUrlLstMo5_1, dto.kkoBtnUrlLstMo6_1)
+
+                    val btn2Nm = listOf(dto.kkoBtnLst1_2, dto.kkoBtnLst2_2, dto.kkoBtnLst3_2, dto.kkoBtnLst4_2, dto.kkoBtnLst5_2, dto.kkoBtnLst6_2)
+                    val btn2Pc = listOf(dto.kkoBtnUrlLstPc1_2, dto.kkoBtnUrlLstPc2_2, dto.kkoBtnUrlLstPc3_2, dto.kkoBtnUrlLstPc4_2, dto.kkoBtnUrlLstPc5_2, dto.kkoBtnUrlLstPc6_2)
+                    val btn2Mo = listOf(dto.kkoBtnUrlLstMo1_2, dto.kkoBtnUrlLstMo2_2, dto.kkoBtnUrlLstMo3_2, dto.kkoBtnUrlLstMo4_2, dto.kkoBtnUrlLstMo5_2, dto.kkoBtnUrlLstMo6_2)
+
+                    // 카드 작성 여부(any): 이미지/타이틀/내용/버튼 중 하나라도 있으면 작성으로 간주
+                    val any = BooleanArray(6)
+                    for (i in 0..5) {
+                        any[i] = !img[i].isNullOrBlank() || !header[i].isNullOrBlank() || !body[i].isNullOrBlank() ||
+                            !btn1Nm[i].isNullOrBlank() || !btn1Pc[i].isNullOrBlank() || !btn1Mo[i].isNullOrBlank() ||
+                            !btn2Nm[i].isNullOrBlank() || !btn2Pc[i].isNullOrBlank() || !btn2Mo[i].isNullOrBlank()
+                    }
+                    val filledCount = any.count { it }
+                    if (filledCount < 2) {
+                        re.status = false; re.errMsg = "카드를 최소 2개이상 작성해주세요."; return re
+                    }
+
+                    var maxFilled = 0
+                    for (i in 0..5) if (any[i]) maxFilled = i + 1
+
+                    // 1..maxFilled 중간 누락 금지
+                    for (i in 0 until maxFilled) {
+                        if (!any[i]) {
+                            re.status = false; re.errMsg = "카드${i + 1}을(를) 작성해주세요."; return re
+                        }
+                    }
+
+                    // 카드1/2 필수 + 1..maxFilled 완성 체크(부분입력 금지)
+                    for (i in 0 until maxFilled) {
+                        if (img[i].isNullOrBlank() || header[i].isNullOrBlank() || body[i].isNullOrBlank()) {
+                            re.status = false; re.errMsg = "카드${i + 1}은 이미지/타이틀/내용이 필수 입니다."; return re
+                        }
+
+                        val b1Any = !btn1Nm[i].isNullOrBlank() || !btn1Pc[i].isNullOrBlank() || !btn1Mo[i].isNullOrBlank()
+                        if (b1Any && (btn1Nm[i].isNullOrBlank() || btn1Pc[i].isNullOrBlank() || btn1Mo[i].isNullOrBlank())) {
+                            re.status = false; re.errMsg = "카드${i + 1} 버튼1은 버튼명/PC 링크/Mobile 링크가 모두 필요합니다."; return re
+                        }
+
+                        val b2Any = !btn2Nm[i].isNullOrBlank() || !btn2Pc[i].isNullOrBlank() || !btn2Mo[i].isNullOrBlank()
+                        if (b2Any) {
+                            if (!b1Any) {
+                                re.status = false; re.errMsg = "카드${i + 1}에서 버튼2가 입력되었는데 버튼1이 비어있습니다. 버튼1부터 입력해주세요."; return re
+                            }
+                            if (btn2Nm[i].isNullOrBlank() || btn2Pc[i].isNullOrBlank() || btn2Mo[i].isNullOrBlank()) {
+                                re.status = false; re.errMsg = "카드${i + 1} 버튼2는 버튼명/PC 링크/Mobile 링크가 모두 필요합니다."; return re
+                            }
+                        }
+                    }
+
+                    val carouselLst = ArrayList<CarouselDto>()
+                    for (i in 0 until maxFilled) {
+                        val b2Any = !btn2Nm[i].isNullOrBlank() || !btn2Pc[i].isNullOrBlank() || !btn2Mo[i].isNullOrBlank()
+
+                        val buttonLst: List<ButtonJsonDto> = if(b2Any) {
+                            listOf(
+                                ButtonJsonDto(btn1Nm[i].toString(), "WL",  btn1Mo[i].toString(), btn1Pc[i].toString())
+                                , ButtonJsonDto(btn2Nm[i].toString(), "WL",  btn2Mo[i].toString(), btn2Pc[i].toString())
+                            )
+                        }else{
+                            listOf(ButtonJsonDto(btn1Nm[i].toString(), "WL",  btn1Mo[i].toString(), btn1Pc[i].toString()))
+                        }
+                        val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(img[i].toString()))
+                        val dd = CarouselDto().apply {
+                            this.header = header[i]
+                            this.message = body[i]
+                            this.attachment = AttachmentDto(buttonLst, ImageDto(imgDto?.kko_img_url, null), null)
+                        }
+                        carouselLst.add(dd)
+                    }
+                    listDto.kko_carousel_json = gson.toJson(carouselLst)
+                }
                 "4" -> listDto.msg_tp = "DMCH223"
                 else -> {
                     if (CommonUtils.isEmptyObject(dto.kko_img_cd)) listDto.msg_tp = "DMCH204"
@@ -1966,7 +2042,7 @@ class SalesforceServiceImpl : SalesforceService {
                 ItemInfoDto(dto.kkoItemLst4!!, dto.kko_view_item_img_url_4!!, dto.kkoItemUrlLstMo4!!, dto.kkoItemUrlLstPc4!!)
             )
         }
-        return GsonBuilder().create().toJson(itemLst)
+        return gson.toJson(itemLst)
     }
 
     private fun processSms(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto) {
