@@ -41,6 +41,7 @@ open class Tblmi_cont_lstDto {
     var kko_video_url: String? = null // (브랜드톡) 비디오 url
     var kko_thumbnail_img_cd: String? = null // (브랜드톡) 비디오 이미지 cd
     var kko_item_json : String ?= null    // (브랜드톡) 와이드 리스트 아이템
+    var kko_carousel_json : String ?= null    // (브랜드톡) 캐러셀
     var kko_msg_tp : String ?= null    // (알림톡) 메세지 타입
     var kko_btn_obj : String ?= null    // (알림톡) 버튼 내용
     var kko_price : Int ?= null    // (알림톡) message 내 포함된 가격/금액/결제금액
@@ -51,11 +52,17 @@ open class Tblmi_cont_lstDto {
     var coupon_seq : String? = null // 쿠폰 시퀀스
     var short_url_yn : String? = null // 쿠폰 short url 사용 여부
     var img_cd_1 : Int?= null   // 이미지 번호
+    var img_url_1 : String?= null
     var img_cd_2 : Int?= null
+    var img_url_2 : String?= null
     var img_cd_3 : Int?= null
+    var img_url_3 : String?= null
     var img_cd_4 : Int?= null
+    var img_url_4 : String?= null
     var img_cd_5 : Int?= null
+    var img_url_5 : String?= null
     var img_cd_6 : Int?= null
+    var img_url_6 : String?= null
     var rcs_btn_ins_tp : String?= null // RCS 버튼 타입
     var rcs_btn_cnt : String?= null // RCS 버튼 갯수
     var rcs_btn_obj : String?= null // RCS 버튼 Object 내용

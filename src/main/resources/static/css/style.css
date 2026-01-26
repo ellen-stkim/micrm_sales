@@ -2403,6 +2403,7 @@
     font-size: 13px;
     text-align: center;
 }
+.rcs_inner .kko_register,
 .rcs_inner .rcs_register {
     margin-top: 20px;
     text-align: right;
@@ -2456,9 +2457,11 @@
     color: #666666;
     border: 1px solid #999999;
 }
+.brandFcContent,
 .rcs_slide_conts {
     display: none;
 }
+.brandFcContent.on,
 .rcs_slide_conts.on {
     display: block;
 }
@@ -2467,6 +2470,8 @@
     position: relative;
     padding-top: 64px;
 }
+.slide_area .kko_prev,
+.slide_area .kko_next,
 .slide_area .rcs_prev,
 .slide_area .rcs_next {
     outline: none;
@@ -2475,9 +2480,11 @@
     top: 40%;
     display: inline-block;
 }
+.slide_area .kko_prev,
 .slide_area .rcs_prev {
     left: 35px;
 }
+.slide_area .kko_next,
 .slide_area .rcs_next {
     right: 35px;
 }
@@ -2486,7 +2493,8 @@
     margin: 0 auto;
 }
 .slide_area .medium {
-    width: 269px;
+    /*width: 269px;*/
+    width: 299px;
     margin: 0 auto;
 }
 .slide_area .medium .swiper-slide {
@@ -2499,7 +2507,7 @@
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
-    background: #f2f2f2;
+    border: 1px solid #dddddd;
 }
 .slide_area .small .swiper-slide section .img_area {
     height: 195px;
@@ -2524,10 +2532,10 @@
 .slide_area .swiper-slide section .txt_area h3 {
     font-size: 13px;
     font-weight: 700;
-    margin-bottom: 5px;
+    padding-bottom: 10px;
 }
 .slide_area .swiper-slide section .txt_area p {
-    height: 80px;
+    min-height: 115px;
     overflow-y: auto;
     line-height: 1.3;
     padding-bottom: 20px;
@@ -2538,6 +2546,7 @@
     text-align: center;
     padding: 5px 0;
 }
+.slide_area .kko_paging,
 .slide_area .rcs_paging {
     margin-top: 10px;
     font-size: 11px;
@@ -8146,6 +8155,7 @@ input::placeholder {
     margin-top: 20px;
 }
 #tpreview .prev_box .slide_area .rcs_paging,
+.viewer_area .slide_area .kko_paging,
 .viewer_area .slide_area .rcs_paging {
     text-align: center;
 }
@@ -9414,4 +9424,29 @@ input::placeholder {
     height: 41px;
     display: table-cell;
     vertical-align: middle;
+}
+
+.swiper-container {
+  width: 100%;
+  padding: 20px 0; /* 슬라이드 밖 여백 */
+}
+
+.swiper-slide {
+  width: 80%; /* 비활성화된 슬라이드 너비 (중앙보다 작게) */
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0.5; /* 양옆 슬라이드 투명도 */
+  transform: scale(0.9); /* 양옆 슬라이드 축소 */
+}
+
+/* 활성화된 중앙 슬라이드 */
+.swiper-slide-active {
+  opacity: 1; /* 활성화 슬라이드 투명도 */
+  transform: scale(1); /* 활성화 슬라이드 원본 크기 */
+}
+
+/* 카카오톡 스타일 페이지네이션 */
+.swiper-pagination-bullet-active {
+  background: #333; /* 활성화된 점 색상 */
+  width: 15px; /* 길쭉한 점 */
+  border-radius: 5px;
 }

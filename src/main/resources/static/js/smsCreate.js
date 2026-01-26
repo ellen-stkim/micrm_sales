@@ -90,7 +90,7 @@ let smsCreate = {
     }
     , titleCount : function(title, type){
         let titleTxt = $(title).val();
-        let newTitle = new String(titleTxt);
+        let newTitle = String(titleTxt);
         let txtLength = newTitle.length;
         let stringAt;
         let count = 0;
@@ -109,31 +109,6 @@ let smsCreate = {
             return false;
         }
 
-        if(type === "kakao_wide_lst_first"){
-            const sliced = newTitle.substring(0, 25);
-            if(newTitle.length > 25){
-                popup.popAlert('최대 25자까지 입력할 수 있습니다.');
-                $("#prev_ft_wide_lst_txt1").html(sliced);
-                $("input[name='kkoItemLst1']").val(sliced);
-                return false;
-            }else{
-                $("#prev_ft_wide_lst_txt1").html(newTitle);
-                return true;
-            }
-        }
-        if(type.startsWith("kakao_wide_lst")){
-            const idx = type.replace('kakao_wide_lst', '');
-            const sliced = newTitle.substring(0, 30);
-            if(newTitle.length > 30){
-                popup.popAlert('최대 30자까지 입력할 수 있습니다.');
-                $("#prev_ft_wide_lst_txt" + idx).html(sliced);
-                $("input[name='kkoItemLst"+ idx +"']").val(sliced);
-                return false;
-            } else {
-                $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
-                return false;
-            }
-        }
         if(type == 'sms'){
             let value = $('.smsType').filter(':checked').val().trim();
             if(value != 'SMS') {
@@ -250,8 +225,6 @@ function slideLayout(type){
     }
     html +=           '</div>'
         + '</div>';
-
-
     var cnt = 0;
     var checkCnt = 0;
     for(let b = 0; b < total; b++){
@@ -436,7 +409,7 @@ function slideLayout(type){
 let rcsCreate = {
     rcsTitle : function(title, number){
         let titleTxt = $(title).val();
-        let newTitle = new String(titleTxt);
+        let newTitle = String(titleTxt);
         let txtLength = newTitle.length;
         let stringAt;
         let count = 0;
@@ -464,7 +437,7 @@ let rcsCreate = {
     }
     , rcsContents : function(text, number){
         let textValue = text.value;
-        let newText = new String(textValue);
+        let newText = String(textValue);
         let txtLength = newText.length;
         let stringAt;
         let count = 0;
@@ -539,36 +512,156 @@ let rcsCreate = {
         let rejectionNumber = number.value;
         document.getElementById('rejectionArea').innerHTML = rejectionNumber;
     }
-    , buttonCount : function(name, type){
+    , buttonCount : function(name, type) {
         let buttonName = $(name).val();
         let txtLength = buttonName.length;
         let typeSlide = $(name).parents('.rcs_slide_conts').length;
         let buttonInx = $(name).attr('data');
         let activeInx = $(name).parents('.rcs_slide_conts').index() - 1;
-
-        if(type == 'text' || type == 'vertical' || type == 'slideMedium'){
-            if(txtLength > 17){
-                $(name).val(buttonName.substring(0,17));
+        if (type == 'text' || type == 'vertical' || type == 'slideMedium') {
+            if (txtLength > 17) {
+                $(name).val(buttonName.substring(0, 17));
             }
         }
-        if(type == 'horizontal'){
-            if(txtLength > 8){
-                $(name).val(buttonName.substring(0,8));
+        if (type == 'horizontal') {
+            if (txtLength > 8) {
+                $(name).val(buttonName.substring(0, 8));
             }
         }
-        if(type == 'slideSmall'){
-            if(txtLength > 5){
-                $(name).val(buttonName.substring(0,5));
+        if (type == 'slideSmall') {
+            if (txtLength > 5) {
+                $(name).val(buttonName.substring(0, 5));
             }
         }
-
-        if(typeSlide == 0){
+        if (typeSlide == 0) {
             $('.rcs_btn_wrap').find('div[data="' + buttonInx + '"]').text($(name).val());
-        }else{
+        } else {
             $('.swiper-slide').eq(activeInx).find('.rcs_btn_wrap div[data="' + buttonInx + '"]').text($(name).val());
         }
 
         let count = $(name).val().length;
         $(name).siblings('.text-count').find('span').html(count);
+    }
+}
+
+let kkoCreate = {
+    brandTitle : function(title, number) {
+        const $El = $("#brandFctitleArea" + number);
+        let titleTxt = $(title).val();
+        let newTitle = String(titleTxt);
+        let stringTitle = '';
+        if (newTitle.length > 20) {
+            popup.popAlert('타이틀은 최대 20글자까지 입력 가능 합니다.');
+            stringTitle = titleTxt.slice(0, 20);
+            title.value = stringTitle;
+            $El.text(stringTitle);
+            return false;
+        }else{
+            $El.text(newTitle);
+        }
+    }
+    , brandFcContents: function (text, number) {
+        const limit = 180;
+        const maxNewlines = 2;
+        const el = (text && text.jquery) ? text[0] : text;
+        if (!el) return;
+        const $text = $(el);
+        const $byteEl = $("#brandFctextByte" + number);
+        const $previewEl = $("#brandFctextArea" + number);
+        let raw = (el.value != null) ? String(el.value) : "";
+        raw = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+        let nlCount = 0;
+        let limited = "";
+        for (const ch of raw) {
+            if (ch === "\n") {
+                nlCount++;
+                if (nlCount > maxNewlines) {
+                    limited += " ";
+                    continue;
+                }
+            }
+            limited += ch;
+        }
+        if (limited !== raw) {
+            popup.popAlert('줄바꿈은 2개를 초과하여 사용할 수 없습니다.');
+            el.value = limited;
+        }
+        const chars = Array.from(limited);
+        if (chars.length > limit) {
+            popup.popAlert('본문내용은 180자를 초과할 수 없습니다.');
+            limited = chars.slice(0, limit).join('');
+            el.value = limited;
+        }
+        const count = Array.from(limited).length;
+        $byteEl.text(count);
+        const safeHtml = limited
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;")
+            .replace(/\n/g, "<br/>");
+
+        $previewEl.html(safeHtml);
+        const $textDiv = $byteEl.closest(".text_count");
+        $text.removeClass("red_border");
+        $textDiv.removeClass("red_color");
+        const $root = $byteEl.closest(".rcs_slide");
+        const limitOverCnt = $root.find(".swiper-slide .text_count.red_color").length;
+        const $limitText = $root.find(".swiper-container > .text_count");
+        if (limitOverCnt > 0) $limitText.addClass("red_color");
+        else $limitText.removeClass("red_color");
+    }
+    , titleCount : function(title, type){
+        let titleTxt = $(title).val();
+        let newTitle = String(titleTxt);
+        if(event.ctrlKey && event.which === 67){
+            return false;
+        }
+        if(type === "btn") {
+            const sliced = newTitle.substring(0, 14);
+            if (newTitle.length > 14) {
+                popup.popAlert('버튼명은 14자까지 입력할 수 있습니다.');
+                $(title).val(sliced);
+                return false;
+            } else {
+                return true;
+            }
+        } else if(type === "kakao_wide_lst_first"){
+            const sliced = newTitle.substring(0, 25);
+            if(newTitle.length > 25){
+                popup.popAlert('최대 25자까지 입력할 수 있습니다.');
+                $("#prev_ft_wide_lst_txt1").html(sliced);
+                $("input[name='kkoItemLst1']").val(sliced);
+                return false;
+            }else{
+                $("#prev_ft_wide_lst_txt1").html(newTitle);
+                return true;
+            }
+        } else if(type.startsWith("kakao_wide_lst")){
+            const idx = type.replace('kakao_wide_lst', '');
+            const sliced = newTitle.substring(0, 30);
+            if(newTitle.length > 30){
+                popup.popAlert('최대 30자까지 입력할 수 있습니다.');
+                $("#prev_ft_wide_lst_txt" + idx).html(sliced);
+                $("input[name='kkoItemLst"+ idx +"']").val(sliced);
+                return false;
+            } else {
+                $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
+                return false;
+            }
+        } else if(type.startsWith("kakaoFc")){
+            const idx = type.replace('kakaoFc', '');
+            const sliced = newTitle.substring(0, 20);
+            if(newTitle.length > 30){
+                popup.popAlert('최대 30자까지 입력할 수 있습니다.');
+                $("#prev_ft_wide_lst_txt" + idx).html(sliced);
+                $("input[name='kkoHeader"+ idx +"']").val(sliced);
+                return false;
+            } else {
+                $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
+                return false;
+            }
+        }
     }
 }

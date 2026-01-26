@@ -44,11 +44,17 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var coupon_nm: String? = null // 선택한 쿠폰명
     var short_url_yn: String? = null // short url 사용 여부
     var img_cd_1: Int? = null   // 이미지 번호
+    var img_url_1: String? = null
     var img_cd_2: Int? = null
+    var img_url_2: String? = null
     var img_cd_3: Int? = null
+    var img_url_3: String? = null
     var img_cd_4: Int? = null
+    var img_url_4: String? = null
     var img_cd_5: Int? = null
+    var img_url_5: String? = null
     var img_cd_6: Int? = null
+    var img_url_6: String? = null
     var rcs_btn_obj: String? = null // rcs object 형태
     var rcs_btn_1: String? = null   // 버튼내용
     var rcs_btn_tp_1: String? = null    // 버튼 타입
@@ -214,6 +220,31 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var kko_video_url:String? = null
     var kko_thumbnail_img_cd:String? = null
     var kko_thumbnail_img_nm:String? = null
+    var kko_item_json: String? = null
+    var kakaoImageItemNm1: String? = null
+    var kakaoImageItemNm2: String? = null
+    var kakaoImageItemNm3: String? = null
+    var kakaoImageItemNm4: String? = null
+    var kakao_item_img_cd_1: String? = null
+    var kakao_item_img_cd_2: String? = null
+    var kakao_item_img_cd_3: String? = null
+    var kakao_item_img_cd_4: String? = null
+    var kko_view_item_img_url_1: String? = null
+    var kko_view_item_img_url_2: String? = null
+    var kko_view_item_img_url_3: String? = null
+    var kko_view_item_img_url_4: String? = null
+    var kkoItemLst1: String? = null
+    var kkoItemLst2: String? = null
+    var kkoItemLst3: String? = null
+    var kkoItemLst4: String? = null
+    var kkoItemUrlLstPc1: String? = null
+    var kkoItemUrlLstPc2: String? = null
+    var kkoItemUrlLstPc3: String? = null
+    var kkoItemUrlLstPc4: String? = null
+    var kkoItemUrlLstMo1: String? = null
+    var kkoItemUrlLstMo2: String? = null
+    var kkoItemUrlLstMo3: String? = null
+    var kkoItemUrlLstMo4: String? = null
 }
 
 

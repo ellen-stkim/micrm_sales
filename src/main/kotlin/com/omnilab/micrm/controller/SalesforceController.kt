@@ -1,7 +1,6 @@
 package com.omnilab.micrm.controller
 
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
@@ -13,7 +12,6 @@ import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.*
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
-import org.apache.commons.io.FilenameUtils
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
@@ -26,13 +24,9 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
-import java.awt.Image
-import java.awt.image.BufferedImage
-import java.io.File
 import java.io.InputStreamReader
 import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDateTime
@@ -40,7 +34,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
-import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
@@ -166,10 +159,12 @@ class SalesforceController {
             view.addObject("fromToLst", sysSettingDao.getMappingSettingList(temp))
 
             //임시 주석
+            /*
             val cntMap = salesforceService.isCheckSender(usrCd)
             view.addObject("kakaoCnt", cntMap["kakaoCnt"])
             view.addObject("smsCnt", cntMap["smsCnt"])
             view.addObject("rcsCnt", cntMap["rcsCnt"])
+            */
             return view
         }else{
             return ModelAndView("redirect:/html/not.html")
@@ -190,11 +185,12 @@ class SalesforceController {
      * @Method Decription : 모바일 컨텐츠 생성하기
      * @title : 모바일 컨텐츠 생성하기
      */
-
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileInsert.service")
     fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): ReturnDto {
         return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
+            //임시 주석
+            logger.error("contentListDto {}", contentListDto)
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
             salesforceService.insertContentList(contentListDto)
         }else{
@@ -298,10 +294,7 @@ class SalesforceController {
      */
 
     @PostMapping("/{usr_cd}/preview.ajax")
-    fun previewService(@ModelAttribute dto : Content_list_CreateDto
-                       , @PathVariable(value = "usr_cd") usrCd: String
-                       , req: HttpServletRequest
-    ) : ModelAndView {
+    fun previewService(@ModelAttribute dto : Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest) : ModelAndView {
         if(getUsrGrpCd(usrCd) != null){
             val view = ModelAndView("cont/mobile/ajax/mdmPreview")
             val formatList = dto.formatType
@@ -527,7 +520,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/brandNormal.ajax")
     fun brandNormal(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         return if(getUsrGrpCd(usrCd) != null){
-            val view = ModelAndView("cont/mobile/ajax/brandNormal")
+            val view = ModelAndView("cont/kko/ajax/brandNormal")
             view
         }else{
             ModelAndView("redirect:/html/not.html")
@@ -550,7 +543,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/brandVideo.ajax")
     fun brandVideo(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         return if(getUsrGrpCd(usrCd) != null){
-            val view = ModelAndView("cont/mobile/ajax/brandVideo")
+            val view = ModelAndView("cont/kko/ajax/brandVideo")
             view
         }else{
             rep.status = 401
@@ -574,10 +567,57 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/brandWideLst.ajax")
     fun brandWide(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         return if(getUsrGrpCd(usrCd) != null){
-            val view = ModelAndView("cont/mobile/ajax/brandWideLst")
+            val view = ModelAndView("cont/kko/ajax/brandWideLst")
             view
         }else{
             rep.status = 401
+            ModelAndView("redirect:/html/not.html")
+        }
+    }
+
+
+    /** @Method Name  : brandNormal
+     * @Since    : 2026. 01. 07.
+     * @author   : lucas
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 브랜드톡 일반 페이지
+     * @title : 브랜드톡 일반 페이지
+     */
+    @GetMapping("/{usr_cd}/brandFc.ajax")
+    fun brandFc(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/kko/ajax/brandFc")
+            view
+        }else{
+            ModelAndView("redirect:/html/not.html")
+        }
+    }
+
+    /** @Method Name  : brandNormal
+     * @Since    : 2026. 01. 07.
+     * @author   : lucas
+     * @param    : req: HttpServletRequest
+     * @param    : rep : HttpServletResponse
+     * @param    : session : HttpSession
+     * @return   : ModelAndView
+     * @excetion :
+     * @see      :
+     * @version  : 0.01
+     * @Method Decription : 브랜드톡 일반 페이지
+     * @title : 브랜드톡 일반 페이지
+     */
+    @GetMapping("/{usr_cd}/brandFa.ajax")
+    fun brandFa(@PathVariable(value = "usr_cd") usrCd: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
+        return if(getUsrGrpCd(usrCd) != null){
+            val view = ModelAndView("cont/kko/ajax/brandFa")
+            view
+        }else{
             ModelAndView("redirect:/html/not.html")
         }
     }

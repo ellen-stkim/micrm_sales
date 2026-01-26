@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil" %>
 <!-- smsCreste.js -->
 <script src="/js/smsCreate.js"></script>
@@ -374,66 +374,67 @@
                                     </div>
                                 </div>
                             </div>
+                            <%--미리 보기--%>
                             <div class="viewer_area" id="kakao_ft_viewer">
                                 <div class="top">브랜드톡 미리보기</div>
-                                <div class="inner">
-                                    <div class="row_body">
-                                        <div class="round_box">
-                                            <div class="kakao_ft" id="prev_ft_img"></div>
-                                            <div class="kakao_ft" id="prev_ft_video"></div>
-                                            <p class="kakao_txt" id="prev_ft_txt"></p>
-                                            <div class="kakao_wide_lst" id="prev_ft_wide_lst">
-                                                <strong class="kakao_wide_lst_strong">
-                                                    <span class="kakao_wide_lst_title" id="prev_ft_wide_lst_title">(광고)</span>
-                                                </strong>
-                                                <div class="kakao_wide_lst_main_div">
-                                                    <ul class="kakao_wide_lst_ul">
-                                                        <li class="kakao_wide_lst_li_first">
-                                                            <div class="kakao_wide_lst_li_first_div">
-                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_first_a" id="prev_ft_wide_lst_img_url1">
-                                                                    <img id="prev_ft_wide_lst_img1" src="" alt="" role="presentation" style="min-height: 41px;">
-                                                                </a>
-                                                            </div>
-                                                            <p class="kakao_wide_lst_li_first_p">
-                                                                <span class="kakao_wide_lst_li_first_span" id="prev_ft_wide_lst_txt1" >리스트 항목 1 내용</span>
-                                                            </p>
-                                                        </li>
-                                                        <li class="kakao_wide_lst_li">
-                                                            <div class="kakao_wide_lst_li_div">
-                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url2">
-                                                                    <img id="prev_ft_wide_lst_img2" src="" alt="" role="presentation" style="min-height: 41px;">
-                                                                </a>
-                                                            </div>
-                                                            <p class="kakao_wide_lst_li_p">
-                                                                <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt2">리스트 항목 2 내용</span>
-                                                            </p>
-                                                        </li>
-                                                        <li class="kakao_wide_lst_li">
-                                                            <div class="kakao_wide_lst_li_div">
-                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url3">
-                                                                    <img id="prev_ft_wide_lst_img3" src="" alt="" role="presentation" style="min-height: 41px;">
-                                                                </a>
-                                                            </div>
-                                                            <p class="kakao_wide_lst_li_p">
-                                                                <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt3">리스트 항목 3 내용</span>
-                                                            </p>
-                                                        </li>
-                                                        <li class="kakao_wide_lst_li">
-                                                            <div class="kakao_wide_lst_li_div">
-                                                                <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url4">
-                                                                    <img id="prev_ft_wide_lst_img4" src="" alt="" role="presentation" style="min-height: 41px;">
-                                                                </a>
-                                                            </div>
-                                                            <p class="kakao_wide_lst_li_p">
-                                                                <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt4">리스트 항목 4 내용</span>
-                                                            </p>
-                                                        </li>
-                                                    </ul>
+                                    <div class="inner">
+                                        <div class="row_body">
+                                            <div class="round_box">
+                                                <div class="kakao_ft" id="prev_ft_img"></div>
+                                                <div class="kakao_ft" id="prev_ft_video"></div>
+                                                <p class="kakao_txt" id="prev_ft_txt"></p>
+                                                <div class="kakao_wide_lst" id="prev_ft_wide_lst">
+                                                    <strong class="kakao_wide_lst_strong">
+                                                        <span class="kakao_wide_lst_title" id="prev_ft_wide_lst_title">(광고)</span>
+                                                    </strong>
+                                                    <div class="kakao_wide_lst_main_div">
+                                                        <ul class="kakao_wide_lst_ul">
+                                                            <li class="kakao_wide_lst_li_first">
+                                                                <div class="kakao_wide_lst_li_first_div">
+                                                                    <a href="#none" target="_blank" class="kakao_wide_lst_li_first_a" id="prev_ft_wide_lst_img_url1">
+                                                                        <img id="prev_ft_wide_lst_img1" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_first_p">
+                                                                    <span class="kakao_wide_lst_li_first_span" id="prev_ft_wide_lst_txt1" >리스트 항목 1 내용</span>
+                                                                </p>
+                                                            </li>
+                                                            <li class="kakao_wide_lst_li">
+                                                                <div class="kakao_wide_lst_li_div">
+                                                                    <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url2">
+                                                                        <img id="prev_ft_wide_lst_img2" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_p">
+                                                                    <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt2">리스트 항목 2 내용</span>
+                                                                </p>
+                                                            </li>
+                                                            <li class="kakao_wide_lst_li">
+                                                                <div class="kakao_wide_lst_li_div">
+                                                                    <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url3">
+                                                                        <img id="prev_ft_wide_lst_img3" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_p">
+                                                                    <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt3">리스트 항목 3 내용</span>
+                                                                </p>
+                                                            </li>
+                                                            <li class="kakao_wide_lst_li">
+                                                                <div class="kakao_wide_lst_li_div">
+                                                                    <a href="#none" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url4">
+                                                                        <img id="prev_ft_wide_lst_img4" src="" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_p">
+                                                                    <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt4">리스트 항목 4 내용</span>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 <div class="byte">
                                     <span class="en_font kakao_byte">0</span>
                                     <span class="en_font">자</span>(버튼제외)<br><br>
@@ -740,10 +741,7 @@
                                             <div class="row">
                                                 <div class="th">무료수신거부</div>
                                                 <div class="td">
-                                                    <input type="text" name="rcs_footer"
-                                                           class="txt_input rejection_num width"
-                                                           oninput="rcsCreate.rejection(this);"
-                                                           placeholder="수신거부 번호를 입력해주세요."/>
+                                                    <input type="text" name="rcs_footer" class="txt_input rejection_num width" oninput="rcsCreate.rejection(this);" placeholder="수신거부 번호를 입력해주세요."/>
                                                 </div>
                                             </div>
                                         </div>
@@ -984,10 +982,11 @@
     let mstSeq = null;
     let dropTarget = null;
     let bindList = [];
+    let kkoBrandFcSwiper;
 
     $(function () {
         //임시 주석
-        //mobileInfo(2682);
+        mobileInfo(2688);
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -1071,68 +1070,111 @@
 
         //카카오 링크 버튼 생성 event
         $(document).on('click', '.kakaoLinkBtn', function () {
-            let btnState = $(this).val();
-            let totalLen = $("#addKakaoLink").children().length;
-            let thisIdx = $(this).closest(".row.flex_box").index();
-            let name = $('.kakao_btn_name').eq(thisIdx);
-            let linkPc = $('.kakao_btn_linkPc').eq(thisIdx);
-            let linkMo = $('.kakao_btn_linkMo').eq(thisIdx);
-            let btnLinkPc = linkPc.val();
-            let btnLinkMo = linkMo.val();
-            let btnName = name.val();
-            let rmLst = Array();
+            const $btn = $(this);
+            const btnState = $btn.val(); // '생성' | '삭제'
+            const type = $('input[name="kko_msg_tp"]:checked').val();
 
-            if (btnState == '생성') {
-                if (btnName != '') {
-                    if (btnLinkPc != '' && btnLinkMo != '') {
-                        if (btnLinkPc.substring(0, 4) == 'http' && btnLinkMo.substring(0, 4) == 'http') {
-                            $('#kakao_ft_viewer').find('.inner .round_box').children('a').remove();
-                            for(let i = 0; i < totalLen; i++){
-                                let lnkNm = $('.kakao_btn_name').eq(i);
-                                let lnkPc = $('.kakao_btn_linkPc').eq(i);
-                                let lnkMo = $('.kakao_btn_linkMo').eq(i);
-                                if(lnkNm.val() != ''
-                                    && lnkPc.val() != ''
-                                    && lnkMo.val() != ''
-                                    && (lnkPc.val().substring(0, 4) == 'http' && lnkMo.val().substring(0, 4) == 'http')
-                                ){
-                                    $('#kakao_ft_viewer').find('.inner .round_box').append('<a href="' + lnkMo.val() + '" class="kakao_link" target="_blank" rel="noopener">' + lnkNm.val() + '</a>');
-                                    lnkNm.attr('readonly', true);
-                                    lnkPc.attr('readonly', true);
-                                    lnkMo.attr('readonly', true);
-                                    $('.kakaoLinkBtn').eq(i).val('삭제');
-                                }else{
-                                    rmLst.push($("#addKakaoLink").children().eq(i))
-                                }
-                            }
+            if (type === "2" || type === "3") {
+                const id = this.id;
+                const m = id.match(/^kkoBtnUrl(\d+)_(1|2)$/);
+                if (!m) return;
 
-                            for(const val of rmLst){
-                                val.remove();
-                            }
-                        } else {
-                            popup.popAlert('정확한 링크 URL을 입력해주세요.');
-                            return false;
-                        }
-                    } else {
-                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
+                const groupNo = Number(m[1]);
+                const kind = Number(m[2]); // 1|2
+
+                const $btn1 = $("#brandFcBtn" + groupNo + "_1");
+                const $btn2 = $("#brandFcBtn" + groupNo + "_2");
+                const $targetBtn = $("#brandFcBtn" + groupNo + "_" + kind);
+
+                const nameKey = "kkoBtnLst" + groupNo + "_" + kind;
+                const label = ($("input[name='" + nameKey + "']").val() || "");
+
+                if (btnState === "생성") {
+                    $btn1.hide();
+                    $btn2.hide();
+                    if (kind === 2 && ($btn1.html() || "") === "") {
+                        popup.popAlert('첫번째 버튼이 생성 되지 않았습니다.');
                         return false;
+                    } else if (kind === 1) {
+                        if (($btn2.html() || "") !== "") $btn2.show();
+                    } else {
+                        $btn1.show();
                     }
-                } else {
-                    popup.popAlert('메시지에 노출될 링크 버튼의 이름을 입력해주세요!');
-                    return false;
+
+                    $targetBtn.html(label).show();
+                    $btn.val('삭제');
+                } else { // 삭제
+                    const suffix = "_" + kind;
+
+                    $("#brandFcBtn" + groupNo + suffix).html("");
+                    if (kind === 2) $("#brandFcBtn" + groupNo + suffix).hide();
+
+                    $("#kkoBtnLst" + groupNo + suffix).val("");
+                    $("#kkoItemUrlLstPc" + groupNo + suffix).val("");
+                    $("#kkoItemUrlLstMo" + groupNo + suffix).val("");
+
+                    $btn.val('생성');
                 }
             } else {
-                $('#kakao_ft_viewer').find('.inner .round_box').children('a.kakao_link').eq(thisIdx).remove();
-                if($("#addKakaoLink").children().length == 1){
-                    $(this).val('생성');
-                    linkPc.val('');
-                    linkMo.val('');
-                    name.val('');
-                    name.attr('readonly', false);
-                    linkPc.attr('readonly', false);
-                    linkMo.attr('readonly', false);
-                } else {
-                    $("#addKakaoLink").children().eq(thisIdx).remove();
+                const $container = $("#addKakaoLink");
+                const totalLen = $container.children().length;
+                const thisIdx = $btn.closest(".row.flex_box").index();
+
+                const $name = $('.kakao_btn_name').eq(thisIdx);
+                const $pc = $('.kakao_btn_linkPc').eq(thisIdx);
+                const $mo = $('.kakao_btn_linkMo').eq(thisIdx);
+
+                const btnName = ($name.val() || "").trim();
+                const btnPc = ($pc.val() || "").trim();
+                const btnMo = ($mo.val() || "").trim();
+
+                const isHttp = (v) => v && v.substring(0, 4) === 'http';
+
+                if (btnState === '생성') {
+                    if (!btnName) {
+                        popup.popAlert('메시지에 노출될 버튼의 이름을 입력해주세요!');
+                        return false;
+                    } else if (!btnPc || !btnMo) {
+                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
+                        return false;
+                    } else if (!isHttp(btnPc) || !isHttp(btnMo)) {
+                        popup.popAlert('정확한 링크 URL을 입력해주세요.');
+                        return false;
+                    }
+                    const $viewerBox = $('#kakao_ft_viewer').find('.inner .round_box');
+                    $viewerBox.children('a').remove();
+                    const rmLst = [];
+                    for (let i = 0; i < totalLen; i++) {
+                        const $nm = $('.kakao_btn_name').eq(i);
+                        const $pcI = $('.kakao_btn_linkPc').eq(i);
+                        const $moI = $('.kakao_btn_linkMo').eq(i);
+                        const $row = $container.children().eq(i);
+                        const nm = ($nm.val() || "").trim();
+                        const pc = ($pcI.val() || "").trim();
+                        const mo = ($moI.val() || "").trim();
+                        if (nm && pc && mo && isHttp(pc) && isHttp(mo)) {
+                            const $a = $("<a/>", {href: mo, class: "kakao_link", target: "_blank", rel: "noopener"}).text(nm);
+                            $viewerBox.append($a);
+                            $nm.prop('readonly', true);
+                            $pcI.prop('readonly', true);
+                            $moI.prop('readonly', true);
+                            $('.kakaoLinkBtn').eq(i).val('삭제');
+                        } else {
+                            rmLst.push($row);
+                        }
+                    }
+                    rmLst.forEach($r => $r.remove());
+                } else { // 삭제
+                    const $viewerBox = $('#kakao_ft_viewer').find('.inner .round_box');
+                    $viewerBox.children('a.kakao_link').eq(thisIdx).remove();
+                    if ($container.children().length === 1) {
+                        $btn.val('생성');
+                        $name.val('').prop('readonly', false);
+                        $pc.val('').prop('readonly', false);
+                        $mo.val('').prop('readonly', false);
+                    } else {
+                        $container.children().eq(thisIdx).remove();
+                    }
                 }
             }
         });
@@ -1276,7 +1318,7 @@
             let nowSub = $('input[name="kko_msg_tp"]:checked').val();
 
             if (kakaoBeforeSub != nowSub) {
-                let message = "브랜드톡 양식을 변경 할 경우 입력한 내용이 초기화됩니다. 변경 하시겠습니까?";
+                let message = "브랜드 톡 양식을 변경할 경우 입력한 내용이 초기화됩니다.";
                 let html = '';
                 html +=
                     '<div class="layer_pop alert active">' +
@@ -1524,6 +1566,8 @@
             let nowIndex = $('.slide_tab > div').index(this);
             $(this).addClass('on').siblings().removeClass('on');
             $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
+            $('.brandFcContent').eq(nowIndex).addClass('on').siblings().removeClass('on');
+            kkoBrandFcSwiper.slideTo(nowIndex);
         });
 
         $(document).on('click', '#previewBtn', function () {
@@ -1738,6 +1782,7 @@
 
             $(".container").html($(".container", $doc).html());
             beforeKkoType = $('.kko_format_type:checked').val();
+            kakaoBeforeSub = $('input[name="kko_msg_tp"]:checked').val();
 
             //load 시 byte 계산
             let kakaoTxt = $('#kakao .textarea');
@@ -1798,24 +1843,35 @@
             });
 
             $('.mobileLstPopup').removeClass('active');
-            mappingLst();
-
-            var mySwiper = new Swiper('.slideSwiper', {
+            new Swiper('.slideSwiper', {
                 direction: 'horizontal',
                 pagination: {
                     el: '.rcs_paging',
                     type: 'fraction',
                 },
-                // Navigation arrows
                 navigation: {
                     nextEl: '.rcs_next',
                     prevEl: '.rcs_prev',
                 },
             });
-
+            kkoBrandFcSwiper = new Swiper('.kkoBrandFcSwiper', {
+                direction: 'horizontal',
+                centeredSlides: true,
+                slidesPerView: 1.2,
+                pagination: {
+                    el: '.kko_paging',
+                    type: 'fraction',
+                },
+                navigation: {
+                    nextEl: '.kko_next',
+                    prevEl: '.kko_prev',
+                },
+            });
             couponSeq = $("#savedCouponSeq").val();
             couponSelectSeq = $("#savedCouponSeq").val();
             couponNm = $("#savedCouponNm").val();
+
+            mappingLst();
         }
 
         let param = {seq: seq}
@@ -1854,17 +1910,17 @@
 
         if (kakaoSenderNo.val() == '' || kakaoSenderNo.val() == null) {
             popup.popAlert("카카오톡 발신 프로필을 선택해주세요");
-            //kakaoSenderNo.parent('.column_2').addClass('outline');
             return false;
         }
-
         if (kakaoOption == 'ad') {
             if (kakaoTitle.val().indexOf('(광고)') != -1) {
                 if (kakaoTxt.val() != '') {
                     let type = kakaoTypeValidate(kakaoFtType);
                     if (type == true) {
+                        /*
                         $('.kakao_txt').removeAttr("name");
                         $(kakaoTxt).attr("name",'kakao_body');
+                        */
                         return true;
                     } else {
                         return false;
@@ -1913,78 +1969,169 @@
                 popup.popAlert("카카오톡 문자 제목을 입력해주세요.");
                 return false;
             }
-            /*if ($('.kakao_txt').val() != '') {
-                let type = kakaoTypeValidate();
-                if (type == true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                popup.popAlert('카카오톡 메시지 내용을 입력해주세요.');
-                $('.kakao_txt').focus();
-                return false;
-            }*/
         }
         return false;
     }
 
     //카카오 유효성 검사
     function kakaoTypeValidate(kakaoFtType) {
-        if(kakaoFtType === "1"){
+        if (kakaoFtType === "1") {
             const REQUIRED_IDX = [1, 2, 3];
-            const FIELD_LABEL = {
-                item:   '리스트 항목명',
-                img:    '이미지',
-                pcUrl:  'PC 링크 URL',
-                moUrl:  '모바일 링크 URL'
-            };
             for (const i of REQUIRED_IDX) {
-                const item  = $("input[name='kkoItemLst"+ i +"']").val();
-                const img   = $("#kakao_item_img_cd_" + i).val();
-                const pcUrl = $("input[name='kkoItemUrlLstPc"+ i +"']").val();
-                const moUrl = $("input[name='kkoItemUrlLstMo"+ i +"']").val();
-
+                const item = $("input[name='kkoItemLst" + i + "']").val();
+                const img = $("#kakao_item_img_cd_" + i).val();
+                const pcUrl = $("input[name='kkoItemUrlLstPc" + i + "']").val();
+                const moUrl = $("input[name='kkoItemUrlLstMo" + i + "']").val();
                 if (!item) {
-                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.item +'을(를) 입력해 주세요.');
+                    popup.popAlert('리스트 ' + i + '번 리스트 항목명을(를) 입력해 주세요.');
                     return false;
-                }
-                if (!img) {
-                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.img +'을(를) 입력해 주세요.');
+                } else if (!img) {
+                    popup.popAlert('리스트 ' + i + '번 이미지를(를) 입력해 주세요.');
                     return false;
-                }
-                if (!pcUrl) {
-                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.pcUrl +'을(를) 입력해 주세요.');
+                } else if (!pcUrl) {
+                    popup.popAlert('리스트 ' + i + '번 PC 링크 URL을(를) 입력해 주세요.');
                     return false;
-                }
-                if (!moUrl) {
-                    popup.popAlert('리스트 ' + i + '번 '+ FIELD_LABEL.moUrl +'을(를) 입력해 주세요.');
+                } else if (!moUrl) {
+                    popup.popAlert('리스트 ' + i + '번 모바일 링크 URL을(를) 입력해 주세요.');
                     return false;
                 }
             }
             return true;
+        } else if(kakaoFtType === "3") {
+            const MAX_CARD = 6;
+            const filled = new Array(MAX_CARD + 1).fill(false);
+
+            for (let n = 1; n <= MAX_CARD; n++) {
+                const $card = $("#kakao_item_img_cd_" + n).closest(".brandFcContent");
+                if ($card.length === 0) {
+                    filled[n] = false;
+                } else {
+                    const imgCd = (($card.find("#kakao_item_img_cd_" + n).val()) || "").trim();
+                    const title = (($card.find('input[name="kkoHeader' + n + '"]').val()) || "").trim();
+                    const body = (($card.find('textarea[name="kkoBody' + n + '"]').val()) || "").trim();
+
+                    const btn1 = (($card.find("#kkoBtnUrl" + n + "_1").val()) || "").trim();
+                    const btn2 = (($card.find("#kkoBtnUrl" + n + "_2").val()) || "").trim();
+                    const hasBtnCreated = (btn1 === "삭제" || btn2 === "삭제");
+
+                    if (imgCd || title || body || hasBtnCreated) {
+                        filled[n] = true;
+                    } else {
+                        filled[n] = false;
+                    }
+                }
+            }
+
+            for (let n = 1; n <= 2; n++) {
+                const $card = $("#kakao_item_img_cd_" + n).closest(".brandFcContent");
+                if ($card.length === 0) {
+                    popup.popAlert("카드" + n + " 영역을 찾을 수 없습니다.");
+                    return false;
+                } else {
+                    const imgCd = (($card.find("#kakao_item_img_cd_" + n).val()) || "").trim();
+                    const title = (($card.find('input[name="kkoHeader' + n + '"]').val()) || "").trim();
+                    const body = (($card.find('textarea[name="kkoBody' + n + '"]').val()) || "").trim();
+
+                    const btn1State = (($card.find("#kkoBtnUrl" + n + "_1").val()) || "").trim();
+                    const btn2State = (($card.find("#kkoBtnUrl" + n + "_2").val()) || "").trim();
+                    const createdBtnCnt = (btn1State === "삭제" ? 1 : 0) + (btn2State === "삭제" ? 1 : 0);
+                    if (btn2State === "삭제" && btn1State !== "삭제") {
+                        popup.popAlert("카드" + n + "는 버튼2를 생성하려면 버튼1을 먼저 생성해야 합니다.");
+                        return false;
+                    } else if (!imgCd) {
+                        popup.popAlert("카드" + n + " 이미지는 필수입니다.");
+                        return false;
+                    } else if (!title) {
+                        popup.popAlert("카드" + n + " 타이틀은 필수입니다.");
+                        return false;
+                    } else if (!body) {
+                        popup.popAlert("카드" + n + " 내용은 필수입니다.");
+                        return false;
+                    } else if (createdBtnCnt < 1) {
+                        popup.popAlert("카드" + n + " 버튼은 최소 1개 이상 생성해야 합니다.");
+                        return false;
+                    } else {
+                        // ok
+                    }
+                }
+            }
+            let maxFilled = 0;
+            for (let n = 1; n <= MAX_CARD; n++) {
+                if (filled[n]) maxFilled = n;
+            }
+            if (maxFilled <= 2) {
+                return true;
+            } else {
+                const missing = [];
+                for (let n = 1; n <= maxFilled; n++) {
+                    if (!filled[n]) missing.push(n);
+                }
+                if (missing.length > 0) {
+                    popup.popAlert("카드 " + missing.join(", ") + "를 작성해 주세요.");
+                    return false;
+                } else {
+                    for (let n = 3; n <= maxFilled; n++) {
+                        const $card = $("#kakao_item_img_cd_" + n).closest(".brandFcContent");
+                        if ($card.length === 0) {
+                            popup.popAlert("카드" + n + " 영역을 찾을 수 없습니다.");
+                            return false;
+                        } else {
+                            const imgCd = (($card.find("#kakao_item_img_cd_" + n).val()) || "").trim();
+                            const title = (($card.find('input[name="kkoHeader' + n + '"]').val()) || "").trim();
+                            const body = (($card.find('textarea[name="kkoBody' + n + '"]').val()) || "").trim();
+
+                            const btn1State = (($card.find("#kkoBtnUrl" + n + "_1").val()) || "").trim();
+                            const btn2State = (($card.find("#kkoBtnUrl" + n + "_2").val()) || "").trim();
+                            const createdBtnCnt = (btn1State === "삭제" ? 1 : 0) + (btn2State === "삭제" ? 1 : 0);
+                            if (btn2State === "삭제" && btn1State !== "삭제") {
+                                popup.popAlert("카드" + n + "는 버튼2를 생성하려면 버튼1을 먼저 생성해야 합니다.");
+                                return false;
+                            } else if (!imgCd) {
+                                popup.popAlert("카드" + n + " 이미지는 필수입니다.");
+                                return false;
+                            } else if (!title) {
+                                popup.popAlert("카드" + n + " 타이틀은 필수입니다.");
+                                return false;
+                            } else if (!body) {
+                                popup.popAlert("카드" + n + " 내용은 필수입니다.");
+                                return false;
+                            } else if (createdBtnCnt < 1) {
+                                popup.popAlert("카드" + n + " 버튼은 최소 1개 이상 생성해야 합니다.");
+                                return false;
+                            } else {
+                                // ok
+                            }
+                        }
+                    }
+                    return true;
+                }
+            }
         } else {
-            let txt = $("textarea[name='kakao_body']").val()
-            let kakaoByte = txt.length;
-            let kakaoImage = $('#kakaoImage');
-            let kakaoTxt = $('.kakao_txt');
-            // 본문 byte 체크
-            if (kakaoImage.val() == '' || kakaoImage.val() == null) {
-                if (kakaoByte > 2000) {
-                    kakaoTxt.focus();
+            const txt = $("textarea[name='kakao_body']").val() || "";
+            const kakaoLen = Array.from(txt).length;
+            const $kakaoImage = $('#kakaoImage');
+            const $kakaoTxt = $('.kakao_txt');
+            const hasImage = !!($kakaoImage.val());
+            if (!hasImage) {
+                if (kakaoLen > 1000) {
+                    $kakaoTxt.focus();
                     popup.popAlert("카카오톡 본문 내용은 1000자를 초과할 수 없습니다.");
                     return false;
+                } else {
+                    return true;
                 }
-            } else if (kakaoImage.val() != '' || kakaoImage.val() != null) {
-                if (kakaoByte > 400) {
-                    kakaoTxt.focus();
+            } else {
+                if (kakaoLen > 400) {
+                    $kakaoTxt.focus();
                     popup.popAlert("카카오톡 본문 내용이 400자를 초과할 수 없습니다.");
                     return false;
+                } else {
+                    return true;
                 }
             }
         }
-        return true;
     }
+
 
     // 문자 유효성 검사
     function smsValidate() {
@@ -2411,19 +2558,30 @@
     }
 
     function previewSlideLoad() {
-
         let swiperEl = $('.previewSlide').length;
         if (swiperEl > 0) {
-            var mySwiper = new Swiper('.previewSlide', {
+            new Swiper('.previewSlide', {
                 direction: 'horizontal',
                 pagination: {
                     el: '.rcs_paging',
                     type: 'fraction',
                 },
-                // Navigation arrows
                 navigation: {
                     nextEl: '.rcs_next',
                     prevEl: '.rcs_prev',
+                },
+            });
+        }
+
+        swiperEl = $('.previewBrandSlide').length;
+        if (swiperEl > 0) {
+            new Swiper('.previewBrandSlide', {
+                direction: 'horizontal',
+                centeredSlides: true,
+                slidesPerView: 1.2,
+                pagination: {
+                    el: '.previewBrandSlidePagign',
+                    type: 'fraction',
                 },
             });
         }
@@ -2434,19 +2592,21 @@
         let stop = false;
         const selectedValue = $('input[name="kko_format_type"]:checked').val();
         if(selectedValue == "kko_ft"){
-            //카카오 버튼 체크
-            $('#addKakaoLink .row.flex_box.double').each(function () {
-                const $row = $(this);
-                const $name = $row.find('input.kakaoLinkBtn');
-                const btnName = $row.find('input[name=kkoBtnLst]').val();
-                const pcUrl = $row.find('input[name=kkoBtnUrlLstPc]').val();
-                const moUrl = $row.find('input[name=kkoBtnUrlLstMo]').val();
-                if ((btnName != '' || pcUrl != '' || moUrl != '') && $($name).val() === "생성") {
-                    stop = true;
-                    popup.popAlert('카카오톡 버튼 생성이 완료 되지 않았습니다!');
-                    return false;
-                }
-            });
+            let kakaoFtType = $("input[name='kko_msg_tp']:checked").val();
+            if(kakaoFtType == "0"){
+                $('#addKakaoLink .row.flex_box.double').each(function () {
+                    const $row = $(this);
+                    const $name = $row.find('input.kakaoLinkBtn');
+                    const btnName = $row.find('input[name=kkoBtnLst]').val();
+                    const pcUrl = $row.find('input[name=kkoBtnUrlLstPc]').val();
+                    const moUrl = $row.find('input[name=kkoBtnUrlLstMo]').val();
+                    if ((btnName != '' || pcUrl != '' || moUrl != '') && $($name).val() === "생성") {
+                        stop = true;
+                        popup.popAlert('카카오톡 버튼 생성이 완료 되지 않았습니다!');
+                        return false;
+                    }
+                });
+            }
         }
         if (stop) {
           return;
@@ -2677,7 +2837,7 @@
         };
 
         let param = $("#imgSetForm").serializeArray();
-        if (type === 'kakaoImage') {
+        if (type === 'kakaoImage' || type === 'kakaoVideoImg') {
             // 이미지 타입 : Kakao Image
             param.push({name: 'ch_tp', value: 'IMGTP_FT'});
             msg = "브랜드톡"
@@ -2687,6 +2847,12 @@
         } else if (type.startsWith('kakaoImageItem')) {
             param.push({name: 'ch_tp', value: 'IMGTP13'});
             msg = "브랜드톡 와이드 리스트"
+        } else if (type.startsWith('kakaoImageFa')) {
+            param.push({name: 'ch_tp', value: 'IMGTP14'});
+            msg = "캐러셀 커머스형"
+        } else if (type.startsWith('kakaoImageFc')) {
+            param.push({name: 'ch_tp', value: 'IMGTP15'});
+            msg = "캐러셀 피드형"
         } else if (type === 'smsImage') {
             // 이미지 타입 : 문자(MMS)
             param.push({name: 'ch_tp', value: 'IMGTP02'});
@@ -2774,21 +2940,27 @@
                 $('input[name="kakao_item_img_cd_1"]').val(imgCheck);
                 $('input[name="kko_view_item_img_url_1"]').val(kkoImgurl);
                 $('#kakaoImageItemFirst').parent('.td').removeClass('outline');
-                $("#prev_ft_wide_lst_img1").attr("src", imageUrl);
+                $("#prev_ft_wide_lst_img1").attr("src", kkoImgurl);
             } else if (type.startsWith('kakaoImageItem')) {
                 const idx = type.replace('kakaoImageItem', '');
                 $('#' + type).val(ImgNm);
                 $('input[name="kakao_item_img_cd_' + idx + '"]').val(imgCheck);
                 $('input[name="kko_view_item_img_url_' + idx + '"]').val(kkoImgurl);
                 $('#' + type).parent('.td').removeClass('outline');
-                $("#prev_ft_wide_lst_img" + idx).attr("src", imageUrl);
+                $("#prev_ft_wide_lst_img" + idx).attr("src", kkoImgurl);
+            } else if (type.startsWith('kakaoImageFc')) {
+                const idx = type.replace('kakaoImageFc', '');
+                $('#' + type).val(ImgNm);
+                $('input[name="kakao_item_img_cd_' + idx + '"]').val(imgCheck);
+                $('input[name="kko_view_item_img_url_' + idx + '"]').val(kkoImgurl);
+                $('#' + type).parent('.td').removeClass('outline');
+                $("#brandFcImgArea" + idx).attr("src", kkoImgurl);
             } else if (type == 'smsImage') {
                 $("#smsImage").val(ImgNm);
                 $('input[name="mds_img_cd"]').val(imgCheck);
                 $('#smsImage').parent('.td').removeClass('outline');
                 //$('#sms').find('.sms_img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'"/>');
                 $('#js-sms-img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'"/>');
-
                 $('#sms_img_box').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'"/>');
                 $('input[name="mms_imgurl"]').val(imageType);
             } else if (type == 'horizontalImage') {
@@ -2876,13 +3048,12 @@
                 let dynamic = $('#js-replace').html(html);
                 mappingLst();
                 adTypeCheck();
-                var mySwiper = new Swiper('.slideSwiper', {
+                new Swiper('.slideSwiper', {
                     direction: 'horizontal',
                     pagination: {
                         el: '.rcs_paging',
                         type: 'fraction',
                     },
-                    // Navigation arrows
                     navigation: {
                         nextEl: '.rcs_next',
                         prevEl: '.rcs_prev',
@@ -2926,7 +3097,6 @@
             );
         }
         if (radioVal == 'lms') {
-
             buttonReplace('text', 3, 17);
             $('#js-title-area').html(
                 '<div class="row body">'
@@ -2958,7 +3128,6 @@
         if (radioVal == 'tall' || radioVal == 'medium') {
             $('#verticalImage').val('');
             $('input[name="verticalImg"]').val('');
-
             buttonReplace('vertical', 2, 17);
             view += '<div class="img_area"></div>'
                 + '<div class="txt_area">'
@@ -2998,7 +3167,6 @@
     //RCS 버튼 Replace
     function buttonReplace(type, length, textCount) {
         let html = '';
-
         for (let a = 0; a < length; a++) {
             html += '<div class="block">'
                 + '<div class="row">'
@@ -3036,28 +3204,23 @@
 
     // RCS 슬라이드형 카드 양식 변경
     function rcsSlideChange(type) {
-
         $('.layer_pop').removeClass('active');
         slideData = type;
         let layout = slideLayout(type);
         $('#js-rcs-area').html(layout);
-
         if (typeValue <= 3) {
             $('input[name="rcs_msg_tp"]').val("small");
         } else {
             $('input[name="rcs_msg_tp"]').val("medium");
         }
-
         mappingLst();
         adTypeCheck();
-
         new Swiper('.slideSwiper', {
             direction: 'horizontal',
             pagination: {
                 el: '.rcs_paging',
                 type: 'fraction',
             },
-            // Navigation arrows
             navigation: {
                 nextEl: '.rcs_next',
                 prevEl: '.rcs_prev',
@@ -3234,7 +3397,6 @@
         }
 
         let res = function (response) {
-            //TO-DO
             //리스트 새로 불러오기
             if (response.imgCheck == 0) {
                 popup.popAlert(response.imgCheckErr);
@@ -3747,7 +3909,6 @@
 
     $(document).on('drop', function(ev){
         dropTarget = $(ev.target);
-
     });
 
     $(document).on('dragend', function(ev){
@@ -3956,7 +4117,6 @@
     }
 
     function checkNaverApi() {
-
         const res = function (response) {
             if (!response.status) {
                 $("input:radio[name='short_url_yn']:radio[value='Y']").prop('checked', false); // 선택하기
@@ -3983,33 +4143,40 @@
         let radioVal = checkType.value;
         $(type).prop('checked', true);
         $('.layer_pop').removeClass('active');
-
         let res = function (response) {
             let $doc = new DOMParser().parseFromString(response, "text/html");
-            let html = $("#bodyArea", $doc).html();
+            let html = $("html", $doc).prop("outerHTML");
             $('#kko_ft').html(html);
-
             if(radioVal === "1"){
+                $("#kakao_ft_viewer").show();
+                $("#kakao_brand_viewer").hide();
                 $("#prev_ft_img").hide();
                 $("#prev_ft_video").hide();
                 $("#prev_ft_txt").hide();
                 $("#prev_ft_wide_lst").show();
-            }else{
+            } else if(radioVal === "2" || radioVal === "3"){
+                $("#kakao_ft_viewer").hide();
+                $("#kakao_brand_viewer").show();
+            } else {
+                $("#kakao_ft_viewer").show();
+                $("#kakao_brand_viewer").hide();
                 $("#prev_ft_img").show();
                 $("#prev_ft_video").show();
                 $("#prev_ft_txt").show();
                 $("#prev_ft_wide_lst").hide();
             }
         }
-
         if(radioVal === "1"){
             com_ajax.ajax('get', '/sf/${usr_cd}/brandWideLst.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
+        }else if(radioVal === "2"){
+            com_ajax.ajax('get', '/sf/${usr_cd}/brandFa.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
+        }else if(radioVal === "3"){
+            com_ajax.ajax('get', '/sf/${usr_cd}/brandFc.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }else if(radioVal === "4"){
             com_ajax.ajax('get', '/sf/${usr_cd}/brandVideo.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }else {
             com_ajax.ajax('get', '/sf/${usr_cd}/brandNormal.ajax', null, res, '${_csrf.headerName}', '${_csrf.token}', true);
         }
-
         kakaoBeforeSub = radioVal;
         mappingLst();
         adTypeCheck();

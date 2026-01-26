@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
 <div id="slideArea">
@@ -59,10 +59,12 @@
                      <div class="row">
                         <div class="th">이미지 선택</div>
                         <div class="td">
-                           <div class="delete_img"><img src="/image/btn_delete1.png" alt="삭제"></div><input type="text" name=""
-                                                                                                                class="txt_input en_font rcsImage" id="slide0" placeholder="이미지를 선택해 주세요." readonly=""><input
-                                type="hidden" name="rcs_img_cd_1" class="txt_input en_font rcsImage"><span class="btn_sm_line"
-                                                                                                           data="slide0" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
+                           <div class="delete_img">
+                              <img src="/image/btn_delete1.png" alt="삭제">
+                           </div>
+                           <input type="text" name="" class="txt_input en_font rcsImage" id="slide0" placeholder="이미지를 선택해 주세요." readonly="">
+                           <input type="hidden" name="rcs_img_cd_1" class="txt_input en_font rcsImage">
+                           <span class="btn_sm_line" data="slide0" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
                         </div>
                      </div>
                   </div>
@@ -82,8 +84,9 @@
                      </div>
                      <div class="row">
                         <div class="th top-border">문자 제목</div>
-                        <div class="td top-border"><input type="text" name="slide_cont_sub" class="txt_input width rcsTitle"
-                                                          placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,0);"></div>
+                        <div class="td top-border">
+                           <input type="text" name="slide_cont_sub" class="txt_input width rcsTitle" placeholder="최대 30자 이내 입력" onkeyup="rcsCreate.rcsTitle(this,0);">
+                        </div>
                      </div>
                   </div>
                   <div class="block" name="textBlock">
@@ -169,10 +172,12 @@
                   <div class="row">
                      <div class="th">이미지 선택</div>
                      <div class="td">
-                        <div class="delete_img"><img src="/image/btn_delete1.png" alt="삭제"></div><input type="text" name=""
-                                                                                                             class="txt_input en_font rcsImage" id="slide1" placeholder="이미지를 선택해 주세요." readonly=""><input
-                             type="hidden" name="rcs_img_cd_2" class="txt_input en_font rcsImage"><span class="btn_sm_line"
-                                                                                                        data="slide2" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
+                        <div class="delete_img">
+                           <img src="/image/btn_delete1.png" alt="삭제">
+                        </div>
+                        <input type="text" name="" class="txt_input en_font rcsImage" id="slide1" placeholder="이미지를 선택해 주세요." readonly="">
+                        <input type="hidden" name="rcs_img_cd_2" class="txt_input en_font rcsImage">
+                        <span class="btn_sm_line" data="slide2" onclick="imageListPopUp('1','slideRcsImage')">선택</span>
                      </div>
                   </div>
                </div>

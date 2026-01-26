@@ -171,7 +171,7 @@ class MobileContentServiceImpl : ContentService {
                                     tblmiContLstdto.msg_tp = "DMCH204"
                                 }else{
                                     val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(contentListCreatedto.kko_img_cd!!))
-                                    if(imgDto.ch_tp == "IMGTP11"){
+                                    if(imgDto?.ch_tp == "IMGTP11"){
                                         tblmiContLstdto.msg_tp = "DMCH218"
                                     } else {
                                         tblmiContLstdto.msg_tp = "DMCH217"
@@ -796,23 +796,23 @@ class MobileContentServiceImpl : ContentService {
         val len = contentOne.size
 
         for (i in 0 until len) {
-            //logger.error("one content: " + contentOne[i])
-            val dto = contentOne[i]
-
-            if (dto.cont_tp.equals("DMTP04")) {
+            val dto1 = contentOne[i]
+            if (dto1.cont_tp.equals("DMTP04")
+                || dto1.msg_tp.equals("DMCH220")
+            ) {
                 // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
-                jsonOneContentsParsing(dto)
+                jsonOneContentsParsing(dto1)
             }
-            if (!CommonUtils.isEmptyObject(dto.rcs_btn_obj)) {
-                jsonButtonParsing(dto)
+            if (!CommonUtils.isEmptyObject(dto1.rcs_btn_obj)) {
+                jsonButtonParsing(dto1)
             }
             // 이전에 선택한 쿠폰 시퀀스와 이름 조회
-            if (dto.cont_tp.equals("DMTP02") && !dto.coupon_seq.isNullOrEmpty()) {
-                val selectCoupon = couponDao.selectCoupon(dto.coupon_seq!!.toInt())
-                dto.coupon_nm = selectCoupon.nm
-                dto.coupon_seq = AES256.AES_Encode(dto.coupon_seq, GlobalValues.encKey)
+            if (dto1.cont_tp.equals("DMTP02") && !dto1.coupon_seq.isNullOrEmpty()) {
+                val selectCoupon = couponDao.selectCoupon(dto1.coupon_seq!!.toInt())
+                dto1.coupon_nm = selectCoupon.nm
+                dto1.coupon_seq = AES256.AES_Encode(dto1.coupon_seq, GlobalValues.encKey)
             }
-            contentOneList.add(dto)
+            contentOneList.add(dto1)
         }
         return contentOneList
     }
@@ -1386,9 +1386,9 @@ class MobileContentServiceImpl : ContentService {
         // 수정 페이지 json 파싱하기
         val jsonParser = JsonParser()
         val dto1 = dto as Content_view_Dto
-        val rcsMsgTp = dto1.msg_tp
+        val msgTp = dto1.msg_tp
 
-        if (rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH207") || rcsMsgTp.equals("DMCH210")) {
+        if (msgTp.equals("DMCH209") || msgTp.equals("DMCH208") || msgTp.equals("DMCH207") || msgTp.equals("DMCH210")) {
             // 가로, 세로형 이라면 cont_body Json 형태 파싱
             if (dto1.cont_body != null) {
                 val jsonObject = jsonParser.parse(dto1.cont_body).asJsonObject
@@ -1398,7 +1398,7 @@ class MobileContentServiceImpl : ContentService {
                     .replace("\"", "")
             }
         }
-        if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
+        if (msgTp.equals("DMCH211") || msgTp.equals("DMCH212")) {
             val slideJsonObject = jsonParser.parse(dto1.cont_body).asJsonObject
             val len = slideJsonObject.size() / 2  // title과 description이 하나의 쌍이 되기에 나눠준다
             dto1.cardSize = len.toString()
@@ -1423,6 +1423,47 @@ class MobileContentServiceImpl : ContentService {
                         .replace("\\r\\n", "<br/>")
                         .replace("\"", "")
                 )
+            }
+        }
+        if (msgTp.equals("DMCH220")) {
+            val data = jsonParser.parse(dto1.kko_item_json).asJsonArray
+            for ((index, value) in data.withIndex()) {
+                val obj = value.asJsonObject
+                val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(obj.get("img_url").asString))
+                when (index) {
+                    0 -> {
+                        dto1.kkoItemLst1 = obj.get("title").asString
+                        dto1.kkoItemUrlLstPc1 = obj.get("url_pc").asString
+                        dto1.kkoItemUrlLstMo1 = obj.get("url_mobile").asString
+                        dto1.kakao_item_img_cd_1 = imgInfo?.seq.toString()
+                        dto1.kakaoImageItemNm1 = imgInfo?.img_nm
+                        dto1.kko_view_item_img_url_1 = imgInfo?.kko_img_url
+                    }
+                    1 -> {
+                        dto1.kkoItemLst2 = obj.get("title").asString
+                        dto1.kkoItemUrlLstPc2 = obj.get("url_pc").asString
+                        dto1.kkoItemUrlLstMo2 = obj.get("url_mobile").asString
+                        dto1.kakao_item_img_cd_2 = imgInfo?.seq.toString()
+                        dto1.kakaoImageItemNm2 = imgInfo?.img_nm
+                        dto1.kko_view_item_img_url_2 = imgInfo?.kko_img_url
+                    }
+                    2 -> {
+                        dto1.kkoItemLst3 = obj.get("title").asString
+                        dto1.kkoItemUrlLstPc3 = obj.get("url_pc").asString
+                        dto1.kkoItemUrlLstMo3 = obj.get("url_mobile").asString
+                        dto1.kakao_item_img_cd_3 = imgInfo?.seq.toString()
+                        dto1.kakaoImageItemNm3 = imgInfo?.img_nm
+                        dto1.kko_view_item_img_url_3 = imgInfo?.kko_img_url
+                    }
+                    3 -> {
+                        dto1.kkoItemLst4 = obj.get("title").asString
+                        dto1.kkoItemUrlLstPc4 = obj.get("url_pc").asString
+                        dto1.kkoItemUrlLstMo4 = obj.get("url_mobile").asString
+                        dto1.kakao_item_img_cd_4 = imgInfo?.seq.toString()
+                        dto1.kakaoImageItemNm4 = imgInfo?.img_nm
+                        dto1.kko_view_item_img_url_4 = imgInfo?.kko_img_url
+                    }
+                }
             }
         }
     }

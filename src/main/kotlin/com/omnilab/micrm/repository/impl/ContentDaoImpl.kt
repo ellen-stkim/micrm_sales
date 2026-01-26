@@ -158,7 +158,7 @@ class ContentDaoImpl : ContentDao {
         return sqlSession.delete("del_tblmi_cont_url_lst", dto)
     }
 
-    override fun selTblmiContImg(dto: Tblmi_cont_imgDto): Tblmi_cont_imgDto {
+    override fun selTblmiContImg(dto: Tblmi_cont_imgDto): Tblmi_cont_imgDto? {
         return sqlSession.selectOne("selTblmiContImg", dto)
     }
 }

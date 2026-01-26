@@ -215,10 +215,14 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var kakao_item_img_cd_2: String? = null
     var kakao_item_img_cd_3: String? = null
     var kakao_item_img_cd_4: String? = null
+    var kakao_item_img_cd_5: String? = null
+    var kakao_item_img_cd_6: String? = null
     var kko_view_item_img_url_1: String? = null
     var kko_view_item_img_url_2: String? = null
     var kko_view_item_img_url_3: String? = null
     var kko_view_item_img_url_4: String? = null
+    var kko_view_item_img_url_5: String? = null
+    var kko_view_item_img_url_6: String? = null
     var kkoItemLst1: String? = null
     var kkoItemLst2: String? = null
     var kkoItemLst3: String? = null
@@ -231,6 +235,42 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var kkoItemUrlLstMo2: String? = null
     var kkoItemUrlLstMo3: String? = null
     var kkoItemUrlLstMo4: String? = null
+    var kkoHeader1: String? = null
+    var kkoHeader2: String? = null
+    var kkoHeader3: String? = null
+    var kkoHeader4: String? = null
+    var kkoHeader5: String? = null
+    var kkoHeader6: String? = null
+    var kkoBody1: String? = null
+    var kkoBody2: String? = null
+    var kkoBody3: String? = null
+    var kkoBody4: String? = null
+    var kkoBody5: String? = null
+    var kkoBody6: String? = null
+    var kkoBtnLst1_1: String? = null
+    var kkoBtnLst1_2: String? = null
+    var kkoBtnLst2_1: String? = null
+    var kkoBtnLst2_2: String? = null
+    var kkoBtnLst3_1: String? = null
+    var kkoBtnLst3_2: String? = null
+    var kkoBtnLst4_1: String? = null
+    var kkoBtnLst4_2: String? = null
+    var kkoBtnLst5_1: String? = null
+    var kkoBtnLst5_2: String? = null
+    var kkoBtnLst6_1: String? = null
+    var kkoBtnLst6_2: String? = null
+    var kkoItemUrlLstPc1_1: String? = null
+    var kkoItemUrlLstPc1_2: String? = null
+    var kkoItemUrlLstPc2_1: String? = null
+    var kkoItemUrlLstPc2_2: String? = null
+    var kkoItemUrlLstPc3_1: String? = null
+    var kkoItemUrlLstPc3_2: String? = null
+    var kkoItemUrlLstPc4_1: String? = null
+    var kkoItemUrlLstPc4_2: String? = null
+    var kkoItemUrlLstMo5_1: String? = null
+    var kkoItemUrlLstMo5_2: String? = null
+    var kkoItemUrlLstMo6_1: String? = null
+    var kkoItemUrlLstMo6_2: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

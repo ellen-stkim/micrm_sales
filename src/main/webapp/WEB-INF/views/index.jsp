@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <c:set var="req" value="${pageContext.request}" />
 <c:choose>
     <c:when test="${header['X-Forwarded-Proto'] eq 'https'}">

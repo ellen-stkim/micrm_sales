@@ -430,9 +430,8 @@
 	<select id="getImgList" parameterType="Tblmi_cont_imgDto" resultType="Tblmi_cont_imgDto">
 		SELECT *
 		FROM TBLMI_CONT_IMG AS img
-		LEFT JOIN TBLMI_COMM_CD AS chcd
-			ON chcd.cd_id = img.ch_tp
-		WHERE  img.del_yn = 'N'
+			LEFT JOIN TBLMI_COMM_CD AS chcd ON chcd.cd_id = img.ch_tp
+		WHERE img.del_yn = 'N'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and img.USR_GRP_CD = #{usr_grp_cd}
 			</if>
@@ -1215,6 +1214,7 @@
 			, tmpl.button_json
 			, l.kko_video_url
 			, l.kko_thumbnail_img_cd
+		    , l.kko_item_json
 			, img_video.img_nm																			AS kko_thumbnail_img_nm
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
@@ -1299,9 +1299,14 @@
 	<select id="selTblmiContImg" parameterType="Tblmi_cont_imgDto" resultType="Tblmi_cont_imgDto">
 		/* selTblmiContImg */
 		select *
-		from Tblmi_cont_imgDto
+		from Tblmi_cont_img
 		<where>
-			seq = #{seq}
+		    <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+				and seq = #{seq}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(kko_img_url)">
+   				and kko_img_url = #{kko_img_url}
+			</if>
 		</where>
 	</select>
 

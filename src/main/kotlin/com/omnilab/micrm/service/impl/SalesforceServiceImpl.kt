@@ -328,558 +328,61 @@ class SalesforceServiceImpl : SalesforceService {
     override fun insertContentList(dto: Content_list_CreateDto): ReturnDto {
         val re = ReturnDto(true)
         val userInfo = UsefulUtils.sessionUser()
-        val contGrpCd = dto.cont_grp_cd
 
         val isByte = isCheckByte(dto)
         if (!isByte.status!!) {
             return isByte
         }
+
         val tblmiContMstDto = Tblmi_cont_mstDto()
         try {
-            tblmiContMstDto.ch_tp = "CH03"
-            tblmiContMstDto.cont_nm = dto.cont_nm
-            tblmiContMstDto.reg_id = userInfo.usr_id
-            tblmiContMstDto.cont_grp_cd = userInfo.usr_grp_cd
-            tblmiContMstDto.cont_grp_cd = contGrpCd
-            tblmiContMstDto.sales_nm = dto.sales_nm
-            tblmiContMstDto.avo_id = dto.avo_id
-            tblmiContMstDto.inten_id = dto.inten_id
-            tblmiContMstDto.orig_id = dto.orig_id
-            tblmiContMstDto.inta_key = dto.inta_key
-            tblmiContMstDto.inta_ve = dto.inta_ve
-            tblmiContMstDto.camp_nm = dto.camp_nm
-            tblmiContMstDto.team_cd = dto.team_cd
-            tblmiContMstDto.usr_key = dto.usr_key
-
+            tblmiContMstDto.apply {
+                ch_tp = "CH03"
+                cont_nm = dto.cont_nm
+                reg_id = userInfo.usr_id
+                cont_grp_cd = userInfo.usr_grp_cd
+                sales_nm = dto.sales_nm
+                avo_id = dto.avo_id
+                inten_id = dto.inten_id
+                orig_id = dto.orig_id
+                inta_key = dto.inta_key
+                inta_ve = dto.inta_ve
+                camp_nm = dto.camp_nm
+                team_cd = dto.team_cd
+                usr_key = dto.usr_key
+            }
             contentDao.insertContentMaster(tblmiContMstDto)// 마스터 코드 리턴
             re.data = tblmiContMstDto.seq.toString()
 
-            // 인덱스 값은 고정되서 넘어온다 [ 0번 인덱스 : kakao , 1번 인덱스 : sms , 2번 인덱스: rcs ]
-            val len = dto.send_to_list!!.size - 1;
-
+            // 3. 리스트 데이터 처리 (0: 카카오, 1: SMS, 2: RCS)
+            val len: Int = dto.send_to_list!!.size - 1
             for (i in 0..len) {
-                // 항상 3번 Insert 작업을 진행한다.
-                // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
-                val tblmiContLstdto = Tblmi_cont_lstDto()
-
-                tblmiContLstdto.cont_cd = tblmiContMstDto.seq   // 마스터 코드 삽입
-                tblmiContLstdto.cont_sub = dto.cont_sub_list!![i].trim()
-                tblmiContLstdto.from_to = dto.from_to
-                tblmiContLstdto.send_to = dto.send_to_list!![i]
-                tblmiContLstdto.send_nm = null
-                tblmiContLstdto.thm_url = null
-                tblmiContLstdto.br_yn = "N"
-                tblmiContLstdto.sup_yn = "N"
-                tblmiContLstdto.reg_id = userInfo.usr_id
-                tblmiContLstdto.cont_grp_cd = userInfo.usr_grp_cd
-                tblmiContLstdto.cont_grp_cd = contGrpCd
-
-                val formatList = dto.formatType
-
-                // 인덱스 번호 0 : 카카오
-                if (i == 0) {
-                    // 제목 저장
-                    tblmiContLstdto.cont_sub = dto.cont_sub_list!![i].trim()
-                    // 체크 여부에 따라 USE_YN 설정
-                    if (formatList!!.contains("kakao")) {
-                        tblmiContLstdto.use_yn = "Y"
-                    } else {
-                        tblmiContLstdto.use_yn = "N"
-                    }
-
-                    val kkoOption = dto.kko_option!!.trim()
-                    if (kkoOption == "ad") {
-                        // 광고 처리
-                        tblmiContLstdto.send_tp = "SENDTP01"
-                    } else if (kkoOption == "guide") {
-                        // 안내 처리
-                        tblmiContLstdto.send_tp = "SENDTP02"
-                    }
-
-                    if ("kko_at" == dto.kko_format_type) {  // 알림톡
-                        // 템플릿 조회
-                        val atDto =  AtTmpl_searchDto(dto.key_id, dto.tmpl_nm,"Y")
-                        atDto.usr_grp_cd =dto.cont_grp_cd
-                        atDto.kep_status = "O"  // 승인완료
-
-                        val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
-                        if(!CommonUtils.isEmptyObject(resultDto)){
-                            tblmiContLstdto.key_id = resultDto.tmpl_cd
-
-                            val g = GsonBuilder().create()
-                            val obj = JsonObject()
-                            obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
-                            obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
-                            obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
-                            obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
-                            tblmiContLstdto.kko_btn_obj = g.toJson(obj)
-                            tblmiContLstdto.kko_img_cd = resultDto.img_seq
-                            tblmiContLstdto.kko_img_url = resultDto.kko_img_url
-                            tblmiContLstdto.kko_title = resultDto.tmpl_tit
-                            tblmiContLstdto.kko_header = resultDto.tmpl_header
-                            tblmiContLstdto.kko_msg_tp = if (resultDto.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
-
-                            tblmiContLstdto.cont_tp = "DMTP05"
-                            tblmiContLstdto.msg_tp = "DMCH216"
-
-                            tblmiContLstdto.cont_body = resultDto.tmpl_cont
-                        }
-                    } else {
-                        // key_id 로 발신키 유효한지 확인
-                        val cdDto = Tblmi_comm_cdDto()
-                        cdDto.grp_id = "KAKAO_KEY"
-                        cdDto.cd_id = userInfo.usr_grp_cd
-
-                        val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
-                        kkoDto.list_val = dto.key_id
-                        val kkoSenderLst = contentDao.selectSenderList(kkoDto)
-
-                        if (kkoSenderLst.isNotEmpty()) {
-                            tblmiContLstdto.key_id = kkoSenderLst[0].list_val
-                        }
-
-                        tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                        when (dto.kko_msg_tp) {
-                            "1" -> {
-                                val requiredMap = linkedMapOf(
-                                    "리스트 1 항목명" to dto.kkoItemLst1,
-                                    "리스트 2 항목명" to dto.kkoItemLst2,
-                                    "리스트 3 항목명" to dto.kkoItemLst3,
-                                    "리스트 1 이미지" to dto.kakao_item_img_cd_1,
-                                    "리스트 2 이미지" to dto.kakao_item_img_cd_2,
-                                    "리스트 3 이미지" to dto.kakao_item_img_cd_3,
-                                    "리스트 1 PC URL" to dto.kkoItemUrlLstPc1,
-                                    "리스트 2 PC URL" to dto.kkoItemUrlLstPc2,
-                                    "리스트 3 PC URL" to dto.kkoItemUrlLstPc3,
-                                    "리스트 1 모바일 URL" to dto.kkoItemUrlLstMo1,
-                                    "리스트 2 모바일 URL" to dto.kkoItemUrlLstMo2,
-                                    "리스트 3 모바일 URL" to dto.kkoItemUrlLstMo3
-                                )
-                                for ((label, value) in requiredMap) {
-                                    if (CommonUtils.isEmptyObject(value)) {
-                                        re.status = false
-                                        re.errMsg = "$label 이(가) 누락되었습니다."
-                                        return re
-                                    }
-                                }
-
-                                val group4 = listOf(
-                                    dto.kkoItemLst4,
-                                    dto.kakao_item_img_cd_4,
-                                    dto.kkoItemUrlLstPc4,
-                                    dto.kkoItemUrlLstMo4
-                                )
-                                val hasAny = group4.any { !CommonUtils.isEmptyObject(it) }
-                                val hasAll = group4.all { !CommonUtils.isEmptyObject(it) }
-                                if (hasAny && !hasAll) {
-                                    re.status = false
-                                    re.errMsg = "리스트 4번 항목은 하나라도 입력 시 모든 값이 필수 입니다."
-                                    return re
-                                }
-                                tblmiContLstdto.msg_tp = "DMCH220"
-                                val itemLst = arrayListOf(
-                                    ItemInfoDto(dto.kkoItemLst1!!, dto.kko_view_item_img_url_1!!, dto.kkoItemUrlLstMo1!!, dto.kkoItemUrlLstPc1!!),
-                                    ItemInfoDto(dto.kkoItemLst2!!, dto.kko_view_item_img_url_2!!, dto.kkoItemUrlLstMo2!!, dto.kkoItemUrlLstPc2!!),
-                                    ItemInfoDto(dto.kkoItemLst3!!, dto.kko_view_item_img_url_3!!, dto.kkoItemUrlLstMo3!!, dto.kkoItemUrlLstPc3!!)
-                                ).apply {
-                                    if (hasAll) {
-                                        add(ItemInfoDto(dto.kkoItemLst4!!, dto.kko_view_item_img_url_4!!, dto.kkoItemUrlLstMo4!!, dto.kkoItemUrlLstPc4!!))
-                                    }
-                                }
-                                tblmiContLstdto.kko_item_json = GsonBuilder().create().toJson(itemLst)
-                                tblmiContLstdto.kko_header = tblmiContLstdto.cont_sub?.let {
-                                    if (it.length > 20) it.substring(0, 20) else it
-                                }
-                            }
-                            "2" -> {
-                                tblmiContLstdto.msg_tp = "DMCH221"
-                            }
-                            "3" -> {
-                                tblmiContLstdto.msg_tp = "DMCH222"
-                            }
-                            "4" -> {
-                                tblmiContLstdto.msg_tp = "DMCH223"
-                            }
-                            else -> {
-                                if(CommonUtils.isEmptyObject(dto.kko_img_cd)){
-                                    tblmiContLstdto.msg_tp = "DMCH204"
-                                }else{
-                                    val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(dto.kko_img_cd!!))
-                                    if(imgDto.ch_tp == "IMGTP11"){
-                                        tblmiContLstdto.msg_tp = "DMCH218"
-                                    } else {
-                                        tblmiContLstdto.msg_tp = "DMCH217"
-                                    }
-                                }
-                            }
-                        }
-                        // 카카오 이미지 처리
-                        if (CommonUtils.isEmptyObject(dto.kko_img_cd)) {
-                            tblmiContLstdto.kko_img_cd = null
-                        } else {
-                            tblmiContLstdto.kko_img_cd = dto.kko_img_cd
-                        }
-                        tblmiContLstdto.cont_body = dto.kakao_body
-                        tblmiContLstdto.kko_img_url = dto.kko_img_url
-                        tblmiContLstdto.kko_btn_nm = dto.kko_btn_nm
-                        tblmiContLstdto.kko_btn_url = dto.kko_btn_url
-                        tblmiContLstdto.kko_btn_urlPc = dto.kko_btn_urlPc
-                        tblmiContLstdto.kko_btn_nm2 = dto.kko_btn_nm2
-                        tblmiContLstdto.kko_btn_url2 = dto.kko_btn_url2
-                        tblmiContLstdto.kko_btn_urlPc2 = dto.kko_btn_urlPc2
-                        tblmiContLstdto.kko_btn_nm3 = dto.kko_btn_nm3
-                        tblmiContLstdto.kko_btn_url3 = dto.kko_btn_url3
-                        tblmiContLstdto.kko_btn_urlPc3 = dto.kko_btn_urlPc3
-                        tblmiContLstdto.kko_btn_nm4 = dto.kko_btn_nm4
-                        tblmiContLstdto.kko_btn_url4 = dto.kko_btn_url4
-                        tblmiContLstdto.kko_btn_urlPc4 = dto.kko_btn_urlPc4
-                        tblmiContLstdto.kko_btn_nm5 = dto.kko_btn_nm5
-                        tblmiContLstdto.kko_btn_url5 = dto.kko_btn_url5
-                        tblmiContLstdto.kko_btn_urlPc5 = dto.kko_btn_urlPc5
-                        tblmiContLstdto.kko_video_url = dto.kko_video_url
-                        tblmiContLstdto.kko_thumbnail_img_cd = dto.kko_thumbnail_img_cd
-                    }
+                val tblmiContLstdto = Tblmi_cont_lstDto().apply {
+                    cont_cd = tblmiContMstDto.seq
+                    cont_sub = dto.cont_sub_list!![i].trim()
+                    from_to = dto.from_to
+                    send_to = dto.send_to_list!![i]
+                    reg_id = userInfo.usr_id
+                    cont_grp_cd = userInfo.usr_grp_cd
+                    br_yn = "N"
+                    sup_yn = "N"
                 }
-
-                // 인덱스 번호 1: SMS (문자 )
-                if (i == 1) {
-                    if (formatList!!.contains("sms")) {
-                        tblmiContLstdto.use_yn = "Y"
-                    } else {
-                        tblmiContLstdto.use_yn = "N"
-                    }
-                    tblmiContLstdto.cont_tp = "DMTP02"
-                    // SMS 광고 , 안내 유형 선택
-                    val smsOption = dto.sms_option!!.trim()
-                    if (smsOption == "ad") {
-                        // 광고 처리
-                        tblmiContLstdto.send_tp = "SENDTP01"
-                    } else if (smsOption == "guide") {
-                        // 안내 처리
-                        tblmiContLstdto.send_tp = "SENDTP02"
-                    }
-
-                    val smsMsgTp = dto.sms_msg_tp
-
-                    // SMS 문자 타입 설정
-                    if (smsMsgTp.equals("LMS")) {
-                        tblmiContLstdto.msg_tp = "DMCH202"
-                        tblmiContLstdto.img_cd_1 = null
-                    } else if (smsMsgTp.equals("MMS")) {
-                        tblmiContLstdto.msg_tp = "DMCH203"
-                        tblmiContLstdto.img_cd_1 = dto.mds_img_cd
-                    } else {
-                        tblmiContLstdto.msg_tp = "DMCH201"
-                        tblmiContLstdto.img_cd_1 = null
-                    }
-
-                    if (!dto.coupon_seq.isNullOrEmpty()) {
-                        tblmiContLstdto.coupon_seq = AES256.AES_Decode(dto.coupon_seq, GlobalValues.encKey)
-                    }
-
-                    // short url 사용 여부
-                    tblmiContLstdto.short_url_yn = dto.short_url_yn
-                    tblmiContLstdto.cont_body = dto.sms_body
+                // 채널별 상세 분기 처리
+                when (i) {
+                    0 -> processKakao(dto, tblmiContLstdto, userInfo, re)?.let { return it }
+                    1 -> processSms(dto, tblmiContLstdto)
+                    2 -> processRcs(dto, tblmiContLstdto, userInfo, i)
                 }
-
-                // 인덱스 번호 2: RCS 분기 처리
-                if (i == 2) {
-                    // 이미지 저장
-                    tblmiContLstdto.img_cd_1 = dto.rcs_img_cd_1
-                    tblmiContLstdto.img_cd_2 = dto.rcs_img_cd_2
-                    tblmiContLstdto.img_cd_3 = dto.rcs_img_cd_3
-                    tblmiContLstdto.img_cd_4 = dto.rcs_img_cd_4
-                    tblmiContLstdto.img_cd_5 = dto.rcs_img_cd_5
-                    tblmiContLstdto.img_cd_6 = dto.rcs_img_cd_6
-
-                    // USE_YN 처리
-                    if (formatList!!.contains("rcs")) {
-                        tblmiContLstdto.use_yn = "Y"
-                    } else {
-                        tblmiContLstdto.use_yn = "N"
-                    }
-
-                    tblmiContLstdto.cont_tp = "DMTP04"
-                    tblmiContLstdto.rcs_footer = dto.rcs_footer
-
-                    // rcs 광고 , 유형 선택
-                    val rcsOption = dto.rcs_option!!.trim()
-
-                    if (rcsOption == "ad") {
-                        // 광고 처리
-                        tblmiContLstdto.send_tp = "SENDTP01"
-                    } else if (rcsOption == "guide") {
-                        // 안내 처리
-                        tblmiContLstdto.send_tp = "SENDTP02"
-                    }
-
-                    val rcsFormatType = dto.rcs_format_type!!.trim()   // rcs 포멧 타입
-                    val rcsMsgType = dto.rcs_msg_tp!!.trim() // rcs 메세지 타입
-
-                    when (rcsFormatType) {
-                        "text" -> {
-                            // RCS 텍스트 형의 경우
-                            if (rcsMsgType == "sms") {
-                                // SMS의 경우
-                                tblmiContLstdto.msg_tp = "DMCH205"
-
-                                // SMS Key 값 설정
-                                val cdDto = Tblmi_comm_cdDto()
-                                cdDto.grp_id = "RCS_SMS_MSG_ID"
-                                cdDto.cd_id = userInfo.usr_grp_cd
-
-                                val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                                if (codeDto != null) {
-                                    tblmiContLstdto.key_id = codeDto.cd_val
-                                }
-                            } else if (rcsMsgType == "lms") {
-                                // LMS의 경우
-                                tblmiContLstdto.msg_tp = "DMCH206"
-
-                                // LMS 키 값 설정
-                                val cdDto = Tblmi_comm_cdDto()
-                                cdDto.grp_id = "RCS_LMS_MSG_ID"
-                                cdDto.cd_id = userInfo.usr_grp_cd
-
-                                val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                                if (codeDto != null) {
-                                    tblmiContLstdto.key_id = codeDto.cd_val
-                                }
-                            }
-                            tblmiContLstdto.cont_body = dto.rcs_body
-                        }
-                        "vertical" -> {
-                            // RCS 세로형의 경우
-                            if (rcsMsgType == "tall") {
-                                // tall형 인 경우
-                                tblmiContLstdto.msg_tp = "DMCH207"
-
-                                // RCS 세로형 Tall Key 값 설정
-                                val cdDto = Tblmi_comm_cdDto()
-                                cdDto.grp_id = "RCS_L_TALL_MSG_ID"
-                                cdDto.cd_id = userInfo.usr_grp_cd
-
-                                val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                                if (codeDto != null) {
-                                    tblmiContLstdto.key_id = codeDto.cd_val
-                                }
-
-                            } else if (rcsMsgType == "medium") {
-                                // Medium 경우
-                                tblmiContLstdto.msg_tp = "DMCH208"
-
-                                // RCS 세로형 Medium Key 값 설정
-                                val cdDto = Tblmi_comm_cdDto()
-                                cdDto.grp_id = "RCS_L_MD_MSG_ID"
-                                cdDto.cd_id = userInfo.usr_grp_cd
-
-                                val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                                if (codeDto != null) {
-                                    tblmiContLstdto.key_id = codeDto.cd_val
-                                }
-                            }
-
-                            val jsonBody = JSONObject()
-                            jsonBody["title"] = dto.cont_sub_list?.get(i)
-                            jsonBody["description"] = dto.rcs_body
-                            // 공백 파싱 처리
-                            //tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
-                            tblmiContLstdto.cont_body = jsonBody.toString();
-                            tblmiContLstdto.img_cd_1 = dto.verticalImg
-
-                        }
-                        "slide" -> {
-                            // 슬라이드 형의 경우 타입 설정
-                            if (rcsMsgType == "small") {
-                                tblmiContLstdto.msg_tp = "DMCH211"
-                            } else if (rcsMsgType == "medium") {
-                                tblmiContLstdto.msg_tp = "DMCH212"
-                            }
-                            // RCS 슬라이드 관련 INSERT 처리
-                            rcsSlideSetting(dto, tblmiContLstdto)
-                        }
-                        else -> {
-                            // 에러 발생
-                            logger.error("RCS TYPE 에러 발생")
-                        }
-                    }
-
-                    // RCS 버튼 체크 기능 개발
-                    if (rcsFormatType == "slide") {
-                        rcsButtonMakeJsonStringSlide(dto, tblmiContLstdto)
-                    } else {
-                        // Button이 1개이상 존재할때 Json형태로 버튼 Insert
-                        rcsButtonMakeJsonString(dto, tblmiContLstdto)
-                    }
-
-                }
-
                 contentDao.insertContent(tblmiContLstdto)
-
-                // Url 처리
-                val lastSeq = tblmiContLstdto.seq
-
-                /**
-                 *  URL 저장하기 로직
-                 *  카카오, 모바일 같은 경우 알맞게 저장된다
-                 *  RCS의 경우
-                 *      1) slide가 아닐때 버튼 순서대로 들어간다
-                 *      2) slide형태는 최대 버튼 개수가 2개 이므로 2개씩 끊어서 판단한다
-                 *      (ex : urlBtn3, urlBtn5 로 저장 되었다면 카드 2의 1번 버튼 ,카드 3의 1번 버튼에 저장됨 )
-                 */
-
-                if (i == 0) {
-                    // 카카오 이미지 URL 링크 저장
-                    if (!CommonUtils.isEmptyObject(dto.kko_img_url)) {
-                        insertContentUrl("img", dto.kko_img_url!!, "kkoImg001", lastSeq!!)
-                    }
-                    // 카카오 버튼 링크 저장
-                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url)) {
-                        insertContentUrl("btn", dto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
-                        insertContentUrl("btn", dto.kko_btn_urlPc!!, "kkoBtnPc001", lastSeq)
-                    }
-                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url2)) {
-                        insertContentUrl("btn", dto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
-                        insertContentUrl("btn", dto.kko_btn_urlPc2!!, "kkoBtnPc002", lastSeq)
-                    }
-                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url3)) {
-                        insertContentUrl("btn", dto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
-                        insertContentUrl("btn", dto.kko_btn_urlPc3!!, "kkoBtnPc003", lastSeq)
-                    }
-                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url4)) {
-                        insertContentUrl("btn", dto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
-                        insertContentUrl("btn", dto.kko_btn_urlPc4!!, "kkoBtnPc004", lastSeq)
-                    }
-                    if (!CommonUtils.isEmptyObject(dto.kko_btn_url5)) {
-                        insertContentUrl("btn", dto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
-                        insertContentUrl("btn", dto.kko_btn_urlPc5!!, "kkoBtnPc005", lastSeq)
-                    }
-
-                    // 카카오 본문 a 링크 저장
-                    val urlKakaoBody = dto.kakao_body
-                    if (urlKakaoBody?.contains("{{") == true) {
-                        val regex = "\\{\\{[^{]+}}"
-                        val p = Pattern.compile(regex)
-                        val matcher = p.matcher(urlKakaoBody)
-
-                        var start = 0
-                        var chk = true
-                        var idx = 0
-
-                        while (chk) {
-                            if (matcher.find(start)) {
-                                start = matcher.start() + matcher.group().length
-                                val url = matcher.group()
-                                    .replace("{{", "")
-                                    .replace("}}", "")
-                                if (url.contains("http") || url.contains("https")) {
-                                    // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
-                                    idx++
-                                    val contUrlDto = Tblmi_cont_url_lstDto()
-                                    contUrlDto.url_tag = "a"
-                                    contUrlDto.url = url
-                                    if (idx >= 10) {
-                                        contUrlDto.url_id = "kkoTrk0" + idx
-                                    } else {
-                                        contUrlDto.url_id = "kkoTrk00" + idx
-                                    }
-                                    contUrlDto.cont_lst_cd = lastSeq
-                                    contentDao.insertContentUrl(contUrlDto)
-                                }
-                            } else {
-                                chk = false
-                            }
-                        }
-
-                    }
-                }
-                if (i == 1) {
-                    // 모바일 이미지 a 링크 저장 (이미지 경로)
-                    if (!CommonUtils.isEmptyObject(dto.mms_imgurl)) {
-                        insertContentUrl("a", dto.mms_imgurl!!, "mmsImg001", lastSeq!!)
-                    }
-
-                    // 모바일 본문 추적 a 링크 저장
-                    val urlSmsBody = dto.sms_body
-                    if (urlSmsBody?.contains("{{") == true) {
-                        val regex = "\\{\\{[^{]+}}"
-                        val p = Pattern.compile(regex)
-                        val matcher = p.matcher(urlSmsBody)
-
-                        var start = 0
-                        var chk = true
-                        var idx = 0
-                        while (chk) {
-                            if (matcher.find(start)) {
-                                start = matcher.start() + matcher.group().length
-                                val url = matcher.group()
-                                    .replace("{{", "")
-                                    .replace("}}", "")
-                                if (url.contains("http") || url.contains("https")) {
-                                    // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
-                                    idx++
-                                    val contUrlDto = Tblmi_cont_url_lstDto()
-                                    contUrlDto.url_tag = "a"
-                                    contUrlDto.url = url
-                                    if (idx >= 10) {
-                                        contUrlDto.url_id = "smsTrk0$idx"
-                                    } else {
-                                        contUrlDto.url_id = "smsTrk00$idx"
-                                    }
-                                    contUrlDto.cont_lst_cd = lastSeq
-                                    contentDao.insertContentUrl(contUrlDto)
-                                }
-                            } else {
-                                chk = false
-                            }
-                        }
-                    }
-                }
-                if (i == 2) {
-                    val urlLen = dto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
-                    if (urlLen != null) {
-                        // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
-                        for (j in 0 until urlLen) {
-                            val urlValue = dto.url_value?.get(j)?.trim()
-                            val fallbackUrlPosition = dto.fallback_url_04?.get(j)?.trim()
-                            val fallbackUrlQuery = dto.fallback_url_05?.get(j)?.trim()
-
-                            if (!CommonUtils.isEmptyObject(urlValue)) {
-                                insertContentUrl("btn", urlValue!!, "urlBtn" + (j + 1), lastSeq!!)
-                            }
-
-                            if (!CommonUtils.isEmptyObject(fallbackUrlPosition)) {
-                                insertContentUrl("btn", fallbackUrlPosition!!, "fallPosiBtn" + (j + 1), lastSeq!!)
-                            }
-
-                            if (!CommonUtils.isEmptyObject(fallbackUrlQuery)) {
-                                insertContentUrl("btn", fallbackUrlQuery!!, "fallQueryBtn" + (j + 1), lastSeq!!)
-                            }
-                        }
-                    }
-                }
-
+                // 4. URL 저장 로직
+                saveUrls(i, dto, tblmiContLstdto.seq!!)
             }
         } catch (e: Exception) {
             logger.error("insert content", e)
             logger.error("마스터 코드 " + tblmiContMstDto.seq);
-            // url 삭제하기
-            val lstSeqDto = Tblmi_cont_lstDto()
-            lstSeqDto.cont_cd = tblmiContMstDto.seq
-            val urlSeqLstList = contentDao.selectLstSeq(lstSeqDto)
-            for (element in urlSeqLstList) {
-                val seq = element.seq
-                contentDao.deleteRealContUrl(Tblmi_cont_url_lstDto(seq))
-            }
-            // mst 삭제하기
-            contentDao.deleteRealContMst(Tblmi_cont_mstDto(tblmiContMstDto.seq))
-            // lst 삭제하기
-            val lstDto = Tblmi_cont_lstDto()
-            lstDto.cont_cd = tblmiContMstDto.seq
-            contentDao.deleteRealContLst(lstDto)
+            handleManualRollback(tblmiContMstDto.seq!!, e)
             re.status = false
-            re.errMsg = "모바일 컨텐츠 저장 도중 오류가 발생 했습니다. \n" +
-                    "동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다."
+            re.errMsg = "모바일 컨텐츠 저장 도중 오류가 발생 했습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다."
             return re
         }
         return re
@@ -899,528 +402,62 @@ class SalesforceServiceImpl : SalesforceService {
      */
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun updateContentList(dto: Tblmi_cont_lstDto): ReturnDto {
-        val contentListCreatedto = dto as Content_list_CreateDto
+        val createDto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
-        val usrId: String = userInfo.usr_id!!
-        val usrGrpCd = contentListCreatedto.cont_grp_cd
-        val tblmiContMstDto = Tblmi_cont_mstDto()
 
-        val isByte = isCheckByte(contentListCreatedto)
-        if (!isByte.status!!) {
-            return isByte
+        val isByte = isCheckByte(createDto)
+        if (!isByte.status!!) return isByte
+
+        val tblmiContMstDto = Tblmi_cont_mstDto().apply {
+            seq = createDto.mst_seq!!.toInt()
+            ch_tp = "CH03"
+            cont_nm = createDto.cont_nm
+            reg_id = userInfo.usr_id
+            upd_id = userInfo.usr_id
+            cont_grp_cd = createDto.cont_grp_cd
+            sales_nm = createDto.sales_nm
+            avo_id = createDto.avo_id
+            inten_id = createDto.inten_id
+            orig_id = createDto.orig_id
+            inta_key = createDto.inta_key
+            inta_ve = createDto.inta_ve
+            camp_nm = createDto.camp_nm
+            team_cd = createDto.team_cd
+            usr_key = createDto.usr_key
         }
-
-        tblmiContMstDto.seq = contentListCreatedto.mst_seq!!.toInt()
-        tblmiContMstDto.ch_tp = "CH03"
-        tblmiContMstDto.cont_nm = contentListCreatedto.cont_nm
-        tblmiContMstDto.reg_id = usrId
-        tblmiContMstDto.upd_id = usrId
-        tblmiContMstDto.cont_grp_cd = usrGrpCd
-        tblmiContMstDto.sales_nm = contentListCreatedto.sales_nm
-        tblmiContMstDto.avo_id = contentListCreatedto.avo_id
-        tblmiContMstDto.inten_id = contentListCreatedto.inten_id
-        tblmiContMstDto.orig_id = contentListCreatedto.orig_id
-        tblmiContMstDto.inta_key = contentListCreatedto.inta_key
-        tblmiContMstDto.inta_ve = contentListCreatedto.inta_ve
-        tblmiContMstDto.camp_nm = contentListCreatedto.camp_nm
-        tblmiContMstDto.team_cd = contentListCreatedto.team_cd
-        tblmiContMstDto.usr_key = contentListCreatedto.usr_key
-
         contentDao.updateMobileMst(tblmiContMstDto)
-
-        val contListDto = Tblmi_cont_lstDto()
-        contListDto.cont_cd = contentListCreatedto.mst_seq!!.toInt()
-        val contLst = salesforceDao.sel_tblmi_cont_lst(contListDto)
-
-        val len = contentListCreatedto.send_to_list!!.size - 1
-
+        val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
+        val len = createDto.send_to_list!!.size - 1
         for (i in 0..len) {
-            // 항상 3번 Insert 작업을 진행한다.
-            // 공통 값은 배열로 받아 처리, 나머지는 각자 처리
-            val tblmiContLstdto = Tblmi_cont_lstDto()
-
+            val tblmiContLstdto = Tblmi_cont_lstDto().apply {
+                seq = when (i) {
+                    0 -> contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.seq
+                    1 -> contLst.firstOrNull { it.cont_tp == "DMTP02" }?.seq
+                    else -> contLst.firstOrNull { it.cont_tp == "DMTP04" }?.seq
+                }
+                cont_cd = tblmiContMstDto.seq
+                cont_sub = createDto.cont_sub_list!![i].trim()
+                send_to = createDto.send_to_list!![i]
+                from_to = createDto.from_to
+                reg_id = userInfo.usr_id
+                upd_id = userInfo.usr_id
+                cont_grp_cd = createDto.cont_grp_cd
+                br_yn = "N"
+                sup_yn = "N"
+            }
             when (i) {
-                0 -> {
-                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP03" || it.cont_tp == "DMTP05" }.findFirst().orElse(null).seq
-                }
-                1 -> {
-                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP02" }.findFirst().orElse(null).seq
-                }
-                else -> {
-                    tblmiContLstdto.seq = contLst.stream().filter{ it.cont_tp == "DMTP04" }.findFirst().orElse(null).seq
-                }
-            }
-
-
-            tblmiContLstdto.cont_cd = tblmiContMstDto.seq
-            tblmiContLstdto.cont_sub = contentListCreatedto.cont_sub_list!![i].trim()
-            tblmiContLstdto.send_to = contentListCreatedto.send_to_list!![i]
-            tblmiContLstdto.send_nm = null
-            tblmiContLstdto.from_to = contentListCreatedto.from_to
-            tblmiContLstdto.thm_url = null
-            tblmiContLstdto.br_yn = "N"
-            tblmiContLstdto.sup_yn = "N"
-            tblmiContLstdto.reg_id = usrId
-            tblmiContLstdto.upd_id = usrId
-            tblmiContLstdto.cont_grp_cd = usrGrpCd
-
-            val formatList = contentListCreatedto.formatType
-
-            // 인덱스 번호 0 : 카카오
-            if (i == 0) {
-                // 체크 여부에 따라 USE_YN 설정
-                if (formatList!!.contains("kakao")) {
-                    tblmiContLstdto.use_yn = "Y"
-                } else {
-                    tblmiContLstdto.use_yn = "N"
-                }
-
-                val kkoOption = contentListCreatedto.kko_option!!.trim()
-                if (kkoOption == "ad") {
-                    // 광고 처리
-                    tblmiContLstdto.send_tp = "SENDTP01"
-                } else if (kkoOption == "guide") {
-                    // 안내 처리
-                    tblmiContLstdto.send_tp = "SENDTP02"
-                }
-
-                if ("kko_at" == contentListCreatedto.kko_format_type) {  // 알림톡
-                    // 템플릿 조회
-                    val atDto =  AtTmpl_searchDto(contentListCreatedto.key_id, contentListCreatedto.tmpl_nm,"Y")
-                    atDto.usr_grp_cd =contentListCreatedto.cont_grp_cd
-                    atDto.kep_status = "O"  // 승인완료
-
-                    val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
-                    if(!CommonUtils.isEmptyObject(resultDto)){
-                        tblmiContLstdto.key_id = resultDto.tmpl_cd
-
-                        val g = GsonBuilder().create()
-                        val obj = JsonObject()
-                        obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
-                        obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
-                        obj.add("item_highlight", g.fromJson(resultDto.item_highlight_json, JsonObject::class.java))
-                        obj.add("item", g.fromJson(resultDto.item_json, JsonObject::class.java))
-                        tblmiContLstdto.kko_btn_obj = g.toJson(obj)
-                        tblmiContLstdto.kko_img_cd = resultDto.img_seq
-                        tblmiContLstdto.kko_img_url = resultDto.kko_img_url
-                        tblmiContLstdto.kko_title = resultDto.tmpl_tit
-                        tblmiContLstdto.kko_header = resultDto.tmpl_header
-                        tblmiContLstdto.kko_msg_tp = if (resultDto.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
-
-                        tblmiContLstdto.cont_tp = "DMTP05"
-                        tblmiContLstdto.msg_tp = "DMCH216"
-
-                        tblmiContLstdto.cont_body = resultDto.tmpl_cont
-                    }
-                }else{
-                    // key_id 로 발신키 유효한지 확인
-                    val cdDto = Tblmi_comm_cdDto()
-                    cdDto.grp_id = "KAKAO_KEY"
-                    cdDto.cd_id = userInfo.usr_grp_cd
-
-                    val kkoDto = SetLst_searchDto("CH02","DMTP03","Y",UsefulUtils.sessionUser().usr_grp_cd)
-                    kkoDto.list_val = contentListCreatedto.key_id
-                    val kkoSenderLst = contentDao.selectSenderList(kkoDto)
-
-                    if (kkoSenderLst.isNotEmpty()) {
-                        tblmiContLstdto.key_id = kkoSenderLst[0].list_val
-                    }
-
-                    tblmiContLstdto.cont_tp = "DMTP03" // 카카오
-                    when (contentListCreatedto.kko_msg_tp) {
-                        "1" -> {
-                            tblmiContLstdto.msg_tp = "DMCH220"
-                        }
-                        "2" -> {
-                            tblmiContLstdto.msg_tp = "DMCH221"
-                        }
-                        "3" -> {
-                            tblmiContLstdto.msg_tp = "DMCH222"
-                        }
-                        "4" -> {
-                            tblmiContLstdto.msg_tp = "DMCH223"
-                        }
-                        else -> {
-                            if(CommonUtils.isEmptyObject(dto.kko_img_cd)){
-                                tblmiContLstdto.msg_tp = "DMCH204"
-                            }else{
-                                val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(dto.kko_img_cd!!))
-                                if(imgDto.ch_tp == "IMGTP11"){
-                                    tblmiContLstdto.msg_tp = "DMCH218"
-                                } else {
-                                    tblmiContLstdto.msg_tp = "DMCH217"
-                                }
-                            }
-                        }
-                    }
-                    // 카카오 이미지 처리
-                    if (CommonUtils.isEmptyObject(contentListCreatedto.kko_img_cd)) {
-                        tblmiContLstdto.kko_img_cd = null
-                    } else {
-                        tblmiContLstdto.kko_img_cd = contentListCreatedto.kko_img_cd
-                    }
-
-                    tblmiContLstdto.cont_body = contentListCreatedto.kakao_body
-                    tblmiContLstdto.kko_img_url = contentListCreatedto.kko_img_url
-                    tblmiContLstdto.kko_btn_nm = contentListCreatedto.kko_btn_nm
-                    tblmiContLstdto.kko_btn_url = contentListCreatedto.kko_btn_url
-                    tblmiContLstdto.kko_btn_urlPc = contentListCreatedto.kko_btn_urlPc
-                    tblmiContLstdto.kko_btn_nm2 = contentListCreatedto.kko_btn_nm2
-                    tblmiContLstdto.kko_btn_url2 = contentListCreatedto.kko_btn_url2
-                    tblmiContLstdto.kko_btn_urlPc2 = contentListCreatedto.kko_btn_urlPc2
-                    tblmiContLstdto.kko_btn_nm3 = contentListCreatedto.kko_btn_nm3
-                    tblmiContLstdto.kko_btn_url3 = contentListCreatedto.kko_btn_url3
-                    tblmiContLstdto.kko_btn_urlPc3 = contentListCreatedto.kko_btn_urlPc3
-                    tblmiContLstdto.kko_btn_nm4 = contentListCreatedto.kko_btn_nm4
-                    tblmiContLstdto.kko_btn_url4 = contentListCreatedto.kko_btn_url4
-                    tblmiContLstdto.kko_btn_urlPc4 = contentListCreatedto.kko_btn_urlPc4
-                    tblmiContLstdto.kko_btn_nm5 = contentListCreatedto.kko_btn_nm5
-                    tblmiContLstdto.kko_btn_url5 = contentListCreatedto.kko_btn_url5
-                    tblmiContLstdto.kko_btn_urlPc5 = contentListCreatedto.kko_btn_urlPc5
-                    tblmiContLstdto.kko_video_url = contentListCreatedto.kko_video_url
-                    tblmiContLstdto.kko_thumbnail_img_cd = contentListCreatedto.kko_thumbnail_img_cd
-                }
-
-            }
-
-            // 인덱스 번호 1: SMS (문자 )
-            if (i == 1) {
-                if (formatList!!.contains("sms")) {
-                    tblmiContLstdto.use_yn = "Y"
-                } else {
-                    tblmiContLstdto.use_yn = "N"
-                }
-                tblmiContLstdto.cont_tp = "DMTP02"
-
-                // SMS 광고 , 안내 유형 선택
-                val smsOption = contentListCreatedto.sms_option!!.trim()
-
-                if (smsOption == "ad") {
-                    // 광고 처리
-                    tblmiContLstdto.send_tp = "SENDTP01"
-                } else if (smsOption == "guide") {
-                    // 안내 처리
-                    tblmiContLstdto.send_tp = "SENDTP02"
-                }
-
-                val smsMsgTp = contentListCreatedto.sms_msg_tp
-
-                // SMS 문자 타입 설정
-                if (smsMsgTp.equals("LMS")) {
-                    tblmiContLstdto.msg_tp = "DMCH202"
-                    tblmiContLstdto.img_cd_1 = null
-                } else if (smsMsgTp.equals("MMS")) {
-                    tblmiContLstdto.msg_tp = "DMCH203"
-                    tblmiContLstdto.img_cd_1 = contentListCreatedto.mds_img_cd
-                } else {
-                    tblmiContLstdto.msg_tp = "DMCH201"
-                    tblmiContLstdto.img_cd_1 = null
-                }
-
-                if (!contentListCreatedto.coupon_seq.isNullOrEmpty()) {
-                    tblmiContLstdto.coupon_seq = AES256.AES_Decode(contentListCreatedto.coupon_seq, GlobalValues.encKey)
-                }
-
-                // short url 사용 여부
-                tblmiContLstdto.short_url_yn = contentListCreatedto.short_url_yn
-                tblmiContLstdto.cont_body = contentListCreatedto.sms_body
-            }
-
-            // 인덱스 번호 2: RCS 분기 처리
-            if (i == 2) {
-                // RCS 포멧타입 변경에 따라 Key 값이 바뀔 수 있으므로 활성화 해준다
-                tblmiContLstdto.img_cd_1 = contentListCreatedto.rcs_img_cd_1
-                tblmiContLstdto.img_cd_2 = contentListCreatedto.rcs_img_cd_2
-                tblmiContLstdto.img_cd_3 = contentListCreatedto.rcs_img_cd_3
-                tblmiContLstdto.img_cd_4 = contentListCreatedto.rcs_img_cd_4
-                tblmiContLstdto.img_cd_5 = contentListCreatedto.rcs_img_cd_5
-                tblmiContLstdto.img_cd_6 = contentListCreatedto.rcs_img_cd_6
-
-                // USE_YN 처리
-                if (formatList!!.contains("rcs")) {
-                    tblmiContLstdto.use_yn = "Y"
-                } else {
-                    tblmiContLstdto.use_yn = "N"
-                }
-
-                tblmiContLstdto.cont_tp = "DMTP04"
-                tblmiContLstdto.rcs_footer = contentListCreatedto.rcs_footer
-
-                // rcs 광고 , 유형 선택
-                val rcsOption = contentListCreatedto.rcs_option!!.trim()
-
-                if (rcsOption == "ad") {
-                    // 광고 처리
-                    tblmiContLstdto.send_tp = "SENDTP01"
-                } else if (rcsOption == "guide") {
-                    // 안내 처리
-                    tblmiContLstdto.send_tp = "SENDTP02"
-                }
-
-                val rcsFormatType = contentListCreatedto.rcs_format_type!!.trim()   // rcs 포멧 타입
-                val rcsMsgType = contentListCreatedto.rcs_msg_tp!!.trim() // rcs 메세지 타입
-
-                when (rcsFormatType) {
-                    "text" -> {
-                        // RCS 텍스트 형의 경우
-                        if (rcsMsgType == "sms") {
-                            // SMS의 경우
-                            tblmiContLstdto.msg_tp = "DMCH205"
-
-                            // RCS SMS key 값 설정
-                            val cdDto = Tblmi_comm_cdDto()
-                            cdDto.grp_id = "RCS_SMS_MSG_ID"
-                            cdDto.cd_id = usrGrpCd
-
-                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                            if (codeDto != null) {
-                                tblmiContLstdto.key_id = codeDto.cd_val
-                            }
-
-                        } else if (rcsMsgType == "lms") {
-                            // LMS의 경우
-                            tblmiContLstdto.msg_tp = "DMCH206"
-
-                            // RCS LMS Key 값 설정
-                            val cdDto = Tblmi_comm_cdDto()
-                            cdDto.grp_id = "RCS_LMS_MSG_ID"
-                            cdDto.cd_id = usrGrpCd
-
-                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                            if (codeDto != null) {
-                                tblmiContLstdto.key_id = codeDto.cd_val
-                            }
-                        }
-                        tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
-                    }
-                    "vertical" -> {
-                        // RCS 세로형의 경우
-                        if (rcsMsgType == "tall") {
-                            // tall형 인 경우
-                            tblmiContLstdto.msg_tp = "DMCH207"
-
-                            // RCS 세로형 Tall Key 값 설정
-                            val cdDto = Tblmi_comm_cdDto()
-                            cdDto.grp_id = "RCS_L_TALL_MSG_ID"
-                            cdDto.cd_id = usrGrpCd
-
-                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                            if (codeDto != null) {
-                                tblmiContLstdto.key_id = codeDto.cd_val
-                            }
-
-                        } else if (rcsMsgType == "medium") {
-                            // medium인 경우
-                            tblmiContLstdto.msg_tp = "DMCH208"
-
-                            // RCS 세로형 Medium Key 값 설정
-                            val cdDto = Tblmi_comm_cdDto()
-                            cdDto.grp_id = "RCS_L_MD_MSG_ID"
-                            cdDto.cd_id = usrGrpCd
-
-                            val codeDto = systemDao.getCommCdKeyValueNull(cdDto)
-                            if (codeDto != null) {
-                                tblmiContLstdto.key_id = codeDto.cd_val
-                            }
-                        }
-
-                        // Json 바디 형태로 저장
-                        val jsonBody = JSONObject()
-                        jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                        jsonBody["description"] = contentListCreatedto.rcs_body
-                        tblmiContLstdto.cont_body = jsonBody.toString()
-                        //.replace("\\r\\n", "\\\\r\\\\n")
-                        tblmiContLstdto.img_cd_1 = contentListCreatedto.verticalImg
-
-                    }
-                    "slide" -> {
-                        // 슬라이드 형의 경우 타입 설정
-                        if (rcsMsgType == "small") {
-                            tblmiContLstdto.msg_tp = "DMCH211"
-                        } else if (rcsMsgType.equals("medium")) {
-                            tblmiContLstdto.msg_tp = "DMCH212"
-                        }
-                        // RCS 슬라이드 관련 INSERT 처리
-                        rcsSlideSetting(contentListCreatedto, tblmiContLstdto)
-                    }
-                    else -> {
-                        // 에러 발생
-                        logger.error("RCS TYPE 에러 발생")
-                    }
-                }
-
-                // RCS 버튼 체크 기능 개발
-                if (rcsFormatType == "slide") {
-                    // Slide 여러개 Button 처리
-                    rcsButtonMakeJsonStringSlide(contentListCreatedto, tblmiContLstdto)
-                } else {
-                    // Button 처리
-                    //logger.error("rcs button 수정 json");
-                    rcsButtonMakeJsonString(contentListCreatedto, tblmiContLstdto)
-                }
-
+                0 -> processKakao(createDto, tblmiContLstdto, userInfo, ReturnDto())
+                1 -> processSms(createDto, tblmiContLstdto)
+                2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
             }
             contentDao.updateMobileContent(tblmiContLstdto)
-
-            val lastSeq = tblmiContLstdto.seq
-            /**
-             *  URL 저장하기 로직
-             *  카카오, 모바일 같은 경우 알맞게 저장된다
-             *  RCS의 경우
-             *      1) slide가 아닐때 버튼 순서대로 들어간다
-             *      2) slide형태는 최대 버튼 개수가 2개 이므로 2개씩 끊어서 판단한다
-             *      (ex : urlBtn3, urlBtn5 로 저장 되었다면 카드 2의 1번 버튼 ,카드 3의 1번 버튼에 저장됨 )
-             */
-
-            if (i == 0) {
-                //기존 링크 삭제
-                val dd = Tblmi_cont_url_lstDto()
-                dd.cont_lst_cd = lastSeq!!
-                dd.url_id = "kko"
-                contentDao.delTblmiContUrlLst(dd)
-
-                // 카카오 url 링크 저장
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_img_url)) {
-                    insertContentUrl("img", contentListCreatedto.kko_img_url!!, "kkoImg001", lastSeq!!)
-                }
-                // btn 처리
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url)) {
-                    insertContentUrl("btn", contentListCreatedto.kko_btn_url!!, "kkoBtn001", lastSeq!!)
-                    insertContentUrl("btn", dto.kko_btn_urlPc!!, "kkoBtnPc001", lastSeq)
-                }
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url2)) {
-                    insertContentUrl("btn", contentListCreatedto.kko_btn_url2!!, "kkoBtn002", lastSeq!!)
-                    insertContentUrl("btn", dto.kko_btn_urlPc2!!, "kkoBtnPc002", lastSeq)
-                }
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url3)) {
-                    insertContentUrl("btn", contentListCreatedto.kko_btn_url3!!, "kkoBtn003", lastSeq!!)
-                    insertContentUrl("btn", dto.kko_btn_urlPc3!!, "kkoBtnPc003", lastSeq)
-                }
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url4)) {
-                    insertContentUrl("btn", contentListCreatedto.kko_btn_url4!!, "kkoBtn004", lastSeq!!)
-                    insertContentUrl("btn", dto.kko_btn_urlPc4!!, "kkoBtnPc004", lastSeq)
-                }
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.kko_btn_url5)) {
-                    insertContentUrl("btn", contentListCreatedto.kko_btn_url5!!, "kkoBtn005", lastSeq!!)
-                    insertContentUrl("btn", dto.kko_btn_urlPc5!!, "kkoBtnPc005", lastSeq)
-                }
-                // 카카오 본문 a 링크 저장 테스트
-                val urlKakaoBody = contentListCreatedto.kakao_body
-                if (urlKakaoBody?.contains("{{") == true) {
-                    //logger.error("contain url kakao_body : " + url_kakao_body)
-                    val regex = "\\{\\{[^{]+}}"
-                    val p = Pattern.compile(regex)
-                    val matcher = p.matcher(urlKakaoBody)
-
-                    var start = 0
-                    var chk = true
-                    var idx = 0
-
-                    while (chk) {
-                        if (matcher.find(start)) {
-                            start = matcher.start() + matcher.group().length
-                            val url = matcher.group()
-                                .replace("{{", "")
-                                .replace("}}", "")
-                            if (url.contains("http") || url.contains("https")) {
-                                idx++
-                                // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
-                                //logger.error("parsing url : " + url)
-                                val contUrlDto = Tblmi_cont_url_lstDto()
-                                contUrlDto.url_tag = "a"
-                                contUrlDto.url = url
-                                if (idx >= 10) {
-                                    contUrlDto.url_id = "kkoTrk0$idx"
-                                } else {
-                                    contUrlDto.url_id = "kkoTrk00$idx"
-                                }
-                                contUrlDto.cont_lst_cd = lastSeq
-                                contentDao.insertContentUrl(contUrlDto)
-                            }
-                        } else {
-                            chk = false
-                        }
-                    }
-
-                }
-            }
-            if (i == 1) {
-                //기존 링크 삭제
-                val dd = Tblmi_cont_url_lstDto()
-                dd.cont_lst_cd = lastSeq!!
-                dd.url_id = "mms"
-                contentDao.delTblmiContUrlLst(dd)
-                // 모바일 url 링크 저장
-                if (!CommonUtils.isEmptyObject(contentListCreatedto.mms_imgurl)) {
-                    insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq)
-                }
-
-                val urlSmsBody = contentListCreatedto.sms_body
-                if (urlSmsBody?.contains("{{") == true) {
-                    val regex = "\\{\\{[^{]+}}"
-                    val p = Pattern.compile(regex)
-                    val matcher = p.matcher(urlSmsBody)
-
-                    var start = 0
-                    var chk = true
-                    var idx = 0
-
-                    while (chk) {
-                        if (matcher.find(start)) {
-                            start = matcher.start() + matcher.group().length
-                            val url = matcher.group()
-                                .replace("{{", "")
-                                .replace("}}", "")
-                            if (url.contains("http") || url.contains("https")) {
-                                idx++
-                                // {{ }} 규칙에 맞는 형태이며, http, https 를 포함하고 있다면 URL을 저장한다
-                                //logger.error("parsing url : " + url)
-                                val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
-                                contUrlDto.url_tag = "a"
-                                contUrlDto.url = url
-                                if (idx >= 10) {
-                                    contUrlDto.url_id = "smsTrk0$idx"
-                                } else {
-                                    contUrlDto.url_id = "smsTrk00$idx"
-                                }
-                                contUrlDto.cont_lst_cd = lastSeq
-                                contentDao.insertContentUrl(contUrlDto)
-                            }
-                        } else {
-                            chk = false
-                        }
-                    }
-
-                }
-            }
-            if (i == 2) {
-                val urlLen = contentListCreatedto.url_value?.size   // 버튼 창이 클릭되면 hidden 값으로 idx 맞게 들어온다
-
-                if (urlLen != null) {
-                    // 버튼이 한 개라도 입력될 경우 URL을 등록한다 ( 버튼이 한 개라도 존재시 빈 값으로 넘어온다)
-                    for (j in 0 until urlLen) {
-                        val urlValue = contentListCreatedto.url_value?.get(j)?.trim()
-                        val fallbackUrlPosition = contentListCreatedto.fallback_url_04?.get(j)?.trim()
-                        val fallbackUrlQuery = contentListCreatedto.fallback_url_05?.get(j)?.trim()
-
-                        if (!CommonUtils.isEmptyObject(urlValue)) {
-                            insertContentUrl("btn", urlValue!!, "urlBtn" + (j + 1), lastSeq!!)
-                        }
-
-                        if (!CommonUtils.isEmptyObject(fallbackUrlPosition)) {
-                            insertContentUrl("btn", fallbackUrlPosition!!, "fallPosiBtn" + (j + 1), lastSeq!!)
-                        }
-
-                        if (!CommonUtils.isEmptyObject(fallbackUrlQuery)) {
-                            insertContentUrl("btn", fallbackUrlQuery!!, "fallQueryBtn" + (j + 1), lastSeq!!)
-                        }
-                    }
-                }
-            }
+            contentDao.delTblmiContUrlLst(Tblmi_cont_url_lstDto().apply {
+                cont_lst_cd = tblmiContLstdto.seq!!
+                url_id = if (i == 0) "kko" else "mms"
+            })
+            saveUrls(i, createDto, tblmiContLstdto.seq!!)
         }
-        val re = ReturnDto()
-        re.status = true
-        return re
+        return ReturnDto(true)
     }
 
     /**
@@ -2809,4 +1846,247 @@ class SalesforceServiceImpl : SalesforceService {
     private fun insertContentUrl(urlTag: String, url: String, urlId: String, contLstCd: Int) {
         contentDao.insertContentUrl(Tblmi_cont_url_lstDto(urlTag, url, urlId, contLstCd))
     }
+
+    private fun processKakao(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, re: ReturnDto): ReturnDto? {
+        listDto.use_yn = if (dto.formatType!!.contains("kakao")) "Y" else "N"
+        listDto.send_tp = if (dto.kko_option == "ad") "SENDTP01" else "SENDTP02"
+
+        if ("kko_at" == dto.kko_format_type) {
+            val atDto = AtTmpl_searchDto(dto.key_id, dto.tmpl_nm, "Y").apply {
+                usr_grp_cd = dto.cont_grp_cd
+                kep_status = "O"
+            }
+            kkoAtTmplDao.selTmplBytmplDto(atDto).let { result ->
+                listDto.apply {
+                    key_id = result.tmpl_cd
+                    cont_tp = "DMTP05"
+                    msg_tp = if (result.tmpl_empsize_tp == "IMAGE") "DMCH219" else "DMCH216"
+                    cont_body = result.tmpl_cont
+                    kko_img_cd = result.img_seq
+                    kko_img_url = result.kko_img_url
+                    kko_title = result.tmpl_tit
+                    kko_header = result.tmpl_header
+                    kko_msg_tp = if (result.tmpl_empsize_tp == "IMAGE") "AI" else "AT"
+
+                    val g = GsonBuilder().create()
+                    val obj = JsonObject().apply {
+                        add("button", g.fromJson(result.button_json, JsonArray::class.java))
+                        add("quick_reply", g.fromJson(result.quick_repl_json, JsonArray::class.java))
+                        add("item_highlight", g.fromJson(result.item_highlight_json, JsonObject::class.java))
+                        add("item", g.fromJson(result.item_json, JsonObject::class.java))
+                    }
+                    kko_btn_obj = g.toJson(obj)
+                }
+            }
+        } else {
+            listDto.cont_tp = "DMTP03"
+            val kkoDto = SetLst_searchDto("CH02", "DMTP03", "Y", userInfo.usr_grp_cd).apply { list_val = dto.key_id }
+            contentDao.selectSenderList(kkoDto).firstOrNull()?.let { listDto.key_id = it.list_val }
+
+            when (dto.kko_msg_tp) {
+                "1" -> {
+                    if (!validateKakaoList(dto, re)) return re
+                    listDto.msg_tp = "DMCH220"
+                    listDto.kko_item_json = createKakaoItemJson(dto)
+                    listDto.kko_header = listDto.cont_sub?.let { if (it.length > 20) it.substring(0, 20) else it }
+                }
+
+                "2" -> listDto.msg_tp = "DMCH221"
+                "3" -> listDto.msg_tp = "DMCH222"
+                "4" -> listDto.msg_tp = "DMCH223"
+                else -> {
+                    if (CommonUtils.isEmptyObject(dto.kko_img_cd)) listDto.msg_tp = "DMCH204"
+                    else {
+                        val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(dto.kko_img_cd!!))
+                        listDto.msg_tp = if (imgDto?.ch_tp == "IMGTP11") "DMCH218" else "DMCH217"
+                    }
+                }
+            }
+            listDto.apply {
+                kko_img_cd = dto.kko_img_cd
+                cont_body = dto.kakao_body
+                kko_img_url = dto.kko_img_url
+                kko_btn_nm = dto.kko_btn_nm
+                kko_btn_url = dto.kko_btn_url
+                kko_btn_urlPc = dto.kko_btn_urlPc
+                kko_btn_nm2 = dto.kko_btn_nm2
+                kko_btn_url2 = dto.kko_btn_url2
+                kko_btn_urlPc2 = dto.kko_btn_urlPc2
+                kko_btn_nm3 = dto.kko_btn_nm3
+                kko_btn_url3 = dto.kko_btn_url3
+                kko_btn_urlPc3 = dto.kko_btn_urlPc3
+                kko_btn_nm4 = dto.kko_btn_nm4
+                kko_btn_url4 = dto.kko_btn_url4
+                kko_btn_urlPc4 = dto.kko_btn_urlPc4
+                kko_btn_nm5 = dto.kko_btn_nm5
+                kko_btn_url5 = dto.kko_btn_url5
+                kko_btn_urlPc5 = dto.kko_btn_urlPc5
+                kko_video_url = dto.kko_video_url
+                kko_thumbnail_img_cd = dto.kko_thumbnail_img_cd
+            }
+        }
+        return null
+    }
+
+    private fun validateKakaoList(dto: Content_list_CreateDto, re: ReturnDto): Boolean {
+        val requiredMap = linkedMapOf(
+            "리스트 1 항목명" to dto.kkoItemLst1,
+            "리스트 2 항목명" to dto.kkoItemLst2,
+            "리스트 3 항목명" to dto.kkoItemLst3,
+            "리스트 1 이미지" to dto.kakao_item_img_cd_1,
+            "리스트 2 이미지" to dto.kakao_item_img_cd_2,
+            "리스트 3 이미지" to dto.kakao_item_img_cd_3,
+            "리스트 1 PC URL" to dto.kkoItemUrlLstPc1,
+            "리스트 2 PC URL" to dto.kkoItemUrlLstPc2,
+            "리스트 3 PC URL" to dto.kkoItemUrlLstPc3,
+            "리스트 1 모바일 URL" to dto.kkoItemUrlLstMo1,
+            "리스트 2 모바일 URL" to dto.kkoItemUrlLstMo2,
+            "리스트 3 모바일 URL" to dto.kkoItemUrlLstMo3
+        )
+        for ((label, value) in requiredMap) {
+            if (CommonUtils.isEmptyObject(value)) {
+                re.status = false; re.errMsg = "$label 이(가) 누락되었습니다."; return false
+            }
+        }
+        val group4 = listOf(dto.kkoItemLst4, dto.kakao_item_img_cd_4, dto.kkoItemUrlLstPc4, dto.kkoItemUrlLstMo4)
+        if (group4.any { !CommonUtils.isEmptyObject(it) } && !group4.all { !CommonUtils.isEmptyObject(it) }) {
+            re.status = false; re.errMsg = "리스트 4번 항목은 하나라도 입력 시 모든 값이 필수 입니다."; return false
+        }
+        return true
+    }
+
+    private fun createKakaoItemJson(dto: Content_list_CreateDto): String {
+        val hasAllGroup4 = listOf(dto.kkoItemLst4, dto.kakao_item_img_cd_4, dto.kkoItemUrlLstPc4, dto.kkoItemUrlLstMo4).all { !CommonUtils.isEmptyObject(it) }
+        val itemLst = arrayListOf(
+            ItemInfoDto(dto.kkoItemLst1!!, dto.kko_view_item_img_url_1!!, dto.kkoItemUrlLstMo1!!, dto.kkoItemUrlLstPc1!!),
+            ItemInfoDto(dto.kkoItemLst2!!, dto.kko_view_item_img_url_2!!, dto.kkoItemUrlLstMo2!!, dto.kkoItemUrlLstPc2!!),
+            ItemInfoDto(dto.kkoItemLst3!!, dto.kko_view_item_img_url_3!!, dto.kkoItemUrlLstMo3!!, dto.kkoItemUrlLstPc3!!)
+        ).apply {
+            if (hasAllGroup4) add(
+                ItemInfoDto(dto.kkoItemLst4!!, dto.kko_view_item_img_url_4!!, dto.kkoItemUrlLstMo4!!, dto.kkoItemUrlLstPc4!!)
+            )
+        }
+        return GsonBuilder().create().toJson(itemLst)
+    }
+
+    private fun processSms(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto) {
+        listDto.use_yn = if (dto.formatType!!.contains("sms")) "Y" else "N"
+        listDto.cont_tp = "DMTP02"
+        listDto.send_tp = if (dto.sms_option == "ad") "SENDTP01" else "SENDTP02"
+        listDto.msg_tp = when (dto.sms_msg_tp) {
+            "LMS" -> "DMCH202"
+            "MMS" -> {
+                listDto.img_cd_1 = dto.mds_img_cd
+                "DMCH203"
+            }
+            else -> "DMCH201"
+        }
+        if (!dto.coupon_seq.isNullOrEmpty()) {
+            listDto.coupon_seq = AES256.AES_Decode(dto.coupon_seq, GlobalValues.encKey)
+        }
+        listDto.short_url_yn = dto.short_url_yn
+        listDto.cont_body = dto.sms_body
+    }
+
+    private fun processRcs(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, i: Int) {
+        listDto.use_yn = if (dto.formatType!!.contains("rcs")) "Y" else "N"
+        listDto.cont_tp = "DMTP04"
+        listDto.rcs_footer = dto.rcs_footer
+        listDto.send_tp = if (dto.rcs_option == "ad") "SENDTP01" else "SENDTP02"
+
+        listDto.img_cd_1 = dto.rcs_img_cd_1
+        listDto.img_cd_2 = dto.rcs_img_cd_2
+        listDto.img_cd_3 = dto.rcs_img_cd_3
+        listDto.img_cd_4 = dto.rcs_img_cd_4
+        listDto.img_cd_5 = dto.rcs_img_cd_5
+        listDto.img_cd_6 = dto.rcs_img_cd_6
+
+        val rcsFormatType = dto.rcs_format_type!!.trim()
+        val rcsMsgType = dto.rcs_msg_tp!!.trim()
+
+        when (rcsFormatType) {
+            "text" -> {
+                listDto.msg_tp = if (rcsMsgType == "sms") "DMCH205" else "DMCH206"
+                val grpId = if (rcsMsgType == "sms") "RCS_SMS_MSG_ID" else "RCS_LMS_MSG_ID"
+                systemDao.getCommCdKeyValueNull(Tblmi_comm_cdDto(grpId, userInfo.usr_grp_cd!!))?.let { listDto.key_id = it.cd_val }
+                listDto.cont_body = dto.rcs_body
+            }
+            "vertical" -> {
+                listDto.msg_tp = if (rcsMsgType == "tall") "DMCH207" else "DMCH208"
+                val grpId = if (rcsMsgType == "tall") "RCS_L_TALL_MSG_ID" else "RCS_L_MD_MSG_ID"
+                systemDao.getCommCdKeyValueNull(Tblmi_comm_cdDto(grpId, userInfo.usr_grp_cd!!))?.let { listDto.key_id = it.cd_val }
+
+                listDto.cont_body = JSONObject().apply {
+                    put("title", dto.cont_sub_list?.get(i))
+                    put("description", dto.rcs_body)
+                }.toString()
+                listDto.img_cd_1 = dto.verticalImg
+            }
+            "slide" -> {
+                listDto.msg_tp = if (rcsMsgType == "small") "DMCH211" else "DMCH212"
+                rcsSlideSetting(dto, listDto)
+            }
+        }
+        if (rcsFormatType == "slide") rcsButtonMakeJsonStringSlide(dto, listDto)
+        else rcsButtonMakeJsonString(dto, listDto)
+    }
+
+    private fun saveUrls(i: Int, dto: Content_list_CreateDto, listSeq: Int) {
+        when (i) {
+            0 -> {
+                if (!dto.kko_img_url.isNullOrEmpty()) insertContentUrl("img", dto.kko_img_url!!, "kkoImg001", listSeq)
+                val btnPairs = listOf(
+                    dto.kko_btn_url to dto.kko_btn_urlPc,
+                    dto.kko_btn_url2 to dto.kko_btn_urlPc2,
+                    dto.kko_btn_url3 to dto.kko_btn_urlPc3,
+                    dto.kko_btn_url4 to dto.kko_btn_urlPc4,
+                    dto.kko_btn_url5 to dto.kko_btn_urlPc5
+                )
+                btnPairs.forEachIndexed { idx, pair ->
+                    if (!pair.first.isNullOrEmpty()) {
+                        insertContentUrl("btn", pair.first!!, "kkoBtn00${idx + 1}", listSeq)
+                        insertContentUrl("btn", pair.second!!, "kkoBtnPc00${idx + 1}", listSeq)
+                    }
+                }
+                parseAndInsertBodyUrls(dto.kakao_body, "kkoTrk", listSeq)
+            }
+
+            1 -> {
+                if (!dto.mms_imgurl.isNullOrEmpty()) insertContentUrl("a", dto.mms_imgurl!!, "mmsImg001", listSeq)
+                parseAndInsertBodyUrls(dto.sms_body, "smsTrk", listSeq)
+            }
+
+            2 -> {
+                dto.url_value?.forEachIndexed { j, url ->
+                    if (!url.isNullOrEmpty()) insertContentUrl("btn", url, "urlBtn${j + 1}", listSeq)
+                    dto.fallback_url_04?.getOrNull(j)?.let { if (it.isNotEmpty()) insertContentUrl("btn", it, "fallPosiBtn${j + 1}", listSeq) }
+                    dto.fallback_url_05?.getOrNull(j)?.let { if (it.isNotEmpty()) insertContentUrl("btn", it, "fallQueryBtn${j + 1}", listSeq) }
+                }
+            }
+        }
+    }
+    private fun parseAndInsertBodyUrls(body: String?, prefix: String, listSeq: Int) {
+        if (body?.contains("{{") != true) return
+        val matcher = Pattern.compile("\\{\\{[^{]+}}").matcher(body)
+        var idx = 0
+        while (matcher.find()) {
+            val url = matcher.group().replace("{{", "").replace("}}", "")
+            if (url.contains("http")) {
+                idx++
+                val urlId = if (idx >= 10) "${prefix}0$idx" else "${prefix}00$idx"
+                contentDao.insertContentUrl(Tblmi_cont_url_lstDto().apply {
+                    url_tag = "a"; this.url = url; this.url_id = urlId; cont_lst_cd = listSeq
+                })
+            }
+        }
+    }
+
+    private fun handleManualRollback(mstSeq: Int, e: Exception) {
+        logger.error("insert content error. MstSeq: $mstSeq", e)
+        val lstSeqList = contentDao.selectLstSeq(Tblmi_cont_lstDto().apply { cont_cd = mstSeq })
+        lstSeqList.forEach { contentDao.deleteRealContUrl(Tblmi_cont_url_lstDto(it.seq)) }
+        contentDao.deleteRealContMst(Tblmi_cont_mstDto(mstSeq))
+        contentDao.deleteRealContLst(Tblmi_cont_lstDto().apply { cont_cd = mstSeq })
+    }
+
 }

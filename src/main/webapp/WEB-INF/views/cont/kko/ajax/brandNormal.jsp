@@ -6,10 +6,9 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
-<div id="bodyArea">
    <div class="block">
        <div class="row">
            <div class="th">이미지 선택</div>
@@ -105,4 +104,3 @@
    <div class="flex_box" style="justify-content: right;">
        <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
    </div>
-</div>

@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <script src="/js/jquery-ui-timepicker.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js?v=0.17"></script>
 <div class="wrap mcdonald">

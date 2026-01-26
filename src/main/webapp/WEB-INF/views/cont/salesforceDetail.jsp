@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="strping" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil" %>
 <!-- smsCreste.js -->
 <script src="/js/smsCreate.js"></script>
@@ -37,7 +37,7 @@
         <!-- row 영역 끝 -->
         <!-- section 영역 시작 -->
         <div class="section">
-            <form:form id="form" action="#" method="post">
+            <form:form id="form" action="#" method="post" onsubmit="return false;">
             <input type="hidden" id="seq" name="mst_seq" value="${list[0].seq}"/>
             <input type="hidden" id="usr_grp_cd" name="usr_grp_cd" value="${list[0].cont_grp_cd}"/>
             <input type="hidden" id="cont_grp_cd" name="cont_grp_cd" value="${list[0].cont_grp_cd}"/>
@@ -268,306 +268,292 @@
                                         </div>
                                     </div>
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
-                                        <div class="block">
-                                            <c:choose>
-                                                <c:when test="${list[0].msg_tp eq 'DMCH220'}">
-                                                    <%--
-                                                    <div class="row">
-                                                       <div class="th">동영상 URL</div>
-                                                       <div class="td">
-                                                           <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다." value="${list[0].kko_video_url}" />
-                                                       </div>
-                                                   </div>
-                                                   <div class="row">
-                                                       <div class="th top-border">썸네일</div>
-                                                       <div class="td top-border">
-                                                           <div class="delete_img" data="kakao">
-                                                               <img src="/image/btn_delete1.png" alt="삭제">
+                                        <c:choose>
+                                            <c:when test="${list[0].msg_tp eq 'DMCH220'}">
+                                                <jsp:include page="kko/ajax/brandWideLst.jsp" />
+                                            </c:when>
+                                            <c:otherwise>
+                                            <div class="block">
+                                                <c:choose>
+                                                    <c:when test="${list[0].msg_tp eq 'DMCH223'}">
+                                                        <div class="row">
+                                                           <div class="th">동영상 URL</div>
+                                                           <div class="td">
+                                                               <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다." value="${list[0].kko_video_url}" />
                                                            </div>
-                                                           <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_nm : ''}" readonly/>
-                                                           <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoVideoImg')">선택</span>
-                                                           <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_cd: ''}">
                                                        </div>
-                                                   </div>
-                                                    --%>
-                                                </c:when>
-                                                <c:when test="${list[0].msg_tp eq 'DMCH223'}">
-                                                    <div class="row">
-                                                       <div class="th">동영상 URL</div>
-                                                       <div class="td">
-                                                           <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다." value="${list[0].kko_video_url}" />
-                                                       </div>
-                                                   </div>
-                                                   <div class="row">
-                                                       <div class="th top-border">썸네일</div>
-                                                       <div class="td top-border">
-                                                           <div class="delete_img" data="kakao">
-                                                               <img src="/image/btn_delete1.png" alt="삭제">
+                                                       <div class="row">
+                                                           <div class="th top-border">썸네일</div>
+                                                           <div class="td top-border">
+                                                               <div class="delete_img" data="kakao">
+                                                                   <img src="/image/btn_delete1.png" alt="삭제">
+                                                               </div>
+                                                               <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_nm : ''}" readonly/>
+                                                               <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoVideoImg')">선택</span>
+                                                               <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_cd: ''}">
                                                            </div>
-                                                           <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_nm : ''}" readonly/>
-                                                           <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoVideoImg')">선택</span>
-                                                           <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_cd: ''}">
                                                        </div>
-                                                   </div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="row">
-                                                        <div class="th">이미지 선택</div>
-                                                        <div class="td">
-                                                            <div class="delete_img" data="kakao">
-                                                                <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
-                                                            </div>
-                                                            <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>
-                                                            <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
-                                                            <!-- 카카오 이미지 저장 넘버 -->
-                                                            <input type="hidden" name="kko_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_img_cd: ''}"/>
-                                                            <!-- 프리뷰를 위한 이미지 URL -->
-                                                            <input type="hidden" name="kko_view_img_url"
-                                                            <c:if test="${cont_tp eq 'DMTP03'  &&list[0].kko_img_lst ne null}">
-                                                                   value="${filePath}${list[0].kko_img_lst}"
-                                                            </c:if>
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="th top-border">이미지 링크 주소</div>
-                                                        <div class="td top-border">
-                                                            <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${cont_tp eq 'DMTP03'? list[0].kko_img_url : ''}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row flex_row">
-                                                        <div class="th top-border">이미지 미리보기</div>
-                                                        <div class="td top-border">
-                                                            <div class="col_img" id="js-kakao-img">
-                                                                <!-- 이미지는 있고, 이미지 링크는 없을때 -->
-                                                                <c:if test="${cont_tp eq 'DMTP03'}">
-                                                                    <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                                        <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
-                                                                            <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
-                                                                        </a>
-                                                                    </c:if>
-                                                                    <!-- 이미지는 있고, 이미지 링크도 있을때 -->
-                                                                    <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                                        <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
-                                                                            <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
-                                                                        </a>
-                                                                    </c:if>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="row">
+                                                            <div class="th">이미지 선택</div>
+                                                            <div class="td">
+                                                                <div class="delete_img" data="kakao">
+                                                                    <img src="${baseURL}/image/btn_delete1.png" alt="삭제" onerror="this.src = '/image/btn_delete1.png'">
+                                                                </div>
+                                                                <input type="text" class="txt_input en_font" name="" id="kakaoImage" value="${cont_tp eq "DMTP03" ? list[0].kko_img_nm : ''}" readonly/>
+                                                                <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
+                                                                <!-- 카카오 이미지 저장 넘버 -->
+                                                                <input type="hidden" name="kko_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_img_cd: ''}"/>
+                                                                <!-- 프리뷰를 위한 이미지 URL -->
+                                                                <input type="hidden" name="kko_view_img_url"
+                                                                <c:if test="${cont_tp eq 'DMTP03'  &&list[0].kko_img_lst ne null}">
+                                                                       value="${filePath}${list[0].kko_img_lst}"
                                                                 </c:if>
+                                                                >
                                                             </div>
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="th top-border">이미지 링크 주소</div>
+                                                            <div class="td top-border">
+                                                                <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_img_url" onblur="smsCreate.imageLinkAdd(this);" value="${cont_tp eq 'DMTP03'? list[0].kko_img_url : ''}" placehorder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row flex_row">
+                                                            <div class="th top-border">이미지 미리보기</div>
+                                                            <div class="td top-border">
+                                                                <div class="col_img" id="js-kakao-img">
+                                                                    <!-- 이미지는 있고, 이미지 링크는 없을때 -->
+                                                                    <c:if test="${cont_tp eq 'DMTP03'}">
+                                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
+                                                                            <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
+                                                                                <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                                            </a>
+                                                                        </c:if>
+                                                                        <!-- 이미지는 있고, 이미지 링크도 있을때 -->
+                                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
+                                                                            <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
+                                                                                <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                                            </a>
+                                                                        </c:if>
+                                                                    </c:if>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                            <div class="block">
+                                                <div class="row flex_row">
+                                                    <div class="row flex_row input-img on">
+                                                        <div class="th bottom-border">개인화 변수</div>
+                                                        <div class="td bottom-border">
+                                                            <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
+                                                            <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
+                                                        </div>
                                                     </div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <div class="block">
-                                            <div class="row flex_row">
-                                                <div class="row flex_row input-img on">
-                                                    <div class="th bottom-border">개인화 변수</div>
+                                                </div>
+                                                <div class="row" style="height:150px;">
+                                                    <div class="th bottom-border">내용</div>
                                                     <div class="td bottom-border">
-                                                        <span style="font-size: 9px">※ 아래 박스에서 개인화 변수를 드래그한 후, 텍스트 상자에 넣거나 클릭하여 추가할 수 있습니다.</span>
-                                                        <div id="kakaoValue" style="width: 100%; max-height: 173px; overflow: auto; padding-top: 10px;"></div>
-                                                    </div>
+                                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea></div>
                                                 </div>
-                                            </div>
-                                            <div class="row" style="height:150px;">
-                                                <div class="th bottom-border">내용</div>
-                                                <div class="td bottom-border">
-                                                    <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevKkoTxt(this)">${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="th">수신거부 문구</div>
-                                                <div class="td">
-                                                    <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
-                                                        <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
-                                                            value="${cutil:numberToPhone(rejectText[0].list_val)}"
-                                                        </c:if>
-                                                        <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
-                                                            placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
-                                                        </c:if>
-                                                    />
-                                                    <div style="display: flex; width: 110px">
-                                                        <span class="btn_sm_line btn_inline" onclick="addRejectText('kko_ft')">사용</span>
-                                                        <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
-                                                    </div>
-                                                    <input type="hidden" name="sms_trackinglink"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="block">
-                                            <div class="row">
-                                                <div class="th">추적 링크 생성</div>
-                                                <div class="td">
-                                                    <input type="text" class="txt_input en_font" id="kakaoTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
-                                                    <span class="btn_sm_line trackingLinkBtn">생성</span>
-                                                    <input type="hidden" name="kko_trackinglink"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
-                                            <div class="row flex_box double">
-                                                <div class="th" style="line-height: 72px;">버튼명</div>
-                                                <div class="td first-td right-border">
-                                                    <c:choose>
-                                                        <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </div>
-                                                <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
-                                                <div class="td flex_box" style="flex-direction: column;">
-                                                    <div class="row flex_box" style="width: 100%;">
-                                                        <div class="th">Pc 링크</div>
-                                                        <div class="td flex_box">
-                                                            <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}"
-                                                                <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                                    readonly
-                                                                </c:if>
-                                                            />
+                                                <div class="row">
+                                                    <div class="th">수신거부 문구</div>
+                                                    <div class="td">
+                                                        <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
+                                                            <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                                                                value="${cutil:numberToPhone(rejectText[0].list_val)}"
+                                                            </c:if>
+                                                            <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                                                                placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                                                            </c:if>
+                                                        />
+                                                        <div style="display: flex; width: 110px">
+                                                            <span class="btn_sm_line btn_inline" onclick="addRejectText('kko_ft')">사용</span>
+                                                            <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
                                                         </div>
+                                                        <input type="hidden" name="sms_trackinglink"/>
                                                     </div>
-                                                    <div class="row flex_box" style="width: 100%;">
-                                                        <div class="th">Mobile 링크</div>
-                                                        <div class="td flex_box">
-                                                            <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}"
-                                                                <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                                    readonly
-                                                                </c:if>
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                    <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                    <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                    <input type="button" class="btn_sm_line kakaoLinkBtn"
-                                                        <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
-                                                            value ="생성"
-                                                        </c:if>
-                                                        <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
-                                                            value="삭제"
-                                                        </c:if>
-                                                    />
                                                 </div>
                                             </div>
-                                            <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url2)}">
+                                            <div class="block">
+                                                <div class="row">
+                                                    <div class="th">추적 링크 생성</div>
+                                                    <div class="td">
+                                                        <input type="text" class="txt_input en_font" id="kakaoTracking" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                                                        <span class="btn_sm_line trackingLinkBtn">생성</span>
+                                                        <input type="hidden" name="kko_trackinglink"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
                                                 <div class="row flex_box double">
                                                     <div class="th" style="line-height: 72px;">버튼명</div>
                                                     <div class="td first-td right-border">
-                                                        <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm2}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                        <c:choose>
+                                                            <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                                <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </div>
                                                     <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
                                                     <div class="td flex_box" style="flex-direction: column;">
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Pc 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc2}" readonly/>
+                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}"
+                                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                                        readonly
+                                                                    </c:if>
+                                                                />
                                                             </div>
                                                         </div>
                                                         <div class="row flex_box" style="width: 100%;">
                                                             <div class="th">Mobile 링크</div>
                                                             <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url2}" readonly/>
+                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}"
+                                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                                        readonly
+                                                                    </c:if>
+                                                                />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="td flex_box" style="width: 273px; align-items: center;">
                                                         <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
                                                         <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                        <input type="button" class="btn_sm_line kakaoLinkBtn"
+                                                            <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
+                                                                value ="생성"
+                                                            </c:if>
+                                                            <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
+                                                                value="삭제"
+                                                            </c:if>
+                                                        />
                                                     </div>
                                                 </div>
-                                            </c:if>
-                                            <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url3)}">
-                                                <div class="row flex_box double">
-                                                    <div class="th" style="line-height: 72px;">버튼명</div>
-                                                    <div class="td first-td right-border">
-                                                        <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm3}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                    </div>
-                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
-                                                    <div class="td flex_box" style="flex-direction: column;">
-                                                        <div class="row flex_box" style="width: 100%;">
-                                                            <div class="th">Pc 링크</div>
-                                                            <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc3}" readonly/>
+                                                <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url2)}">
+                                                    <div class="row flex_box double">
+                                                        <div class="th" style="line-height: 72px;">버튼명</div>
+                                                        <div class="td first-td right-border">
+                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm2}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                        </div>
+                                                        <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                        <div class="td flex_box" style="flex-direction: column;">
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Pc 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc2}" readonly/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Mobile 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url2}" readonly/>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row flex_box" style="width: 100%;">
-                                                            <div class="th">Mobile 링크</div>
-                                                            <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url3}" readonly/>
-                                                            </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                         </div>
                                                     </div>
-                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                            <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url4)}">
-                                                <div class="row flex_box double">
-                                                    <div class="th" style="line-height: 72px;">버튼명</div>
-                                                    <div class="td first-td right-border">
-                                                        <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm4}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                    </div>
-                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
-                                                    <div class="td flex_box" style="flex-direction: column;">
-                                                        <div class="row flex_box" style="width: 100%;">
-                                                            <div class="th">Pc 링크</div>
-                                                            <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc4}" readonly/>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url3)}">
+                                                    <div class="row flex_box double">
+                                                        <div class="th" style="line-height: 72px;">버튼명</div>
+                                                        <div class="td first-td right-border">
+                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm3}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                        </div>
+                                                        <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                        <div class="td flex_box" style="flex-direction: column;">
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Pc 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc3}" readonly/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Mobile 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url3}" readonly/>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row flex_box" style="width: 100%;">
-                                                            <div class="th">Mobile 링크</div>
-                                                            <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url4}" readonly/>
-                                                            </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                         </div>
                                                     </div>
-                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                            <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url5)}">
-                                                <div class="row flex_box double">
-                                                    <div class="th" style="line-height: 72px;">버튼명</div>
-                                                    <div class="td first-td right-border">
-                                                        <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm5}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
-                                                    </div>
-                                                    <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
-                                                    <div class="td flex_box" style="flex-direction: column;">
-                                                        <div class="row flex_box" style="width: 100%;">
-                                                            <div class="th">Pc 링크</div>
-                                                            <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc5}" readonly/>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url4)}">
+                                                    <div class="row flex_box double">
+                                                        <div class="th" style="line-height: 72px;">버튼명</div>
+                                                        <div class="td first-td right-border">
+                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm4}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                        </div>
+                                                        <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                        <div class="td flex_box" style="flex-direction: column;">
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Pc 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc4}" readonly/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Mobile 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url4}" readonly/>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row flex_box" style="width: 100%;">
-                                                            <div class="th">Mobile 링크</div>
-                                                            <div class="td flex_box">
-                                                                <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url5}" readonly/>
-                                                            </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
                                                         </div>
                                                     </div>
-                                                    <div class="td flex_box" style="width: 273px; align-items: center;">
-                                                        <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                                                        <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url5)}">
+                                                    <div class="row flex_box double">
+                                                        <div class="th" style="line-height: 72px;">버튼명</div>
+                                                        <div class="td first-td right-border">
+                                                            <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" value="${list[0].kko_btn_nm5}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                        </div>
+                                                        <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                                                        <div class="td flex_box" style="flex-direction: column;">
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Pc 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc5}" readonly/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row flex_box" style="width: 100%;">
+                                                                <div class="th">Mobile 링크</div>
+                                                                <div class="td flex_box">
+                                                                    <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url5}" readonly/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="td flex_box" style="width: 273px; align-items: center;">
+                                                            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                                                            <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                        <div class="flex_box" style="justify-content: right;">
-                                            <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
-                                        </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="flex_box" style="justify-content: right;">
+                                                <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
+                                            </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                     <div class="input_area kko_area" id="kko_at" ${cont_tp eq "DMTP05"?'': 'hidden'}>
                                         <div class="block">
@@ -586,189 +572,255 @@
                                         </div>
                                     </div>
                                 </div>
-                                <c:if test="${cont_tp eq 'DMTP03'}">
-                                    <div class="viewer_area" id="kakao_ft_viewer" >
-                                        <div class="top">브랜드톡 미리보기</div>
-                                        <div class="inner">
-                                            <div class="row_body">
-                                                <div class="round_box">
-                                                    <div class="kakao_ft sms_img_box" id="prev_ft_img">
-                                                        <!-- 이미지는 있고, 이미지 링크는 없을때 -->
-                                                        <c:if test="${cont_tp eq 'DMTP03'}">
-                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
-                                                                <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
-                                                                </a>
-                                                            </c:if>
-                                                            <!-- 이미지는 있고, 이미지 링크도 있을때 -->
-                                                            <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
-                                                                <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
-                                                                    <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
-                                                                </a>
-                                                            </c:if>
+                                <div class="viewer_area" id="kakao_ft_viewer" <c:if test='${list[0].msg_tp eq "DMCH221" or list[0].msg_tp eq "DMCH222"}'>hidden</c:if>>
+                                    <div class="top">브랜드톡 미리보기</div>
+                                    <div class="inner">
+                                        <div class="row_body">
+                                            <div class="round_box">
+                                                <div class="kakao_ft sms_img_box" id="prev_ft_img">
+                                                    <!-- 이미지는 있고, 이미지 링크는 없을때 -->
+                                                    <c:if test="${cont_tp eq 'DMTP03'}">
+                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) == ''}">
+                                                            <a href="${list[0].kko_img_lst}" target="_blank" rel="noopener">
+                                                                <img src="${filePath}${list[0].kko_img_lst}"  onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                            </a>
                                                         </c:if>
-                                                    </div>
-                                                    <div class="kakao_ft" id="prev_ft_video">
-                                                        <c:if test='${list[0].msg_tp eq "DMCH223"}'>
-                                                            <c:set var="parts" value="${fn:split(list[0].kko_video_url, '/')}" />
+                                                        <!-- 이미지는 있고, 이미지 링크도 있을때 -->
+                                                        <c:if test="${fn:trim(list[0].kko_img_lst) != '' && fn:trim(list[0].kko_img_url) != ''}">
+                                                            <a href="${list[0].kko_img_url}" target="_blank" rel="noopener">
+                                                                <img src="${filePath}${list[0].kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                            </a>
+                                                        </c:if>
+                                                    </c:if>
+                                                </div>
+                                                <div class="kakao_ft" id="prev_ft_video">
+                                                    <c:if test='${list[0].msg_tp eq "DMCH223"}'>
+                                                       <c:set var="parts" value="${fn:split(list[0].kko_video_url, '/')}" />
                                                        <c:set var="videoId" value="${parts[fn:length(parts) - 1]}" />
                                                        <c:set var="convertedUrl" value="https://play-tv.kakao.com/embed/player/cliplink/${videoId}?service=player_share" />
                                                        <div class="">
                                                           <iframe src="${convertedUrl}" width="100%"></iframe>
                                                        </div>
-                                                        </c:if>
+                                                    </c:if>
+                                                </div>
+                                                <p class="kakao_txt" id="prev_ft_txt" <c:if test='${list[0].msg_tp eq "DMCH220"}'>style="display: none;"</c:if>>${cutil:replaceBr(list[0].cont_body)}</p>
+                                                <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                    <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url2))}">
+                                                    <a href="${list[0].kko_btn_url2}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm2}</a>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url3))}">
+                                                    <a href="${list[0].kko_btn_url3}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm3}</a>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url4))}">
+                                                    <a href="${list[0].kko_btn_url4}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm4}</a>
+                                                </c:if>
+                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url5))}">
+                                                    <a href="${list[0].kko_btn_url5}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm5}</a>
+                                                </c:if>
+                                                <div class="kakao_wide_lst" id="prev_ft_wide_lst" <c:if test='${list[0].msg_tp eq "DMCH220"}'>style="display: block"</c:if>>
+                                                    <strong class="kakao_wide_lst_strong">
+                                                        <span class="kakao_wide_lst_title" id="prev_ft_wide_lst_title">${fn:escapeXml(list[0].cont_sub)}</span>
+                                                    </strong>
+                                                    <div class="kakao_wide_lst_main_div">
+                                                        <ul class="kakao_wide_lst_ul">
+                                                            <li class="kakao_wide_lst_li_first">
+                                                                <div class="kakao_wide_lst_li_first_div">
+                                                                    <a href="${list[0].kkoItemUrlLstMo1}" target="_blank" class="kakao_wide_lst_li_first_a" id="prev_ft_wide_lst_img_url1">
+                                                                        <img id="prev_ft_wide_lst_img1" src="${list[0].kko_view_item_img_url_1}" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_first_p">
+                                                                    <span class="kakao_wide_lst_li_first_span" id="prev_ft_wide_lst_txt1" >${list[0].kkoItemLst1}</span>
+                                                                </p>
+                                                            </li>
+                                                            <li class="kakao_wide_lst_li">
+                                                                <div class="kakao_wide_lst_li_div">
+                                                                    <a href="${list[0].kkoItemUrlLstMo2}" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url2">
+                                                                        <img id="prev_ft_wide_lst_img2" src="${list[0].kko_view_item_img_url_2}" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_p">
+                                                                    <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt2">${list[0].kkoItemLst2}</span>
+                                                                </p>
+                                                            </li>
+                                                            <li class="kakao_wide_lst_li">
+                                                                <div class="kakao_wide_lst_li_div">
+                                                                    <a href="${list[0].kkoItemUrlLstMo3}" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url3">
+                                                                        <img id="prev_ft_wide_lst_img3" src="${list[0].kko_view_item_img_url_3}" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_p">
+                                                                    <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt3">${list[0].kkoItemLst3}</span>
+                                                                </p>
+                                                            </li>
+                                                            <li class="kakao_wide_lst_li">
+                                                                <div class="kakao_wide_lst_li_div">
+                                                                    <a href="${list[0].kkoItemUrlLstMo4}" target="_blank" class="kakao_wide_lst_li_a" id="prev_ft_wide_lst_img_url4">
+                                                                        <img id="prev_ft_wide_lst_img4" src="${list[0].kko_view_item_img_url_4}" alt="" role="presentation" style="min-height: 41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="kakao_wide_lst_li_p">
+                                                                    <span class="kakao_wide_lst_li_span" id="prev_ft_wide_lst_txt4">${list[0].kkoItemLst4}</span>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
                                                     </div>
-                                                    <p class="kakao_txt" id="prev_ft_txt">${cutil:replaceBr(list[0].cont_body)}</p>
-                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                        <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
-                                                    </c:if>
-                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url2))}">
-                                                        <a href="${list[0].kko_btn_url2}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm2}</a>
-                                                    </c:if>
-                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url3))}">
-                                                        <a href="${list[0].kko_btn_url3}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm3}</a>
-                                                    </c:if>
-                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url4))}">
-                                                        <a href="${list[0].kko_btn_url4}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm4}</a>
-                                                    </c:if>
-                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url5))}">
-                                                        <a href="${list[0].kko_btn_url5}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm5}</a>
-                                                    </c:if>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="byte">
-                                            <span class="en_font kakao_byte">0</span>
-                                            <span class="en_font">byte</span>(버튼제외)<br><br>
-                                            <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
-                                            <span class="en_font">※ 이미지 유형 최대 400자</span>
-                                        </div>
                                     </div>
-                                    <div class="viewer_area" id="kakao_at_viewer" hidden>
-                                        <div class="top">미리보기</div>
-                                        <div class="at_inner template_body">
-                                            <div class="text">
-                                                <div class="row_body">
-                                                    <div class="round_box">
-                                                        <div class="round_box head">
-                                                            <p>알림톡 도착</p>
-                                                        </div>
-                                                        <div class="at_tmpl_data">
-                                                        <div class="at_tmpl_data"></div>
-                                                        <input type="hidden" class="kakao_txt" name="kakao_body"
-                                                               value="">
-                                                        <a href="" class="sms_btn"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="byte">
+                                        <span class="en_font kakao_byte">0</span>
+                                        <span class="en_font">byte</span>(버튼제외)<br><br>
+                                        <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
+                                        <span class="en_font">※ 이미지 유형 최대 400자</span>
                                     </div>
-                                </c:if>
-                                <c:if test="${cont_tp eq 'DMTP05'}">
-                                    <div class="viewer_area" id="kakao_ft_viewer" hidden>
-                                        <div class="top">브랜드톡 미리보기</div>
-                                        <div class="inner">
+                                </div>
+                                <div class="viewer_area" id="kakao_at_viewer" <c:if test="${cont_tp ne 'DMTP05'}">hidden="hidden" </c:if>>
+                                    <div class="top">미리보기</div>
+                                    <div class="at_inner template_body">
+                                        <div class="text">
                                             <div class="row_body">
-                                                <div class="round_box">
-                                                    <div class="kakao_ft sms_img_box" id="prev_ft_img"></div>
-                                                    <p class="kakao_txt" id="prev_ft_txt"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="byte">
-                                            <span class="en_font kakao_byte">0</span><span class="en_font">byte</span>(버튼제외)
-                                        </div>
-                                    </div>
-                                    <div class="viewer_area" id="kakao_at_viewer">
-                                        <div class="top">미리보기</div>
-                                        <div class="at_inner template_body">
-                                            <div class="text">
-                                                <div class="row_body">
-                                                    <div class="round_box" >
-                                                        <div class="round_box head">
-                                                            <p>알림톡 도착</p>
-                                                        </div>
-                                                        <div class="at_tmpl_data">
-                                                            <!-- 이미지형  아이템리스트형 -->
-                                                            <c:set var="tmpl" value="${list[0]}"/>
-                                                            <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
-                                                                <c:if test="${!empty tmpl.kko_img_cd}">
-                                                                    <div class="kko_img_box">
-                                                                        <img src="${tmpl.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                <div class="round_box" >
+                                                    <div class="round_box head">
+                                                        <p>알림톡 도착</p>
+                                                    </div>
+                                                    <div class="at_tmpl_data">
+                                                        <!-- 이미지형  아이템리스트형 -->
+                                                        <c:set var="tmpl" value="${list[0]}"/>
+                                                        <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'  || tmpl.tmpl_empsize_tp eq 'IMAGE'}">
+                                                            <c:if test="${!empty tmpl.kko_img_cd}">
+                                                                <div class="kko_img_box">
+                                                                    <img src="${tmpl.kko_img_url}" style="max-height: 135px;" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                </div>
+                                                            </c:if>
+                                                        </c:if>
+                                                        <div class="at_msg_cont">
+                                                            <%--  강조유형 강조표기형 --%>
+                                                            <c:if test="${tmpl.tmpl_empsize_tp eq 'TEXT'}">
+                                                                <div class="tmpl_subtit">${tmpl.tmpl_subtit}</div>
+                                                                <div class="tmpl_tit">${tmpl.tmpl_tit}</div>
+                                                            </c:if>
+                                                                <%--  강조유형 아이템리스트형 --%>
+                                                            <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'}">
+                                                                <c:if test="${!empty tmpl.item_highlight_json}">
+                                                                    <c:set var="highlight" value="${tmpl.highlight_json}"/>
+                                                                    <div class="tmpl_header">${tmpl.tmpl_header}</div>
+                                                                    <div class="item_high_div">
+                                                                        <div class="tmpl_high">
+                                                                            <div>${highlight.title}</div>
+                                                                            <div class="tmpl_subtit">${highlight.description}</div>
+                                                                        </div>
+                                                                        <c:if test="${fn:contains(tmpl.item_highlight_json,'\"imageUrl\"')}">
+                                                                            <div class="right_img_box">
+                                                                                <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                                                            </div>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </c:if>
+                                                                <c:if test="${fn:contains(tmpl.item_json,'\"list\"') ||fn:contains(tmpl.item_json,'\"summary\"')}">
+                                                                    <div class="item_div">
+                                                                        <c:if test="${fn:contains(tmpl.item_json,'\"list\"')}">
+                                                                            <div class="item_table">
+                                                                                <c:forEach var="item" items="${tmpl.item_list_json.list}">
+                                                                                    <div>
+                                                                                        <span class="th">${item.title}</span>
+                                                                                        <span class="td">${item.description}</span>
+                                                                                    </div>
+                                                                                </c:forEach>
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${fn:contains(tmpl.item_json,'\"summary\"')}">
+                                                                            <div class="item_summary">
+                                                                                <span class="th">${tmpl.item_list_json.summary.title}</span>
+                                                                                <span class="td">${tmpl.item_list_json.summary.description}</span>
+                                                                            </div>
+                                                                        </c:if>
                                                                     </div>
                                                                 </c:if>
                                                             </c:if>
-                                                            <div class="at_msg_cont">
-                                                                    <%--  강조유형 강조표기형 --%>
-                                                                <c:if test="${tmpl.tmpl_empsize_tp eq 'TEXT'}">
-                                                                    <div class="tmpl_subtit">${tmpl.tmpl_subtit}</div>
-                                                                    <div class="tmpl_tit">${tmpl.tmpl_tit}</div>
-                                                                </c:if>
-                                                                    <%--  강조유형 아이템리스트형 --%>
-                                                                <c:if test="${tmpl.tmpl_empsize_tp eq 'ITEM_LIST'}">
-                                                                    <c:if test="${!empty tmpl.item_highlight_json}">
-                                                                        <c:set var="highlight" value="${tmpl.highlight_json}"/>
-                                                                        <div class="tmpl_header">${tmpl.tmpl_header}</div>
-                                                                        <div class="item_high_div">
-                                                                            <div class="tmpl_high">
-                                                                                <div>${highlight.title}</div>
-                                                                                <div class="tmpl_subtit">${highlight.description}</div>
-                                                                            </div>
-                                                                            <c:if test="${fn:contains(tmpl.item_highlight_json,'\"imageUrl\"')}">
-                                                                                <div class="right_img_box">
-                                                                                    <img src="${highlight.imageUrl}" onerror="this.src = '/image/bg_none.png'" alt="">
-                                                                                </div>
-                                                                            </c:if>
-                                                                        </div>
-                                                                    </c:if>
-                                                                    <c:if test="${fn:contains(tmpl.item_json,'\"list\"') ||fn:contains(tmpl.item_json,'\"summary\"')}">
-                                                                        <div class="item_div">
-                                                                            <c:if test="${fn:contains(tmpl.item_json,'\"list\"')}">
-                                                                                <div class="item_table">
-                                                                                    <c:forEach var="item" items="${tmpl.item_list_json.list}">
-                                                                                        <div>
-                                                                                            <span class="th">${item.title}</span>
-                                                                                            <span class="td">${item.description}</span>
-                                                                                        </div>
-                                                                                    </c:forEach>
-                                                                                </div>
-                                                                            </c:if>
-                                                                            <c:if test="${fn:contains(tmpl.item_json,'\"summary\"')}">
-                                                                                <div class="item_summary">
-                                                                                    <span class="th">${tmpl.item_list_json.summary.title}</span>
-                                                                                    <span class="td">${tmpl.item_list_json.summary.description}</span>
-                                                                                </div>
-                                                                            </c:if>
-                                                                        </div>
-                                                                    </c:if>
-                                                                </c:if>
-                                                                <div class="cont">${cutil:replaceBr(tmpl.cont_body)}</div>
-                                                                    <%--     부가 정보--%>
-                                                                <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
-                                                                    <div class="etx">${tmpl.tmpl_ext}</div>
-                                                                </c:if>
-                                                                <c:if test="${tmpl.tmpl_msg_tp eq 'AD'}">
-                                                                    <div class="ad">${tmpl.tmpl_ad}</div>
-                                                                </c:if>
-                                                            </div>
-                                                            <c:if test="${!empty tmpl.button_json}">
-                                                                <c:forEach var="btn" items="${tmpl.btn_json}">
-                                                                    <c:if test="${btn.linkType eq 'AC'}">
-                                                                        <a class="sms_btn kakao_yellow">${btn.name}</a>
-                                                                    </c:if>
-                                                                    <c:if test="${btn.linkType ne 'AC'}">
-                                                                        <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
-                                                                </c:forEach>
+                                                            <div class="cont">${cutil:replaceBr(tmpl.cont_body)}</div>
+                                                                <%--     부가 정보--%>
+                                                            <c:if test="${tmpl.tmpl_msg_tp eq 'EX'}">
+                                                                <div class="etx">${tmpl.tmpl_ext}</div>
                                                             </c:if>
-                                                            <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
+                                                            <c:if test="${tmpl.tmpl_msg_tp eq 'AD'}">
+                                                                <div class="ad">${tmpl.tmpl_ad}</div>
+                                                            </c:if>
                                                         </div>
+                                                        <c:if test="${!empty tmpl.button_json}">
+                                                            <c:forEach var="btn" items="${tmpl.btn_json}">
+                                                                <c:if test="${btn.linkType eq 'AC'}">
+                                                                    <a class="sms_btn kakao_yellow">${btn.name}</a>
+                                                                </c:if>
+                                                                <c:if test="${btn.linkType ne 'AC'}">
+                                                                    <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                        <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </c:if>
+                                </div>
+                                <div class="viewer_area" id="kakao_brand_viewer" <c:if test='${list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222"}'>hidden="hidden"</c:if>>
+                                    <div class="rcs_inner kko_slide">
+                                        <div class="slide_area">
+                                            <div class="kko_prev">
+                                                <img src="/image/ico_rcs_prev.png" alt="">
+                                            </div>
+                                            <div class="kko_next">
+                                                <img src="/image/ico_rcs_next.png" alt="">
+                                            </div>
+                                            <div class="swiper-container medium kkoBrandFcSwiper">
+                                                <div class="swiper-wrapper">
+                                                    <c:forEach var="idx" begin="1" end="6">
+                                                        <div class="swiper-slide slide${idx}">
+                                                            <section>
+                                                                <div class="img_area">
+                                                                    <img id="brandFcImgArea${idx}" src="" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                                </div>
+                                                                <c:set var="imgIdx" value="${idx+1}"/>
+                                                                <div class="txt_area">
+                                                                    <h3 id="brandFctitleArea${idx}">
+                                                                        타이틀을 입력해주세요.
+                                                                    </h3>
+                                                                    <div style=" display: block; width: 100%; height: 1px; margin: 8px 1px; background-color: rgba(0, 0, 0, 0.08);"></div>
+                                                                    <p id="brandFctextArea${idx}" style="padding-top: 10px; overflow-wrap: anywhere; word-break: break-word; white-space: normal;">
+                                                                        내용을 입력해주세요.
+                                                                    </p>
+                                                                    <div id="brandFcBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
+                                                                        <div class="kakao_link" id="brandFcBtn${idx}_1" data="1" style="display: none"></div>
+                                                                        <div class="kakao_link" id="brandFcBtn${idx}_2" data="2" style="display: none"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                            <div class="text_count">
+                                                                <span class="num en_font">
+                                                                    <span id="brandFctextByte${idx}">0</span>/180
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                                <div class="kko_paging en_font">1/6</div>
+                                                <div class="kko_register">수신거부 | 홈 > 친구차단</div>
+                                                <div class="text_count">
+                                                    <p>※ 본문내용 : 카드 당
+                                                        <span class="en_font">180</span>
+                                                        글자 이내
+                                                        <br>
+                                                        본문길이 : 최대 3줄
+                                                        <br>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div><!-- sms_form end-->
@@ -2821,27 +2873,21 @@
                                     <div class="th">발신 번호</div>
                                     <div class="column_1">
                                         <c:if test="${fn:trim(list[2].send_to) == ''}">
-                                            <input type="text" class="sms_number smsNumber" id="send_slice_rcs"
-                                                   placeholder="발신 번호를 입력해주세요." readonly="">
+                                            <input type="text" class="sms_number smsNumber" id="send_slice_rcs" placeholder="발신 번호를 입력해주세요." readonly="">
                                         </c:if>
                                         <c:if test="${fn:trim(list[2].send_to) != ''}">
-                                            <input type="text" class="sms_number smsNumber" id="send_slice_rcs"
-                                                   value="${list[2].sender}(${list[2].send_num})"/>
+                                            <input type="text" class="sms_number smsNumber" id="send_slice_rcs" value="${list[2].sender}(${list[2].send_num})"/>
                                         </c:if>
-                                        <input type="hidden" name="send_to_list" id="slide_send_num"
-                                               value="${list[2].send_to}"/>
-                                        <span class="btn_sm_line"
-                                              onclick="mobileSenderPopup('1','slidercs')">변경</span>
+                                        <input type="hidden" name="send_to_list" id="slide_send_num" value="${list[2].send_to}"/>
+                                        <span class="btn_sm_line" onclick="mobileSenderPopup('1','slidercs')">변경</span>
                                     </div>
                                 </div>
-
                                 <div class="input_area left">
                                     <div class="block line_none">
                                         <div class="slide_tab cf">
                                             <c:forEach var="i" begin="1" end="${list[2].cardSize}">
                                                 <c:if test="${i eq 1}">
-                                                    <div id="cardOn" class="cardOn on" data="${i}">
-                                                        카드${i}</div>
+                                                    <div id="cardOn" class="cardOn on" data="${i}">카드${i}</div>
                                                 </c:if>
                                                 <c:if test="${i ne 1}">
                                                     <div id="cardOn" class="cardOn" data="${i}">카드${i}</div>
@@ -2849,8 +2895,7 @@
                                             </c:forEach>
                                         </div>
                                     </div>
-                                    <c:forEach var="idx" begin="0" end="${list[2].cardSize-1}"
-                                               varStatus="st">
+                                    <c:forEach var="idx" begin="0" end="${list[2].cardSize-1}" varStatus="st">
                                     <!-- 카드 사이즈 만큼 반복하며 카드 그리기 -->
                                     <c:if test="${idx eq 0}">
                                     <div class="rcs_slide_conts on">
@@ -2863,9 +2908,7 @@
                                                     <div class="th">이미지 선택</div>
                                                     <div class="td">
                                                         <div class="delete_img">
-                                                            <img
-                                                                    src="${baseURL}/image/btn_delete1.png"
-                                                                    alt="삭제">
+                                                            <img src="${baseURL}/image/btn_delete1.png" alt="삭제">
                                                         </div>
                                                         <c:set var="imgNm"
                                                                value="${fn:split(list[2].img_nm_lst,',')[idx]}"/>

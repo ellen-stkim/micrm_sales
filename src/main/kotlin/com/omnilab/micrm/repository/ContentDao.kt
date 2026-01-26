@@ -79,6 +79,6 @@ interface ContentDao {
 
     fun delTblmiContUrlLst(dto: Tblmi_cont_url_lstDto): Int
 
-    fun selTblmiContImg(dto: Tblmi_cont_imgDto): Tblmi_cont_imgDto
+    fun `selTblmiContImg`(dto: Tblmi_cont_imgDto): Tblmi_cont_imgDto?
 
 }
