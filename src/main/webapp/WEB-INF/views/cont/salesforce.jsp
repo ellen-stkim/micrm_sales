@@ -1041,7 +1041,7 @@
 
     $(function () {
         //임시 주석
-        //mobileInfo(2688);
+        mobileInfo(2689);
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();

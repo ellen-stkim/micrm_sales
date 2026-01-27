@@ -1217,6 +1217,7 @@
 			, l.kko_thumbnail_img_cd
 		    , l.kko_item_json
 			, img_video.img_nm																			AS kko_thumbnail_img_nm
+			, l.kko_item_json
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
 		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq
