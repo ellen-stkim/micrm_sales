@@ -286,6 +286,7 @@
             , KKO_VIDEO_URL
             , KKO_THUMBNAIL_IMG_CD
             , KKO_ITEM_JSON
+            , KKO_CAROUSEL_JSON
         )
         values
             (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}
@@ -337,6 +338,7 @@
             , #{kko_video_url}
             , #{kko_thumbnail_img_cd}
             , #{kko_item_json}
+            , #{kko_carousel_json}
         )
     </insert>
 
