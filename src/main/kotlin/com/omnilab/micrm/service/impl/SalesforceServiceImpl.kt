@@ -55,6 +55,7 @@ import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Service("SalesforceServiceImpl")
@@ -838,6 +839,7 @@ class SalesforceServiceImpl : SalesforceService {
         val contMst = campaignDao.sel_camp_cont_mst(contMstDto)
 
         if(contMst == null){
+            logger.error("contMst == null")
             salesforceDao.ins_tblmicp_sales_execute(exMap)
             return false
         }else {
@@ -908,6 +910,7 @@ class SalesforceServiceImpl : SalesforceService {
                         contTpLst["DMTP03"] != null -> {
                             val sendTo = inArguments[contTpLst["DMTP03"]?.from_to]
                             if(sendTo == null){
+                                logger.error("sendTo == null")
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
@@ -936,6 +939,7 @@ class SalesforceServiceImpl : SalesforceService {
                         contTpLst["DMTP04"] != null -> {
                             val sendTo = inArguments[contTpLst["DMTP04"]?.from_to]
                             if(sendTo == null){
+                                logger.error("sendTo == null")
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
@@ -950,6 +954,7 @@ class SalesforceServiceImpl : SalesforceService {
                         else -> {
                             val sendTo = inArguments[contTpLst["DMTP02"]?.from_to]
                             if(sendTo == null){
+                                logger.error("sendTo == null")
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
                             }else{
