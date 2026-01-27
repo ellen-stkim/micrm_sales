@@ -1965,7 +1965,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }else{
                             listOf(ButtonJsonDto(btn1Nm[i].toString(), "WL",  btn1Mo[i].toString(), btn1Pc[i].toString()))
                         }
-                        val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(img[i].toString()))
+                        val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(img[i]!!.toInt()))
                         val dd = CarouselDto().apply {
                             this.header = header[i]
                             this.message = body[i]
