@@ -441,8 +441,7 @@
                 (
                     select *
                     from tblmi_cont_mst
-                    where (INTEN_ID is null or INTEN_ID = '')
-                        and (ORIG_ID is null or ORIG_ID = '')
+                    where INTEN_ID = #{inten_id}
                         and INTA_KEY = #{inta_key}
                         and INTA_VE = #{inta_ve}
                         order by seq asc

@@ -825,6 +825,7 @@
 	</update>
 
 	<update id="updateMobileContentMst" parameterType="Tblmi_cont_mstDto">
+		/* updateMobileContentMst */
 		update tblmi_cont_mst set
 			UPD_ID= #{upd_id}
 			, UPD_DT = now()
