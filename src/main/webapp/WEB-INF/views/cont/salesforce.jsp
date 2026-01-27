@@ -220,11 +220,13 @@
                                             <input name="kko_msg_tp" class="lowType" type="radio" value="1" />
                                             <span></span>
                                         </label>
+                                        <%--
                                         <label class="custom_radio en_font">
                                             캐러셀 커머스형
                                             <input name="kko_msg_tp" class="lowType" type="radio" value="2" />
                                             <span></span>
                                         </label>
+                                        --%>
                                         <label class="custom_radio en_font">
                                             캐러셀 피드형
                                             <input name="kko_msg_tp" class="lowType" type="radio" value="3" />
@@ -1041,7 +1043,7 @@
 
     $(function () {
         //임시 주석
-        //mobileInfo(2689);
+        <%--mobileInfo(2689);--%>
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -1939,6 +1941,7 @@
             couponSelectSeq = $("#savedCouponSeq").val();
             couponNm = $("#savedCouponNm").val();
 
+            //임시 주석
             mappingLst();
         }
 
@@ -2045,6 +2048,16 @@
     function kakaoTypeValidate(kakaoFtType) {
         if (kakaoFtType === "1") {
             const REQUIRED_IDX = [1, 2, 3];
+
+            const mainTitle = $('.kakaoTitle').val() || "";
+            if (mainTitle.length > 20) {
+                popup.popAlert("와이드 리스트형 제목은 띄어쓰기 포함 20자 이내여야 합니다.");
+                return false;
+            }
+            if (mainTitle.includes("\n") || mainTitle.includes("\r")) {
+                popup.popAlert("와이드 리스트형 제목은 줄바꿈이 불가능합니다.");
+                return false;
+            }
             for (const i of REQUIRED_IDX) {
                 const item = $("input[name='kkoItemLst" + i + "']").val();
                 const img = $("#kakao_item_img_cd_" + i).val();
@@ -2071,24 +2084,37 @@
 
             for (let n = 1; n <= MAX_CARD; n++) {
                 const $card = $("#kakao_item_img_cd_" + n).closest(".brandFcContent");
-                if ($card.length === 0) {
-                    filled[n] = false;
-                } else {
-                    const imgCd = (($card.find("#kakao_item_img_cd_" + n).val()) || "").trim();
-                    const title = (($card.find('input[name="kkoHeader' + n + '"]').val()) || "").trim();
-                    const body = (($card.find('textarea[name="kkoBody' + n + '"]').val()) || "").trim();
+                if ($card.length > 0) {
+                    const imgCd = ($("#kakao_item_img_cd_" + n).val() || "").trim();
+                    const title = ($('input[name="kkoHeader' + n + '"]').val() || "").trim();
+                    const body = ($('textarea[name="kkoBody' + n + '"]').val() || "").trim();
+                    const btn1Nm = ($('input[name="kkoBtnLst' + n + '_1"]').val() || "").trim();
+                    const btn2Nm = ($('input[name="kkoBtnLst' + n + '_2"]').val() || "").trim();
 
-                    const btn1 = (($card.find("#kkoBtnUrl" + n + "_1").val()) || "").trim();
-                    const btn2 = (($card.find("#kkoBtnUrl" + n + "_2").val()) || "").trim();
-                    const hasBtnCreated = (btn1 === "삭제" || btn2 === "삭제");
-
-                    if (imgCd || title || body || hasBtnCreated) {
+                    if (imgCd || title || body || btn1Nm || btn2Nm) {
                         filled[n] = true;
-                    } else {
-                        filled[n] = false;
+                        if (title.length > 20) {
+                            popup.popAlert("카드 " + n + "의 타이틀은 띄어쓰기 포함 20자 이내여야 합니다.");
+                            return false;
+                        }
+                        if (body.length > 180) {
+                            popup.popAlert("카드 " + n + "의 내용은 띄어쓰기 포함 180자 이내여야 합니다.");
+                            return false;
+                        }
+                        const brCount = (body.match(/\n/g) || []).length;
+                        if (brCount > 10) {
+                            popup.popAlert("카드 " + n + "의 내용은 줄바꿈을 최대 10회까지 허용합니다.");
+                            return false;
+                        }
+                        // 버튼명: 8자 제한
+                        if (btn1Nm.length > 8 || btn2Nm.length > 8) {
+                            popup.popAlert("카드 " + n + "의 버튼명은 띄어쓰기 포함 8자 이내여야 합니다.");
+                            return false;
+                        }
                     }
                 }
             }
+
 
             for (let n = 1; n <= 2; n++) {
                 const $card = $("#kakao_item_img_cd_" + n).closest(".brandFcContent");
@@ -2197,6 +2223,16 @@
                     return true;
                 }
             }
+            let btnValid = true;
+            $("input[name='kkoBtnLst']").each(function(idx) {
+                const btnNm = ($(this).val() || "").trim();
+                if (btnNm.length > 14) {
+                    popup.popAlert((idx + 1) + "번째 버튼명이 14자를 초과했습니다. (띄어쓰기 포함 14자 제한)");
+                    $(this).focus();
+                    btnValid = false;
+                    return false;
+                }
+            });
         }
     }
 
@@ -3386,7 +3422,7 @@
             '<li data="IMGTP11">와이드 이미지</li>'+
             '<li data="IMGTP12">와이드 리스트 (첫번째 이미지)</li>'+
             '<li data="IMGTP13">와이드 리스트</li>'+
-            '<li data="IMGTP14">캐러셀 커머스</li>'+
+            /*'<li data="IMGTP14">캐러셀 커머스</li>'+*/
             '<li data="IMGTP15">캐러셀 피드</li>'+
             '</ul>'+
             '</div>'+

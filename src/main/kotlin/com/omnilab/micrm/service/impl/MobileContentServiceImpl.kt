@@ -2,13 +2,11 @@ package com.omnilab.micrm.service.impl
 
 
 import com.google.gson.*
-import com.omnilab.micrm.common.AES256
-import com.omnilab.micrm.common.BtnValueUtils
-import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.common.GlobalValues
-import com.omnilab.micrm.common.UsefulUtils
+import com.google.gson.reflect.TypeToken
+import com.omnilab.micrm.common.*
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
+import com.omnilab.micrm.model.table.kakao.CarouselDto
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.repository.KkoAtTmplDao
@@ -45,6 +43,7 @@ class MobileContentServiceImpl : ContentService {
     @Qualifier("CouponDaoImpl")
     private lateinit var couponDao: CouponDao
 
+    private val g = GsonBuilder().create()
 
     /**
      * @Method Name  : insertMobileContentList
@@ -122,7 +121,6 @@ class MobileContentServiceImpl : ContentService {
                         val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                         if(!CommonUtils.isEmptyObject(resultDto)){
                             tblmiContLstdto.key_id = resultDto.tmpl_cd
-                            val g = GsonBuilder().create()
                             val obj = JsonObject()
                             obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
                             obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
@@ -774,7 +772,11 @@ class MobileContentServiceImpl : ContentService {
      * @title : 모바일 컨텐츠 리스트 뽑아내기
      */
     private fun selectMobileContent(dto: Tblmi_cont_mstDto): List<Contents_lstDto> {
-        return contentDao.selectMobileContent(dto)
+        val lst = contentDao.selectMobileContent(dto)
+        lst.forEach {
+            jsonViewContentsParsing(it)
+        }
+        return lst
     }
 
     /**
@@ -799,6 +801,7 @@ class MobileContentServiceImpl : ContentService {
             val dto1 = contentOne[i]
             if (dto1.cont_tp.equals("DMTP04")
                 || dto1.msg_tp.equals("DMCH220")
+                || dto1.msg_tp.equals("DMCH222")
             ) {
                 // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
                 jsonOneContentsParsing(dto1)
@@ -925,8 +928,6 @@ class MobileContentServiceImpl : ContentService {
                     val resultDto = kkoAtTmplDao.selTmplBytmplDto(atDto)
                     if(!CommonUtils.isEmptyObject(resultDto)){
                         tblmiContLstdto.key_id = resultDto.tmpl_cd
-
-                        val g = GsonBuilder().create()
                         val obj = JsonObject()
                         obj.add("button",g.fromJson(resultDto.button_json, JsonArray::class.java))
                         obj.add("quick_reply",g.fromJson(resultDto.quick_repl_json, JsonArray::class.java))
@@ -1387,7 +1388,6 @@ class MobileContentServiceImpl : ContentService {
         val jsonParser = JsonParser()
         val dto1 = dto as Content_view_Dto
         val msgTp = dto1.msg_tp
-
         if (msgTp.equals("DMCH209") || msgTp.equals("DMCH208") || msgTp.equals("DMCH207") || msgTp.equals("DMCH210")) {
             // 가로, 세로형 이라면 cont_body Json 형태 파싱
             if (dto1.cont_body != null) {
@@ -1397,8 +1397,7 @@ class MobileContentServiceImpl : ContentService {
                     .replace("\\r\\n", "<br/>")
                     .replace("\"", "")
             }
-        }
-        if (msgTp.equals("DMCH211") || msgTp.equals("DMCH212")) {
+        }else if (msgTp.equals("DMCH211") || msgTp.equals("DMCH212")) {
             val slideJsonObject = jsonParser.parse(dto1.cont_body).asJsonObject
             val len = slideJsonObject.size() / 2  // title과 description이 하나의 쌍이 되기에 나눠준다
             dto1.cardSize = len.toString()
@@ -1407,8 +1406,8 @@ class MobileContentServiceImpl : ContentService {
             for (i in 0 until len) {
                 idx++
 
-                val title = "title" + idx
-                val description = "description" + idx
+                val title = "title$idx"
+                val description = "description$idx"
 
                 dto1.slideTitle.add(
                     slideJsonObject.get(title).toString()
@@ -1424,44 +1423,98 @@ class MobileContentServiceImpl : ContentService {
                         .replace("\"", "")
                 )
             }
-        }
-        if (msgTp.equals("DMCH220")) {
+        } else if (msgTp.equals("DMCH220")) {
             val data = jsonParser.parse(dto1.kko_item_json).asJsonArray
-            for ((index, value) in data.withIndex()) {
+            data.forEachIndexed { index, value ->
                 val obj = value.asJsonObject
                 val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(obj.get("img_url").asString))
-                when (index) {
-                    0 -> {
-                        dto1.kkoItemLst1 = obj.get("title").asString
-                        dto1.kkoItemUrlLstPc1 = obj.get("url_pc").asString
-                        dto1.kkoItemUrlLstMo1 = obj.get("url_mobile").asString
-                        dto1.kakao_item_img_cd_1 = imgInfo?.seq.toString()
-                        dto1.kakaoImageItemNm1 = imgInfo?.img_nm
-                        dto1.kko_view_item_img_url_1 = imgInfo?.kko_img_url
+                val title = obj.get("title").asString
+                val urlPc = obj.get("url_pc").asString
+                val urlMo = obj.get("url_mobile").asString
+                val imgSeq = imgInfo?.seq?.toString()
+                val imgNm = imgInfo?.img_nm
+                val kkoImgUrl = imgInfo?.kko_img_url
+                dto1.apply {
+                    when (index) {
+                        0 -> {
+                            kkoItemLst1 = title
+                            kkoItemUrlLstPc1 = urlPc
+                            kkoItemUrlLstMo1 = urlMo
+                            kakao_item_img_cd_1 = imgSeq
+                            kakaoImageItemNm1 = imgNm
+                            kko_view_item_img_url_1 = kkoImgUrl
+                        }
+                        1 -> {
+                            kkoItemLst2 = title
+                            kkoItemUrlLstPc2 = urlPc
+                            kkoItemUrlLstMo2 = urlMo
+                            kakao_item_img_cd_2 = imgSeq
+                            kakaoImageItemNm2 = imgNm
+                            kko_view_item_img_url_2 = kkoImgUrl
+                        }
+                        2 -> {
+                            kkoItemLst3 = title
+                            kkoItemUrlLstPc3 = urlPc
+                            kkoItemUrlLstMo3 = urlMo
+                            kakao_item_img_cd_3 = imgSeq
+                            kakaoImageItemNm3 = imgNm
+                            kko_view_item_img_url_3 = kkoImgUrl
+                        }
+                        3 -> {
+                            kkoItemLst4 = title
+                            kkoItemUrlLstPc4 = urlPc
+                            kkoItemUrlLstMo4 = urlMo
+                            kakao_item_img_cd_4 = imgSeq
+                            kakaoImageItemNm4 = imgNm
+                            kko_view_item_img_url_4 = kkoImgUrl
+                        }
                     }
-                    1 -> {
-                        dto1.kkoItemLst2 = obj.get("title").asString
-                        dto1.kkoItemUrlLstPc2 = obj.get("url_pc").asString
-                        dto1.kkoItemUrlLstMo2 = obj.get("url_mobile").asString
-                        dto1.kakao_item_img_cd_2 = imgInfo?.seq.toString()
-                        dto1.kakaoImageItemNm2 = imgInfo?.img_nm
-                        dto1.kko_view_item_img_url_2 = imgInfo?.kko_img_url
+                }
+            }
+        } else if (msgTp.equals("DMCH222")) {
+            val type = object : TypeToken<MutableList<CarouselDto>>() {}.type
+            val data = g.fromJson<MutableList<CarouselDto>>(dto1.kko_carousel_json, type)
+
+            data.forEachIndexed { index, value ->
+                val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(value.attachment!!.image!!.img_url!!))
+                val att = value.attachment!!
+                val buttons = att.button!!
+
+                // 중복되는 필드 할당 로직을 하나의 함수로 정의
+                fun setCarouselFields(
+                    imgCd: (String?) -> Unit, imgNm: (String?) -> Unit, imgUrl: (String?) -> Unit,
+                    header: (String?) -> Unit, body: (String?) -> Unit,
+                    btn1Nm: (String?) -> Unit, btn1Pc: (String?) -> Unit, btn1Mo: (String?) -> Unit,
+                    btn2Nm: (String?) -> Unit = {}, btn2Pc: (String?) -> Unit = {}, btn2Mo: (String?) -> Unit = {}
+                ) {
+                    imgCd(imgInfo?.seq?.toString())
+                    imgNm(imgInfo?.img_nm)
+                    imgUrl(imgInfo?.kko_img_url)
+                    header(value.header)
+                    body(value.message)
+
+                    // 버튼 1은 무조건 존재한다고 가정
+                    if (buttons.isNotEmpty()) {
+                        btn1Nm(buttons[0].name)
+                        btn1Pc(buttons[0].url_pc)
+                        btn1Mo(buttons[0].url_mobile)
                     }
-                    2 -> {
-                        dto1.kkoItemLst3 = obj.get("title").asString
-                        dto1.kkoItemUrlLstPc3 = obj.get("url_pc").asString
-                        dto1.kkoItemUrlLstMo3 = obj.get("url_mobile").asString
-                        dto1.kakao_item_img_cd_3 = imgInfo?.seq.toString()
-                        dto1.kakaoImageItemNm3 = imgInfo?.img_nm
-                        dto1.kko_view_item_img_url_3 = imgInfo?.kko_img_url
+                    // 버튼이 2개일 때만 버튼 2 세팅
+                    if (buttons.size == 2) {
+                        btn2Nm(buttons[1].name)
+                        btn2Pc(buttons[1].url_pc)
+                        btn2Mo(buttons[1].url_mobile)
                     }
-                    3 -> {
-                        dto1.kkoItemLst4 = obj.get("title").asString
-                        dto1.kkoItemUrlLstPc4 = obj.get("url_pc").asString
-                        dto1.kkoItemUrlLstMo4 = obj.get("url_mobile").asString
-                        dto1.kakao_item_img_cd_4 = imgInfo?.seq.toString()
-                        dto1.kakaoImageItemNm4 = imgInfo?.img_nm
-                        dto1.kko_view_item_img_url_4 = imgInfo?.kko_img_url
+                }
+
+                dto1.apply {
+                    when (index) {
+                        0 -> setCarouselFields({kakao_item_img_cd_1=it}, {kakaoImageItemNm1=it}, {kko_view_item_img_url_1=it}, {kkoHeader1=it}, {kkoBody1=it}, {kkoBtnLst1_1=it}, {kkoBtnUrlLstPc1_1=it}, {kkoBtnUrlLstMo1_1=it}, {kkoBtnLst1_2=it}, {kkoBtnUrlLstPc1_2=it}, {kkoBtnUrlLstMo1_2=it})
+                        1 -> setCarouselFields({kakao_item_img_cd_2=it}, {kakaoImageItemNm2=it}, {kko_view_item_img_url_2=it}, {kkoHeader2=it}, {kkoBody2=it}, {kkoBtnLst2_1=it}, {kkoBtnUrlLstPc2_1=it}, {kkoBtnUrlLstMo2_1=it}, {kkoBtnLst2_2=it}, {kkoBtnUrlLstPc2_2=it}, {kkoBtnUrlLstMo2_2=it})
+                        2 -> setCarouselFields({kakao_item_img_cd_3=it}, {kakaoImageItemNm3=it}, {kko_view_item_img_url_3=it}, {kkoHeader3=it}, {kkoBody3=it}, {kkoBtnLst3_1=it}, {kkoBtnUrlLstPc3_1=it}, {kkoBtnUrlLstMo3_1=it}, {kkoBtnLst3_2=it}, {kkoBtnUrlLstPc3_2=it}, {kkoBtnUrlLstMo3_2=it})
+                        3 -> setCarouselFields({kakao_item_img_cd_4=it}, {kakaoImageItemNm4=it}, {kko_view_item_img_url_4=it}, {kkoHeader4=it}, {kkoBody4=it}, {kkoBtnLst4_1=it}, {kkoBtnUrlLstPc4_1=it}, {kkoBtnUrlLstMo4_1=it}, {kkoBtnLst4_2=it}, {kkoBtnUrlLstPc4_2=it}, {kkoBtnUrlLstMo4_2=it})
+                        4 -> setCarouselFields({kakao_item_img_cd_5=it}, {kakaoImageItemNm5=it}, {kko_view_item_img_url_5=it}, {kkoHeader5=it}, {kkoBody5=it}, {kkoBtnLst5_1=it}, {kkoBtnUrlLstPc5_1=it}, {kkoBtnUrlLstMo5_1=it}, {kkoBtnLst5_2=it}, {kkoBtnUrlLstPc5_2=it}, {kkoBtnUrlLstMo5_2=it})
+                        5 -> setCarouselFields({kakao_item_img_cd_6=it}, {kakaoImageItemNm6=it}, {kko_view_item_img_url_6=it}, {kkoHeader6=it}, {kkoBody6=it}, {kkoBtnLst6_1=it}, {kkoBtnUrlLstPc6_1=it}, {kkoBtnUrlLstMo6_1=it}, {kkoBtnLst6_2=it}, {kkoBtnUrlLstPc6_2=it}, {kkoBtnUrlLstMo6_2=it})
                     }
                 }
             }
@@ -1499,7 +1552,6 @@ class MobileContentServiceImpl : ContentService {
 
 
             for (i in 0 until len) {
-                val gson = Gson()
                 val suggestObj = jsonSuggestArray.get(i).asJsonObject
                 val actionObj = suggestObj.get("action").asJsonObject
                 val displayText = actionObj.get(BtnValueUtils.displayText);
@@ -1509,7 +1561,7 @@ class MobileContentServiceImpl : ContentService {
                 if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.clipBoardAction))) {
                     // 복사하기 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.clipBoardAction)
-                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = g.fromJson(dataJsonObj.toString(), MutableMap::class.java)
                     val textData = (jsonDataMap[BtnValueUtils.copyToClipboard] as? MutableMap<*, *>)?.get(BtnValueUtils.text)
 
                     //logger.error("복사 데이터가 존재한다 : " + dataJsonObj.toString());
@@ -1521,7 +1573,7 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.urlAction))) {
                     // URL 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.urlAction)
-                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = g.fromJson(dataJsonObj.toString(), MutableMap::class.java)
                     val urlData = (jsonDataMap[BtnValueUtils.openUrl] as? MutableMap<*, *>)?.get(BtnValueUtils.url)
 
                     //logger.error("URL 데이터가 존재한다 : " + dataJsonObj.toString());
@@ -1535,7 +1587,7 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.dialerAction))) {
                     // 전화 버튼
                     val dataJsonObj = actionObj?.get(BtnValueUtils.dialerAction)
-                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = g.fromJson(dataJsonObj.toString(), MutableMap::class.java)
                     val phoneNumber = (jsonDataMap[BtnValueUtils.dialPhoneNumber] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber)
 
                     //logger.error("전화 데이터가 존재한다 : " + dataJsonObj.toString())
@@ -1548,7 +1600,7 @@ class MobileContentServiceImpl : ContentService {
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.mapAction))) {
                     // MapAction의 경우 3가지가 존재한다 ( 1. 좌표 입력 , 2. 쿼리 입력 , 3. 내 위치 보내기)
                     val mapObj = actionObj?.get(BtnValueUtils.mapAction)
-                    val jsonDataMap = gson.fromJson(mapObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = g.fromJson(mapObj.toString(), MutableMap::class.java)
 
                     //logger.error("jsonDataMapAction :" + jsonDataMap)
                     //logger.error("mapObj" + mapObj.toString())
@@ -1564,7 +1616,7 @@ class MobileContentServiceImpl : ContentService {
                         val fallbackUrl = (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.fallbackUrl).toString()
 
                         // 좌표 입력과 쿼리 입력 여부의 차이는 location 하위의 query 여부이다
-                        val location = gson.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.location).toString(), MutableMap::class.java)
+                        val location = g.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)?.get(BtnValueUtils.location).toString(), MutableMap::class.java)
 
                         if (!CommonUtils.isEmptyObject(location[BtnValueUtils.query])) {
                             // 좌표 쿼리가 존재하는 Json 버튼 데이터
@@ -1641,7 +1693,7 @@ class MobileContentServiceImpl : ContentService {
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.calendarAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.calendarAction)
-                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = g.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
                     val description = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.description).toString()
                     val startTime = (jsonDataMap[BtnValueUtils.createCalendarEvent] as? MutableMap<*, *>)?.get(BtnValueUtils.startTime).toString().split("T")
@@ -1661,7 +1713,7 @@ class MobileContentServiceImpl : ContentService {
                      logger.error("title : " + title);*/
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.composeAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.composeAction)
-                    val jsonDataMap = gson.fromJson(dataJsonObj.toString(), MutableMap::class.java)
+                    val jsonDataMap = g.fromJson(dataJsonObj.toString(), MutableMap::class.java)
 
                     val phoneNumber = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.phoneNumber).toString()
                     val text = (jsonDataMap[BtnValueUtils.composeTextMessage] as? MutableMap<*, *>)?.get(BtnValueUtils.text).toString()
@@ -1698,39 +1750,88 @@ class MobileContentServiceImpl : ContentService {
      * @title : 제이슨 컨텐츠 파싱
      */
 
-    private fun jsonViewContentsParsing(dto: Tblmi_cont_lstDto) {
-        // 뷰에 뿌려줄 Json 데이터 파싱하기
+    private fun jsonViewContentsParsing(dto: Contents_lstDto) {
+        val jsonParser = JsonParser()
+        val msgTp = dto.msg_tp
 
-        /*var jsonParser = JsonParser()
-        val dto = dto as Contents_lstDto
-        val rcsMsgTp = dto.msg_tp*/
-
-        /* if (rcsMsgTp.equals("DMCH209") || rcsMsgTp.equals("DMCH208") || rcsMsgTp.equals("DMCH207")
-                 || rcsMsgTp.equals("DMCH210")) {
-             // 가로, 세로형 이라면 cont_body Json 형태 파싱
-             if (dto.cont_body != null) {
-                 var jsonObject = jsonParser.parse(dto.cont_body).asJsonObject
-                 dto.cont_body = jsonObject.get("description").toString()
-                         .replace("\\\\r\\\\n", "<br>")
-                         .replace("\\r\\n","<br>")
-                         .replace("\"", "")
-             }
-         }*/
-        /*if (rcsMsgTp.equals("DMCH211") || rcsMsgTp.equals("DMCH212")) {
-
-            val jsonArray = jsonParser.parse(dto.cont_body).asJsonArray
-            val len = jsonArray.size()
-
-            for (i in 0 until len) {
-                val jsonObject = jsonArray.get(i).asJsonObject
-                dto.slideTitle.add(jsonObject.get("title").toString()
-                        .replace("\"", ""))
-                dto.slideBody.add(jsonObject.get("description").toString()
-                        .replace("\\\\r\\\\n", "<br>")
-                        .replace("\"", "")
-                )
+        if (msgTp.equals("DMCH220")) {
+            if(dto.kko_item_json != null) {
+                val data = jsonParser.parse(dto.kko_item_json).asJsonArray
+                data.forEachIndexed { index, value ->
+                    val obj = value.asJsonObject
+                    val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(obj.get("img_url").asString))
+                    val title = obj.get("title").asString
+                    val urlPc = obj.get("url_pc").asString
+                    val urlMo = obj.get("url_mobile").asString
+                    val imgSeq = imgInfo?.seq?.toString()
+                    val imgNm = imgInfo?.img_nm
+                    val kkoImgUrl = imgInfo?.kko_img_url
+                    dto.apply {
+                        when (index) {
+                            0 -> {
+                                kkoItemLst1 = title
+                                kkoItemUrlLstPc1 = urlPc
+                                kkoItemUrlLstMo1 = urlMo
+                                kakao_item_img_cd_1 = imgSeq
+                                kakaoImageItemNm1 = imgNm
+                                kko_view_item_img_url_1 = kkoImgUrl
+                            }
+                            1 -> {
+                                kkoItemLst2 = title
+                                kkoItemUrlLstPc2 = urlPc
+                                kkoItemUrlLstMo2 = urlMo
+                                kakao_item_img_cd_2 = imgSeq
+                                kakaoImageItemNm2 = imgNm
+                                kko_view_item_img_url_2 = kkoImgUrl
+                            }
+                            2 -> {
+                                kkoItemLst3 = title
+                                kkoItemUrlLstPc3 = urlPc
+                                kkoItemUrlLstMo3 = urlMo
+                                kakao_item_img_cd_3 = imgSeq
+                                kakaoImageItemNm3 = imgNm
+                                kko_view_item_img_url_3 = kkoImgUrl
+                            }
+                            3 -> {
+                                kkoItemLst4 = title
+                                kkoItemUrlLstPc4 = urlPc
+                                kkoItemUrlLstMo4 = urlMo
+                                kakao_item_img_cd_4 = imgSeq
+                                kakaoImageItemNm4 = imgNm
+                                kko_view_item_img_url_4 = kkoImgUrl
+                            }
+                        }
+                    }
+                }
             }
-        }*/
+        } else if (msgTp.equals("DMCH222")) {
+            val type = object : TypeToken<MutableList<CarouselDto>>() {}.type
+            val data = g.fromJson<MutableList<CarouselDto>>(dto.kko_carousel_json, type)
+            data.firstOrNull()?.let { firstItem ->
+                val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(firstItem.attachment?.image?.img_url ?: ""))
+                val att = firstItem.attachment!!
+                val buttons = att.button ?: emptyList()
+                dto.apply {
+                    kakao_item_img_cd_1 = imgInfo?.seq?.toString()
+                    kakaoImageItemNm1 = imgInfo?.img_nm
+                    kko_view_item_img_url_1 = imgInfo?.kko_img_url
+
+                    kkoHeader1 = firstItem.header
+                    kkoBody1 = firstItem.message
+
+                    buttons.getOrNull(0)?.let { btn ->
+                        kkoBtnLst1_1 = btn.name
+                        kkoBtnUrlLstPc1_1 = btn.url_pc
+                        kkoBtnUrlLstMo1_1 = btn.url_mobile
+                    }
+                    buttons.getOrNull(1)?.let { btn ->
+                        kkoBtnLst1_2 = btn.name
+                        kkoBtnUrlLstPc1_2 = btn.url_pc
+                        kkoBtnUrlLstMo1_2 = btn.url_mobile
+                    }
+                }
+            }
+        }
     }
 
     /**

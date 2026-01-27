@@ -300,6 +300,10 @@
 			, tmpl.item_json
 			, tmpl.tmpl_msg_tp
 			, tmpl.button_json
+			, b.KKO_ITEM_JSON
+			, b.KKO_CAROUSEL_JSON
+			, b.KKO_VIDEO_URL
+			, b.KKO_THUMBNAIL_IMG_CD
 		FROM (
 			SELECT mst.seq								AS seq
 				, mst.ch_tp								AS ch_tp

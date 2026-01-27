@@ -14,10 +14,10 @@
     <c:when test="${not empty list}">
         <c:forEach var="content" items="${list}">
             <c:if test="${content.use_yn eq 'Y'}">
-                <div class="column" style="border-bottom: none;">
+                <div class="column" style="border-bottom: none; height: 100%;">
             </c:if>
             <c:if test="${content.use_yn eq 'N'}">
-                <div class="column off">
+                <div class="column off" style="height: 100%;">
             </c:if>
                 <!-- 비활성화 cover -->
                 <div class="hidden_cover"></div>
@@ -57,6 +57,18 @@
                             <c:if test="${title eq 'DMCH218'}">
                                 <li>브랜드톡 와이드 이미지</li>
                             </c:if>
+                            <c:if test="${title eq 'DMCH220'}">
+                                <li>브랜드톡 와이드 리스트</li>
+                            </c:if>
+                            <c:if test="${title eq 'DMCH221'}">
+                                <li>브랜드톡 캐러셀 커머스</li>
+                            </c:if>
+                            <c:if test="${title eq 'DMCH222'}">
+                                <li>브랜드톡 캐러셀 피드</li>
+                            </c:if>
+                            <c:if test="${title eq 'DMCH223'}">
+                                <li>브랜드톡 동영상</li>
+                            </c:if>
                             <c:if test="${title eq 'DMCH216'}">
                                 <li>알림톡</li>
                             </c:if>
@@ -71,7 +83,7 @@
                     <h3>${content.cont_nm}</h3>
                     <div class="remove_info">
                         <input type="button" value="${content.use_yn}" class="en_font useState right-border" onclick="updateUseState('${content.seq}', this);"/>
-<%--                        <a href="/cont/mdmDetail/${content.seq}.mi">수정</a>--%>
+                        <%--<a href="/cont/mdmDetail/${content.seq}.mi">수정</a>--%>
                     </div>
                 </div>
                 <div class="row_top cf">
@@ -94,33 +106,130 @@
                 </div>
                 <!-- 카카오톡 브랜드톡 -->
                 <c:if test="${content.cont_tp eq 'DMTP03'}">
-                    <div class="row_body">
-                        <div class="round_box">
-                            <c:if test="${not empty content.kko_image_url}">
-                            <div class="sms">
-                                <img src="${filePath}${content.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="">
+                    <c:choose>
+                        <c:when test="${content.msg_tp eq 'DMCH220'}">
+                        <div class="row_body" >
+                            <div class="round_box">
+                                <div class="kakao_wide_lst" style="display:block">
+                                    <strong class="kakao_wide_lst_strong">
+                                        <span class="kakao_wide_lst_title">${content.cont_sub}</span>
+                                    </strong>
+                                    <div class="kakao_wide_lst_main_div">
+                                        <ul class="kakao_wide_lst_ul">
+                                            <li class="kakao_wide_lst_li_first">
+                                                <div class="kakao_wide_lst_li_first_div">
+                                                    <a href="${content.kkoItemUrlLstMo1}" target="_blank" class="kakao_wide_lst_li_first_a">
+                                                        <img src="${content.kko_view_item_img_url_1}" alt="" role="presentation" style="min-height:41px; width: 100%">
+                                                    </a>
+                                                </div>
+                                                <p class="kakao_wide_lst_li_first_p">
+                                                    <span class="kakao_wide_lst_li_first_span">${content.kkoItemLst1}</span>
+                                                </p>
+                                            </li>
+                                            <li class="kakao_wide_lst_li">
+                                                <div class="kakao_wide_lst_li_div">
+                                                    <a href="${content.kkoItemUrlLstMo2}" target="_blank" class="kakao_wide_lst_li_a">
+                                                        <img src="${content.kko_view_item_img_url_2}" alt="" role="presentation" style="min-height:41px; width: 100%">
+                                                    </a>
+                                                </div>
+                                                <p class="kakao_wide_lst_li_p">
+                                                    <span class="kakao_wide_lst_li_span">${content.kkoItemLst2}</span>
+                                                </p>
+                                            </li>
+                                            <li class="kakao_wide_lst_li">
+                                                <div class="kakao_wide_lst_li_div">
+                                                    <a href="${content.kkoItemUrlLstMo3}" target="_blank" class="kakao_wide_lst_li_a">
+                                                        <img src="${content.kko_view_item_img_url_3}" alt="" role="presentation" style="min-height:41px; width: 100%">
+                                                    </a>
+                                                </div>
+                                                <p class="kakao_wide_lst_li_p">
+                                                    <span class="kakao_wide_lst_li_span">${content.kkoItemLst3}</span>
+                                                </p>
+                                            </li>
+                                            <c:if test="${!cutil:isEmptyObject(content.kkoItemLst4)}">
+                                                <li class="kakao_wide_lst_li">
+                                                    <div class="kakao_wide_lst_li_div">
+                                                        <a href="${content.kkoItemUrlLstMo4}" target="_blank" class="kakao_wide_lst_li_a">
+                                                            <img src="${content.kko_view_item_img_url_4}" alt="" role="presentation" style="min-height:41px; width: 100%">
+                                                        </a>
+                                                    </div>
+                                                    <p class="kakao_wide_lst_li_p">
+                                                        <span class="kakao_wide_lst_li_span">${content.kkoItemLst4}</span>
+                                                    </p>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            </c:if>
-                            <p class="sms_txt">
-                                ${cutil:replaceBr(content.cont_body)}
-                            </p>
-                            <c:if test="${not empty content.kko_btn_url}">
-                                <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm}</a>
-                            </c:if>
-                            <c:if test="${not empty content.kko_btn_url2}">
-                                <a href="${content.kko_btn_url2}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm2}</a>
-                            </c:if>
-                            <c:if test="${not empty content.kko_btn_url3}">
-                                <a href="${content.kko_btn_url3}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm3}</a>
-                            </c:if>
-                            <c:if test="${not empty content.kko_btn_url4}">
-                                <a href="${content.kko_btn_url4}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm4}</a>
-                            </c:if>
-                            <c:if test="${not empty content.kko_btn_url5}">
-                                <a href="${content.kko_btn_url5}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm5}</a>
-                            </c:if>
                         </div>
-                    </div>
+                        </c:when>
+                        <c:when test="${content.msg_tp eq 'DMCH221' or content.msg_tp eq 'DMCH222'}">
+                            <div class="row_body">
+                                <div class="round_box">
+                                    <div class="sms">
+                                        <img src="${content.kko_view_item_img_url_1}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                    </div>
+                                    <div class="txt_area" style="padding: 15px;">
+                                        <h3 style="font-size: 13px; font-weight: 700; padding-bottom: 10px;">${content.kkoHeader1}</h3>
+                                        <div style="display:block;width:100%;height:1px;margin:8px 1px;background-color:rgba(0,0,0,0.08);"></div>
+                                        <p style="padding-top:10px;overflow-wrap:anywhere;word-break:break-word;white-space:normal; min-height: 115px; overflow-y: auto; line-height: 1.3; padding-bottom: 20px;">
+                                            ${content.kkoBody1}
+                                        </p>
+                                        <div style="display:flex;gap:12px;align-items:center;">
+                                            <c:if test="${not empty content.kkoBtnLst1_1}">
+                                                <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
+                                                    ${content.kkoBtnLst1_1}
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${not empty content.kkoBtnLst1_2}">
+                                                <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
+                                                    ${content.kkoBtnLst1_2}
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="row_body">
+                                <div class="round_box">
+                                    <c:if test="${content.msg_tp eq 'DMCH223'}">
+                                        <c:set var="parts" value="${fn:split(content.kko_video_url, '/')}"/>
+                                        <c:set var="videoId" value="${parts[fn:length(parts) - 1]}"/>
+                                        <c:set var="convertedUrl" value="${'https://play-tv.kakao.com/embed/player/cliplink/' += videoId += '?service=player_share'}"/>
+                                        <div>
+                                            <iframe src="${convertedUrl}" width="100%"></iframe>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${not empty content.kko_image_url}">
+                                    <div class="sms">
+                                        <img src="${filePath}${content.kko_image_url}" onerror="this.src = '/image/bg_none.png'" alt="">
+                                    </div>
+                                    </c:if>
+                                    <p class="sms_txt">
+                                        ${cutil:replaceBr(content.cont_body)}
+                                    </p>
+                                    <c:if test="${not empty content.kko_btn_url}">
+                                        <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm}</a>
+                                    </c:if>
+                                    <c:if test="${not empty content.kko_btn_url2}">
+                                        <a href="${content.kko_btn_url2}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm2}</a>
+                                    </c:if>
+                                    <c:if test="${not empty content.kko_btn_url3}">
+                                        <a href="${content.kko_btn_url3}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm3}</a>
+                                    </c:if>
+                                    <c:if test="${not empty content.kko_btn_url4}">
+                                        <a href="${content.kko_btn_url4}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm4}</a>
+                                    </c:if>
+                                    <c:if test="${not empty content.kko_btn_url5}">
+                                        <a href="${content.kko_btn_url5}" target="_blank" rel="noopener" class="sms_btn">${content.kko_btn_nm5}</a>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
                 <!-- 카카오톡 알림톡 -->
                 <c:if test="${content.cont_tp eq 'DMTP05'}">

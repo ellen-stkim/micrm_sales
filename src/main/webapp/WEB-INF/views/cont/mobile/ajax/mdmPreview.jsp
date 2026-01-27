@@ -68,18 +68,17 @@
                                                                                     <h3>${content[headerKey]}</h3>
                                                                                     <div style="display:block;width:100%;height:1px;margin:8px 1px;background-color:rgba(0,0,0,0.08);"></div>
                                                                                     <p style="padding-top:10px;overflow-wrap:anywhere;word-break:break-word;white-space:normal;">
-                                                                                            ${content[bodyKey]}
+                                                                                        ${content[bodyKey]}
                                                                                     </p>
                                                                                     <div style="display:flex;gap:12px;align-items:center;">
                                                                                         <c:if test="${not empty content[btn1Key]}">
                                                                                             <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
-                                                                                                    ${content[btn1Key]}
+                                                                                                ${content[btn1Key]}
                                                                                             </div>
                                                                                         </c:if>
-
                                                                                         <c:if test="${not empty content[btn2Key]}">
                                                                                             <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
-                                                                                                    ${content[btn2Key]}
+                                                                                                ${content[btn2Key]}
                                                                                             </div>
                                                                                         </c:if>
                                                                                     </div>

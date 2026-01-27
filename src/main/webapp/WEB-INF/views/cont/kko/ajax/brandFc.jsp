@@ -39,22 +39,22 @@
                     <div class="delete_img" data="kakao">
                         <img src="/image/btn_delete1.png" alt="삭제">
                     </div>
-                    <input type="text" class="txt_input en_font" id="kakaoImageFc${status.count}" name="kakaoImageFc${status.count}" placeholder="이미지를 선택해 주세요." readonly/>
+                    <input type="text" class="txt_input en_font" id="kakaoImageFc${status.count}" name="kakaoImageFc${status.count}" placeholder="이미지를 선택해 주세요." readonly value="${list[0]['kakaoImageItemNm' += status.count]}"/>
                     <span class="btn_sm_line" data="kakaoImageFc${status.count}" onclick="imageListPopUp('1','kakaoImageFc${status.count}')">선택</span>
-                    <input type="hidden" id="kakao_item_img_cd_${status.count}" name="kakao_item_img_cd_${status.count}" value="">
-                    <input type="hidden" id="kko_view_item_img_url_${status.count}" name="kko_view_item_img_url_${status.count}" maxlength="" value="">
+                    <input type="hidden" id="kakao_item_img_cd_${status.count}" name="kakao_item_img_cd_${status.count}" value="${list[0]['kakao_item_img_cd_' += status.count]}">
+                    <input type="hidden" id="kko_view_item_img_url_${status.count}" name="kko_view_item_img_url_${status.count}" maxlength="" value="${list[0]['kko_view_item_img_url_' += status.count]}">
                 </div>
             </div>
             <div class="row">
                <div class="th top-border">타이틀</div>
                <div class="td top-border">
-                   <input type="text" name="kkoHeader${status.count}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandTitle(this, ${status.count});">
+                   <input type="text" name="kkoHeader${status.count}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandTitle(this, ${status.count});" value="${list[0]['kkoHeader' += status.count]}">
                </div>
             </div>
             <div class="row" style="height:150px;">
                 <div class="th top-border">내용</div>
                 <div class="td top-border">
-                    <textarea name="kkoBody${status.count}" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" oninput="kkoCreate.brandFcContents(this, ${status.count})"></textarea>
+                    <textarea name="kkoBody${status.count}" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" oninput="kkoCreate.brandFcContents(this, ${status.count})">${list[0]['kkoBody' += status.count]}</textarea>
                 </div>
             </div>
         </div>
@@ -62,20 +62,20 @@
             <div class="row flex_box double">
                <div class="th" style="line-height: 72px;">버튼명</div>
                <div class="td first-td right-border">
-                   <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_1" maxlength="14" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')"/>
+                   <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_1" maxlength="8" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')" value="${list[0]['kkoBtnLst' += status.count += '_1']}"/>
                </div>
                <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
                <div class="td flex_box" style="flex-direction: column;">
                    <div class="row flex_box" style="width: 100%;">
                        <div class="th">Pc 링크</div>
                        <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstPc${status.count}_1" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                           <input type="text" name="kkoBtnUrlLstPc${status.count}_1" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstPc' += status.count += '_1']}"/>
                        </div>
                    </div>
                    <div class="row flex_box" style="width: 100%;">
                        <div class="th">Mobile 링크</div>
                        <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstMo${status.count}_1" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                           <input type="text" name="kkoBtnUrlLstMo${status.count}_1" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstMo' += status.count += '_1']}"/>
                        </div>
                    </div>
                </div>
@@ -88,20 +88,20 @@
             <div class="row flex_box double">
                <div class="th" style="line-height: 72px;">버튼명</div>
                <div class="td first-td right-border">
-                   <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_2" maxlength="14" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')"/>
+                   <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_2" maxlength="8" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')" value="${list[0]['kkoBtnLst' += status.count += '_2']}"/>
                </div>
                <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
                <div class="td flex_box" style="flex-direction: column;">
                    <div class="row flex_box" style="width: 100%;">
                        <div class="th">Pc 링크</div>
                        <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstPc${status.count}_2" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                           <input type="text" name="kkoBtnUrlLstPc${status.count}_2" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstPc' += status.count += '_2']}"/>
                        </div>
                    </div>
                    <div class="row flex_box" style="width: 100%;">
                        <div class="th">Mobile 링크</div>
                        <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstMo${status.count}_2" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                           <input type="text" name="kkoBtnUrlLstMo${status.count}_2" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstMo' += status.count += '_2']}"/>
                        </div>
                    </div>
                </div>

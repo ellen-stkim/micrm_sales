@@ -13,7 +13,7 @@
    <div class="row">
        <div class="th">동영상 URL</div>
        <div class="td">
-           <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다."/>
+           <input type="text" class="txt_input en_font width kakaoImgLink" name="kko_video_url" placeholder="카카오TV 동영상 URL(https://tv.kakao.com)만 사용 가능합니다." value="${list[0].kko_video_url}"/>
        </div>
    </div>
    <div class="row">
@@ -22,9 +22,9 @@
            <div class="delete_img" data="kakao">
                <img src="/image/btn_delete1.png" alt="삭제">
            </div>
-           <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." readonly/>
+           <input type="text" class="txt_input en_font" name="" id="kakaoVideoImg" placeholder="이미지를 선택해 주세요." value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_nm : ''}" readonly/>
            <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoVideoImg')">선택</span>
-           <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="">
+           <input type="hidden" id="kko_thumbnail_img_cd" name="kko_thumbnail_img_cd" value="${cont_tp eq "DMTP03" ? list[0].kko_thumbnail_img_cd: ''}">
        </div>
    </div>
 </div>
@@ -41,13 +41,20 @@
    <div class="row" style="height:150px;">
        <div class="th bottom-border">내용</div>
        <div class="td bottom-border">
-           <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" maxlength="76" style="width: 100%;height: 100%; resize: none;"  oninput="onchangePrevKkoTxt(this)" ></textarea>
+           <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" maxlength="76" style="width: 100%;height: 100%; resize: none;"  oninput="onchangePrevKkoTxt(this)" >${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea>
        </div>
    </div>
    <div class="row">
        <div class="th">수신거부 문구</div>
        <div class="td">
-           <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);" placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."/>
+           <input type="text" class="txt_input" name="rejectText" style="width: calc(100% - 110px);"
+                   <c:if test="${fn:trim(rejectText[0].list_nm) != ''}">
+                       value="${cutil:numberToPhone(rejectText[0].list_val)}"
+                   </c:if>
+                   <c:if test="${fn:trim(rejectText[0].list_nm) == ''}">
+                       placeholder="기본 수신거부 문구가 설정되어 있지 않습니다."
+                   </c:if>
+           />
            <div style="display: flex; width: 110px">
                <span class="btn_sm_line btn_inline" onclick="addRejectText('kko_ft')">사용</span>
                <span class="btn_sm_line btn_inline" onclick="mobileRejectTextPopup(1)">변경</span>
@@ -70,27 +77,49 @@
    <div class="row flex_box double">
        <div class="th" style="line-height: 72px;">버튼명</div>
        <div class="td first-td right-border">
-           <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+           <c:choose>
+               <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                   <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+               </c:when>
+               <c:otherwise>
+                   <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+               </c:otherwise>
+           </c:choose>
        </div>
        <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
        <div class="td flex_box" style="flex-direction: column;">
            <div class="row flex_box" style="width: 100%;">
                <div class="th">Pc 링크</div>
                <div class="td flex_box">
-                   <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                   <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}"
+                       <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                           readonly
+                       </c:if>
+                   />
                </div>
            </div>
            <div class="row flex_box" style="width: 100%;">
                <div class="th">Mobile 링크</div>
                <div class="td flex_box">
-                   <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)"/>
+                   <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}"
+                       <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                           readonly
+                       </c:if>
+                   />
                </div>
            </div>
        </div>
        <div class="td flex_box" style="width: 273px; align-items: center;">
            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-           <input type="button" class="btn_sm_line kakaoLinkBtn" value="생성"/>
+           <input type="button" class="btn_sm_line kakaoLinkBtn"
+               <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
+                   value ="생성"
+               </c:if>
+               <c:if test="${fn:trim(list[0].kko_btn_url) != ''}">
+                   value="삭제"
+               </c:if>
+           />
        </div>
    </div>
 </div>

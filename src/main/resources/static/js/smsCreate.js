@@ -562,7 +562,7 @@ let kkoCreate = {
     }
     , brandFcContents: function (text, number) {
         const limit = 180;
-        const maxNewlines = 2;
+        const maxNewlines = 10;
         const el = (text && text.jquery) ? text[0] : text;
         if (!el) return;
         const $text = $(el);
@@ -619,9 +619,9 @@ let kkoCreate = {
             return false;
         }
         if(type === "btn") {
-            const sliced = newTitle.substring(0, 14);
+            const sliced = newTitle.substring(0, 8);
             if (newTitle.length > 14) {
-                popup.popAlert('버튼명은 14자까지 입력할 수 있습니다.');
+                popup.popAlert('버튼명은 8자까지 입력할 수 있습니다.');
                 $(title).val(sliced);
                 return false;
             } else {
