@@ -1896,6 +1896,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 "2" -> listDto.msg_tp = "DMCH221"
                 "3" -> {
+                    listDto.msg_tp = "DMCH222"
                     val img = listOf(dto.kakao_item_img_cd_1, dto.kakao_item_img_cd_2, dto.kakao_item_img_cd_3, dto.kakao_item_img_cd_4, dto.kakao_item_img_cd_5, dto.kakao_item_img_cd_6)
                     val header = listOf(dto.kkoHeader1, dto.kkoHeader2, dto.kkoHeader3, dto.kkoHeader4, dto.kkoHeader5, dto.kkoHeader6)
                     val body = listOf(dto.kkoBody1, dto.kkoBody2, dto.kkoBody3, dto.kkoBody4, dto.kkoBody5, dto.kkoBody6)
