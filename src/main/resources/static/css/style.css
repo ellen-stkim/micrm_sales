@@ -1732,6 +1732,7 @@
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
+    line-height: 1.5;
 }
 .row.body .column_1 .title {
     height: 100%;
@@ -2314,6 +2315,7 @@
 }
 #kakao .column_1,
 #rcs .column_1 {
+    overflow: auto;
     line-height: 35px;
 }
 #kakao .column_1 .custom_radio,
