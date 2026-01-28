@@ -204,7 +204,7 @@
                                         <div class="th">문자 제목</div>
                                         <div class="column_1">
                                             <input type="text" class="title kakaoTitle" name="cont_sub_list" value="${fn:escapeXml(list[0].cont_sub)}"/>
-                                            <span class="ex_txt">※ 실제 발송에는 반영되지 않습니다.</span>
+                                            <span class="ex_txt">※ 와이드 리스트형을 제외한 발송에는 반영되지 않습니다.</span>
                                         </div>
                                     </div>
                                     <div class="row body">
