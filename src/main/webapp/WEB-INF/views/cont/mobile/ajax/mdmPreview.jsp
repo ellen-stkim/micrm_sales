@@ -181,8 +181,8 @@
                                                                     </c:if>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <c:set var="urlKey" value="${'kko_btn_url' + i}"/>
-                                                                    <c:set var="nmKey" value="${'kko_btn_nm' + i}"/>
+                                                                    <c:set var="urlKey" value="${'kko_btn_url' += i}"/>
+                                                                    <c:set var="nmKey" value="${'kko_btn_nm' += i}"/>
                                                                     <c:if test="${not empty content[urlKey]}">
                                                                         <a href="${content[urlKey]}" target="_blank" rel="noopener" class="sms_btn">${content[nmKey]}</a>
                                                                     </c:if>
