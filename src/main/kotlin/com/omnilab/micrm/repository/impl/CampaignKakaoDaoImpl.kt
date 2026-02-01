@@ -308,14 +308,26 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             when (kakaoCont.msg_tp) {
                "DMCH220" -> {
                    kkoMsgdto.type = "U_FL"
-                   kkoMsgdto.item = kakaoCont.kko_item_json
+                   //kkoMsgdto.item = kakaoCont.kko_item_json
+                   var msg = kakaoCont.kko_item_json
+                   for (key in map.keys) {
+                       val reg = Regex("\\{\\{(?i)${key}}}")
+                       msg = kakaoCont.kko_carousel_json?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                   }
+                   kkoMsgdto.item = msg
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
                }
                "DMCH222" -> {
                    kkoMsgdto.type = "U_FC"
-                   kkoMsgdto.carousel_json = kakaoCont.kko_carousel_json
+                   //kkoMsgdto.carousel_json = kakaoCont.kko_carousel_json
+                   var msg = kakaoCont.kko_carousel_json
+                   for (key in map.keys) {
+                       val reg = Regex("\\{\\{(?i)${key}}}")
+                       msg = kakaoCont.kko_carousel_json?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                   }
+                   kkoMsgdto.carousel_json = msg
                }
                "DMCH223" -> {
                    kkoMsgdto.type = "U_FP"

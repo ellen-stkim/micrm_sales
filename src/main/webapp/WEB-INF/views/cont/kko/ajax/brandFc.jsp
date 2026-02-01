@@ -48,7 +48,7 @@
             <div class="row">
                <div class="th top-border">타이틀</div>
                <div class="td top-border">
-                   <input type="text" name="kkoHeader${status.count}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandTitle(this, ${status.count});" value="${list[0]['kkoHeader' += status.count]}">
+                   <input type="text" name="kkoHeader${status.count}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandFcTitle(this, ${status.count});" value="${list[0]['kkoHeader' += status.count]}">
                </div>
             </div>
             <div class="row" style="height:150px;">
@@ -79,10 +79,8 @@
                        </div>
                    </div>
                </div>
-               <div class="td flex_box" style="width: 273px; align-items: center;">
-                   <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                   <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrl${status.count}_1" value="생성"/>
+               <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
+                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="brandFcBtn${status.count}_1" value="${empty list[0]['kkoBtnLst' += status.count += '_1'] ? "생성": "삭제"}"/>
                </div>
            </div>
             <div class="row flex_box double">
@@ -105,10 +103,8 @@
                        </div>
                    </div>
                </div>
-               <div class="td flex_box" style="width: 273px; align-items: center;">
-                   <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                   <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrl${status.count}_2" value="생성"/>
+               <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
+                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="brandFcBtn${status.count}_2" value="${empty list[0]['kkoBtnLst' += status.count += '_2'] ? "생성": "삭제"}"/>
                </div>
            </div>
         </div>

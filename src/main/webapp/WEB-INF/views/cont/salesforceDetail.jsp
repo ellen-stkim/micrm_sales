@@ -664,7 +664,7 @@
                                     </div>
                                 </div>
                                 <div class="viewer_area" id="kakao_at_viewer" <c:if test="${cont_tp ne 'DMTP05'}">hidden="hidden" </c:if>>
-                                    <div class="top">미리보기</div>
+                                    <div class="top">알림톡 미리보기</div>
                                     <div class="at_inner template_body">
                                         <div class="text">
                                             <div class="row_body">
@@ -752,6 +752,7 @@
                                     </div>
                                 </div>
                                 <div class="viewer_area" id="kakao_brand_viewer" <c:if test='${list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222"}'>hidden="hidden"</c:if>>
+                                    <div class="top">브랜드톡 미리보기</div>
                                     <div class="rcs_inner kko_slide">
                                         <div class="slide_area">
                                             <div class="kko_prev">
@@ -760,7 +761,79 @@
                                             <div class="kko_next">
                                                 <img src="/image/ico_rcs_next.png" alt="">
                                             </div>
-                                            <div class="swiper-container medium kkoBrandFcSwiper">
+                                            <div class="swiper-container medium kkoBrandFaSwiper" <c:if test='${list[0].msg_tp ne "DMCH221"}'>hidden="hidden"</c:if>>
+                                                <div class="swiper-wrapper">
+                                                    <c:forEach var="idx" begin="0" end="6" >
+                                                        <div class="swiper-slide slide${idx}">
+                                                            <section>
+                                                                <div class="img_area">
+                                                                    <img id="brandFaImgArea${idx}" src="${list[0]['kko_view_item_img_url_' += idx]}" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                                </div>
+                                                                <c:set var="imgIdx" value="${idx+1}"/>
+                                                                <div class="txt_area">
+                                                                    <h3 id="brandFatitleArea${idx}">
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty list[0]['kkoHeader' += idx]}">
+                                                                                ${list[0]['kkoHeader' += idx]}
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                타이틀을 입력해주세요.
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </h3>
+                                                                    <dl class="list_price" >
+                                                                        <dd class="dc_price" id="brandFaDiscount${idx}"></dd>
+                                                                        <dd class="normal_price" id="brandFaPrice${idx}"></dd>
+                                                                        <dd class="sale_percent" id="brandFaPercent${idx}"></dd>
+                                                                    </dl>
+                                                                    <div style=" display: block; width: 100%; height: 1px; margin: 8px 1px; background-color: rgba(0, 0, 0, 0.08);"></div>
+                                                                    <p id="brandFatextArea${idx}" style="padding-top: 10px; overflow-wrap: anywhere; word-break: break-word; white-space: normal;">
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty list[0]['kkoBody' += idx]}">
+                                                                                ${list[0]['kkoBody' += idx]}
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                내용을 입력해주세요.
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </p>
+                                                                    <c:if test="${idx ne 0}">
+                                                                        <div id="brandFaBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
+                                                                            <div class="kakao_link" id="brandFaBtn${idx}_1" data="1" <c:if test="${empty list[0]['kkoBtnLst' += idx += '_1']}">style="display: none"</c:if>>${list[0]['kkoBtnLst' += idx += '_1']}</div>
+                                                                        </div>
+                                                                    </c:if>
+                                                                </div>
+                                                            </section>
+                                                            <div class="text_count">
+                                                                <span class="num en_font">
+                                                                    <span id="brandFatextByte${idx}">
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty list[0]['kkoBody' += idx]}">
+                                                                                ${fn:length(list[0]['kkoBody' += idx])}
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                0
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </span>/${idx eq 0 ? '50' : '34'}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                                <div class="kko_paging en_font">1/6</div>
+                                                <div class="kko_register">수신거부 | 홈 > 친구차단</div>
+                                                <div class="text_count">
+                                                    <p>※ 본문내용 : 카드 당
+                                                        <span class="en_font">180</span>
+                                                        글자 이내
+                                                        <br>
+                                                        본문길이 : 최대 3줄
+                                                        <br>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-container medium kkoBrandFcSwiper" <c:if test='${list[0].msg_tp ne "DMCH222"}'>hidden="hidden"</c:if>>
                                                 <div class="swiper-wrapper">
                                                     <c:forEach var="idx" begin="1" end="6" >
                                                         <div class="swiper-slide slide${idx}">
@@ -792,8 +865,8 @@
                                                                         </c:choose>
                                                                     </p>
                                                                     <div id="brandFcBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
-                                                                        <div class="kakao_link" id="brandFcBtn${idx}_1" data="1" style="display: none">${list[0]['kkoBtnUrlLstPc' += idx += '_1']}</div>
-                                                                        <div class="kakao_link" id="brandFcBtn${idx}_2" data="2" style="display: none">${list[0]['kkoBtnUrlLstMo' += idx += '_2']}</div>
+                                                                        <div class="kakao_link" id="brandFcBtn${idx}_1" data="1" <c:if test="${empty list[0]['kkoBtnLst' += idx += '_1']}">style="display: none"</c:if>>${list[0]['kkoBtnLst' += idx += '_1']}</div>
+                                                                        <div class="kakao_link" id="brandFcBtn${idx}_2" data="2" <c:if test="${empty list[0]['kkoBtnLst' += idx += '_2']}">style="display: none"</c:if>>${list[0]['kkoBtnLst' += idx += '_2']}</div>
                                                                     </div>
                                                                 </div>
                                                             </section>

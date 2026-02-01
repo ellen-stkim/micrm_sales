@@ -109,9 +109,7 @@
                </div>
            </div>
        </div>
-       <div class="td flex_box" style="width: 273px; align-items: center;">
-           <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
-           <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+       <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
            <input type="button" class="btn_sm_line kakaoLinkBtn"
                <c:if test="${fn:trim(list[0].kko_btn_url) == ''}">
                    value ="생성"

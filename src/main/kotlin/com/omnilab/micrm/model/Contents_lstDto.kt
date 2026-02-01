@@ -155,6 +155,7 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
     var kakao_item_img_cd_2: String? = null
     var kakao_item_img_cd_3: String? = null
     var kakao_item_img_cd_4: String? = null
+    var kko_view_item_img_url_0: String? = null
     var kko_view_item_img_url_1: String? = null
     var kko_view_item_img_url_2: String? = null
     var kko_view_item_img_url_3: String? = null
@@ -173,12 +174,14 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
     var kkoItemUrlLstMo2: String? = null
     var kkoItemUrlLstMo3: String? = null
     var kkoItemUrlLstMo4: String? = null
+    var kkoHeader0: String? = null
     var kkoHeader1: String? = null
     var kkoHeader2: String? = null
     var kkoHeader3: String? = null
     var kkoHeader4: String? = null
     var kkoHeader5: String? = null
     var kkoHeader6: String? = null
+    var kkoBody0: String? = null
     var kkoBody1: String? = null
     var kkoBody2: String? = null
     var kkoBody3: String? = null
@@ -223,6 +226,18 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
     var kkoBtnUrlLstMo6_2: String? = null
     var kakao_item_img_cd_5: String? = null
     var kakao_item_img_cd_6: String? = null
+    var kkoPrice1: Long? = null
+    var kkoPrice2: Long? = null
+    var kkoPrice3: Long? = null
+    var kkoPrice4: Long? = null
+    var kkoPrice5: Long? = null
+    var kkoPrice6: Long? = null
+    var kkoDiscountPrice1: Long? = null
+    var kkoDiscountPrice2: Long? = null
+    var kkoDiscountPrice3: Long? = null
+    var kkoDiscountPrice4: Long? = null
+    var kkoDiscountPrice5: Long? = null
+    var kkoDiscountPrice6: Long? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

@@ -2459,10 +2459,12 @@
     color: #666666;
     border: 1px solid #999999;
 }
+.brandFaContent,
 .brandFcContent,
 .rcs_slide_conts {
     display: none;
 }
+.brandFaContent.on,
 .brandFcContent.on,
 .rcs_slide_conts.on {
     display: block;
@@ -9451,4 +9453,43 @@ input::placeholder {
   background: #333; /* 활성화된 점 색상 */
   width: 15px; /* 길쭉한 점 */
   border-radius: 5px;
+}
+
+.list_price {
+    overflow:hidden;
+    list-style:outside none none;
+    margin: 2px 0px 0px;
+    padding:0;
+}
+
+.dc_price {
+    font-weight: 700;
+    font-size: 15px;
+    color: rgb(25, 25, 25);
+    line-height: 20px;
+    float: left;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+}
+
+.normal_price {
+    margin: 6px 0 0 2px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 15px;
+    color: rgb(25, 25, 25);
+    float: left;
+    vertical-align: top;
+    padding: 0;
+}
+
+.sale_percent {
+    margin: 6px 0px 0px 5px;
+    font-size: 10px;
+    line-height: 13px;
+    color: rgb(255, 98, 41);
+    float: left;
+    vertical-align: top;
+    padding: 0px;
 }

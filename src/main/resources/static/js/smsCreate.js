@@ -545,7 +545,170 @@ let rcsCreate = {
 }
 
 let kkoCreate = {
-    brandTitle : function(title, number) {
+    brandFaTitle : function(title, number) {
+        const $El = $("#brandFatitleArea" + number);
+        let titleTxt = $(title).val();
+        let newTitle = String(titleTxt);
+        let stringTitle = '';
+        if (newTitle.length > 20) {
+            popup.popAlert('타이틀은 최대 20글자까지 입력 가능 합니다.');
+            stringTitle = titleTxt.slice(0, 20);
+            title.value = stringTitle;
+            $El.text(stringTitle);
+            return false;
+        }else{
+            $El.text(newTitle);
+        }
+    }
+    , brandFaContents: function (text, number) {
+        const rules = (Number(number) === 0)
+            ? {limit: 50, maxNewlines: 2}
+            : {limit: 34, maxNewlines: 1};
+
+        const limit = rules.limit;
+        const maxNewlines = rules.maxNewlines;
+
+        const el = (text && text.jquery) ? text[0] : text;
+        if (!el) return;
+
+        const $text = $(el);
+        const $byteEl = $("#brandFatextByte" + number);
+        const $previewEl = $("#brandFatextArea" + number);
+
+        let raw = (el.value != null) ? String(el.value) : "";
+        raw = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+        // 줄바꿈 제한
+        let nlCount = 0;
+        let limited = "";
+        for (const ch of raw) {
+            if (ch === "\n") {
+                nlCount++;
+                if (nlCount > maxNewlines) {
+                    limited += " ";
+                    continue;
+                }
+            }
+            limited += ch;
+        }
+
+        if (limited !== raw) {
+            popup.popAlert(`줄바꿈은 ${maxNewlines}개를 초과하여 사용할 수 없습니다.`);
+            el.value = limited;
+        }
+
+        const chars = Array.from(limited);
+        if (chars.length > limit) {
+            popup.popAlert(`본문내용은 ${limit}자를 초과할 수 없습니다.`);
+            limited = chars.slice(0, limit).join('');
+            el.value = limited;
+        }
+
+        const count = Array.from(limited).length;
+        $byteEl.text(count);
+
+        const safeHtml = limited
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/\n/g, "<br/>");
+
+        $previewEl.html(safeHtml);
+
+        // 기존 스타일 처리 유지
+        const $textDiv = $byteEl.closest(".text_count");
+        $text.removeClass("red_border");
+        $textDiv.removeClass("red_color");
+
+        const $root = $byteEl.closest(".rcs_slide");
+        const limitOverCnt = $root.find(".swiper-slide .text_count.red_color").length;
+        const $limitText = $root.find(".swiper-container > .text_count");
+        if (limitOverCnt > 0) $limitText.addClass("red_color");
+        else $limitText.removeClass("red_color");
+    }
+    , brandFaPrice: function(obj, number) {
+        const el = (obj && obj.jquery) ? obj[0] : obj;
+        if (!el) return;
+
+        const idx = Number(number);
+        let raw = (el.value != null) ? String(el.value) : "";
+        const digits = raw.replace(/[^\d]/g, "");
+        if (digits === "") {
+            el.value = "";
+            $("#kkoPrice" + idx).val("");
+            $("#brandFaPrice" + idx).html("");
+            this._toggleBrandFaPriceStrike(idx);
+            return;
+        }
+        const price = parseInt(digits, 10);
+        if (!Number.isFinite(price) || price < 0) {
+            el.value = "";
+            $("#kkoPrice" + idx).val("");
+            $("#brandFaPrice" + idx).html("");
+            this._toggleBrandFaPriceStrike(idx);
+            return;
+        }
+        el.value = price;
+        $("#brandFaPrice" + idx).html(common.comma(price));
+        const $discount = $("#kkoDiscountPrice" + idx);
+        const discountDigits = String($discount.val() || "").replace(/[^\d]/g, "");
+        if (discountDigits !== "") {
+            const discount = parseInt(discountDigits, 10);
+            if (Number.isFinite(discount) && discount > price) {
+                popup.popAlert("할인금액은 가격보다 클 수 없습니다.");
+                $discount.val(common.comma(price));
+            }
+        }
+        this._toggleBrandFaPriceStrike(idx);
+    }
+    , brandFaDiscount: function(obj, number) {
+        const el = (obj && obj.jquery) ? obj[0] : obj;
+        if (!el) return;
+        const idx = Number(number);
+        const $price = $("#kkoPrice" + idx);
+        const priceDigits = String($price.val() || "").replace(/[^\d]/g, "");
+        if (priceDigits === "") {
+            popup.popAlert("가격을 먼저 입력해 주세요.");
+            el.value = "";
+            $("#brandFaDiscount" + idx).html("");
+            $price.focus();
+            this._toggleBrandFaPriceStrike(idx);
+            return;
+        }
+        const price = parseInt(priceDigits, 10);
+        if (!Number.isFinite(price) || price < 0) {
+            popup.popAlert("가격 값이 올바르지 않습니다.");
+            $("#brandFaDiscount" + idx).html("");
+            el.value = "";
+            this._toggleBrandFaPriceStrike(idx);
+            return;
+        }
+        let raw = (el.value != null) ? String(el.value) : "";
+        const digits = raw.replace(/[^\d]/g, "");
+        if (digits === "") {
+            el.value = "";
+            $("#brandFaDiscount" + idx).html("");
+            this._toggleBrandFaPriceStrike(idx);
+            return;
+        }
+        let discount = parseInt(digits, 10);
+        if (!Number.isFinite(discount) || discount < 0) {
+            el.value = "";
+            $("#brandFaDiscount" + idx).html("");
+            this._toggleBrandFaPriceStrike(idx);
+            return;
+        }
+        if (discount > price) {
+            popup.popAlert("할인금액은 가격보다 클 수 없습니다.");
+            discount = price;
+        }
+        el.value = discount;
+        $("#brandFaDiscount" + idx).html(common.comma(discount));
+        this._toggleBrandFaPriceStrike(idx);
+    }
+    , brandFcTitle : function(title, number) {
         const $El = $("#brandFctitleArea" + number);
         let titleTxt = $(title).val();
         let newTitle = String(titleTxt);
@@ -662,6 +825,19 @@ let kkoCreate = {
                 $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
                 return false;
             }
+        }
+    }
+    , _toggleBrandFaPriceStrike: function (idx) {
+        const $priceLabel = $("#brandFaPrice" + idx);
+        const discountDigits = String($("#kkoDiscountPrice" + idx).val() || "").replace(/[^\d]/g, "");
+        const discount = discountDigits ? parseInt(discountDigits, 10) : 0;
+
+        if (Number.isFinite(discount) && discount > 0) {
+            $priceLabel.css("text-decoration", "line-through");
+            $priceLabel.css("font-size", "10px");
+        } else {
+            $priceLabel.css("text-decoration", "");
+            $priceLabel.css("font-size", "15px");
         }
     }
 }

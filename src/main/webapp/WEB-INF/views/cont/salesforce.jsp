@@ -445,7 +445,7 @@
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_at_viewer" hidden>
-                                <div class="top">미리보기</div>
+                                <div class="top">알림톡 미리보기</div>
                                 <div class="at_inner template_body">
                                     <div class="text">
                                         <div class="row_body">
@@ -462,6 +462,7 @@
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_brand_viewer" hidden="hidden">
+                                <div class="top">브랜드톡 미리보기</div>
                                 <div class="rcs_inner kko_slide">
                                     <div class="slide_area">
                                         <div class="kko_prev">
@@ -470,7 +471,56 @@
                                         <div class="kko_next">
                                             <img src="/image/ico_rcs_next.png" alt="">
                                         </div>
-                                        <div class="swiper-container medium kkoBrandFcSwiper">
+                                        <div class="swiper-container medium kkoBrandFaSwiper" hidden="hidden">
+                                            <div class="swiper-wrapper">
+                                                <c:forEach var="idx" begin="0" end="6">
+                                                    <div class="swiper-slide slide${idx}">
+                                                        <section>
+                                                            <div class="img_area">
+                                                                <img id="brandFaImgArea${idx}" src="" onerror="this.src = '/image/bg_none.png'" alt=""/>
+                                                            </div>
+                                                            <c:set var="imgIdx" value="${idx+1}"/>
+                                                            <div class="txt_area">
+                                                                <h3 id="brandFatitleArea${idx}">
+                                                                    타이틀을 입력해주세요.
+                                                                </h3>
+                                                                <dl class="list_price" >
+                                                                    <dd class="dc_price" id="brandFaDiscount${idx}"></dd>
+                                                                    <dd class="normal_price" id="brandFaPrice${idx}"></dd>
+                                                                    <dd class="sale_percent" id="brandFaPercent${idx}"></dd>
+                                                                </dl>
+                                                                <div style=" display: block; width: 100%; height: 1px; margin: 8px 1px; background-color: rgba(0, 0, 0, 0.08);"></div>
+                                                                <p id="brandFatextArea${idx}" style="padding-top: 10px; overflow-wrap: anywhere; word-break: break-word; white-space: normal;">
+                                                                    내용을 입력해주세요.
+                                                                </p>
+                                                                <c:if test="idx ne 0">
+                                                                    <div id="brandFaBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
+                                                                        <div class="kakao_link" id="brandFaBtn${idx}_1" data="1" style="display: none"></div>
+                                                                    </div>
+                                                                </c:if>
+                                                            </div>
+                                                        </section>
+                                                        <div class="text_count">
+                                                            <span class="num en_font">
+                                                                <span id="brandFatextByte${idx}">0</span>/${idx eq 0 ? '50' : '34'}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                            <div class="kko_paging en_font">1/6</div>
+                                            <div class="kko_register">수신거부 | 홈 > 친구차단</div>
+                                            <div class="text_count">
+                                                <p>※ 본문내용 : 카드 당
+                                                    <span class="en_font">180</span>
+                                                    글자 이내
+                                                    <br>
+                                                    본문길이 : 최대 3줄
+                                                    <br>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-container medium kkoBrandFcSwiper" hidden="hidden">
                                             <div class="swiper-wrapper">
                                                 <c:forEach var="idx" begin="1" end="6">
                                                     <div class="swiper-slide slide${idx}">
@@ -1039,11 +1089,11 @@
     let mstSeq = null;
     let dropTarget = null;
     let bindList = [];
-    let kkoBrandFcSwiper;
+    let kkoBrandFcSwiper, kkoBrandFaSwiper;
 
     $(function () {
         //임시 주석
-        <%--mobileInfo(2689);--%>
+        mobileInfo(2689);
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -1131,24 +1181,43 @@
             const type = $('input[name="kko_msg_tp"]:checked').val();
 
             if (type === "2" || type === "3") {
+                const btnPrefix = (type === "2") ? "brandFaBtn" : "brandFcBtn";
                 const id = this.id;
-                const m = id.match(/^kkoBtnUrl(\d+)_(1|2)$/);
-                if (!m) return;
-
                 const groupNo = Number(m[1]);
-                const kind = Number(m[2]); // 1|2
+                const kind = Number(m[2]);
 
-                const $btn1 = $("#brandFcBtn" + groupNo + "_1");
-                const $btn2 = $("#brandFcBtn" + groupNo + "_2");
-                const $targetBtn = $("#brandFcBtn" + groupNo + "_" + kind);
+                const $btn1 = $("#" + btnPrefix + groupNo + "_1");
+                const $btn2 = $("#" + btnPrefix + groupNo + "_2");
+                const $targetBtn = $("#" + btnPrefix + groupNo + "_" + kind);
 
-                const nameKey = "kkoBtnLst" + groupNo + "_" + kind;
-                const label = ($("input[name='" + nameKey + "']").val() || "");
+                const $name = $("input[name=kkoBtnLst" + groupNo + "_" + kind + "]");
+                const $pc = $("input[name=kkoBtnUrlLstPc" + groupNo + "_" + kind + "]");
+                const $mo = $("input[name=kkoBtnUrlLstMo" + groupNo + "_" + kind + "]");
 
+                const label = ($name.val() || "").trim();
+                const btnPc = ($pc.val() || "").trim();
+                const btnMo = ($mo.val() || "").trim();
+
+                const isHttp = (v) => /^https?:\/\//i.test(v);
+                alert(btnState);
                 if (btnState === "생성") {
+                    if (!label) {
+                        popup.popAlert('메시지에 노출될 버튼의 이름을 입력해주세요!');
+                        return false;
+                    }
+                    if (!btnPc || !btnMo) {
+                        popup.popAlert('버튼 클릭시 이동할 URL을 입력해주세요.');
+                        return false;
+                    }
+                    if (!isHttp(btnPc) || !isHttp(btnMo)) {
+                        popup.popAlert('정확한 링크 URL을 입력해주세요.');
+                        return false;
+                    }
+
                     $btn1.hide();
                     $btn2.hide();
-                    if (kind === 2 && ($btn1.html() || "") === "") {
+
+                    if (kind === 2 && (($btn1.html() || "") === "")) {
                         popup.popAlert('첫번째 버튼이 생성 되지 않았습니다.');
                         return false;
                     } else if (kind === 1) {
@@ -1159,17 +1228,24 @@
 
                     $targetBtn.html(label).show();
                     $btn.val('삭제');
+
                 } else { // 삭제
-                    const suffix = "_" + kind;
-
-                    $("#brandFcBtn" + groupNo + suffix).html("");
-                    if (kind === 2) $("#brandFcBtn" + groupNo + suffix).hide();
-
-                    $("#kkoBtnLst" + groupNo + suffix).val("");
-                    $("#kkoItemUrlLstPc" + groupNo + suffix).val("");
-                    $("#kkoItemUrlLstMo" + groupNo + suffix).val("");
-
+                    alert("AWEWAEWA")
+                    $name.val("");
+                    $pc.val("");
+                    $mo.val("");
                     $btn.val('생성');
+                    if(kine === 1){
+                        $("#" + kkoBtnUrlLstPc + groupNo + "_1").html("");
+                        $("#" + btnPrefix + groupNo + "_1").hide();
+
+                        $("#" + btnPrefix + groupNo + "_2").html("");
+                        $("#" + btnPrefix + groupNo + "_2").html("");
+                        $("#" + btnPrefix + groupNo + "_2").hide();
+                    }else {
+                        $("#" + btnPrefix + groupNo + "_2").html("");
+                        $("#" + btnPrefix + groupNo + "_2").hide();
+                    }
                 }
             } else {
                 const $container = $("#addKakaoLink");
@@ -1624,6 +1700,9 @@
             $('.rcs_slide_conts').eq(nowIndex).addClass('on').siblings().removeClass('on');
             $('.brandFcContent').eq(nowIndex).addClass('on').siblings().removeClass('on');
             kkoBrandFcSwiper.slideTo(nowIndex);
+            $('.brandFaContent').eq(nowIndex).addClass('on').siblings().removeClass('on');
+            kkoBrandFaSwiper.slideTo(nowIndex);
+
         });
 
         $(document).on('click', '#previewBtn', function () {
@@ -1942,7 +2021,7 @@
             couponNm = $("#savedCouponNm").val();
 
             //임시 주석
-            mappingLst();
+            //mappingLst();
         }
 
         let param = {seq: seq}
@@ -3052,6 +3131,13 @@
                 $('input[name="kko_view_item_img_url_' + idx + '"]').val(kkoImgurl);
                 $('#' + type).parent('.td').removeClass('outline');
                 $("#prev_ft_wide_lst_img" + idx).attr("src", kkoImgurl);
+            } else if (type.startsWith('kakaoImageFa')) {
+                const idx = type.replace('kakaoImageFa', '');
+                $('#' + type).val(ImgNm);
+                $('input[name="kakao_item_img_cd_' + idx + '"]').val(imgCheck);
+                $('input[name="kko_view_item_img_url_' + idx + '"]').val(kkoImgurl);
+                $('#' + type).parent('.td').removeClass('outline');
+                $("#brandFaImgArea" + idx).attr("src", kkoImgurl);
             } else if (type.startsWith('kakaoImageFc')) {
                 const idx = type.replace('kakaoImageFc', '');
                 $('#' + type).val(ImgNm);
@@ -4270,6 +4356,12 @@
                 $('#prev_ft_wide_lst_img' + i).attr("src", "");
                 $('#prev_ft_wide_lst_txt' + i).html("리스트 항목 " + i + " 내용");
             }
+            for(let i=1; i<=7; i++) {
+                $('#brandFaImgArea' + i).attr("src", "");
+                $('#brandFatitleArea' + i).html("타이틀을 입력해주세요.");
+                $('#brandFatextArea' + i).html("내용을 입력해주세요.");
+                $('#brandFaBtn' + i + '_1').hide().html("");
+            }
             for(let i=1; i<=6; i++) {
                 $('#brandFcImgArea' + i).attr("src", "");
                 $('#brandFctitleArea' + i).html("타이틀을 입력해주세요.");
@@ -4283,7 +4375,21 @@
                 $("#prev_ft_video").hide();
                 $("#prev_ft_txt").hide();
                 $("#prev_ft_wide_lst").show();
-            } else if(radioVal === "2" || radioVal === "3"){
+            } else if(radioVal === "2"){
+                if(kkoBrandFaSwiper) kkoBrandFaSwiper.destroy();
+                kkoBrandFaSwiper = new Swiper('.kkoBrandFaSwiper', {
+                    initialSlide: 1,
+                    direction: 'horizontal',
+                    centeredSlides: true,
+                    slidesPerView: 1.2,
+                    pagination: { el: '.kko_paging', type: 'fraction' },
+                    navigation: { nextEl: '.kko_next', prevEl: '.kko_prev' },
+                });
+                $("#kakao_ft_viewer").hide();
+                $("#kakao_brand_viewer").show();
+                $(".kkoBrandFaSwiper").show();
+                $(".kkoBrandFcSwiper").hide();
+            } else if(radioVal === "3"){
                 if(kkoBrandFcSwiper) kkoBrandFcSwiper.destroy();
                 kkoBrandFcSwiper = new Swiper('.kkoBrandFcSwiper', {
                     direction: 'horizontal',
@@ -4294,6 +4400,8 @@
                 });
                 $("#kakao_ft_viewer").hide();
                 $("#kakao_brand_viewer").show();
+                $(".kkoBrandFaSwiper").hide();
+                $(".kkoBrandFcSwiper").show();
             } else {
                 $("#kakao_ft_viewer").show();
                 $("#kakao_brand_viewer").hide();
