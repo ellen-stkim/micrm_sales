@@ -1093,7 +1093,7 @@
 
     $(function () {
         //임시 주석
-        <%-- mobileInfo(2689); --%>
+        <%--mobileInfo(2689);--%>
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -1182,7 +1182,13 @@
 
             if (type === "2" || type === "3") {
                 const btnPrefix = (type === "2") ? "brandFaBtn" : "brandFcBtn";
+                const buttonPrefix = (type === "2") ? "kkoBtnUrlFa" : "kkoBtnUrlFc";
                 const id = this.id;
+
+                var re = new RegExp("^" + buttonPrefix + "(\\d+)_(1|2)$");
+                var m = id.match(re);
+                if (!m) return;
+
                 const groupNo = Number(m[1]);
                 const kind = Number(m[2]);
 
@@ -1199,7 +1205,6 @@
                 const btnMo = ($mo.val() || "").trim();
 
                 const isHttp = (v) => /^https?:\/\//i.test(v);
-                alert(btnState);
                 if (btnState === "생성") {
                     if (!label) {
                         popup.popAlert('메시지에 노출될 버튼의 이름을 입력해주세요!');
@@ -1228,15 +1233,13 @@
 
                     $targetBtn.html(label).show();
                     $btn.val('삭제');
-
                 } else { // 삭제
-                    alert("AWEWAEWA")
                     $name.val("");
                     $pc.val("");
                     $mo.val("");
                     $btn.val('생성');
-                    if(kine === 1){
-                        $("#" + kkoBtnUrlLstPc + groupNo + "_1").html("");
+                    if(kind === 1){
+                        $("#" + btnPrefix + groupNo + "_1").html("");
                         $("#" + btnPrefix + groupNo + "_1").hide();
 
                         $("#" + btnPrefix + groupNo + "_2").html("");

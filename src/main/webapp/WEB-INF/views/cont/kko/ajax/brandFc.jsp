@@ -80,7 +80,7 @@
                    </div>
                </div>
                <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
-                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="brandFcBtn${status.count}_1" value="${empty list[0]['kkoBtnLst' += status.count += '_1'] ? "생성": "삭제"}"/>
+                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrlFc${status.count}_1" value="${empty list[0]['kkoBtnLst' += status.count += '_1'] ? "생성": "삭제"}"/>
                </div>
            </div>
             <div class="row flex_box double">
@@ -104,7 +104,7 @@
                    </div>
                </div>
                <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
-                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="brandFcBtn${status.count}_2" value="${empty list[0]['kkoBtnLst' += status.count += '_2'] ? "생성": "삭제"}"/>
+                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrlFc${status.count}_2"  value="${empty list[0]['kkoBtnLst' += status.count += '_2'] ? "생성": "삭제"}"/>
                </div>
            </div>
         </div>
