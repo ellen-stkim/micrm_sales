@@ -356,7 +356,7 @@ class SalesforceController {
      */
     @PostMapping("/{usr_cd}/senderMobileList.ajax")
     fun selectSenderMobileList(@ModelAttribute dto : SetLst_searchDto, @PathVariable(value = "usr_cd") usrCd: String): ModelAndView {
-        if(getUsrGrpCd(usrCd) != null){
+        return if(getUsrGrpCd(usrCd) != null){
             dto.usr_grp_cd = usrCd
             val view = ModelAndView("cont/mobile/ajax/senderMobileListAjax")
             val senderMap = salesforceService.selectSenderList(dto)
@@ -364,9 +364,9 @@ class SalesforceController {
             view.addObject("page", senderMap["page"])
             view.addObject("pageNo", senderMap["pageNo"])
             view.addObject("listCnt", senderMap["listCnt"])
-            return view
+            view
         }else{
-            return ModelAndView("redirect:/html/not.html")
+            ModelAndView("redirect:/html/not.html")
         }
     }
 

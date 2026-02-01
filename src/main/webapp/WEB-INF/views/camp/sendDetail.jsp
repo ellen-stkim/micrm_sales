@@ -29,16 +29,16 @@
         <div class="row bottom-border cf">
             <div class="left">
                 <c:if test="${reportSize > 0}">
-                    <a href="#" class="btn_basic ico_result left right-border"
-                       onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
+                    <a href="#" class="btn_basic ico_result left right-border" onclick="location.href='/report/proDt.mi?pro_id=${dto.pro_id}'"> 결과</a>
                 </c:if>
-                <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 결과 다운로드</a>
+                <c:if test="${user.usr_grp_cd ne '25'}">
+                    <a href="#" class="btn_basic down left right-border" onclick="detailDown();"> 결과 다운로드</a>
+                </c:if>
             </div>
         </div>
         <!-- row 영역 끝 -->
         <ul class="tab_row">
             <li class="on"><a href="javascript:void(0);">캠페인 상세로 보기</a></li>
-            <!-- <li><a href="javascript:void(0);">캠페인 플로우로 보기</a></li> -->
         </ul>
         <!--
            발송 상태에 따라 현재 진행 중인 ('article'클래스) 영역에
@@ -68,9 +68,7 @@
                                     <span class="number en_font">${st.count}</span>
                                     <div class="info_row">
                                         <h3 class="ellipsis">${g.camp_nm}</h3>
-                                        <span class="en_font">(<fmt:formatNumber
-                                                value="${dto.pro_st eq '03' ? tar_cnt : g.send_cnt}"
-                                                pattern="#,###"/>명)</span><br>
+                                        <span class="en_font">(<fmt:formatNumber value="${dto.pro_st eq '03' ? tar_cnt : g.send_cnt}" pattern="#,###"/>명)</span><br>
                                         <c:if test="${!empty g.avo_nm}">
                                             <span class="half-ellipsis">(${g.avo_nm})</span>
                                             <span class="bar">|</span>
@@ -92,12 +90,12 @@
                                                 <div class="chart" name="progress1"
                                                      data="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                 <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber
-                                                                    value="${sendCnt[camp_id].w_cnt}"
-                                                                    pattern="#,###"/></span>
-                                                    <span class="percents en_font">(<fmt:formatNumber
-                                                            type="percent" pattern="0.00%"
-                                                            value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
+                                                    <span class="number en_font">
+                                                        <fmt:formatNumber value="${sendCnt[camp_id].w_cnt}" pattern="#,###"/>
+                                                    </span>
+                                                    <span class="percents en_font">
+                                                        (<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].w_cnt/sendCnt[camp_id].t_cnt}"/>)
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,27 +107,26 @@
                                                 <div class="chart" name="progress2"
                                                      data="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                 <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber
-                                                                    value="${sendCnt[camp_id].s_cnt}"
-                                                                    pattern="#,###"/></span>
-                                                    <span class="percents en_font">(<fmt:formatNumber
-                                                            type="percent" pattern="0.00%"
-                                                            value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
+                                                    <span class="number en_font">
+                                                        <fmt:formatNumber value="${sendCnt[camp_id].s_cnt}" pattern="#,###"/>
+                                                    </span>
+                                                    <span class="percents en_font">
+                                                        (<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].s_cnt/sendCnt[camp_id].t_cnt}"/>)
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row_graph cf">
                                             <div class="th">실패</div>
                                             <div class="td cf">
-                                                <div class="chart" name="progress3"
-                                                     data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
+                                                <div class="chart" name="progress3" data="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"></div>
                                                 <div class="detail">
-                                                            <span class="number en_font"><fmt:formatNumber
-                                                                    value="${sendCnt[camp_id].f_cnt}"
-                                                                    pattern="#,###"/></span>
-                                                    <span class="percents en_font">(<fmt:formatNumber
-                                                            type="percent" pattern="0.00%"
-                                                            value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"/>)</span>
+                                                    <span class="number en_font">
+                                                        <fmt:formatNumber value="${sendCnt[camp_id].f_cnt}" pattern="#,###"/>
+                                                    </span>
+                                                    <span class="percents en_font">
+                                                        (<fmt:formatNumber type="percent" pattern="0.00%" value="${sendCnt[camp_id].f_cnt/sendCnt[camp_id].t_cnt}"/>)
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,13 +142,14 @@
                                                    <span class="number en_font">
                                                    <c:choose>
                                                        <c:when test="${empty openCnt[camp_id]}">0</c:when>
-                                                       <c:otherwise><fmt:formatNumber value="${openCnt[camp_id].cnt}"
-                                                                                      pattern="#,###"/></c:otherwise>
+                                                       <c:otherwise>
+                                                           <fmt:formatNumber value="${openCnt[camp_id].cnt}" pattern="#,###"/>
+                                                       </c:otherwise>
                                                    </c:choose>
                                                    </span>
-                                                    <span class="percents en_font">(<fmt:formatNumber type="percent"
-                                                                                                      pattern="0.00%"
-                                                                                                      value="${!empty openCnt[camp_id].cnt ? openCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
+                                                    <span class="percents en_font">
+                                                        (<fmt:formatNumber type="percent" pattern="0.00%" value="${!empty openCnt[camp_id].cnt ? openCnt[camp_id].cnt/g.send_cnt : '0'}"/>)
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,13 +162,10 @@
                                                      <span class="number en_font">
                                                      <c:choose>
                                                          <c:when test="${empty trackCnt[camp_id]}">0</c:when>
-                                                         <c:otherwise><fmt:formatNumber value="${trackCnt[camp_id].cnt}"
-                                                                                        pattern="#,###"/></c:otherwise>
+                                                         <c:otherwise><fmt:formatNumber value="${trackCnt[camp_id].cnt}" pattern="#,###"/></c:otherwise>
                                                      </c:choose>
                                                      </span>
-                                                    <span class="percents en_font">(<fmt:formatNumber type="percent"
-                                                                                                      pattern="0.00%"
-                                                                                                      value="${!empty trackCnt[camp_id].cnt ? trackCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
+                                                    <span class="percents en_font">(<fmt:formatNumber type="percent" pattern="0.00%" value="${!empty trackCnt[camp_id].cnt ? trackCnt[camp_id].cnt/g.send_cnt : '0'}"/>)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +184,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="article">
                     <div class="top">
                         <span class="slash">캠페인 상세 정보</span>
@@ -198,11 +192,9 @@
                         <div class="left" style="width: 95%">
                             <!-- 발송단가 영역 시작 -->
                             <div class="price">
-                                <input type="button" class="btn_sm_line size" value="발송단가 확인하기"
-                                       onclick="isShowPrice(true)">
+                                <input type="button" class="btn_sm_line size" value="발송단가 확인하기" onclick="isShowPrice(true)">
                                 <div class="price_detail" id="price_detail_div" hidden>
-                                    <input type="button" value="닫기" class="btn_pop_close sm"
-                                           onclick="isShowPrice(false)">
+                                    <input type="button" value="닫기" class="btn_pop_close sm" onclick="isShowPrice(false)">
                                     <div class="cf">
                                         <table class="pop_table_type2 width1 margin" summary="table">
                                             <thead>
@@ -291,17 +283,18 @@
                                     <tr>
                                         <td class="en_font">${st.count}</td>
                                         <td>
-                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span
-                                                    style="text-align: center; display: block;">(<fmt:formatNumber
-                                                    value="${g.send_cnt}" pattern="#,###"/>명)</span></div>
+                                            <div><span class="ellipsis name">${g.camp_nm}</span> <span style="text-align: center; display: block;">(<fmt:formatNumber value="${g.send_cnt}" pattern="#,###"/>명)</span></div>
                                             <c:choose>
                                                 <c:when test="${empty targetDto}">
-                                                    <div><span class="th">계산일 : </span><span
-                                                            class="en_font">${g.upd_dt}</span></div>
+                                                    <div>
+                                                        <span class="th">계산일 : </span>
+                                                        <span class="en_font">${g.upd_dt}</span>
+                                                    </div>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <div><span class="th">계산일 : </span><span
-                                                            class="en_font">${cutil:stringDatetimeParse(targetDto.upd_dto)}</span>
+                                                    <div>
+                                                        <span class="th">계산일 : </span>
+                                                        <span class="en_font">${cutil:stringDatetimeParse(targetDto.upd_dto)}</span>
                                                     </div>
                                                 </c:otherwise>
                                             </c:choose>
@@ -310,10 +303,12 @@
                                             <div>
                                                 <span class="ellipsis conts_name bar">${contLst[cont_id].cont_nm}</span>
                                                 <span>
-                                            <c:if test="${g.camp_ch eq 'CH01'}"><img src="/image/ico_edm.png"
-                                                                                     alt=""/></c:if>
-                                            <c:if test="${g.camp_ch eq 'CH02'}"><img src="/image/ico_mobile.png"
-                                                                                     alt=""/></c:if>
+                                            <c:if test="${g.camp_ch eq 'CH01'}">
+                                                <img src="/image/ico_edm.png" alt=""/>
+                                            </c:if>
+                                            <c:if test="${g.camp_ch eq 'CH02'}">
+                                                <img src="/image/ico_mobile.png" alt=""/>
+                                            </c:if>
                                         </span>
                                             </div>
                                             <div>
@@ -322,18 +317,21 @@
                                         </td>
                                         <td>
                                             <div style="width: 130px;">
-                                        <span class="bar">
-                                        <c:choose>
-                                            <c:when test="${g.sto eq '02'}">시간 최적화</c:when>
-                                            <c:when test="${g.sto eq '03'}">요일 최적화</c:when>
-                                            <c:otherwise>일괄 발송
-                                            </c:otherwise>
-                                        </c:choose>
-                                        </span>
+                                                <span class="bar">
                                                 <c:choose>
-                                                    <c:when test="${g.send_st_tp eq '0'}"><span
-                                                            class="bar">예약발송</span></c:when>
-                                                    <c:otherwise><span class="bar">즉시발송</span></c:otherwise>
+                                                    <c:when test="${g.sto eq '02'}">시간 최적화</c:when>
+                                                    <c:when test="${g.sto eq '03'}">요일 최적화</c:when>
+                                                    <c:otherwise>일괄 발송
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                </span>
+                                                <c:choose>
+                                                    <c:when test="${g.send_st_tp eq '0'}">
+                                                        <span class="bar">예약발송</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="bar">즉시발송</span>
+                                                    </c:otherwise>
                                                 </c:choose>
                                             </div>
                                             <div>
@@ -348,7 +346,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 <div class="article">
@@ -359,7 +356,6 @@
                         <div class="view" id="tpreview"></div>
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- section 영역 끝 -->
@@ -456,7 +452,6 @@
     index = ${st.index}
         barArr[index] = new Array();
     curArr = barArr[index];
-
     // 대기 progress.js
     prg1 = $(`[name="progress1"]`)[index]
     curArr[0] = new ProgressBar.Line(prg1, {
@@ -515,7 +510,6 @@
         svgStyle: {width: '100%', height: '7px'}
     });
     </c:forEach>
-
     <c:if test="${dto.pro_st eq '01' or dto.pro_st eq '03'}">
     <c:set var="tt" value="${cutil:stringDatetimeMap(startDt)}" />
     //발송 취소 가능 시간 Timer
@@ -577,7 +571,6 @@
             popup.confirmAlertCallback("입력하신 문의 내용이 관리자에게 전송되지 않으며, 입력하신 내용은 저장되지 않습니다.", "mailCancelOk(this)");
         });
 
-
         for (tempIdx in barArr) {
             campBarArr = barArr[tempIdx];
             for (idx in campBarArr) {
@@ -587,7 +580,6 @@
                 campBarArr[idx].animate(Number($(bar).attr('data')));
             }
         }
-
     });
 
     //조건보기 팝업 open
@@ -767,8 +759,7 @@
 
     </c:if>
 
-    <c:if test="${dto.pro_st eq '03' or dto.pro_st eq '04'}">
-
+    <c:if test="${(dto.pro_st eq '03' or dto.pro_st eq '04') and user.usr_grp_cd ne '25'}">
     function detailDown() {
         let frm = common.create_form('dummy', 'POST', '/camp/getSendHstDown.service', 'popup_down');
         common.add_input(frm, "pid", '${dto.pro_id}');
@@ -778,7 +769,6 @@
         frm.submit();
         frm.remove();
     }
-
     </c:if>
 
     function mailCancelOk(e) {

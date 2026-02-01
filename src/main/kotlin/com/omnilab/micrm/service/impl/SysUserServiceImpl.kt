@@ -8,6 +8,7 @@ import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_usrDto
 import com.omnilab.micrm.model.table.Tblmi_usr_authDto
 import com.omnilab.micrm.model.table.Tblmi_usr_log_hstDto
+import com.omnilab.micrm.repository.CommonDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.repository.SysUserDao
 import com.omnilab.micrm.service.SysUserService
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
 
@@ -26,9 +27,15 @@ class SysUserServiceImpl: SysUserService {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
-    lateinit var sysUserDao : SysUserDao;
+    lateinit var sysUserDao : SysUserDao
+
     @Autowired
-    lateinit var sysSettingDao : SysSettingDao;
+    lateinit var commonDao: CommonDao
+
+    @Autowired
+    lateinit var sysSettingDao : SysSettingDao
+
+    val passwordPattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~])[A-Za-z\\d!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~]{8,16}$")
 
     override fun getUserList(udto: Tblmi_usrDto):MutableMap<String, Any>{
         val dto = udto as Usr_searchDto
@@ -69,12 +76,17 @@ class SysUserServiceImpl: SysUserService {
                 map["message"] = "중복된 로그인 아이디(이메일) 입니다."
                 return map
             }
+            if(!passwordPattern.matcher(dto.usr_pw.toString()).matches()){
+                map["check"] = false
+                map["message"] = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+                return map
+            }
             dto.usr_pw = CommonUtils.sha512(dto.usr_pw)
             dto.reg_id = userInfo.usr_id
             dto.access_yn = "1"
-            val tempDto : Tblmi_usrDto = Tblmi_usrDto()
+            val tempDto = Tblmi_usrDto()
             tempDto.usr_grp_cd = userInfo.usr_grp_cd
-            val maxUserDto = sysUserDao.getMaxUser(tempDto);
+            val maxUserDto = sysUserDao.getMaxUser(tempDto)
             val newUsrId :String?
             if(maxUserDto == null){
                 var commDto = Tblmi_comm_cdDto()
@@ -88,7 +100,7 @@ class SysUserServiceImpl: SysUserService {
             }else{
                 val maxId = maxUserDto.usr_id!!
                 val lengthId = maxId.length
-                val preId = maxId.substring(0,lengthId-4)
+                val preId = maxId.substring(0, lengthId-4)
                 var surId = maxId.substring(lengthId-4)
                 val parseId = (surId.toInt()+1).toString()
                 surId = surId.substring(0,surId.length-parseId.length)
@@ -98,7 +110,7 @@ class SysUserServiceImpl: SysUserService {
             }
 
             if(sysUserDao.insertUser(dto) > 0){
-                val authDto : Tblmi_usr_authDto = Tblmi_usr_authDto()
+                val authDto = Tblmi_usr_authDto()
                 authDto.usr_id = newUsrId
                 authDto.role_cd = dto.role_cd
                 authDto.reg_id = userInfo.usr_id
@@ -116,15 +128,38 @@ class SysUserServiceImpl: SysUserService {
         }else{
             dto.upd_id = userInfo.usr_id
             if(!dto.usr_pw.isNullOrEmpty()){
+                if(!passwordPattern.matcher(dto.usr_pw.toString()).matches()){
+                    map["check"] = false
+                    map["message"] = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+                    return map
+                }
+                if(dto.usr_pw_old == null){
+                    map["check"] = false
+                    map["message"] = "현재 비밀번호를 입력해주세요."
+                    return map
+                }
+                val pwd = commonDao.sel_tblmi_usrOne(Tblmi_usrDto(userInfo.usr_id)).usr_pw
+                if(CommonUtils.sha512(dto.usr_pw_old) !=  pwd){
+                    map["check"] = false
+                    map["message"] = "현재 비밀번호가 올바르지 않습니다."
+                    return map
+                }
+                if(pwd ==  CommonUtils.sha512(dto.usr_pw)){
+                    map["check"] = false
+                    map["message"] = "현재 비밀번호와 동일한 비밀번호는 사용할수 없습니다."
+                    return map
+                }
                 dto.last_pw_upd_dt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())
                 dto.usr_pw = CommonUtils.sha512(dto.usr_pw)
             }
             if(sysUserDao.updateUser(dto) > 0){
-                val authDto : Tblmi_usr_authDto = Tblmi_usr_authDto()
+                val authDto = Tblmi_usr_authDto()
                 authDto.usr_id = dto.usr_id
                 authDto.role_cd = dto.role_cd
                 authDto.upd_id = userInfo.usr_id
-                if(sysUserDao.updateUserAuth(authDto) >0) {
+                // 기존권한 삭제
+                sysUserDao.deleteUserAuth(authDto)
+                if(sysUserDao.insertUserAuth(authDto) > 0) {
                     map["check"] = true
                     map["message"] = "사용자 정보가 수정되었습니다."
                 }
@@ -158,8 +193,8 @@ class SysUserServiceImpl: SysUserService {
         return map
     }
 
-    override fun getUserLog(udto: Tblmi_usr_log_hstDto):MutableMap<String, Any>{
-        val dto = udto as Usr_log_searchDto
+    override fun getUserLog(uDto: Tblmi_usr_log_hstDto):MutableMap<String, Any>{
+        val dto = uDto as Usr_log_searchDto
         val map : MutableMap<String, Any> = HashMap()
         dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val pageNo = if (dto.pageNo == null) {

@@ -27,14 +27,16 @@
             </div>
         </div>
         <!-- row 영역 끝 -->
-        <div class="row bottom-border cf">
-            <div class="left">
-                <input type="button" class="btn_basic delete left right-border" onclick="excelDown();" value="발송 비용 다운로드">
+        <c:if test="${user.usr_grp_cd ne '25'}">
+            <div class="row bottom-border cf">
+                <div class="left">
+                    <input type="button" class="btn_basic delete left right-border" onclick="excelDown();" value="발송 비용 다운로드">
+                </div>
+                <div class="left">
+                    <input type="button" class="btn_basic delete left right-border" onclick="excelDown2();" value="캠페인 리스트 다운로드">
+                </div>
             </div>
-            <div class="left">
-                <input type="button" class="btn_basic delete left right-border" onclick="excelDown2();" value="캠페인 리스트 다운로드">
-            </div>
-        </div>
+        </c:if>
         <!--
            발송 상태에 따라 현재 진행 중인 ('article'클래스) 영역에
           'active'클래스 적용
@@ -627,33 +629,36 @@
             com_ajax.ajax('get', './programList.ajax', $('#searchForm').serializeArray(), res);
         }
 
-        function excelDown(){
-            let frm = common.create_form('dummy', 'POST', '/cost/costReportDown.service', 'popup_down');
-            common.add_input(frm, "start_dt", '${param.start_dt}');
-            common.add_input(frm, "end_dt", '${param.end_dt}');
-            common.add_input(frm, "pro_nm", '${param.pro_nm}');
-            common.add_input(frm, "team_nm", '${param.team_nm}');
-            common.add_input(frm, "monthly_dt", '${param.monthly_dt}');
-            let message = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>miCRM</title></head><body><img src="/image/excelDown.jpg" alt="" style="width:100%;"></body></html>';
-            common.popview('', 'popup_down', '661', '423', message);
-            document.body.insertBefore(frm, null);
-            frm.submit();
-            frm.remove();
-        }
+        <c:if test="${user.usr_grp_cd ne '25'}">
+            function excelDown(){
+                let frm = common.create_form('dummy', 'POST', '/cost/costReportDown.service', 'popup_down');
+                common.add_input(frm, "start_dt", '${param.start_dt}');
+                common.add_input(frm, "end_dt", '${param.end_dt}');
+                common.add_input(frm, "pro_nm", '${param.pro_nm}');
+                common.add_input(frm, "team_nm", '${param.team_nm}');
+                common.add_input(frm, "monthly_dt", '${param.monthly_dt}');
+                let message = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>miCRM</title></head><body><img src="/image/excelDown.jpg" alt="" style="width:100%;"></body></html>';
+                common.popview('', 'popup_down', '661', '423', message);
+                document.body.insertBefore(frm, null);
+                frm.submit();
+                frm.remove();
+            }
 
-        function excelDown2(){
-            let frm = common.create_form('dummy', 'POST', '/cost/costReportLstDown.service', 'popup_down');
-            common.add_input(frm, "start_dt", '${param.start_dt}');
-            common.add_input(frm, "end_dt", '${param.end_dt}');
-            common.add_input(frm, "pro_nm", '${param.pro_nm}');
-            common.add_input(frm, "team_nm", '${param.team_nm}');
-            common.add_input(frm, "monthly_dt", '${param.monthly_dt}');
-            let message = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>miCRM</title></head><body><img src="/image/excelDown.jpg" alt="" style="width:100%;"></body></html>';
-            common.popview('', 'popup_down', '661', '423', message);
-            document.body.insertBefore(frm, null);
-            frm.submit();
-            frm.remove();
-        }
+            function excelDown2(){
+                let frm = common.create_form('dummy', 'POST', '/cost/costReportLstDown.service', 'popup_down');
+                common.add_input(frm, "start_dt", '${param.start_dt}');
+                common.add_input(frm, "end_dt", '${param.end_dt}');
+                common.add_input(frm, "pro_nm", '${param.pro_nm}');
+                common.add_input(frm, "team_nm", '${param.team_nm}');
+                common.add_input(frm, "monthly_dt", '${param.monthly_dt}');
+                let message = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>miCRM</title></head><body><img src="/image/excelDown.jpg" alt="" style="width:100%;"></body></html>';
+                common.popview('', 'popup_down', '661', '423', message);
+                document.body.insertBefore(frm, null);
+                frm.submit();
+                frm.remove();
+            }
+        </c:if>
+
 
         function selPeriodOption(type ,el){
             $('.clickBtn').removeClass("clickBtn")

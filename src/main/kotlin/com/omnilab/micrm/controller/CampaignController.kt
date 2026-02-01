@@ -176,11 +176,18 @@ class CampaignController {
      */
     @PostMapping("/getSendHstDown.service")
     fun getSendHstDown(@RequestParam(value = "pid", required = true) pro_id: String, @RequestParam(value = "type", required = false) type: String?): ModelAndView {
-        val map = campaignServiceImpl.getProgramSendResultExcel(pro_id, type, UsefulUtils.sessionUser().usr_grp_cd!!)
-        val view = ModelAndView("ExcelDownView")
-        view.addObject("name", map["name"])
-        view.addObject("book", map["book"])
-        return view
+        //쏘니 제외
+        return if(UsefulUtils.sessionUser().usr_grp_cd!! != "25"){
+            val map = campaignServiceImpl.getProgramSendResultExcel(pro_id, type, UsefulUtils.sessionUser().usr_grp_cd!!)
+            val view = ModelAndView("ExcelDownView")
+            view.addObject("name", map["name"])
+            view.addObject("book", map["book"])
+            view
+        }else{
+            val view = ModelAndView("redirect:/html/not.html")
+            view
+        }
+
     }
 
 

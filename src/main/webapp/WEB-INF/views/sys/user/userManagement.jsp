@@ -261,18 +261,19 @@
         let logEmail = document.getElementById('usr_log_id').value;
         let phone = document.getElementById('userPhone').value;
         let authority = document.getElementById('authority').getAttribute('data');
-        $("#usr_st").val(1);
         let password = document.getElementById('password').value;
         let comfirm = document.getElementById('comfirmPsw').value;
         let regPhone = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
         let regMail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        //let regPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$/;
-        let regPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/;
+        let regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~])[A-Za-z\d!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]{8,16}$/;
+
         let error1 = document.getElementById('errorArea1');
         let error2 = document.getElementById('errorArea2');
 
         error1.innerHTML = '';
         error2.innerHTML = '';
+
+        $("#usr_st").val(1);
 
         if (name === '') {
             error2.innerHTML = '이름을 입력해주세요.';

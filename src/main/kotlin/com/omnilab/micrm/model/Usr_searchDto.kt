@@ -19,6 +19,7 @@ class Usr_searchDto : Tblmi_usrDto() {
     var cd_nm : String? = null
     var del_dt : String? = null
     var appr_nm : String? = null
+    var usr_pw_old: String? = null
 
 
     override fun toString(): String {

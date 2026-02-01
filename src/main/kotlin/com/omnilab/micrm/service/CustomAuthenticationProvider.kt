@@ -79,7 +79,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 result.details = uInfo
                 return result
             }
-        }else{
+        } else {
             val usrSt = userInfo.usr_st
             if(usrSt.equals("2")){
                 sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(userInfo.usr_grp_cd!!, userInfo.usr_id!!, userInfo.usr_email!!, ip, "1"))
@@ -99,6 +99,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             }
             sqlSession.insert("ins_tblmi_usr_log_hst", Tblmi_usr_log_hstDto(userInfo.usr_grp_cd!!, userInfo.usr_id!!, userInfo.usr_email!!, ip, "0"))
             sqlSession.update("upd_tblmi_usr_log_in_dt", userInfo)
+
             val roleList: List<Tblmi_usr_authDto> = sqlSession.selectList("sel_tblmi_usr_auth", Tblmi_usr_authDto(userInfo.usr_id!!))
             val roles = ArrayList<GrantedAuthority>()
             roles.add(SimpleGrantedAuthority("ROLE_SALES"))

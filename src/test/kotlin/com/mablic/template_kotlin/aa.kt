@@ -2,8 +2,8 @@ package com.mablic.template_kotlin
 
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.model.table.Tblmi_kko_at_tmplDto
 import org.slf4j.LoggerFactory
+import java.util.regex.Pattern
 
 class aa {
 }
@@ -52,5 +52,21 @@ fun main() {
     val g = GsonBuilder().create()
     logger.error("{}", g.toJson(map))
 
+
+    val password_pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~])[A-Za-z\\d!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~]{8,16}$")
+
+
+    System.out.println(isValid("Abcd1234!")); // true
+    System.out.println(isValid("abcd1234"));  // false (특수문자 없음)
+    System.out.println(isValid("abcd!!!!"));  // false (숫자 없음)
+    System.out.println(isValid("1234!!!!"));  // false (영문 없음)
+    System.out.println(isValid("Ab1!"));      // false (길이 부족)
+
 }
 
+
+
+fun isValid(pw: String?): Boolean {
+    val password_pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~])[A-Za-z\\d!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~]{8,16}$")
+    return pw != null && password_pattern.matcher(pw).matches()
+}

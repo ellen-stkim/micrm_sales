@@ -27,7 +27,7 @@
     <link rel="stylesheet" type="text/css" href="/css/login.css?v=0.17"/>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" style="padding-left: 0">
     <!-- header 영역 시작 -->
     <header class="header cf">
         <h1 class="logo" tabindex="0">
@@ -35,7 +35,9 @@
         </h1>
     </header>
     <!-- header 영역 끝 -->
+    <%--
     <tiles:insertAttribute name="menu"/>
+    --%>
     <!-- container 영역 시작 -->
     <section class="container">
         <!-- 컨텐츠 영역 시작 -->

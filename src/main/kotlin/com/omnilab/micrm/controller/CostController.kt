@@ -1,5 +1,6 @@
 package com.omnilab.micrm.controller
 
+import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SearchSendCostDto
 import com.omnilab.micrm.service.CostReportService
 import org.slf4j.LoggerFactory
@@ -51,20 +52,30 @@ class CostController {
 
     @PostMapping("/costReportDown.service")
     fun costReportDown(@ModelAttribute dto: SearchSendCostDto): ModelAndView {
-        val map = costReportService.costReportDownloadExcel(dto)
-        val view = ModelAndView("ExcelDownView")
-        view.addObject("name", map["name"])
-        view.addObject("book", map["book"])
-        return view
+        return if (UsefulUtils.sessionUser().usr_grp_cd!! != "25") {
+            val map = costReportService.costReportDownloadExcel(dto)
+            val view = ModelAndView("ExcelDownView")
+            view.addObject("name", map["name"])
+            view.addObject("book", map["book"])
+            view
+        } else {
+            val view = ModelAndView("redirect:/html/not.html")
+            view
+        }
     }
 
     @PostMapping("/costReportLstDown.service")
     fun costReportLstDown(@ModelAttribute dto: SearchSendCostDto): ModelAndView {
-        val map = costReportService.costLstDownloadExcel(dto)
-        val view = ModelAndView("ExcelDownView")
-        view.addObject("name", map["name"])
-        view.addObject("book", map["book"])
-        return view
+        return if (UsefulUtils.sessionUser().usr_grp_cd!! != "25") {
+            val map = costReportService.costLstDownloadExcel(dto)
+            val view = ModelAndView("ExcelDownView")
+            view.addObject("name", map["name"])
+            view.addObject("book", map["book"])
+            view
+        } else {
+            val view = ModelAndView("redirect:/html/not.html")
+            view
+        }
     }
 
 }

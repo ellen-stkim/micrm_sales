@@ -170,17 +170,21 @@
                     </tr>
                     </sec:authorize>
                     <tr>
+                        <th scope="row">현재 비밀번호</th>
+                        <td>
+                            <input type="password" placeholder="현재 비밀번호를 입력해주세요." id="passwordOld" name="usr_pw_old" class="input_type1 pwd"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th scope="row">새 비밀번호</th>
                         <td>
-                            <input type="password" placeholder="새 비밀번호를 입력해주세요." id="password" name="usr_pw"
-                                   class="input_type1 pwd"/>
+                            <input type="password" placeholder="새 비밀번호를 입력해주세요." id="password" name="usr_pw" class="input_type1 pwd"/>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">새 비밀번호 확인</th>
                         <td>
-                            <input type="password" placeholder="새 비밀번호를 입력해주세요." id="comfirmPsw" name="usr_pw_ck"
-                                   class="input_type1 pwd"/>
+                            <input type="password" placeholder="새 비밀번호를 입력해주세요." id="confirmPsw" name="usr_pw_ck" class="input_type1 pwd"/>
                             <div class="right blue_point_color" id="errorArea1"></div>
                         </td>
                     </tr>
@@ -190,8 +194,7 @@
                 <div class="btn_row">
                     <input type="hidden" name="seq" id="seq" value="${list[0].seq}"/>
                     <input type="hidden" name="usr_id" id="usr_id" value="${list[0].usr_id}"/>
-                    <input type="button" class="btn_bg btn_size2 btn_center" onclick="accountFormCheck(this);"
-                           value="저장"/>
+                    <input type="button" class="btn_bg btn_size2 btn_center" onclick="accountFormCheck(this);" value="저장"/>
                 </div>
             </div>
         </div>
@@ -265,17 +268,17 @@
         let phone = document.getElementById('userPhone').value;
         let authority = document.getElementById('authority').getAttribute('data');
         let authorityNm = $('#authority').html();
-        $("#usr_st").val(authority);
-        //let regPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$/;
+        let regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~])[A-Za-z\d!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]{8,16}$/;
+        let passwordOld = document.getElementById('passwordOld').value;
         let password = document.getElementById('password').value;
-        let comfirm = document.getElementById('comfirmPsw').value;
+        let confirm = document.getElementById('confirmPsw').value;
         let regPhone = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
         let regMail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        /*let regPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/;*/
         let error1 = document.getElementById('errorArea1');
         let error2 = document.getElementById('errorArea2');
         error1.innerHTML = '';
         error2.innerHTML = '';
+        $("#usr_st").val(authority);
 
         if (name === '') {
             error2.innerHTML = '이름을 입력해주세요.';
@@ -302,34 +305,41 @@
             return false;
         }
         if(password != ''){
-           /* if (!regPwd.test(password)) {
+            if (!regPwd.test(password)) {
                 error2.innerHTML = '8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.';
                 return false;
-            }*/
-            if (comfirm == '') {
+            }
+            if (confirm == '') {
                  error1.innerHTML = '비밀번호를 입력해주세요.';
                  return false;
             }
-            if (password != comfirm) {
+            if (password != confirm) {
                 error1.innerHTML = '비밀번호가 일치하지 않습니다.';
+                return false;
+            }
+            if(passwordOld == ''){
+                error2.innerHTML = '현재 비밀번호를 입력해주세요.';
                 return false;
             }
         }
 
-        var res = function (response) {
-            if(response.check === true){
+        const res = function (response) {
+            if (response.check === true) {
                 $('#usrNm').html(name);
                 $('#usrEmail').html(email);
                 $('#usrPhone').html(phone);
                 $('#usrAuth').html(authorityNm);
                 popup.popAlert(response.message);
                 popupClose(el);
-            }else{
+            } else {
                 popup.popAlert(response.message);
                 popupClose(el);
             }
+            $('#passwordOld').val("");
+            $('#password').val("");
+            $('#confirmPsw').val("");
         };
-        var param = $("#saveUserForm").serializeArray();
+        const param = $("#saveUserForm").serializeArray();
         param.push({name: 'role_cd', value: authority});
         com_ajax.ajax('post', '${baseURL}/sys/user/saveUser.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
     }
@@ -341,21 +351,20 @@
 
     //개인로그 가져오기
     function getUserLog(page) {
-        var res = function (response) {
-           $("#userLogSection").html(response);
-            var listSize = $('#sizeList').val();
-            if(listSize<10){
-                var addBodyCnt = 10-listSize;
-                var html = '<tr><td></td><td></td><td></td></tr>';
-                for(var i =0; i<addBodyCnt; i++){
+        const res = function (response) {
+            $("#userLogSection").html(response);
+            const listSize = $('#sizeList').val();
+            if (listSize < 10) {
+                const addBodyCnt = 10 - listSize;
+                const html = '<tr><td></td><td></td><td></td></tr>';
+                for (let i = 0; i < addBodyCnt; i++) {
                     $('#userLogTbody').append(html);
                 }
             }
         };
-
-        var param = {usr_id: $('#usr_id').val(),pageNo: page};
+        const param = {usr_id: $('#usr_id').val(), pageNo: page};
         com_ajax.ajax('post', '${baseURL}/sys/user/getUserLog.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}');
-    };
+    }
     getUserLog('1');
 
 </script>

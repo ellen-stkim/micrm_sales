@@ -91,36 +91,37 @@
 	</select>
 
 	<insert id="insertUser" parameterType="Tblmi_usrDto" useGeneratedKeys="true" keyProperty="usr_id">
-		insert into tblmi_usr
-		(
-					USR_ID,
-					USR_LOG_ID,
-					USR_EMAIL,
-					USR_PW,
-					USR_GRP_CD,
-					USR_NM,
-					USR_TEL,
-					ACCESS_YN,
-					USR_MOB,
-					USR_ST,
-					APPR_ID,
-					REG_ID,
-					REG_DT
+		insert into tblmi_usr (
+			USR_ID,
+			USR_LOG_ID,
+			USR_EMAIL,
+			USR_PW,
+			USR_GRP_CD,
+			USR_NM,
+			USR_TEL,
+			ACCESS_YN,
+			USR_MOB,
+			USR_ST,
+			APPR_ID,
+			REG_ID,
+			REG_DT,
+			USR_SALES_ORG_ID
 		)
-		VALUES
-		(			#{usr_id},
-					#{usr_log_id},
-					#{usr_email},
-					#{usr_pw},
-					#{usr_grp_cd},
-					#{usr_nm},
-					#{usr_tel},
-					#{access_yn},
-					#{usr_mob},
-					#{usr_st},
-					#{appr_id},
-					#{reg_id},
-					now()
+		VALUES (
+			#{usr_id},
+			#{usr_log_id},
+			#{usr_email},
+			#{usr_pw},
+			#{usr_grp_cd},
+			#{usr_nm},
+			#{usr_tel},
+			#{access_yn},
+			#{usr_mob},
+			#{usr_st},
+			#{appr_id},
+			#{reg_id},
+			now(),
+			(SELECT CD_ID FROM tblmi_comm_cd WHERE grp_id = 'SALES_MID' AND cd_val = #{usr_grp_cd})
 		)
 	</insert>
 
@@ -236,16 +237,21 @@
 		</if>
 	</select>
 
-
 	<update id="updateUserAuth" parameterType="Tblmi_usr_authDto">
-		update tblmi_usr_auth
-		set
+		update tblmi_usr_auth set
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(role_cd)">
 			role_cd=#{role_cd},
 		</if>
-		UPD_DT = now(), UPD_ID=#{upd_id}
+			UPD_DT = now(), UPD_ID=#{upd_id}
 		where
-		usr_id = #{usr_id}
+			usr_id = #{usr_id}
+	</update>
+
+	<update id="deleteUserAuth" parameterType="Tblmi_usr_authDto">
+		delete from tblmi_usr_auth
+		where
+			role_cd in ('R1', 'R2', 'R10')
+			and usr_id = #{usr_id}
 	</update>
 
 </mapper>
