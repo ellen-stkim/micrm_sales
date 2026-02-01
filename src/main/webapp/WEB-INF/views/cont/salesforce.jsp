@@ -1093,7 +1093,7 @@
 
     $(function () {
         //임시 주석
-        mobileInfo(2689);
+        <%-- mobileInfo(2689); --%>
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -2021,7 +2021,7 @@
             couponNm = $("#savedCouponNm").val();
 
             //임시 주석
-            //mappingLst();
+            mappingLst();
         }
 
         let param = {seq: seq}
