@@ -3488,8 +3488,13 @@
             '</div>';
         $("#imgListHtml").html(html);
     }
+    let isSubmitting = false;
 
     function saveContentImg() {
+        if (isSubmitting) {
+            return false;
+        }
+
         let imgNm = $("#img_nmCk").val();
         if (imgNm == "" || imgNm == null) {
             popup.popAlert("이미지명을 입력해주세요.");
@@ -3500,7 +3505,10 @@
             return false;
         }
 
+        isSubmitting = true;
+
         let res = function (response) {
+            isSubmitting = false;
             //리스트 새로 불러오기
             if (response.imgCheck == 0) {
                 popup.popAlert(response.imgCheckErr);

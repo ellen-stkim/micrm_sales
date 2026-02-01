@@ -151,7 +151,7 @@
                                                             <c:when test="${content.kko_msg_tp eq '4'}">
                                                                 <c:set var="parts" value="${fn:split(content.kko_video_url, '/')}"/>
                                                                 <c:set var="videoId" value="${parts[fn:length(parts) - 1]}"/>
-                                                                <c:set var="convertedUrl" value="${'https://play-tv.kakao.com/embed/player/cliplink/' + videoId + '?service=player_share'}"/>
+                                                                <c:set var="convertedUrl" value="${'https://play-tv.kakao.com/embed/player/cliplink/' += videoId += '?service=player_share'}"/>
                                                                 <div>
                                                                     <iframe src="${convertedUrl}" width="100%"></iframe>
                                                                 </div>
