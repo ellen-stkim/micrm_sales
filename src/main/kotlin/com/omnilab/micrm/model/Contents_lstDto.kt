@@ -151,6 +151,7 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
     var kakaoImageItemNm4: String? = null
     var kakaoImageItemNm5: String? = null
     var kakaoImageItemNm6: String? = null
+    var kakao_item_img_cd_0: String? = null
     var kakao_item_img_cd_1: String? = null
     var kakao_item_img_cd_2: String? = null
     var kakao_item_img_cd_3: String? = null

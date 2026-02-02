@@ -233,13 +233,11 @@
                                                 <input name="kko_msg_tp" class="lowType" type="radio" value="1" <c:if test='${list[0].msg_tp eq "DMCH220"}'>checked</c:if> />
                                                 <span></span>
                                             </label>
-                                            <%--
                                             <label class="custom_radio en_font">
                                                 캐러셀 커머스형
                                                 <input name="kko_msg_tp" class="lowType" type="radio" value="2" <c:if test='${list[0].msg_tp eq "DMCH221"}'>checked</c:if> />
                                                 <span></span>
                                             </label>
-                                            --%>
                                             <label class="custom_radio en_font">
                                                 캐러셀 피드형
                                                 <input name="kko_msg_tp" class="lowType" type="radio" value="3" <c:if test='${list[0].msg_tp eq "DMCH222"}'>checked</c:if> />
@@ -744,7 +742,9 @@
                                                                     <a href="${btn.linkPc}" target="_blank" class="sms_btn" rel="noopener">${btn.name}</a></c:if>
                                                             </c:forEach>
                                                         </c:if>
+                                                        <%--
                                                         <input type="hidden" class="kakao_txt" name="kakao_body" value="${list[0].cont_body}">
+                                                        --%>
                                                     </div>
                                                 </div>
                                             </div>
@@ -800,6 +800,7 @@
                                                                     <c:if test="${idx ne 0}">
                                                                         <div id="brandFaBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
                                                                             <div class="kakao_link" id="brandFaBtn${idx}_1" data="1" <c:if test="${empty list[0]['kkoBtnLst' += idx += '_1']}">style="display: none"</c:if>>${list[0]['kkoBtnLst' += idx += '_1']}</div>
+                                                                            <div class="kakao_link" id="brandFaBtn${idx}_2" data="2" <c:if test="${empty list[0]['kkoBtnLst' += idx += '_2']}">style="display: none"</c:if>>${list[0]['kkoBtnLst' += idx += '_2']}</div>
                                                                         </div>
                                                                     </c:if>
                                                                 </div>

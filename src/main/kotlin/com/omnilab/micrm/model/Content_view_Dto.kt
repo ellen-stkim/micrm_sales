@@ -222,12 +222,14 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var kko_thumbnail_img_nm:String? = null
     var kko_item_json: String? = null
     var kko_carousel_json: String? = null
+    var kko_head_json : String ?= null    // (브랜드톡) 캐러셀
     var kakaoImageItemNm1: String? = null
     var kakaoImageItemNm2: String? = null
     var kakaoImageItemNm3: String? = null
     var kakaoImageItemNm4: String? = null
     var kakaoImageItemNm5: String? = null
     var kakaoImageItemNm6: String? = null
+    var kakao_item_img_cd_0: String? = null
     var kakao_item_img_cd_1: String? = null
     var kakao_item_img_cd_2: String? = null
     var kakao_item_img_cd_3: String? = null

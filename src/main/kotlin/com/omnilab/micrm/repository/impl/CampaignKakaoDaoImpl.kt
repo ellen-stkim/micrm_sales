@@ -312,12 +312,21 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    var msg = kakaoCont.kko_item_json
                    for (key in map.keys) {
                        val reg = Regex("\\{\\{(?i)${key}}}")
-                       msg = kakaoCont.kko_carousel_json?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                       msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
                    }
                    kkoMsgdto.item = msg
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
+                   var msg = kakaoCont.kko_carousel_json
+                   var head = kakaoCont.kko_head_json
+                   for (key in map.keys) {
+                       val reg = Regex("\\{\\{(?i)${key}}}")
+                       msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                       head = head?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                   }
+                   kkoMsgdto.carousel_json = msg
+                   kkoMsgdto.head_json = head
                }
                "DMCH222" -> {
                    kkoMsgdto.type = "U_FC"
@@ -325,7 +334,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    var msg = kakaoCont.kko_carousel_json
                    for (key in map.keys) {
                        val reg = Regex("\\{\\{(?i)${key}}}")
-                       msg = kakaoCont.kko_carousel_json?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                       msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
                    }
                    kkoMsgdto.carousel_json = msg
                }

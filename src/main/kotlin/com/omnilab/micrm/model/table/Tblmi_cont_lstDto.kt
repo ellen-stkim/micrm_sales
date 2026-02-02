@@ -42,6 +42,7 @@ open class Tblmi_cont_lstDto {
     var kko_thumbnail_img_cd: String? = null // (브랜드톡) 비디오 이미지 cd
     var kko_item_json : String ?= null    // (브랜드톡) 와이드 리스트 아이템
     var kko_carousel_json : String ?= null    // (브랜드톡) 캐러셀
+    var kko_head_json : String ?= null    // (브랜드톡) 캐러셀
     var kko_msg_tp : String ?= null    // (알림톡) 메세지 타입
     var kko_btn_obj : String ?= null    // (알림톡) 버튼 내용
     var kko_price : Int ?= null    // (알림톡) message 내 포함된 가격/금액/결제금액

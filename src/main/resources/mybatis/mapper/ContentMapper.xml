@@ -109,7 +109,8 @@
 			kko_video_url,
 			kko_thumbnail_img_cd,
 			kko_item_json,
-			kko_carousel_json
+			kko_carousel_json,
+			kko_head_json
 		)
 		values (
 			#{cont_cd},
@@ -177,7 +178,8 @@
 			#{kko_video_url},
 			#{kko_thumbnail_img_cd},
 		    #{kko_item_json},
-		    #{kko_carousel_json}
+		    #{kko_carousel_json},
+			#{kko_head_json}
 		)
 	</insert>
 
@@ -304,6 +306,7 @@
 			, b.KKO_CAROUSEL_JSON
 			, b.KKO_VIDEO_URL
 			, b.KKO_THUMBNAIL_IMG_CD
+			, b.kko_head_json
 		FROM (
 			SELECT mst.seq								AS seq
 				, mst.ch_tp								AS ch_tp
@@ -965,6 +968,7 @@
 			kko_thumbnail_img_cd = #{kko_thumbnail_img_cd},
 			kko_item_json = #{kko_item_json},
 			kko_carousel_json = #{kko_carousel_json},
+			kko_head_json = #{kko_head_json}
 			kko_msg_tp = #{kko_msg_tp},
 			kko_btn_obj = #{kko_btn_obj},
 			kko_price = #{kko_price},
@@ -1227,6 +1231,7 @@
 			, img_video.img_nm																			AS kko_thumbnail_img_nm
 			, l.kko_item_json
 			, l.kko_carousel_json
+			, l.kko_head_json
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
 		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq

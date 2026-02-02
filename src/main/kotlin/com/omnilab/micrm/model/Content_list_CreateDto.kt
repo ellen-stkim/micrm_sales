@@ -211,6 +211,7 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
             }
             field = value
         }
+    var kakao_item_img_cd_0: String? = null
     var kakao_item_img_cd_1: String? = null
     var kakao_item_img_cd_2: String? = null
     var kakao_item_img_cd_3: String? = null

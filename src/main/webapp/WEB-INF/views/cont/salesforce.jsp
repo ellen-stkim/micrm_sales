@@ -220,13 +220,11 @@
                                             <input name="kko_msg_tp" class="lowType" type="radio" value="1" />
                                             <span></span>
                                         </label>
-                                        <%--
                                         <label class="custom_radio en_font">
                                             캐러셀 커머스형
                                             <input name="kko_msg_tp" class="lowType" type="radio" value="2" />
                                             <span></span>
                                         </label>
-                                        --%>
                                         <label class="custom_radio en_font">
                                             캐러셀 피드형
                                             <input name="kko_msg_tp" class="lowType" type="radio" value="3" />
@@ -496,6 +494,7 @@
                                                                 <c:if test="idx ne 0">
                                                                     <div id="brandFaBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
                                                                         <div class="kakao_link" id="brandFaBtn${idx}_1" data="1" style="display: none"></div>
+                                                                        <div class="kakao_link" id="brandFaBtn${idx}_2" data="2" style="display: none"></div>
                                                                     </div>
                                                                 </c:if>
                                                             </div>
@@ -1185,8 +1184,8 @@
                 const buttonPrefix = (type === "2") ? "kkoBtnUrlFa" : "kkoBtnUrlFc";
                 const id = this.id;
 
-                var re = new RegExp("^" + buttonPrefix + "(\\d+)_(1|2)$");
-                var m = id.match(re);
+                const re = new RegExp("^" + buttonPrefix + "(\\d+)_(1|2)$");
+                const m = id.match(re);
                 if (!m) return;
 
                 const groupNo = Number(m[1]);
@@ -2067,7 +2066,7 @@
         }
         if (kakaoOption == 'ad') {
             if (kakaoTitle.val().indexOf('(광고)') != -1) {
-                if (kakaoTxt.val() != '') {
+                if (kakaoTxt.val() != '' || kakaoFtType == "2") {
                     let type = kakaoTypeValidate(kakaoFtType);
                     if (type == true) {
                         /*
@@ -2160,7 +2159,86 @@
                 }
             }
             return true;
-        } else if(kakaoFtType === "3") {
+        } else if(kakaoFtType === "2"){
+            const cards = [];
+            for (let i = 0; i <= 6; i++) {
+                const imageVal = document.getElementById('kakaoImageFa' + i).value.trim();
+                const titleVal = document.querySelector('input[name="kkoHeader' + i + '"]').value.trim();
+                const bodyVal = document.querySelector('textarea[name="kkoBody' + i + '"]').value.trim();
+                let btnNameVal = "";
+                if (i > 0) {
+                    btnNameVal = document.querySelector('input[name="kkoBtnLst' + i + '_1"]').value.trim();
+                }
+                cards.push({
+                    index: i,
+                    image: imageVal,
+                    title: titleVal,
+                    body: bodyVal,
+                    btnName: btnNameVal
+                });
+            }
+
+            const intro = cards[0];
+            const isIntroStarted = (intro.image !== "" || intro.title !== "" || intro.body !== "");
+
+            if (isIntroStarted) {
+                if (intro.image === "" || intro.title === "" || intro.body === "") {
+                    popup.popAlert("Intro를 작성하시려면 이미지, 타이틀, 내용을 모두 입력해야 합니다.");
+                    return false;
+                }
+                // 인트로 제약 조건
+                if (intro.title.length > 20 || intro.title.indexOf('\n') !== -1) {
+                    popup.popAlert("Intro 타이틀은 20자 이내이며 줄바꿈이 불가합니다.");
+                    return false;
+                }
+                var introBodyLines = (intro.body.match(/\n/g) || []).length;
+                if (intro.body.length > 50 || introBodyLines > 2) {
+                    popup.popAlert("Intro 내용은 50자 이내이며 줄바꿈은 최대 2회까지 가능합니다.");
+                    return false;
+                }
+            }
+
+            var activeCardCount = 0;
+            for (var j = 1; j <= 6; j++) {
+                var card = cards[j];
+                var isStarted = (card.image !== "" || card.title !== "" || card.body !== "" || card.btnName !== "");
+                if (isStarted) {
+                    // 순서 검사: 이전 카드가 비어있는데 현재 카드가 입력된 경우
+                    if (activeCardCount < j - 1) {
+                        popup.popAlert("카드" + (j - 1) + "을 먼저 작성해야 합니다. 순서대로 입력해주세요.");
+                        return false;
+                    }
+                    // 필수 항목 검사
+                    if (card.image === "" || card.title === "" || card.body === "" || card.btnName === "") {
+                        popup.popAlert("카드" + j + "의 이미지, 상품명, 내용, 버튼을 모두 입력해주세요.");
+                        return false;
+                    }
+
+                    // 카드 제약 조건 검사
+                    if (card.title.length > 30) {
+                        popup.popAlert("카드" + j + " 상품명은 30자 이내여야 합니다.");
+                        return false;
+                    }
+                    var cardBodyLines = (card.body.match(/\n/g) || []).length;
+                    if (card.body.length > 34 || cardBodyLines > 1) {
+                        popup.popAlert("카드" + j + " 내용은 34자 이내이며 줄바꿈은 1회만 가능합니다.");
+                        return false;
+                    }
+                    if (card.btnName.length > 8) {
+                        popup.popAlert("카드" + j + " 버튼명은 8자 이내여야 합니다.");
+                        return false;
+                    }
+                    activeCardCount++;
+                }
+            }
+            // 최소 2개 카드 작성 검사
+            if (activeCardCount < 2) {
+                popup.popAlert("인트로를 제외하고 최소 2개 이상의 카드를 작성해야 합니다.");
+                return false;
+            }
+            return true;
+        }
+        else if(kakaoFtType === "3") {
             const MAX_CARD = 6;
             const filled = new Array(MAX_CARD + 1).fill(false);
 
@@ -2207,9 +2285,8 @@
                     const imgCd = (($card.find("#kakao_item_img_cd_" + n).val()) || "").trim();
                     const title = (($card.find('input[name="kkoHeader' + n + '"]').val()) || "").trim();
                     const body = (($card.find('textarea[name="kkoBody' + n + '"]').val()) || "").trim();
-
-                    const btn1State = (($card.find("#kkoBtnUrl" + n + "_1").val()) || "").trim();
-                    const btn2State = (($card.find("#kkoBtnUrl" + n + "_2").val()) || "").trim();
+                    const btn1State = (($card.find("#kkoBtnUrlFc" + n + "_1").val()) || "").trim();
+                    const btn2State = (($card.find("#kkoBtnUrlFc" + n + "_2").val()) || "").trim();
                     const createdBtnCnt = (btn1State === "삭제" ? 1 : 0) + (btn2State === "삭제" ? 1 : 0);
                     if (btn2State === "삭제" && btn1State !== "삭제") {
                         popup.popAlert("카드" + n + "는 버튼2를 생성하려면 버튼1을 먼저 생성해야 합니다.");
@@ -2255,9 +2332,8 @@
                             const imgCd = (($card.find("#kakao_item_img_cd_" + n).val()) || "").trim();
                             const title = (($card.find('input[name="kkoHeader' + n + '"]').val()) || "").trim();
                             const body = (($card.find('textarea[name="kkoBody' + n + '"]').val()) || "").trim();
-
-                            const btn1State = (($card.find("#kkoBtnUrl" + n + "_1").val()) || "").trim();
-                            const btn2State = (($card.find("#kkoBtnUrl" + n + "_2").val()) || "").trim();
+                            const btn1State = (($card.find("#kkoBtnUrlFc" + n + "_1").val()) || "").trim();
+                            const btn2State = (($card.find("#kkoBtnUrlFc" + n + "_2").val()) || "").trim();
                             const createdBtnCnt = (btn1State === "삭제" ? 1 : 0) + (btn2State === "삭제" ? 1 : 0);
                             if (btn2State === "삭제" && btn1State !== "삭제") {
                                 popup.popAlert("카드" + n + "는 버튼2를 생성하려면 버튼1을 먼저 생성해야 합니다.");
@@ -2282,6 +2358,23 @@
                     return true;
                 }
             }
+        } else if (kakaoFtType === "4") {
+            const txtRaw = ($("textarea[name='kakao_body']").val() || "");
+            const txt = txtRaw.replace(/\r\n/g, "\n").replace(/\r/g, "\n"); // 개행 통일
+
+            const len = Array.from(txt).length; // 유니코드 안전 length
+            if (len > 76) {
+                $('.kakao_txt').focus();
+                popup.popAlert("텍스트 문구는 띄어쓰기 포함 76자를 초과할 수 없습니다.");
+                return false;
+            }
+            const brCount = (txt.match(/\n/g) || []).length;
+            if (brCount > 5) {
+                $('.kakao_txt').focus();
+                popup.popAlert("텍스트 문구는 줄바꿈을 최대 5회까지 허용합니다.");
+                return false;
+            }
+            return true;
         } else {
             const txt = $("textarea[name='kakao_body']").val() || "";
             const kakaoLen = Array.from(txt).length;
@@ -3511,7 +3604,7 @@
             '<li data="IMGTP11">와이드 이미지</li>'+
             '<li data="IMGTP12">와이드 리스트 (첫번째 이미지)</li>'+
             '<li data="IMGTP13">와이드 리스트</li>'+
-            /*'<li data="IMGTP14">캐러셀 커머스</li>'+*/
+            '<li data="IMGTP14">캐러셀 커머스</li>'+
             '<li data="IMGTP15">캐러셀 피드</li>'+
             '</ul>'+
             '</div>'+

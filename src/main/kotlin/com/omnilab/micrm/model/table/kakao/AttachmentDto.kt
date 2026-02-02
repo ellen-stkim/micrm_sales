@@ -8,7 +8,7 @@ import org.apache.ibatis.type.Alias
 data class AttachmentDto(
     var button: List<ButtonJsonDto>?
     , var image: ImageDto?
-    , var commerce: String?
+    , var commerce: CommerceDto?
 ) {
 
     constructor(): this(null, null, null)

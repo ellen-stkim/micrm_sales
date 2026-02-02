@@ -124,6 +124,7 @@
              , a.KKO_THUMBNAIL_IMG_CD
              , a.KKO_ITEM_JSON
              , a.KKO_CAROUSEL_JSON
+             , a.kko_head_json
              , #{reg_id} as reg_id
         from Tblmi_cont_lst as a
             LEFT JOIN tblmi_set_lst AS b ON a.SEND_TO = b.SEQ
@@ -288,6 +289,7 @@
             , KKO_THUMBNAIL_IMG_CD
             , KKO_ITEM_JSON
             , KKO_CAROUSEL_JSON
+            , kko_head_json
         )
         values
             (#{cont_cd}, #{cont_tp}, #{cont_sub}, #{cont_top_body}, #{cont_body}, #{from_to}, #{send_tp}, #{send_to}, #{send_nm}, #{thm_url}, #{br_yn}, #{sup_yn}, #{msg_tp}, #{kko_img_cd}, #{kko_img_url}
@@ -340,6 +342,7 @@
             , #{kko_thumbnail_img_cd}
             , #{kko_item_json}
             , #{kko_carousel_json}
+            , #{kko_head_json}
         )
     </insert>
 

@@ -93,6 +93,7 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.kko_thumbnail_img_cd = tblmiContLstdto.kko_thumbnail_img_cd
         this.kko_item_json = tblmiContLstdto.kko_item_json
         this.kko_carousel_json = tblmiContLstdto.kko_carousel_json
+        this.kko_head_json = tblmiContLstdto.kko_head_json
     }
 
     override fun toString(): String {

@@ -1,7 +1,6 @@
 package com.omnilab.micrm.service.impl
 
 import com.exacttarget.fuelsdk.*
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -55,7 +54,6 @@ import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 
 @Service("SalesforceServiceImpl")
@@ -1894,7 +1892,178 @@ class SalesforceServiceImpl : SalesforceService {
                     listDto.kko_item_json = createKakaoItemJson(dto)
                     listDto.kko_header = listDto.cont_sub?.let { if (it.length > 20) it.substring(0, 20) else it }
                 }
-                "2" -> listDto.msg_tp = "DMCH221"
+                "2" -> {
+                    listDto.msg_tp = "DMCH221"
+                    val img = listOf(dto.kakao_item_img_cd_0, dto.kakao_item_img_cd_1, dto.kakao_item_img_cd_2, dto.kakao_item_img_cd_3, dto.kakao_item_img_cd_4, dto.kakao_item_img_cd_5, dto.kakao_item_img_cd_6)
+                    val header = listOf(dto.kkoHeader0, dto.kkoHeader1, dto.kkoHeader2, dto.kkoHeader3, dto.kkoHeader4, dto.kkoHeader5, dto.kkoHeader6)
+                    val body = listOf(dto.kkoBody0, dto.kkoBody1, dto.kkoBody2, dto.kkoBody3, dto.kkoBody4, dto.kkoBody5, dto.kkoBody6)
+
+                    val price = listOf("", dto.kkoPrice1, dto.kkoPrice2, dto.kkoPrice3, dto.kkoPrice4, dto.kkoPrice5, dto.kkoPrice6)
+                    val discountPrice = listOf("", dto.kkoDiscountPrice1, dto.kkoDiscountPrice2, dto.kkoDiscountPrice3, dto.kkoDiscountPrice4, dto.kkoDiscountPrice5, dto.kkoDiscountPrice6)
+
+                    val btn1Nm = listOf("", dto.kkoBtnLst1_1, dto.kkoBtnLst2_1, dto.kkoBtnLst3_1, dto.kkoBtnLst4_1, dto.kkoBtnLst5_1, dto.kkoBtnLst6_1)
+                    val btn1Pc = listOf("", dto.kkoBtnUrlLstPc1_1, dto.kkoBtnUrlLstPc2_1, dto.kkoBtnUrlLstPc3_1, dto.kkoBtnUrlLstPc4_1, dto.kkoBtnUrlLstPc5_1, dto.kkoBtnUrlLstPc6_1)
+                    val btn1Mo = listOf("", dto.kkoBtnUrlLstMo1_1, dto.kkoBtnUrlLstMo2_1, dto.kkoBtnUrlLstMo3_1, dto.kkoBtnUrlLstMo4_1, dto.kkoBtnUrlLstMo5_1, dto.kkoBtnUrlLstMo6_1)
+
+                    val btn2Nm = listOf("", dto.kkoBtnLst1_2, dto.kkoBtnLst2_2, dto.kkoBtnLst3_2, dto.kkoBtnLst4_2, dto.kkoBtnLst5_2, dto.kkoBtnLst6_2)
+                    val btn2Pc = listOf("", dto.kkoBtnUrlLstPc1_2, dto.kkoBtnUrlLstPc2_2, dto.kkoBtnUrlLstPc3_2, dto.kkoBtnUrlLstPc4_2, dto.kkoBtnUrlLstPc5_2, dto.kkoBtnUrlLstPc6_2)
+                    val btn2Mo = listOf("", dto.kkoBtnUrlLstMo1_2, dto.kkoBtnUrlLstMo2_2, dto.kkoBtnUrlLstMo3_2, dto.kkoBtnUrlLstMo4_2, dto.kkoBtnUrlLstMo5_2, dto.kkoBtnUrlLstMo6_2)
+
+                    // 2. 작성 여부 판별 (any)
+                    val any = BooleanArray(7)
+                    for (i in 0..6) {
+                        val basicAny = !img[i].isNullOrBlank() || !header[i].isNullOrBlank() || !body[i].isNullOrBlank()
+                        val btnAny = if (i == 0) false else (!btn1Nm[i].isNullOrBlank() || !btn2Nm[i].isNullOrBlank())
+                        any[i] = basicAny || btnAny
+                    }
+
+                    // 3. 카드 최소 2개 필수 (1~6번 중)
+                    val cardFilledCount = (1..6).count { any[it] }
+                    if (cardFilledCount < 2) {
+                        re.status = false
+                        re.errMsg = "상품 카드를 최소 2개 이상 작성해주세요."
+                        return re
+                    }
+
+                    var maxCardIdx = 0
+                    for (i in 1..6) if (any[i]) maxCardIdx = i
+
+                    // 4. 상세 유효성 루프
+                    for (i in 0..maxCardIdx) {
+                        // 순서대로 작성했는지 체크
+                        if (!any[i]) {
+                            re.status = false
+                            re.errMsg = "카드${i}을(를) 먼저 작성해주세요."
+                            return re
+                        }
+
+                        // [공통 필수] 이미지, 타이틀, 내용
+                        if (img[i].isNullOrBlank() || header[i].isNullOrBlank() || body[i].isNullOrBlank()) {
+                            val name = if (i == 0) "Intro" else "카드${i}"
+                            re.status = false
+                            re.errMsg = "${name}의 이미지, 타이틀(상품명), 내용은 필수입니다."
+                            return re
+                        }
+
+
+                        if (i == 0) {
+                            // --- 인트로 제약조건 ---
+                            if (header[0]!!.length > 20 || header[0]!!.contains("\n")) {
+                                re.status = false; re.errMsg = "Intro 타이틀은 20자 이내(줄바꿈 불가)여야 합니다."; return re
+                            }
+                            if (body[0]!!.length > 50 || body[0]!!.count { it == '\n' } > 2) {
+                                re.status = false; re.errMsg = "Intro 내용은 50자 이내(줄바꿈 최대 2회)여야 합니다."; return re
+                            }
+                        } else {
+                            // --- 카드 제약조건 ---
+                            if (price[i] == null) {
+                                re.status = false; re.errMsg = "카드${i}의 가격은 필수 입력 사항입니다."; return re
+                            }
+
+                            if (header[i]!!.length > 30) {
+                                re.status = false; re.errMsg = "카드${i} 상품명은 30자 이내여야 합니다."; return re
+                            }
+                            if (body[i]!!.length > 34 || body[i]!!.count { it == '\n' } > 1) {
+                                re.status = false; re.errMsg = "카드${i} 내용은 34자 이내(줄바꿈 최대 1회)여야 합니다."; return re
+                            }
+
+                            // --- 버튼 유효성 검사 (기존과 동일) ---
+                            val b1Any = !btn1Nm[i].isNullOrBlank() || !btn1Pc[i].isNullOrBlank() || !btn1Mo[i].isNullOrBlank()
+                            val b2Any = !btn2Nm[i].isNullOrBlank() || !btn2Pc[i].isNullOrBlank() || !btn2Mo[i].isNullOrBlank()
+
+                            if (b2Any && !b1Any) {
+                                re.status = false
+                                re.errMsg =  "카드${i}의 버튼 2가 입력되었으나 버튼 1이 비어있습니다. 버튼 1부터 입력해주세요."
+                                return re
+                            }
+                            if (!b1Any) {
+                                re.status = false
+                                re.errMsg = "카드${i}의 버튼 정보를 입력해주세요."
+                                return re
+                            }
+                            if (btn1Nm[i].isNullOrBlank() || btn1Pc[i].isNullOrBlank() || btn1Mo[i].isNullOrBlank()) {
+                                re.status = false
+                                re.errMsg = "카드${i}의 버튼 1 명칭과 링크(PC/Mo)를 모두 입력해주세요."
+                                return re
+                            }
+                            if (btn1Nm[i]!!.length > 8) {
+                                re.status = false
+                                re.errMsg = "카드${i}의 버튼 1 명칭은 8자 이내여야 합니다."
+                                return re
+                            }
+                            if (b2Any) {
+                                if (btn2Nm[i].isNullOrBlank() || btn2Pc[i].isNullOrBlank() || btn2Mo[i].isNullOrBlank()) {
+                                    re.status = false
+                                    re.errMsg = "카드${i}의 버튼 2 명칭과 링크(PC/Mo)를 모두 입력해주세요."
+                                    return re
+                                }
+                                if (btn2Nm[i]!!.length > 8) {
+                                    re.status = false
+                                    re.errMsg = "카드${i}의 버튼 2 명칭은 8자 이내여야 합니다."
+                                    return re
+                                }
+                            }
+                        }
+                    }
+
+                    val carouselLst = ArrayList<CarouselDto>()
+                    var headData: HeadDto? = null // 인트로용 별도 객체
+
+                    for (i in 0..maxCardIdx) {
+                        // 인트로를 작성하지 않았으면 건너뜀
+                        if (i == 0 && !any[0]) continue
+
+                        val imgId = img[i]?.toIntOrNull() ?: 0
+                        val imgDto = contentDao.selTblmiContImg(Tblmi_cont_imgDto(imgId))
+
+                        if (i == 0) {
+                            // --- [인트로] head 객체 세팅 ---
+                            headData = HeadDto().apply {
+                                this.header = header[i]
+                                this.content = body[i]
+                                this.image_url = imgDto?.kko_img_url
+                            }
+                        } else {
+                            // --- [카드] carousel 리스트 세팅 ---
+                            val buttonLst = ArrayList<ButtonJsonDto>()
+                            // 버튼 1 (필수)
+                            buttonLst.add(ButtonJsonDto(btn1Nm[i].toString(), "WL", btn1Mo[i].toString(), btn1Pc[i].toString()))
+
+                            // 버튼 2 (선택)
+                            val b2Any = !btn2Nm[i].isNullOrBlank() || !btn2Pc[i].isNullOrBlank() || !btn2Mo[i].isNullOrBlank()
+                            if (b2Any) {
+                                buttonLst.add(ButtonJsonDto(btn2Nm[i].toString(), "WL", btn2Mo[i].toString(), btn2Pc[i].toString()))
+                            }
+
+                            val itemCard = CarouselDto().apply {
+                                this.header = header[i]
+                                this.additional_content = body[i]
+
+                                val origin = price[i]?.toString()?.replace(Regex("[^0-9]"), "")?.toLongOrNull() ?: 0L
+                                val sale = discountPrice[i]?.toString()?.replace(Regex("[^0-9]"), "")?.toLongOrNull() ?: 0L
+
+                                val discountRate = if (sale > 0L && origin > 0L) {
+                                    val rate = (origin - sale).toDouble() / origin * 100
+                                    Math.round(rate).toInt()
+                                } else {
+                                    0
+                                }
+                                val commerce = CommerceDto(header[i], origin, sale, discountRate, sale)
+                                this.attachment = AttachmentDto(
+                                    buttonLst,
+                                    ImageDto(imgDto?.kko_img_url, null),
+                                    commerce
+                                )
+                            }
+                            carouselLst.add(itemCard)
+                        }
+                    }
+
+                    if(headData != null){
+                        listDto.kko_head_json = gson.toJson(headData)
+                    }
+                    listDto.kko_carousel_json = gson.toJson(carouselLst)
+                }
                 "3" -> {
                     listDto.msg_tp = "DMCH222"
                     val img = listOf(dto.kakao_item_img_cd_1, dto.kakao_item_img_cd_2, dto.kakao_item_img_cd_3, dto.kakao_item_img_cd_4, dto.kakao_item_img_cd_5, dto.kakao_item_img_cd_6)
@@ -1958,10 +2127,7 @@ class SalesforceServiceImpl : SalesforceService {
                         val b2Any = !btn2Nm[i].isNullOrBlank() || !btn2Pc[i].isNullOrBlank() || !btn2Mo[i].isNullOrBlank()
 
                         val buttonLst: List<ButtonJsonDto> = if(b2Any) {
-                            listOf(
-                                ButtonJsonDto(btn1Nm[i].toString(), "WL",  btn1Mo[i].toString(), btn1Pc[i].toString())
-                                , ButtonJsonDto(btn2Nm[i].toString(), "WL",  btn2Mo[i].toString(), btn2Pc[i].toString())
-                            )
+                            listOf(ButtonJsonDto(btn1Nm[i].toString(), "WL",  btn1Mo[i].toString(), btn1Pc[i].toString()), ButtonJsonDto(btn2Nm[i].toString(), "WL",  btn2Mo[i].toString(), btn2Pc[i].toString()))
                         }else{
                             listOf(ButtonJsonDto(btn1Nm[i].toString(), "WL",  btn1Mo[i].toString(), btn1Pc[i].toString()))
                         }

@@ -204,7 +204,7 @@ define(["postmonger"], function (Postmonger) {
 			}
         }
 		//임시 주석
-        let data = $("#form").serializeArray();
+		let data = $("#form").serializeArray();
 		data.push({name: 'sales_nm', value: model.name});
 		data.push({name: 'inten_id', value: model.definitionId});
 		data.push({name: 'orig_id', value: model.id});

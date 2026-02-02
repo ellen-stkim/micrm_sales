@@ -48,6 +48,52 @@
                                         </div>
                                         <div class="row_body">
                                             <c:choose>
+                                                <c:when test="${content.kko_msg_tp eq '2'}">
+                                                    <div class="slide_area">
+                                                        <div class="swiper-container medium previewBrandSlide">
+                                                            <div class="swiper-wrapper">
+                                                                <c:forEach var="idx" begin="0" end="6">
+                                                                    <c:set var="headerKey" value="${'kkoHeader' += idx}"/>
+                                                                    <c:set var="bodyKey" value="${'kkoBody' += idx}"/>
+                                                                    <c:set var="imgKey" value="${'kko_view_item_img_url_' += idx}"/>
+                                                                    <c:if test="${idx ne 0}">
+                                                                        <c:set var="btn1Key" value="${'kkoBtnLst' += idx += '_1'}"/>
+                                                                        <c:set var="btn2Key" value="${'kkoBtnLst' += idx += '_2'}"/>
+                                                                    </c:if>
+                                                                    <c:if test="${not empty content[headerKey]}">
+                                                                        <div class="swiper-slide slide${idx}">
+                                                                            <section>
+                                                                                <div class="img_area">
+                                                                                    <img src="${content[imgKey]}" onerror="this.src='/image/bg_none.png'" alt=""/>
+                                                                                </div>
+                                                                                <div class="txt_area">
+                                                                                    <h3>${content[headerKey]}</h3>
+                                                                                    <div style="display:block;width:100%;height:1px;margin:8px 1px;background-color:rgba(0,0,0,0.08);"></div>
+                                                                                    <p style="padding-top:10px;overflow-wrap:anywhere;word-break:break-word;white-space:normal;">
+                                                                                        ${content[bodyKey]}
+                                                                                    </p>
+                                                                                    <div style="display:flex;gap:12px;align-items:center;">
+                                                                                        <c:if test="${not empty content[btn1Key]}">
+                                                                                            <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
+                                                                                                ${content[btn1Key]}
+                                                                                            </div>
+                                                                                        </c:if>
+                                                                                        <c:if test="${not empty content[btn2Key]}">
+                                                                                            <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
+                                                                                                ${content[btn2Key]}
+                                                                                            </div>
+                                                                                        </c:if>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </section>
+                                                                        </div>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </div>
+                                                            <div class="previewBrandSlidePagign" style="text-align:center;padding-top:20px;">1/7</div>
+                                                        </div>
+                                                    </div>
+                                                </c:when>
                                                 <c:when test="${content.kko_msg_tp eq '3'}">
                                                     <div class="slide_area">
                                                         <div class="swiper-container medium previewBrandSlide">

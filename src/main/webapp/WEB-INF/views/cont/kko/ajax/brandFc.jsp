@@ -46,10 +46,10 @@
                 </div>
             </div>
             <div class="row">
-               <div class="th top-border">타이틀</div>
-               <div class="td top-border">
-                   <input type="text" name="kkoHeader${status.count}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandFcTitle(this, ${status.count});" value="${list[0]['kkoHeader' += status.count]}">
-               </div>
+                <div class="th top-border">타이틀</div>
+                <div class="td top-border">
+                    <input type="text" name="kkoHeader${status.count}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandFcTitle(this, ${status.count});" value="${list[0]['kkoHeader' += status.count]}">
+                </div>
             </div>
             <div class="row" style="height:150px;">
                 <div class="th top-border">내용</div>
@@ -60,53 +60,53 @@
         </div>
         <div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
             <div class="row flex_box double">
-               <div class="th" style="line-height: 72px;">버튼명</div>
-               <div class="td first-td right-border">
-                   <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_1" maxlength="8" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')" value="${list[0]['kkoBtnLst' += status.count += '_1']}"/>
-               </div>
-               <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
-               <div class="td flex_box" style="flex-direction: column;">
-                   <div class="row flex_box" style="width: 100%;">
-                       <div class="th">Pc 링크</div>
-                       <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstPc${status.count}_1" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstPc' += status.count += '_1']}"/>
-                       </div>
-                   </div>
-                   <div class="row flex_box" style="width: 100%;">
-                       <div class="th">Mobile 링크</div>
-                       <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstMo${status.count}_1" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstMo' += status.count += '_1']}"/>
-                       </div>
-                   </div>
-               </div>
-               <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
-                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrlFc${status.count}_1" value="${empty list[0]['kkoBtnLst' += status.count += '_1'] ? "생성": "삭제"}"/>
-               </div>
-           </div>
+                <div class="th" style="line-height: 72px;">버튼명</div>
+                <div class="td first-td right-border">
+                    <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_1" maxlength="8" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')" value="${list[0]['kkoBtnLst' += status.count += '_1']}"/>
+                </div>
+                <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                <div class="td flex_box" style="flex-direction: column;">
+                    <div class="row flex_box" style="width: 100%;">
+                        <div class="th">Pc 링크</div>
+                        <div class="td flex_box">
+                            <input type="text" name="kkoBtnUrlLstPc${status.count}_1" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstPc' += status.count += '_1']}"/>
+                        </div>
+                    </div>
+                    <div class="row flex_box" style="width: 100%;">
+                        <div class="th">Mobile 링크</div>
+                        <div class="td flex_box">
+                            <input type="text" name="kkoBtnUrlLstMo${status.count}_1" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstMo' += status.count += '_1']}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
+                    <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrlFc${status.count}_1" value="${empty list[0]['kkoBtnLst' += status.count += '_1'] ? "생성": "삭제"}"/>
+                </div>
+            </div>
             <div class="row flex_box double">
-               <div class="th" style="line-height: 72px;">버튼명</div>
-               <div class="td first-td right-border">
-                   <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_2" maxlength="8" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')" value="${list[0]['kkoBtnLst' += status.count += '_2']}"/>
-               </div>
-               <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
-               <div class="td flex_box" style="flex-direction: column;">
-                   <div class="row flex_box" style="width: 100%;">
-                       <div class="th">Pc 링크</div>
-                       <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstPc${status.count}_2" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstPc' += status.count += '_2']}"/>
-                       </div>
-                   </div>
-                   <div class="row flex_box" style="width: 100%;">
-                       <div class="th">Mobile 링크</div>
-                       <div class="td flex_box">
-                           <input type="text" name="kkoBtnUrlLstMo${status.count}_2" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstMo' += status.count += '_2']}"/>
-                       </div>
-                   </div>
-               </div>
-               <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
-                   <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrlFc${status.count}_2"  value="${empty list[0]['kkoBtnLst' += status.count += '_2'] ? "생성": "삭제"}"/>
-               </div>
-           </div>
+                <div class="th" style="line-height: 72px;">버튼명</div>
+                <div class="td first-td right-border">
+                    <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst${status.count}_2" maxlength="8" placeholder="버튼명을 입력해주세요." oninput="kkoCreate.titleCount(this,'btn')" value="${list[0]['kkoBtnLst' += status.count += '_2']}"/>
+                </div>
+                <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+                <div class="td flex_box" style="flex-direction: column;">
+                    <div class="row flex_box" style="width: 100%;">
+                        <div class="th">Pc 링크</div>
+                        <div class="td flex_box">
+                            <input type="text" name="kkoBtnUrlLstPc${status.count}_2" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstPc' += status.count += '_2']}"/>
+                        </div>
+                    </div>
+                    <div class="row flex_box" style="width: 100%;">
+                        <div class="th">Mobile 링크</div>
+                        <div class="td flex_box">
+                            <input type="text" name="kkoBtnUrlLstMo${status.count}_2" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0]['kkoBtnUrlLstMo' += status.count += '_2']}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="td flex_box" style="width: 273px; align-items: center; justify-content: center;">
+                    <input type="button" class="btn_sm_line kakaoLinkBtn" id="kkoBtnUrlFc${status.count}_2" value="${empty list[0]['kkoBtnLst' += status.count += '_2'] ? "생성": "삭제"}"/>
+                </div>
+            </div>
         </div>
     </div>
 </c:forEach>

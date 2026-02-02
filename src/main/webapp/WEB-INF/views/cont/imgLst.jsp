@@ -196,7 +196,7 @@
             '<li data="IMGTP11">와이드 이미지</li>'+
             '<li data="IMGTP12">와이드 리스트 (첫번째 이미지)</li>'+
             '<li data="IMGTP13">와이드 리스트</li>'+
-            /*'<li data="IMGTP14">캐러셀 커머스</li>'+*/
+            '<li data="IMGTP14">캐러셀 커머스</li>'+
             '<li data="IMGTP15">캐러셀 피드</li>'+
             '</ul>'+
             '</div>'+

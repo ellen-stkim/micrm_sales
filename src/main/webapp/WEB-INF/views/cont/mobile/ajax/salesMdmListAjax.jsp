@@ -61,7 +61,7 @@
                                 <li>브랜드톡 와이드 리스트</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH221'}">
-                               <%-- <li>브랜드톡 캐러셀 커머스</li>--%>
+                                <li>브랜드톡 캐러셀 커머스</li>
                             </c:if>
                             <c:if test="${title eq 'DMCH222'}">
                                 <li>브랜드톡 캐러셀 피드</li>
