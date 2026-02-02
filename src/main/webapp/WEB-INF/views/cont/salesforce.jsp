@@ -207,7 +207,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="row body">
+                                <div class="row body" id="brandType">
                                     <div class="th">브랜드톡 양식</div>
                                     <div class="column_1">
                                         <label class="custom_radio en_font">
@@ -1092,7 +1092,7 @@
 
     $(function () {
         //임시 주석
-        <%--mobileInfo(2689);--%>
+        <%--mobileInfo(2669);--%>
 
         $('input[name="dbInfo"]').on('change', function () {
             mappingLst();
@@ -1919,6 +1919,16 @@
                 prevEl: '.kko_prev',
             },
         });
+
+
+        kkoBrandFaSwiper = new Swiper('.kkoBrandFaSwiper', {
+            initialSlide: 1,
+            direction: 'horizontal',
+            centeredSlides: true,
+            slidesPerView: 1.2,
+            pagination: { el: '.kko_paging', type: 'fraction' },
+            navigation: { nextEl: '.kko_next', prevEl: '.kko_prev' },
+        });
     });
 
     // 정보 조회
@@ -2023,7 +2033,7 @@
             couponNm = $("#savedCouponNm").val();
 
             //임시 주석
-            mappingLst();
+            //mappingLst();
         }
 
         let param = {seq: seq}
@@ -4184,7 +4194,7 @@
 
             $('#js-kakao-img').html('');
             $('.kakao_link').remove()
-
+            $("#brandType").hide();
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
@@ -4193,6 +4203,7 @@
             $('#kakao_at_viewer .at_tmpl_data').html('');
             $('#tmplNm').val('');
             $('#templateCode').val('');
+            $("#brandType").show();
         }
     }
 

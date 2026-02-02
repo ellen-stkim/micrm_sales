@@ -223,6 +223,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var kko_item_json: String? = null
     var kko_carousel_json: String? = null
     var kko_head_json : String ?= null    // (브랜드톡) 캐러셀
+    var kakaoImageItemNm0: String? = null
     var kakaoImageItemNm1: String? = null
     var kakaoImageItemNm2: String? = null
     var kakaoImageItemNm3: String? = null

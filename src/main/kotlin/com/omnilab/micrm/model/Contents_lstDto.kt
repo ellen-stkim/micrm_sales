@@ -145,6 +145,7 @@ class Contents_lstDto: Tblmi_cont_lstDto() {
         }
 
     var cardSize : String? = null
+    var kakaoImageItemNm0: String? = null
     var kakaoImageItemNm1: String? = null
     var kakaoImageItemNm2: String? = null
     var kakaoImageItemNm3: String? = null

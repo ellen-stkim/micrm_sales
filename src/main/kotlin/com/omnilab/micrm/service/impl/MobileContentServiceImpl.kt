@@ -7,6 +7,7 @@ import com.omnilab.micrm.common.*
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.kakao.CarouselDto
+import com.omnilab.micrm.model.table.kakao.HeadDto
 import com.omnilab.micrm.repository.ContentDao
 import com.omnilab.micrm.repository.CouponDao
 import com.omnilab.micrm.repository.KkoAtTmplDao
@@ -801,6 +802,7 @@ class MobileContentServiceImpl : ContentService {
             val dto1 = contentOne[i]
             if (dto1.cont_tp.equals("DMTP04")
                 || dto1.msg_tp.equals("DMCH220")
+                || dto1.msg_tp.equals("DMCH221")
                 || dto1.msg_tp.equals("DMCH222")
             ) {
                 // RCS 형태인 경우 Json 파싱해서 뷰에 뿌려준다
@@ -1388,6 +1390,7 @@ class MobileContentServiceImpl : ContentService {
         val jsonParser = JsonParser()
         val dto1 = dto as Content_view_Dto
         val msgTp = dto1.msg_tp
+
         if (msgTp.equals("DMCH209") || msgTp.equals("DMCH208") || msgTp.equals("DMCH207") || msgTp.equals("DMCH210")) {
             // 가로, 세로형 이라면 cont_body Json 형태 파싱
             if (dto1.cont_body != null) {
@@ -1471,6 +1474,53 @@ class MobileContentServiceImpl : ContentService {
                     }
                 }
             }
+        }else if (msgTp.equals("DMCH221")) {
+            val type = object : TypeToken<HashMap<String, Any>>() {}.type
+
+            // --- [1] 인트로(Head) 처리 ---
+            if (!dto1.kko_head_json.isNullOrEmpty()) {
+                val head = g.fromJson(dto1.kko_head_json, HeadDto::class.java)
+                val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(head.image_url!!))
+                dto1.apply {
+                    kakao_item_img_cd_0 = imgInfo?.seq?.toString()
+                    kakaoImageItemNm0 = imgInfo?.img_nm
+                    kko_view_item_img_url_0 = imgInfo?.kko_img_url
+                    kkoHeader0 = head.header
+                    kkoBody0 = head.content
+                }
+            }
+            // --- [2] 카드(Carousel) 리스트 처리 ---
+            val carouselJson = dto1.kko_carousel_json
+            val carouselType = object : TypeToken<MutableList<CarouselDto>>() {}.type
+            val carouselList = g.fromJson<MutableList<CarouselDto>>(carouselJson, carouselType)
+            // 공통 필드 할당 함수 정의 (가격 필드 추가)
+            fun setFields(
+                v: CarouselDto,
+                f: (imgCd: String?, imgNm: String?, imgUrl: String?, head: String?, body: String?, prc: Any?, dPrc: Any?, b1: List<String?>, b2: List<String?>) -> Unit
+            ) {
+                val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(v.attachment?.image?.img_url ?: ""))
+                val btns = v.attachment?.button ?: listOf()
+
+                val b1 = if (btns.isNotEmpty()) listOf(btns[0].name, btns[0].url_pc, btns[0].url_mobile) else listOf(null, null, null)
+                val b2 = if (btns.size >= 2) listOf(btns[1].name, btns[1].url_pc, btns[1].url_mobile) else listOf(null, null, null)
+                f(imgInfo?.seq?.toString(), imgInfo?.img_nm, imgInfo?.kko_img_url, v.header, v.additional_content, v.attachment?.commerce?.regular_price, v.attachment?.commerce?.discount_price, b1, b2)
+            }
+            carouselList.forEachIndexed { index, item ->
+                val value = g.fromJson(g.toJson(item), CarouselDto::class.java)
+                setFields(value) { ic, inm, iu, h, b, p, dp, b1, b2 ->
+                    dto1.apply {
+                        when (index) {
+                            0 -> { kakao_item_img_cd_1=ic; kakaoImageItemNm1=inm; kko_view_item_img_url_1=iu; kkoHeader1=h; kkoBody1=b; kkoPrice1=p as? Long; kkoDiscountPrice1=dp as? Long; kkoBtnLst1_1=b1[0]; kkoBtnUrlLstPc1_1=b1[1]; kkoBtnUrlLstMo1_1=b1[2]; kkoBtnLst1_2=b2[0]; kkoBtnUrlLstPc1_2=b2[1]; kkoBtnUrlLstMo1_2=b2[2] }
+                            1 -> { kakao_item_img_cd_2=ic; kakaoImageItemNm2=inm; kko_view_item_img_url_2=iu; kkoHeader2=h; kkoBody2=b; kkoPrice2=p as? Long; kkoDiscountPrice2=dp as? Long; kkoBtnLst2_1=b1[0]; kkoBtnUrlLstPc2_1=b1[1]; kkoBtnUrlLstMo2_1=b1[2]; kkoBtnLst2_2=b2[0]; kkoBtnUrlLstPc2_2=b2[1]; kkoBtnUrlLstMo2_2=b2[2] }
+                            2 -> { kakao_item_img_cd_3=ic; kakaoImageItemNm3=inm; kko_view_item_img_url_3=iu; kkoHeader3=h; kkoBody3=b; kkoPrice3=p as? Long; kkoDiscountPrice3=dp as? Long; kkoBtnLst3_1=b1[0]; kkoBtnUrlLstPc3_1=b1[1]; kkoBtnUrlLstMo3_1=b1[2]; kkoBtnLst3_2=b2[0]; kkoBtnUrlLstPc3_2=b2[1]; kkoBtnUrlLstMo3_2=b2[2] }
+                            3 -> { kakao_item_img_cd_4=ic; kakaoImageItemNm4=inm; kko_view_item_img_url_4=iu; kkoHeader4=h; kkoBody4=b; kkoPrice4=p as? Long; kkoDiscountPrice4=dp as? Long; kkoBtnLst4_1=b1[0]; kkoBtnUrlLstPc4_1=b1[1]; kkoBtnUrlLstMo4_1=b1[2]; kkoBtnLst4_2=b2[0]; kkoBtnUrlLstPc4_2=b2[1]; kkoBtnUrlLstMo4_2=b2[2] }
+                            4 -> { kakao_item_img_cd_5=ic; kakaoImageItemNm5=inm; kko_view_item_img_url_5=iu; kkoHeader5=h; kkoBody5=b; kkoPrice5=p as? Long; kkoDiscountPrice5=dp as? Long; kkoBtnLst5_1=b1[0]; kkoBtnUrlLstPc5_1=b1[1]; kkoBtnUrlLstMo5_1=b1[2]; kkoBtnLst5_2=b2[0]; kkoBtnUrlLstPc5_2=b2[1]; kkoBtnUrlLstMo5_2=b2[2] }
+                            5 -> { kakao_item_img_cd_6=ic; kakaoImageItemNm6=inm; kko_view_item_img_url_6=iu; kkoHeader6=h; kkoBody6=b; kkoPrice6=p as? Long; kkoDiscountPrice6=dp as? Long; kkoBtnLst6_1=b1[0]; kkoBtnUrlLstPc6_1=b1[1]; kkoBtnUrlLstMo6_1=b1[2]; kkoBtnLst6_2=b2[0]; kkoBtnUrlLstPc6_2=b2[1]; kkoBtnUrlLstMo6_2=b2[2] }
+                        }
+                    }
+                }
+            }
+            logger.error("dto1 {}", dto1)
         } else if (msgTp.equals("DMCH222")) {
             val type = object : TypeToken<MutableList<CarouselDto>>() {}.type
             val data = g.fromJson<MutableList<CarouselDto>>(dto1.kko_carousel_json, type)

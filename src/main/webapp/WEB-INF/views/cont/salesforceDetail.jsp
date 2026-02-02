@@ -220,7 +220,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="row body">
+                                    <div class="row body" id="brandType" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <div class="th">브랜드톡 양식</div>
                                         <div class="column_1">
                                             <label class="custom_radio en_font">
@@ -271,6 +271,9 @@
                                         <c:choose>
                                             <c:when test="${list[0].msg_tp eq 'DMCH220'}">
                                                 <jsp:include page="kko/ajax/brandWideLst.jsp" />
+                                            </c:when>
+                                            <c:when test="${list[0].msg_tp eq 'DMCH221'}">
+                                                <jsp:include page="kko/ajax/brandFa.jsp" />
                                             </c:when>
                                             <c:when test="${list[0].msg_tp eq 'DMCH222'}">
                                                 <jsp:include page="kko/ajax/brandFc.jsp" />
@@ -555,7 +558,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="viewer_area" id="kakao_ft_viewer" <c:if test='${list[0].msg_tp eq "DMCH221" or list[0].msg_tp eq "DMCH222"}'>hidden</c:if>>
+                                <div class="viewer_area" id="kakao_ft_viewer" <c:if test='${cont_tp ne "DMTP03" or (list[0].msg_tp eq "DMCH221" or list[0].msg_tp eq "DMCH222")}'>hidden</c:if>>
                                     <div class="top">브랜드톡 미리보기</div>
                                     <div class="inner">
                                         <div class="row_body">
@@ -751,7 +754,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="viewer_area" id="kakao_brand_viewer" <c:if test='${list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222"}'>hidden="hidden"</c:if>>
+                                <div class="viewer_area" id="kakao_brand_viewer" <c:if test='${cont_tp ne "DMTP03" or (list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222")}'>hidden="hidden"</c:if>>
                                     <div class="top">브랜드톡 미리보기</div>
                                     <div class="rcs_inner kko_slide">
                                         <div class="slide_area">

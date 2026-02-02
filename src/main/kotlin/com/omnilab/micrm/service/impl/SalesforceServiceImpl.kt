@@ -54,6 +54,7 @@ import java.util.stream.Collectors
 import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.floor
 
 
 @Service("SalesforceServiceImpl")
@@ -2044,11 +2045,11 @@ class SalesforceServiceImpl : SalesforceService {
 
                                 val discountRate = if (sale > 0L && origin > 0L) {
                                     val rate = (origin - sale).toDouble() / origin * 100
-                                    Math.round(rate).toInt()
+                                    floor(rate).toInt()
                                 } else {
                                     0
                                 }
-                                val commerce = CommerceDto(header[i], origin, sale, discountRate, sale)
+                                val commerce = CommerceDto(header[i], origin, sale, discountRate, null)
                                 this.attachment = AttachmentDto(
                                     buttonLst,
                                     ImageDto(imgDto?.kko_img_url, null),
