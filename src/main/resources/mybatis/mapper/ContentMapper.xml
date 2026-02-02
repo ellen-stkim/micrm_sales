@@ -968,7 +968,7 @@
 			kko_thumbnail_img_cd = #{kko_thumbnail_img_cd},
 			kko_item_json = #{kko_item_json},
 			kko_carousel_json = #{kko_carousel_json},
-			kko_head_json = #{kko_head_json}
+			kko_head_json = #{kko_head_json},
 			kko_msg_tp = #{kko_msg_tp},
 			kko_btn_obj = #{kko_btn_obj},
 			kko_price = #{kko_price},
