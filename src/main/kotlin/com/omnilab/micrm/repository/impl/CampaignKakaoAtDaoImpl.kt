@@ -293,13 +293,6 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                 val objMap: MutableMap<String, Any> = gson.fromJson(kakaoCont.kko_btn_obj, MutableMap::class.java) as MutableMap<String, Any>
                 if(objMap["button"] != null && objMap["button"].toString() != "{}"){
                     val result = processJson(kakaoCont.kko_btn_obj!!, map, trackURL!!, hstSeq)
-                    /*
-                    val btnData = gson.toJson(objMap["button"])
-                    for (key in map.keys) {
-                        val reg = Regex("#\\{(?i)${key}}")
-                        btnData = btnData.replace(reg, CommonUtils.stringValueOf(map[key]))
-                    }
-                    */
                     val obj = JsonParser.parseString(result).asJsonObject
                     val buttons = obj.getAsJsonArray("button")
                     kkoMsgdto.button_json = buttons.toString()
@@ -447,65 +440,71 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         return sqlSession.update("del_kko_send_cj", map)
     }
 
-    fun processJson(jsonStr: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
+    fun processJson(jsonStr: String, keyMap: Map<String, Any>, trackURL: String, hstSeq: String): String {
         val gson = GsonBuilder().setPrettyPrinting().create()
-        val jsonObject = JsonParser.parseString(jsonStr).asJsonObject
-        val buttons = jsonObject["button"].asJsonArray
+
+        // 1. 대소문자 무시를 위해 keyMap의 키를 모두 소문자로 변환하여 관리
+        val insensitiveKeyMap = keyMap.mapKeys { it.key.lowercase() }
+
+        val jsonObject = try {
+            JsonParser.parseString(jsonStr).asJsonObject
+        } catch (e: Exception) {
+            return jsonStr
+        }
+
+        val buttons = jsonObject.getAsJsonArray("button") ?: return gson.toJson(jsonObject)
 
         for (button in buttons) {
             val obj = button.asJsonObject
             for ((field, valueElement) in obj.entrySet()) {
                 if (!valueElement.isJsonPrimitive || !valueElement.asJsonPrimitive.isString) continue
-                val value = valueElement.asString
 
-                val newValue = if (field == "linkMo" || field == "linkPc") {
-                    processLinkField(value, keyMap, trackURL, hstSeq)
-                } else {
-                    replaceTemplate(value, keyMap, urlContext = false)
-                }
+                val originalValue = valueElement.asString
+                // 필드명 체크 (대소문자 무시하고 싶다면 equals(..., ignoreCase = true) 사용 가능)
+                val isLinkField = field.equals("linkMo", true) || field.equals("linkPc", true)
+
+                val newValue = processTemplate(originalValue, insensitiveKeyMap, isLinkField, trackURL, hstSeq)
                 obj.addProperty(field, newValue)
             }
         }
         return gson.toJson(jsonObject)
     }
 
-    fun processLinkField(value: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
-        val regex = Regex("^((?:https?|http)://)?#\\{([^}]+)}$")
-        val match = regex.matchEntire(value)
-        if (match != null) {
-            val protocol = match.groupValues[1].ifBlank { "https://" }
-            val key = match.groupValues[2]
-            return transform(key, protocol, keyMap, trackURL, hstSeq)
-        }
-        return replaceTemplate(value, keyMap, urlContext = true)
-    }
+    fun processTemplate(input: String, keyMap: Map<String, Any>, isLinkField: Boolean, trackURL: String, hstSeq: String): String {
+        val pattern = Regex("#\\{([^}]+)}", RegexOption.IGNORE_CASE)
+        val fullMatchRegex = Regex("^((?:https?|http)://)?#\\{([^}]+)}$", RegexOption.IGNORE_CASE)
 
-    fun replaceTemplate(input: String, keyMap: MutableMap<String, Any>, urlContext: Boolean): String {
-        val pattern = Regex("#\\{([^}]+)}")
+        val fullMatch = fullMatchRegex.matchEntire(input)
+
+        if (isLinkField && fullMatch != null) {
+            val protocol = fullMatch.groupValues[1].ifBlank { "https://" }
+            val key = fullMatch.groupValues[2].lowercase() // 소문자로 조회
+            val value = keyMap[key]?.toString() ?: return input
+
+            return try {
+                val plainText = "$hstSeq§$protocol$value"
+                val encoded = AES256.AES_Encode(plainText, GlobalValues.encKey)
+                "$trackURL/s/a/$encoded"
+            } catch (e: Exception) {
+                "$protocol$value"
+            }
+        }
+
         return pattern.replace(input) { m ->
-            val key = m.groupValues[1]
-            val raw = keyMap[key]?.toString() ?: return@replace m.value
+            val key = m.groupValues[1].lowercase()
+            val rawValue = keyMap[key]?.toString() ?: return@replace m.value
 
             val prefix = input.substring(0, m.range.first)
-            val isAbsolute = raw.startsWith("http://", true) || raw.startsWith("https://", true)
-            val isExplicitScheme = prefix.endsWith("http://") || prefix.endsWith("https://")
-            val prev = prefix.lastOrNull()
-            val isPathOrQueryContext = prev in listOf('/', '?', '&', '=', '#')
+            val hasScheme = rawValue.startsWith("http://", true) || rawValue.startsWith("https://", true)
+            val isAfterScheme = prefix.endsWith("://")
+            val isPathOrQuery = prefix.lastOrNull() in listOf('/', '?', '&', '=', '#')
 
             when {
-                isAbsolute -> raw
-                isExplicitScheme -> raw
-                isPathOrQueryContext -> raw
-                urlContext -> raw          // 링크 필드라면 기본은 raw
-                else -> "https://$raw"     // 일반 텍스트라면 보강
+                hasScheme || isAfterScheme || isPathOrQuery || isLinkField -> rawValue
+                else -> "https://$rawValue"
             }
         }
     }
 
-
-    fun transform(key: String, protocol: String, keyMap: MutableMap<String, Any>, trackURL: String, hstSeq: String): String {
-        val value = keyMap[key] ?: return "#{$key}"
-        return "$trackURL/s/a/" + AES256.AES_Encode("$hstSeq§$protocol$value", GlobalValues.encKey)
-    }
 
 }
