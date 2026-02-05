@@ -460,7 +460,6 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                 if (!valueElement.isJsonPrimitive || !valueElement.asJsonPrimitive.isString) continue
 
                 val originalValue = valueElement.asString
-                // 필드명 체크 (대소문자 무시하고 싶다면 equals(..., ignoreCase = true) 사용 가능)
                 val isLinkField = field.equals("linkMo", true) || field.equals("linkPc", true)
 
                 val newValue = processTemplate(originalValue, insensitiveKeyMap, isLinkField, trackURL, hstSeq)
