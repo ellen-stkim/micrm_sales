@@ -2033,7 +2033,7 @@
             couponNm = $("#savedCouponNm").val();
 
             //임시 주석
-            //mappingLst();
+            mappingLst();
         }
 
         let param = {seq: seq}
