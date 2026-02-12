@@ -24,9 +24,11 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
+import java.beans.PropertyEditorSupport
 import java.io.InputStreamReader
 import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDateTime
@@ -270,6 +272,20 @@ class SalesforceController {
         }else{
             return ModelAndView("redirect:/html/not.html")
         }
+    }
+
+    @InitBinder
+    fun initBinder(binder: WebDataBinder) {
+        // kkoBtnLst 필드만 "콤마 split" 금지하고, 들어온 문자열을 그대로 1개 값으로 취급
+        binder.registerCustomEditor(
+            MutableList::class.java,
+            "kkoBtnLst",
+            object : PropertyEditorSupport() {
+                override fun setAsText(text: String?) {
+                    value = if (text.isNullOrBlank()) null else mutableListOf(text)
+                }
+            }
+        )
     }
 
     /** @Method Name  : previewService
