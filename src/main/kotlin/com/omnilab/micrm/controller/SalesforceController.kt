@@ -276,13 +276,24 @@ class SalesforceController {
 
     @InitBinder
     fun initBinder(binder: WebDataBinder) {
-        // kkoBtnLst 필드만 "콤마 split" 금지하고, 들어온 문자열을 그대로 1개 값으로 취급
         binder.registerCustomEditor(
             MutableList::class.java,
             "kkoBtnLst",
             object : PropertyEditorSupport() {
+                override fun setValue(value: Any?) {
+                    when (value) {
+                        null -> super.setValue(null)
+                        // 반복 파라미터로 들어온 경우: ["낙원,의밤", "낙원,의밤2"]
+                        is Array<*> -> super.setValue(
+                            value.filterIsInstance<String>().toMutableList()
+                        )
+                        // 단일 값으로 들어온 경우: "낙원,의밤" -> split 금지, 그대로 1개
+                        is String -> super.setValue(mutableListOf(value))
+                        else -> super.setValue(value)
+                    }
+                }
                 override fun setAsText(text: String?) {
-                    value = if (text.isNullOrBlank()) null else mutableListOf(text)
+                    super.setValue(if (text.isNullOrBlank()) null else mutableListOf(text))
                 }
             }
         )
