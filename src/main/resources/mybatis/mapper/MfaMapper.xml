@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 프로젝트에 맞게 수정  -->
+<mapper namespace="mybatis.mapper.MfaMapper">
+	<cache />
+	<select id="selTblmiMfa" parameterType="Tblmi_mfa" resultType="Tblmi_mfa">
+		select *
+		from Tblmi_mfa
+		<where>
+		    usr_id = #{usr_id}
+			and phone = #{phone}
+			and expired_at <![CDATA[ > ]]> #{expired_at}
+			and use_yn = #{use_yn}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(code)">
+				AND code = #{code}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insTblmiMfa" parameterType="Tblmi_mfa">
+		insert into Tblmi_mfa (
+			usr_id
+		    , phone
+			, code
+			, expired_at
+			, count
+			, use_yn
+			, reg_id
+			, upd_id
+		) values (
+			#{usr_id}
+			, #{phone}
+			, #{code}
+			, #{expired_at}
+			, #{count}
+			, #{use_yn}
+			, #{reg_id}
+			, #{upd_id}
+		)
+	</insert>
+
+	<update id="updTblmiMfa" parameterType="Tblmi_mfa">
+		update Tblmi_mfa set
+		    use_yn = #{use_yn}
+		<where>
+			usr_id = #{usr_id}
+			and phone = #{phone}
+			and code = #{code}
+		</where>
+	</update>
+
+
+	<insert id="insSmsLg" parameterType="LgSc_tranDto">
+		insert into ${m_server}.SC_TRAN
+			(TR_SENDDATE, TR_SENDSTAT, TR_ID, TR_MSGTYPE, TR_PHONE, TR_CALLBACK, TR_MSG, TR_ETC1, TR_ETC2, TR_ETC3, TR_ETC4)
+		VALUES
+			(#{tr_senddate}, #{tr_sendstat}, #{tr_id}, #{tr_msgtype}, #{tr_phone}, #{tr_callback}, #{tr_msg}, #{tr_etc1}, #{tr_etc2}, #{tr_etc3}, #{tr_etc4})
+	</insert>
+</mapper>
+
+
+
+
+

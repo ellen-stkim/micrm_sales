@@ -150,6 +150,17 @@
                             </c:if>/>
                         </td>
                     </tr>
+                    <tr>
+                        <th scope="row">2차인증 사용여부 </th>
+                        <td>
+                            <div style="padding: 0px 15px">
+                                <label class="custom_check1">
+                                    <input type="checkbox" id="userMfa" name="is_mfa" value="Y" <c:if test="${list[0].is_mfa eq 'Y'}">checked="checked"</c:if> />
+                                    <span></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
                     <sec:authorize access="hasRole('R10')">
                     <tr>
                         <th scope="row">권한</th>
@@ -165,29 +176,31 @@
                                     </c:forEach>
                                 </ul>
                             </div>
-                            <!-- select 영역 끝 -->
+                            <!-- select 영역 끝  -->
                         </td>
                     </tr>
                     </sec:authorize>
-                    <tr>
-                        <th scope="row">현재 비밀번호</th>
-                        <td>
-                            <input type="password" placeholder="현재 비밀번호를 입력해주세요." id="passwordOld" name="usr_pw_old" class="input_type1 pwd"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">새 비밀번호</th>
-                        <td>
-                            <input type="password" placeholder="새 비밀번호를 입력해주세요." id="password" name="usr_pw" class="input_type1 pwd"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">새 비밀번호 확인</th>
-                        <td>
-                            <input type="password" placeholder="새 비밀번호를 입력해주세요." id="confirmPsw" name="usr_pw_ck" class="input_type1 pwd"/>
-                            <div class="right blue_point_color" id="errorArea1"></div>
-                        </td>
-                    </tr>
+                    <c:if test="${list[0].usr_id eq sessionScope.userId || list[0].role_cd ne 'R10' }">
+                        <tr>
+                            <th scope="row">현재 비밀번호</th>
+                            <td>
+                                <input type="password" placeholder="현재 비밀번호를 입력해주세요." id="passwordOld" name="usr_pw_old" class="input_type1 pwd"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">새 비밀번호</th>
+                            <td>
+                                <input type="password" placeholder="새 비밀번호를 입력해주세요." id="password" name="usr_pw" class="input_type1 pwd"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">새 비밀번호 확인</th>
+                            <td>
+                                <input type="password" placeholder="새 비밀번호를 입력해주세요." id="confirmPsw" name="usr_pw_ck" class="input_type1 pwd"/>
+                                <div class="right blue_point_color" id="errorArea1"></div>
+                            </td>
+                        </tr>
+                    </c:if>
                     </tbody>
                 </table>
                 <div class="pop_error_txt blue_point_color" id="errorArea2"></div>
@@ -268,57 +281,58 @@
         let phone = document.getElementById('userPhone').value;
         let authority = document.getElementById('authority').getAttribute('data');
         let authorityNm = $('#authority').html();
-        let regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~])[A-Za-z\d!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]{8,16}$/;
-        let passwordOld = document.getElementById('passwordOld').value;
-        let password = document.getElementById('password').value;
-        let confirm = document.getElementById('confirmPsw').value;
         let regPhone = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
         let regMail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        let error1 = document.getElementById('errorArea1');
-        let error2 = document.getElementById('errorArea2');
-        error1.innerHTML = '';
-        error2.innerHTML = '';
+        let error1 = $('#errorArea1');
+        let error2 = $('#errorArea2');
+        $('#errorArea1').html('');
+        $('#errorArea2').html('');
+        let regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~])[A-Za-z\d!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]{8,16}$/;
+        let passwordOld = $('#passwordOld').val() || '';
+        let password = $('#password').val() || '';
+        let confirm = $('#confirmPsw').val() || '';
+
         $("#usr_st").val(authority);
 
         if (name === '') {
-            error2.innerHTML = '이름을 입력해주세요.';
+            error2.html('이름을 입력해주세요.');
             return false;
         }
         if (email === '') {
-            error2.innerHTML = '이메일을 입력해주세요.';
+            error2.html('이메일을 입력해주세요.');
             return false;
         }
         if (phone === '') {
-            error2.innerHTML = '휴대폰번호를 입력해주세요.';
+            error2.html('휴대폰번호를 입력해주세요.');
             return false;
         }
         if (!regPhone.test(phone)) {
-            error2.innerHTML = '핸드폰 번호 형식에 맞게 입력해주세요.';
+            error2.html('핸드폰 번호 형식에 맞게 입력해주세요.');
             return false;
         }
         if (!regMail.test(email)) {
-            error2.innerHTML = '이메일 형식에 맞게 입력해주세요.';
+            error2.html('이메일 형식에 맞게 입력해주세요.');
             return false;
         }
         if (authority == '') {
-            error2.innerHTML = '권한을 선택해주세요.';
+            error2.html('권한을 선택해주세요.');
             return false;
         }
         if(password != ''){
             if (!regPwd.test(password)) {
-                error2.innerHTML = '8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.';
+                error2.html('8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.');
                 return false;
             }
             if (confirm == '') {
-                 error1.innerHTML = '비밀번호를 입력해주세요.';
+                 error1.html('비밀번호를 입력해주세요.');
                  return false;
             }
             if (password != confirm) {
-                error1.innerHTML = '비밀번호가 일치하지 않습니다.';
+                error1.html('비밀번호가 일치하지 않습니다.');
                 return false;
             }
             if(passwordOld == ''){
-                error2.innerHTML = '현재 비밀번호를 입력해주세요.';
+                error2.html('현재 비밀번호를 입력해주세요.');
                 return false;
             }
         }

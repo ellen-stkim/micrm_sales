@@ -7,7 +7,6 @@ import org.apache.ibatis.type.Alias
 
 @Alias("Usr_searchDto")
 class Usr_searchDto : Tblmi_usrDto() {
-
     var pageNo : Int? = null
     var searchType : String? = null
     var searchValue : String? = null
@@ -20,7 +19,6 @@ class Usr_searchDto : Tblmi_usrDto() {
     var del_dt : String? = null
     var appr_nm : String? = null
     var usr_pw_old: String? = null
-
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

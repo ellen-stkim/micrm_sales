@@ -15,6 +15,10 @@
         <put-attribute name="menu" value="/WEB-INF/layout/base-menu.jsp"/>
     </definition>
 
+    <definition name="login/mfa" template="/WEB-INF/views/login/mfa.jsp">
+        <put-attribute name="head" value="/WEB-INF/layout/base-header.jsp"/>
+    </definition>
+
     <!-- Home -->
     <definition name="home" extends="main-layout">
         <put-attribute name="body" value="/WEB-INF/views/home.jsp"/>

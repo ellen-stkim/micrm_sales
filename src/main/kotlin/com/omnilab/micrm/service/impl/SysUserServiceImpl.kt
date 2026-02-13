@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
+import kotlin.math.log
 
 
 @Service("SysUserServiceImpl")
@@ -61,109 +62,109 @@ class SysUserServiceImpl: SysUserService {
 
     override fun saveUser(udto: Tblmi_usrDto): MutableMap<String, Any> {
         val dto = udto as Usr_searchDto
-        val map : MutableMap<String, Any> = HashMap()
+        val map: MutableMap<String, Any> = HashMap()
         val userInfo = UsefulUtils.sessionUser()
 
-        dto.usr_grp_cd = userInfo.usr_grp_cd
-        dto.usr_tel = dto.usr_tel?.replace("-","")
-        dto.usr_mob = dto.usr_mob?.replace("-","")
+        val phoneRegex = Regex("""^\d{3}-\d{3,4}-\d{4}$""")
+        if (!dto.usr_mob.isNullOrBlank() && !phoneRegex.matches(dto.usr_mob!!)) {
+            return mutableMapOf("check" to false, "message" to "핸드폰 번호 형식이 올바르지 않습니다. (000-0000-0000)")
+        }
+        if (dto.is_mfa == "Y" && dto.usr_mob.isNullOrBlank()) {
+            return mutableMapOf("check" to false, "message" to "MFA 설정을 위해서는 핸드폰 번호가 필수입니다.")
+        }
 
-        if(dto.seq == null){
-            //아이디 중복체크
-            val duplCk = sysUserDao.duplicationCheckId(dto);
-            if(duplCk > 0 ){
-                map["check"] = false
-                map["message"] = "중복된 로그인 아이디(이메일) 입니다."
-                return map
+        // 1. 기본 데이터 가공 및 초기화
+        dto.apply {
+            usr_grp_cd = userInfo.usr_grp_cd
+            usr_tel = usr_tel?.replace("-", "")
+            usr_mob = usr_mob?.replace("-", "")
+            is_mfa = if (is_mfa == "Y") "Y" else "N" // 3항 연산자 대체
+        }
+
+        if (dto.seq == null) {
+            /** [신규 등록 로직] **/
+            // 아이디 중복 체크
+            if (sysUserDao.duplicationCheckId(dto) > 0) {
+                return mutableMapOf("check" to false, "message" to "중복된 로그인 아이디(이메일) 입니다.")
             }
-            if(!passwordPattern.matcher(dto.usr_pw.toString()).matches()){
-                map["check"] = false
-                map["message"] = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
-                return map
+            // 비밀번호 패턴 검증
+            if (!passwordPattern.matcher(dto.usr_pw.toString()).matches()) {
+                return mutableMapOf("check" to false, "message" to "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
             }
+            // 초기값 설정
             dto.usr_pw = CommonUtils.sha512(dto.usr_pw)
             dto.reg_id = userInfo.usr_id
             dto.access_yn = "1"
-            val tempDto = Tblmi_usrDto()
-            tempDto.usr_grp_cd = userInfo.usr_grp_cd
-            val maxUserDto = sysUserDao.getMaxUser(tempDto)
-            val newUsrId :String?
-            if(maxUserDto == null){
-                var commDto = Tblmi_comm_cdDto()
-                commDto.grp_id = "USR_GRP_CD"
-                commDto.cd_id = userInfo.usr_grp_cd
-                commDto = sysSettingDao.getCommCD(commDto)!!
-                val preId = commDto.cd_val
-                dto.usr_id = preId + "0001"
-                dto.appr_id = userInfo.usr_id
-                newUsrId = dto.usr_id
-            }else{
+            // 신규 USR_ID 생성 로직
+            val maxUserDto = sysUserDao.getMaxUser(Tblmi_usrDto().apply { usr_grp_cd = userInfo.usr_grp_cd })
+            if (maxUserDto == null) {
+                val commDto = sysSettingDao.getCommCD(Tblmi_comm_cdDto().apply {
+                    grp_id = "USR_GRP_CD"
+                    cd_id = userInfo.usr_grp_cd
+                })!!
+                dto.usr_id = "${commDto.cd_val}0001"
+            } else {
                 val maxId = maxUserDto.usr_id!!
-                val lengthId = maxId.length
-                val preId = maxId.substring(0, lengthId-4)
-                var surId = maxId.substring(lengthId-4)
-                val parseId = (surId.toInt()+1).toString()
-                surId = surId.substring(0,surId.length-parseId.length)
-                dto.usr_id = preId + surId + parseId
-                dto.appr_id = userInfo.usr_id
-                newUsrId = dto.usr_id
+                val preId = maxId.substring(0, maxId.length - 4)
+                val nextNum = maxUserDto.cnt!! + 1
+                dto.usr_id = preId + String.format("%04d", nextNum) // 숫자를 4자리 포맷으로 안전하게 생성
             }
+            dto.appr_id = userInfo.usr_id
+            val newUsrId = dto.usr_id
 
-            if(sysUserDao.insertUser(dto) > 0){
-                val authDto = Tblmi_usr_authDto()
-                authDto.usr_id = newUsrId
-                authDto.role_cd = dto.role_cd
-                authDto.reg_id = userInfo.usr_id
-                if(sysUserDao.insertUserAuth(authDto) >0){
-                    map["check"] = true
-                    map["message"] = "사용자가 추가 되었습니다."
-                }else{
-                    map["check"] = false
-                    map["message"] = "저장에 실패하였습니다. 관리자에게 문의해주세요."
-                }
-            }else{
+            // DB Insert
+            if (sysUserDao.insertUser(dto) > 0) {
+                val authInserted = sysUserDao.insertUserAuth(Tblmi_usr_authDto().apply {
+                    usr_id = newUsrId
+                    role_cd = dto.role_cd
+                    reg_id = userInfo.usr_id
+                })
+
+                map["check"] = authInserted > 0
+                map["message"] = if (authInserted > 0) "사용자가 추가 되었습니다." else "저장에 실패하였습니다. 관리자에게 문의해주세요."
+            } else {
                 map["check"] = false
                 map["message"] = "저장에 실패하였습니다. 관리자에게 문의해주세요."
             }
-        }else{
+
+        } else {
+            /** [정보 수정 로직] **/
             dto.upd_id = userInfo.usr_id
-            if(!dto.usr_pw.isNullOrEmpty()){
-                if(!passwordPattern.matcher(dto.usr_pw.toString()).matches()){
-                    map["check"] = false
-                    map["message"] = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
-                    return map
+            // 비밀번호 변경 시도 시 검증
+            if (!dto.usr_pw.isNullOrEmpty()) {
+                if (!passwordPattern.matcher(dto.usr_pw.toString()).matches()) {
+                    return mutableMapOf("check" to false, "message" to "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
                 }
-                if(dto.usr_pw_old == null){
-                    map["check"] = false
-                    map["message"] = "현재 비밀번호를 입력해주세요."
-                    return map
+                if (dto.usr_pw_old == null) {
+                    return mutableMapOf("check" to false, "message" to "현재 비밀번호를 입력해주세요.")
                 }
-                val pwd = commonDao.sel_tblmi_usrOne(Tblmi_usrDto(userInfo.usr_id)).usr_pw
-                if(CommonUtils.sha512(dto.usr_pw_old) !=  pwd){
-                    map["check"] = false
-                    map["message"] = "현재 비밀번호가 올바르지 않습니다."
-                    return map
+                val currentPwdInDb = commonDao.sel_tblmi_usrOne(Tblmi_usrDto(dto.usr_id)).usr_pw
+                val inputOldPwdSha = CommonUtils.sha512(dto.usr_pw_old)
+                val inputNewPwdSha = CommonUtils.sha512(dto.usr_pw)
+
+                if (inputOldPwdSha != currentPwdInDb) {
+                    return mutableMapOf("check" to false, "message" to "현재 비밀번호가 올바르지 않습니다.")
                 }
-                if(pwd ==  CommonUtils.sha512(dto.usr_pw)){
-                    map["check"] = false
-                    map["message"] = "현재 비밀번호와 동일한 비밀번호는 사용할수 없습니다."
-                    return map
+                if (currentPwdInDb == inputNewPwdSha) {
+                    return mutableMapOf("check" to false, "message" to "현재 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.")
                 }
                 dto.last_pw_upd_dt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())
-                dto.usr_pw = CommonUtils.sha512(dto.usr_pw)
+                dto.usr_pw = inputNewPwdSha
             }
-            if(sysUserDao.updateUser(dto) > 0){
-                val authDto = Tblmi_usr_authDto()
-                authDto.usr_id = dto.usr_id
-                authDto.role_cd = dto.role_cd
-                authDto.upd_id = userInfo.usr_id
-                // 기존권한 삭제
-                sysUserDao.deleteUserAuth(authDto)
-                if(sysUserDao.insertUserAuth(authDto) > 0) {
-                    map["check"] = true
-                    map["message"] = "사용자 정보가 수정되었습니다."
+
+            // DB Update
+            if (sysUserDao.updateUser(dto) > 0) {
+                val authDto = Tblmi_usr_authDto().apply {
+                    usr_id = dto.usr_id
+                    role_cd = dto.role_cd
+                    upd_id = userInfo.usr_id
                 }
-            }else{
+                sysUserDao.deleteUserAuth(authDto)
+                val authUpdated = sysUserDao.insertUserAuth(authDto)
+
+                map["check"] = authUpdated > 0
+                map["message"] = if (authUpdated > 0) "사용자 정보가 수정되었습니다." else "권한 수정에 실패하였습니다."
+            } else {
                 map["check"] = false
                 map["message"] = "저장에 실패하였습니다. 관리자에게 문의해주세요."
             }

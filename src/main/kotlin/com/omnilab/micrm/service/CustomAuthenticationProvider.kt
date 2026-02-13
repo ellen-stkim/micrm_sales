@@ -54,10 +54,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
                 val id = segments[2]
                 commDto. extra = id
             }
-
-
             val usrGrpCd = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", commDto)
-
             if(usrGrpCd == null){
                 val info: Tblmi_usrDto? = sqlSession.selectOne("sel_tblmi_usr", loginDto)
                 if(info != null){

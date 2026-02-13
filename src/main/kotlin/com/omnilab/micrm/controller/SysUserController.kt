@@ -76,16 +76,15 @@ class SysUserController {
         val map = sysUserService.getUserList(dto)
         view.addObject("list", map["list"])
         //권한 목록 가져오기
-        var cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        val cdDto = Tblmi_comm_cdDto()
         cdDto.grp_id = "ROLE_CD"
         val cdList = sysSettingService.getCommCDLst(cdDto);
         view.addObject("cdDto", cdList)
         //승인담당자 목록 가져오기
-        val searchDto: Usr_searchDto = Usr_searchDto()
+        val searchDto = Usr_searchDto()
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val userMap = sysUserService.getAllUserList(searchDto)
         view.addObject("uslist", userMap["list"])
-
         return view
     }
 
@@ -113,7 +112,7 @@ class SysUserController {
         val map = sysUserService.getUserList(dto)
         view.addObject("list", map["list"])
         //권한 목록 가져오기
-        var cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
+        val cdDto : Tblmi_comm_cdDto = Tblmi_comm_cdDto()
         cdDto.grp_id = "ROLE_CD"
         val cdList = sysSettingService.getCommCDLst(cdDto);
         view.addObject("cdDto", cdList)
@@ -122,7 +121,6 @@ class SysUserController {
         searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val userMap = sysUserService.getAllUserList(searchDto)
         view.addObject("uslist", userMap["list"])
-
         return view
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -24,11 +25,29 @@ class InterceptorHandler : HandlerInterceptor {
     override fun preHandle(req: HttpServletRequest, rep: HttpServletResponse, handler: Any): Boolean {
         req.characterEncoding = "UTF-8"
         rep.contentType = "text/html; charset=UTF-8"
+
+        if (handler is ResourceHttpRequestHandler) {
+            return true
+        }
+
+        val isPending = req.session.getAttribute("MFA_PENDING") as Boolean?
+        // 2차 인증이 필요한 상태인데, 현재 페이지가 인증번호 입력 페이지나 API가 아니라면
+        if (java.lang.Boolean.TRUE == isPending) {
+            val uri: String = req.requestURI
+            if (!uri.startsWith("/login/mfa.mi")
+                && !uri.startsWith("/api/sms/verify.service")
+                && !uri.startsWith("/api/sms/resend.service")
+                && !uri.startsWith("/error/error.mi")
+                ) {
+                rep.sendRedirect("/login/mfa.mi")
+                return false
+            }
+        }
         return super.preHandle(req, rep, handler)
     }
 
     override fun postHandle(req: HttpServletRequest, rep: HttpServletResponse, handler: Any, modelAndView: ModelAndView?) {
-        rep.setHeader("Set-Cookie", "JSESSIONID=" + req.requestedSessionId + "; HttpOnly; path=/; Secure; SameSite=None;")
+        //rep.setHeader("Set-Cookie", "JSESSIONID=" + req.requestedSessionId + "; HttpOnly; path=/; Secure; SameSite=None;")
         super.postHandle(req, rep, handler, modelAndView)
     }
 

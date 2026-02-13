@@ -2,7 +2,9 @@ package com.omnilab.micrm.config.handler
 
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.table.Tblmi_usrDto
+import com.omnilab.micrm.service.MfaService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.server.Session
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -24,6 +26,9 @@ class LoginSuccessHandler : AuthenticationSuccessHandler {
 
     private val log = LoggerFactory.getLogger(LoginSuccessHandler::class.java)
 
+    @Autowired
+    lateinit var mfaService: MfaService
+
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(req: HttpServletRequest, rep: HttpServletResponse, auth: Authentication) {
         val loginDto : Tblmi_usrDto = auth.details as Tblmi_usrDto
@@ -32,14 +37,19 @@ class LoginSuccessHandler : AuthenticationSuccessHandler {
         session?.setAttribute("userEmail", loginDto.usr_email)
         session?.setAttribute("userName", loginDto.usr_nm)
 
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this)
-        val requestCache: RequestCache = HttpSessionRequestCache()
-        val savedRequest = requestCache.getRequest(req, rep)
-        if (savedRequest != null && savedRequest.toString().endsWith("/${GlobalValues.indexpage}")) {
-            val redriectUrl = savedRequest.redirectUrl
-            rep.sendRedirect(redriectUrl)
+        if(loginDto.is_mfa == "Y"){
+            req.session.setAttribute("MFA_PENDING", true)
+            rep.sendRedirect("/login/mfa.mi")
         } else {
-            rep.sendRedirect("/${GlobalValues.home}")
+            SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this)
+            val requestCache: RequestCache = HttpSessionRequestCache()
+            val savedRequest = requestCache.getRequest(req, rep)
+            if (savedRequest != null && savedRequest.toString().endsWith("/${GlobalValues.indexpage}")) {
+                val redriectUrl = savedRequest.redirectUrl
+                rep.sendRedirect(redriectUrl)
+            } else {
+                rep.sendRedirect("/${GlobalValues.home}")
+            }
         }
     }
 }

@@ -27,15 +27,20 @@ open class Tblmi_usrDto {
     var reg_dt: String? = null
     var upd_id: String? = null
     var upd_dt: String? = null
+    @set:JvmName("setIs_mfa")
+    @get:JvmName("getIs_mfa")
+    var is_mfa: String? = null
+
+    var cnt: Int? = null
 
     constructor()
-    constructor(usr_id: String?) {
-        this.usr_id = usr_id
+    constructor(usrId: String?) {
+        this.usr_id = usrId
     }
 
-    constructor(usr_log_id: String?, usr_pw: String?) {
-        this.usr_log_id = usr_log_id
-        this.usr_pw = usr_pw
+    constructor(usrLogId: String?, usrPw: String?) {
+        this.usr_log_id = usrLogId
+        this.usr_pw = usrPw
     }
 
     override fun toString(): String {

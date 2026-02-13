@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.*
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CsrfFilter
 import org.springframework.security.web.firewall.StrictHttpFirewall
 import org.springframework.web.filter.CharacterEncodingFilter
@@ -87,7 +88,7 @@ class SecurityConfig {
                     .loginProcessingUrl("/login.service")
                     .usernameParameter("id")
                     .passwordParameter("password")
-                    .successHandler(LoginSuccessHandler())
+                    .successHandler(loginHandler())
                     .failureHandler(LoginFailHandler())
             }
             // 로그아웃 설정
@@ -141,5 +142,9 @@ class SecurityConfig {
         return registration
     }
 
+    @Bean
+    fun loginHandler(): LoginSuccessHandler {
+        return LoginSuccessHandler()
+    }
 
 }

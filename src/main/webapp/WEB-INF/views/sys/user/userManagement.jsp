@@ -110,15 +110,24 @@
                     <tr>
                         <th>이메일</th>
                         <td>
-                            <input type="text" id="userMail" placeholder="사용자의 이메일을 입력해주세요." name="usr_email"
-                                   class="input_type1"/>
+                            <input type="text" id="userMail" placeholder="사용자의 이메일을 입력해주세요." name="usr_email" class="input_type1"/>
                         </td>
                     </tr>
                     <tr>
                         <th>핸드폰번호</th>
                         <td>
-                            <input type="text" id="userPhone" placeholder="사용자의 핸드폰번호을 입력해주세요." name="usr_mob"
-                                   class="input_type1"/>
+                            <input type="text" id="userPhone" placeholder="사용자의 핸드폰번호을 입력해주세요." name="usr_mob" class="input_type1"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>2차인증 사용여부</th>
+                        <td>
+                            <div style="padding: 0px 15px">
+                                <label class="custom_check1">
+                                    <input type="checkbox" id="userMfa" name="is_mfa" value="Y" />
+                                    <span></span>
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     <tr>

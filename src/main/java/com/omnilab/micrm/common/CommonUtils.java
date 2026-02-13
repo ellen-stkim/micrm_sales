@@ -42,9 +42,7 @@ import static org.springframework.integration.graph.LinkNode.Type.input;
 
 @SuppressWarnings("rawtypes")
 public class CommonUtils {
-
     public static final Logger log = LoggerFactory.getLogger(CommonUtils.class);
-
     private static final Pattern SIMPLE_PATTERN = Pattern.compile("^#\\{[^}]+}$");
     private static final Pattern HTTPS_PATTERN = Pattern.compile("^https://#\\{[^}]+}$");
     private static final Pattern HTTP_PATTERN = Pattern.compile("^http://#\\{[^}]+}$");
@@ -619,5 +617,11 @@ public class CommonUtils {
         return SIMPLE_PATTERN.matcher(input).matches()
             || HTTPS_PATTERN.matcher(input).matches()
             || HTTP_PATTERN.matcher(input).matches();
+    }
+
+    public static String generateZeroPaddedCode() {
+        SecureRandom random = new SecureRandom();
+        int number = random.nextInt(1000000); // 0 ~ 999999
+        return String.format("%06d", number); // 모자란 자릿수는 0으로 채움
     }
 }

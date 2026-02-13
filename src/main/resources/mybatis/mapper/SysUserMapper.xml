@@ -57,13 +57,11 @@
 			, usr.upd_dt
 			, auth.role_cd
 			, cd.cd_nm
+			, usr.is_mfa
 		from tblmi_usr as usr
-			LEFT JOIN tblmi_usr_auth as auth
-					on auth.usr_id = usr.usr_id
-			LEFT JOIN tblmi_comm_cd as cd
-					on cd.cd_id = auth.role_cd
-			LEFT JOIN tblmi_usr as infoApp
-					on infoApp.usr_id = usr.appr_id
+			LEFT JOIN tblmi_usr_auth as auth on auth.usr_id = usr.usr_id
+			LEFT JOIN tblmi_comm_cd as cd on cd.cd_id = auth.role_cd
+			LEFT JOIN tblmi_usr as infoApp on infoApp.usr_id = usr.appr_id
 					and infoApp.usr_grp_cd = #{usr_grp_cd}
 		where cd.grp_id = 'ROLE_CD'
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
@@ -105,7 +103,8 @@
 			APPR_ID,
 			REG_ID,
 			REG_DT,
-			USR_SALES_ORG_ID
+			USR_SALES_ORG_ID,
+		    is_mfa
 		)
 		VALUES (
 			#{usr_id},
@@ -121,7 +120,8 @@
 			#{appr_id},
 			#{reg_id},
 			now(),
-			(SELECT CD_ID FROM tblmi_comm_cd WHERE grp_id = 'SALES_MID' AND cd_val = #{usr_grp_cd})
+			(SELECT CD_ID FROM tblmi_comm_cd WHERE grp_id = 'SALES_MID' AND cd_val = #{usr_grp_cd}),
+			#{is_mfa}
 		)
 	</insert>
 
@@ -161,6 +161,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(last_pw_upd_dt)">
 			LAST_PW_UPD_DT=#{last_pw_upd_dt},
 		</if>
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(is_mfa)">
+			is_mfa = #{is_mfa},
+		</if>
 		UPD_DT = now(), UPD_ID=#{upd_id}
 		where
 		seq = #{seq}
@@ -170,28 +173,24 @@
 	</update>
 
 	<select id="getMaxUser" parameterType="Tblmi_usrDto"  resultType="Tblmi_usrDto">
-		select *
+		select max(usr_id) as usr_id
+			, count(*) as cnt
 		from tblmi_usr
 		where usr_grp_cd = #{usr_grp_cd}
-		and usr_id = (select max(usr_id) from tblmi_usr	where usr_grp_cd = #{usr_grp_cd})
 	</select>
 
 	<insert id="insertUserAuth" parameterType="Tblmi_usr_authDto">
-		insert into tblmi_usr_auth
-		(
-					USR_ID,
-					ROLE_CD,
-					REG_ID,
-					REG_DT
-		)
-		VALUES
-		(			#{usr_id},
-					#{role_cd},
-					#{reg_id},
-					now()
-		)
-		ON DUPLICATE KEY
-		UPDATE
+		insert into tblmi_usr_auth (
+			USR_ID,
+			ROLE_CD,
+			REG_ID,
+			REG_DT
+		) VALUES (
+			#{usr_id},
+			#{role_cd},
+			#{reg_id},
+			now()
+		) ON DUPLICATE KEY UPDATE
 			role_cd = #{role_cd},
 			upd_id = #{upd_id},
 			upd_dt = now()

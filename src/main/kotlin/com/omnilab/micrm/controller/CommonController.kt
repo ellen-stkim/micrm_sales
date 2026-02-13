@@ -120,6 +120,7 @@ class CommonController {
     @RequestMapping("/error/error.mi")
     fun errorCon(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): String {
         try{
+            logger.error("------ /error/error.mi")
             val throwable = req.getAttribute("javax.servlet.error.exception") as Throwable?
             val statusCode = req.getAttribute("javax.servlet.error.status_code") as Int
             var servletName = req.getAttribute("javax.servlet.error.servlet_name") as String?
