@@ -48,6 +48,9 @@ class MfaController {
     @ResponseBody
     @PostMapping("/api/sms/verify.service")
     fun mfaPage(@RequestParam code:String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, auth: Authentication) : Boolean {
+        if(code.isEmpty()){
+            return false
+        }
         val loginDto : Tblmi_usrDto = auth.details as Tblmi_usrDto
         val codeCheck = mfaService.codeCheck(loginDto.usr_id!!, loginDto.usr_mob!!, code)
         if(codeCheck) {
