@@ -118,7 +118,7 @@
         <div class="pop_title">아이디·비밀번호 찾기</div>
         <div class="pop_inner">
             <h2 class="table_tit">아이디 찾기</h2>
-            <form action="/mcr/id" id="idInquiry" method="post">
+            <form:form action="/mcr/id" id="idInquiry" method="post">
                 <table class="pop_table_type1" summary="아이디 찾기">
                     <colgroup>
                         <col width="102"/>
@@ -144,7 +144,7 @@
                     </tr>
                     </tbody>
                 </table>
-            </form>
+            </form:form>
             <div class="form_error" id="idError"></div>
             <div class="btn_row margin-bottom">
                 <input type="button" class="btn_bg btn_idInquiry" value="찾기"/>
