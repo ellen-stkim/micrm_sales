@@ -124,7 +124,7 @@ class SecurityConfig {
             .headers { headers: HeadersConfigurer<HttpSecurity> ->
                 headers
                     .xssProtection { }
-                    .contentSecurityPolicy("frame-ancestors 'self' *.exacttarget.com *.marketingcloudapps.com; form-action 'self'")
+                    .contentSecurityPolicy("frame-ancestors 'self' *.exacttarget.com *.marketingcloudapps.com; form-action 'self'; ")
             }
             .build()
     }
