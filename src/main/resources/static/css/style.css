@@ -501,7 +501,7 @@
     background: #e6e6e6;
     position: absolute;
     left: -40px;
-    bottom: 15px;
+    bottom: -15px;
 }
 .data div {
     float: left;

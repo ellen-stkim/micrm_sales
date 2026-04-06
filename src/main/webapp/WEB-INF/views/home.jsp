@@ -354,6 +354,7 @@
         data: {
             labels: ['1회', '2회', '3회', '4회', '5회 이상'],
             datasets: [{
+                label: '발송 현황',
                 barPercentage: 0.3,
                 data: [0, 0, 0, 0, 0],
                 backgroundColor: [
@@ -383,27 +384,29 @@
                 }
             },
             scales: {
-                yAxes: [{
+                x: {
+                    grid: { display: false },
                     ticks: {
-                        min: 0,
-                        display: false
-                    },
-                    gridLines: {
-                        display: false
+                        font: {
+                            family: "NotoSansCJKkr",
+                            size: 12
+                        }
                     }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: {
-                        fontFamily: "NotoSansCJKkr",
-                        fontSize: 12
-                    }
-                }],
+                },
+                y: {
+                    min: 0,
+                    beginAtZero: true,
+                    display: false,
+                    grid: { display: false }
+                }
             },
-            legend: {
-                display: false
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
             },
             hover: {
                 animationDuration: 0
@@ -412,27 +415,33 @@
                 duration: 1100,
                 easing: 'easeInOutQuart',
                 onComplete: function () {
-                    var chartInstance = this.chart,
-                        ctx = chartInstance.ctx;
-                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                    const chart = this;
+                    const ctx = chart.ctx;
+
+                    ctx.save();
+
+                    ctx.font = '12px NotoSansCJKkr';
                     ctx.fillStyle = '#999999';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'bottom';
-                    this.data.datasets.forEach(function (dataset, i) {
-                        var meta = chartInstance.controller.getDatasetMeta(i);
-                        meta.data.forEach(function (bar, index) {
-                            var data = dataset.data[index];
-                            var addUnit = data + "%";
-                            ctx.fillText(addUnit, bar._model.x, bar._model.y - 5);
+
+                    chart.data.datasets.forEach((dataset, i) => {
+                        const meta = chart.getDatasetMeta(i);
+
+                        meta.data.forEach((bar, index) => {
+                            const value = dataset.data[index];
+                            if (value === 0) return;
+
+                            ctx.fillText(value + "%", bar.x, bar.y - 5);
                         });
                     });
+
+                    ctx.restore();
                 }
             }
         }
     });
     var notInPop = [];
-
-
 
     function thispopupClose(close) {
         $(close).parents('.layer_pop').css('display', 'none');

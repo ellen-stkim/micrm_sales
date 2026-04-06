@@ -537,14 +537,12 @@
 		SET    del_yn = #{del_yn}
 				, upd_id = #{upd_id}
 				, upd_dt = Now()
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-				seq = #{seq}
-			</if>
+		<where>
+			seq = #{seq}
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
 				and ch_tp = #{ch_tp}
 			</if>
-		</trim>
+		</where>
 	</update>
 
 	<update id ="updateMobileUseYn" parameterType="Tblmi_cont_mstDto">
@@ -552,14 +550,14 @@
 		SET    use_yn = #{use_yn}
 				, upd_id = #{upd_id}
 				, upd_dt = Now()
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				seq = #{seq}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
 				and ch_tp = #{ch_tp}
 			</if>
-		</trim>
+		</where>
 	</update>
 
 	<update id="updateImgList" parameterType="Tblmi_cont_imgDto">
@@ -780,12 +778,11 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(cont_nm)">
 			cont_nm = #{cont_nm},
 		</if>
-		UPD_ID= #{upd_id}, UPD_DT = now()
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-				seq = #{seq}
-			</if>
-		</trim>
+		UPD_ID= #{upd_id}
+	    , UPD_DT = now()
+		<where>
+			seq = #{seq}
+		</where>
 	</update>
 
 	<update id="updateEdmList" parameterType="Tblmi_cont_lstDto">
@@ -823,12 +820,11 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 			USE_YN = #{use_yn},
 		</if>
-		UPD_ID= #{upd_id}, UPD_DT = now()
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-				seq = #{seq}
-			</if>
-		</trim>
+		UPD_ID= #{upd_id}
+		, UPD_DT = now()
+		<where>
+			seq = #{seq}
+		</where>
 	</update>
 
 	<update id="updateMobileContentMst" parameterType="Tblmi_cont_mstDto">
@@ -980,11 +976,9 @@
 			rcs_btn_obj = #{rcs_btn_obj},
 			UPD_ID= #{upd_id},
 			UPD_DT = now()
-			<trim prefix="WHERE" prefixOverrides="AND |OR ">
-				<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
-					seq = #{seq}
-				</if>
-			</trim>
+		<where>
+			seq = #{seq}
+		</where>
 	</update>
 
 	<!-- 하위 모바일 컨텐츠 사용이 'Y' 인 데이터 뽑아 내기 -->

@@ -6,6 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<sec:authentication var="user" property="details"/>
 <!-- left menu 영역 시작 -->
 <nav class="nav">
 	<!-- gnb 영역 시작 -->
@@ -19,15 +20,16 @@
 				<li<c:if test="${urlPath eq '/cont/imgLst.mi'}"> class='on'</c:if>><a href="/cont/imgLst.mi">이미지 파일</a></li>
 			</ul>
 		</li>
+        <c:if test="${user.usr_grp_cd ne '26'}">
 		<li class="coupon">
 			<span>쿠폰</span>
 			<ul class="sub_menu">
-
 				<li<c:if test="${fn:contains(urlPath,'/coupon/couponList')}"> class='on'</c:if>><a href="/coupon/couponList.mi">리스트</a></li>
 				<li<c:if test="${fn:contains(urlPath,'/coupon/couponRegister')}"> class='on'</c:if>><a href="/coupon/couponRegister.mi">쿠폰등록</a></li>
 				<li<c:if test="${fn:contains(urlPath,'/coupon/couponIssuedLog')}"> class='on'</c:if>><a href="/coupon/couponIssuedLog.mi">쿠폰발급내역</a></li>
 			</ul>
 		</li>
+        </c:if>
 		<li>
 			<span>리포트</span>
 			<ul class="sub_menu">

@@ -592,13 +592,13 @@
                     responsive: false,
                     scales: {
                         x: {
-                            stacked: true,
+                            stacked: false,
                             grid: {
                                 color: 'rgba(244, 244, 244, 1)'
                             }
                         },
                         y: {
-                            stacked: true,
+                            stacked: false,
                             beginAtZero: true,
                             grid: {
                                 display: false

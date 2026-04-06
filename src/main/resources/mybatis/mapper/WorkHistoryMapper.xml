@@ -32,8 +32,7 @@
  	</insert>
 
 	<update id ="updateWorkHistory" parameterType="Tblmi_workDto">
-		UPDATE TBLMI_WORK_HST
-		SET UPD_ID = #{upd_id}
+		UPDATE TBLMI_WORK_HST SET UPD_ID = #{upd_id}
 			,UPD_DT = now()
 			,WORK_END_DT = now()
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_stat)">

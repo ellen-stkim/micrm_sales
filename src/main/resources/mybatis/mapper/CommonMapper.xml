@@ -140,9 +140,7 @@
 		update tblmi_usr
 		set usr_pw = #{usr_pw}
 		<where>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_log_id)">
-				usr_log_id = #{usr_log_id}
-			</if>
+			usr_log_id = #{usr_log_id}
 		</where>
 	</update>
 
@@ -171,8 +169,7 @@
 	</insert>
 
 	<select id="getBlockBlockDto" parameterType="Tblmi_Block_lstDto" resultType="Tblmi_Block_lstDto">
-		SELECT
-			seq
+		SELECT seq
 			, block_type
 			, block_target
 			, block_reg_usr

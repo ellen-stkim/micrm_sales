@@ -41,8 +41,7 @@ fun main() {
     logger.error("aa {}", tmplDto.tmpl_cont)
     */
 
-    logger.error("{}", CommonUtils.sha512("sony2026$!@"))
-    logger.error("{}", CommonUtils.sha512("milvus2026$!@"))
+    logger.error("비번 {}", CommonUtils.sha512("3UEkAU2E5UedeQwb"))
 
 
     val map = HashMap<String, Any?>()
@@ -54,13 +53,6 @@ fun main() {
 
 
     val password_pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~])[A-Za-z\\d!@#$%^&*()_\\-+=\\[\\]{};:'\\\",.<>/?\\\\|`~]{8,16}$")
-
-
-    System.out.println(isValid("Abcd1234!")); // true
-    System.out.println(isValid("abcd1234"));  // false (특수문자 없음)
-    System.out.println(isValid("abcd!!!!"));  // false (숫자 없음)
-    System.out.println(isValid("1234!!!!"));  // false (영문 없음)
-    System.out.println(isValid("Ab1!"));      // false (길이 부족)
 
 }
 

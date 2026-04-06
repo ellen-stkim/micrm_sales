@@ -27,9 +27,11 @@ spring:
 
 variable:
   db-class: org.mariadb.jdbc.Driver
-  db-url: jdbc:mariadb://125.131.213.7:3306/test_db_micrm_sales_temp
+  db-url: jdbc:mariadb://125.131.213.7:3306/test_db_micrm_sales
   db-username: ENC(OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p)
   db-password: ENC(TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA==)
+  #db-username: ENC(OAzWhy70Vw4p8WNRGn+whiGGezD0BY0BgG6u6t3eR3JVY7u4ub5YVibzA0XuxB9p)
+  #db-password: ENC(TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA==)
 
   mail-username:
   mail-password:

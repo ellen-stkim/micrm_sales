@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler
+import java.lang.Boolean.TRUE
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -32,7 +33,7 @@ class InterceptorHandler : HandlerInterceptor {
 
         val isPending = req.session.getAttribute("MFA_PENDING") as Boolean?
         // 2차 인증이 필요한 상태인데, 현재 페이지가 인증번호 입력 페이지나 API가 아니라면
-        if (java.lang.Boolean.TRUE == isPending) {
+        if (TRUE == isPending) {
             val uri: String = req.requestURI
             if (!uri.startsWith("/login/mfa.mi")
                 && !uri.startsWith("/api/sms/verify.service")

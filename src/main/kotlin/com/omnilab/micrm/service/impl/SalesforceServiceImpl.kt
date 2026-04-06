@@ -148,9 +148,9 @@ class SalesforceServiceImpl : SalesforceService {
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
 
-                val token: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
+                val token1: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
 
-                val auth = customAuthenticationProvider.authenticate(token)
+                val auth = customAuthenticationProvider.authenticate(token1)
                 if (auth.isAuthenticated) {
                     session.setAttribute("MID", userId)
                     SecurityContextHolder.getContext().authentication = auth

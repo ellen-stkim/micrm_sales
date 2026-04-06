@@ -582,87 +582,73 @@
     bar2.animate(0.67);
     // Chart.js  발송 현황
     var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    if (window.myChart) {
+        window.myChart.destroy();
+    }
+    window.myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['1회', '2회', '3회', '4회', '5회 이상'],
             datasets: [{
-                barPercentage: 0.3,
+                barPercentage: 0.6,
+                categoryPercentage: 0.8,
                 data: [15, 20, 30, 25, 10],
-                backgroundColor: [
-                    '#efefef',
-                    '#efefef',
-                    '#efefef',
-                    '#efefef',
-                    '#efefef'
-                ],
-                hoverBackgroundColor: [
-                    '#efefef',
-                    '#efefef',
-                    '#efefef',
-                    '#efefef',
-                    '#efefef'
-                ],
+                backgroundColor: '#efefef',
                 borderWidth: 0
             }]
         },
         options: {
-            tooltips: false,
+            responsive: false,
             layout: {
                 padding: {
-                    top: 20,
-                    left: 0,
-                    right: 0
+                    top: 20
                 }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false }
             },
             scales: {
-                yAxes: [{
+                x: {
+                    grid: { display: false },
                     ticks: {
-                        min: 0,
-                        display: false
-                    },
-                    gridLines: {
-                        display: false
+                        font: {
+                            family: "NotoSansCJKkr",
+                            size: 12
+                        }
                     }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: {
-                        fontFamily: "NotoSansCJKkr",
-                        fontSize: 12
-                    }
-                }],
-            },
-            legend: {
-                display: false
-            },
-            hover: {
-                animationDuration: 0
-            },
-            animation: {
-                duration: 1100,
-                easing: 'easeInOutQuart',
-                onComplete: function () {
-                    var chartInstance = this.chart,
-                        ctx = chartInstance.ctx;
-                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-                    ctx.fillStyle = '#999999';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'bottom';
-                    this.data.datasets.forEach(function (dataset, i) {
-                        var meta = chartInstance.controller.getDatasetMeta(i);
-                        meta.data.forEach(function (bar, index) {
-                            var data = dataset.data[home];
-                            var addUnit = data + "%";
-                            ctx.fillText(addUnit, bar._model.x, bar._model.y - 5);
-                        });
-                    });
+                },
+                y: {
+                    beginAtZero: true,
+                    display: false,
+                    grid: { display: false }
                 }
             }
-        }
+        },
+        plugins: [{
+            id: 'labelPlugin',
+            afterDatasetsDraw(chart) {
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = '12px NotoSansCJKkr';
+                ctx.fillStyle = '#999999';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                chart.data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+
+                    meta.data.forEach((bar, index) => {
+                        const value = dataset.data[index];
+                        if (!value) return;
+                        const y = bar.base - 12;
+                        ctx.fillText(value + "%", bar.x, y);
+                    });
+                });
+                ctx.restore();
+            }
+        }]
     });
+
 </script>
 
 </html>
