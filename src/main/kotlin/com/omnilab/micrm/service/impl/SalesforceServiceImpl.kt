@@ -593,7 +593,7 @@ class SalesforceServiceImpl : SalesforceService {
             postData["grant_type"] = "client_credentials"
             postData["client_id"] =  cid.cd_val.toString()
             postData["client_secret"] = sec.cd_val.toString()
-            if(!dto.bu_id.isNullOrEmpty()){
+            if(!mstDto.bu_id.isNullOrEmpty()){
                 postData["account_id"] = mstDto.bu_id.toString()
             }
 
