@@ -597,6 +597,8 @@ class SalesforceServiceImpl : SalesforceService {
                 postData["account_id"] = dto.bu_id.toString()
             }
 
+            logger.info("gson.toJson(postData) {}", gson.toJson(postData))
+
             val headers = HttpHeaders()
             headers.contentType = MediaType.APPLICATION_JSON
             val acceptableMediaType: MutableList<MediaType> = ArrayList()
