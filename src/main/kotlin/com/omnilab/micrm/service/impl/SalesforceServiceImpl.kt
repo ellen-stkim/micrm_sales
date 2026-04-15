@@ -135,7 +135,7 @@ class SalesforceServiceImpl : SalesforceService {
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
             val statusLine: StatusLine = response.statusLine
-            //logger.error("responseBody : {}", responseBody)
+            logger.info("responseBody : {}", responseBody)
 
             if (statusLine.statusCode == HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
@@ -147,7 +147,6 @@ class SalesforceServiceImpl : SalesforceService {
                 val organizationId = organization["id"] as Long
                 val userId = user["id"] as Long
                 val msg = "\nenterpriseId: $enterpriseId\norganizationId: $organizationId\nuserId: $userId"
-
                 val token1: Authentication = UsernamePasswordAuthenticationToken(organizationId, userId)
 
                 val auth = customAuthenticationProvider.authenticate(token1)

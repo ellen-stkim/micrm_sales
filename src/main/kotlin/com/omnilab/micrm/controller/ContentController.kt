@@ -1066,7 +1066,7 @@ class ContentController  {
      * @title : 알림톡 탬플릿 생성 뷰 페이지
      */
     @PostMapping("/kko/tmplCreate.mi")
-    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession,@ModelAttribute("extId") extId :String): ModelAndView {
+    fun atTmplCreate(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession, @ModelAttribute("extId") extId :String): ModelAndView {
         val view = ModelAndView("cont/kko/tmplCreate")
         val map = kkoMsgService.tmplCreateLst()
 
