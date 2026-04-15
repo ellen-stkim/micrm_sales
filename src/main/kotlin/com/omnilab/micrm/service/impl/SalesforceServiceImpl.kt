@@ -135,7 +135,7 @@ class SalesforceServiceImpl : SalesforceService {
             val entity: HttpEntity = response.entity
             val responseBody = EntityUtils.toString(entity, Charsets.UTF_8)
             val statusLine: StatusLine = response.statusLine
-            logger.info("responseBody : {}", responseBody)
+            //logger.info("responseBody : {}", responseBody)
 
             if (statusLine.statusCode == HttpStatus.SC_OK) {
                 val jsonParser = JSONParser()
@@ -151,7 +151,7 @@ class SalesforceServiceImpl : SalesforceService {
 
                 val auth = customAuthenticationProvider.authenticate(token1)
                 if (auth.isAuthenticated) {
-                    session.setAttribute("MID", userId)
+                    session.setAttribute("MID", organizationId)
                     SecurityContextHolder.getContext().authentication = auth
                     val loginDto: Tblmi_usrDto = auth.details as Tblmi_usrDto
                     returnMap["usr_grp_cd"] = loginDto.usr_grp_cd!!
