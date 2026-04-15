@@ -1,5 +1,6 @@
 package template_kotlin;
 
+import com.omnilab.micrm.common.CommonUtils;
 import org.apache.commons.math3.analysis.function.Exp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,21 +15,31 @@ import java.security.cert.Certificate;
 public class test {
 
     public static void main(String[] args) throws Exception {
+        Logger logger = LoggerFactory.getLogger("test");
         KeyStore ks = KeyStore.getInstance("Windows-MY");
         ks.load(null, null);
 
         //PrivateKey privKey = (PrivateKey) ks.getKey(alias, null);
         //Certificate cert = ks.getCertificate(alias);
 
-        Provider p = ks.getProvider();
-        Signature sig = Signature.getInstance("SHA1withRSA", p);
+        //Provider p = ks.getProvider();
+        //Signature sig = Signature.getInstance("SHA1withRSA", p);
         //sig.initSign(privKey);
-        byte[] signature = sig.sign();
-        System.out.println("\tGenerated signature...");
+        //byte[] signature = sig.sign();
+        //System.out.println("\tGenerated signature...");
         //sig.initVerify(cert);
+        /*
         if (sig.verify(signature)) {
            System.out.println("\tSignature verified!");
         }
+        */
+
+        Boolean b = null;
+        logger.error("{}", CommonUtils.isEmptyObject(b));
+        b = false;
+        logger.error("{}", CommonUtils.isEmptyObject(b));
+        b = true;
+        logger.error("{}", CommonUtils.isEmptyObject(b));
     }
 
     public void conTest(){

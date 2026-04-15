@@ -120,7 +120,7 @@
 			#{appr_id},
 			#{reg_id},
 			now(),
-			(SELECT CD_ID FROM tblmi_comm_cd WHERE grp_id = 'SALES_MID' AND cd_val = #{usr_grp_cd}),
+			(SELECT CD_ID FROM tblmi_comm_cd WHERE grp_id = 'SALES_MID' AND cd_val = #{usr_grp_cd} AND (cd_desc = '' or cd_desc is null)),
 			#{is_mfa}
 		)
 	</insert>
