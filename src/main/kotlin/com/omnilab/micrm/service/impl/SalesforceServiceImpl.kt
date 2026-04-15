@@ -594,7 +594,7 @@ class SalesforceServiceImpl : SalesforceService {
             postData["client_id"] =  cid.cd_val.toString()
             postData["client_secret"] = sec.cd_val.toString()
             if(!dto.bu_id.isNullOrEmpty()){
-                postData["account_id"] = dto.bu_id.toString()
+                postData["account_id"] = mstDto.bu_id.toString()
             }
 
             logger.info("gson.toJson(postData) {}", gson.toJson(postData))
