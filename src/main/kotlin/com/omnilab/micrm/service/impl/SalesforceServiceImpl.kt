@@ -1024,7 +1024,7 @@ class SalesforceServiceImpl : SalesforceService {
             reMap["totalCnt"] = totalCnt
         }catch (e: Exception){
             reMap["check"] = false
-            logger.error("getDataExtention ${usrCd}/${extentionId}", e)
+            logger.error("getDataExtention ${usrCd}/${extentionId}/${mid}", e)
         }
         return reMap
     }
