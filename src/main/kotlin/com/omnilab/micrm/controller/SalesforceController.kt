@@ -187,9 +187,12 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileInsert.service")
-    fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): ReturnDto {
+    fun insertMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String, session: HttpSession): ReturnDto {
         return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            if(CommonUtils.isEmptyObject(session.getAttribute("MID"))){
+                contentListDto.bu_id = CommonUtils.nullToBlankStr(session.getAttribute("MID"))
+            }
             salesforceService.insertContentList(contentListDto)
         }else{
             ReturnDto(false)
@@ -210,9 +213,12 @@ class SalesforceController {
      */
     @ResponseBody
     @PostMapping("/{usr_cd}/mobileUpdate.service")
-    fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String): ReturnDto {
+    fun updateMoblieContent(@ModelAttribute contentListDto: Content_list_CreateDto, @PathVariable(value = "usr_cd") usrCd: String, session: HttpSession): ReturnDto {
         return if(getUsrGrpCd(usrCd) != null && usrCd == UsefulUtils.sessionUser().usr_grp_cd){
             contentListDto.cont_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+            if(CommonUtils.isEmptyObject(session.getAttribute("MID"))){
+                contentListDto.bu_id = CommonUtils.nullToBlankStr(session.getAttribute("MID"))
+            }
             salesforceService.updateContentList(contentListDto)
         }else{
             ReturnDto(false)

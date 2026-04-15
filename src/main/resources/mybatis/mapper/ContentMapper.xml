@@ -18,6 +18,7 @@
 			orig_id,
 			inta_key,
 			inta_ve,
+		    bu_id,
 			cont_grp_cd,
 			reg_id,
 			reg_dt,
@@ -35,6 +36,7 @@
 			#{orig_id},
 			#{inta_key},
 			#{inta_ve},
+            #{bu_id},
 			#{cont_grp_cd},
 			#{reg_id},
 			now(),
@@ -871,6 +873,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_key)">
 			, usr_key = #{usr_key}
 		</if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(bu_id)">
+            , bu_id = #{bu_id}
+        </if>
 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
 				seq = #{seq}

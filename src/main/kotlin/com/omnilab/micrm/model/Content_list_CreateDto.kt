@@ -305,6 +305,7 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var kkoDiscountPrice4: Long? = null
     var kkoDiscountPrice5: Long? = null
     var kkoDiscountPrice6: Long? = null
+    var bu_id: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

@@ -26,15 +26,16 @@ open class Tblmi_cont_mstDto: Cloneable {
     var reg_dt : String ?= null
     var upd_id : String ?= null
     var upd_dt : String ?= null
+    var bu_id: String? = null
 
     constructor()
     constructor(seq: Int?){
         this.seq = seq
     }
-    constructor(seq: Int, cont_grp_cd: String, use_yn: String){
+    constructor(seq: Int, contGrpCd: String, useYn: String){
         this.seq = seq
-        this.cont_grp_cd = cont_grp_cd
-        this.use_yn = use_yn
+        this.cont_grp_cd = contGrpCd
+        this.use_yn = useYn
     }
 
     override fun toString(): String {

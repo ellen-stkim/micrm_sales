@@ -350,6 +350,7 @@ class SalesforceServiceImpl : SalesforceService {
                 camp_nm = dto.camp_nm
                 team_cd = dto.team_cd
                 usr_key = dto.usr_key
+                bu_id = dto.bu_id
             }
             contentDao.insertContentMaster(tblmiContMstDto)// 마스터 코드 리턴
             re.data = tblmiContMstDto.seq.toString()
@@ -424,6 +425,7 @@ class SalesforceServiceImpl : SalesforceService {
             camp_nm = createDto.camp_nm
             team_cd = createDto.team_cd
             usr_key = createDto.usr_key
+            bu_id = createDto.bu_id
         }
         contentDao.updateMobileMst(tblmiContMstDto)
         val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
@@ -591,6 +593,9 @@ class SalesforceServiceImpl : SalesforceService {
             postData["grant_type"] = "client_credentials"
             postData["client_id"] =  cid.cd_val.toString()
             postData["client_secret"] = sec.cd_val.toString()
+            if(!dto.bu_id.isNullOrEmpty()){
+                postData["account_id"] = dto.bu_id.toString()
+            }
 
             val headers = HttpHeaders()
             headers.contentType = MediaType.APPLICATION_JSON

@@ -624,4 +624,17 @@ public class CommonUtils {
         int number = random.nextInt(1000000); // 0 ~ 999999
         return String.format("%06d", number); // 모자란 자릿수는 0으로 채움
     }
+
+    public static String nullToBlankStr(Object o){
+        return nullToDefaultStr(o, "");
+    }
+
+    public static String nullToDefaultStr(Object o, String s){
+        if(o == null){
+            return s;
+        }else{
+            return String.valueOf(o);
+        }
+    }
+
 }
