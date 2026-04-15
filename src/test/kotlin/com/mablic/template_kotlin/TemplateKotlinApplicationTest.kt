@@ -23,7 +23,7 @@ class TemplateKotlinApplicationTests {
 
     @Test
     fun contextLoads() {
-        salesforceService.getDataExtention("03","cce071c7-4680-ed11-ba43-5cba2c19aa40")
+        salesforceService.getDataExtention("03","cce071c7-4680-ed11-ba43-5cba2c19aa40", "")
     }
     
     

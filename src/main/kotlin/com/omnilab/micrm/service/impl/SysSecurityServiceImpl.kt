@@ -21,8 +21,6 @@ class SysSecurityServiceImpl: SysSecurityService {
     @Autowired
     lateinit var sysSecurityDao : SysSecurityDao;
 
-
-
     override fun getAdminUserLog(uDto : Tblmi_usr_hstDto):MutableMap<String, Any>{
         val map : MutableMap<String, Any> = HashMap()
         val dto = uDto as UsrHst_searchDto

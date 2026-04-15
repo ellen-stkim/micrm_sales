@@ -977,7 +977,7 @@ class SalesforceServiceImpl : SalesforceService {
         return true
     }
 
-    override fun getDataExtention(usrCd: String, extentionId: String) : MutableMap<String,Any> {
+    override fun getDataExtention(usrCd: String, extentionId: String, mid: String) : MutableMap<String,Any> {
         val reMap = HashMap<String, Any>()
         val commCdList  = systemDao.getCommCDList(Tblmi_comm_cdDto(usrCd,"SALESFORCE","SALESFORCE","Y"))
         try{
@@ -991,16 +991,15 @@ class SalesforceServiceImpl : SalesforceService {
                     "SALES_SOAP_URL" ->  configuration["soapEndpoint"] = commCd.cd_val
                 }
             }
+            configuration["accountId"] = mid
             configuration["useOAuth2Authentication"] = "true"
             val client = ETClient(configuration)
-
             val filter = ETFilter()
             val exp = ETExpression()
 
             exp.property = "id"
             exp.operator = ETExpression.Operator.EQUALS
             exp.addValue(extentionId)
-
             filter.expression = exp
 
             val response = client.retrieve(ETDataExtension::class.java, filter)

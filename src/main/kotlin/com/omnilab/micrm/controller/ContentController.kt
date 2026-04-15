@@ -1082,7 +1082,7 @@ class ContentController  {
             view.addObject("column", sysSettingService.getDBValue())
         } else {
             val usrGrpCd = UsefulUtils.sessionUser().usr_grp_cd
-            val reMap = salesforceService.getDataExtention(usrGrpCd!!,extId)
+            val reMap = salesforceService.getDataExtention(usrGrpCd!!,extId, session.getAttribute("MID").toString())
             view.addObject("extention",reMap["list"])
         }
 
@@ -1231,7 +1231,7 @@ class ContentController  {
      */
 
     @PostMapping("/kko/tmplDetail.mi")
-    fun detailTmplContent(@RequestParam("seq") seq : Int, @ModelAttribute("extId") extId: String) : ModelAndView {
+    fun detailTmplContent(@RequestParam("seq") seq : Int, @ModelAttribute("extId") extId: String, session: HttpSession) : ModelAndView {
         val tblmiContMstdto = Tblmi_cont_mstDto()
         tblmiContMstdto.seq = seq
         val view = ModelAndView("cont/kko/detailTmpl")
@@ -1251,7 +1251,7 @@ class ContentController  {
             view.addObject("column", sysSettingService.getDBValue())
         } else {
             val usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-            val reMap = salesforceService.getDataExtention(usr_grp_cd!!,extId)
+            val reMap = salesforceService.getDataExtention(usr_grp_cd!!,extId, session.getAttribute("MID").toString())
             view.addObject("extention",reMap["list"])
         }
 
