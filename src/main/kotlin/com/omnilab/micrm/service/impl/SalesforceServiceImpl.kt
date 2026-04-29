@@ -435,6 +435,7 @@ class SalesforceServiceImpl : SalesforceService {
         }
         contentDao.updateMobileMst(tblmiContMstDto)
         val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
+        logger.error("contLst {}", contLst)
         val len = createDto.send_to_list!!.size - 1
         for (i in 0..len) {
             val tblmiContLstdto = Tblmi_cont_lstDto().apply {

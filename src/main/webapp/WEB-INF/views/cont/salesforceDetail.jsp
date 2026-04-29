@@ -278,25 +278,25 @@
                                         <div class="column_1">
                                             <label class="custom_radio en_font">
                                                 친구톡
-                                                <input name="kko_target_tp" class="lowType" type="radio" value="-"
+                                                <input name="kko_tar_tp" class="lowType" type="radio" value="-"
                                                        <c:if test='${list[0].kko_tar_tp eq "-" or empty list[0].kko_tar_tp}'>checked</c:if> />
                                                 <span></span>
                                             </label>
                                             <label class="custom_radio en_font">
                                                 M (마케팅 수신동의 전체)
-                                                <input name="kko_target_tp" class="lowType" type="radio" value="M"
+                                                <input name="kko_tar_tp" class="lowType" type="radio" value="M"
                                                        <c:if test='${list[0].kko_tar_tp eq "M"}'>checked</c:if> />
                                                 <span></span>
                                             </label>
                                             <label class="custom_radio en_font">
                                                 N (마케팅 수신동의 고객 중 비친구)
-                                                <input name="kko_target_tp" class="lowType" type="radio" value="N"
+                                                <input name="kko_tar_tp" class="lowType" type="radio" value="N"
                                                        <c:if test='${list[0].kko_tar_tp eq "N"}'>checked</c:if> />
                                                 <span></span>
                                             </label>
                                             <label class="custom_radio en_font">
                                                 I (채널 친구 - 기존 친구톡)
-                                                <input name="kko_target_tp" class="lowType" type="radio" value="I"
+                                                <input name="kko_tar_tp" class="lowType" type="radio" value="I"
                                                        <c:if test='${list[0].kko_tar_tp eq "I"}'>checked</c:if> />
                                                 <span></span>
                                             </label>
