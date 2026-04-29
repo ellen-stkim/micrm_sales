@@ -423,7 +423,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
             
             return ApiResponse(
                 result = false,
-                data = CommonUtils.mapToObj(data["data"] as MutableMap<String, Any>, KkoBrandTemplateDto::class.java) as KkoBrandTemplateDto,
+                msg = data["message"].toString(),
                 status = data["code"]!!.toString().replace("API_", "").toInt()
             )
         }

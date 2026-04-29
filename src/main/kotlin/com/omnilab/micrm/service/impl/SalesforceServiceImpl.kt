@@ -2462,7 +2462,9 @@ class SalesforceServiceImpl : SalesforceService {
             re.data = createBrand.data!!.templateCode
             return re
         }else{
-            return ReturnDto(false)
+            val re = ReturnDto(false)
+            re.errMsg = createBrand.msg
+            return re
         }
     }
     
