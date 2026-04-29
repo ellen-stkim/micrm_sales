@@ -1235,6 +1235,8 @@
 			, l.kko_item_json
 			, l.kko_carousel_json
 			, l.kko_head_json
+		    , l.kko_tar_tp
+		    , l.kko_tmpl_cd
 		FROM   tblmi_cont_lst l
 		   INNER JOIN tblmi_cont_mst m ON l.cont_cd = m.seq
 		   LEFT JOIN tblmi_cont_img AS kko_img on l.kko_img_cd = kko_img.seq
