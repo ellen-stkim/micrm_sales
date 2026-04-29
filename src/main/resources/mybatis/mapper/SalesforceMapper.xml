@@ -74,6 +74,8 @@
              , a.BR_YN
              , a.SUP_YN
              , a.MSG_TP
+             , a.KKO_TMPL_CD
+             , a.KKO_TAR_TP
              , a.KKO_IMG_CD
              , a.KKO_IMG_URL
              , a.KKO_BTN_NM
