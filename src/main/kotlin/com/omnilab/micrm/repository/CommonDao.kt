@@ -1,7 +1,5 @@
 package com.omnilab.micrm.repository
 
-import com.omnilab.micrm.model.Content_view_Dto
-import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.*
 
 interface CommonDao {
