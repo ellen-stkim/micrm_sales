@@ -2188,7 +2188,6 @@ class SalesforceServiceImpl : SalesforceService {
             
             // 브랜드톡 등록
             if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
-                logger.error("listDto {}", listDto)
                 val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto)
                 if(!reg.status!!){
                     return reg
