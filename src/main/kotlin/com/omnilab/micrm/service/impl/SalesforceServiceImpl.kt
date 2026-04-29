@@ -2393,7 +2393,6 @@ class SalesforceServiceImpl : SalesforceService {
                        } else {
                            kkoBrandDto.upgradeTp = "U_FI"
                        }
-                       logger.info("imgInfo {}", imgInfo)
                        kkoBrandDto.imageUrl = imgInfo.kko_img_url
                    }
                }else{
@@ -2402,7 +2401,6 @@ class SalesforceServiceImpl : SalesforceService {
            }
         }
         kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
-        kkoBrandDto.imageUrl = listDto.kko_img_url
         kkoBrandDto.header = listDto.kko_header
         //kkoBrandDto.additionalContent =
         
