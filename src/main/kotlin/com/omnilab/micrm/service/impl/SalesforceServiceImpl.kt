@@ -1863,7 +1863,6 @@ class SalesforceServiceImpl : SalesforceService {
     }
 
     private fun processKakao(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, re: ReturnDto): ReturnDto? {
-        logger.error("dto {}", dto)
         listDto.use_yn = if (dto.formatType!!.contains("kakao")) "Y" else "N"
         listDto.send_tp = if (dto.kko_option == "ad") "SENDTP01" else "SENDTP02"
 

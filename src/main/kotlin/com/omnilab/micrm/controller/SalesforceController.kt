@@ -219,6 +219,7 @@ class SalesforceController {
             if(!CommonUtils.isEmptyObject(session.getAttribute("MID"))){
                 contentListDto.bu_id = CommonUtils.nullToBlankStr(session.getAttribute("MID"))
             }
+            logger.error("contentListDto {}", contentListDto)
             salesforceService.updateContentList(contentListDto)
         }else{
             ReturnDto(false)
