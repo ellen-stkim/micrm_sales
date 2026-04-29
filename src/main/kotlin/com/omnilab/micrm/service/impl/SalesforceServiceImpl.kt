@@ -2393,6 +2393,7 @@ class SalesforceServiceImpl : SalesforceService {
                        } else {
                            kkoBrandDto.upgradeTp = "U_FI"
                        }
+                       logger.info("imgInfo {}", imgInfo)
                        kkoBrandDto.imageUrl = imgInfo.kko_img_url
                    }
                }else{
