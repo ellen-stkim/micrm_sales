@@ -21,6 +21,8 @@ open class Tblmi_cont_lstDto {
     var br_yn : String ?= null  // 브라우저 보기 여부
     var sup_yn : String ?= null //수신거부 삽입 여부
     var msg_tp : String ?= null // 메세지 타입
+    var kko_tmpl_cd : String ?= null // 템플릿 코드
+    var kko_tar_tp : String ?= null // 타켓
     var kko_img_cd : Int?= null // (브랜드톡) 이미지 번호
     var kko_img_url : String?= null // (브랜드톡) 이미지 클릭 링크 주소
     var kko_btn_nm : String?= null  // (브랜드톡) 버튼 내용

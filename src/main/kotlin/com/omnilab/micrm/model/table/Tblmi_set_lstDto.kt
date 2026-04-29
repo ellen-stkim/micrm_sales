@@ -14,6 +14,7 @@ open class Tblmi_set_lstDto {
     var list_nm : String ?= null // 리스트 명
     var list_etc : String ?= null // 기타 값
     var def_yn : String ?= null // 삭제 여부
+    var addl_use_yn: String? = null // 추가기능 사용 여부
     var del_dt : String ?= null // 삭제 여부
     var use_yn : String ?= null // 사용 여부
     var usr_grp_cd : String ?= null // 사용자 소속 코드

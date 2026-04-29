@@ -82,26 +82,36 @@
                 </colgroup>
                 <input type ="hidden" id="sendDefaultNo" value="${list[0].seq}"/>
                 <tbody>
-                <tr>
-                    <th>발신자명</th>
-                    <td>
-                        <span class="en_font" id ="sendDefaultNm">
-                            <c:if test ="${list[0].def_yn == 'Y'}">
-                                ${list[0].list_nm}
-                            </c:if>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>발신키</th>
-                    <td>
-                        <span class="en_font" id="sendDefaultAddress">
-                            <c:if test = "${list[0].def_yn == 'Y'}">
-                                ${list[0].list_val}
-                            </c:if>
-                        </span>
-                    </td>
-                </tr>
+                    <tr>
+                        <th>발신자명</th>
+                        <td>
+                            <span class="en_font" id="sendDefaultNm">
+                                <c:if test="${list[0].def_yn == 'Y'}">
+                                    ${list[0].list_nm}
+                                </c:if>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>발신키</th>
+                        <td>
+                            <span class="en_font" id="sendDefaultAddress">
+                                <c:if test="${list[0].def_yn == 'Y'}">
+                                    ${list[0].list_val}
+                                </c:if>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>브랜드톡 사용 가능 여부</th>
+                        <td>
+                            <span class="en_font" id="brandYn">
+                                <c:if test="${list[0].def_yn == 'Y'}">
+                                    ${list[0].addl_use_yn}
+                                </c:if>
+                            </span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="count border-bottom cf">
@@ -243,8 +253,7 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-
+    $(function(){
         $('#searchItems ul li').on('click',function(){
             let searchItem = $(this).attr('data');
 
@@ -270,7 +279,6 @@
                 $('#typeArea').children().remove();
             }
         });
-
 
         $(document).on('click','#sendCateSel .option',(e)=>{
             const val = $(e.target).attr('data');
@@ -302,7 +310,9 @@
             }
             $("#errorArea1").html('');
         });
-    });
+
+
+    })
 
     getSmsSettingList('1');
 
@@ -360,9 +370,7 @@
 
     // SMS 저장하기
     function saveSms() {
-
         const res = function(response){
-
             if(response.status == 200){
                 alert("등록되었습니다.");
                 let nowPageNo = $("#nowPageNo").val();
@@ -621,44 +629,6 @@
         }
     }
 
-    // 문자 리스트 검색하기
-    function searchSmsSetting() {
-
-        let standard = $('.searchSelect').attr('data');
-        let searchValue = $("#searchValue").val().trim();
-
-        if(standard == 'use_yn') {
-            let yn_data = $("#yn_select").attr('data');
-            $("#searchValue").val(yn_data)
-        }
-
-        if (standard == '' && searchValue != '') {
-            popup.searchAlert("기준을 선택해 주세요.");
-            return false;
-        } else {
-            $('#searchType').val(standard);
-            if (standard == 'noti.NOTI_POPYN') {
-                var selectData = document.querySelector('#selectData').getAttribute("data");
-                $('#searchValue').val(selectData);
-            }
-            getSmsSettingList('1');
-        }
-    }
-
-    // 문자 리스트 Y,N 값 변경하기
-    function updateSmsLstYn(seq,use_yn) {
-
-        const res = function(response){
-            let pageNo = $("#nowPageNo").val();
-            getSmsSettingList(pageNo)
-        }
-
-        let data = []
-        data.push({name : "seq" , value : seq })
-        data.push({name : "use_yn" , value : use_yn} )
-
-        com_ajax.ajax('post', '${baseURL}/sys/setting/updateSetLstYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
-    }
 
     // 삭제 처리
     function deleteSmsAddress(seq){
@@ -749,6 +719,16 @@
         }
         return formatNum;
     }
+    
+    <%--
+    function updateBrandYn(key){
+        const res = function (response) {
+            console.log(response)
+        }
 
-
+        let data = [];
+        data.push({name: 'key', value: key});
+        com_ajax.ajax('post', '${baseURL}/sys/setting/getBrandyn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
+    --%>
 </script>

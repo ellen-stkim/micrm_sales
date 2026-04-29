@@ -108,7 +108,7 @@ class CommonController {
      */
     @ResponseBody
     @PostMapping("/getCampInfo.ajax")
-    fun getCampInfo(@RequestParam(value = "startDate")startDate: String, @RequestParam(value = "endDate")endDate: String ):List<Tblmicp_campaignDto> {
+    fun getCampInfo(@RequestParam(value = "startDate") startDate: String, @RequestParam(value = "endDate")endDate: String ):List<Tblmicp_campaignDto> {
         val dto = Tblmicp_campaignDto()
         dto.start_dt = startDate
         dto.end_dt = endDate

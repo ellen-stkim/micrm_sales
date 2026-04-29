@@ -108,6 +108,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
+    
+    @Autowired
+    private lateinit var kkoRestApiServiceImpl: KkoRestApiServiceImpl
+    
 
     @Autowired
     @Qualifier("CouponIssueServiceImpl")
@@ -352,6 +356,7 @@ class SalesforceServiceImpl : SalesforceService {
                 usr_key = dto.usr_key
                 bu_id = dto.bu_id
             }
+            //임시 주석
             contentDao.insertContentMaster(tblmiContMstDto)// 마스터 코드 리턴
             re.data = tblmiContMstDto.seq.toString()
 
@@ -374,6 +379,7 @@ class SalesforceServiceImpl : SalesforceService {
                     1 -> processSms(dto, tblmiContLstdto)
                     2 -> processRcs(dto, tblmiContLstdto, userInfo, i)
                 }
+                //임시 주석
                 contentDao.insertContent(tblmiContLstdto)
                 // 4. URL 저장 로직
                 saveUrls(i, dto, tblmiContLstdto.seq!!)
@@ -2178,6 +2184,18 @@ class SalesforceServiceImpl : SalesforceService {
                 kko_video_url = dto.kko_video_url
                 kko_thumbnail_img_cd = dto.kko_thumbnail_img_cd
             }
+            
+            // 브랜드톡 등록
+            if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
+                logger.error("listDto {}", listDto)
+                val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto)
+                if(!reg.status!!){
+                    return reg
+                }else{
+                    listDto.kko_tar_tp = dto.kko_tar_tp
+                    listDto.kko_tmpl_cd = reg.data
+                }
+            }
         }
         return null
     }
@@ -2343,4 +2361,108 @@ class SalesforceServiceImpl : SalesforceService {
         contentDao.deleteRealContLst(Tblmi_cont_lstDto().apply { cont_cd = mstSeq })
     }
 
+    private fun convertBrandTalk(contNm: String, sendKey: String, listDto: Tblmi_cont_lstDto): ReturnDto {
+        val kkoBrandDto = KkoBrandTemplateDto()
+        kkoBrandDto.templateName = contNm
+        when (listDto.msg_tp) {
+           "DMCH220" -> {
+               kkoBrandDto.upgradeTp = "U_FL"
+           }
+           "DMCH221" -> {
+               kkoBrandDto.upgradeTp = "U_FA"
+           }
+           "DMCH222" -> {
+               kkoBrandDto.upgradeTp = "U_FC"
+           }
+           "DMCH223" -> {
+               kkoBrandDto.upgradeTp = "U_FP"
+           }
+           else -> {
+               // 이전 버전 호환용
+               if(listDto.kko_img_cd != null){
+                   val imgDto = Tblmi_cont_imgDto(listDto.kko_img_cd!!)
+                   val imgInfo = contentDao.selTblmiContImg(imgDto)
+                   if(imgInfo == null){
+                       return ReturnDto().apply {
+                           status = false
+                           errMsg = "이미지 로드 정보 조회 오류"
+                       }
+                   }else{
+                       if(imgInfo.ch_tp == "IMGTP11") {  // 와이드 이미지
+                           kkoBrandDto.upgradeTp = "U_FW"
+                       } else {
+                           kkoBrandDto.upgradeTp = "U_FI"
+                       }
+                       kkoBrandDto.imageUrl = imgInfo.kko_img_url
+                   }
+               }else{
+                   kkoBrandDto.upgradeTp  = "U_FT"
+               }
+           }
+        }
+        kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
+        kkoBrandDto.imageUrl = listDto.kko_img_url
+        kkoBrandDto.header = listDto.kko_header
+        //kkoBrandDto.additionalContent =
+        
+        val listBtn = ArrayList<FtButtonDto>()
+        if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm)) {
+            val dd = FtButtonDto().apply {
+                name = listDto.kko_btn_nm
+                linkType = "WL"
+                linkMobile = "https://#{btnUrl1}"
+                linkPc = "https://#{btnUrl1}"
+            }
+            listBtn.add(dd)
+        }
+        if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm2)) {
+            val dd = FtButtonDto().apply {
+                name = listDto.kko_btn_nm2
+                linkType = "WL"
+                linkMobile = "https://#{btnUrl2}"
+                linkPc = "https://#{btnUrl2}"
+            }
+            listBtn.add(dd)
+        }
+        if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm3)) {
+            val dd = FtButtonDto().apply {
+                name = listDto.kko_btn_nm3
+                linkType = "WL"
+                linkMobile = "https://#{btnUrl3}"
+                linkPc = "https://#{btnUrl3}"
+            }
+            listBtn.add(dd)
+        }
+        if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm4)) {
+            val dd = FtButtonDto().apply {
+                name = listDto.kko_btn_nm4
+                linkType = "WL"
+                linkMobile = "https://#{btnUrl4}"
+                linkPc = "https://#{btnUrl4}"
+            }
+            listBtn.add(dd)
+        }
+        if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm5)) {
+            val dd = FtButtonDto().apply {
+                name = listDto.kko_btn_nm5
+                linkType = "WL"
+                linkMobile = "https://#{btnUrl5}"
+                linkPc = "https://#{btnUrl5}"
+            }
+            listBtn.add(dd)
+        }
+        if(listBtn.isNotEmpty()){
+            kkoBrandDto.buttons = listBtn
+        }
+        val createBrand = kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
+        
+        if(createBrand.result){
+            val re = ReturnDto(true)
+            re.data = createBrand.data!!.templateCode
+            return re
+        }else{
+            return ReturnDto(false)
+        }
+    }
+    
 }

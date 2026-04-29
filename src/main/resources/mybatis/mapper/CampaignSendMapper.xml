@@ -106,7 +106,7 @@
 			`CLIENT_ID`, `MESSAGE_TYPE`, `SENDER_KEY`, `PHONE_NUMBER`, `MESSAGE`, `SENDER_NO`
 			, `BUTTON_JSON`, `QUICK_REPLY_JSON`, `ITEM_HIGHLIGHT_JSON`, `ITEM_JSON`
 			, `PRICE`, `CURRENCY_TYPE`, `TITLE`, `HEADER`, `KKO_TITLE`
-			, `IMAGE_JSON`, `AD_FLAG`, `TEMPLATE_CODE`
+			, `IMAGE_JSON`, `AD_FLAG`, `TEMPLATE_CODE`, `TARGETING`
 			, `ETC1`, `ETC2`, `ETC3`, `ETC4`, `ETC5`, `ETC6`, `TAX_CD1`, `CID`, `REQDATE`
 			, `VIDEO_JSON`, `CAROUSEL_JSON`, `HEAD_JSON`
 		)
@@ -116,7 +116,7 @@
 			#{list.clientId}, #{list.type}, #{list.profile_key}, #{list.phone}, #{list.msg}, #{list.callback}
 			, #{list.button_json}, #{list.quick_reply}, #{list.item_highlight}, #{list.item}
 			, #{list.price}, #{list.currency_type}, #{list.title}, #{list.header}, #{list.kko_title}
-			, #{list.img_url}, #{list.ad_flag}, #{list.template_code}
+			, #{list.img_url}, #{list.ad_flag}, #{list.template_code}, #{list.targeting}
 			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.tax_cd1}, #{list.serialnum}, #{list.reqdate}
 			, #{list.video_json}, #{list.carousel_json}, #{list.head_json}
 		)

@@ -2,9 +2,13 @@ package com.omnilab.micrm.service.impl
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.common.FilenameAwareInputStreamResource
+import com.omnilab.micrm.config.adapter.EmptyStringTypeAdapterFactory
+import com.omnilab.micrm.model.ApiResponse
+import com.omnilab.micrm.model.table.kakao.KkoBrandTemplateDto
 import com.omnilab.micrm.service.KkoRestApiService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +21,6 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.multipart.MultipartFile
 import java.net.HttpURLConnection
-import kotlin.math.log
 
 
 @Service("KkoRestApiServiceImpl")
@@ -45,10 +48,14 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     @Autowired
     @Qualifier("restTemplate")
     private lateinit var restTemplate: RestTemplate
-
+    
     @Autowired
     @Qualifier("KkoAtTmplDaoImpl")
     private lateinit var kkoAtTmplDao: KkoAtTmplDao
+    
+    val gson = GsonBuilder()
+            .registerTypeAdapterFactory(EmptyStringTypeAdapterFactory())
+            .create()
 
     override fun createAtTmpl(dto: Kko_at_tmplDto): MutableMap<String, Any> {
         val token = getToken(url, recellVersion)
@@ -61,7 +68,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("accept", MediaType.ALL_VALUE)
 
         val urlString = "$url/$recellVersion/resell/template/create/${dto.send_key}"
-        val gson = GsonBuilder().create()
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(dto), headers))
         return reMap
     }
@@ -75,7 +81,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("accept", MediaType.ALL_VALUE)
 
         val urlString = "$url/$recellVersion/resell/template/modify/${newDto.send_key}"
-        val gson = GsonBuilder().create()
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.PUT, HttpEntity(gson.toJson(newDto), headers))
         return reMap
     }
@@ -130,7 +135,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return reMap
     }
 
-    override fun cancleKepReq(tmplCd: String?, sendKey: String?): MutableMap<String, Any>? {
+    override fun cancelKepReq(tmplCd: String?, sendKey: String?): MutableMap<String, Any>? {
         val token = getToken(url, recellVersion)
 
         val headers = HttpHeaders()
@@ -156,7 +161,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return restExchange(urlString, HttpMethod.PUT, HttpEntity(null, headers))
     }
 
-    override fun cancleAppTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any> {
+    override fun cancelAppTemplate(sendKey: String?, tmplCd: String?): MutableMap<String, Any> {
         val token = getToken(url, recellVersion)
 
         val headers = HttpHeaders()
@@ -278,7 +283,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         bodyMap["categoryCode"] = map["cateCd"] as String
         bodyMap["channelKey"] = "base"
 
-        val gson = GsonBuilder().create()
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(bodyMap), headers))
         val data = reMap["data"] as MutableMap<String, Any>
         logger.info("createSendProfile {}", data)
@@ -330,9 +334,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("accept", MediaType.ALL_VALUE)
 
         bodyMap["offerCd"] = "API"
-
-        val gson = GsonBuilder().create()
-
         val urlString = "$url/$recellVersion/resell/client/create"
 
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(bodyMap), headers))
@@ -347,6 +348,22 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         return result
     }
 
+    override fun checkBrand(sendKey: String): MutableMap<String, Any> {
+        logger.error("{}", sendKey)
+        val token = getToken(url, recellVersion)
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", recellVersion)
+        headers.set("accept", MediaType.ALL_VALUE)
+        headers.set("X-Sender-Key", sendKey)
+        
+        val urlString = "$url/$recellVersion/bm/check/${clientId}"
+        val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.GET, HttpEntity(headers))
+        return reMap
+    }
+
     private fun getToken(thisUrl: String, version: String): String {
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
@@ -357,7 +374,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         val map: MutableMap<String, Any> = HashMap()
         map["grant_type"] = "api"
 
-        val gson = GsonBuilder().create()
         val urlString = "$thisUrl/$recellVersion/oauth/token"
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(map), headers));
         val data = reMap["data"] as MutableMap<String, Any>
@@ -379,5 +395,37 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         }
         return reMap
     }
+    
+    override fun createBrand(sendKey: String, template: KkoBrandTemplateDto): ApiResponse<KkoBrandTemplateDto> {
+        val result: MutableMap<String, Any> = mutableMapOf()
+        val token = getToken(url, recellVersion)
+        
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", recellVersion)
+        headers.set("accept", MediaType.ALL_VALUE)
+        headers.set("X-Sender-Key", sendKey)
 
+        val urlString = "$url/$recellVersion/ftup/template/${clientId}/create"
+        val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(template), headers))
+        val data = reMap["data"] as MutableMap<String, Any>
+        logger.error("createBrand {}", reMap)
+        if ("API_200" == data["code"] || data["code"] == "200") {
+            return ApiResponse(
+                result = true,
+                data = CommonUtils.mapToObj(data["data"] as MutableMap<String, Any>, KkoBrandTemplateDto::class.java) as KkoBrandTemplateDto,
+                status = 200
+            )
+        } else {
+            result["status"] = data["code"]!!.toString().replace("API_", "")
+            result["msg"] = data["message"]!!
+            
+            return ApiResponse(
+                result = false,
+                data = CommonUtils.mapToObj(data["data"] as MutableMap<String, Any>, KkoBrandTemplateDto::class.java) as KkoBrandTemplateDto,
+                status = data["code"]!!.toString().replace("API_", "").toInt()
+            )
+        }
+    }
 }

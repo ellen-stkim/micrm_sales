@@ -9,18 +9,42 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <%@ taglib uri="tld/Commonutils.tld" prefix="cutil"%>
-
+<style>
+    .use-cell {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .refresh {
+        border: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        margin-left: 6px;
+    }
+    
+    .refresh::before {
+        content: "⟳";
+        font-size: 13px;
+        color: #b0b0b0;
+    }
+    
+</style>
 <!-- table 영역 시작 -->
 <c:choose>
     <c:when test="${not empty list}">
         <table class="table mail_tbl" summary="table">
             <colgroup>
-                <col width="3%" />
-                <col width="12.8%" />
-                <col width="15.8%" />
-                <col width="25.8%" />
-                <col width="15.8%" />
-                <col width="10.8%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="10%" />
+                <col width="25%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="5%" />
             </colgroup>
             <thead>
             <tr>
@@ -28,6 +52,7 @@
                 <th>기본</th>
                 <th>발신자명</th>
                 <th>발신번호</th>
+                <th>브랜드톡사용여부</th>
                 <th>생성일</th>
                 <th>사용여부</th>
             </tr>
@@ -47,6 +72,10 @@
                     </td>
                     <td class="en_font">${n.list_nm}</td>
                     <td class="en_font">${n.list_val}</td>
+                    <td class="en_font" class="use-cell">
+                        ${n.addl_use_yn}
+                        <%--<button class="refresh" onclick="updateBrandYn('${n.list_val}')"></button>--%>
+                    </td>
                     <td class="en_font">${n.reg_dt}</td>
                     <td class="en_font">
                         <c:if test = "${fn:trim(n.use_yn) == 'Y'}">
@@ -70,28 +99,30 @@
     <c:otherwise>
         <table class="table mail_tbl" summary="table">
             <colgroup>
-                <col width="3%" />
-                <col width="12.8%" />
-                <col width="15.8%" />
-                <col width="25.8%" />
-                <col width="15.8%" />
-                <col width="10.8%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="10%" />
+                <col width="25%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="5%" />
             </colgroup>
             <thead>
             <tr>
                 <th></th>
                 <th>기본</th>
-                <th>채널명</th>
-                <th>발신프로필키</th>
+                <th>발신자명</th>
+                <th>발신번호</th>
+                <th>브랜드톡사용여부</th>
                 <th>생성일</th>
                 <th>사용여부</th>
             </tr>
             </thead>
             <tbody>
-            <!-- 검색 결과가 없는 경우 영역 시작 -->
-            <tr class="no_data">
-                <td colspan="100%">조회된 결과가 없습니다.</td>
-            </tr>
+                <!-- 검색 결과가 없는 경우 영역 시작 -->
+                <tr class="no_data">
+                    <td colspan="100%">조회된 결과가 없습니다.</td>
+                </tr>
             </tbody>
         </table>
         <input type ="hidden" id ="nowPageNo" value ="${pageNo}"/>

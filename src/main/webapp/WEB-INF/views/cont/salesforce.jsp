@@ -148,7 +148,7 @@
                                     <div class="value" data="">개인화 변수</div>
                                     <ul class="option mappingLst">
                                         <%-- 임시 주석 --%>
-                                        <%--<li data="phone">phone</li>--%>
+                                        <li data="phone">phone</li>
                                     </ul>
                                 </div>
                                 <input type="hidden" id="recv_phone" class="sel_value" name="from_to"/>
@@ -207,6 +207,15 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="row body">
+                                    <div class="th">발신 프로필</div>
+                                    <div class="column_1">
+                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder ="발신 프로필을 선택해주세요" readonly/>
+                                        <input type="hidden" name="send_key" id="send_key"/>
+                                        <input type="hidden" name="send_to_list" id="kakao_send_to_num" />
+                                        <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
+                                    </div>
+                                </div>
                                 <div class="row body" id="brandType">
                                     <div class="th">브랜드톡 양식</div>
                                     <div class="column_1">
@@ -237,13 +246,29 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="row body">
-                                    <div class="th">발신 프로필</div>
+                                <div class="row body" id="brandTarget">
+                                    <div class="th">브랜드톡 타겟</div>
                                     <div class="column_1">
-                                        <input type="text" class="sms_number smsNumber smsNumber_kko" id="send_to" placeholder ="발신 프로필을 선택해주세요" readonly/>
-                                        <input type="hidden" name="send_key" id="send_key"/>
-                                        <input type="hidden" name="send_to_list" id="kakao_send_to_num" />
-                                        <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
+                                        <label class="custom_radio en_font">
+                                            친구톡
+                                            <input name="kko_tar_tp" class="lowType" type="radio" value="-" checked />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font" style="display: none" name="kko_target_tp_label" >
+                                            M (마케팅 수신동의 전체)
+                                            <input name="kko_tar_tp" class="lowType" type="radio" value="M" />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font" style="display: none" name="kko_target_tp_label" >
+                                            N (마케팅 수신동의 고객 중 비친구)
+                                            <input name="kko_tar_tp" class="lowType" type="radio" value="N" />
+                                            <span></span>
+                                        </label>
+                                        <label class="custom_radio en_font" style="display: none" name="kko_target_tp_label" >
+                                            I (채널 친구 - 기존 친구톡)
+                                            <input name="kko_tar_tp" class="lowType" type="radio" value="I" />
+                                            <span></span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="input_area kko_area" id="kko_ft">
@@ -3072,9 +3097,9 @@
 
     // 발신자 번호 input 저장하기
     function mobileSendSave(type) {
-
-        let send_to = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNumber"]').val();  // 보낼 번호
-        let send_nm = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNm"]').val(); // 발신자 명
+        let send_to = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNumber"]').val();
+        let send_nm = $('input[name="callNumber"]:checked').parent('label').find('input[name="sendNm"]').val();
+        let addlUseYn = $('input[name="callNumber"]:checked').parent('label').find('input[name="addlUseYn"]').val();
         let send_number = $('input[name="callNumber"]:checked').val();
         let send_to_type = $('#mSendType').val();
         let sender = send_nm + "(" + send_to + ")";
@@ -3101,6 +3126,13 @@
             if ($('.kkoType:checked').val() === "kko_at") {
                 $('.delete_tmpl').trigger('click');
             }
+        }
+        
+        if(addlUseYn == "Y"){
+            $('label[name="kko_target_tp_label"]').show();
+        }else{
+            $('label[name="kko_target_tp_label"]').hide();
+            $('input[name="kko_target_tp"][value="-"]').prop('checked', true);
         }
 
         $('.mobilePopup').removeClass('active');

@@ -1,6 +1,5 @@
 package com.omnilab.micrm.config.handler
 
-import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.http.client.ClientHttpResponse
@@ -25,6 +24,7 @@ class RestTemplateErrorHandler: ResponseErrorHandler  {
 
     override fun handleError(url: URI, method: HttpMethod, response: ClientHttpResponse) {
         //logger.error("handleError response: {} ({}) - {} ", url, response.statusCode, StreamUtils.copyToString(response.body, StandardCharsets.UTF_8))
-        logger.error("handleError response: {} ({})", url, response.statusCode)
+        val body: String? = StreamUtils.copyToString(response.body, StandardCharsets.UTF_8)
+        logger.error("handleError response: {} ({}), {}", url, response.statusCode, body)
     }
 }

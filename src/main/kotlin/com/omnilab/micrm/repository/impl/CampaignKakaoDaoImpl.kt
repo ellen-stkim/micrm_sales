@@ -157,21 +157,21 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             if (!kakaoContAList.isNullOrEmpty()) {
                 for (urlLst in kakaoContAList) {
                     val url = urlLst.url!!
-                        targetBody = targetBody.replaceFirst(("\\{\\{"
-                                + url.replace("(", "\\(")
-                            .replace(")", "\\)")
-                            .replace("{", "\\{")
-                            .replace("}", "\\}")
-                            .replace("[", "\\[")
-                            .replace("]", "\\]")
-                            .replace("*", "[*]")
-                            .replace("+", "[+]")
-                            .replace("$", "[&]")
-                            .replace("|", "[|]")
-                            .replace("?", "[?]")
-                                + "\\}\\}")
-                            .toRegex()
-                            , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
+                    targetBody = targetBody.replaceFirst(("\\{\\{"
+                            + url.replace("(", "\\(")
+                        .replace(")", "\\)")
+                        .replace("{", "\\{")
+                        .replace("}", "\\}")
+                        .replace("[", "\\[")
+                        .replace("]", "\\]")
+                        .replace("*", "[*]")
+                        .replace("+", "[+]")
+                        .replace("$", "[&]")
+                        .replace("|", "[|]")
+                        .replace("?", "[?]")
+                            + "\\}\\}")
+                        .toRegex()
+                        , "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + urlLst.seq.toString(), GlobalValues.encKey)}")
                 }
             }
 
@@ -294,6 +294,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.msg = targetBody
             kkoMsgdto.profile_key = kakaoCont.send_to
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
+            kkoMsgdto.targeting = if(!CommonUtils.isEmptyObject(kakaoCont.kko_tar_tp) && kakaoCont.kko_tar_tp != "-") kakaoCont.kko_tar_tp else null
+            kkoMsgdto.template_code = kakaoCont.kko_tmpl_cd
 
             if(kakaoBtnUrl != null){
                 val lst = ArrayList<ButtonJsonDto>()

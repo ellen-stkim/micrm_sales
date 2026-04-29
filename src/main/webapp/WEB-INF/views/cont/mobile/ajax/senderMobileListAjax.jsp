@@ -36,14 +36,12 @@
                         <tr>
                            <td>
                               <label class="custom_radio">
-                                 <input name="callNumber" type="radio" value="${item.seq}"
-                                    <c:if test="${status.index == 0}">
-                                         checked
-                                    </c:if>
-                                 ><span>
-                              <input type ="hidden" name ="sendNumber" value ="${item.list_val}"/>
-                              <input type ="hidden" name ="sendNm" value ="${item.list_nm}"/>
-                              </span>
+                                  <input name="callNumber" type="radio" value="${item.seq}" <c:if test="${status.index == 0}">checked</c:if> >
+                                  <span>
+                                      <input type ="hidden" name ="sendNumber" value ="${item.list_val}"/>
+                                      <input type ="hidden" name ="sendNm" value ="${item.list_nm}"/>
+                                      <input type ="hidden" name ="addlUseYn" value ="${item.addl_use_yn}"/>
+                                  </span>
                               </label>
                            </td>
                            <td>${item.list_nm}</td>

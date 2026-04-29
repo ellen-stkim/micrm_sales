@@ -230,7 +230,7 @@ class SysSettingServiceImpl : SysSettingService {
 
         // 기존 Lst 값 def_yn 변경
         val defaultLstDto = Tblmi_set_lstDto()
-        defaultLstDto.seq = setLstDto.defaultMailNo
+        //defaultLstDto.seq = setLstDto.defaultMailNo
         defaultLstDto.usr_grp_cd = userInfo.usr_grp_cd
         defaultLstDto.def_yn = "N"
 

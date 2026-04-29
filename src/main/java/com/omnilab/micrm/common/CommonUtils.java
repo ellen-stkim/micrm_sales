@@ -10,11 +10,19 @@ import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.binary.Base64;
@@ -636,5 +644,46 @@ public class CommonUtils {
             return String.valueOf(o);
         }
     }
+    
+    public static Map<String, Object> objToMap(Object obj){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return objectMapper.convertValue(obj, Map.class);
+    }
+
+    public static Map<String, Object> stringToMap(String input) {
+        Map<String, Object> map = new HashMap<>();
+        input = input.replaceAll("^\\{|\\}$", "");
+        Pattern pattern = Pattern.compile("([^=]+)=([^,]+)(?:, )?");
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            String key = matcher.group(1).trim();
+            String value = matcher.group(2).trim();
+            if ("null".equals(value)) {
+                map.put(key, null);
+            } else {
+                map.put(key, value);
+            }
+        }
+        return map;
+    }
+
+    public static Object mapToObj(Map map, Class c){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        return objectMapper.convertValue(map, c);
+    }
+
+    public static <T> List<T> objToList(Object data, Class<T> c) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new KotlinModule.Builder().build());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        return objectMapper.convertValue(data, objectMapper.getTypeFactory().constructCollectionType(List.class, c));
+    }
+    
 
 }

@@ -49,6 +49,7 @@ class Kko_msgDto {
     var etc5: String? = null
     var etc6: String? = null
     var clientId: String? = null
+    var targeting:String? = null
 
     var title: String? = null
     var kko_title: String? = null

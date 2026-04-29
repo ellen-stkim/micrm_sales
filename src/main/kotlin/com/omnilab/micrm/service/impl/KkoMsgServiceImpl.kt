@@ -283,7 +283,7 @@ class KkoMsgServiceImpl : KkoMsgService {
                 // 검수 요청 상태일 경우
                 if ("I" == dto!!.kep_status) {
                     // 비즈메세지 요청 취소
-                    val tmplResult: MutableMap<String, Any>? = kkoRestApiService.cancleKepReq(dto.tmpl_cd, dto.send_key)
+                    val tmplResult: MutableMap<String, Any>? = kkoRestApiService.cancelKepReq(dto.tmpl_cd, dto.send_key)
 
                     if (tmplResult!!["result"] as Boolean) {
                         val data: MutableMap<String, Any> = tmplResult["data"] as MutableMap<String, Any>

@@ -1,6 +1,7 @@
 package com.omnilab.micrm.config
 
 import com.omnilab.micrm.common.ImagePaginationRenderer
+import com.omnilab.micrm.config.handler.RestInterceptorHandler
 import com.omnilab.micrm.config.handler.RestTemplateErrorHandler
 
 import org.springframework.context.annotation.Configuration
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 
 import org.springframework.context.annotation.Bean
+import org.springframework.http.client.BufferingClientHttpRequestFactory
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.mail.javamail.JavaMailSenderImpl
@@ -83,21 +85,23 @@ class OtherConfig {
     @Bean(name = ["restTemplate"])
     fun restTemplate(): RestTemplate {
         val scsf = SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(null, TrustSelfSignedStrategy()).build(), NoopHostnameVerifier.INSTANCE)
-        val factorty = HttpComponentsClientHttpRequestFactory()
-        factorty.setReadTimeout(5000)
-        factorty.setConnectTimeout(3000)
+        val factory = HttpComponentsClientHttpRequestFactory()
+        factory.setReadTimeout(5000)
+        factory.setConnectTimeout(3000)
         val httpClient = HttpClientBuilder.create()
                 .setMaxConnTotal(100)
                 .setMaxConnPerRoute(5)
                 .setSSLSocketFactory(scsf)
                 .setRedirectStrategy(LaxRedirectStrategy())
                 .build()
-        factorty.httpClient = httpClient
-        // BufferingClientHttpRequestFactory(factorty)
+        factory.httpClient = httpClient
+        val bufferingFactory = BufferingClientHttpRequestFactory(factory)
+
         val restTemplateBuilder = RestTemplateBuilder()
-                .requestFactory { factorty }
+                .requestFactory { bufferingFactory }
                 .errorHandler(RestTemplateErrorHandler())
                 .setConnectTimeout(Duration.ofMinutes(3))
+                .interceptors(RestInterceptorHandler())
                 .build()
         return restTemplateBuilder
     }

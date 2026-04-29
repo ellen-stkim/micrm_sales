@@ -56,6 +56,11 @@ variable:
   biz-version: v2
   biz-Auth: ENC(kO6zwBtVbCe9kwwg6lUrqtfMpN/MMK5n6LA0vHV8+pGGrShBcnGtLniK6zdAzF/+0CodDLN52UFiH86BMcrQ+C/Ucbzhe/gYYc3XFg1tAKXDyzBy6vm1n6HxnY/x/9vP)
   biz-id: R000000015
+  #biz-url: https://web1.dktechinmsg.com/mng
+  #biz-msg-url: https://web1.dktechinmsg.com
+  #biz-version: v2
+  #biz-Auth: ENC(NgQrA60fspkLGY4ERU5eYFvgfHRpbNQV6zcE0Q7BLdPk8m7/Dsx9NE2FnLCuP3Eo50verDtOlinxyOZzerTijCXh4Bdx7uRYpQqaniY5LNCf0UKMNj4UB9QP/uH7BGo1)
+  #biz-id: R000000029
 
 upload:
   src : "D:/work/micrm_sales/src/main/resources/static/image/upload/notice"

@@ -27,7 +27,7 @@ class SysSettingController {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     @Value("\${upload.src}")
-    private val filePath: String? = null
+    private lateinit var filePath: String
 
     @Autowired
     lateinit var sysSettingService: SysSettingService;
@@ -820,4 +820,19 @@ class SysSettingController {
     fun deleteNaverApp(lstDto: Tblmi_set_lstDto) : Map<String, Any> {
         return sysSettingService.deleteNaverApp(lstDto)
     }
+
+    @ResponseBody
+    @PostMapping("/getBrandyn.ajax")
+    fun getBrandyn(@RequestParam(value = "key") key: String) : Map<String, Any> {
+        return kkoRestApiService.checkBrand(key)
+    }
+    
+    /*
+    @ResponseBody
+    @PostMapping("/updateBrandYn.ajax")
+    fun getBrandyn(lstDto: Tblmi_set_lstDto) : Map<String, Any> {
+        return kaka.deleteNaverApp(lstDto)
+    }
+     */
+    
 }
