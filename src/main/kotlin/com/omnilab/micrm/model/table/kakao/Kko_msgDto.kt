@@ -63,6 +63,7 @@ class Kko_msgDto {
     var m_server: String? = null
 
     var tax_cd1: String? = null
+    var upgrade_tp: String? = null
 
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

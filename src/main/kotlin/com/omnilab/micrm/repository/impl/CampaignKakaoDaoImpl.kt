@@ -294,9 +294,14 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.msg = targetBody
             kkoMsgdto.profile_key = kakaoCont.send_to
             kkoMsgdto.ad_flag = if (kakaoCont.send_tp == "SENDTP01") "Y" else "N"
-            kkoMsgdto.targeting = if(!CommonUtils.isEmptyObject(kakaoCont.kko_tar_tp) && kakaoCont.kko_tar_tp != "-") kakaoCont.kko_tar_tp else null
             kkoMsgdto.template_code = kakaoCont.kko_tmpl_cd
-
+            if(!CommonUtils.isEmptyObject(kakaoCont.kko_tar_tp) && kakaoCont.kko_tar_tp != "-"){
+                kkoMsgdto.targeting = kakaoCont.kko_tar_tp
+                kkoMsgdto.upgrade_tp = "BM"
+            }else{
+                kkoMsgdto.upgrade_tp = "FY"
+            }
+            
             if(kakaoBtnUrl != null){
                 val lst = ArrayList<ButtonJsonDto>()
                 buildButtonDto(kakaoCont.kko_btn_nm , kakaoBtnUrl , kakaoBtnUrlPc , trackURL!!, hstSeq, map)?.let(lst::add)
