@@ -410,7 +410,6 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         val urlString = "$url/$recellVersion/ftup/template/${clientId}/create"
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(template), headers))
         val data = reMap["data"] as MutableMap<String, Any>
-        logger.error("createBrand {}", reMap)
         if ("API_200" == data["code"] || data["code"] == "200") {
             return ApiResponse(
                 result = true,
