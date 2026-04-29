@@ -237,61 +237,71 @@
                                             <span class="btn_sm_line" onclick="mobileSenderPopup('1','kko')">변경</span>
                                         </div>
                                     </div>
+                                    <div class="row body" id="brandType" ${cont_tp eq "DMTP03"?'': 'hidden' }>
+                                        <div class="th">브랜드톡 양식</div>
+                                        <div class="column_1">
+                                            <label class="custom_radio en_font">
+                                                텍스트/이미지/와이드이미지
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="0"
+                                                       <c:if
+                                                           test='${list[0].msg_tp ne "DMCH220" and list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222" and list[0].msg_tp ne "DMCH223"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                와이드 리스트형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="1"
+                                                       <c:if test='${list[0].msg_tp eq "DMCH220"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                캐러셀 커머스형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="2"
+                                                       <c:if test='${list[0].msg_tp eq "DMCH221"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                캐러셀 피드형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="3"
+                                                       <c:if test='${list[0].msg_tp eq "DMCH222"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                프리미엄 동영상형
+                                                <input name="kko_msg_tp" class="lowType" type="radio" value="4"
+                                                       <c:if test='${list[0].msg_tp eq "DMCH223"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="row body" id="brandTarget" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                        <div class="th">브랜드톡 타겟</div>
-                                       <div class="column_1">
-                                           <label class="custom_radio en_font">
-                                               친구톡
-                                               <input name="kko_target_tp" class="lowType" type="radio" value="-" <c:if test='${list[0].msg_tp eq "DMCH221"}'>checked</c:if> />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               M (마케팅 수신동의 전체)
-                                               <input name="kko_target_tp" class="lowType" type="radio" value="M" />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               N (마케팅 수신동의 고객 중 비친구)
-                                               <input name="kko_target_tp" class="lowType" type="radio" value="N" />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               I (채널 친구 - 기존 친구톡)
-                                               <input name="kko_target_tp" class="lowType" type="radio" value="I" />
-                                               <span></span>
-                                           </label>
-                                       </div>
-                                   </div>
-                                   <div class="row body" id="brandType" ${cont_tp eq "DMTP03"?'': 'hidden' }>
-                                       <div class="th">브랜드톡 양식</div>
-                                       <div class="column_1">
-                                           <label class="custom_radio en_font">
-                                               텍스트/이미지/와이드이미지
-                                               <input name="kko_msg_tp" class="lowType" type="radio" value="0" <c:if test='${list[0].msg_tp ne "DMCH220" and list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222" and list[0].msg_tp ne "DMCH223"}'>checked</c:if> />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               와이드 리스트형
-                                               <input name="kko_msg_tp" class="lowType" type="radio" value="1" <c:if test='${list[0].msg_tp eq "DMCH220"}'>checked</c:if> />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               캐러셀 커머스형
-                                               <input name="kko_msg_tp" class="lowType" type="radio" value="2" <c:if test='${list[0].msg_tp eq "DMCH221"}'>checked</c:if> />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               캐러셀 피드형
-                                               <input name="kko_msg_tp" class="lowType" type="radio" value="3" <c:if test='${list[0].msg_tp eq "DMCH222"}'>checked</c:if> />
-                                               <span></span>
-                                           </label>
-                                           <label class="custom_radio en_font">
-                                               프리미엄 동영상형
-                                               <input name="kko_msg_tp" class="lowType" type="radio" value="4" <c:if test='${list[0].msg_tp eq "DMCH223"}'>checked</c:if> />
-                                               <span></span>
-                                           </label>
-                                       </div>
-                                   </div>
+                                        <div class="column_1">
+                                            <label class="custom_radio en_font">
+                                                친구톡
+                                                <input name="kko_target_tp" class="lowType" type="radio" value="-"
+                                                       <c:if test='${list[0].kko_tar_tp eq "-" or empty list[0].kko_tar_tp}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                M (마케팅 수신동의 전체)
+                                                <input name="kko_target_tp" class="lowType" type="radio" value="M"
+                                                       <c:if test='${list[0].kko_tar_tp eq "M"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                N (마케팅 수신동의 고객 중 비친구)
+                                                <input name="kko_target_tp" class="lowType" type="radio" value="N"
+                                                       <c:if test='${list[0].kko_tar_tp eq "N"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                            <label class="custom_radio en_font">
+                                                I (채널 친구 - 기존 친구톡)
+                                                <input name="kko_target_tp" class="lowType" type="radio" value="I"
+                                                       <c:if test='${list[0].kko_tar_tp eq "I"}'>checked</c:if> />
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="input_area kko_area" id="kko_ft" ${cont_tp eq "DMTP03"?'': 'hidden' }>
                                         <c:choose>
                                             <c:when test="${list[0].msg_tp eq 'DMCH220'}">
