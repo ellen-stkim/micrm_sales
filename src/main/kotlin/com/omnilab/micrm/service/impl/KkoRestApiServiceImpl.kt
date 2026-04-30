@@ -427,4 +427,36 @@ class KkoRestApiServiceImpl : KkoRestApiService {
             )
         }
     }
+    
+    override fun updateBrand(sendKey: String, template: KkoBrandTemplateDto): ApiResponse<KkoBrandTemplateDto> {
+        val result: MutableMap<String, Any> = mutableMapOf()
+        val token = getToken(url, recellVersion)
+        
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        headers.set("Authorization", "Bearer $token")
+        headers.set("version", recellVersion)
+        headers.set("accept", MediaType.ALL_VALUE)
+        headers.set("X-Sender-Key", sendKey)
+
+        val urlString = "$url/$recellVersion/ftup/template/${clientId}/${template.templateCode}"
+        val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(template), headers))
+        val data = reMap["data"] as MutableMap<String, Any>
+        if ("API_200" == data["code"] || data["code"] == "200") {
+            return ApiResponse(
+                result = true,
+                data = CommonUtils.mapToObj(data["data"] as MutableMap<String, Any>, KkoBrandTemplateDto::class.java) as KkoBrandTemplateDto,
+                status = 200
+            )
+        } else {
+            result["status"] = data["code"]!!.toString().replace("API_", "")
+            result["msg"] = data["message"]!!
+            
+            return ApiResponse(
+                result = false,
+                msg = data["message"].toString(),
+                status = data["code"]!!.toString().replace("API_", "").toInt()
+            )
+        }
+    }
 }

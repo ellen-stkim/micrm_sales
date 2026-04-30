@@ -23,5 +23,6 @@ interface KkoRestApiService {
 
     fun checkBrand(sendKey: String): MutableMap<String, Any>
     fun createBrand(sendKey: String, template: KkoBrandTemplateDto): ApiResponse<KkoBrandTemplateDto>
+    fun updateBrand(sendKey: String, template: KkoBrandTemplateDto): ApiResponse<KkoBrandTemplateDto>
     
 }

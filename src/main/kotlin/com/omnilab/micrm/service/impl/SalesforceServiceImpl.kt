@@ -2183,8 +2183,6 @@ class SalesforceServiceImpl : SalesforceService {
             
             // 브랜드톡 등록
             if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
-                logger.error("listDto.kko_tmpl_cd {}", listDto.kko_tmpl_cd)
-                /*
                 val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto)
                 if(!reg.status!!){
                     return reg
@@ -2192,7 +2190,6 @@ class SalesforceServiceImpl : SalesforceService {
                     listDto.kko_tar_tp = dto.kko_tar_tp
                     listDto.kko_tmpl_cd = reg.data
                 }
-                 */
             }
         }
         return null
@@ -2451,7 +2448,13 @@ class SalesforceServiceImpl : SalesforceService {
         if(listBtn.isNotEmpty()){
             kkoBrandDto.buttons = listBtn
         }
-        val createBrand = kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
+        
+        val createBrand = if(listDto.kko_tmpl_cd.isNullOrEmpty()){
+            kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
+        }else{
+            kkoBrandDto.templateCode = listDto.kko_tmpl_cd
+            kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
+        }
         
         if(createBrand.result){
             val re = ReturnDto(true)
