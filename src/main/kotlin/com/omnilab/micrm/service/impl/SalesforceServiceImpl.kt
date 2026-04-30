@@ -433,7 +433,6 @@ class SalesforceServiceImpl : SalesforceService {
         }
         contentDao.updateMobileMst(tblmiContMstDto)
         val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
-        logger.error("contLst {}", contLst)
         val len = createDto.send_to_list!!.size - 1
         for (i in 0..len) {
             val tblmiContLstdto = Tblmi_cont_lstDto().apply {
@@ -2184,7 +2183,7 @@ class SalesforceServiceImpl : SalesforceService {
             
             // 브랜드톡 등록
             if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
-                logger.error("dto.kko_tmpl_cd {}", dto.kko_tmpl_cd)
+                logger.error("listDto.kko_tmpl_cd {}", listDto.kko_tmpl_cd)
                 /*
                 val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto)
                 if(!reg.status!!){
