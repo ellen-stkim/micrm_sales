@@ -2453,7 +2453,7 @@ class SalesforceServiceImpl : SalesforceService {
             kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
         }else{
             kkoBrandDto.templateCode = listDto.kko_tmpl_cd
-            kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
+            kkoRestApiServiceImpl.updateBrand(sendKey, kkoBrandDto)
         }
         
         if(createBrand.result){
