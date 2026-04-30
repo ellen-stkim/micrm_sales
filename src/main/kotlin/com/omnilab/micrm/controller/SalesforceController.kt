@@ -1001,6 +1001,7 @@ class SalesforceController {
     @GetMapping("/{usr_cd}/getDataExtension.ajax")
     fun getDataExtension(@RequestParam(value = "extentionId") extentionId: String, @PathVariable(value = "usr_cd") usrCd: String, session: HttpSession): MutableMap<String, Any> {
         return if(getUsrGrpCd(usrCd) != null){
+            logger.error("{}, {}, {}", usrCd, extentionId, session.getAttribute("MID"))
             salesforceService.getDataExtention(usrCd, extentionId, session.getAttribute("MID").toString())
         }else{
             HashMap()
