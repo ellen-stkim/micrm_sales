@@ -70,7 +70,6 @@ define(["postmonger"], function (Postmonger) {
 
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		if(eventDefinitionModel){
-            triggerReady = true;
 			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 
@@ -78,6 +77,7 @@ define(["postmonger"], function (Postmonger) {
             if(mstSeq) {
                 mobileInfo(mstSeq);
             }
+            triggerReady = true;
 		}
 	});
 
@@ -96,7 +96,7 @@ define(["postmonger"], function (Postmonger) {
 	    const res = function(response) {
             if (response.status === "true") {
 				if(mstSeq) {
-                    checkReady();
+
 				}else{
 					$('#usr_grp_cd').val(response.usr_grp_cd);
 					$('#cont_grp_cd').val(response.usr_grp_cd);
