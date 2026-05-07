@@ -238,7 +238,7 @@ define(["postmonger"], function (Postmonger) {
 	}
 
     function checkReady() {
-        console.log("checkReady" + tokenReady + " , "+ endpointReady + ", " + triggerReady)
+        console.log("checkReady" + "  :  " + tokenReady + " , "+ endpointReady + ", " + userReady + "," + triggerReady)
         if (!tokenReady || !endpointReady) {
             return;
         }
