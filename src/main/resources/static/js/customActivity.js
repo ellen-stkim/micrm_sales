@@ -75,7 +75,9 @@ define(["postmonger"], function (Postmonger) {
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 
 			dataExtensionId = eventDefinitionModel.dataExtensionId;
-            checkReady();
+            if(mstSeq) {
+                mobileInfo(mstSeq);
+            }
 		}
 	});
 
@@ -249,14 +251,7 @@ define(["postmonger"], function (Postmonger) {
             connection.trigger('requestTriggerEventDefinition');
             return;
         }
-
-        if(mstSeq) {
-            mobileInfo(mstSeq);
-            mappingLst();
-        }else{
-            mappingLst();
-        }
-
+        mappingLst();
         $('#commonLoading').removeClass('active');
     }
 
