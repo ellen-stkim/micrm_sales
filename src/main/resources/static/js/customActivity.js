@@ -94,7 +94,7 @@ define(["postmonger"], function (Postmonger) {
 	    const res = function(response) {
             if (response.status === "true") {
 				if(mstSeq) {
-					mobileInfo(mstSeq);
+                    checkReady();
 				}else{
 					$('#usr_grp_cd').val(response.usr_grp_cd);
 					$('#cont_grp_cd').val(response.usr_grp_cd);
@@ -250,7 +250,13 @@ define(["postmonger"], function (Postmonger) {
             return;
         }
 
-        mappingLst();
+        if(mstSeq) {
+            mobileInfo(mstSeq);
+            mappingLst();
+        }else{
+            mappingLst();
+        }
+
         $('#commonLoading').removeClass('active');
     }
 
