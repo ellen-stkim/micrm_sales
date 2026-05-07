@@ -2397,7 +2397,18 @@ class SalesforceServiceImpl : SalesforceService {
         }
         kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
         kkoBrandDto.header = listDto.kko_header
-        //kkoBrandDto.additionalContent =
+        if(!listDto.kko_item_json.isNullOrEmpty()) {
+            val itemLst = gson.fromJson<MutableList<WideItemDto>>(listDto.kko_item_json, object : TypeToken<MutableList<WideItemDto>>() {}.type)
+            val subWideItemList = ArrayList<WideItemDto>()
+            for((index, item) in itemLst.withIndex()){
+                if(index == 0){
+                    kkoBrandDto.mainWideItem = item
+                }else{
+                    subWideItemList.add(item)
+                }
+            }
+            kkoBrandDto.subWideItemList = subWideItemList
+        }
         
         val listBtn = ArrayList<FtButtonDto>()
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm)) {
