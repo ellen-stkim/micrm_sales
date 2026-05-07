@@ -10,6 +10,9 @@ define(["postmonger"], function (Postmonger) {
 	let cnt = 0;
 	let eventDefinitionKey;
 	let eventModel = null;
+    let tokenReady = false;
+    let endpointReady = false;
+    let userReady = false;
 
 	$(window).ready(function (){
 		_connection = connection;
@@ -20,9 +23,7 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
 
-		connection.trigger('ready');
-
-		/** 에러페이지 리턴이 필요하면
+		/**
 		 setTimeout(function() {
 			if(flag) {
 				location.href='error.mi';
@@ -47,40 +48,25 @@ define(["postmonger"], function (Postmonger) {
 		});
 	});
 
-	connection.on("requestedTokens", function (tokens){
-		if(tokens) {
-			fuel2token = tokens.fuel2token;
-			token = tokens.token;
-			cnt++;
+    connection.on("requestedTokens", function (tokens) {
+        if (tokens) {
+            fuel2token = tokens.fuel2token;
+            token = tokens.token;
+            cnt++;
+            tokenReady = true;
 
-			if(cnt == 2) {
-				// payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-				if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
-					getUser(fuelapiRestHost, fuel2token, tokens.token);
-				} else {
-					mappingLst();
-				}
-			}
-		}
-	});
+            checkReady();
+        }
+    });
 
 	connection.on("requestedEndpoints", function(endpoints){
 		if(endpoints) {
 			fuelapiRestHost = endpoints.fuelapiRestHost;
-			cnt++;
-
-			if(cnt == 2) {
-				// payload에 usr_grp_cd가 없으면 DB에서 조회한다.
-				if($('#usr_grp_cd').val() == '' || $('#usr_grp_cd').val() == null) {
-					getUser(fuelapiRestHost, fuel2token, token);
-				} else {
-					mappingLst();
-				}
-			}
+            endpointReady = true;
+            checkReady();
 		}
 	});
 
-	//사용자 지정 활동에 의해 호출된 이벤트 에 대한 응답으로 실행됩니다.
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		if(eventDefinitionModel){
 			eventModel = eventDefinitionModel
@@ -129,6 +115,7 @@ define(["postmonger"], function (Postmonger) {
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}
 				}
+                userReady = true;
 			}else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
@@ -244,6 +231,19 @@ define(["postmonger"], function (Postmonger) {
 
 		com_ajax.ajax('post', '/sf/'+ usr_cd +'/mobileUpdate.service', data, res, null, null);
 	}
+
+    function checkReady() {
+        if (!tokenReady || !endpointReady) {
+            return;
+        }
+        if (!userReady) {
+            getUser(fuelapiRestHost, fuel2token, token);
+        } else {
+            mappingLst();
+        }
+        $('#commonLoading').removeClass('active');
+    }
+
 });
 
 
