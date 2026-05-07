@@ -439,7 +439,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
         headers.set("accept", MediaType.ALL_VALUE)
         headers.set("X-Sender-Key", sendKey)
 
-        val urlString = "$url/$recellVersion/ftup/template/${clientId}/${template.templateCode}"
+        val urlString = "$url/$recellVersion/ftup/template/update/${clientId}/${template.templateCode}"
         val reMap: MutableMap<String, Any> = restExchange(urlString, HttpMethod.POST, HttpEntity(gson.toJson(template), headers))
         val data = reMap["data"] as MutableMap<String, Any>
         if ("API_200" == data["code"] || data["code"] == "200") {
