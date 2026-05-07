@@ -2058,6 +2058,8 @@
             couponSeq = $("#savedCouponSeq").val();
             couponSelectSeq = $("#savedCouponSeq").val();
             couponNm = $("#savedCouponNm").val();
+            
+            mappingLst();
         }
         let param = {seq: seq}
         com_ajax.ajaxSync('post', '${baseURL}/sf/${usr_cd}/mobileInfo.ajax', param, res, '${_csrf.headerName}', '${_csrf.token}',true)
