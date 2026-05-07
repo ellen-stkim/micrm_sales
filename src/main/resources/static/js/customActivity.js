@@ -13,6 +13,7 @@ define(["postmonger"], function (Postmonger) {
     let tokenReady = false;
     let endpointReady = false;
     let userReady = false;
+    let triggerReady = false;
 
 	$(window).ready(function (){
 		_connection = connection;
@@ -20,7 +21,7 @@ define(["postmonger"], function (Postmonger) {
 		connection.trigger('requestTokens');
 		connection.trigger('requestEndpoints');
 		connection.trigger('requestInteraction');
-		connection.trigger('requestTriggerEventDefinition');
+		//connection.trigger('requestTriggerEventDefinition');
 		connection.trigger('requestDataSources');
 
 		/**
@@ -69,11 +70,12 @@ define(["postmonger"], function (Postmonger) {
 
 	connection.on('requestedTriggerEventDefinition', function (eventDefinitionModel){
 		if(eventDefinitionModel){
+            triggerReady = true;
 			eventModel = eventDefinitionModel
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 
 			dataExtensionId = eventDefinitionModel.dataExtensionId;
-			mappingLst();
+            checkReady();
 		}
 	});
 
@@ -236,11 +238,18 @@ define(["postmonger"], function (Postmonger) {
         if (!tokenReady || !endpointReady) {
             return;
         }
+
         if (!userReady) {
             getUser(fuelapiRestHost, fuel2token, token);
-        } else {
-            mappingLst();
+            return;
         }
+
+        if (!triggerReady) {
+            connection.trigger('requestTriggerEventDefinition');
+            return;
+        }
+
+        mappingLst();
         $('#commonLoading').removeClass('active');
     }
 
