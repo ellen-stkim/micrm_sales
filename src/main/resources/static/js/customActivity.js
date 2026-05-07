@@ -118,6 +118,7 @@ define(["postmonger"], function (Postmonger) {
 					}
 				}
                 userReady = true;
+                checkReady();
 			}else {
                 // 조회실패
                 alert('사용자 조회에 실패하였습니다.');
