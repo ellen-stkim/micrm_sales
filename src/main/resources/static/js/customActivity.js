@@ -74,10 +74,12 @@ define(["postmonger"], function (Postmonger) {
 			eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
 
 			dataExtensionId = eventDefinitionModel.dataExtensionId;
+            triggerReady = true;
             if(mstSeq) {
                 mobileInfo(mstSeq);
+            }else{
+                checkReady();
             }
-            triggerReady = true;
 		}
 	});
 
