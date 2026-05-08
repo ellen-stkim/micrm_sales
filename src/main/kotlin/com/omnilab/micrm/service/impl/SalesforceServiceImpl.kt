@@ -456,7 +456,7 @@ class SalesforceServiceImpl : SalesforceService {
                     kko_tmpl_cd = contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.kko_tmpl_cd
                 }
                 when (i) {
-                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, ReturnDto())
+                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, ReturnDto())?.let { return it }
                     1 -> processSms(createDto, tblmiContLstdto)
                     2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
                 }
