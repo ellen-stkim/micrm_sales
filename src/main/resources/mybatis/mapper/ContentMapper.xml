@@ -942,6 +942,8 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 				USE_YN = #{use_yn},
 			</if>
+            kko_tar_tp = #{kko_tar_tp},
+            kko_tmpl_cd = #{kko_tmpl_cd},
 			cont_sub = #{cont_sub},
 			cont_body = #{cont_body},
 			img_cd_1 = #{img_cd_1},

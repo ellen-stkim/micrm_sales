@@ -11,7 +11,7 @@ class DtoMapper {
 
 }
 
-fun CarouselDto.toFtCarouselDto(): FtCarouselDto {
+fun CarouselDto.toFtCarouselCommerceDto(): FtCarouselDto {
     return FtCarouselDto(
         header = null,
         content = null,
@@ -23,6 +23,20 @@ fun CarouselDto.toFtCarouselDto(): FtCarouselDto {
         coupon = null
     )
 }
+
+fun CarouselDto.toFtCarouselLstDto(): FtCarouselDto {
+    return FtCarouselDto(
+        header = this.header,
+        content = this.message,
+        additionalContent = null,
+        imageUrl = this.attachment?.image?.img_url,
+        imageLink = null,
+        commerce = null,
+        buttons = this.attachment?.button?.map { it.toFtButtonDto() },
+        coupon = null
+    )
+}
+
 
 fun CommerceDto.toFtCommerceDto(): FtCommerceDto {
     return FtCommerceDto(
