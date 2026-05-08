@@ -1953,7 +1953,7 @@ class SalesforceServiceImpl : SalesforceService {
                     // 4. 상세 유효성 루프
                     for (i in 0..maxCardIdx) {
                         // 순서대로 작성했는지 체크
-                        if (!any[i]) {
+                        if (i != 0 && !any[i]) {
                             re.status = false
                             re.errMsg = "카드${i}을(를) 먼저 작성해주세요."
                             return re
@@ -1967,7 +1967,7 @@ class SalesforceServiceImpl : SalesforceService {
                             return re
                         }
 
-                        if (i == 0) {
+                        if (i == 0 && !any[i]) {
                             // --- 인트로 제약조건 ---
                             if (header[0]!!.length > 20 || header[0]!!.contains("\n")) {
                                 re.status = false; re.errMsg = "Intro 타이틀은 20자 이내(줄바꿈 불가)여야 합니다."; return re
