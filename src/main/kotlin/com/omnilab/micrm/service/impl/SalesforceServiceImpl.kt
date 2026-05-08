@@ -10,6 +10,7 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.mapper.toFtCarouselCommerceDto
+import com.omnilab.micrm.mapper.toFtCarouselLstDto
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.kakao.*
@@ -2432,7 +2433,9 @@ class SalesforceServiceImpl : SalesforceService {
                 val itemLst = rawList.map { it.toFtCarouselCommerceDto() }.toMutableList()
                 kkoBrandDto.carousel = itemLst
             }else if(listDto.msg_tp == "DMCH222"){
-            
+                val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)
+                val itemLst = rawList.map { it.toFtCarouselLstDto() }.toMutableList()
+                kkoBrandDto.carousel = itemLst
             }
         }
         
