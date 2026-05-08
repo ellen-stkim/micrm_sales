@@ -2388,6 +2388,21 @@ class SalesforceServiceImpl : SalesforceService {
            }
            "DMCH223" -> {
                kkoBrandDto.upgradeTp = "U_FP"
+               val ftVideo = FtVideoDto()
+               if(listDto.kko_thumbnail_img_cd != null) {
+                   val imgDto = Tblmi_cont_imgDto(listDto.kko_thumbnail_img_cd!!)
+                   val imgInfo = contentDao.selTblmiContImg(imgDto)
+                   if (imgInfo == null) {
+                       return ReturnDto().apply {
+                           status = false
+                           errMsg = "이미지 로드 정보 조회 오류"
+                       }
+                   } else {
+                       ftVideo.thumbnailUrl = imgInfo.kko_img_url
+                   }
+               }
+               ftVideo.videoUrl = listDto.kko_video_url
+               kkoBrandDto.video = ftVideo
            }
            else -> {
                // 이전 버전 호환용
