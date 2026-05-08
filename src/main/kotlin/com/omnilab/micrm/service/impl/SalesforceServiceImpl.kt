@@ -407,64 +407,75 @@ class SalesforceServiceImpl : SalesforceService {
      */
     @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun updateContentList(dto: Tblmi_cont_lstDto): ReturnDto {
+        val re = ReturnDto(true)
         val createDto = dto as Content_list_CreateDto
         val userInfo = UsefulUtils.sessionUser()
 
         val isByte = isCheckByte(createDto)
         if (!isByte.status!!) return isByte
 
-        val tblmiContMstDto = Tblmi_cont_mstDto().apply {
-            seq = createDto.mst_seq!!.toInt()
-            ch_tp = "CH03"
-            cont_nm = createDto.cont_nm
-            reg_id = userInfo.usr_id
-            upd_id = userInfo.usr_id
-            cont_grp_cd = createDto.cont_grp_cd
-            sales_nm = createDto.sales_nm
-            avo_id = createDto.avo_id
-            inten_id = createDto.inten_id
-            orig_id = createDto.orig_id
-            inta_key = createDto.inta_key
-            inta_ve = createDto.inta_ve
-            camp_nm = createDto.camp_nm
-            team_cd = createDto.team_cd
-            usr_key = createDto.usr_key
-            bu_id = createDto.bu_id
-        }
-        contentDao.updateMobileMst(tblmiContMstDto)
-        val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
-        val len = createDto.send_to_list!!.size - 1
-        for (i in 0..len) {
-            val tblmiContLstdto = Tblmi_cont_lstDto().apply {
-                seq = when (i) {
-                    0 -> contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.seq
-                    1 -> contLst.firstOrNull { it.cont_tp == "DMTP02" }?.seq
-                    else -> contLst.firstOrNull { it.cont_tp == "DMTP04" }?.seq
-                }
-                cont_cd = tblmiContMstDto.seq
-                cont_sub = createDto.cont_sub_list!![i].trim()
-                send_to = createDto.send_to_list!![i]
-                from_to = createDto.from_to
+        val tblmiContMstDto = Tblmi_cont_mstDto()
+        try {
+            tblmiContMstDto.apply {
+                seq = createDto.mst_seq!!.toInt()
+                ch_tp = "CH03"
+                cont_nm = createDto.cont_nm
                 reg_id = userInfo.usr_id
                 upd_id = userInfo.usr_id
                 cont_grp_cd = createDto.cont_grp_cd
-                br_yn = "N"
-                sup_yn = "N"
-                kko_tmpl_cd = contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.kko_tmpl_cd
+                sales_nm = createDto.sales_nm
+                avo_id = createDto.avo_id
+                inten_id = createDto.inten_id
+                orig_id = createDto.orig_id
+                inta_key = createDto.inta_key
+                inta_ve = createDto.inta_ve
+                camp_nm = createDto.camp_nm
+                team_cd = createDto.team_cd
+                usr_key = createDto.usr_key
+                bu_id = createDto.bu_id
             }
-            when (i) {
-                0 -> processKakao(createDto, tblmiContLstdto, userInfo, ReturnDto())
-                1 -> processSms(createDto, tblmiContLstdto)
-                2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
+            contentDao.updateMobileMst(tblmiContMstDto)
+            val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
+            val len = createDto.send_to_list!!.size - 1
+            for (i in 0..len) {
+                val tblmiContLstdto = Tblmi_cont_lstDto().apply {
+                    seq = when (i) {
+                        0 -> contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.seq
+                        1 -> contLst.firstOrNull { it.cont_tp == "DMTP02" }?.seq
+                        else -> contLst.firstOrNull { it.cont_tp == "DMTP04" }?.seq
+                    }
+                    cont_cd = tblmiContMstDto.seq
+                    cont_sub = createDto.cont_sub_list!![i].trim()
+                    send_to = createDto.send_to_list!![i]
+                    from_to = createDto.from_to
+                    reg_id = userInfo.usr_id
+                    upd_id = userInfo.usr_id
+                    cont_grp_cd = createDto.cont_grp_cd
+                    br_yn = "N"
+                    sup_yn = "N"
+                    kko_tmpl_cd = contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.kko_tmpl_cd
+                }
+                when (i) {
+                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, ReturnDto())
+                    1 -> processSms(createDto, tblmiContLstdto)
+                    2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
+                }
+                contentDao.updateMobileContent(tblmiContLstdto)
+                contentDao.delTblmiContUrlLst(Tblmi_cont_url_lstDto().apply {
+                    cont_lst_cd = tblmiContLstdto.seq!!
+                    url_id = if (i == 0) "kko" else "mms"
+                })
+                saveUrls(i, createDto, tblmiContLstdto.seq!!)
             }
-            contentDao.updateMobileContent(tblmiContLstdto)
-            contentDao.delTblmiContUrlLst(Tblmi_cont_url_lstDto().apply {
-                cont_lst_cd = tblmiContLstdto.seq!!
-                url_id = if (i == 0) "kko" else "mms"
-            })
-            saveUrls(i, createDto, tblmiContLstdto.seq!!)
+        } catch (e: Exception){
+            logger.error("update content", e)
+            logger.error("마스터 코드 " + tblmiContMstDto.seq);
+            handleManualRollback(tblmiContMstDto.seq!!, e)
+            re.status = false
+            re.errMsg = "모바일 컨텐츠 수정 도중 오류가 발생 했습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다."
+            return re
         }
-        return ReturnDto(true)
+        return re
     }
 
     /**
