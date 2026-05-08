@@ -254,9 +254,7 @@ define(["postmonger"], function (Postmonger) {
             return;
         }
         mappingLst();
-        $('#commonLoading').removeClass('active');
     }
-
 });
 
 
