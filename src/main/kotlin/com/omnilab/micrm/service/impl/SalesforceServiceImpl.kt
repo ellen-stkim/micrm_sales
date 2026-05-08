@@ -2389,13 +2389,13 @@ class SalesforceServiceImpl : SalesforceService {
            "DMCH223" -> {
                kkoBrandDto.upgradeTp = "U_FP"
                val ftVideo = FtVideoDto()
-               if(listDto.kko_thumbnail_img_cd != null) {
-                   val imgDto = Tblmi_cont_imgDto(listDto.kko_thumbnail_img_cd!!)
+               if(!listDto.kko_thumbnail_img_cd.isNullOrEmpty()) {
+                   val imgDto = Tblmi_cont_imgDto(listDto.kko_thumbnail_img_cd!!.toInt())
                    val imgInfo = contentDao.selTblmiContImg(imgDto)
                    if (imgInfo == null) {
                        return ReturnDto().apply {
                            status = false
-                           errMsg = "이미지 로드 정보 조회 오류"
+                           errMsg = "동영상 썸네일 이미지 조회 오류"
                        }
                    } else {
                        ftVideo.thumbnailUrl = imgInfo.kko_img_url
