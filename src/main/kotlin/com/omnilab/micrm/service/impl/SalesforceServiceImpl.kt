@@ -1952,8 +1952,12 @@ class SalesforceServiceImpl : SalesforceService {
 
                     // 4. 상세 유효성 루프
                     for (i in 0..maxCardIdx) {
+                        if (i == 0 && !any[i]) {
+                            continue
+                        }
+                    
                         // 순서대로 작성했는지 체크
-                        if (i != 0 && !any[i]) {
+                        if (!any[i]) {
                             re.status = false
                             re.errMsg = "카드${i}을(를) 먼저 작성해주세요."
                             return re
