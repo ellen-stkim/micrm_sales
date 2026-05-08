@@ -9,6 +9,7 @@ import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.common.UsefulUtils
+import com.omnilab.micrm.mapper.toFtCarouselDto
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.kakao.*
@@ -2423,6 +2424,12 @@ class SalesforceServiceImpl : SalesforceService {
                 }
             }
             kkoBrandDto.subWideItemList = subWideItemList
+        }
+        
+        if(!listDto.kko_carousel_json.isNullOrEmpty()){
+            val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)
+            val itemLst = rawList.map { it.toFtCarouselDto() }.toMutableList()
+            kkoBrandDto.carousel = itemLst
         }
         
         val listBtn = ArrayList<FtButtonDto>()

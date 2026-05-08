@@ -17,7 +17,7 @@ data class KkoBrandTemplateDto(
     var header: String?,
     var additionalContent: String?,
     var carouselHead: CarouselHeadDto?,
-    var carousel: MutableList<CarouselDto>?,
+    var carousel: MutableList<FtCarouselDto>?,
     var carouselTail: CarouselTailDto?,
     var mainWideItem: WideItemDto?,
     var subWideItemList: MutableList<WideItemDto>?,
