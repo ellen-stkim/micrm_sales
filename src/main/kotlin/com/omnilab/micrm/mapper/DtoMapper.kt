@@ -13,7 +13,7 @@ class DtoMapper {
 
 fun CarouselDto.toFtCarouselDto(): FtCarouselDto {
     return FtCarouselDto(
-        header = this.header,
+        header = null,
         content = null,
         additionalContent = this.additional_content,
         imageUrl = this.attachment?.image?.img_url,
