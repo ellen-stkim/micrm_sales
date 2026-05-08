@@ -517,7 +517,7 @@
                                                                 <p id="brandFatextArea${idx}" style="padding-top: 10px; overflow-wrap: anywhere; word-break: break-word; white-space: normal;">
                                                                     내용을 입력해주세요.
                                                                 </p>
-                                                                <c:if test="idx ne 0">
+                                                                <c:if test="${idx ne 0}">
                                                                     <div id="brandFaBtn${idx}" style="display: flex; gap: 12px; align-items: center;">
                                                                         <div class="kakao_link" id="brandFaBtn${idx}_1" data="1" style="display: none"></div>
                                                                         <div class="kakao_link" id="brandFaBtn${idx}_2" data="2" style="display: none"></div>
