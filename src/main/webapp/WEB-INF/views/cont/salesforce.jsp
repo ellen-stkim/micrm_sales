@@ -4227,6 +4227,7 @@
             $('#js-kakao-img').html('');
             $('.kakao_link').remove()
             $("#brandType").hide();
+            $("#brandTarget").hide();
         } else {
             $('#kakao_ft_viewer').show();
             $('#kakao_at_viewer').hide();
@@ -4236,6 +4237,7 @@
             $('#tmplNm').val('');
             $('#templateCode').val('');
             $("#brandType").show();
+            $("#brandTarget").show();
         }
     }
 
