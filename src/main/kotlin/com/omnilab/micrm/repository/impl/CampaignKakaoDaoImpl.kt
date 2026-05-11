@@ -454,6 +454,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.etc5 = rcsDb
             kkoMsgdto.tax_cd1 = dto.usr_grp_cd
             kkoMsgdto.m_server = kakaoDb
+            kkoMsgdto.template_code = kakaoCont.kko_tmpl_cd
+            kkoMsgdto.targeting = kakaoCont.kko_tar_tp
             sendLst.add(kkoMsgdto)
             logger.error("kakaoCont {}", kakaoCont)
             logger.error("kkoMsgdto {}", kkoMsgdto)

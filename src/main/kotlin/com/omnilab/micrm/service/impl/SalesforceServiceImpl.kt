@@ -2215,7 +2215,6 @@ class SalesforceServiceImpl : SalesforceService {
                         true
                     }
                 }
-                logger.error("isNew {},{},{}", isNew, oldMsgTp, listDto.msg_tp)
                 val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto, isNew)
                 if(!reg.status!!){
                     return reg
