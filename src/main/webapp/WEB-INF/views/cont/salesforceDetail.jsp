@@ -243,8 +243,7 @@
                                             <label class="custom_radio en_font">
                                                 텍스트/이미지/와이드이미지
                                                 <input name="kko_msg_tp" class="lowType" type="radio" value="0"
-                                                       <c:if
-                                                           test='${list[0].msg_tp ne "DMCH220" and list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222" and list[0].msg_tp ne "DMCH223"}'>checked</c:if> disabled/>
+                                                       <c:if test='${list[0].msg_tp ne "DMCH220" and list[0].msg_tp ne "DMCH221" and list[0].msg_tp ne "DMCH222" and list[0].msg_tp ne "DMCH223"}'>checked</c:if> />
                                                 <span></span>
                                             </label>
                                             <label class="custom_radio en_font">

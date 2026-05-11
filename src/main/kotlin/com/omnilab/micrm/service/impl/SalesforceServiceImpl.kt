@@ -357,7 +357,7 @@ class SalesforceServiceImpl : SalesforceService {
                 bu_id = dto.bu_id
             }
             //임시 주석
-            contentDao.insertContentMaster(tblmiContMstDto)// 마스터 코드 리턴
+            contentDao.insertContentMaster(tblmiContMstDto) // 마스터 코드 리턴
             re.data = tblmiContMstDto.seq.toString()
 
             // 3. 리스트 데이터 처리 (0: 카카오, 1: SMS, 2: RCS)
@@ -375,7 +375,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 // 채널별 상세 분기 처리
                 when (i) {
-                    0 -> processKakao(dto, tblmiContLstdto, userInfo, re)?.let { return it }
+                    0 -> processKakao(dto, tblmiContLstdto, userInfo, null, re)?.let { return it }
                     1 -> processSms(dto, tblmiContLstdto)
                     2 -> processRcs(dto, tblmiContLstdto, userInfo, i)
                 }
@@ -386,7 +386,7 @@ class SalesforceServiceImpl : SalesforceService {
             }
         } catch (e: Exception) {
             logger.error("insert content", e)
-            logger.error("마스터 코드 " + tblmiContMstDto.seq);
+            logger.error("마스터 코드 " + tblmiContMstDto.seq)
             handleManualRollback(tblmiContMstDto.seq!!, e)
             re.status = false
             re.errMsg = "모바일 컨텐츠 저장 도중 오류가 발생 했습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다."
@@ -435,6 +435,7 @@ class SalesforceServiceImpl : SalesforceService {
                 team_cd = createDto.team_cd
                 usr_key = createDto.usr_key
                 bu_id = createDto.bu_id
+                
             }
             contentDao.updateMobileMst(tblmiContMstDto)
             val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
@@ -458,7 +459,7 @@ class SalesforceServiceImpl : SalesforceService {
                     kko_tmpl_cd = contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.kko_tmpl_cd
                 }
                 when (i) {
-                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, ReturnDto())?.let { return it }
+                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, contLst[i].msg_tp, ReturnDto())?.let { return it }
                     1 -> processSms(createDto, tblmiContLstdto)
                     2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
                 }
@@ -471,7 +472,7 @@ class SalesforceServiceImpl : SalesforceService {
             }
         } catch (e: Exception){
             logger.error("update content", e)
-            logger.error("마스터 코드 " + tblmiContMstDto.seq);
+            logger.error("마스터 코드 " + tblmiContMstDto.seq)
             handleManualRollback(tblmiContMstDto.seq!!, e)
             re.status = false
             re.errMsg = "모바일 컨텐츠 수정 도중 오류가 발생 했습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다."
@@ -1874,7 +1875,7 @@ class SalesforceServiceImpl : SalesforceService {
         contentDao.insertContentUrl(Tblmi_cont_url_lstDto(urlTag, url, urlId, contLstCd))
     }
 
-    private fun processKakao(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, re: ReturnDto): ReturnDto? {
+    private fun processKakao(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, oldMsgTp: String?, re: ReturnDto): ReturnDto? {
         listDto.use_yn = if (dto.formatType!!.contains("kakao")) "Y" else "N"
         listDto.send_tp = if (dto.kko_option == "ad") "SENDTP01" else "SENDTP02"
 
@@ -2200,7 +2201,16 @@ class SalesforceServiceImpl : SalesforceService {
             
             // 브랜드톡 등록
             if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
-                val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto)
+                val isNew = if(oldMsgTp == null){
+                    true
+                } else {
+                    if(oldMsgTp == listDto.msg_tp){
+                        false
+                    }else{
+                        true
+                    }
+                }
+                val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto, isNew)
                 if(!reg.status!!){
                     return reg
                 }else{
@@ -2373,7 +2383,7 @@ class SalesforceServiceImpl : SalesforceService {
         contentDao.deleteRealContLst(Tblmi_cont_lstDto().apply { cont_cd = mstSeq })
     }
 
-    private fun convertBrandTalk(contNm: String, sendKey: String, listDto: Tblmi_cont_lstDto): ReturnDto {
+    private fun convertBrandTalk(contNm: String, sendKey: String, listDto: Tblmi_cont_lstDto, isNew: Boolean): ReturnDto {
         val kkoBrandDto = KkoBrandTemplateDto()
         kkoBrandDto.templateName = contNm
         when (listDto.msg_tp) {
@@ -2504,7 +2514,7 @@ class SalesforceServiceImpl : SalesforceService {
             kkoBrandDto.buttons = listBtn
         }
         
-        val createBrand = if(listDto.kko_tmpl_cd.isNullOrEmpty()){
+        val createBrand = if(isNew){
             kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
         }else{
             kkoBrandDto.templateCode = listDto.kko_tmpl_cd

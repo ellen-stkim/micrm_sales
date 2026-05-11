@@ -4223,6 +4223,7 @@
             $('#kko_ft input[type="text"]').val('');
             $('#prev_ft_img').html('');
             $('#prev_ft_txt').html('');
+            $('#prev_ft_video').html('');
 
             $('#js-kakao-img').html('');
             $('.kakao_link').remove()
