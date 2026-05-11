@@ -375,7 +375,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 // 채널별 상세 분기 처리
                 when (i) {
-                    0 -> processKakao(dto, tblmiContLstdto, userInfo, null, re)?.let { return it }
+                    0 -> processKakao(dto, tblmiContLstdto, userInfo, null, null, re)?.let { return it }
                     1 -> processSms(dto, tblmiContLstdto)
                     2 -> processRcs(dto, tblmiContLstdto, userInfo, i)
                 }
@@ -464,7 +464,7 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
                 when (i) {
-                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, contLst[i].msg_tp, ReturnDto())?.let { return it }
+                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, contLst[i].msg_tp, contLst[i].key_id, ReturnDto())?.let { return it }
                     1 -> processSms(createDto, tblmiContLstdto)
                     2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
                 }
@@ -1880,7 +1880,7 @@ class SalesforceServiceImpl : SalesforceService {
         contentDao.insertContentUrl(Tblmi_cont_url_lstDto(urlTag, url, urlId, contLstCd))
     }
 
-    private fun processKakao(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, oldMsgTp: String?, re: ReturnDto): ReturnDto? {
+    private fun processKakao(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, userInfo: Tblmi_usrDto, oldMsgTp: String?, senderKey: String?,re: ReturnDto): ReturnDto? {
         listDto.use_yn = if (dto.formatType!!.contains("kakao")) "Y" else "N"
         listDto.send_tp = if (dto.kko_option == "ad") "SENDTP01" else "SENDTP02"
 
@@ -2206,10 +2206,10 @@ class SalesforceServiceImpl : SalesforceService {
             
             // 브랜드톡 등록
             if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
-                val isNew = if(oldMsgTp == null){
+                val isNew = if(oldMsgTp == null && senderKey == null){
                     true
                 } else {
-                    if(oldMsgTp == listDto.msg_tp){
+                    if(oldMsgTp == listDto.msg_tp && senderKey == listDto.key_id){
                         false
                     }else{
                         true
