@@ -60,7 +60,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     override fun createAtTmpl(dto: Kko_at_tmplDto): MutableMap<String, Any> {
         val token = getToken(url, recellVersion)
 
-        //        header 설정
+        // header 설정
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         headers.set("Authorization", "Bearer $token")

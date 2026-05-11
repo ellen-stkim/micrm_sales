@@ -47,9 +47,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="th top-border">
-                        ${g eq 0 ? '타이틀' : '상품명'}
-                </div>
+                <div class="th top-border">${g eq 0 ? '타이틀' : '상품명'}</div>
                 <div class="td top-border">
                     <input type="text" name="kkoHeader${g}" class="txt_input width brandTitle" placeholder="최대 20자 이내 입력" oninput="kkoCreate.brandFaTitle(this, ${g});" value="${list[0]['kkoHeader' += g]}">
                 </div>

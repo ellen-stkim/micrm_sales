@@ -1912,7 +1912,7 @@ class SalesforceServiceImpl : SalesforceService {
             }
         } else {
             listDto.cont_tp = "DMTP03"
-            val kkoDto = SetLst_searchDto("CH02", "DMTP03", "Y", userInfo.usr_grp_cd).apply { list_val = dto.key_id }
+            val kkoDto = SetLst_searchDto("CH02", "DMTP03", null, userInfo.usr_grp_cd).apply { seq = dto.send_to?.toInt() }
             contentDao.selectSenderList(kkoDto).firstOrNull()?.let { listDto.key_id = it.list_val }
 
             when (dto.kko_msg_tp) {
@@ -2519,9 +2519,9 @@ class SalesforceServiceImpl : SalesforceService {
             kkoBrandDto.buttons = listBtn
         }
         
-        val createBrand = if(isNew){
+        val createBrand = if(isNew) {
             kkoRestApiServiceImpl.createBrand(sendKey, kkoBrandDto)
-        }else{
+        } else {
             kkoBrandDto.templateCode = listDto.kko_tmpl_cd
             kkoRestApiServiceImpl.updateBrand(sendKey, kkoBrandDto)
         }

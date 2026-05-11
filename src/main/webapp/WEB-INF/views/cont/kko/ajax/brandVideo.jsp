@@ -41,9 +41,7 @@
    <div class="row" style="height:150px;">
        <div class="th bottom-border">내용</div>
        <div class="td bottom-border">
-           <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" maxlength="76" style="width: 100%;height: 100%; resize: none;"  oninput="onchangePrevKkoTxt(this)" >
-               ${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}
-           </textarea>
+           <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" maxlength="76" style="width: 100%;height: 100%; resize: none;"  oninput="onchangePrevKkoTxt(this)" >${list[0].cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}</textarea>
        </div>
    </div>
    <div class="row">

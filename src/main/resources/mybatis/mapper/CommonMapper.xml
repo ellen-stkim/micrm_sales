@@ -112,6 +112,9 @@
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
 			and use_yn = #{use_yn}
 		</if>
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(seq)">
+            and seq = #{seq}
+        </if>
 		ORDER BY FIELD(DEF_YN, 'Y') DESC, REG_DT DESC
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
 			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
