@@ -1912,7 +1912,7 @@ class SalesforceServiceImpl : SalesforceService {
             }
         } else {
             listDto.cont_tp = "DMTP03"
-            val kkoDto = SetLst_searchDto("CH02", "DMTP03", null, userInfo.usr_grp_cd).apply { seq = dto.send_to?.toInt() }
+            val kkoDto = SetLst_searchDto("CH02", "DMTP03", null, userInfo.usr_grp_cd).apply { seq = listDto.send_to?.toInt() }
             contentDao.selectSenderList(kkoDto).firstOrNull()?.let { listDto.key_id = it.list_val }
 
             when (dto.kko_msg_tp) {
