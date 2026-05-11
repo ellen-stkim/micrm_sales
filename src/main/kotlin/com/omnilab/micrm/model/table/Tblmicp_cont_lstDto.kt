@@ -38,6 +38,8 @@ class Tblmicp_cont_lstDto: Tblmi_cont_lstDto {
         this.br_yn = tblmiContLstdto.br_yn
         this.sup_yn = tblmiContLstdto.sup_yn
         this.msg_tp = tblmiContLstdto.msg_tp
+        this.kko_tmpl_cd = tblmiContLstdto.kko_tmpl_cd
+        this.kko_tar_tp = tblmiContLstdto.kko_tar_tp
         this.kko_img_cd = tblmiContLstdto.kko_img_cd
         this.kko_img_url = tblmiContLstdto.kko_img_url
         this.kko_btn_nm = tblmiContLstdto.kko_btn_nm

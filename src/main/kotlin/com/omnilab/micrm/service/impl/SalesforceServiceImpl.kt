@@ -784,7 +784,7 @@ class SalesforceServiceImpl : SalesforceService {
                     campaignDao.ins_program(temp)
                     proDto = salesforceDao.sel_tblmicp_program(check)
                 }
-
+                
                 for(i in contLstM){
                     val campaignDto = Tblmicp_campaignDto(proDto!!.pro_id)
                     campaignDto.cont_id = i.seq
