@@ -442,10 +442,12 @@ class SalesforceServiceImpl : SalesforceService {
             val len = createDto.send_to_list!!.size - 1
             for (i in 0..len) {
                 val tblmiContLstdto = Tblmi_cont_lstDto().apply {
+                    val contMap = contLst.associateBy { it.cont_tp }
                     seq = when (i) {
-                        0 -> contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.seq
-                        1 -> contLst.firstOrNull { it.cont_tp == "DMTP02" }?.seq
-                        else -> contLst.firstOrNull { it.cont_tp == "DMTP04" }?.seq
+                        0 -> contMap["DMTP03"]?.seq ?: contMap["DMTP05"]?.seq
+                        1 -> contMap["DMTP02"]?.seq
+                        2 -> contMap["DMTP04"]?.seq
+                        else -> null
                     }
                     cont_cd = tblmiContMstDto.seq
                     cont_sub = createDto.cont_sub_list!![i].trim()
@@ -456,7 +458,10 @@ class SalesforceServiceImpl : SalesforceService {
                     cont_grp_cd = createDto.cont_grp_cd
                     br_yn = "N"
                     sup_yn = "N"
-                    kko_tmpl_cd = contLst.firstOrNull { it.cont_tp in listOf("DMTP03", "DMTP05") }?.kko_tmpl_cd
+                    kko_tmpl_cd = when (i) {
+                        0 -> contMap["DMTP03"]?.kko_tmpl_cd ?: contMap["DMTP05"]?.kko_tmpl_cd
+                        else -> null
+                    }
                 }
                 when (i) {
                     0 -> processKakao(createDto, tblmiContLstdto, userInfo, contLst[i].msg_tp, ReturnDto())?.let { return it }
@@ -2210,6 +2215,7 @@ class SalesforceServiceImpl : SalesforceService {
                         true
                     }
                 }
+                logger.error("isNew {},{},{}", isNew, oldMsgTp, listDto.msg_tp)
                 val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto, isNew)
                 if(!reg.status!!){
                     return reg

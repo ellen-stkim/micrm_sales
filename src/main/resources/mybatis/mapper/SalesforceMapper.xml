@@ -147,6 +147,7 @@
                 and a.USE_YN = #{use_yn}
             </if>
         </where>
+        order by a.seq asc
     </select>
 
     <select id="sel_tblmicp_cont_mst" parameterType="Tblmicp_cont_mstDto" resultType="Tblmicp_cont_mstDto">
