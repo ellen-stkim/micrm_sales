@@ -108,7 +108,7 @@
 			, `PRICE`, `CURRENCY_TYPE`, `TITLE`, `HEADER`, `KKO_TITLE`
 			, `IMAGE_JSON`, `AD_FLAG`, `TEMPLATE_CODE`, `TARGETING`, `UPGRADE_TP`
 			, `ETC1`, `ETC2`, `ETC3`, `ETC4`, `ETC5`, `ETC6`, `TAX_CD1`, `CID`, `REQDATE`
-			, `VIDEO_JSON`, `CAROUSEL_JSON`, `HEAD_JSON`, `TEMPLATE_CODE`, `TARGETING`
+			, `VIDEO_JSON`, `CAROUSEL_JSON`, `HEAD_JSON`
 		)
 		values
 		<foreach collection="list" item="list" separator="," >
@@ -118,7 +118,7 @@
 			, #{list.price}, #{list.currency_type}, #{list.title}, #{list.header}, #{list.kko_title}
 			, #{list.img_url}, #{list.ad_flag}, #{list.template_code}, #{list.targeting}, #{list.upgrade_tp}
 			, #{list.etc1}, #{list.etc2}, #{list.etc3}, #{list.etc4}, #{list.etc5}, #{list.etc6}, #{list.tax_cd1}, #{list.serialnum}, #{list.reqdate}
-			, #{list.video_json}, #{list.carousel_json}, #{list.head_json}, #{list.template_code}, #{list.targeting}
+			, #{list.video_json}, #{list.carousel_json}, #{list.head_json}
 		)
 		</foreach>
 	</insert>
