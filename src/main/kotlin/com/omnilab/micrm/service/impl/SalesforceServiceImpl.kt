@@ -2451,6 +2451,9 @@ class SalesforceServiceImpl : SalesforceService {
             val itemLst = gson.fromJson<MutableList<WideItemDto>>(listDto.kko_item_json, object : TypeToken<MutableList<WideItemDto>>() {}.type)
             val subWideItemList = ArrayList<WideItemDto>()
             for((index, item) in itemLst.withIndex()){
+                item.title = "#{title}"
+                item.linkPc = "#{lnkPc}"
+                item.linkMobile = "#{lnkMo}"
                 if(index == 0){
                     kkoBrandDto.mainWideItem = item
                 }else{
