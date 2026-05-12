@@ -2442,11 +2442,14 @@ class SalesforceServiceImpl : SalesforceService {
                }
            }
         }
-        //kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
         if(!listDto.cont_body.isNullOrEmpty()){
+            //kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
             kkoBrandDto.content = "#{body}"
         }
-        kkoBrandDto.header = listDto.kko_header
+        if(!listDto.kko_header.isNullOrEmpty()){
+            //kkoBrandDto.header = listDto.kko_header
+            kkoBrandDto.header = "#{header}"
+        }
         if(!listDto.kko_item_json.isNullOrEmpty()) {
             val itemLst = gson.fromJson<MutableList<WideItemDto>>(listDto.kko_item_json, object : TypeToken<MutableList<WideItemDto>>() {}.type)
             val subWideItemList = ArrayList<WideItemDto>()
