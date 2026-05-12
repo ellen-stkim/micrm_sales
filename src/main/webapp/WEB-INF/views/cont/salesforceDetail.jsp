@@ -376,9 +376,10 @@
                                                 <div class="row" style="height:150px;">
                                                     <div class="th bottom-border">내용</div>
                                                     <div class="td bottom-border">
-                                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevKkoTxt(this)">
-                                                            ${cont_tp eq 'DMTP03' and fn:replace(list[0].cont_body,',','') ne '' ? list[0].cont_body :''}
-                                                        </textarea>
+                                                        <c:if test="${cont_tp eq 'DMTP03' and not empty fn:replace(list[0].cont_body,',','')}">
+                                                            <c:set var="contBody">${fn:escapeXml(list[0].cont_body)}</c:set>
+                                                        </c:if>
+                                                        <textarea name="kakao_body" class="kakao_txt textarea" cols="30" rows="10" style="width: 100%;height: 100%; resize: none;" onkeyup="onchangePrevKkoTxt(this)">${contBody}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="row">

@@ -59,6 +59,10 @@
                                     <div class="li">브랜드톡(txt)</div>
                                     <div class="li">브랜드톡(img)</div>
                                     <div class="li">브랜드톡(wid)</div>
+                                    <div class="li">브랜드톡(와이드 리스트)</div>
+                                    <div class="li">브랜드톡(캐러셀 커머스)</div>
+                                    <div class="li">브랜드톡(캐러셀 피드)</div>
+                                    <div class="li">브랜드톡(동영상)</div>
                                     <div class="li">RCS SMS</div>
                                     <div class="li">RCS LMS</div>
                                     <div class="li">RCS MMS</div>
@@ -79,6 +83,10 @@
                                     <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_TXT.total_cnt? val.KKO_FT_TXT.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_IMG.total_cnt? val.KKO_FT_IMG.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_WID.total_cnt? val.KKO_FT_WID.total_cnt : 0 }" pattern="#,###" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FL.total_cnt? val.KKO_FT_FL.total_cnt : 0 }" pattern="#,###" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FA.total_cnt? val.KKO_FT_FA.total_cnt : 0 }" pattern="#,###" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FC.total_cnt? val.KKO_FT_FC.total_cnt : 0 }" pattern="#,###" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FP.total_cnt? val.KKO_FT_FP.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_SMS.total_cnt? val.RCS_SMS.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_LMS.total_cnt? val.RCS_LMS.total_cnt : 0 }" pattern="#,###" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_MMS.total_cnt? val.RCS_MMS.total_cnt : 0 }" pattern="#,###" /></div>
@@ -95,8 +103,12 @@
                             <div class="total-wrap">
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_AT.total_cnt? typeTotalMap.KKO_AT.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_TXT.total_cnt? typeTotalMap.KKO_FT_TXT.total_cnt : 0 }" pattern="#,###" /></div>
-                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_IMG.total_cnt? typeTotalMap.KKO_AT.KKO_FT_IMG : 0 }" pattern="#,###" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_IMG.total_cnt? typeTotalMap.KKO_FT_IMG.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_WID.total_cnt? typeTotalMap.KKO_FT_WID.total_cnt : 0 }" pattern="#,###" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FL.total_cnt? typeTotalMap.KKO_FT_FL.total_cnt : 0 }" pattern="#,###" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FA.total_cnt? typeTotalMap.KKO_FT_FA.total_cnt : 0 }" pattern="#,###" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FC.total_cnt? typeTotalMap.KKO_FT_FC.total_cnt : 0 }" pattern="#,###" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FP.total_cnt? typeTotalMap.KKO_FT_FP.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_SMS.total_cnt? typeTotalMap.RCS_SMS.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_LMS.total_cnt? typeTotalMap.RCS_LMS.total_cnt : 0 }" pattern="#,###" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_MMS.total_cnt? typeTotalMap.RCS_MMS.total_cnt : 0 }" pattern="#,###" /></div>
@@ -127,6 +139,10 @@
                                     <div class="li">브랜드톡(txt)</div>
                                     <div class="li">브랜드톡(img)</div>
                                     <div class="li">브랜드톡(wid)</div>
+                                    <div class="li">브랜드톡(와이드 리스트)</div>
+                                    <div class="li">브랜드톡(캐러셀 커머스)</div>
+                                    <div class="li">브랜드톡(캐러셀 피드)</div>
+                                    <div class="li">브랜드톡(동영상)</div>
                                     <div class="li">RCS SMS</div>
                                     <div class="li">RCS LMS</div>
                                     <div class="li">RCS MMS</div>
@@ -146,6 +162,10 @@
                                     <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_TXT.total_cost? val.KKO_FT_TXT.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_IMG.total_cost? val.KKO_FT_IMG.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_WID.total_cost? val.KKO_FT_WID.total_cost : 0 }" pattern="#,###.#" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FL.total_cost? val.KKO_FT_FL.total_cost : 0 }" pattern="#,###.#" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FA.total_cost? val.KKO_FT_FA.total_cost : 0 }" pattern="#,###.#" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FC.total_cost? val.KKO_FT_FC.total_cost : 0 }" pattern="#,###.#" /></div>
+                                    <div class="li"><fmt:formatNumber value="${!empty val.KKO_FT_FP.total_cost? val.KKO_FT_FP.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_SMS.total_cost? val.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_LMS.total_cost? val.RCS_LMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                     <div class="li"><fmt:formatNumber value="${!empty val.RCS_MMS.total_cost? val.RCS_MMS.total_cost : 0 }" pattern="#,###.#" /></div>
@@ -164,6 +184,10 @@
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_TXT.total_cost? typeTotalMap.KKO_FT_TXT.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_IMG.total_cost? typeTotalMap.KKO_FT_IMG.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_WID.total_cost? typeTotalMap.KKO_FT_WID.total_cost : 0 }" pattern="#,###.#" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FL.total_cost? typeTotalMap.KKO_FT_FL.total_cost : 0 }" pattern="#,###.#" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FA.total_cost? typeTotalMap.KKO_FT_FA.total_cost : 0 }" pattern="#,###.#" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FC.total_cost? typeTotalMap.KKO_FT_FC.total_cost : 0 }" pattern="#,###.#" /></div>
+                                <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.KKO_FT_FP.total_cost? typeTotalMap.KKO_FT_FP.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_SMS.total_cost? typeTotalMap.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_LMS.total_cost? typeTotalMap.RCS_LMS.total_cost : 0 }" pattern="#,###.#" /></div>
                                 <div class="li"><fmt:formatNumber value="${!empty typeTotalMap.RCS_MMS.total_cost? typeTotalMap.RCS_MMS.total_cost : 0 }" pattern="#,###.#" /></div>
@@ -296,6 +320,10 @@
                                                 <p>브랜드톡(txt) : <fmt:formatNumber value="${!empty prg.KKO_FT_TXT.total_cnt? prg.KKO_FT_TXT.total_cnt : 0 }" pattern="#,##0" /></p>
                                                 <p>브랜드톡(img) : <fmt:formatNumber value="${!empty prg.KKO_FT_IMG.total_cnt? prg.KKO_FT_IMG.total_cnt : 0 }" pattern="#,##0" /></p>
                                                 <p>브랜드톡(wid) : <fmt:formatNumber value="${!empty prg.KKO_FT_WID.total_cnt? prg.KKO_FT_WID.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(와이드 리스트) : <fmt:formatNumber value="${!empty prg.KKO_FT_FL.total_cnt? prg.KKO_FT_FL.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(캐러셀 커머스) : <fmt:formatNumber value="${!empty prg.KKO_FT_FA.total_cnt? prg.KKO_FT_FA.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(캐러셀 피드) : <fmt:formatNumber value="${!empty prg.KKO_FT_FC.total_cnt? prg.KKO_FT_FC.total_cnt : 0 }" pattern="#,##0" /></p>
+                                                <p>브랜드톡(동영상) : <fmt:formatNumber value="${!empty prg.KKO_FT_FP.total_cnt? prg.KKO_FT_FP.total_cnt : 0 }" pattern="#,##0" /></p>
                                             </div>
                                             <div>
                                                 <p>RCS SMS : <fmt:formatNumber value="${!empty prg.RCS_SMS.total_cnt? prg.RCS_SMS.total_cnt : 0 }" pattern="#,##0" /></p>
@@ -318,6 +346,10 @@
                                                 <p>브랜드톡(txt) : <fmt:formatNumber value="${!empty prg.KKO_FT_TXT.total_cost? prg.KKO_FT_TXT.total_cost : 0 }" pattern="#,###.#" /></p>
                                                 <p>브랜드톡(img) : <fmt:formatNumber value="${!empty prg.KKO_FT_IMG.total_cost? prg.KKO_FT_IMG.total_cost : 0 }" pattern="#,###.#" /></p>
                                                 <p>브랜드톡(wid) : <fmt:formatNumber value="${!empty prg.KKO_FT_WID.total_cost? prg.KKO_FT_WID.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(와이드 리스트) : <fmt:formatNumber value="${!empty prg.KKO_FT_FL.total_cost? prg.KKO_FT_FL.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(캐러셀 커머스) : <fmt:formatNumber value="${!empty prg.KKO_FT_FA.total_cost? prg.KKO_FT_FA.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(캐러셀 피드) : <fmt:formatNumber value="${!empty prg.KKO_FT_FC.total_cost? prg.KKO_FT_FC.total_cost : 0 }" pattern="#,###.#" /></p>
+                                                <p>브랜드톡(동영상) : <fmt:formatNumber value="${!empty prg.KKO_FT_FP.total_cost? prg.KKO_FT_FP.total_cost : 0 }" pattern="#,###.#" /></p>
                                             </div>
                                             <div>
                                                 <p>RCS SMS : <fmt:formatNumber value="${!empty prg.RCS_SMS.total_cost? prg.RCS_SMS.total_cost : 0 }" pattern="#,###.#" /></p>
@@ -488,6 +520,10 @@
             let ftTextData = [];
             let ftImgData = [];
             let ftWideData = [];
+            let ftFLData = [];
+            let ftFAData = [];
+            let ftFCData = [];
+            let ftFPData = [];
             let rcsSmsData = [];
             let rcsLmsData = [];
             let rcsMmsData = [];
@@ -503,6 +539,10 @@
                 let ftTxt =map.KKO_FT_TXT
                 let ftImg =map.KKO_FT_IMG
                 let ftWid =map.KKO_FT_WID
+                let ftFL =map.KKO_FT_FL
+                let ftFA =map.KKO_FT_FA
+                let ftFC =map.KKO_FT_FC
+                let ftFP =map.KKO_FT_FP
                 let rcsSms =map.RCS_SMS
                 let rcsLms =map.RCS_LMS
                 let rcsMms =map.RCS_MMS
@@ -515,6 +555,10 @@
                 ftTextData.push(ftTxt == undefined || ftTxt ==null? 0 : ftTxt.total_cnt)
                 ftImgData.push(ftImg == undefined || ftImg ==null? 0 : ftImg.total_cnt)
                 ftWideData.push(ftWid == undefined || ftWid ==null? 0 : ftWid.total_cnt)
+                ftFLData.push(ftFL == undefined || ftFL ==null? 0 : ftFL.total_cnt)
+                ftFAData.push(ftFA == undefined || ftFA ==null? 0 : ftFA.total_cnt)
+                ftFCData.push(ftFC == undefined || ftFC ==null? 0 : ftFC.total_cnt)
+                ftFPData.push(ftFP == undefined || ftFP ==null? 0 : ftFP.total_cnt)
                 rcsSmsData.push(rcsSms == undefined || rcsSms ==null? 0 : rcsSms.total_cnt)
                 rcsLmsData.push(rcsLms == undefined || rcsLms ==null? 0 : rcsLms.total_cnt)
                 rcsMmsData.push(rcsMms == undefined || rcsMms ==null? 0 : rcsMms.total_cnt)
@@ -534,58 +578,78 @@
                         {
                             label: '알림톡',
                             data: atData,
-                            backgroundColor: 'rgba(29, 33, 132, 1)'
+                            backgroundColor: 'rgba(29, 33, 132, 1)' // 진한 네이비
                         },
                         {
                             label: '브랜드톡(txt)',
                             data: ftTextData,
-                            backgroundColor: 'rgba(40, 69, 156, 1)'
+                            backgroundColor: 'rgba(52, 92, 184, 1)' // 블루
                         },
                         {
                             label: '브랜드톡(img)',
                             data: ftImgData,
-                            backgroundColor: 'rgba(97, 140, 211, 1)'
+                            backgroundColor: 'rgba(92, 145, 255, 1)' // 밝은 블루
                         },
                         {
                             label: '브랜드톡(wid)',
                             data: ftWideData,
-                            backgroundColor: 'rgba(118, 177, 225, 1)'
+                            backgroundColor: 'rgba(0, 174, 239, 1)' // 스카이블루
+                        },
+                        {
+                            label: '브랜드톡(와이드 리스트)',
+                            data: ftFLData,
+                            backgroundColor: 'rgba(0, 200, 170, 1)' // 민트
+                        },
+                        {
+                            label: '브랜드톡(캐러셀 커머스)',
+                            data: ftFAData,
+                            backgroundColor: 'rgba(102, 187, 106, 1)' // 그린
+                        },
+                        {
+                            label: '브랜드톡(캐러셀 피드)',
+                            data: ftFCData,
+                            backgroundColor: 'rgba(255, 167, 38, 1)' // 오렌지
+                        },
+                        {
+                            label: '브랜드톡(동영상)',
+                            data: ftFPData,
+                            backgroundColor: 'rgba(239, 83, 80, 1)' // 레드
                         },
                         {
                             label: 'RCS SMS',
                             data: rcsSmsData,
-                            backgroundColor: 'rgba(118, 215, 221, 1)'
+                            backgroundColor: 'rgba(0, 188, 212, 1)' // 시안
                         },
                         {
                             label: 'RCS LMS',
                             data: rcsLmsData,
-                            backgroundColor: 'rgba(79, 212, 191, 1)'
+                            backgroundColor: 'rgba(38, 166, 154, 1)' // 틸
                         },
                         {
                             label: 'RCS MMS',
                             data: rcsMmsData,
-                            backgroundColor: 'rgba(123, 214, 157, 1)'
+                            backgroundColor: 'rgba(67, 160, 71, 1)' // 딥그린
                         },
                         {
                             label: 'RCS 템플릿',
                             data: rcsTempData,
-                            backgroundColor: 'rgba(191, 211, 129, 1)'
+                            backgroundColor: 'rgba(156, 204, 101, 1)' // 라임
                         },
                         {
                             label: 'SMS',
                             data: smsData,
-                            backgroundColor: 'rgba(248, 170, 77, 1)'
+                            backgroundColor: 'rgba(255, 183, 77, 1)' // 연오렌지
                         },
                         {
                             label: 'LMS',
                             data: lmsData,
-                            backgroundColor: 'rgba(245, 133, 34, 1)'
+                            backgroundColor: 'rgba(255, 112, 67, 1)' // 딥오렌지
                         },
                         {
                             label: 'MMS',
                             data: mmsData,
-                            backgroundColor: 'rgba(242, 89, 33, 1)'
-                        },
+                            backgroundColor: 'rgba(216, 67, 21, 1)' // 브라운레드
+                        }
                     ]
                 },
                 options: {

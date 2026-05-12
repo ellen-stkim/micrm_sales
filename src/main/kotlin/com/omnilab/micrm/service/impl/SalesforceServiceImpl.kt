@@ -2442,7 +2442,8 @@ class SalesforceServiceImpl : SalesforceService {
                }
            }
         }
-        kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
+        //kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
+        kkoBrandDto.content = "#{body}"
         kkoBrandDto.header = listDto.kko_header
         if(!listDto.kko_item_json.isNullOrEmpty()) {
             val itemLst = gson.fromJson<MutableList<WideItemDto>>(listDto.kko_item_json, object : TypeToken<MutableList<WideItemDto>>() {}.type)
@@ -2472,7 +2473,8 @@ class SalesforceServiceImpl : SalesforceService {
         val listBtn = ArrayList<FtButtonDto>()
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm)) {
             val dd = FtButtonDto().apply {
-                name = listDto.kko_btn_nm
+                //name = listDto.kko_btn_nm
+                name = "#{btn1}"
                 linkType = "WL"
                 linkMobile = "https://#{btnUrl1}"
                 linkPc = "https://#{btnUrl1}"
@@ -2481,7 +2483,8 @@ class SalesforceServiceImpl : SalesforceService {
         }
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm2)) {
             val dd = FtButtonDto().apply {
-                name = listDto.kko_btn_nm2
+                //name = listDto.kko_btn_nm2
+                name = "#{btn2}"
                 linkType = "WL"
                 linkMobile = "https://#{btnUrl2}"
                 linkPc = "https://#{btnUrl2}"
@@ -2490,7 +2493,8 @@ class SalesforceServiceImpl : SalesforceService {
         }
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm3)) {
             val dd = FtButtonDto().apply {
-                name = listDto.kko_btn_nm3
+                //name = listDto.kko_btn_nm3
+                name = "#{btn3}"
                 linkType = "WL"
                 linkMobile = "https://#{btnUrl3}"
                 linkPc = "https://#{btnUrl3}"
@@ -2499,7 +2503,8 @@ class SalesforceServiceImpl : SalesforceService {
         }
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm4)) {
             val dd = FtButtonDto().apply {
-                name = listDto.kko_btn_nm4
+                //name = listDto.kko_btn_nm4
+                name = "#{btn4}"
                 linkType = "WL"
                 linkMobile = "https://#{btnUrl4}"
                 linkPc = "https://#{btnUrl4}"
@@ -2508,7 +2513,8 @@ class SalesforceServiceImpl : SalesforceService {
         }
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm5)) {
             val dd = FtButtonDto().apply {
-                name = listDto.kko_btn_nm5
+                //name = listDto.kko_btn_nm5
+                name = "#{btn5}"
                 linkType = "WL"
                 linkMobile = "https://#{btnUrl5}"
                 linkPc = "https://#{btnUrl5}"

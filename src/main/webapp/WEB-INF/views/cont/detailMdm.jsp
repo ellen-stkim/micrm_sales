@@ -354,9 +354,7 @@
                                 <div class="viewer_area">
                                     <div class="top">카카오톡 본문 입력창</div>
                                     <div class="inner">
-                                            <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30"
-                                                      rows="10"
-                                                      onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
+                                        <textarea name="kakao_body" id="" class="kakao_txt textarea" cols="30" rows="10" onkeyup="smsCreate.byteCount(this, 'kakao');">${list[0].cont_body}</textarea>
                                         <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                             <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
                                         </c:if>
