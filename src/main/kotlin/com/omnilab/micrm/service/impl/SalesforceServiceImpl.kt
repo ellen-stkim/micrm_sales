@@ -2452,8 +2452,8 @@ class SalesforceServiceImpl : SalesforceService {
             val subWideItemList = ArrayList<WideItemDto>()
             for((index, item) in itemLst.withIndex()){
                 item.title = "#{title}"
-                item.linkPc = "#{lnkPc}"
-                item.linkMobile = "#{lnkMo}"
+                item.linkPc = "https://#{lnkPc}"
+                item.linkMobile = "https://#{lnkMo}"
                 if(index == 0){
                     kkoBrandDto.mainWideItem = item
                 }else{
