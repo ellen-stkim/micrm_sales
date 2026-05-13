@@ -1979,7 +1979,7 @@ class SalesforceServiceImpl : SalesforceService {
                             return re
                         }
 
-                        if (i == 0 && !any[i]) {
+                        if (i == 0 && any[i]) {
                             // --- 인트로 제약조건 ---
                             if (header[0]!!.length > 20 || header[0]!!.contains("\n")) {
                                 re.status = false; re.errMsg = "Intro 타이틀은 20자 이내(줄바꿈 불가)여야 합니다."; return re
