@@ -2485,10 +2485,10 @@ class SalesforceServiceImpl : SalesforceService {
                     if(it.attachment?.button != null){
                         for(j in it.attachment!!.button!!){
                             if(!j.url_mobile.isNullOrEmpty()){
-                                j.url_mobile = "#{mobile}"
+                                j.url_mobile = "https://#{mobile}"
                             }
                             if(!j.url_pc.isNullOrEmpty()){
-                                j.url_pc = "#{pc}"
+                                j.url_pc = "https://#{pc}"
                             }
                             if(!j.scheme_android.isNullOrEmpty()){
                                 j.scheme_android = "#{scheme_android}"
