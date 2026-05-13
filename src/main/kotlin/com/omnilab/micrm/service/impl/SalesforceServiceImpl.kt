@@ -2483,7 +2483,7 @@ class SalesforceServiceImpl : SalesforceService {
                         it.attachment?.commerce?.title = "#{title}"
                     }
                     if(it.attachment?.button != null){
-                        for(j in it.attachment!!.button){
+                        for(j in it.attachment!!.button!!){
                             if(!j.url_mobile.isNullOrEmpty()){
                                 j.url_mobile = "#{mobile}"
                             }
