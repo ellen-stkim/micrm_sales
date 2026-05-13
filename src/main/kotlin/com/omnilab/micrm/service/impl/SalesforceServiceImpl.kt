@@ -2469,7 +2469,37 @@ class SalesforceServiceImpl : SalesforceService {
         if(!listDto.kko_carousel_json.isNullOrEmpty()){
             if(listDto.msg_tp == "DMCH221"){
                 val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)
-                val itemLst = rawList.map { it.toFtCarouselCommerceDto() }.toMutableList()
+                val itemLst = rawList.map {
+                    if(!it.header.isNullOrEmpty()){
+                        it.header = "#{header}"
+                    }
+                    if(!it.additional_content.isNullOrEmpty()){
+                        it.additional_content = "#{additional_content}"
+                    }
+                    if(!it.attachment?.image?.img_link.isNullOrEmpty()){
+                        it.attachment?.image?.img_link = "#{imgLnk}"
+                    }
+                    if(!it.attachment?.commerce?.title.isNullOrEmpty()){
+                        it.attachment?.commerce?.title = "#{title}"
+                    }
+                    if(it.attachment?.button != null){
+                        for(j in it.attachment!!.button){
+                            if(!j.url_mobile.isNullOrEmpty()){
+                                j.url_mobile = "#{mobile}"
+                            }
+                            if(!j.url_pc.isNullOrEmpty()){
+                                j.url_pc = "#{pc}"
+                            }
+                            if(!j.scheme_android.isNullOrEmpty()){
+                                j.scheme_android = "#{scheme_android}"
+                            }
+                            if(!j.scheme_ios.isNullOrEmpty()){
+                                j.scheme_ios = "#{scheme_ios}"
+                            }
+                        }
+                    }
+                    it.toFtCarouselCommerceDto()
+                }.toMutableList()
                 kkoBrandDto.carousel = itemLst
             }else if(listDto.msg_tp == "DMCH222"){
                 val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)

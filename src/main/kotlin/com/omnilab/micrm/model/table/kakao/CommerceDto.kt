@@ -6,11 +6,11 @@ import org.apache.ibatis.type.Alias
 
 @Alias("CommerceDto")
 data class CommerceDto(
-    val title: String?
-    , val regular_price: Long?
-    , val discount_price: Long?
-    , val discount_rate: Int?
-    , val discount_fixed: Long?
+    var title: String?
+    , var regular_price: Long?
+    , var discount_price: Long?
+    , var discount_rate: Int?
+    , var discount_fixed: Long?
 ) {
 
     constructor(): this(null, null, null, null, null)
