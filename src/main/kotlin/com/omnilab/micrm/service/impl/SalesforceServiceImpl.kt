@@ -2508,6 +2508,15 @@ class SalesforceServiceImpl : SalesforceService {
             }
         }
         
+        if(!CommonUtils.isEmptyObject(listDto.kko_head_json)){
+            if(listDto.msg_tp == "DMCH221"){
+                val headDto = gson.fromJson<HeadDto>(listDto.kko_head_json, object : TypeToken<HeadDto>() {}.type)
+                headDto.header = "#{header}"
+                headDto.content = "#{content}"
+                kkoBrandDto.head = gson.toJson(headDto)
+            }
+        }
+        
         val listBtn = ArrayList<FtButtonDto>()
         if(!CommonUtils.isEmptyObject(listDto.kko_btn_nm)) {
             val dd = FtButtonDto().apply {
