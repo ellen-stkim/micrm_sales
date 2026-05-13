@@ -2503,7 +2503,31 @@ class SalesforceServiceImpl : SalesforceService {
                 kkoBrandDto.carousel = itemLst
             }else if(listDto.msg_tp == "DMCH222"){
                 val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)
-                val itemLst = rawList.map { it.toFtCarouselLstDto() }.toMutableList()
+                val itemLst = rawList.map {
+                    if(!it.header.isNullOrEmpty()){
+                        it.header = "#{header}"
+                    }
+                    if(!it.message.isNullOrEmpty()){
+                        it.message = "#{content}"
+                    }
+                    if(it.attachment?.button != null){
+                        for(j in it.attachment!!.button!!){
+                            if(!j.url_mobile.isNullOrEmpty()){
+                                j.url_mobile = "https://#{mobile}"
+                            }
+                            if(!j.url_pc.isNullOrEmpty()){
+                                j.url_pc = "https://#{pc}"
+                            }
+                            if(!j.scheme_android.isNullOrEmpty()){
+                                j.scheme_android = "#{scheme_android}"
+                            }
+                            if(!j.scheme_ios.isNullOrEmpty()){
+                                j.scheme_ios = "#{scheme_ios}"
+                            }
+                        }
+                    }
+                    it.toFtCarouselLstDto()
+                }.toMutableList()
                 kkoBrandDto.carousel = itemLst
             }
         }
