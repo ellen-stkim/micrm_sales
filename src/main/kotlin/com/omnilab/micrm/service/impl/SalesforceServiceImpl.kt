@@ -2510,10 +2510,10 @@ class SalesforceServiceImpl : SalesforceService {
         
         if(!CommonUtils.isEmptyObject(listDto.kko_head_json)){
             if(listDto.msg_tp == "DMCH221"){
-                val headDto = gson.fromJson<HeadDto>(listDto.kko_head_json, object : TypeToken<HeadDto>() {}.type)
+                val headDto = gson.fromJson<CarouselHeadDto>(listDto.kko_head_json, object : TypeToken<CarouselHeadDto>() {}.type)
                 headDto.header = "#{header}"
                 headDto.content = "#{content}"
-                kkoBrandDto.head = gson.toJson(headDto)
+                kkoBrandDto.carouselHead = headDto
             }
         }
         

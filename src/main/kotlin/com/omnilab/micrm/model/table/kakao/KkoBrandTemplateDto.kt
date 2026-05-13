@@ -25,10 +25,9 @@ data class KkoBrandTemplateDto(
     var commerce: FtCommerceDto?,
     var buttons: MutableList<FtButtonDto>?,
     var coupon: CouponDto?,
-    var head: String?
 ) {
 
-    constructor() : this(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
     
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)
