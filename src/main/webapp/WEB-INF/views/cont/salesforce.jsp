@@ -348,7 +348,7 @@
                                         <div class="row flex_box double">
                                             <div class="th" style="line-height: 72px;">버튼명</div>
                                             <div class="td first-td right-border">
-                                                <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                                                <input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="8" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
                                             </div>
                                             <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
                                             <div class="td flex_box" style="flex-direction: column;">
@@ -1365,7 +1365,7 @@
                 let layout = '<div class="row flex_box double">'
                     + '<div class="th" style="line-height: 72px;">버튼명</div>'
                     + '<div class="td first-td right-border">'
-                    + '<input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,\'kakao\')"/>'
+                    + '<input type="text" class="txt_input width kakao_btn_name" name="kkoBtnLst" maxlength="8" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,\'kakao\')"/>'
                     + '</div>'
                     + '<div class="th" style="line-height: 72px;">버튼 링크 주소</div>'
                     + '<div class="td flex_box" style="flex-direction: column;">'
@@ -2054,6 +2054,14 @@
                     nextEl: '.kko_next',
                     prevEl: '.kko_prev',
                 },
+            });
+            kkoBrandFaSwiper = new Swiper('.kkoBrandFaSwiper', {
+                initialSlide: 1,
+                direction: 'horizontal',
+                centeredSlides: true,
+                slidesPerView: 1.2,
+                pagination: { el: '.kko_paging', type: 'fraction' },
+                navigation: { nextEl: '.kko_next', prevEl: '.kko_prev' },
             });
             couponSeq = $("#savedCouponSeq").val();
             couponSelectSeq = $("#savedCouponSeq").val();

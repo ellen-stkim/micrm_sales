@@ -79,10 +79,10 @@
        <div class="td first-td right-border">
            <c:choose>
                <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                   <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                   <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="8" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
                </c:when>
                <c:otherwise>
-                   <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="14" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                   <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="8" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
                </c:otherwise>
            </c:choose>
        </div>
