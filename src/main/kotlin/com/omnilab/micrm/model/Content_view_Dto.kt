@@ -17,6 +17,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var send_tp_nm: String? = null  // 발신유형명
     var send_to: String? = null // 발신번호/주소 (이메일 : 이메일, 모바일 :핸드폰번호)
     var send_nm: String? = null //발신자 명
+    var sender_addl_use_yn: String? = null //추가 기능 사용 여부
     var thm_url: String? = null    //썸네일 주소
     var br_yn: String? = null  // 브라우저 보기 여부
     var sup_yn: String? = null //수신거부 삽입 여부
