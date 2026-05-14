@@ -333,6 +333,7 @@
                                                                value="${filePath}${list[0].kko_img_lst}"
                                                         </c:if>
                                                         >
+                                                        <input type="hidden" id="kakao_img_tp" value="${list[0].kko_img_tp}">
                                                     </div>
                                                 </div>
                                                 <div class="row">

@@ -283,6 +283,7 @@
                                                 <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                                                 <input type="hidden" id="kakao_img_cd" name="kko_img_cd" value="">
                                                 <input type="hidden" id="kko_view_img_url" name="kko_view_img_url" maxlength="" value="">
+                                                <input type="hidden" id="kakao_img_tp" value="">
                                                 <!-- 프리뷰를 위한 이미지 URL -->
                                             </div>
                                         </div>
@@ -1426,6 +1427,7 @@
                         $("#kakaoImage").val('');
                         $("input[name='kko_img_cd']").val('');
                         $("input[name='kko_view_img_url']").val('');
+                        $("input[name='kakao_img_tp']").val('');
                         $("#js-kakao-img").empty();
                     }
 

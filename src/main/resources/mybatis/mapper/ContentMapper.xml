@@ -1179,6 +1179,7 @@
 			, l.kko_img_url                                                                                        AS kko_img_url
 			, kko_img.img_nm                                                                                       AS kko_img_nm
 			, kko_img.img_url                                                                                      AS kko_img_lst
+            , kko_img.ch_tp                                                                                        AS kko_img_tp
 			, l.kko_btn_nm                                                                                         AS kko_btn_nm
 			, l.kko_btn_url                                                                                        AS kko_btn_url
 			, l.kko_btn_urlPc                                                                                      AS kko_btn_urlPc

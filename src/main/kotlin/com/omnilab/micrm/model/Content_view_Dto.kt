@@ -321,6 +321,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var kkoDiscountPrice6: Long? = null
     var kko_tmpl_cd: String? = null
     var kko_tar_tp: String? = null
+    var kko_img_tp: String? = null
 }
 
 
