@@ -457,8 +457,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             kkoMsgdto.template_code = kakaoCont.kko_tmpl_cd
             kkoMsgdto.targeting = kakaoCont.kko_tar_tp
             sendLst.add(kkoMsgdto)
-            logger.error("kakaoCont {}", kakaoCont)
-            logger.error("kkoMsgdto {}", kkoMsgdto)
+            //logger.debug("kakaoCont {}", kakaoCont)
+            //logger.debug("kkoMsgdto {}", kkoMsgdto)
             sqlSession.insert("ins_camp_send_kko_enter", sendLst)
             cnt++
         } catch (e: Exception) {

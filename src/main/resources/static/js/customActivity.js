@@ -103,20 +103,16 @@ define(["postmonger"], function (Postmonger) {
 					$('#usr_grp_cd').val(response.usr_grp_cd);
 					$('#cont_grp_cd').val(response.usr_grp_cd);
 
-					if(response.kko.list){
+					if(response.kko.list.length > 0){
 						$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
 						$('#send_key').val(response.kko.list[0].list_val)
 						$("#kakao_send_to_num").val(response.kko.list[0].seq);
 					}
-					if(response.mdm.list){
+					if(response.mdm.list.length > 0){
 						$("#sms_send_to").val(response.mdm.list[0].list_nm + "(" + numberToPhone(response.mdm.list[0].list_val) + ")");
 						$("#sms_send_to_num").val(response.mdm.list[0].seq);
 					}
-					if(response.rcs.list){
-						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
-						$("#text_send_num").val(response.rcs.list[0].seq);
-					}
-					if(response.rcs.list){
+					if(response.rcs.list.length > 0){
 						$("#send_text_rcs").val(response.rcs.list[0].list_nm + "(" + numberToPhone(response.rcs.list[0].list_val) + ")");
 						$("#text_send_num").val(response.rcs.list[0].seq);
 					}

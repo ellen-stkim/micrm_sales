@@ -28,8 +28,8 @@ class Tblmi_comm_cdDto {
     var cdDescIsNull: Boolean? = null
 
     constructor()
-    constructor(grp_id: String){
-        this.grp_id = grp_id
+    constructor(grpId: String){
+        this.grp_id = grpId
     }
     constructor(grpId: String, cdId: String){
         this.grp_id = grpId
