@@ -2438,7 +2438,7 @@
                 if($("#kakao_img_tp").val() == "IMGTP11"){
                     if (kakaoLen > 76) {
                         $kakaoTxt.focus();
-                        popup.popAlert("카카오톡 본문 내용이 76자를 초과할 수 없습니다.");
+                        popup.popAlert("와이드 이미지의 경우 카카오톡 본문 내용이 76자를 초과할 수 없습니다.");
                         return false;
                     } else {
                         return true;
