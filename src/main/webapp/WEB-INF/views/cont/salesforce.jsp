@@ -2433,19 +2433,29 @@
                     return true;
                 }
             } else {
-                if (kakaoLen > 400) {
-                    $kakaoTxt.focus();
-                    popup.popAlert("카카오톡 본문 내용이 400자를 초과할 수 없습니다.");
-                    return false;
-                } else {
-                    return true;
+                if($("#kakao_img_tp").val() == "IMGTP11"){
+                    if (kakaoLen > 76) {
+                        $kakaoTxt.focus();
+                        popup.popAlert("카카오톡 본문 내용이 76자를 초과할 수 없습니다.");
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }else{
+                    if (kakaoLen > 400) {
+                        $kakaoTxt.focus();
+                        popup.popAlert("카카오톡 본문 내용이 400자를 초과할 수 없습니다.");
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
             let btnValid = true;
             $("input[name='kkoBtnLst']").each(function(idx) {
                 const btnNm = ($(this).val() || "").trim();
-                if (btnNm.length > 14) {
-                    popup.popAlert((idx + 1) + "번째 버튼명이 14자를 초과했습니다. (띄어쓰기 포함 14자 제한)");
+                if (btnNm.length > 8) {
+                    popup.popAlert((idx + 1) + "번째 버튼명이 8자를 초과했습니다. (띄어쓰기 포함 8자 제한)");
                     $(this).focus();
                     btnValid = false;
                     return false;
@@ -3224,13 +3234,14 @@
     function imgSendSave(seq) {
         let imgType = $("#imgType").val();  // 이미지 파일 타입
         let imgLength = $('input[name="contentsImg"]:checked').length;
-        let imgCheck = $('input[name="contentsImg"]:checked').val() // 이미지 파일 seq
-        let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();    // 이미지 파일 본명
-        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val(); // 이미지 파일 url
-        let kkoImgurl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val(); // 이미지 파일 url
+        let imgCheck = $('input[name="contentsImg"]:checked').val()
+        let ImgNm = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgNm"]').val();
+        let imgUrl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="imgurl"]').val();
+        let kkoImgurl = $('input[name="contentsImg"]:checked').parent('label').find('input[name="kkoImgurl"]').val();
+        let imgTp = $('input[name="contentsImg"]:checked').parent('label').find('input[name="ImgTp"]').val();
 
         if (imgLength > 0) {
-            imageCreate(imgType, imgUrl, ImgNm, imgCheck, kkoImgurl);
+            imageCreate(imgType, imgUrl, ImgNm, imgCheck, kkoImgurl, imgTp);
             $('#imagePop').siblings('.pop_error_txt').html('');
             $('.imagePopup').removeClass('active');
         } else {
@@ -3238,25 +3249,22 @@
         }
     }
 
-    function imageCreate(type, imageUrl, ImgNm, imgCheck, kkoImgurl) {
+    function imageCreate(type, imageUrl, ImgNm, imgCheck, kkoImgurl, imgTp) {
         let imageType = imageUrl;
         let kakaoImgLink = $('.kakaoImgLink').val();
 
         if (imageType != '') {
             if (type == 'kakaoImage') {
+                $("input[name='kko_view_img_url']").val(imageUrl);
+                $("#kakaoImage").val(ImgNm);
+                $('input[name="kko_img_cd"]').val(imgCheck);
+                $('#kakaoImage').parent('.td').removeClass('outline');
+                $('#kakao_img_tp').val(imgTp)
                 if (kakaoImgLink == '') {
-                    $("input[name='kko_view_img_url']").val(imageUrl);
-                    $("#kakaoImage").val(ImgNm);
-                    $('input[name="kko_img_cd"]').val(imgCheck);
-                    $('#kakaoImage').parent('.td').removeClass('outline');
                     // $('#kakao').find('.sms_img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'" />' + '</a>');
                     $('#js-kakao-img').html('<a href="' + imageType + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
                     $('#prev_ft_img').html('<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />');
                 } else {
-                    $("input[name='kko_view_img_url']").val(imageUrl);
-                    $("#kakaoImage").val(ImgNm);
-                    $('input[name="kko_img_cd"]').val(imgCheck);
-                    $('#kakaoImage').parent('.td').removeClass('outline');
                     //$('#kakao').find('.sms_img').html('<a href="' + kakaoImgLink + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none_wide.png\'" />' + '</a>');
                     $('#js-kakao-img').html('<a href="' + kakaoImgLink + '" target="_blank">' + '<img src="' + imageType + '" onerror="this.src=\'/image/bg_none.png\'" />' + '</a>');
                 }

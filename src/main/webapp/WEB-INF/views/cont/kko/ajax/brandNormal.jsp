@@ -20,6 +20,7 @@
                <span class="btn_sm_line" data="kakaoImage" onclick="imageListPopUp('1','kakaoImage')">선택</span>
                <input type="hidden" id="kakao_img_cd" name="kko_img_cd" value="">
                <input type="hidden" id="kko_view_img_url" name="kko_view_img_url" maxlength="" value="">
+               <input type="hidden" id="kakao_img_tp" value="">
            </div>
        </div>
        <div class="row">
