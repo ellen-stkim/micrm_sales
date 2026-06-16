@@ -37,13 +37,13 @@ class ReportServiceImpl : ReportService {
         val re_map = HashMap<String, Any?>()
         val tableau_url = sysSettingDao.getCommCD(Tblmi_comm_cdDto("TABLEAU_URL", usr_grp_cd))?.cd_val
 
-        return if (tableau_url.isNullOrEmpty()) {
+        return if (tableau_url.isNullOrBlank()) {
             re_map
         } else {
             val map = LinkedMultiValueMap<String, String>()
             map["username"] = sysSettingDao.getCommCD(Tblmi_comm_cdDto("TABLEAU_ID", usr_grp_cd))?.cd_val
             val response = commonService.getRest("${tableau_url}/trusted", "POST", map)
-            if (response.body.isNullOrEmpty()) {
+            if (response.body.isNullOrBlank()) {
                 re_map
             } else {
                 re_map["tableauUrl"] = sysSettingDao.getCommCD(Tblmi_comm_cdDto("TABLEAU_REP_PAGE",

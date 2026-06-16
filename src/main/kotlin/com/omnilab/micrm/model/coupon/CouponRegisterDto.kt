@@ -17,9 +17,9 @@ class CouponRegisterDto : Tblmicou_couponDto() {
     var category: String? = null
     var expire_time: String? = ""
         set(value) {
-            if (value.isNullOrEmpty() || !value.contains(":")) {
+            if (value.isNullOrBlank() || !value.contains(":")) {
                 field = ""
-            } else if (expire_date.isNullOrEmpty()) {
+            } else if (expire_date.isNullOrBlank()) {
                 field = value
             } else {
                 field = value
@@ -28,9 +28,9 @@ class CouponRegisterDto : Tblmicou_couponDto() {
         }
     var expire_date: String? = ""
         set(value) {
-            if (value.isNullOrEmpty() ) {
+            if (value.isNullOrBlank() ) {
                 field = ""
-            } else if (expire_time.isNullOrEmpty()) {
+            } else if (expire_time.isNullOrBlank()) {
                 field = value
             } else {
                 field = value
@@ -40,7 +40,7 @@ class CouponRegisterDto : Tblmicou_couponDto() {
 
     override var daily_start_time: String? = ""
         set(value) {
-            if (value.isNullOrEmpty() || !value.contains(":")) {
+            if (value.isNullOrBlank() || !value.contains(":")) {
                 field = ""
             } else {
                 field = value
@@ -48,7 +48,7 @@ class CouponRegisterDto : Tblmicou_couponDto() {
         }
     override var daily_end_time: String? = ""
         set(value) {
-            if (value.isNullOrEmpty() || !value.contains(":")) {
+            if (value.isNullOrBlank() || !value.contains(":")) {
                 field = ""
             } else {
                 field = value

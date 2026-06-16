@@ -46,7 +46,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         //고객사 ID
         val kakaoClientId = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_ID", dto.usr_grp_cd!!)).cd_val
 
-        if(kakaoClientId.isNullOrEmpty()){
+        if(kakaoClientId.isNullOrBlank()){
             logger.error("kakaoClientId id null {}", dto.usr_grp_cd)
             return cnt
         }
@@ -389,7 +389,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                     callbackDto.rcs_msg_id = rcsCont.key_id
                     callbackDto.rcs_msg_header = if (rcsCont.send_tp == "SENDTP01") "1" else "0" // 안내 0, 광고 1
                     callbackDto.rcs_btn_ins_tp = rcsCont.rcs_btn_ins_tp
-                    callbackDto.rcs_btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrEmpty()) "0" else rcsCont.rcs_btn_cnt
+                    callbackDto.rcs_btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrBlank()) "0" else rcsCont.rcs_btn_cnt
                     callbackDto.rcs_btn_obj = rcsBtnObj
                     callbackDto.rcs_btn_1 = rcsCont.rcs_btn_1
                     callbackDto.rcs_btn_tp_1 = rcsCont.rcs_btn_tp_1

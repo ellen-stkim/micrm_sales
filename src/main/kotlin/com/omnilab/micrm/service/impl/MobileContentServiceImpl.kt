@@ -812,7 +812,7 @@ class MobileContentServiceImpl : ContentService {
                 jsonButtonParsing(dto1)
             }
             // 이전에 선택한 쿠폰 시퀀스와 이름 조회
-            if (dto1.cont_tp.equals("DMTP02") && !dto1.coupon_seq.isNullOrEmpty()) {
+            if (dto1.cont_tp.equals("DMTP02") && !dto1.coupon_seq.isNullOrBlank()) {
                 val selectCoupon = couponDao.selectCoupon(dto1.coupon_seq!!.toInt())
                 dto1.coupon_nm = selectCoupon.nm
                 dto1.coupon_seq = AES256.AES_Encode(dto1.coupon_seq, GlobalValues.encKey)
@@ -1478,7 +1478,7 @@ class MobileContentServiceImpl : ContentService {
             val type = object : TypeToken<HashMap<String, Any>>() {}.type
 
             // --- [1] 인트로(Head) 처리 ---
-            if (!dto1.kko_head_json.isNullOrEmpty()) {
+            if (!dto1.kko_head_json.isNullOrBlank()) {
                 val head = g.fromJson(dto1.kko_head_json, HeadDto::class.java)
                 val imgInfo = contentDao.selTblmiContImg(Tblmi_cont_imgDto(head.image_url!!))
                 dto1.apply {

@@ -24,7 +24,7 @@ class SysInfoServiceImpl : SysInfoService {
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             for(i in lst){
                 i.use_yn = "Y"
-                if(i.seq == null && !i.cd_val.isNullOrEmpty()){
+                if(i.seq == null && !i.cd_val.isNullOrBlank()){
                     sysSettingDao.ins_tblmi_comm_cd(i)
                     i.reg_dt = sdf.format(Date())
                 }else{

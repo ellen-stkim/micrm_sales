@@ -198,7 +198,7 @@ class SalesforceServiceImpl : SalesforceService {
                 if(check !is AnonymousAuthenticationToken){
                     val loginDto: Tblmi_usrDto = check.details as Tblmi_usrDto
                     if(session.getAttribute("MID") != null && session.getAttribute("MID").toString() == loginDto.usr_grp_cd!!){
-                        if(loginDto.usr_sales_id.isNullOrEmpty()){
+                        if(loginDto.usr_sales_id.isNullOrBlank()){
                             loginDto.usr_sales_id = userId.toString()
                             salesforceDao.upd_usrInfo(loginDto)
                         }
@@ -623,7 +623,7 @@ class SalesforceServiceImpl : SalesforceService {
             postData["grant_type"] = "client_credentials"
             postData["client_id"] = cid.cd_val.toString()
             postData["client_secret"] = sec.cd_val.toString()
-            if (!mstDto.bu_id.isNullOrEmpty()) {
+            if (!mstDto.bu_id.isNullOrBlank()) {
                 postData["account_id"] = mstDto.bu_id.toString()
             }
             
@@ -710,7 +710,7 @@ class SalesforceServiceImpl : SalesforceService {
                                     salesforceDao.ins_tblmicp_cont_url_lst(map)
                                     
                                     // 쿠폰 발급 이력 생성
-                                    if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrEmpty()) {
+                                    if (i.cont_tp == "DMTP02" && !i.coupon_seq.isNullOrBlank()) {
                                         val couponIssueDto = CouponIssueDto()
                                         couponIssueDto.coupon_seq = Integer.parseInt(i.coupon_seq)
                                         couponIssueDto.send_phone = tblmicpContLstdto.send_to
@@ -2288,7 +2288,7 @@ class SalesforceServiceImpl : SalesforceService {
             }
             else -> "DMCH201"
         }
-        if (!dto.coupon_seq.isNullOrEmpty()) {
+        if (!dto.coupon_seq.isNullOrBlank()) {
             listDto.coupon_seq = AES256.AES_Decode(dto.coupon_seq, GlobalValues.encKey)
         }
         listDto.short_url_yn = dto.short_url_yn
@@ -2342,7 +2342,7 @@ class SalesforceServiceImpl : SalesforceService {
         when (i) {
             0 -> {
                 logger.error("dto {}", dto)
-                if (!dto.kko_img_url.isNullOrEmpty()) insertContentUrl("img", dto.kko_img_url!!, "kkoImg001", listSeq)
+                if (!dto.kko_img_url.isNullOrBlank()) insertContentUrl("img", dto.kko_img_url!!, "kkoImg001", listSeq)
                 val btnPairs = listOf(
                     dto.kko_btn_url to dto.kko_btn_urlPc,
                     dto.kko_btn_url2 to dto.kko_btn_urlPc2,
@@ -2351,7 +2351,7 @@ class SalesforceServiceImpl : SalesforceService {
                     dto.kko_btn_url5 to dto.kko_btn_urlPc5
                 )
                 btnPairs.forEachIndexed { idx, pair ->
-                    if (!pair.first.isNullOrEmpty()) {
+                    if (!pair.first.isNullOrBlank()) {
                         insertContentUrl("btn", pair.first!!, "kkoBtn00${idx + 1}", listSeq)
                         insertContentUrl("btn", pair.second!!, "kkoBtnPc00${idx + 1}", listSeq)
                     }
@@ -2365,7 +2365,7 @@ class SalesforceServiceImpl : SalesforceService {
                     dto.kkoItemUrlLstMo4 to dto.kkoItemUrlLstPc4,
                 )
                 itemPairs.forEachIndexed { idx, pair ->
-                    if (!pair.first.isNullOrEmpty()) {
+                    if (!pair.first.isNullOrBlank()) {
                         val seq = "%03d".format(idx + 1)
                         insertContentUrl("btn", pair.first!!, "kkoItemMo$seq", listSeq)
                         insertContentUrl("btn", pair.second!!, "kkoItemPc$seq", listSeq)
@@ -2388,7 +2388,7 @@ class SalesforceServiceImpl : SalesforceService {
                     dto.kkoBtnUrlLstMo6_2 to dto.kkoBtnUrlLstPc6_2,
                 )
                 carouselPairs.forEachIndexed { idx, pair ->
-                    if (!pair.first.isNullOrEmpty()) {
+                    if (!pair.first.isNullOrBlank()) {
                         val seq = "%03d".format(idx + 1)
                         insertContentUrl("btn", pair.first!!, "kkoBtnMo$seq", listSeq)
                         insertContentUrl("btn", pair.second!!, "kkoBtnPc$seq", listSeq)
@@ -2396,7 +2396,7 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 
                 
-                if(!dto.kko_carousel_json.isNullOrEmpty()){
+                if(!dto.kko_carousel_json.isNullOrBlank()){
                     val items: List<Map<String, Any>> = mapper.readValue(dto.kko_carousel_json.toString())
                     
                     val resultMap = mutableMapOf<String, String>()
@@ -2424,13 +2424,13 @@ class SalesforceServiceImpl : SalesforceService {
             }
 
             1 -> {
-                if (!dto.mms_imgurl.isNullOrEmpty()) insertContentUrl("a", dto.mms_imgurl!!, "mmsImg001", listSeq)
+                if (!dto.mms_imgurl.isNullOrBlank()) insertContentUrl("a", dto.mms_imgurl!!, "mmsImg001", listSeq)
                 parseAndInsertBodyUrls(dto.sms_body, "smsTrk", listSeq)
             }
 
             2 -> {
                 dto.url_value?.forEachIndexed { j, url ->
-                    if (!url.isNullOrEmpty()) insertContentUrl("btn", url, "urlBtn${j + 1}", listSeq)
+                    if (!url.isNullOrBlank()) insertContentUrl("btn", url, "urlBtn${j + 1}", listSeq)
                     dto.fallback_url_04?.getOrNull(j)?.let { if (it.isNotEmpty()) insertContentUrl("btn", it, "fallPosiBtn${j + 1}", listSeq) }
                     dto.fallback_url_05?.getOrNull(j)?.let { if (it.isNotEmpty()) insertContentUrl("btn", it, "fallQueryBtn${j + 1}", listSeq) }
                 }
@@ -2477,7 +2477,7 @@ class SalesforceServiceImpl : SalesforceService {
            "DMCH223" -> {
                kkoBrandDto.upgradeTp = "U_FP"
                val ftVideo = FtVideoDto()
-               if(!listDto.kko_thumbnail_img_cd.isNullOrEmpty()) {
+               if(!listDto.kko_thumbnail_img_cd.isNullOrBlank()) {
                    val imgDto = Tblmi_cont_imgDto(listDto.kko_thumbnail_img_cd!!.toInt())
                    val imgInfo = contentDao.selTblmiContImg(imgDto)
                    if (imgInfo == null) {
@@ -2515,15 +2515,15 @@ class SalesforceServiceImpl : SalesforceService {
                }
            }
         }
-        if(!listDto.cont_body.isNullOrEmpty()){
+        if(!listDto.cont_body.isNullOrBlank()){
             //kkoBrandDto.content = listDto.cont_body?.replace(Regex("\\{\\{\\s*(.*?)\\s*\\}\\}"), "#{$1}")
             kkoBrandDto.content = "#{body}"
         }
-        if(!listDto.kko_header.isNullOrEmpty()){
+        if(!listDto.kko_header.isNullOrBlank()){
             //kkoBrandDto.header = listDto.kko_header
             kkoBrandDto.header = "#{header}"
         }
-        if(!listDto.kko_item_json.isNullOrEmpty()) {
+        if(!listDto.kko_item_json.isNullOrBlank()) {
             val itemLst = gson.fromJson<MutableList<WideItemDto>>(listDto.kko_item_json, object : TypeToken<MutableList<WideItemDto>>() {}.type)
             val subWideItemList = ArrayList<WideItemDto>()
             for((index, item) in itemLst.withIndex()){
@@ -2539,34 +2539,34 @@ class SalesforceServiceImpl : SalesforceService {
             kkoBrandDto.subWideItemList = subWideItemList
         }
         
-        if(!listDto.kko_carousel_json.isNullOrEmpty()){
+        if(!listDto.kko_carousel_json.isNullOrBlank()){
             if(listDto.msg_tp == "DMCH221"){
                 val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)
                 val itemLst = rawList.map {
-                    if(!it.header.isNullOrEmpty()){
+                    if(!it.header.isNullOrBlank()){
                         it.header = "#{header}"
                     }
-                    if(!it.additional_content.isNullOrEmpty()){
+                    if(!it.additional_content.isNullOrBlank()){
                         it.additional_content = "#{additional_content}"
                     }
-                    if(!it.attachment?.image?.img_link.isNullOrEmpty()){
+                    if(!it.attachment?.image?.img_link.isNullOrBlank()){
                         it.attachment?.image?.img_link = "#{imgLnk}"
                     }
-                    if(!it.attachment?.commerce?.title.isNullOrEmpty()){
+                    if(!it.attachment?.commerce?.title.isNullOrBlank()){
                         it.attachment?.commerce?.title = "#{title}"
                     }
                     if(it.attachment?.button != null){
                         for(j in it.attachment!!.button!!){
-                            if(!j.url_mobile.isNullOrEmpty()){
+                            if(!j.url_mobile.isNullOrBlank()){
                                 j.url_mobile = "https://#{mobile}"
                             }
-                            if(!j.url_pc.isNullOrEmpty()){
+                            if(!j.url_pc.isNullOrBlank()){
                                 j.url_pc = "https://#{pc}"
                             }
-                            if(!j.scheme_android.isNullOrEmpty()){
+                            if(!j.scheme_android.isNullOrBlank()){
                                 j.scheme_android = "#{scheme_android}"
                             }
-                            if(!j.scheme_ios.isNullOrEmpty()){
+                            if(!j.scheme_ios.isNullOrBlank()){
                                 j.scheme_ios = "#{scheme_ios}"
                             }
                         }
@@ -2577,24 +2577,24 @@ class SalesforceServiceImpl : SalesforceService {
             }else if(listDto.msg_tp == "DMCH222"){
                 val rawList:MutableList<CarouselDto> = gson.fromJson(listDto.kko_carousel_json, object : TypeToken<MutableList<CarouselDto>>() {}.type)
                 val itemLst = rawList.map {
-                    if(!it.header.isNullOrEmpty()){
+                    if(!it.header.isNullOrBlank()){
                         it.header = "#{header}"
                     }
-                    if(!it.message.isNullOrEmpty()){
+                    if(!it.message.isNullOrBlank()){
                         it.message = "#{content}"
                     }
                     if(it.attachment?.button != null){
                         for(j in it.attachment!!.button!!){
-                            if(!j.url_mobile.isNullOrEmpty()){
+                            if(!j.url_mobile.isNullOrBlank()){
                                 j.url_mobile = "https://#{mobile}"
                             }
-                            if(!j.url_pc.isNullOrEmpty()){
+                            if(!j.url_pc.isNullOrBlank()){
                                 j.url_pc = "https://#{pc}"
                             }
-                            if(!j.scheme_android.isNullOrEmpty()){
+                            if(!j.scheme_android.isNullOrBlank()){
                                 j.scheme_android = "#{scheme_android}"
                             }
-                            if(!j.scheme_ios.isNullOrEmpty()){
+                            if(!j.scheme_ios.isNullOrBlank()){
                                 j.scheme_ios = "#{scheme_ios}"
                             }
                         }

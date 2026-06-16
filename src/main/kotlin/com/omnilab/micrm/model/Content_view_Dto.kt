@@ -106,7 +106,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
 
     // btn_데이터 뿌려주기
     var cont_btn_json: List<MutableMap<String, Any>>? = null
-        get() = if (!rcs_btn_obj.isNullOrEmpty() && field == null) {
+        get() = if (!rcs_btn_obj.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(rcs_btn_obj, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()
@@ -150,7 +150,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var item_json: String? = null
 
     var btn_json: ArrayList<MutableMap<String, Any>>? = null
-        get() = if (!button_json.isNullOrEmpty() && field == null) {
+        get() = if (!button_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(button_json, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()
@@ -174,7 +174,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
         }
 
     var highlight_json: Object? = null
-        get() = if (!item_highlight_json.isNullOrEmpty() && field == null) {
+        get() = if (!item_highlight_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(item_highlight_json, Object::class.java)
             obj
@@ -183,7 +183,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
         }
 
     var item_list_json: Object? = null
-        get() = if (!item_json.isNullOrEmpty() && field == null) {
+        get() = if (!item_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(item_json, Object::class.java)
             obj
@@ -195,7 +195,7 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
 
     var at_btn_obj :String? = null
     var at_btn_json: ArrayList<MutableMap<String, Any>>? = null
-        get() = if (!at_btn_obj.isNullOrEmpty() && field == null) {
+        get() = if (!at_btn_obj.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(at_btn_obj, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()

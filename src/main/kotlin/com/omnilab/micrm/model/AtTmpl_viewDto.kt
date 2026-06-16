@@ -26,7 +26,7 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
     var kep_status_nm: String? = null
 
     var btn_json: ArrayList<MutableMap<String, Any>>? = null
-        get() = if (!button_json.isNullOrEmpty() && field == null) {
+        get() = if (!button_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create()
             val obj = g.fromJson(button_json, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()
@@ -50,7 +50,7 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
         }
 
     var highlight_json: Any? = null
-        get() = if (!item_highlight_json.isNullOrEmpty() && field == null) {
+        get() = if (!item_highlight_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(item_highlight_json, Object::class.java)
             obj
@@ -59,7 +59,7 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
         }
 
     var item_list_json: Any? = null
-        get() = if (!item_json.isNullOrEmpty() && field == null) {
+        get() = if (!item_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(item_json, Object::class.java)
             obj
@@ -68,7 +68,7 @@ class AtTmpl_viewDto : Tblmi_kko_at_tmplDto() {
         }
 
     var comment_json: ArrayList<MutableMap<String, Any>>? = null
-        get() = if (!cmt_json.isNullOrEmpty() && field == null) {
+        get() = if (!cmt_json.isNullOrBlank() && field == null) {
             val g = GsonBuilder().create();
             val obj = g.fromJson(cmt_json, Object::class.java)
             val lst = ArrayList<MutableMap<String, Any>>()

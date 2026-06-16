@@ -35,7 +35,7 @@ class CampaignRcsDaoImpl : CampaignSendDao {
         val kakaoDb = kakaoDbDto.cd_val
         val kakaoKey = sqlSession.selectOne<Tblmi_comm_cdDto>("getCommCD", Tblmi_comm_cdDto("KAKAO_KEY", dto.usr_grp_cd!!)).cd_val
 
-        if(kakaoKey.isNullOrEmpty()){
+        if(kakaoKey.isNullOrBlank()){
             return cnt
         }
 
@@ -310,13 +310,13 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                 sendDto.msg = targetBody
                 sendDto.sendable = "Y"
             }
-            sendDto.msg_footer =  if (rcsCont.rcs_footer.isNullOrEmpty()) null else rcsCont.rcs_footer
+            sendDto.msg_footer =  if (rcsCont.rcs_footer.isNullOrBlank()) null else rcsCont.rcs_footer
             sendDto.msg_copyallowed = "Y"
             sendDto.brand_id = rcsBrnID
             sendDto.msgbase_id = rcsCont.key_id
             sendDto.fallback_yn = "N"
 
-            sendDto.btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrEmpty()) "0" else rcsCont.rcs_btn_cnt
+            sendDto.btn_cnt = if(rcsCont.rcs_btn_cnt.isNullOrBlank()) "0" else rcsCont.rcs_btn_cnt
             sendDto.btn_insert_type = rcsCont.rcs_btn_ins_tp
             sendDto.btn_text_1 = rcsCont.rcs_btn_1
             sendDto.btn_type_1 = rcsCont.rcs_btn_tp_1

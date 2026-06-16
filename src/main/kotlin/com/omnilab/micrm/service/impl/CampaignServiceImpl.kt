@@ -74,7 +74,7 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
     override fun getCampList(cDto: Tblmicp_campaignDto) : Map<String, Any> {
         val map : MutableMap<String, Any> = HashMap()
         cDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd!!
-        if(cDto.start_dt.isNullOrEmpty()){
+        if(cDto.start_dt.isNullOrBlank()){
             val year = Calendar.getInstance()[Calendar.YEAR]
             val mm = Calendar.getInstance()[Calendar.MONTH] +1
             cDto.start_dt = year.toString()+"-"+ if (mm < 10){ "0$mm"} else {mm.toString()} +"-"+ "01"

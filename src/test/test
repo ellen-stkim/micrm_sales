@@ -209,7 +209,7 @@
                         tblmiContLstdto.img_cd_1 = null
                     }
 
-                    if (!dto.coupon_seq.isNullOrEmpty()) {
+                    if (!dto.coupon_seq.isNullOrBlank()) {
                         tblmiContLstdto.coupon_seq = AES256.AES_Decode(dto.coupon_seq, GlobalValues.encKey)
                     }
 

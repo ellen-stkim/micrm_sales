@@ -131,7 +131,7 @@ class SysUserServiceImpl: SysUserService {
             /** [정보 수정 로직] **/
             dto.upd_id = userInfo.usr_id
             // 비밀번호 변경 시도 시 검증
-            if (!dto.usr_pw.isNullOrEmpty()) {
+            if (!dto.usr_pw.isNullOrBlank()) {
                 if (!passwordPattern.matcher(dto.usr_pw.toString()).matches()) {
                     return mutableMapOf("check" to false, "message" to "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
                 }
