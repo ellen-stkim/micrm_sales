@@ -365,7 +365,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                            }
                        }
                    }
-                   kkoMsgdto.carousel_json = msg
+                   kkoMsgdto.carousel_json = mapper.writeValueAsString(items)
                    kkoMsgdto.head_json = head
                }
                "DMCH222" -> {
@@ -375,6 +375,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                        val reg = Regex("\\{\\{(?i)${key}}}")
                        msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
                    }
+                   
                    val items: MutableList<MutableMap<String, Any>> = mapper.readValue(msg, object : TypeReference<MutableList<MutableMap<String, Any>>>() {})
                    var btnIndex = 1
                    items.forEach { item ->
@@ -384,24 +385,14 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                        buttons.forEach { button ->
                            val seq = "%03d".format(btnIndex++)
                            kakaoContUrlMap["kkoBtnMo$seq"]?.let {
-                               button["url_mobile"] = "$trackURL/s/k/${
-                                   AES256.AES_Encode(
-                                       hstSeq + "/" + it.seq.toString(),
-                                       GlobalValues.encKey
-                                   )
-                               }"
+                               button["url_mobile"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
                            }
                            kakaoContUrlMap["kkoBtnPc$seq"]?.let {
-                               button["url_pc"] = "$trackURL/s/k/${
-                                   AES256.AES_Encode(
-                                       hstSeq + "/" + it.seq.toString(),
-                                       GlobalValues.encKey
-                                   )
-                               }"
+                               button["url_pc"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
                            }
                        }
                    }
-                   kkoMsgdto.carousel_json = msg
+                   kkoMsgdto.carousel_json = mapper.writeValueAsString(items)
                }
                "DMCH223" -> {
                    kkoMsgdto.type = "U_FP"

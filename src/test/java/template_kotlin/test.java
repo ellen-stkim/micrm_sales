@@ -1,6 +1,8 @@
 package template_kotlin;
 
+import com.omnilab.micrm.common.AES256;
 import com.omnilab.micrm.common.CommonUtils;
+import com.omnilab.micrm.common.GlobalValues;
 import org.apache.commons.math3.analysis.function.Exp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +18,10 @@ public class test {
 
     public static void main(String[] args) throws Exception {
         Logger logger = LoggerFactory.getLogger("test");
+        /*
         KeyStore ks = KeyStore.getInstance("Windows-MY");
         ks.load(null, null);
-
+        */
         //PrivateKey privKey = (PrivateKey) ks.getKey(alias, null);
         //Certificate cert = ks.getCertificate(alias);
 
@@ -33,13 +36,18 @@ public class test {
            System.out.println("\tSignature verified!");
         }
         */
-
+        /*
         Boolean b = null;
         logger.error("{}", CommonUtils.isEmptyObject(b));
         b = false;
         logger.error("{}", CommonUtils.isEmptyObject(b));
         b = true;
         logger.error("{}", CommonUtils.isEmptyObject(b));
+        */
+        
+        String s = "xLQHq4OxpbWTHG4jw7BkDg";
+        logger.error("{}", AES256.AES_Decode(s, GlobalValues.encKey));
+        
     }
 
     public void conTest(){
