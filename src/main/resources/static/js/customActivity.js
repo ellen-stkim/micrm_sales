@@ -107,6 +107,10 @@ define(["postmonger"], function (Postmonger) {
 						$("#send_to").val(response.kko.list[0].list_nm + "(" + numberToPhone(response.kko.list[0].list_val) + ")");
 						$('#send_key').val(response.kko.list[0].list_val)
 						$("#kakao_send_to_num").val(response.kko.list[0].seq);
+
+                        if(response.kko.list[0].addl_use_yn == "Y") {
+                            $('label[name="kko_target_tp_label"]').show();
+                        }
 					}
 					if(response.mdm.list.length > 0){
 						$("#sms_send_to").val(response.mdm.list[0].list_nm + "(" + numberToPhone(response.mdm.list[0].list_val) + ")");

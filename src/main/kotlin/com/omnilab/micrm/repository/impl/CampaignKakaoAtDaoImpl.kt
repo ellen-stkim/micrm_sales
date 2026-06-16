@@ -67,6 +67,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
         val urlDto = Tblmicp_cont_url_lstDto()
         urlDto.cont_lst_cd = kakaoCont.seq
         val kakaoContUrlList = sqlSession.selectList<Tblmicp_cont_url_lstDto>("sel_tblmicp_cont_url_lst", urlDto)
+        /*
         var kakaoBtnUrl: Tblmicp_cont_url_lstDto? = null
         var kakaoImgUrl: Tblmicp_cont_url_lstDto? = null
 
@@ -78,7 +79,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                 kakaoImgUrl = urlLst
             }
         }
-
+        */
         // MDM 콘텐츠 URL 리스트 정보
         var mdmContUrlList: MutableList<Tblmicp_cont_url_lstDto>? = null
         if(mdmCont != null){

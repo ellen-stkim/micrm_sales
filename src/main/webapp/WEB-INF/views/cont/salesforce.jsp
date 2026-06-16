@@ -464,9 +464,9 @@
                                 <div class="byte">
                                     <span class="en_font kakao_byte">0</span>
                                     <span class="en_font">자</span>(버튼제외)<br><br>
-                                    <span class="en_font">※ 텍스트 유형 최대 1000자</span><br>
-                                    <span class="en_font">※ 이미지 유형 최대 400자</span><br>
-                                    <span class="en_font">※ 와이드 이미지 유형 최대 76자</span>
+                                    <span class="en_font" style="color: #ff0000bf">※ 텍스트 유형 최대 1000자</span><br>
+                                    <span class="en_font" style="color: #ff0000bf">※ 이미지 유형 최대 400자</span><br>
+                                    <span class="en_font" style="color: #ff0000bf">※ 와이드 이미지 유형 최대 76자</span>
                                 </div>
                             </div>
                             <div class="viewer_area" id="kakao_at_viewer" hidden>

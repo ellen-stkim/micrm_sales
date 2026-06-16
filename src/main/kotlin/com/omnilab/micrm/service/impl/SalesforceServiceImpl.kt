@@ -1,6 +1,7 @@
 package com.omnilab.micrm.service.impl
 
 import com.exacttarget.fuelsdk.*
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -57,6 +58,9 @@ import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.floor
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 
 
 @Service("SalesforceServiceImpl")
@@ -119,6 +123,8 @@ class SalesforceServiceImpl : SalesforceService {
 
     @Autowired
     private lateinit var customAuthenticationProvider: AuthenticationProvider
+
+    val mapper = jacksonObjectMapper()
 
     private val yyyymmddFormat = SimpleDateFormat("YYYY-MM-dd")
     private val gson = GsonBuilder().create()
@@ -1912,7 +1918,9 @@ class SalesforceServiceImpl : SalesforceService {
             }
         } else {
             listDto.cont_tp = "DMTP03"
-            val kkoDto = SetLst_searchDto("CH02", "DMTP03", null, userInfo.usr_grp_cd).apply { seq = listDto.send_to?.toInt() }
+            val kkoDto = SetLst_searchDto("CH02", "DMTP03", null, userInfo.usr_grp_cd).apply {
+                seq = listDto.send_to?.toIntOrNull()
+            }
             contentDao.selectSenderList(kkoDto).firstOrNull()?.let { listDto.key_id = it.list_val }
 
             when (dto.kko_msg_tp) {
@@ -2348,6 +2356,40 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
                 parseAndInsertBodyUrls(dto.kakao_body, "kkoTrk", listSeq)
+                
+                if(!dto.kko_item_json.isNullOrEmpty()){
+                    val items: List<Map<String, Any>> = ObjectMapper().readValue(dto.kko_item_json, object : TypeReference<List<Map<String, Any>>>() {})
+                    items.forEachIndexed { index, item ->
+                        val seq = "%03d".format(index + 1)
+                        insertContentUrl("btn", item["url_pc"]?.toString().orEmpty(), "kkoItemPc$seq", listSeq)
+                        insertContentUrl("btn", item["url_mobile"]?.toString().orEmpty(), "kkoItemMo$seq", listSeq)
+                    }
+                }
+                if(!dto.kko_carousel_json.isNullOrEmpty()){
+                    val items: List<Map<String, Any>> = mapper.readValue(dto.kko_carousel_json.toString())
+                    
+                    val resultMap = mutableMapOf<String, String>()
+                    var seq = 1
+                    
+                    items.forEach { item ->
+                        val attachment = item["attachment"] as? Map<*, *> ?: return@forEach
+                        val buttons = attachment["button"] as? List<*> ?: return@forEach
+                    
+                        buttons.forEach { button ->
+                            val buttonMap = button as? Map<*, *> ?: return@forEach
+                            val index = "%03d".format(seq)
+                            buttonMap["url_pc"]?.toString()?.let {
+                                resultMap["kkoItemPC$index"] = it
+                                insertContentUrl("btn", it, "kkoBtnPc$index", listSeq)
+                            }
+                            buttonMap["url_mobile"]?.toString()?.let {
+                                resultMap["kkoItemMo$index"] = it
+                                insertContentUrl("btn", it, "kkoBtnMo$index", listSeq)
+                            }
+                            seq++
+                        }
+                    }
+                }
             }
 
             1 -> {

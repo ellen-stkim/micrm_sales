@@ -1,5 +1,6 @@
 package com.omnilab.micrm.controller
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
@@ -88,7 +89,7 @@ class SalesforceController {
     @Autowired
     @Qualifier("CouponIssueServiceImpl")
     private lateinit var couponIssueService: CouponIssueService
-
+    
     @Value("\${upload.content}")
     private val filePath: String? = null
 

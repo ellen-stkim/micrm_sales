@@ -315,7 +315,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             when (kakaoCont.msg_tp) {
                "DMCH220" -> {
                    kkoMsgdto.type = "U_FL"
-                   //kkoMsgdto.item = kakaoCont.kko_item_json
                    var msg = kakaoCont.kko_item_json
                    for (key in map.keys) {
                        val reg = Regex("\\{\\{(?i)${key}}}")
@@ -337,7 +336,6 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                }
                "DMCH222" -> {
                    kkoMsgdto.type = "U_FC"
-                   //kkoMsgdto.carousel_json = kakaoCont.kko_carousel_json
                    var msg = kakaoCont.kko_carousel_json
                    for (key in map.keys) {
                        val reg = Regex("\\{\\{(?i)${key}}}")
