@@ -2358,14 +2358,44 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 parseAndInsertBodyUrls(dto.kakao_body, "kkoTrk", listSeq)
                 
-                if(!dto.kko_item_json.isNullOrEmpty()){
-                    val items: List<Map<String, Any>> = ObjectMapper().readValue(dto.kko_item_json, object : TypeReference<List<Map<String, Any>>>() {})
-                    items.forEachIndexed { index, item ->
-                        val seq = "%03d".format(index + 1)
-                        insertContentUrl("btn", item["url_pc"]?.toString().orEmpty(), "kkoItemPc$seq", listSeq)
-                        insertContentUrl("btn", item["url_mobile"]?.toString().orEmpty(), "kkoItemMo$seq", listSeq)
+                val itemPairs = listOf(
+                    dto.kkoItemUrlLstMo1 to dto.kkoItemUrlLstPc1,
+                    dto.kkoItemUrlLstMo2 to dto.kkoItemUrlLstPc2,
+                    dto.kkoItemUrlLstMo3 to dto.kkoItemUrlLstPc3,
+                    dto.kkoItemUrlLstMo4 to dto.kkoItemUrlLstPc4,
+                )
+                itemPairs.forEachIndexed { idx, pair ->
+                    if (!pair.first.isNullOrEmpty()) {
+                        val seq = "%03d".format(idx + 1)
+                        insertContentUrl("btn", pair.first!!, "kkoItemMo$seq", listSeq)
+                        insertContentUrl("btn", pair.second!!, "kkoItemPc$seq", listSeq)
                     }
                 }
+                
+                
+                val carouselPairs = listOf(
+                    dto.kkoBtnUrlLstMo1_1 to dto.kkoBtnUrlLstPc1_1,
+                    dto.kkoBtnUrlLstMo1_2 to dto.kkoBtnUrlLstPc1_2,
+                    dto.kkoBtnUrlLstMo2_1 to dto.kkoBtnUrlLstPc2_1,
+                    dto.kkoBtnUrlLstMo2_2 to dto.kkoBtnUrlLstPc2_2,
+                    dto.kkoBtnUrlLstMo3_1 to dto.kkoBtnUrlLstPc3_1,
+                    dto.kkoBtnUrlLstMo3_2 to dto.kkoBtnUrlLstPc3_2,
+                    dto.kkoBtnUrlLstMo4_1 to dto.kkoBtnUrlLstPc4_1,
+                    dto.kkoBtnUrlLstMo4_2 to dto.kkoBtnUrlLstPc4_2,
+                    dto.kkoBtnUrlLstMo5_1 to dto.kkoBtnUrlLstPc5_1,
+                    dto.kkoBtnUrlLstMo5_2 to dto.kkoBtnUrlLstPc5_2,
+                    dto.kkoBtnUrlLstMo6_1 to dto.kkoBtnUrlLstPc6_1,
+                    dto.kkoBtnUrlLstMo6_2 to dto.kkoBtnUrlLstPc6_2,
+                )
+                carouselPairs.forEachIndexed { idx, pair ->
+                    if (!pair.first.isNullOrEmpty()) {
+                        val seq = "%03d".format(idx + 1)
+                        insertContentUrl("btn", pair.first!!, "kkoBtnMo$seq", listSeq)
+                        insertContentUrl("btn", pair.second!!, "kkoBtnPc$seq", listSeq)
+                    }
+                }
+                
+                
                 if(!dto.kko_carousel_json.isNullOrEmpty()){
                     val items: List<Map<String, Any>> = mapper.readValue(dto.kko_carousel_json.toString())
                     

@@ -1,0 +1,28 @@
+2026-02-23 15:20:24 [ INFO] [JwtDecoderKt] [] [] : {
+  "inArguments": [
+    {
+      "url2": "www.chorogusan.or.kr/mobileCard/2024/2_Settlement/SettlementContent_6Months/index.html?&bncd=265001095&teamCd=2024010014&url_no=url1",
+      "emailaddress": "sienna@milvus.co.kr",
+      "firstname": "임지현",
+      "period_week_3day": "토요일",
+      "formattede164phonenumber": "01071591292",
+      "period_week_4day": "일요일",
+      "url1": "www.chorogusan.or.kr/mobileCard/2024/2_Settlement/SettlementContent_100Days/index.html?&bncd=265001094&teamCd=2024010014&url_no=url1",
+      "period_3day": "2026.02.07",
+      "period_4day": "2026.02.08",
+      "subscriberkey": "3",
+      "korean_name": "김초록",
+      "channel_nm": "자동이체",
+      "seq": "4548",
+      "§extention_cnt§": 4,
+      "§data_extension_id§": "c93ce1c8-7f01-f111-a5de-5cba2c19cba8"
+    }
+  ],
+  "activityObjectID": "b07f883f-e1cb-4d63-bfb1-af88ae5cf210",
+  "journeyId": "34890419-1d88-488a-90bb-5601ae2c4d95",
+  "activityId": "b07f883f-e1cb-4d63-bfb1-af88ae5cf210",
+  "definitionInstanceId": "cf521b89-5e3b-40a4-b046-ee94125564d3",
+  "activityInstanceId": "f5f6772d-bd61-43dd-a092-d795ccf17d82",
+  "keyValue": "3",
+  "mode": 0
+}
