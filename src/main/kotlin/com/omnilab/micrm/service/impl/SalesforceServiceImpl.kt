@@ -1,7 +1,6 @@
 package com.omnilab.micrm.service.impl
 
 import com.exacttarget.fuelsdk.*
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -58,9 +57,7 @@ import javax.servlet.http.HttpSession
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.floor
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 
 
 @Service("SalesforceServiceImpl")
@@ -2372,7 +2369,6 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
                 
-                
                 val carouselPairs = listOf(
                     dto.kkoBtnUrlLstMo1_1 to dto.kkoBtnUrlLstPc1_1,
                     dto.kkoBtnUrlLstMo1_2 to dto.kkoBtnUrlLstPc1_2,
@@ -2394,40 +2390,11 @@ class SalesforceServiceImpl : SalesforceService {
                         insertContentUrl("btn", pair.second!!, "kkoBtnPc$seq", listSeq)
                     }
                 }
-                
-                
-                if(!dto.kko_carousel_json.isNullOrBlank()){
-                    val items: List<Map<String, Any>> = mapper.readValue(dto.kko_carousel_json.toString())
-                    
-                    val resultMap = mutableMapOf<String, String>()
-                    var seq = 1
-                    
-                    items.forEach { item ->
-                        val attachment = item["attachment"] as? Map<*, *> ?: return@forEach
-                        val buttons = attachment["button"] as? List<*> ?: return@forEach
-                    
-                        buttons.forEach { button ->
-                            val buttonMap = button as? Map<*, *> ?: return@forEach
-                            val index = "%03d".format(seq)
-                            buttonMap["url_pc"]?.toString()?.let {
-                                resultMap["kkoItemPC$index"] = it
-                                insertContentUrl("btn", it, "kkoBtnPc$index", listSeq)
-                            }
-                            buttonMap["url_mobile"]?.toString()?.let {
-                                resultMap["kkoItemMo$index"] = it
-                                insertContentUrl("btn", it, "kkoBtnMo$index", listSeq)
-                            }
-                            seq++
-                        }
-                    }
-                }
             }
-
             1 -> {
                 if (!dto.mms_imgurl.isNullOrBlank()) insertContentUrl("a", dto.mms_imgurl!!, "mmsImg001", listSeq)
                 parseAndInsertBodyUrls(dto.sms_body, "smsTrk", listSeq)
             }
-
             2 -> {
                 dto.url_value?.forEachIndexed { j, url ->
                     if (!url.isNullOrBlank()) insertContentUrl("btn", url, "urlBtn${j + 1}", listSeq)

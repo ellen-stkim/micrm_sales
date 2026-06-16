@@ -1,5 +1,7 @@
 package com.omnilab.micrm.repository.impl
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.AES256
 import com.omnilab.micrm.common.CommonUtils
@@ -25,6 +27,7 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
 
     val logger = LoggerFactory.getLogger(this::class.java)
     val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS")
+    val mapper = jacksonObjectMapper()
 
     @Autowired
     private lateinit var sqlSession: SqlSession
@@ -79,6 +82,8 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
         val kakaoBtnUrlPc3: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc003" }
         val kakaoBtnUrlPc4: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc004" }
         val kakaoBtnUrlPc5: Tblmicp_cont_url_lstDto? = kakaoContUrlBtnList.firstOrNull { it.url_id == "kkoBtnPc005" }
+
+        val kakaoContUrlMap = kakaoContUrlBtnList.associateBy { it.url_id }
 
         var kakaoImgUrl: Tblmicp_cont_url_lstDto? = null
         // 이미지 리스트
@@ -320,7 +325,19 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                        val reg = Regex("\\{\\{(?i)${key}}}")
                        msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
                    }
-                   kkoMsgdto.item = msg
+                   
+                   val items: MutableList<MutableMap<String, Any>> = mapper.readValue(msg, object : TypeReference<MutableList<MutableMap<String, Any>>>() {})
+                   items.forEachIndexed { index, item ->
+                       val seq = "%03d".format(index + 1)
+                       kakaoContUrlMap["kkoItemMo$seq"]?.let {
+                           item["url_mobile"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
+                       }
+                       
+                       kakaoContUrlMap["kkoItemPc$seq"]?.let {
+                           item["url_pc"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
+                       }
+                   }
+                   kkoMsgdto.item = mapper.writeValueAsString(items)
                }
                "DMCH221" -> {
                    kkoMsgdto.type = "U_FA"
@@ -331,6 +348,23 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                        msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
                        head = head?.replace(reg, CommonUtils.stringValueOf(map[key]))
                    }
+                   
+                   val items: MutableList<MutableMap<String, Any>> = mapper.readValue(msg, object : TypeReference<MutableList<MutableMap<String, Any>>>() {})
+                   var btnIndex = 1
+                   items.forEach { item ->
+                       val attachment = item["attachment"] as? MutableMap<String, Any> ?: return@forEach
+                       val buttons = attachment["button"] as? MutableList<MutableMap<String, Any>> ?: return@forEach
+                   
+                       buttons.forEach { button ->
+                           val seq = "%03d".format(btnIndex++)
+                           kakaoContUrlMap["kkoBtnMo$seq"]?.let {
+                               button["url_mobile"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
+                           }
+                           kakaoContUrlMap["kkoBtnPc$seq"]?.let {
+                               button["url_pc"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
+                           }
+                       }
+                   }
                    kkoMsgdto.carousel_json = msg
                    kkoMsgdto.head_json = head
                }
@@ -340,6 +374,32 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    for (key in map.keys) {
                        val reg = Regex("\\{\\{(?i)${key}}}")
                        msg = msg?.replace(reg, CommonUtils.stringValueOf(map[key]))
+                   }
+                   val items: MutableList<MutableMap<String, Any>> = mapper.readValue(msg, object : TypeReference<MutableList<MutableMap<String, Any>>>() {})
+                   var btnIndex = 1
+                   items.forEach { item ->
+                       val attachment = item["attachment"] as? MutableMap<String, Any> ?: return@forEach
+                       val buttons = attachment["button"] as? MutableList<MutableMap<String, Any>> ?: return@forEach
+                       
+                       buttons.forEach { button ->
+                           val seq = "%03d".format(btnIndex++)
+                           kakaoContUrlMap["kkoBtnMo$seq"]?.let {
+                               button["url_mobile"] = "$trackURL/s/k/${
+                                   AES256.AES_Encode(
+                                       hstSeq + "/" + it.seq.toString(),
+                                       GlobalValues.encKey
+                                   )
+                               }"
+                           }
+                           kakaoContUrlMap["kkoBtnPc$seq"]?.let {
+                               button["url_pc"] = "$trackURL/s/k/${
+                                   AES256.AES_Encode(
+                                       hstSeq + "/" + it.seq.toString(),
+                                       GlobalValues.encKey
+                                   )
+                               }"
+                           }
+                       }
                    }
                    kkoMsgdto.carousel_json = msg
                }
@@ -525,7 +585,5 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
             )
         }
     }
-
-
 
 }
