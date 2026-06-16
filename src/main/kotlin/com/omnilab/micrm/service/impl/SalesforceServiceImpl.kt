@@ -2341,6 +2341,7 @@ class SalesforceServiceImpl : SalesforceService {
     private fun saveUrls(i: Int, dto: Content_list_CreateDto, listSeq: Int) {
         when (i) {
             0 -> {
+                logger.error("dto {}", dto)
                 if (!dto.kko_img_url.isNullOrEmpty()) insertContentUrl("img", dto.kko_img_url!!, "kkoImg001", listSeq)
                 val btnPairs = listOf(
                     dto.kko_btn_url to dto.kko_btn_urlPc,
