@@ -22,13 +22,13 @@ import javax.servlet.http.HttpSession
 import kotlin.jvm.Throws
 
 @Component
-class LoginSuccessHandler : AuthenticationSuccessHandler {
+class LoginSuccessHandler(private val mfaService: MfaService) : AuthenticationSuccessHandler {
 
     private val log = LoggerFactory.getLogger(LoginSuccessHandler::class.java)
-
+    /*
     @Autowired
     lateinit var mfaService: MfaService
-
+    */
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(req: HttpServletRequest, rep: HttpServletResponse, auth: Authentication) {
         val loginDto : Tblmi_usrDto = auth.details as Tblmi_usrDto
@@ -41,7 +41,6 @@ class LoginSuccessHandler : AuthenticationSuccessHandler {
             req.session.setAttribute("MFA_PENDING", true)
             rep.sendRedirect("/login/mfa.mi")
         } else {
-            SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this)
             val requestCache: RequestCache = HttpSessionRequestCache()
             val savedRequest = requestCache.getRequest(req, rep)
             if (savedRequest != null && savedRequest.toString().endsWith("/${GlobalValues.indexpage}")) {

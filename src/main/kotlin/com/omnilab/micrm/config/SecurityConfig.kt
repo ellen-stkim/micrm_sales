@@ -27,7 +27,7 @@ import javax.servlet.DispatcherType
 import javax.servlet.Filter
 
 @Configuration
-class SecurityConfig {
+class SecurityConfig(private val loginSuccessHandler: LoginSuccessHandler) {
 
     private val INDEXPAGE = "/index.mi"
 
@@ -88,7 +88,7 @@ class SecurityConfig {
                     .loginProcessingUrl("/login.service")
                     .usernameParameter("id")
                     .passwordParameter("password")
-                    .successHandler(loginHandler())
+                    .successHandler(loginSuccessHandler)
                     .failureHandler(LoginFailHandler())
             }
             // 로그아웃 설정
@@ -141,10 +141,12 @@ class SecurityConfig {
         registration.setDispatcherTypes(EnumSet.allOf(DispatcherType::class.java))
         return registration
     }
-
+    
+    /*
     @Bean
     fun loginHandler(): LoginSuccessHandler {
         return LoginSuccessHandler()
     }
+    */
 
 }
