@@ -45,8 +45,10 @@ public class test {
         logger.error("{}", CommonUtils.isEmptyObject(b));
         */
         
-        String s = "xLQHq4OxpbWTHG4jw7BkDg";
+        String s = "o9UyCZ9PEu7eUQYghOFNnw";
         logger.error("{}", AES256.AES_Decode(s, GlobalValues.encKey));
+        
+        logger.error("{}", CommonUtils.sha512("LzY8tkthA89hQn4N"));
         
     }
 

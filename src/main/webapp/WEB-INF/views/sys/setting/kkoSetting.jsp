@@ -628,7 +628,21 @@
             searchSmsSetting()
         }
     }
+    
+    // 문자 리스트 Y,N 값 변경하기
+    function updateSmsLstYn(seq,use_yn) {
 
+        const res = function(response){
+            let pageNo = $("#nowPageNo").val();
+            getSmsSettingList(pageNo)
+        }
+
+        let data = []
+        data.push({name : "seq" , value : seq })
+        data.push({name : "use_yn" , value : use_yn} )
+
+        com_ajax.ajax('post', '${baseURL}/sys/setting/updateSetLstYn.ajax', data, res, '${_csrf.headerName}', '${_csrf.token}');
+    }
 
     // 삭제 처리
     function deleteSmsAddress(seq){

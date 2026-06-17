@@ -233,7 +233,7 @@ class EmailContentServiceImpl : ContentService {
             } else {
                 map["result"] = 2 //body 변경없음 또는 null
                 val listEmdList = contentDao.getEmdOne(tempMstDto)
-                tblmiContLstdto.seq = dto.list_seq?.get(0)?.toInt()
+                tblmiContLstdto.seq = dto.list_seq?.get(0)
                 tblmiContLstdto.cont_cd = tempMstDto.seq
                 tblmiContLstdto.upd_id = usr_id
                 if(!listEmdList.cont_body.equals(tblmiContLstdto.cont_body) || !listEmdList.br_yn.equals(tblmiContLstdto.br_yn)||!listEmdList.sup_yn.equals(tblmiContLstdto.sup_yn)||!listEmdList.cont_top_body.equals(tblmiContLstdto.cont_top_body)){
