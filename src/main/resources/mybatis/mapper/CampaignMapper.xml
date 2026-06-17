@@ -721,6 +721,10 @@
 			 ,l.rcs_btn_cont_3 AS rcs_btn_cont_3
 			 ,l.rcs_footer     AS rcs_footer
 			 , tmpl.button_json AS at_btn_obj
+             , l.kko_item_json
+             , l.kko_carousel_json
+         	 , l.kko_video_url
+             , l.msg_tp
 		FROM   tblmicp_cont_lst l
 				   INNER JOIN tblmicp_cont_mst m ON l.cont_cd = m.seq
 				   LEFT JOIN tblmi_cont_img AS kko_img ON l.kko_img_cd = kko_img.seq

@@ -153,8 +153,9 @@ class CampaignController {
     @PostMapping("/sendContcpPreview.ajax")
     fun sendContcpPreview(@RequestParam("cont_id") contId: String, req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession): ModelAndView {
         val dto = Tblmicp_cont_mstDto(contId.toInt(), UsefulUtils.sessionUser().usr_grp_cd!!, "Y")
+        val data = campaignServiceImpl.getContentPreview(dto)
         val view = ModelAndView("camp/ajax/sendPreview")
-        view.addObject("list", campaignServiceImpl.getContentPreview(dto))
+        view.addObject("list", data)
         view.addObject("filePath", sysSettingService.getCommCD(Tblmi_comm_cdDto("COMMON", "UPURL01"))?.cd_val)
         return view
     }

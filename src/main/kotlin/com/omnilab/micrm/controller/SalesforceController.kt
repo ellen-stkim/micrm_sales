@@ -333,10 +333,8 @@ class SalesforceController {
                 val map = mobileContentService.previewJsonService(dto)
                 view.addObject("jsonContent", map["jsonContent"])
             }
-            view.addObject("content", dto);
-            val commonCDDto = Tblmi_comm_cdDto()
-            commonCDDto.grp_id = "COMMON"
-            commonCDDto.cd_id = "UPURL01"
+            view.addObject("content", dto)
+            val commonCDDto = Tblmi_comm_cdDto("COMMON", "UPURL01")
             val uploadPrefix = sysSettingService.getCommCD(commonCDDto)
             view.addObject("filePath", uploadPrefix?.cd_val)
             return view

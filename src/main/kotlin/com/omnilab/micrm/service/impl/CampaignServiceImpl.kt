@@ -1,11 +1,12 @@
 package com.omnilab.micrm.service.impl
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.Contents_searchDto
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendResult_lstDto
-import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.*
 import org.slf4j.LoggerFactory
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
+
 
 @Service("CampaignServiceImpl")
 class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
@@ -232,9 +234,76 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         for (contentDto in contentDtoLst) {
             val map = HashMap<String, Any?>()
             contentDto.cardSize = '1'.toString()
-            if (contentDto.cont_tp.equals("DMTP04")) {
+            if (contentDto.cont_tp.equals("DMTP04")
+                || contentDto.msg_tp.equals("DMCH220")
+                || contentDto.msg_tp.equals("DMCH221")
+                || contentDto.msg_tp.equals("DMCH222")
+            ) {
                 commonService.jsonOneContentsParsing(contentDto)
             }
+            
+            if(contentDto.msg_tp.equals("DMCH220")){
+                val type = object : TypeToken<List<Map<String, Any?>>>() {}.type
+                val wideItemList: List<Map<String, Any?>> = Gson().fromJson(contentDto.kko_item_json, type)
+                map["wideItemList"] = wideItemList
+            }else if(contentDto.msg_tp.equals("DMCH221")){
+                val type = object : TypeToken<List<Map<String, Any?>>>() {}.type
+                val rawList: List<Map<String, Any?>> = Gson().fromJson(contentDto.kko_carousel_json, type)
+                
+                val carouselList = rawList.map { card ->
+                    val attachment = card["attachment"] as? Map<*, *> ?: emptyMap<String, Any?>()
+                    val image = attachment["image"] as? Map<*, *> ?: emptyMap<String, Any?>()
+                    val commerce = attachment["commerce"] as? Map<*, *> ?: emptyMap<String, Any?>()
+                    val buttons = attachment["button"] as? List<Map<String, Any?>> ?: emptyList()
+                    
+                    mutableMapOf(
+                        "header" to card["header"],
+                        "body" to card["additional_content"],
+                        "imgUrl" to image["img_url"],
+                
+                        "btn1Name" to buttons.getOrNull(0)?.get("name"),
+                        "btn1UrlMobile" to buttons.getOrNull(0)?.get("url_mobile"),
+                        "btn1UrlPc" to buttons.getOrNull(0)?.get("url_pc"),
+                
+                        "btn2Name" to buttons.getOrNull(1)?.get("name"),
+                        "btn2UrlMobile" to buttons.getOrNull(1)?.get("url_mobile"),
+                        "btn2UrlPc" to buttons.getOrNull(1)?.get("url_pc"),
+                
+                        "commerceTitle" to commerce["title"],
+                        "regularPrice" to commerce["regular_price"],
+                        "discountPrice" to commerce["discount_price"],
+                        "discountRate" to commerce["discount_rate"]
+                    )
+                }
+                map["carouselList"] = carouselList
+            }else if(contentDto.msg_tp.equals("DMCH222")){
+                val type = object : TypeToken<List<Map<String, Any?>>>() {}.type
+                val rawList: List<Map<String, Any?>> = Gson().fromJson(contentDto.kko_carousel_json, type)
+                
+                val slideList = rawList.map { slide ->
+                
+                    val attachment = slide["attachment"] as? Map<*, *> ?: emptyMap<String, Any?>()
+                    val image = attachment["image"] as? Map<*, *> ?: emptyMap<String, Any?>()
+                    val buttons = attachment["button"] as? List<Map<String, Any?>> ?: emptyList()
+                
+                    mutableMapOf<String, Any?>(
+                        "header" to slide["header"],
+                        "body" to slide["message"],
+                
+                        "imgUrl" to image["img_url"],
+                
+                        "btn1Name" to buttons.getOrNull(0)?.get("name"),
+                        "btn1UrlMobile" to buttons.getOrNull(0)?.get("url_mobile"),
+                        "btn1UrlPc" to buttons.getOrNull(0)?.get("url_pc"),
+                
+                        "btn2Name" to buttons.getOrNull(1)?.get("name"),
+                        "btn2UrlMobile" to buttons.getOrNull(1)?.get("url_mobile"),
+                        "btn2UrlPc" to buttons.getOrNull(1)?.get("url_pc")
+                    )
+                }
+                map["carouselList"] = slideList
+            }
+            
             map["dto"] = contentDto
             mapLst.add(map)
         }

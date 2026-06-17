@@ -69,18 +69,161 @@
                         <!-- 브랜드톡 -->
                         <c:if test="${cont_tp eq 'DMTP03'}">
                             <div class="scroll-box">
-                                <div class="round_box">
-                                    <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
-                                        <div class="sms">
-                                            <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
+                                <c:choose>
+                                    <c:when test="${dto.msg_tp eq 'DMCH220'}">
+                                    <div class="round_box">
+                                        <div class="kakao_wide_lst" style="display:block">
+                                            <strong class="kakao_wide_lst_strong">
+                                                <span class="kakao_wide_lst_title">${dto.cont_sub}</span>
+                                            </strong>
+                                            <div class="kakao_wide_lst_main_div">
+                                                <ul class="kakao_wide_lst_ul">
+                                                    <c:forEach items="${listmap.wideItemList}" var="item" varStatus="status">
+                                                        <li class="${status.first ? 'kakao_wide_lst_li_first' : 'kakao_wide_lst_li'}">
+                                                            <div class="${status.first ? 'kakao_wide_lst_li_first_div' : 'kakao_wide_lst_li_div'}">
+                                                                <a href="${item.url_mobile}" target="_blank"
+                                                                   class="${status.first ? 'kakao_wide_lst_li_first_a' : 'kakao_wide_lst_li_a'}">
+                                                                    <img src="${item.img_url}" alt="" role="presentation" style="min-height:41px;">
+                                                                </a>
+                                                            </div>
+                                                            <p class="${status.first ? 'kakao_wide_lst_li_first_p' : 'kakao_wide_lst_li_p'}">
+                                                                <span class="${status.first ? 'kakao_wide_lst_li_first_span' : 'kakao_wide_lst_li_span'}">
+                                                                    ${item.title}
+                                                                </span>
+                                                            </p>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </c:if>
-                                    <c:set var="btnStyle" value="${empty content.kko_btn_url && !cutil:isEmptyObject(dto.kko_img_lst) ? 'max-height: 200px' : ''}" />
-                                    <p class="sms_txt" style="${btnStyle}">${cutil:replaceBr(dto.cont_body)}</p>
-                                    <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
-                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
-                                    </c:if>
-                                </div>
+                                    </div>
+                                    </c:when>
+                                    <c:when test="${dto.msg_tp eq 'DMCH221'}">
+                                        <div class="slide_area">
+                                            <div class="swiper-container medium previewBrandSlide">
+                                                <div class="swiper-wrapper">
+                                                    <c:forEach items="${listmap.carouselList}" var="card" varStatus="status">
+                                                        <div class="swiper-slide slide${status.index + 1}">
+                                                            <section>
+                                                                <div class="img_area">
+                                                                    <img src="${card.imgUrl}" onerror="this.src='/image/bg_none.png'" alt=""/>
+                                                                </div>
+                                                                <div class="txt_area">
+                                                                    <h3>${card.header}</h3>
+                                                                    <div style="display:block;width:100%;height:1px;margin:8px 1px;background-color:rgba(0,0,0,0.08);"></div>
+                                                                    <p style="padding-top:10px;overflow-wrap:anywhere;word-break:break-word;white-space:normal;">
+                                                                        ${card.body}
+                                                                    </p>
+                                                                    <div style="display:flex;gap:12px;align-items:center;">
+                                                                        <c:if test="${not empty card.btn1Name}">
+                                                                            <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">${card.btn1Name}</div>
+                                                                        </c:if>
+                                                                        <c:if test="${not empty card.btn2Name}">
+                                                                            <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">${card.btn2Name}</div>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                                <div class="previewBrandSlidePagign" style="text-align:center;padding-top:20px;">
+                                                    1/${fn:length(listmap.carouselList)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            new Swiper('.previewBrandSlide', {
+                                                direction: 'horizontal',
+                                                centeredSlides: true,
+                                                slidesPerView: 1.2,
+                                                pagination: {
+                                                    el: '.previewBrandSlidePagign',
+                                                    type: 'fraction',
+                                                },
+                                            });
+                                        </script>
+                                    </c:when>
+                                    <c:when test="${dto.msg_tp eq 'DMCH222'}">
+                                        <div class="slide_area">
+                                            <div class="swiper-container medium previewBrandSlide">
+                                                <div class="swiper-wrapper">
+                                                    <c:forEach items="${listmap.carouselList}" var="slide" varStatus="status">
+                                                        <div class="swiper-slide slide${status.index + 1}">
+                                                            <section>
+                                                                <div class="img_area">
+                                                                    <img src="${slide.imgUrl}" onerror="this.src='/image/bg_none.png'" alt=""/>
+                                                                </div>
+                                                                <div class="txt_area">
+                                                                    <h3>${slide.header}</h3>
+                                                                    <div style="display:block;width:100%;height:1px;margin:8px 1px;background-color:rgba(0,0,0,0.08);"></div>
+                                                                    <p style="padding-top:10px;overflow-wrap:anywhere;word-break:break-word;white-space:normal;">
+                                                                        ${slide.body}
+                                                                    </p>
+                                                                    <div style="display:flex;gap:12px;align-items:center;">
+                                                                        <c:if test="${not empty slide.btn1Name}">
+                                                                            <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
+                                                                                ${slide.btn1Name}
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${not empty slide.btn2Name}">
+                                                                            <div class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:15px auto;outline:none;border-radius:5px;">
+                                                                                ${slide.btn2Name}
+                                                                            </div>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                                <div class="previewBrandSlidePagign" style="text-align:center;padding-top:20px;">
+                                                    1/${fn:length(content.slideList)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            new Swiper('.previewBrandSlide', {
+                                                direction: 'horizontal',
+                                                centeredSlides: true,
+                                                slidesPerView: 1.2,
+                                                pagination: {
+                                                    el: '.previewBrandSlidePagign',
+                                                    type: 'fraction',
+                                                },
+                                            });
+                                        </script>
+                                    </c:when>
+                                    <c:when test="${dto.msg_tp eq 'DMCH223'}">
+                                        <div class="round_box">
+                                            <c:set var="parts" value="${fn:split(dto.kko_video_url, '/')}"/>
+                                            <c:set var="videoId" value="${parts[fn:length(parts) - 1]}"/>
+                                            <c:set var="convertedUrl" value="${'https://play-tv.kakao.com/embed/player/cliplink/' += videoId += '?service=player_share'}"/>
+                                            <div>
+                                                <iframe src="${convertedUrl}" width="100%"></iframe>
+                                            </div>
+                                            <c:set var="btnStyle" value="${empty content.kko_btn_url && !cutil:isEmptyObject(dto.kko_img_lst) ? 'max-height: 200px' : ''}" />
+                                            <p class="sms_txt" style="${btnStyle}">${cutil:replaceBr(dto.cont_body)}</p>
+                                            <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
+                                                <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
+                                            </c:if>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="round_box">
+                                            <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
+                                                <div class="sms">
+                                                    <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
+                                                </div>
+                                            </c:if>
+                                            <c:set var="btnStyle" value="${empty content.kko_btn_url && !cutil:isEmptyObject(dto.kko_img_lst) ? 'max-height: 200px' : ''}" />
+                                            <p class="sms_txt" style="${btnStyle}">${cutil:replaceBr(dto.cont_body)}</p>
+                                            <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
+                                                <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
+                                            </c:if>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </c:if>
                         <!-- 알림톡 -->
