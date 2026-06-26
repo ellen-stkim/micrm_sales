@@ -2385,8 +2385,8 @@ class SalesforceServiceImpl : SalesforceService {
                 carouselPairs.forEachIndexed { idx, pair ->
                     if (!pair.first.isNullOrBlank()) {
                         val seq = "%03d".format(idx + 1)
-                        insertContentUrl("btn", pair.first!!, "kkoBtnMo$seq", listSeq)
-                        insertContentUrl("btn", pair.second!!, "kkoBtnPc$seq", listSeq)
+                        insertContentUrl("btn", pair.first!!, "kkoBtnCaMo$seq", listSeq)
+                        insertContentUrl("btn", pair.second!!, "kkoBtnCaPc$seq", listSeq)
                     }
                 }
             }

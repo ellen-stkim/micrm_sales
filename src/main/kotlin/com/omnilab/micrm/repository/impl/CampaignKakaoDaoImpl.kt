@@ -350,17 +350,17 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    }
                    
                    val items: MutableList<MutableMap<String, Any>> = mapper.readValue(msg, object : TypeReference<MutableList<MutableMap<String, Any>>>() {})
-                   var btnIndex = 1
-                   items.forEach { item ->
-                       val attachment = item["attachment"] as? MutableMap<String, Any> ?: return@forEach
-                       val buttons = attachment["button"] as? MutableList<MutableMap<String, Any>> ?: return@forEach
-                   
-                       buttons.forEach { button ->
-                           val seq = "%03d".format(btnIndex++)
-                           kakaoContUrlMap["kkoBtnMo$seq"]?.let {
+                   items.forEachIndexed { cardIndex, item ->
+                       val attachment = item["attachment"] as? MutableMap<String, Any> ?: return@forEachIndexed
+                       val buttons = attachment["button"] as? MutableList<MutableMap<String, Any>> ?: return@forEachIndexed
+
+                       buttons.forEachIndexed { btnIndex, button ->
+                           // 저장 시 카드별 2슬롯(kkoBtnCa) 기준으로 url_id 가 매겨지므로 동일 규칙으로 조회
+                           val seq = "%03d".format(cardIndex * 2 + btnIndex + 1)
+                           kakaoContUrlMap["kkoBtnCaMo$seq"]?.let {
                                button["url_mobile"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
                            }
-                           kakaoContUrlMap["kkoBtnPc$seq"]?.let {
+                           kakaoContUrlMap["kkoBtnCaPc$seq"]?.let {
                                button["url_pc"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
                            }
                        }
@@ -377,17 +377,17 @@ class CampaignKakaoDaoImpl : CampaignSendDao {
                    }
                    
                    val items: MutableList<MutableMap<String, Any>> = mapper.readValue(msg, object : TypeReference<MutableList<MutableMap<String, Any>>>() {})
-                   var btnIndex = 1
-                   items.forEach { item ->
-                       val attachment = item["attachment"] as? MutableMap<String, Any> ?: return@forEach
-                       val buttons = attachment["button"] as? MutableList<MutableMap<String, Any>> ?: return@forEach
-                       
-                       buttons.forEach { button ->
-                           val seq = "%03d".format(btnIndex++)
-                           kakaoContUrlMap["kkoBtnMo$seq"]?.let {
+                   items.forEachIndexed { cardIndex, item ->
+                       val attachment = item["attachment"] as? MutableMap<String, Any> ?: return@forEachIndexed
+                       val buttons = attachment["button"] as? MutableList<MutableMap<String, Any>> ?: return@forEachIndexed
+
+                       buttons.forEachIndexed { btnIndex, button ->
+                           // 저장 시 카드별 2슬롯(kkoBtnCa) 기준으로 url_id 가 매겨지므로 동일 규칙으로 조회
+                           val seq = "%03d".format(cardIndex * 2 + btnIndex + 1)
+                           kakaoContUrlMap["kkoBtnCaMo$seq"]?.let {
                                button["url_mobile"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
                            }
-                           kakaoContUrlMap["kkoBtnPc$seq"]?.let {
+                           kakaoContUrlMap["kkoBtnCaPc$seq"]?.let {
                                button["url_pc"] = "$trackURL/s/k/${AES256.AES_Encode(hstSeq + "/" + it.seq.toString(), GlobalValues.encKey)}"
                            }
                        }

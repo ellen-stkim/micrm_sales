@@ -69,18 +69,18 @@ class MvcConfig : WebMvcConfigurer {
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(interceptorhandler())
+        registry.addInterceptor(interceptorHandler())
     }
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         converters.add(stringConverter())
-        converters.add(JacksonConverter())
+        converters.add(jacksonConverter())
         converters.add(byteArrayHttpMessageConverter())
         converters.add(ResourceHttpMessageConverter())
     }
 
     @Bean
-    fun interceptorhandler(): InterceptorHandler {
+    fun interceptorHandler(): InterceptorHandler {
         return InterceptorHandler()
     }
 
@@ -167,7 +167,7 @@ class MvcConfig : WebMvcConfigurer {
     }
 
     @Bean //json
-    fun JacksonConverter(): MappingJackson2HttpMessageConverter {
+    fun jacksonConverter(): MappingJackson2HttpMessageConverter {
         val converter = MappingJackson2HttpMessageConverter()
         val mediatype = ArrayList<MediaType>()
         mediatype.add(MediaType.APPLICATION_JSON)
@@ -227,7 +227,7 @@ class MvcConfig : WebMvcConfigurer {
     }
 
     @Bean(name = ["downloadView"])
-    fun downloadview(): DownloadView {
+    fun downloadView(): DownloadView {
         return DownloadView()
     }
 
@@ -237,12 +237,12 @@ class MvcConfig : WebMvcConfigurer {
     }
 
     @Bean(name = ["PrintView"])
-    fun printview(): PrintView {
+    fun printView(): PrintView {
         return PrintView()
     }
 
-    @Bean(name = ["jsonview"])
-    fun jsonview(): MappingJackson2JsonView {
+    @Bean(name = ["jsonView"])
+    fun jsonView(): MappingJackson2JsonView {
         val viewResolver = MappingJackson2JsonView()
         viewResolver.setPrettyPrint(true)
         return viewResolver

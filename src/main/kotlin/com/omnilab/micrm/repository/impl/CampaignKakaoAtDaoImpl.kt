@@ -340,7 +340,7 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                     val list = mdmCont.img_nm_lst!!.split(",")
                     kkoMsgdto.failed_img = imgPath + list[0]
                 }
-            }else{
+            } else {
                 kkoMsgdto.failed_type = "NO"
                 if(rcsCont != null || mdmCont != null){
                     val callbackDto = Tblmicp_send_callback_msgDto()
@@ -405,7 +405,6 @@ class CampaignKakaoAtDaoImpl : CampaignSendDao {
                         }
                         callbackDto.mdm_server = mdmDb
                     }
-
                     callbackDto.usr_grp_cd = dto.usr_grp_cd
                     callbackDto.reg_id = dto.reg_id
                     callbackLst.add(callbackDto)
