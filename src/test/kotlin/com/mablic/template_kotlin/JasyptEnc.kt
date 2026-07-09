@@ -32,6 +32,9 @@ fun main(args: Array<String>) {
     //Basic R000000029 R000000029_3eAd3HZqQHSAjKHplkWBXw
     //log.error("{}", enc.decrypt("U8SIOt9AoBYZIi7jBeYSIIOu49tAqx7sP7NEU7N2/aiNsEWzy+vum5z8ofTlerYE"))
     //log.error("{}", enc.decrypt("21G7JK4R05kWOFny8jIBb42OS6q0pYyLv2QUTv7p8lA+58795PYGutW65lUCTXKZ"))
-    log.error("{}", enc.decrypt("kO6zwBtVbCe9kwwg6lUrqtfMpN/MMK5n6LA0vHV8+pGGrShBcnGtLniK6zdAzF/+0CodDLN52UFiH86BMcrQ+C/Ucbzhe/gYYc3XFg1tAKXDyzBy6vm1n6HxnY/x/9vP"))
+    //log.error("{}", enc.decrypt("kO6zwBtVbCe9kwwg6lUrqtfMpN/MMK5n6LA0vHV8+pGGrShBcnGtLniK6zdAzF/+0CodDLN52UFiH86BMcrQ+C/Ucbzhe/gYYc3XFg1tAKXDyzBy6vm1n6HxnY/x/9vP"))
     
+    //log.error("{}", CommonUtils.sha512("7GhwLrNSN0AYxgt8"))
+    
+    log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
 }

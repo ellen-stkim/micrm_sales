@@ -210,5 +210,11 @@
         <url-rule>
             <url disable="true">/sf/25/mobileUpdate.service</url>
         </url-rule>
+        <url-rule>
+            <url disable="true">/sf/26/mobileInsert.service</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/sf/26/mobileUpdate.service</url>
+        </url-rule>
     </url-rule-set>
 </config>

@@ -2185,7 +2185,7 @@
                 return false;
             }
             for (const i of REQUIRED_IDX) {
-                const item = $("input[name='kkoItemLst" + i + "']").val();
+                const item = $("[name='kkoItemLst" + i + "']").val();
                 const img = $("#kakao_item_img_cd_" + i).val();
                 const pcUrl = $("input[name='kkoItemUrlLstPc" + i + "']").val();
                 const moUrl = $("input[name='kkoItemUrlLstMo" + i + "']").val();
@@ -2200,6 +2200,14 @@
                     return false;
                 } else if (!moUrl) {
                     popup.popAlert('리스트 ' + i + '번 모바일 링크 URL을(를) 입력해 주세요.');
+                    return false;
+                }
+            }
+            // 항목 내용 줄바꿈은 최대 1회까지만 허용 (1~4번, 입력된 항목만 검사)
+            for (let i = 1; i <= 4; i++) {
+                const content = ($("[name='kkoItemLst" + i + "']").val() || "").replace(/\r\n|\r/g, "\n");
+                if ((content.match(/\n/g) || []).length > 1) {
+                    popup.popAlert('리스트 ' + i + '번 내용은 줄바꿈을 1회까지만 입력할 수 있습니다.');
                     return false;
                 }
             }

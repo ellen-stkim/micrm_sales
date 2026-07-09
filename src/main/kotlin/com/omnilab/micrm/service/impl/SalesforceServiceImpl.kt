@@ -2256,6 +2256,18 @@ class SalesforceServiceImpl : SalesforceService {
         if (group4.any { !CommonUtils.isEmptyObject(it) } && !group4.all { !CommonUtils.isEmptyObject(it) }) {
             re.status = false; re.errMsg = "리스트 4번 항목은 하나라도 입력 시 모든 값이 필수 입니다."; return false
         }
+        // 항목 내용 줄바꿈은 최대 1회까지만 허용
+        val itemContents = linkedMapOf(
+            "리스트 1 내용" to dto.kkoItemLst1,
+            "리스트 2 내용" to dto.kkoItemLst2,
+            "리스트 3 내용" to dto.kkoItemLst3,
+            "리스트 4 내용" to dto.kkoItemLst4
+        )
+        for ((label, value) in itemContents) {
+            if (!value.isNullOrBlank() && value.count { it == '\n' } > 1) {
+                re.status = false; re.errMsg = "$label 은(는) 줄바꿈을 1회까지만 입력할 수 있습니다."; return false
+            }
+        }
         return true
     }
 

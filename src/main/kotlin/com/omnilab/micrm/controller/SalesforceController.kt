@@ -939,7 +939,7 @@ class SalesforceController {
                 }
                 return ResponseEntity(null, HttpStatus.OK)
             } catch (e: Exception) {
-                logger.error("excep {}", e.javaClass)
+                logger.error("Exception {}", e.javaClass)
                 if(e is SQLIntegrityConstraintViolationException || e is DuplicateKeyException){
                     logger.error("execute.service SQLIntegrityConstraintViolationException : {} | {}", e.message, payload)
                 }else{

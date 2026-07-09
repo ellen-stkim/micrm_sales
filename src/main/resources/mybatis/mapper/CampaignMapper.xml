@@ -524,6 +524,7 @@
 	</select>
 
 	<select id="sel_send_status_cnt" parameterType="String" resultType="Map">
+        /* sel_send_status_cnt */
 		SELECT camp_id
 			, COUNT(*) AS t_cnt
 			, count(if(send_rst is NULL, 1, null)) as w_cnt

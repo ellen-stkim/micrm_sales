@@ -794,11 +794,11 @@ let kkoCreate = {
             const sliced = newTitle.substring(0, 25);
             if(newTitle.length > 25){
                 popup.popAlert('최대 25자까지 입력할 수 있습니다.');
-                $("#prev_ft_wide_lst_txt1").html(sliced);
-                $("input[name='kkoItemLst1']").val(sliced);
+                $("#prev_ft_wide_lst_txt1").html(kkoCreate._itemPreview(sliced));
+                $("[name='kkoItemLst1']").val(sliced);
                 return false;
             }else{
-                $("#prev_ft_wide_lst_txt1").html(newTitle);
+                $("#prev_ft_wide_lst_txt1").html(kkoCreate._itemPreview(newTitle));
                 return true;
             }
         } else if(type.startsWith("kakao_wide_lst")){
@@ -806,11 +806,11 @@ let kkoCreate = {
             const sliced = newTitle.substring(0, 30);
             if(newTitle.length > 30){
                 popup.popAlert('최대 30자까지 입력할 수 있습니다.');
-                $("#prev_ft_wide_lst_txt" + idx).html(sliced);
-                $("input[name='kkoItemLst"+ idx +"']").val(sliced);
+                $("#prev_ft_wide_lst_txt" + idx).html(kkoCreate._itemPreview(sliced));
+                $("[name='kkoItemLst"+ idx +"']").val(sliced);
                 return false;
             } else {
-                $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
+                $("#prev_ft_wide_lst_txt" + idx).html(kkoCreate._itemPreview(newTitle));
                 return false;
             }
         } else if(type.startsWith("kakaoFc")){
@@ -825,6 +825,34 @@ let kkoCreate = {
                 $("#prev_ft_wide_lst_txt" + idx).html(newTitle);
                 return false;
             }
+        }
+    }
+    // 와이드 리스트 항목 프리뷰: HTML 이스케이프 후 줄바꿈을 <br> 로 반영
+    , _itemPreview: function (s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\r\n|\r|\n/g, '<br>');
+    }
+    // 와이드 리스트 항목 내용: 엔터(줄바꿈) 최대 1회만 허용 (2번째 엔터 차단)
+    , itemLineBreakGuard: function (e) {
+        const key = e.key || e.keyCode;
+        if (key === 'Enter' || key === 13) {
+            const cnt = ((e.target.value || '').match(/\n/g) || []).length;
+            if (cnt >= 1) {
+                e.preventDefault();
+                return false;
+            }
+        }
+        return true;
+    }
+    // 붙여넣기 등으로 줄바꿈이 2회 이상 들어온 경우 1회로 보정
+    , itemLineBreakTrim: function (el) {
+        const v = (el.value || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+        const parts = v.split('\n');
+        if (parts.length > 2) {
+            el.value = parts[0] + '\n' + parts.slice(1).join('');
         }
     }
     , _toggleBrandFaPriceStrike: function (idx) {
