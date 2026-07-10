@@ -629,20 +629,22 @@
                                                     </c:if>
                                                 </div>
                                                 <p class="kakao_txt" id="prev_ft_txt" <c:if test='${list[0].msg_tp eq "DMCH220"}'>style="display: none;"</c:if>>${cutil:replaceBr(list[0].cont_body)}</p>
-                                                <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
-                                                    <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
-                                                </c:if>
-                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url2))}">
-                                                    <a href="${list[0].kko_btn_url2}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm2}</a>
-                                                </c:if>
-                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url3))}">
-                                                    <a href="${list[0].kko_btn_url3}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm3}</a>
-                                                </c:if>
-                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url4))}">
-                                                    <a href="${list[0].kko_btn_url4}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm4}</a>
-                                                </c:if>
-                                                <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url5))}">
-                                                    <a href="${list[0].kko_btn_url5}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm5}</a>
+                                                <c:if test="${list[0].msg_tp ne 'DMCH220'}">
+                                                    <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                        <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
+                                                    </c:if>
+                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url2))}">
+                                                        <a href="${list[0].kko_btn_url2}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm2}</a>
+                                                    </c:if>
+                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url3))}">
+                                                        <a href="${list[0].kko_btn_url3}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm3}</a>
+                                                    </c:if>
+                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url4))}">
+                                                        <a href="${list[0].kko_btn_url4}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm4}</a>
+                                                    </c:if>
+                                                    <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url5))}">
+                                                        <a href="${list[0].kko_btn_url5}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm5}</a>
+                                                    </c:if>
                                                 </c:if>
                                                 <div class="kakao_wide_lst" id="prev_ft_wide_lst" <c:if test='${list[0].msg_tp eq "DMCH220"}'>style="display: block"</c:if>>
                                                     <strong class="kakao_wide_lst_strong">
@@ -691,6 +693,14 @@
                                                                 </p>
                                                             </li>
                                                         </ul>
+                                                    </div>
+                                                    <div id="prev_ft_wide_lst_btn" style="display:flex; gap:12px; align-items:center; padding:10px 15px 0;">
+                                                        <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                                                            <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
+                                                        </c:if>
+                                                        <c:if test="${!cutil:isEmptyObject(fn:trim(list[0].kko_btn_url2))}">
+                                                            <a href="${list[0].kko_btn_url2}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm2}</a>
+                                                        </c:if>
                                                     </div>
                                                 </div>
                                             </div>

@@ -457,6 +457,7 @@
                                                             </li>
                                                         </ul>
                                                     </div>
+                                                    <div id="prev_ft_wide_lst_btn" style="display:flex; gap:12px; align-items:center; padding:10px 15px 0;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1295,6 +1296,12 @@
 
                 const isHttp = (v) => v && v.substring(0, 4) === 'http';
 
+                // 와이드 리스트형은 버튼을 가로(flex) 컨테이너에, 그 외 타입은 기존처럼 round_box 에 세로로 표시
+                const kkoMsgTp = $('input[name="kko_msg_tp"]:checked').val();
+                const $viewerBox = (kkoMsgTp === "1")
+                    ? $('#prev_ft_wide_lst_btn')
+                    : $('#kakao_ft_viewer').find('.inner .round_box');
+
                 if (btnState === '생성') {
                     if (!btnName) {
                         popup.popAlert('메시지에 노출될 버튼의 이름을 입력해주세요!');
@@ -1306,7 +1313,6 @@
                         popup.popAlert('정확한 링크 URL을 입력해주세요.');
                         return false;
                     }
-                    const $viewerBox = $('#kakao_ft_viewer').find('.inner .round_box');
                     $viewerBox.children('a').remove();
                     const rmLst = [];
                     for (let i = 0; i < totalLen; i++) {
@@ -1330,7 +1336,6 @@
                     }
                     rmLst.forEach($r => $r.remove());
                 } else { // 삭제
-                    const $viewerBox = $('#kakao_ft_viewer').find('.inner .round_box');
                     $viewerBox.children('a.kakao_link').eq(thisIdx).remove();
                     if (totalLen === 1) {
                         $btn.val('생성');
@@ -4527,6 +4532,7 @@
             $("#prev_ft_video").html("");
             $(".kakao_byte").html("0");
             $('#kakao_ft_viewer').find('.inner .round_box a.kakao_link').remove();
+            $('#prev_ft_wide_lst_btn').empty();
 
             $("#prev_ft_wide_lst_title").html("(광고)");
             for(let i=1; i<=4; i++) {

@@ -42,7 +42,7 @@
    <div class="row flex_box double">
       <div class="th top-border" style="line-height: 72px;">내용</div>
       <div class="td first-td right-border top-border">
-        <textarea class="txt_input width kakao_btn_name kko_item_txt" name="kkoItemLst${i}" rows="2" maxlength="${maxLens[idx]}" style="resize:none;" placeholder="내용을 입력해주세요. (최대 ${maxLens[idx]}자, 줄바꿈 1회)" onkeydown="kkoCreate.itemLineBreakGuard(event)" oninput="kkoCreate.itemLineBreakTrim(this)" onkeyup="kkoCreate.titleCount(this,'${countKeys[idx]}')">${list[0]['kkoItemLst' += i]}</textarea>
+        <textarea class="txt_input width kakao_btn_name kko_item_txt" name="kkoItemLst${i}" rows="2" maxlength="${maxLens[idx]}" style="resize:none; padding:10px; line-height:1.4;" placeholder="내용을 입력해주세요. (최대 ${maxLens[idx]}자, 줄바꿈 1회)" onkeydown="kkoCreate.itemLineBreakGuard(event)" oninput="kkoCreate.itemLineBreakTrim(this)" onkeyup="kkoCreate.titleCount(this,'${countKeys[idx]}')">${list[0]['kkoItemLst' += i]}</textarea>
       </div>
       <div class="th top-border" style="line-height: 72px;">링크 주소</div>
       <div class="td flex_box top-border" style="flex-direction: column;">
