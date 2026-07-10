@@ -62,3 +62,71 @@
     </div>
   </div>
 </c:forEach>
+<%-- 버튼 (최대 2개) : 생성 시 빈 1행, 상세 조회 시 저장된 값 표시 --%>
+<div class="block" id="addKakaoLink" style="margin-bottom: 10px;">
+    <div class="row flex_box double">
+        <div class="th" style="line-height: 72px;">버튼명</div>
+        <div class="td first-td right-border">
+            <c:choose>
+                <c:when test="${fn:trim(list[0].kko_btn_nm) != ''}">
+                    <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="8" value="${list[0].kko_btn_nm}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                </c:when>
+                <c:otherwise>
+                    <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="8" placeholder="버튼 링크 제목을 입력해주세요." onkeyup="smsCreate.titleCount(this,'kakao')"/>
+                </c:otherwise>
+            </c:choose>
+        </div>
+        <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+        <div class="td flex_box" style="flex-direction: column;">
+            <div class="row flex_box" style="width: 100%;">
+                <div class="th">Pc 링크</div>
+                <div class="td flex_box">
+                    <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc}" <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">readonly</c:if>/>
+                </div>
+            </div>
+            <div class="row flex_box" style="width: 100%;">
+                <div class="th">Mobile 링크</div>
+                <div class="td flex_box">
+                    <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url}" <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">readonly</c:if>/>
+                </div>
+            </div>
+        </div>
+        <div class="td flex_box" style="width: 273px; align-items: center;">
+            <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+            <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+            <input type="button" class="btn_sm_line kakaoLinkBtn" <c:choose><c:when test="${fn:trim(list[0].kko_btn_url) != ''}">value="삭제"</c:when><c:otherwise>value="생성"</c:otherwise></c:choose>/>
+        </div>
+    </div>
+    <c:if test="${!cutil:isEmptyObject(list[0].kko_btn_url2)}">
+        <div class="row flex_box double">
+            <div class="th" style="line-height: 72px;">버튼명</div>
+            <div class="td first-td right-border">
+                <input type="text" name="kkoBtnLst" class="txt_input width kakao_btn_name" maxlength="8" value="${list[0].kko_btn_nm2}" readonly onkeyup="smsCreate.titleCount(this,'kakao')"/>
+            </div>
+            <div class="th" style="line-height: 72px;">버튼 링크 주소</div>
+            <div class="td flex_box" style="flex-direction: column;">
+                <div class="row flex_box" style="width: 100%;">
+                    <div class="th">Pc 링크</div>
+                    <div class="td flex_box">
+                        <input type="text" name="kkoBtnUrlLstPc" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_urlPc2}" readonly/>
+                    </div>
+                </div>
+                <div class="row flex_box" style="width: 100%;">
+                    <div class="th">Mobile 링크</div>
+                    <div class="td flex_box">
+                        <input type="text" name="kkoBtnUrlLstMo" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" value="${list[0].kko_btn_url2}" readonly/>
+                    </div>
+                </div>
+            </div>
+            <div class="td flex_box" style="width: 273px; align-items: center;">
+                <div class="arrow arrow-down kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                <div class="arrow arrow-up kakaoLinkArrow" style="width: 44px; height: 37px;"></div>
+                <input type="button" class="btn_sm_line kakaoLinkBtn" value="삭제"/>
+            </div>
+        </div>
+    </c:if>
+</div>
+<div class="flex_box" style="justify-content: right; align-items: center;">
+    <span class="ex_txt" style="margin-right: auto;">※ 버튼은 최대 2개까지 추가할 수 있습니다.</span>
+    <input type="button" class="btn_sm_line addKakaoLinkRow" value="추가"/>
+</div>

@@ -1279,12 +1279,15 @@
                 }
             } else {
                 const $container = $("#addKakaoLink");
-                const totalLen = $container.children().length;
-                const thisIdx = $btn.closest(".row.flex_box").index();
+                // 항목 필드와 버튼 필드가 동일 클래스를 공유하므로, 반드시 버튼 행(row) 단위로만 스코프
+                const $rows = $container.children(".row.flex_box.double");
+                const totalLen = $rows.length;
+                const $thisRow = $btn.closest(".row.flex_box.double");
+                const thisIdx = $rows.index($thisRow);
 
-                const $name = $('.kakao_btn_name').eq(thisIdx);
-                const $pc = $('.kakao_btn_linkPc').eq(thisIdx);
-                const $mo = $('.kakao_btn_linkMo').eq(thisIdx);
+                const $name = $thisRow.find('.kakao_btn_name');
+                const $pc = $thisRow.find('.kakao_btn_linkPc');
+                const $mo = $thisRow.find('.kakao_btn_linkMo');
 
                 const btnName = ($name.val() || "").trim();
                 const btnPc = ($pc.val() || "").trim();
@@ -1307,10 +1310,10 @@
                     $viewerBox.children('a').remove();
                     const rmLst = [];
                     for (let i = 0; i < totalLen; i++) {
-                        const $nm = $('.kakao_btn_name').eq(i);
-                        const $pcI = $('.kakao_btn_linkPc').eq(i);
-                        const $moI = $('.kakao_btn_linkMo').eq(i);
-                        const $row = $container.children().eq(i);
+                        const $row = $rows.eq(i);
+                        const $nm = $row.find('.kakao_btn_name');
+                        const $pcI = $row.find('.kakao_btn_linkPc');
+                        const $moI = $row.find('.kakao_btn_linkMo');
                         const nm = ($nm.val() || "").trim();
                         const pc = ($pcI.val() || "").trim();
                         const mo = ($moI.val() || "").trim();
@@ -1320,7 +1323,7 @@
                             $nm.prop('readonly', true);
                             $pcI.prop('readonly', true);
                             $moI.prop('readonly', true);
-                            $('.kakaoLinkBtn').eq(i).val('삭제');
+                            $row.find('.kakaoLinkBtn').val('삭제');
                         } else {
                             rmLst.push($row);
                         }
@@ -1329,13 +1332,13 @@
                 } else { // 삭제
                     const $viewerBox = $('#kakao_ft_viewer').find('.inner .round_box');
                     $viewerBox.children('a.kakao_link').eq(thisIdx).remove();
-                    if ($container.children().length === 1) {
+                    if (totalLen === 1) {
                         $btn.val('생성');
                         $name.val('').prop('readonly', false);
                         $pc.val('').prop('readonly', false);
                         $mo.val('').prop('readonly', false);
                     } else {
-                        $container.children().eq(thisIdx).remove();
+                        $thisRow.remove();
                     }
                 }
             }
@@ -1362,7 +1365,13 @@
 
         $(document).on('click', '.addKakaoLinkRow', function(){
             let totalLen = $("#addKakaoLink").children().length;
-            if(totalLen < 5){
+            const kkoMsgTp = $('input[name="kko_msg_tp"]:checked').val();
+            const maxBtn = (kkoMsgTp === "1") ? 2 : 5;   // 와이드 리스트형은 최대 2개
+            if(totalLen >= maxBtn){
+                popup.popAlert('버튼은 최대 ' + maxBtn + '개까지 추가할 수 있습니다.');
+                return false;
+            }
+            if(totalLen < maxBtn){
                 let layout = '<div class="row flex_box double">'
                     + '<div class="th" style="line-height: 72px;">버튼명</div>'
                     + '<div class="td first-td right-border">'
@@ -2935,7 +2944,7 @@
         const selectedValue = $('input[name="kko_format_type"]:checked').val();
         if(selectedValue == "kko_ft"){
             let kakaoFtType = $("input[name='kko_msg_tp']:checked").val();
-            if(kakaoFtType == "0"){
+            if(kakaoFtType == "0" || kakaoFtType == "1"){
                 $('#addKakaoLink .row.flex_box.double').each(function () {
                     const $row = $(this);
                     const $name = $row.find('input.kakaoLinkBtn');
