@@ -192,6 +192,16 @@
                                                                             </c:if>
                                                                         </ul>
                                                                     </div>
+                                                                    <c:if test="${not empty content.kko_btn_url or not empty content.kko_btn_url2}">
+                                                                        <div style="display:flex;gap:12px;align-items:center;padding:0 12px 12px;">
+                                                                            <c:if test="${not empty content.kko_btn_url}">
+                                                                                <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${content.kko_btn_nm}</a>
+                                                                            </c:if>
+                                                                            <c:if test="${not empty content.kko_btn_url2}">
+                                                                                <a href="${content.kko_btn_url2}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${content.kko_btn_nm2}</a>
+                                                                            </c:if>
+                                                                        </div>
+                                                                    </c:if>
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${content.kko_msg_tp eq '4'}">
@@ -219,6 +229,7 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                         <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
+                                                        <c:if test="${content.kko_msg_tp ne '1'}">
                                                         <c:forEach var="i" begin="1" end="5">
                                                             <c:choose>
                                                                 <c:when test="${i eq 1}">
@@ -235,6 +246,7 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </c:forEach>
+                                                        </c:if>
                                                     </div>
                                                 </c:otherwise>
                                             </c:choose>

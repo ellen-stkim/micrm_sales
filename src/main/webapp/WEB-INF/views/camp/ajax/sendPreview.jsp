@@ -95,6 +95,16 @@
                                                     </c:forEach>
                                                 </ul>
                                             </div>
+                                            <c:if test="${not empty dto.kko_btn_url or not empty dto.kko_btn_url2}">
+                                                <div style="display:flex;gap:12px;align-items:center;padding:0 12px 12px;">
+                                                    <c:if test="${not empty dto.kko_btn_url}">
+                                                        <a href="${dto.kko_btn_url}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${dto.kko_btn_nm}</a>
+                                                    </c:if>
+                                                    <c:if test="${not empty dto.kko_btn_url2}">
+                                                        <a href="${dto.kko_btn_url2}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${dto.kko_btn_nm2}</a>
+                                                    </c:if>
+                                                </div>
+                                            </c:if>
                                         </div>
                                     </div>
                                     </c:when>

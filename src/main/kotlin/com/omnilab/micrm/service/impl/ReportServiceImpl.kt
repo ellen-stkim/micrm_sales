@@ -186,6 +186,11 @@ class ReportServiceImpl : ReportService {
             if (dto.cont_tp.equals("DMTP04")) {
                 commonService.jsonOneContentsParsing(dto)
             }
+            // 와이드 리스트형: 항목 JSON 파싱하여 프리뷰용 리스트 구성
+            if (dto.msg_tp.equals("DMCH220") && !dto.kko_item_json.isNullOrBlank()) {
+                val type = object : com.google.gson.reflect.TypeToken<List<Map1<String, Any?>>>() {}.type
+                map["wideItemList"] = com.google.gson.Gson().fromJson<List<Map1<String, Any?>>>(dto.kko_item_json, type)
+            }
             map["dto"] = dto
             map["url"] = campaignReportDao.getLinkClickCnt(dto.list_seq)
             mapLst.add(map)

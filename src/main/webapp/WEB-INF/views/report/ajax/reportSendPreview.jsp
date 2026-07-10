@@ -85,17 +85,56 @@
                         <!-- 브랜드톡 -->
                         <c:if test="${cont_tp eq 'DMTP03'}">
                             <div class="scroll-box">
-                                <div class="round_box">
-                                    <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
-                                        <div class="sms">
-                                            <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
+                                <c:choose>
+                                    <c:when test="${dto.msg_tp eq 'DMCH220'}">
+                                        <div class="round_box">
+                                            <div class="kakao_wide_lst" style="display:block">
+                                                <strong class="kakao_wide_lst_strong">
+                                                    <span class="kakao_wide_lst_title">${dto.cont_sub}</span>
+                                                </strong>
+                                                <div class="kakao_wide_lst_main_div">
+                                                    <ul class="kakao_wide_lst_ul">
+                                                        <c:forEach items="${listmap.wideItemList}" var="item" varStatus="status">
+                                                            <li class="${status.first ? 'kakao_wide_lst_li_first' : 'kakao_wide_lst_li'}">
+                                                                <div class="${status.first ? 'kakao_wide_lst_li_first_div' : 'kakao_wide_lst_li_div'}">
+                                                                    <a href="${item.url_mobile}" target="_blank" class="${status.first ? 'kakao_wide_lst_li_first_a' : 'kakao_wide_lst_li_a'}">
+                                                                        <img src="${item.img_url}" alt="" role="presentation" style="min-height:41px;">
+                                                                    </a>
+                                                                </div>
+                                                                <p class="${status.first ? 'kakao_wide_lst_li_first_p' : 'kakao_wide_lst_li_p'}">
+                                                                    <span class="${status.first ? 'kakao_wide_lst_li_first_span' : 'kakao_wide_lst_li_span'}">${item.title}</span>
+                                                                </p>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
+                                                <c:if test="${not empty dto.kko_btn_url or not empty dto.kko_btn_url2}">
+                                                    <div style="display:flex;gap:12px;align-items:center;padding:0 12px 12px;">
+                                                        <c:if test="${not empty dto.kko_btn_url}">
+                                                            <a href="${dto.kko_btn_url}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${dto.kko_btn_nm}</a>
+                                                        </c:if>
+                                                        <c:if test="${not empty dto.kko_btn_url2}">
+                                                            <a href="${dto.kko_btn_url2}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${dto.kko_btn_nm2}</a>
+                                                        </c:if>
+                                                    </div>
+                                                </c:if>
+                                            </div>
                                         </div>
-                                    </c:if>
-                                    <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
-                                    <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
-                                        <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
-                                    </c:if>
-                                </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="round_box">
+                                            <c:if test="${!cutil:isEmptyObject(dto.kko_img_lst)}">
+                                                <div class="sms">
+                                                    <img src="${filePath}${dto.kko_img_lst}" onerror="this.src = '/image/bg_none.png'" alt="kko">
+                                                </div>
+                                            </c:if>
+                                            <p class="sms_txt">${cutil:replaceBr(dto.cont_body)}</p>
+                                            <c:if test="${!cutil:isEmptyObject(dto.kko_btn_url)}">
+                                                <a href="${dto.kko_btn_url}" target="_blank" class="sms_btn" rel="noopener">${dto.kko_btn_nm}</a>
+                                            </c:if>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </c:if>
                         <!-- 알림톡 -->
