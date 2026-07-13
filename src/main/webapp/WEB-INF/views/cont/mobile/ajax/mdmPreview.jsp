@@ -228,8 +228,8 @@
                                                                 </c:choose>
                                                             </c:otherwise>
                                                         </c:choose>
-                                                        <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
                                                         <c:if test="${content.kko_msg_tp ne '1'}">
+                                                        <p class="sms_txt">${cutil:replaceBr(content.kakao_body)}</p>
                                                         <c:forEach var="i" begin="1" end="5">
                                                             <c:choose>
                                                                 <c:when test="${i eq 1}">
