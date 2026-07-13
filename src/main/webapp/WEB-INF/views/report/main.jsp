@@ -50,7 +50,7 @@
 </section>
 <!-- container 영역 끝 -->
 </div>
-<script type="text/javascript" src="/js/tableau.js?v=0.20"></script>
+<script type="text/javascript" src="/js/tableau.js?v=0.21"></script>
 <script type="text/javascript" src="https://tableau-report.com/javascripts/api/tableau-2.min.js"></script>
 <script>
     $(function(){

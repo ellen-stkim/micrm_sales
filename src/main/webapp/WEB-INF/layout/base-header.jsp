@@ -9,27 +9,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="stylesheet" type="text/css" href="/css/reset.css?v=0.20" />
-<link rel="stylesheet" type="text/css" href="/css/font.css?v=0.20" />
-<link rel="stylesheet" type="text/css" href="/css/layout.css?v=0.20" />
-<link rel="stylesheet" type="text/css" href="/css/style.css?v=0.20" />
-<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css?v=0.20" />
-<link rel="stylesheet" type="text/css" href='/css/fullcalendar.min.css?v=0.20' /><!-- fullcalendar css -->
-<link rel="stylesheet" type="text/css" href='/css/Chart.min.css?v=0.20' /><!-- chart css -->
-<link rel="stylesheet" type="text/css" href='/css/swiper.min.css?v=0.20' />
-<link rel="stylesheet" type="text/css" href='/css/timepicki.css?v=0.20' />
-<link rel="stylesheet" type="text/css" href='/css/jquery-ui-timepicker.css?v=0.20' />
-<script src="/js/jquery-3.6.0.min.js?v=0.20"></script>
-<script src="/js/jquery.validate.min.js?v=0.20"></script>
-<script src="/js/jquery-ui.min.js?v=0.20"></script>
-<script src="/js/common.js?v=0.20"></script>
-<script src="/js/popup.js?v=0.20"></script>
-<script src="/js/moment.min.js?v=0.20"></script><!-- moment.js -->
-<script src="/js/fullcalendar.min.js?v=0.20"></script><!-- fullcalendar.js -->
-<script src="/js/Chart.min.js?v=0.20"></script><!-- char.js -->
-<script src="/js/progressbar.min.js?v=0.20"></script><!-- progressbar.js -->
-<script src="/js/ckeditor/ckeditor.js?v=0.20"></script>
-<script src="/js/swiper.min.js?v=0.20"></script>
-<script src="/js/timepicki.js?v=0.20"></script>
+<link rel="stylesheet" type="text/css" href="/css/reset.css?v=0.21" />
+<link rel="stylesheet" type="text/css" href="/css/font.css?v=0.21" />
+<link rel="stylesheet" type="text/css" href="/css/layout.css?v=0.21" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=0.21" />
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css?v=0.21" />
+<link rel="stylesheet" type="text/css" href='/css/fullcalendar.min.css?v=0.21' /><!-- fullcalendar css -->
+<link rel="stylesheet" type="text/css" href='/css/Chart.min.css?v=0.21' /><!-- chart css -->
+<link rel="stylesheet" type="text/css" href='/css/swiper.min.css?v=0.21' />
+<link rel="stylesheet" type="text/css" href='/css/timepicki.css?v=0.21' />
+<link rel="stylesheet" type="text/css" href='/css/jquery-ui-timepicker.css?v=0.21' />
+<script src="/js/jquery-3.6.0.min.js?v=0.21"></script>
+<script src="/js/jquery.validate.min.js?v=0.21"></script>
+<script src="/js/jquery-ui.min.js?v=0.21"></script>
+<script src="/js/common.js?v=0.21"></script>
+<script src="/js/popup.js?v=0.21"></script>
+<script src="/js/moment.min.js?v=0.21"></script><!-- moment.js -->
+<script src="/js/fullcalendar.min.js?v=0.21"></script><!-- fullcalendar.js -->
+<script src="/js/Chart.min.js?v=0.21"></script><!-- char.js -->
+<script src="/js/progressbar.min.js?v=0.21"></script><!-- progressbar.js -->
+<script src="/js/ckeditor/ckeditor.js?v=0.21"></script>
+<script src="/js/swiper.min.js?v=0.21"></script>
+<script src="/js/timepicki.js?v=0.21"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 

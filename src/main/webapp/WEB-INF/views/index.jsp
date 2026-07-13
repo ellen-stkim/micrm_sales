@@ -24,7 +24,7 @@
     <meta name="csrfparameterName" content="${_csrf.parameterName}">
     <meta name="csrfHeaderName" content="${_csrf.headerName}">
     <tiles:insertAttribute name="head"/>
-    <link rel="stylesheet" type="text/css" href="/css/login.css?v=0.20"/>
+    <link rel="stylesheet" type="text/css" href="/css/login.css?v=0.21"/>
 </head>
 <body>
 <div class="wrap" style="padding-left: 0">
