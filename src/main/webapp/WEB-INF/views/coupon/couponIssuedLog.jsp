@@ -9,7 +9,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="/WEB-INF/tlds/Page.tld" prefix="ui" %>
 <script src="/js/jquery-ui-timepicker.js"></script>
-<script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js?v=0.19"></script>
+<script type="text/javascript" charset="utf-8" src="/js/mcdonalds_coupon.js?v=0.20"></script>
 <div class="wrap mcdonald">
     <h3 class="page_title">COUPON</h3>
     <form:form id="searchCouponIssuedLogForm" name="searchCouponIssuedLogForm" onsubmit="return false" >
