@@ -457,7 +457,7 @@
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <div id="prev_ft_wide_lst_btn" style="display:flex; gap:8px; align-items:center; padding:12px 15px; border-top:1px solid #ededed;"></div>
+                                                    <div id="prev_ft_wide_lst_btn" style="display:flex; gap:8px; align-items:center; padding:12px 15px;"></div>
                                                 </div>
                                             </div>
                                         </div>

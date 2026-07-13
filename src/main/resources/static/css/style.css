@@ -9297,7 +9297,8 @@ input::placeholder {
 
 .kakao_wide_lst_main_div {
     padding: 2px 8px 8px;
-    margin: 0 0 16px;
+    margin: 0;
+    border-bottom: 1px solid #ededed;
 }
 
 .kakao_wide_lst_ul {

@@ -161,7 +161,7 @@
                                         </ul>
                                     </div>
                                     <c:if test="${not empty content.kko_btn_url or not empty content.kko_btn_url2}">
-                                        <div style="display:flex;gap:8px;align-items:center;padding:12px 15px;border-top:1px solid #ededed;">
+                                        <div style="display:flex;gap:8px;align-items:center;padding:12px 15px;">
                                             <c:if test="${not empty content.kko_btn_url}">
                                                 <a href="${content.kko_btn_url}" target="_blank" rel="noopener" class="kakao_link" style="display:block;width:100%;height:37px;line-height:35px;background:#f2f2f2;font-size:12px;text-align:center;margin:0;outline:none;border-radius:5px;">${content.kko_btn_nm}</a>
                                             </c:if>

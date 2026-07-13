@@ -694,7 +694,7 @@
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <div id="prev_ft_wide_lst_btn" style="display:flex; gap:8px; align-items:center; padding:12px 15px; border-top:1px solid #ededed;">
+                                                    <div id="prev_ft_wide_lst_btn" style="display:flex; gap:8px; align-items:center; padding:12px 15px;">
                                                         <c:if test="${fn:trim(list[0].kko_btn_nm) != ''}">
                                                             <a href="${list[0].kko_btn_url}" class="kakao_link" target="_blank" rel="noopener">${list[0].kko_btn_nm}</a>
                                                         </c:if>
