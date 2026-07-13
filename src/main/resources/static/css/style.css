@@ -9376,6 +9376,7 @@ input::placeholder {
     height: 41px;
     display: inline;
     vertical-align: middle;
+    white-space: pre-line;
 }
 
 .kakao_wide_lst_li {
@@ -9428,6 +9429,7 @@ input::placeholder {
     height: 41px;
     display: table-cell;
     vertical-align: middle;
+    white-space: pre-line;
 }
 
 .swiper-container {
