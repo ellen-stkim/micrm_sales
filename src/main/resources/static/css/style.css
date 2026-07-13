@@ -9355,6 +9355,27 @@ input::placeholder {
     text-decoration: none;
 }
 
+/* 와이드 리스트 메인 이미지: 비율 유지하며 잘림 없이 전체 노출 */
+.kakao_wide_lst_li_first_a img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+/* 와이드 리스트 미리보기 버튼: 실제 수신처럼 가로로 균등하게 꽉 차게 */
+#prev_ft_wide_lst_btn .kakao_link {
+    flex: 1 1 0;
+    width: auto;
+    margin: 0;
+}
+/* 썸네일: 작은 영역이라 비율 유지하며 채움 */
+.kakao_wide_lst_li_a img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .kakao_wide_lst_li_first_p {
     color: rgb(255, 255, 255);
     padding: 0;
