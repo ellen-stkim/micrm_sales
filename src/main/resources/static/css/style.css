@@ -9296,9 +9296,8 @@ input::placeholder {
 }
 
 .kakao_wide_lst_main_div {
-    padding: 2px 8px 12px;
+    padding: 2px 8px 8px;
     margin: 0;
-    border-bottom: 1px solid #d0d0d0;
 }
 
 .kakao_wide_lst_ul {
@@ -9373,7 +9372,7 @@ input::placeholder {
 .kakao_wide_lst_li_a img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     display: block;
 }
 
@@ -9423,7 +9422,7 @@ input::placeholder {
 }
 
 .kakao_wide_lst_li_a {
-    height: 48px;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0);
     text-align: center;
     border-radius: 3px;
