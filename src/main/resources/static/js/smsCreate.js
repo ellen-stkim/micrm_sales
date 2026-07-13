@@ -164,7 +164,7 @@ let smsCreate = {
             }
 
             if(type){
-                $("#" + type).attr('src', link);
+                $("#" + type).attr('href', linkVal);
             }
         }else{
             return false;
@@ -854,6 +854,11 @@ let kkoCreate = {
         if (parts.length > 2) {
             el.value = parts[0] + '\n' + parts.slice(1).join('');
         }
+    }
+    // 와이드 리스트 항목 링크: 입력 즉시(실시간) 프리뷰 <a> href 반영
+    , wideLinkLive: function (input, aId) {
+        const v = (input.value || '').trim();
+        $("#" + aId).attr('href', v ? v : '#none');
     }
     , _toggleBrandFaPriceStrike: function (idx) {
         const $priceLabel = $("#brandFaPrice" + idx);

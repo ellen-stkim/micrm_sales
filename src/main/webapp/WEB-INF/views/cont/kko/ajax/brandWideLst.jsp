@@ -49,13 +49,13 @@
         <div class="row flex_box" style="width: 100%;">
           <div class="th">Pc 링크</div>
           <div class="td flex_box">
-            <input type="text" name="kkoItemUrlLstPc${i}" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" onblur="smsCreate.imageLinkAdd(this, '${prevId}');" value="${list[0]['kkoItemUrlLstPc' += i]}"/>
+            <input type="text" name="kkoItemUrlLstPc${i}" class="txt_input en_font kakao_btn_linkPc" placeholder="URL 입력 (http:// 또는 https://필수입력)" oninput="kkoCreate.wideLinkLive(this, '${prevId}');" onblur="smsCreate.imageLinkAdd(this, '${prevId}');" value="${list[0]['kkoItemUrlLstPc' += i]}"/>
           </div>
         </div>
         <div class="row flex_box" style="width: 100%;">
           <div class="th">Mobile 링크</div>
           <div class="td flex_box">
-            <input type="text" name="kkoItemUrlLstMo${i}" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" onblur="smsCreate.imageLinkAdd(this, '${prevId}');" value="${list[0]['kkoItemUrlLstMo' += i]}"/>
+            <input type="text" name="kkoItemUrlLstMo${i}" class="txt_input en_font kakao_btn_linkMo" placeholder="URL 입력 (http:// 또는 https://필수입력)" oninput="kkoCreate.wideLinkLive(this, '${prevId}');" onblur="smsCreate.imageLinkAdd(this, '${prevId}');" value="${list[0]['kkoItemUrlLstMo' += i]}"/>
           </div>
         </div>
       </div>
