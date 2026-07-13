@@ -9277,8 +9277,8 @@ input::placeholder {
     margin: 0 0 7px;
     display: block;
     height: 26px;
-    padding: 5px 0 0;
-    text-align: center;
+    padding: 5px 0 0 4px;
+    text-align: left;
 }
 
 .kakao_wide_lst_title {
@@ -9297,7 +9297,7 @@ input::placeholder {
 
 .kakao_wide_lst_main_div {
     padding: 2px 8px 8px;
-    margin: 0;
+    margin: 0 0 40px;
 }
 
 .kakao_wide_lst_ul {
@@ -9319,7 +9319,7 @@ input::placeholder {
 
 .kakao_wide_lst_li_first_div {
     width: 240px;
-    height: 120px;
+    height: 150px;
     margin: 0;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 3px;
@@ -9343,7 +9343,7 @@ input::placeholder {
 }
 
 .kakao_wide_lst_li_first_a {
-    height: 118px;
+    height: 148px;
     background-color: rgba(0, 0, 0, 0);
     text-align: center;
     border-radius: 3px;
@@ -9409,8 +9409,8 @@ input::placeholder {
 
 .kakao_wide_lst_li_div {
     margin: 0 1px;
-    width: 41px;
-    height: 41px;
+    width: 48px;
+    height: 48px;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 3px;
     box-sizing: border-box;
@@ -9422,7 +9422,7 @@ input::placeholder {
 }
 
 .kakao_wide_lst_li_a {
-    height: 41px;
+    height: 48px;
     background-color: rgba(0, 0, 0, 0);
     text-align: center;
     border-radius: 3px;
@@ -9447,7 +9447,7 @@ input::placeholder {
 .kakao_wide_lst_li_span {
     color: rgb(25 ,25 ,25);
     font-weight: 400;
-    height: 41px;
+    height: 48px;
     display: table-cell;
     vertical-align: middle;
     white-space: pre-line;
