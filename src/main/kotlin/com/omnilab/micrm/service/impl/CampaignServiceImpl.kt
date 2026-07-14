@@ -113,13 +113,6 @@ class CampaignServiceImpl : com.omnilab.micrm.service.CampaignService {
         val searchDto = Tblmicp_programDto(dto.pro_id)
         searchDto.usr_grp_cd = usrGrpCd
 
-        /*
-        val programDto = campaignDao.sel_tblmicp_programOne(searchDto)
-        map["programDto"] = programDto
-        if(programDto.pro_tg_tp == "TG02"){
-            map["targetDto"] = campaignDao.sel_tblmi_traget_grp(Tblmi_target_grpDto(programDto.pro_tg_id?.toInt(), usr_grp_cd, null))
-        }*/
-
         val contMstDto = campaignDao.sel_camp_cont_mst(Tblmicp_cont_mstDto(dto.cont_id, usrGrpCd, null))
         val list = campaignDao.sel_ContentsList(Contents_searchDto(contMstDto!!.cont_seq))
         if(list.isNotEmpty()) {

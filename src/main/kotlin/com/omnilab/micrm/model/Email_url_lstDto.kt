@@ -1,9 +1,5 @@
 package com.omnilab.micrm.model
 
-import org.apache.ibatis.type.Alias
-import org.springframework.web.multipart.MultipartFile
-import java.io.Serializable
-
 class Email_url_lstDto {
 
     var url_tag:Array<String>? = null

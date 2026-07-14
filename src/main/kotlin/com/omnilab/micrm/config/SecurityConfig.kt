@@ -13,12 +13,10 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.annotation.web.configurers.*
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CsrfFilter
 import org.springframework.security.web.firewall.StrictHttpFirewall
 import org.springframework.web.filter.CharacterEncodingFilter
@@ -105,16 +103,6 @@ class SecurityConfig(private val loginSuccessHandler: LoginSuccessHandler) {
                     .authenticationEntryPoint(authenticationhandler)
                     .accessDeniedHandler(authenticationhandler)
             }
-            // remember me 설정
-            /*
-            .rememberMe { rememberMe: RememberMeConfigurer<HttpSecurity> ->
-                rememberMe
-                    .key("micrm")
-                    .rememberMeParameter("remember_me")
-                    .rememberMeCookieName("MICRMRE")
-                    .tokenValiditySeconds(864000)
-            }
-            */
             // session
             .sessionManagement { sessionManagement: SessionManagementConfigurer<HttpSecurity> ->
                 sessionManagement
@@ -141,12 +129,5 @@ class SecurityConfig(private val loginSuccessHandler: LoginSuccessHandler) {
         registration.setDispatcherTypes(EnumSet.allOf(DispatcherType::class.java))
         return registration
     }
-    
-    /*
-    @Bean
-    fun loginHandler(): LoginSuccessHandler {
-        return LoginSuccessHandler()
-    }
-    */
 
 }

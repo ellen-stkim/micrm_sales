@@ -1090,21 +1090,6 @@ class MobileContentServiceImpl : ContentService {
                         tblmiContLstdto.cont_body = contentListCreatedto.rcs_body
                     }
                     // RCS 가로형 서비스 중단으로 인한 삭제 처리
-                    /*else if (rcsFormatType.equals("horizontal")) {
-                        if (rcsMsgType.equals("left")) {
-
-                            tblmiContLstdto.msg_tp = "DMCH209"
-                        } else if (rcsMsgType.equals("right")) {
-                            tblmiContLstdto.msg_tp = "DMCH210"
-                        }
-
-                        val jsonBody = JSONObject()
-                        jsonBody["title"] = contentListCreatedto.cont_sub_list?.get(i)
-                        jsonBody["description"] = contentListCreatedto.rcs_body
-                        tblmiContLstdto.cont_body = jsonBody.toString().replace("\\r\\n","\\\\r\\\\n")
-                        tblmiContLstdto.img_cd_1 = contentListCreatedto.horizonImg
-
-                    }*/
                     "vertical" -> {
                         // RCS 세로형의 경우
                         if (rcsMsgType == "tall") {
@@ -1254,15 +1239,6 @@ class MobileContentServiceImpl : ContentService {
                     insertContentUrl("a", contentListCreatedto.mms_imgurl!!, "mmsImg001", lastSeq!!)
                 }
 
-                /*if (!CommonUtils.isEmptyObject(contentListCreatedto.sms_trackinglink)) {
-                    val contUrlDto: Tblmi_cont_url_lstDto = Tblmi_cont_url_lstDto()
-                    contUrlDto.url_tag = "a"
-                    contUrlDto.url = contentListCreatedto.sms_trackinglink
-                    contUrlDto.url_id = "smsTrk001"
-                    contUrlDto.cont_lst_cd = lastSeq
-                    contentDao.insertContentUrl(contUrlDto)
-                }
-*/
                 val url_sms_body = contentListCreatedto.sms_body
 
                 if (url_sms_body?.contains("{{") == true) {
@@ -1691,55 +1667,6 @@ class MobileContentServiceImpl : ContentService {
                             dto1.btnType?.add(BtnValueUtils.latitude)
                         }
                     }
-
-
-                    /* if (!CommonUtils.isEmptyObject(jsonDataMap[BtnValueUtils.requestLocationPush])) {
-                         // 현재 위치 버튼
-                          logger.error("현재위치");
-                         dto.btnType?.add(BtnValueUtils.requestLocationPush)
-                         dto.btnData?.add(listOf(""))
-                         dto.btnText?.add(displayText.toString()
-                                 .replace("\"", ""))
-
-                     } else {
-                         logger.error("현재 위치 아님");
-                         // fallbackUrl
-                         val fallbackUrl =
-                                 (jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                         ?.get(BtnValueUtils.fallbackUrl)
-                                         .toString()
-
-                         // 좌표 입력과 쿼리 입력 여부의 차이는 location 하위의 query 여부이다
-                         val location =
-                                 gson?.fromJson((jsonDataMap[BtnValueUtils.showLocation] as? MutableMap<*, *>)
-                                         ?.get(BtnValueUtils.location)
-                                         .toString(), MutableMap::class.java)
-
-                         if (!CommonUtils.isEmptyObject(location[BtnValueUtils.query])) {
-                             // 좌표 쿼리가 존재하는 Json 버튼 데이터
-                             val query = location[BtnValueUtils.query].toString()
-                             // logger.error("좌표 쿼리 존재1 " + query);
-                             dto.btnData?.add(listOf(query, fallbackUrl))
-                             dto.btnText?.add(displayText.toString()
-                                     .replace("\"", ""))
-                             dto.btnType?.add(BtnValueUtils.query)
-
-                         } else {
-                             // 좌표 쿼리가 존재하지 않는 Json 버튼 데이터
-                             val latitude = location[BtnValueUtils.latitude].toString()
-                             val longitude = location[BtnValueUtils.longitude].toString()
-                             val label = location[BtnValueUtils.label].toString()
-
-                             logger.error("좌표 쿼리 존재 X " + latitude);
-                             logger.error("좌표 쿼리 존재 X " + longitude);
-                             logger.error("좌표 쿼리 존재 X " + label);
-
-                             dto.btnData?.add(listOf(latitude, longitude, label, fallbackUrl))
-                             dto.btnText?.add(displayText.toString()
-                                     .replace("\"", ""))
-                             dto.btnType?.add(BtnValueUtils.latitude)
-                         }
-                     }*/
 
                 } else if (!CommonUtils.isEmptyObject(actionObj?.get(BtnValueUtils.calendarAction))) {
                     val dataJsonObj = actionObj?.get(BtnValueUtils.calendarAction)

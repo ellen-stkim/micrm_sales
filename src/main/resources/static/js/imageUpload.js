@@ -507,11 +507,6 @@ function lcm(minNum, maxNum) {
     return minNum * maxNum / gcd(minNum, maxNum);
 }
 
-//새 이미지 파일 업로드 팝업 open function
-function uploadPopup() {
-    $('.uploadPopup').addClass('active');
-}
-
 // RCS 가로형 이미지 유효성 체크 function
 function horizontal(image){
     let file = $(image)[0].files[0];

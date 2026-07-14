@@ -3,8 +3,6 @@ package com.omnilab.micrm.task.Impl
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.GroupUsr_SearchDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.repository.CampaignDao
-import com.omnilab.micrm.repository.CommonDao
 import com.omnilab.micrm.repository.MemberDao
 import com.omnilab.micrm.service.*
 import com.omnilab.micrm.task.ThreadPool
@@ -31,17 +29,6 @@ class ThreadPoolImpl : ThreadPool {
     @Autowired
     @Qualifier("MemberDaoImpl")
     private lateinit var memberDao: MemberDao
-
-    @Autowired
-    private lateinit var commonService: CommonService
-
-    @Autowired
-    @Qualifier("CampaignDaoImpl")
-    private lateinit var campaignDao: CampaignDao
-
-    @Autowired
-    @Qualifier("CommonDaoImpl")
-    private lateinit var commonDao: CommonDao
 
     // detailTask 스케 줄러 처리
     override fun insertDetailTargetTask(file: MultipartFile, dto: Tblmi_group_usrDto) {

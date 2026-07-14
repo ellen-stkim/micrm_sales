@@ -5,7 +5,6 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.ContentDao
-import com.omnilab.micrm.repository.MemberDao
 import com.omnilab.micrm.service.ContentService
 import com.omnilab.micrm.service.ImgParsing
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
@@ -20,7 +19,6 @@ import java.io.File
 import java.io.IOException
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 
 @Service("EmailContentServiceImpl")
 class EmailContentServiceImpl : ContentService {
@@ -33,10 +31,6 @@ class EmailContentServiceImpl : ContentService {
     @Autowired
     @Qualifier("ContentDaoImpl")
     private lateinit var contentDao: ContentDao
-
-    @Autowired
-    @Qualifier("MemberDaoImpl")
-    private lateinit var memberDao: MemberDao
 
     @Autowired
     private val img: ImgParsing? = null

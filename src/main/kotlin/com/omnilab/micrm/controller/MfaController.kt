@@ -1,14 +1,8 @@
 package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.model.table.Tblmi_usrDto
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.MfaService
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -19,8 +13,6 @@ import javax.servlet.http.HttpSession
 
 @Controller
 class MfaController {
-
-    private val logger = LoggerFactory.getLogger(MfaController::class.java)
 
     @Autowired
     private lateinit var mfaService: MfaService

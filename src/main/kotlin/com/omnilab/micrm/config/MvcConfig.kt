@@ -100,16 +100,6 @@ class MvcConfig : WebMvcConfigurer {
         return filterRegistrationBean
     }
 
-    /*
-    @Bean //사이트 메쉬 필러 등록
-    fun siteMeshFilter(): FilterRegistrationBean<SiteMeshFilter>? {
-        val filterRegistrationBean: FilterRegistrationBean<SiteMeshFilter> = FilterRegistrationBean()
-        filterRegistrationBean.filter = SiteMeshFilter()
-        filterRegistrationBean.order = 3
-        return filterRegistrationBean
-    }
-    */
-
     @Bean //DispatcherServlet
     fun dispatcherServlet(): DispatcherServlet {
         val ds = DispatcherServlet()

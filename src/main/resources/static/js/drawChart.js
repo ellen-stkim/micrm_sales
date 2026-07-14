@@ -147,54 +147,6 @@ function drawComboChart(targetDiv, chartData) {
 
 
 /* =========================
-drawHorizChart
-========================= */
-function drawHorizChart(targetDiv, chartData) {
-    var parentDiv = $('#' + targetDiv).parent();
-    parentDiv.children('iframe').remove();
-    parentDiv.children('canvas').remove();
-
-    var canvas = document.createElement('canvas');
-    canvas.id = targetDiv;
-    parentDiv.append(canvas);
-
-    var ctx = document.getElementById(targetDiv).getContext("2d");
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: chartData,
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: { enabled: false }
-            },
-            datasets: {
-                bar: {
-                    grouped: true
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    grid: { display: false },
-                    ticks: { display: false },
-                    stacked: false
-                },
-                y: {
-                    display: true,
-                    grid: { display: false },
-                    ticks: { display: false },
-                    stacked: false
-                }
-            }
-        }
-    });
-}
-
-
-/* =========================
 랜덤값
 ========================= */
 window.randomScalingFactor = function () {

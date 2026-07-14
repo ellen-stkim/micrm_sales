@@ -46,10 +46,6 @@ class ContentController  {
     lateinit var sysSettingService: SysSettingService;
 
     @Autowired
-    @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignService : CampaignService
-
-    @Autowired
     @Qualifier("KkoMsgServiceImpl")
     private lateinit var kkoMsgService: KkoMsgService
 
@@ -1386,14 +1382,6 @@ class ContentController  {
      * @Method Decription : 알림톡 템플릿 삭제
      * @title : 알림톡 템플릿 삭제
      */
-    /*@ResponseBody
-    @PostMapping("/kko/removeTmpl.service")
-    fun removeTmpl(req: HttpServletRequest, rep: HttpServletResponse, session: HttpSession
-                      , @RequestBody dto : Kko_at_tmplDto, principal: Principal): Any? {
-        // 사용 x
-       return kkoMsgService.removeTmpl(searchDto,principal.name)
-    }
-*/
 
 
 }

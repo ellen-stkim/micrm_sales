@@ -1,6 +1,5 @@
 package com.omnilab.micrm.controller
 
-import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.service.MemberService

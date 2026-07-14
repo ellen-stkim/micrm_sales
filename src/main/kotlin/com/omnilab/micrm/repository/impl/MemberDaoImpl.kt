@@ -5,23 +5,17 @@ import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.GroupUsr_SearchDto
-import com.omnilab.micrm.model.Sup_searchDto
 import com.omnilab.micrm.model.table.Tblmi_group_listDto
 import com.omnilab.micrm.model.table.Tblmi_group_usrDto
-import com.omnilab.micrm.model.table.Tblmi_supDto
 import com.omnilab.micrm.repository.MemberDao
 import com.omnilab.micrm.repository.MicrmUserDao
 import com.omnilab.micrm.repository.WorkDao
 import com.omnilab.micrm.service.CommonService
-import com.omnilab.micrm.service.WorkService
-import org.apache.ibatis.session.ResultContext
-import org.apache.ibatis.session.ResultHandler
 import org.apache.ibatis.session.SqlSession
 import org.apache.poi.ss.usermodel.Workbook
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.stereotype.Repository
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
@@ -49,10 +43,6 @@ class MemberDaoImpl : MemberDao {
     @Qualifier("MicrmUserDaoImpl")
     private lateinit var micrmUserDao: MicrmUserDao
 
-    @Autowired
-    @Qualifier("taskExecutor")
-    private lateinit var taskExecutor: ThreadPoolTaskExecutor
-
     override fun insertGroup(groupListDto: Tblmi_group_listDto) {
         sqlSession.insert("insertGroupList", groupListDto)
     }
@@ -72,25 +62,6 @@ class MemberDaoImpl : MemberDao {
             sqlSession.insert("insertGrpUser", paramMap)
         }
     }
-
-    /*fun insertGroupUser(groupUserList: List<Tblmi_group_usrDto>) {
-        // 대용량 처리를 위한 배치 처리 Insert
-
-        val splitNum = 1000 // 1000 개씩 끊어서 insert
-        val roopNum = Math.ceil((groupUserList.size.toFloat() / splitNum).toDouble()).toInt()
-        var lastNum: Int
-
-        var paramMap: MutableMap<String, List<Tblmi_group_usrDto>> = HashMap<String, List<Tblmi_group_usrDto>>()
-
-        for (i in 0 until roopNum) {
-            lastNum = splitNum * (i + 1)
-            if (lastNum > groupUserList.size) lastNum = groupUserList.size
-            logger.warn(lastNum.toString() + " / " + groupUserList.size)
-            paramMap["groupUserList"] = groupUserList.subList(i * splitNum, lastNum)
-            sqlSession.insert("insertGrpUser", paramMap)
-        }
-
-    }*/
 
     override fun updateGroupList(groupListDto: Tblmi_group_listDto) {
         sqlSession.update("updateGrpList", groupListDto)
@@ -170,15 +141,6 @@ class MemberDaoImpl : MemberDao {
                         }
 
                         dto.usr_nm = CommonUtils.Excel_cell_value(row.getCell(1))?.trim()
-                        /*if (dto.usr_nm == null || !Pattern.matches("^[a-zA-Z0-9가-힣\\s!@()/_,*]*$", dto.usr_nm)) {
-                            *//**
-                             * 1. 회원 명은 알파벳 ,숫자 ,공백,숫자, 한글 (자음, 모음만은 X ) 만 허용 한다 (특수 문자 허용 X)
-                             * 2. 회원명에 null은 허옹햐지 않는다.
-                             *//*
-                            errorCnt++;
-                            errorMessage = (idx + 1).toString() + " 행의 2번째 열 회원명을 확인해 주세요"
-                            break;
-                        }*/
 
                         if (dto.usr_nm == null) {
                             /**
@@ -267,26 +229,6 @@ class MemberDaoImpl : MemberDao {
                 // 엑셀 데이터에 에러가 존재 한다면 에러 리턴
 
                 // 오류 상태 저장
-                //val failWorkDto = Tblmi_workDto()
-                /*failWorkDto.seq = workSeq
-                failWorkDto.upd_id = dto.reg_id
-                failWorkDto.work_stat = "2"
-                failWorkDto.work_msg = " 파일명 : " + fileNm + "<br>" + " 그룹 명 : " + dto.grp_nm + "<br>" + "오류 결과 : " + "서버 에러 " + errorMessage
-                workDao.updateWorkHistory(failWorkDto)
-
-                // 오류 이메일 전송
-                val usrDto = Tblmi_usrDto()
-                usrDto.usr_id = dto.reg_id
-
-                val emailUser = micrmUserDao.sel_tblmi_usr(usrDto)
-
-                val sendTo = emailUser.usr_email.toString()
-                val sendToNm = emailUser.usr_nm.toString()
-                val sendFrom = UsefulUtils.adminEmail();
-                val subject = "[MICRM] 업로드 생성 결과"
-                val body = failWorkDto.work_msg!!
-                commonService.sendMail(sendTo, sendToNm, sendFrom, subject, body);*/
-
                 logger.error("Excel Data Error")
                 throw Exception()
             }
@@ -311,13 +253,6 @@ class MemberDaoImpl : MemberDao {
             logger.error("Catch Server Error : {}" , e.printStackTrace())
 
             // 오류 상태 저장
-            /*val failWorkDto = Tblmi_workDto()
-            failWorkDto.seq = workSeq
-            failWorkDto.upd_id = dto.reg_id
-            failWorkDto.work_stat = "2"
-            failWorkDto.work_msg = " 파일명 : " + fileNm + "<br>" + " 그룹 명 : " + dto.grp_nm + "<br>" + "오류 결과 : " + "서버 에러 " + errorMessage
-            workDao.updateWorkHistory(failWorkDto)*/
-
             failWorkDto.work_msg = " 파일명 : " + fileNm + "<br>" + " 그룹 명 : " + dto.grp_nm + "<br>" + "오류 결과 : " + "서버 에러 " + errorMessage
             logger.error("errorMessage : " + errorMessage)
 

@@ -3,7 +3,6 @@ package com.omnilab.micrm.model
 import com.omnilab.micrm.model.table.Tblmite_target_lst
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
-import org.springframework.web.multipart.MultipartFile
 
 class TestTarget_SearchDto : Tblmite_target_lst() {
 

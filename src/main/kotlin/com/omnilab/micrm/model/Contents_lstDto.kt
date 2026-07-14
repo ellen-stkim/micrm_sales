@@ -2,7 +2,6 @@ package com.omnilab.micrm.model
 
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
-import com.omnilab.micrm.model.table.Tblmi_cont_mstDto
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias

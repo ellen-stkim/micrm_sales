@@ -1,6 +1,5 @@
 package com.omnilab.micrm.controller
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.GsonBuilder
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
@@ -18,7 +17,6 @@ import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.dao.DuplicateKeyException
@@ -89,9 +87,6 @@ class SalesforceController {
     @Autowired
     @Qualifier("CouponIssueServiceImpl")
     private lateinit var couponIssueService: CouponIssueService
-    
-    @Value("\${upload.content}")
-    private val filePath: String? = null
 
     fun getUsrGrpCd(usrGrpCd: String): Tblmi_comm_cdDto?{
         val dto = Tblmi_comm_cdDto("USR_GRP_CD", usrGrpCd)
@@ -724,24 +719,6 @@ class SalesforceController {
             return HashMap()
         }
     }
-/*
-    *//**
-     * @Method Name  : mappingLst
-     * @Since    : 2022. 08. 04.
-     * @author   : SSW
-     * @param    : dto: SalesforceDto
-     * @return   : Map<String, Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 사용자 조회
-     * @title : 사용자 조회
-     *//*
-    @ResponseBody
-    @PostMapping("/{usr_cd}/mappingLst.ajax")
-    fun mappingLst(@PathVariable(value = "usr_cd") usr_cd: String, @ModelAttribute dto: SalesforceDto, session: HttpSession): Map<String, Any> {
-        return salesforceService.mappingLst(dto)
-    }*/
 
     @ResponseBody
     @PostMapping("/{usr_cd}/save.service")
@@ -756,13 +733,6 @@ class SalesforceController {
             dto.inta_ve = data["interactionVersion"].toString()
             val save = salesforceDao.upd_tblmi_cont_mst(dto)
             ResponseEntity(null, HttpStatus.OK)
-            /*
-            return if(save == 1){
-                ResponseEntity(null, HttpStatus.OK)
-            }else{
-                ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
-            }
-             */
         }else{
             ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
         }

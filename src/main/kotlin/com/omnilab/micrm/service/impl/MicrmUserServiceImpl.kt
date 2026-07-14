@@ -4,7 +4,6 @@ import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.table.Tblmi_usrDto
 import com.omnilab.micrm.repository.MicrmUserDao
-import com.omnilab.micrm.service.CommonService
 import com.omnilab.micrm.service.MicrmUserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

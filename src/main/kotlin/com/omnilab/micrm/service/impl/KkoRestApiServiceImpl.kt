@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
-import com.omnilab.micrm.repository.KkoAtTmplDao
 import com.omnilab.micrm.common.FilenameAwareInputStreamResource
 import com.omnilab.micrm.config.adapter.EmptyStringTypeAdapterFactory
 import com.omnilab.micrm.model.ApiResponse
@@ -48,11 +47,7 @@ class KkoRestApiServiceImpl : KkoRestApiService {
     @Autowired
     @Qualifier("restTemplate")
     private lateinit var restTemplate: RestTemplate
-    
-    @Autowired
-    @Qualifier("KkoAtTmplDaoImpl")
-    private lateinit var kkoAtTmplDao: KkoAtTmplDao
-    
+
     val gson = GsonBuilder()
             .registerTypeAdapterFactory(EmptyStringTypeAdapterFactory())
             .create()

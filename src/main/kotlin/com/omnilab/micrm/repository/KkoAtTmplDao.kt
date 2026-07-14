@@ -3,7 +3,6 @@ package com.omnilab.micrm.repository
 import com.omnilab.micrm.model.AtTmpl_searchDto
 import com.omnilab.micrm.model.AtTmpl_viewDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.model.table.kakao.Kko_at_tmplDto
 
 interface KkoAtTmplDao {
     fun selectAtTmplLst(dto: AtTmpl_searchDto): List<AtTmpl_viewDto>

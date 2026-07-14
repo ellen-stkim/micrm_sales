@@ -1,6 +1,5 @@
 package com.omnilab.micrm.model
 
-import com.omnilab.micrm.model.table.Tblmi_usrDto
 import com.omnilab.micrm.model.table.Tblmi_usr_log_hstDto
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle

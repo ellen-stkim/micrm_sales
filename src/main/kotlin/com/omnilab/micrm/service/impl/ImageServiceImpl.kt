@@ -3,7 +3,6 @@ package com.omnilab.micrm.service.impl
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.FileUploadUtils
 import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.Contents_searchDto
 import com.omnilab.micrm.model.Image_searchDto
 import com.omnilab.micrm.model.table.Tblmi_cont_imgDto
 import com.omnilab.micrm.repository.ContentDao
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service
 import org.springframework.util.MimeTypeUtils
 import org.springframework.web.multipart.MultipartFile
 import java.awt.Image
-import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -407,172 +405,4 @@ class ImageServiceImpl : ImageService {
     private fun gcd(a: Int, b: Int): Int {
         return if (b == 0) a else gcd(b, a % b)
     }
-
-    /*
-    override fun mobileUpload(file: MultipartFile, dto: Tblmi_cont_imgDto): Map<String, Any> {
-        var map: MutableMap<String, Any> = hashMapOf()
-        //이미지명 중복 체크 추가.
-        val imgNmCh = getImgNmCh(dto)
-        if(imgNmCh > 0 ){
-            map["imgCheck"] = 0
-            map["imgCheckErr"] = "중복된 이미지명입니다."
-            return map
-        }
-        // 파일 체크
-        val image : BufferedImage = ImageIO.read(file.inputStream)
-        val imageWidth: Int = image.width
-        val imageHeight: Int = image.height
-
-        if(dto.ch_tp == "IMGTP01"){
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE){
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "모바일은 jpg 파일만 업로드 가능 합니다."
-                return map
-            }
-        } else if(dto.ch_tp == "IMGTP12"){ // 브랜드톡 와이드
-            val width = image.width
-            val height = image.height
-
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_PNG_VALUE
-            ) {
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "jpg, png, 파일만 업로드 가능 합니다."
-                return map
-            }
-
-            val maxSize = 5 * 1024 * 1024
-            if (file.size > maxSize) {
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "이미지 용량은 최대 5MB까지 허용됩니다."
-                return map
-            }
-
-            if (width < 500) {
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "이미지 가로는 최소 500px 이상이어야 합니다."
-                return map
-            }
-
-            val ratio = height.toDouble() / width.toDouble()
-            if (ratio < 0.5 || ratio > 1.0) {
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "이미지 비율은 0.5 ≤ 세로/가로 ≤ 1 이어야 합니다."
-                return map
-            }
-        } else{
-            if(file.contentType != MimeTypeUtils.IMAGE_JPEG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_PNG_VALUE
-                && file.contentType != MimeTypeUtils.IMAGE_GIF_VALUE
-            ){
-                map["imgCheck"] = 0
-                map["imgCheckErr"] = "jpg, png, gif 파일만 업로드 가능 합니다."
-                return map
-            }
-        }
-        try {
-            map["imgCheck"] = 1
-            val userInfo = UsefulUtils.sessionUser()
-            val contentFilePath = filePath + "/"+ userInfo.usr_grp_cd
-            map = fileUpload.upload(userInfo.usr_grp_cd!!, file)
-            if(map["uploaded"].toString() == "0"){
-                logger.info("File Upload fail")
-                map["uploaded"] = 0
-                map["message"] = "파일 저장에 실패하였습니다."
-                logger.info("File DB insert fail")
-                return map
-            } else {
-                if(dto.ch_tp != "IMGTP01" && dto.ch_tp != "IMGTP10"){
-                    val fileName = map["file_nm"]
-                    if(image.width < 500 || image.height < 250) {
-                        val newWidth = 500
-                        val newHeight = 500
-                        val ratio: Double
-                        val w: Int
-                        var h: Int
-
-                        if (imageWidth > imageHeight) {
-                            ratio = newWidth.toDouble() / imageWidth.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else if (imageHeight > imageWidth) {
-                            ratio = newHeight.toDouble() / imageHeight.toDouble()
-                            w = (imageWidth * ratio).toInt()
-                            h = (imageHeight * ratio).toInt()
-                        } else {
-                            w = newWidth
-                            h = newHeight
-                        }
-                        if(h < 250){
-                            h = 250
-                        }
-                        val resizeImage = image.getScaledInstance(w, h, Image.SCALE_SMOOTH)
-                        val newImage = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-                        val g = newImage.graphics
-                        g.drawImage(resizeImage, 0, 0, null)
-                        g.dispose()
-                        ImageIO.write(newImage, "jpg", File(FilenameUtils.getFullPath("$contentFilePath/$fileName"), FilenameUtils.getName("$contentFilePath/$fileName")))
-                        resizeImage.flush()
-                        image.flush()
-                        newImage.flush()
-                    }
-                }
-                var resultMap: MutableMap<String, Any>? = null
-                when (dto.ch_tp) {
-                    "IMGTP09" -> {    // 카카오 알림톡 이미지
-                        resultMap = kkoRestApiService.uploadTmplImg(file)
-                    }
-                    "IMGTP10" -> {
-                        resultMap = kkoRestApiService.uploadTmplItemImg(file)
-                    }
-                    "IMGTP03", "IMGTP11" -> {    // 카카오 브랜드톡 이미지
-                        resultMap = kkoRestApiService.uploadFtImg(file, dto.ch_tp!!)
-                    }
-                }
-
-                if(!CommonUtils.isEmptyObject(resultMap)){
-                    if(resultMap!!["result"] as Boolean){
-                        val data: MutableMap<String, Any> = resultMap["data"] as MutableMap<String, Any>
-                        logger.error("aaa {}", data)
-                        if(data["code"] == "API_200"){
-                            dto.kko_img_url = data["image"].toString()
-                        }else if(data["code"] == "0000"){
-                            dto.kko_img_url = (data["data"] as MutableMap<*, *>)["image"].toString()
-                        }else{
-                            map["uploaded"] = 0
-                            map["message"] = "파일 저장에 실패하였습니다."
-                            logger.error("File DB insert fail, {}", data)
-                            return map
-                        }
-                    }else{
-                        map["uploaded"] = 0
-                        map["message"] = "파일 저장에 실패하였습니다."
-                        logger.info("File DB insert fail")
-                        return map
-                    }
-                }
-
-            }
-
-            dto.reg_id = userInfo.usr_id
-            dto.usr_grp_cd = userInfo.usr_grp_cd
-            dto.img_org_nm = map["fileName"].toString()
-            dto.img_file_nm = map["file_nm"].toString()
-            dto.img_url = map["url"].toString()
-            val returnMap = contentUpload(dto)
-            if(returnMap["message"].toString() == "0"){
-                map["uploaded"] = 0
-                map["message"] = "파일 저장에 실패하였습니다."
-                logger.info("File DB insert fail")
-            }
-
-        }catch (e:Exception){
-            map["uploaded"] = 0
-            map["message"] = "파일 저장에 실패하였습니다."
-            logger.info("File DB insert fail")
-            return map
-        }
-        return map
-    }
-     */
 }

@@ -8,10 +8,6 @@ import org.apache.ibatis.session.SqlSessionFactory
 import org.aspectj.lang.annotation.Aspect
 import org.mybatis.spring.SqlSessionFactoryBean
 import org.mybatis.spring.SqlSessionTemplate
-import org.slf4j.LoggerFactory
-import org.springframework.aop.Advisor
-import org.springframework.aop.aspectj.AspectJExpressionPointcut
-import org.springframework.aop.support.DefaultPointcutAdvisor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -19,12 +15,9 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
-import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
-import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.transaction.interceptor.*
-import java.sql.SQLException
 import java.util.*
 import javax.sql.DataSource
 import kotlin.jvm.Throws
@@ -34,8 +27,6 @@ import kotlin.jvm.Throws
 @Configuration
 @EnableTransactionManagement
 internal class DatabaseConfig {
-
-    private val log = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
     private lateinit var applicationContext: ApplicationContext
@@ -80,52 +71,6 @@ internal class DatabaseConfig {
         transactionManager.isGlobalRollbackOnParticipationFailure = false
         return transactionManager
     }
-
-    /*
-    @Bean("txAdvice")
-    fun txAdvice(@Qualifier("transactionManager") transactionManager: DataSourceTransactionManager): TransactionInterceptor {
-        val txAdvice = TransactionInterceptor()
-        val txAttributes = Properties()
-
-        val rollbackRules = ArrayList<RollbackRuleAttribute>()
-        rollbackRules.add(RollbackRuleAttribute(java.lang.Exception::class.java))
-        rollbackRules.add(RollbackRuleAttribute(SQLException::class.java))
-        rollbackRules.add(RollbackRuleAttribute(BadSqlGrammarException::class.java))
-        rollbackRules.add(RollbackRuleAttribute(Exception::class.java))
-
-        val readOnlyAttribute = DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW)
-        readOnlyAttribute.isReadOnly = true
-        readOnlyAttribute.timeout = -1
-
-        val writeAttribute = RuleBasedTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW, rollbackRules)
-        writeAttribute.timeout = -1
-
-        val readOnlyTransactionAttributesDefinition = readOnlyAttribute.toString()
-        val writeTransactionAttributesDefinition = writeAttribute.toString()
-        //log.error("Read Only Attributes :: {}", readOnlyTransactionAttributesDefinition);
-        //log.error("Write Attributes :: {}", writeTransactionAttributesDefinition);
-
-        // read-only
-        txAttributes.setProperty("sel*", readOnlyTransactionAttributesDefinition)
-        txAttributes.setProperty("get*", readOnlyTransactionAttributesDefinition)
-        txAttributes.setProperty("list*", readOnlyTransactionAttributesDefinition)
-        txAttributes.setProperty("count*", readOnlyTransactionAttributesDefinition)
-
-        // write rollback-rule
-        txAttributes.setProperty("*", writeTransactionAttributesDefinition)
-        txAdvice.setTransactionAttributes(txAttributes)
-        txAdvice.transactionManager = transactionManager
-        return txAdvice
-    }
-
-    @Bean
-    fun txAdviceAdvisor(@Qualifier("txAdvice") txAdvice: TransactionInterceptor): Advisor {
-        val pointcut = AspectJExpressionPointcut()
-        pointcut.expression = "execution(* com.omnilab.micrm.service..*.*(..))"
-        //pointcut.expression = "execution(* com.omnilab.micrm.repository..*.*(..))"
-        return DefaultPointcutAdvisor(pointcut, txAdvice)
-    }
-    */
 
     @Bean(name = ["sqlSessionFactory"])
     @Throws(Exception::class)

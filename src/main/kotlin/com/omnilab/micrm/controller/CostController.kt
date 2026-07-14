@@ -3,7 +3,6 @@ package com.omnilab.micrm.controller
 import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SearchSendCostDto
 import com.omnilab.micrm.service.CostReportService
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Controller
@@ -12,13 +11,10 @@ import org.springframework.web.servlet.ModelAndView
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
-import kotlin.math.log
 
 @RequestMapping("/cost")
 @Controller
 class CostController {
-
-    private val logger = LoggerFactory.getLogger(CostController::class.java)
 
     @Autowired
     @Qualifier("CostReportServiceImpl")

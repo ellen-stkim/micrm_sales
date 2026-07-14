@@ -96,8 +96,6 @@ class Content_view_Dto : Tblmi_cont_mstDto() {
     var btnText: MutableList<String>? = mutableListOf()
 
     // 버튼 데이터
-    //var btnData : MutableList<String> ?= mutableListOf()
-
     var btnData: MutableList<List<String>>? = mutableListOf()
 
     // 버튼 타입

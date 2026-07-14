@@ -1,6 +1,5 @@
 package com.omnilab.micrm.model
 
-import com.google.gson.GsonBuilder
 import com.omnilab.micrm.model.table.Tblmi_cont_lstDto
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
@@ -16,9 +15,7 @@ class Content_list_CreateDto : Tblmi_cont_lstDto()  {
     var kko_format_type : String?= null
 
     var cont_nm : String ?= null
-    //var cont_sub: List<String> ?= null
     var cont_sub_list : List<String> ?= null
-    //var send_to : List<String> ?= null
     var send_to_list : List<String> ?= null
 
     var sms_msg_tp :String ?= null  // 문자 종류

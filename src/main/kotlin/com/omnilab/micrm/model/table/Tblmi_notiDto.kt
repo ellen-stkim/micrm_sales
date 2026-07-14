@@ -1,7 +1,6 @@
 package com.omnilab.micrm.model.table
 
 import org.apache.ibatis.type.Alias
-import java.io.Serializable
 
 
 @Alias("Tblmi_notiDto")

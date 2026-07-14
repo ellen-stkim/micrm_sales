@@ -1,6 +1,5 @@
 package com.omnilab.micrm.model.table
 
-import com.omnilab.micrm.model.SendTarget_Dto
 import org.apache.commons.lang3.builder.EqualsBuilder
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle

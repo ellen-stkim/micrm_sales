@@ -23,19 +23,12 @@ class CampaignController {
     val logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
-    @Qualifier("MemberServiceImpl")
-    private lateinit var memberService: MemberService
-
-    @Autowired
     @Qualifier("SysSettingServiceImpl")
     private lateinit var sysSettingService: SysSettingService
 
     @Autowired
     @Qualifier("CampaignServiceImpl")
     private lateinit var campaignServiceImpl: CampaignService
-
-    @Autowired
-    private lateinit var commonService: CommonService
 
     @Autowired
     @Qualifier("ReportServiceImpl")

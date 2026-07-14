@@ -60,9 +60,7 @@ class InterceptorHandler : HandlerInterceptor {
             var detail = "hello, detail"
             when (url) {
                 "/home.mi" -> detail = "공통 기능 : 메인 대시보드 조회";
-//                "/mbr/member.mi" -> detail = "회원관리 : DB 회원 조회";
                 "/mbr/downloadTblmiList.mi" -> detail = "회원관리 : DB 회원 내려받기";
-//                "/mbr/reject.mi" -> detail = "회원관리 : 수신거부 회원 조회";
                 "/mbr/saveTblmiSupForm.ajax" -> detail = "회원관리 : 수신거부 파일 업로드";
                 "/mbr/saveTblmiSupList.ajax" -> detail = "회원관리 : 수신거부 개별 추가";
                 "/mbr/deleteAllTblmiSupList.ajax" -> detail = "회원관리 : 수신거부 회원 전체 삭제";

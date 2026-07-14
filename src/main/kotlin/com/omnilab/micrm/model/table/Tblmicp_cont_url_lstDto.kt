@@ -3,8 +3,6 @@ package com.omnilab.micrm.model.table
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
-import org.springframework.web.multipart.MultipartFile
-import java.io.Serializable
 
 @Alias("Tblmicp_cont_url_lstDto")
 class Tblmicp_cont_url_lstDto: Tblmi_cont_url_lstDto {

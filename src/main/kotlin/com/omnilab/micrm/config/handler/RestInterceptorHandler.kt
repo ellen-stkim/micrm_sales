@@ -1,17 +1,6 @@
 package com.omnilab.micrm.config.handler
 
-import com.omnilab.micrm.common.CommonUtils
 import org.slf4j.LoggerFactory
-
-import org.springframework.security.core.AuthenticationException
-import org.springframework.security.web.AuthenticationEntryPoint
-import org.springframework.security.access.AccessDeniedException
-import org.springframework.security.web.access.AccessDeniedHandler
-
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-
-import com.omnilab.micrm.common.GlobalValues
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor

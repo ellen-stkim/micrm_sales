@@ -5,7 +5,6 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
 import com.omnilab.micrm.model.table.Tblmi_set_lstDto
-import com.omnilab.micrm.service.CampaignService
 import com.omnilab.micrm.service.KkoRestApiService
 import com.omnilab.micrm.service.SysSettingService
 import org.slf4j.LoggerFactory
@@ -826,13 +825,5 @@ class SysSettingController {
     fun getBrandyn(@RequestParam(value = "key") key: String) : Map<String, Any> {
         return kkoRestApiService.checkBrand(key)
     }
-    
-    /*
-    @ResponseBody
-    @PostMapping("/updateBrandYn.ajax")
-    fun getBrandyn(lstDto: Tblmi_set_lstDto) : Map<String, Any> {
-        return kaka.deleteNaverApp(lstDto)
-    }
-     */
-    
+
 }

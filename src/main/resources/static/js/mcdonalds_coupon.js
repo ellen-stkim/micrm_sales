@@ -1,76 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
     const mcWarp = document.querySelector(".wrap.mcdonald");
 
-    //테이블 페이징
-    // const paging = mcWarp.querySelectorAll(".tbl_wrap .paging_wrap .paging li");
-    // if(paging !== null) {
-    //     const btnPagingPrev = mcWarp.querySelector(".tbl_wrap .paging_wrap .btn.prev");
-    //     const btnPagingNext = mcWarp.querySelector(".tbl_wrap .paging_wrap .btn.next");
-    //     let pagingIdx = 0;
-    //     paging.forEach((item, idx) => {
-    //         item.addEventListener("click", () => {
-    //             pagingIdx = idx;
-    //             for (let i = 0; i < paging.length; i++) {
-    //                 paging[i].classList.remove("active");
-    //             }
-    //             if (pagingIdx === 0) {
-    //                 btnPagingPrev.classList.add("disable");
-    //                 btnPagingNext.classList.remove("disable");
-    //             } else if (pagingIdx === paging.length - 1) {
-    //                 btnPagingNext.classList.add("disable");
-    //                 btnPagingPrev.classList.remove("disable");
-    //             } else {
-    //                 btnPagingPrev.classList.remove("disable");
-    //                 btnPagingNext.classList.remove("disable");
-    //             }
-    //             item.classList.add("active");
-    //         });
-    //     });
-    //
-    //     btnPagingPrev.addEventListener("click", () => {
-    //         if (pagingIdx === 0) {
-    //             return false;
-    //         }
-    //         pagingIdx--;
-    //
-    //         if (pagingIdx === 0) {
-    //             btnPagingPrev.classList.add("disable");
-    //             btnPagingNext.classList.remove("disable");
-    //         } else if (pagingIdx === paging.length - 1) {
-    //             btnPagingNext.classList.add("disable");
-    //             btnPagingPrev.classList.remove("disable");
-    //         } else {
-    //             btnPagingPrev.classList.remove("disable");
-    //             btnPagingNext.classList.remove("disable");
-    //         }
-    //         for (let i = 0; i < paging.length; i++) {
-    //             paging[i].classList.remove("active");
-    //         }
-    //         paging[pagingIdx].classList.add("active");
-    //     });
-    //
-    //     btnPagingNext.addEventListener("click", () => {
-    //         if (pagingIdx === paging.length - 1) {
-    //             return false;
-    //         }
-    //         pagingIdx++;
-    //
-    //         if (pagingIdx === 0) {
-    //             btnPagingPrev.classList.add("disable");
-    //             btnPagingNext.classList.remove("disable");
-    //         } else if (pagingIdx === paging.length - 1) {
-    //             btnPagingNext.classList.add("disable");
-    //             btnPagingPrev.classList.remove("disable");
-    //         } else {
-    //             btnPagingPrev.classList.remove("disable");
-    //             btnPagingNext.classList.remove("disable");
-    //         }
-    //         for (let i = 0; i < paging.length; i++) {
-    //             paging[i].classList.remove("active");
-    //         }
-    //         paging[pagingIdx].classList.add("active");
-    //     });
-    // }
     const days = document.querySelectorAll(".input_field.period .part.full .days li");
     days.forEach((item) => {
         item.addEventListener("click", () => {
@@ -206,18 +136,3 @@ const chkNumber =  (input) => {
     }
     return false;
 }
-
-//쿠폰 발급 발행 대상자 전체 삭제
-const resetAllTarget = () => {
-    const targetList = document.querySelectorAll(".input_field.audience .components .add_list li");
-    if (targetList.length !== 0) {
-        targetList.forEach((item) => {
-            item.remove();
-        })
-        const el = document.getElementById('fileInput');
-        const valueInput = el.closest(".file.label").nextElementSibling;
-        valueInput.value = "";
-    } else {
-        return false;
-    }
-};

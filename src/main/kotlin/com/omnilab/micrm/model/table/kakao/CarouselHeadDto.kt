@@ -1,7 +1,6 @@
 package com.omnilab.micrm.model.table.kakao
 
 import com.google.gson.annotations.SerializedName
-import com.omnilab.micrm.model.table.kakao.CommerceDto
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias

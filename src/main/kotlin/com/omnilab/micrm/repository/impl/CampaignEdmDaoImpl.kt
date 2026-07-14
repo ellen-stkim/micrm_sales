@@ -7,7 +7,6 @@ import com.omnilab.micrm.model.table.edm.Camp_send_edm_tableDto
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
 import com.omnilab.micrm.repository.CampaignSendDao
 import org.apache.ibatis.session.ResultContext
 import org.apache.ibatis.session.ResultHandler

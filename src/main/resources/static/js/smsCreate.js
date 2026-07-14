@@ -4,18 +4,6 @@ let smsCreate = {
         let text = new String(textVal);
         let textLength = text.length;
         let count = 0;
-        /*
-        let stringAt;
-        for(let i = 0; i < textLength; i++){
-            stringAt = text.charAt(i);
-            if (escape(stringAt) == '%0D'){}
-            else if (escape(stringAt).length > 4){
-                count += 2;
-            }else{
-                count++;
-            }
-        }
-        */
         count = textLength;
         if(type == 'kakao'){
             let limetCnt = 1000;

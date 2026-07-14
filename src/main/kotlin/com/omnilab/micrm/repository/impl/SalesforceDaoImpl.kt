@@ -49,7 +49,6 @@ class SalesforceDaoImpl: SalesforceDao {
         return if(check == null) {
             sqlSession.insert("ins_tblmicp_cont_mst", dto)
         }else{
-            //sqlSession.update("upd_tblmicp_cont_mst", dto)
             0
         }
     }

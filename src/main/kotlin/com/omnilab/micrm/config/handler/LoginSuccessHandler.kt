@@ -3,17 +3,11 @@ package com.omnilab.micrm.config.handler
 import com.omnilab.micrm.common.GlobalValues
 import com.omnilab.micrm.model.table.Tblmi_usrDto
 import com.omnilab.micrm.service.MfaService
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.web.servlet.server.Session
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache
 import org.springframework.security.web.savedrequest.RequestCache
 import org.springframework.stereotype.Component
-import org.springframework.web.context.support.SpringBeanAutowiringSupport
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -24,11 +18,6 @@ import kotlin.jvm.Throws
 @Component
 class LoginSuccessHandler(private val mfaService: MfaService) : AuthenticationSuccessHandler {
 
-    private val log = LoggerFactory.getLogger(LoginSuccessHandler::class.java)
-    /*
-    @Autowired
-    lateinit var mfaService: MfaService
-    */
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(req: HttpServletRequest, rep: HttpServletResponse, auth: Authentication) {
         val loginDto : Tblmi_usrDto = auth.details as Tblmi_usrDto

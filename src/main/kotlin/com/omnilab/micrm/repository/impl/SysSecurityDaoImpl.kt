@@ -1,8 +1,6 @@
 package com.omnilab.micrm.repository.impl
 
-import com.omnilab.micrm.model.Block_searchDto
 import com.omnilab.micrm.model.UsrHst_searchDto
-import com.omnilab.micrm.model.table.Tblmi_block_lstDto
 import com.omnilab.micrm.model.table.Tblmi_usr_hstDto
 import com.omnilab.micrm.repository.SysSecurityDao
 import org.apache.ibatis.session.SqlSession

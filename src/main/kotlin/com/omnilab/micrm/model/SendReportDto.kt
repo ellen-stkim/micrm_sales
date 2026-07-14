@@ -1,6 +1,5 @@
 package com.omnilab.micrm.model
 
-import com.omnilab.micrm.model.table.Tblmicp_programDto
 import com.omnilab.micrm.model.table.Tblmire_send_hstDto
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle

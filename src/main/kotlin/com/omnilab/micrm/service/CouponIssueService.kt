@@ -1,9 +1,7 @@
 package com.omnilab.micrm.service
 
-import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.CouponIssueDto
 import com.omnilab.micrm.model.table.Tblmicou_coupon_issued_logDto
-import com.omnilab.micrm.model.table.Tblmicp_campaignDto
 import org.springframework.web.multipart.MultipartFile
 
 interface CouponIssueService {

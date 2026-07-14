@@ -1,7 +1,6 @@
 package com.omnilab.micrm.repository
 
 import com.omnilab.micrm.model.Tblmi_mfa
-import com.omnilab.micrm.model.table.Tblmi_workDto
 import com.omnilab.micrm.model.table.mdm.LgSc_tranDto
 
 

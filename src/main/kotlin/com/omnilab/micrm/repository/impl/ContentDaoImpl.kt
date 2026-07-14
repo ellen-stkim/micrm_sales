@@ -1,8 +1,5 @@
 package com.omnilab.micrm.repository.impl
 
-import com.omnilab.micrm.common.CommonUtils
-import com.omnilab.micrm.common.UsefulUtils
-import com.omnilab.micrm.model.Content_list_CreateDto
 import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.*
@@ -50,10 +47,6 @@ class ContentDaoImpl : ContentDao {
     override fun contentUpload(dto: Tblmi_cont_imgDto) : Int{
         return sqlSession.insert("contentUpload", dto)
     }
-
-   /* override fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto): List<Content_view_Dto> {
-        return sqlSession.selectList("selectMobileContent",tblmiContMstdto)
-    }*/
 
     override fun selectMobileContent(tblmiContMstdto: Tblmi_cont_mstDto): List<Contents_lstDto> {
         return sqlSession.selectList("selectMobileContent",tblmiContMstdto)

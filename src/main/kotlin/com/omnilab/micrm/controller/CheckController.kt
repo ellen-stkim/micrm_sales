@@ -1,9 +1,7 @@
 package com.omnilab.micrm.controller
 
-import com.omnilab.micrm.service.CampaignService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
@@ -17,10 +15,6 @@ import javax.servlet.http.HttpServletRequest
 class CheckController {
 
     private val logger = LoggerFactory.getLogger(CheckController::class.java)
-
-    @Autowired
-    @Qualifier("CampaignServiceImpl")
-    private lateinit var campaignServiceImpl: com.omnilab.micrm.service.CampaignService
 
     @Autowired
     private val threadPoolTaskExecutor: ThreadPoolTaskExecutor? = null

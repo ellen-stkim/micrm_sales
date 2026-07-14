@@ -2,8 +2,6 @@ package com.omnilab.micrm.repository
 
 import com.omnilab.micrm.model.Contents_lstDto
 import com.omnilab.micrm.model.table.Tblmicp_campaignDto
-import com.omnilab.micrm.model.table.rcs.LgRcs_imgDto
-import java.util.ArrayList
 
 interface CampaignSendDao {
 

@@ -3,7 +3,6 @@ package com.omnilab.micrm.service
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
-import org.springframework.web.multipart.MultipartFile
 
 interface SysSettingService {
 

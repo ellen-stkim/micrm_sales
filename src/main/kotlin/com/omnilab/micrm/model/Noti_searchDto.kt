@@ -1,7 +1,6 @@
 package com.omnilab.micrm.model
 
 import com.omnilab.micrm.model.table.Tblmi_notiDto
-import com.omnilab.micrm.model.table.Tblmi_tbl_listDto
 import org.apache.ibatis.type.Alias
 
 @Alias("Noti_searchDto")

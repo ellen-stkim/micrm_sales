@@ -3,12 +3,8 @@ package com.omnilab.micrm.repository.impl
 import com.omnilab.micrm.model.*
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.model.table.mdm.LgSc_tranDto
-import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.MfaDao
-import org.apache.ibatis.session.ResultContext
-import org.apache.ibatis.session.ResultHandler
 import org.apache.ibatis.session.SqlSession
-import org.apache.poi.ss.usermodel.Workbook
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository

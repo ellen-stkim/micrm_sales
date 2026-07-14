@@ -7,19 +7,15 @@ import com.omnilab.micrm.common.UsefulUtils
 import com.omnilab.micrm.model.SalesforceDto
 import com.omnilab.micrm.model.SetLst_searchDto
 import com.omnilab.micrm.model.table.*
-import com.omnilab.micrm.repository.MemberDao
 import com.omnilab.micrm.repository.SalesforceDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.KkoRestApiService
 import com.omnilab.micrm.service.SysSettingService
-import com.omnilab.micrm.service.WorkService
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -29,19 +25,8 @@ class SysSettingServiceImpl : SysSettingService {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Value("\${upload.src}")
-    private val filePath: String? = null
-
     @Autowired
     lateinit var sysSettingDao: SysSettingDao;
-
-    @Autowired
-    @Qualifier("WorkServiceImpl")
-    private lateinit var workService: WorkService
-
-    @Autowired
-    @Qualifier("MemberDaoImpl")
-    private lateinit var memberDao: MemberDao
 
     @Autowired
     private lateinit var salesforceDao: SalesforceDao
@@ -129,24 +114,6 @@ class SysSettingServiceImpl : SysSettingService {
         dto.usr_grp_cd = userInfo.usr_grp_cd!!
 
         return salesforceDao.mappingLst(dto)
-    }
-
-
-    private fun getDate(): Map<String, String> {
-
-        val dateMap: MutableMap<String, String> = HashMap()
-
-        // 내일 날짜 구하기
-        val tomorrow = Calendar.getInstance()
-        tomorrow.add(Calendar.DATE, 1)
-        dateMap["tomorrow"] = SimpleDateFormat("yyyy-MM-dd").format(tomorrow.time)
-
-        // 일주일 전 날짜 구하기
-        val week = Calendar.getInstance()
-        week.add(Calendar.DATE, -7);
-        dateMap["weekDay"] = SimpleDateFormat("yyyy-MM-dd").format(week.time);
-
-        return dateMap
     }
 
     override fun updateSetLstYn(dto: Tblmi_set_lstDto): Map<String, Any> {

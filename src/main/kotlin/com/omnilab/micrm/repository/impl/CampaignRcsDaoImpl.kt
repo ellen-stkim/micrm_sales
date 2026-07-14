@@ -95,9 +95,6 @@ class CampaignRcsDaoImpl : CampaignSendDao {
         // Callback 메세지 저장 리스트
         val callbackLst = ArrayList<Tblmicp_send_callback_msgDto>()
 
-        // 이미지 리스트
-//        val rcsImgLst = ArrayList<LgRcs_imgDto>()
-
         try {
             var targetSubject = rcsCont.cont_sub
             var targetBody = CommonUtils.escapeTextToHtml(rcsCont.cont_body)
@@ -283,21 +280,6 @@ class CampaignRcsDaoImpl : CampaignSendDao {
                         isSendable = "N"
                     }
                 }
-                /*if(cnt == 0){
-                    for (i in list.indices) {
-                        val imgDto = LgRcs_imgDto()
-                        imgDto.group_key = "GR_${dto.seq.toString()}"
-                        imgDto.group_cnt = list.size.toString()
-                        imgDto.status = "0"
-                        imgDto.sendable = "N"
-                        imgDto.brand_id = rcsBrnID
-                        imgDto.img_path = imgPath?.trim() + list[i].trim()
-                        imgDto.template_yn = "N"
-                        imgDto.m_server = rcsDb
-                        rcsImgLst.add(imgDto)
-                    }
-                }
-                sqlSession.insert("ins_camp_send_rcs_img_lg", rcsImgLst)*/
             }
 
             if(sendDto.type == "12"){

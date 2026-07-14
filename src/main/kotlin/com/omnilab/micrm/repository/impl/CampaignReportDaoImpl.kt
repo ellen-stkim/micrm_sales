@@ -1,6 +1,5 @@
 package com.omnilab.micrm.repository.impl
 
-import com.omnilab.micrm.model.Content_view_Dto
 import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.Tblmicp_programDto
 import com.omnilab.micrm.model.table.Tblmire_camp_mstDto
@@ -30,10 +29,6 @@ class CampaignReportDaoImpl : CampaignReportDao {
     override fun getCampMst(proId: String): List<Tblmire_camp_mstDto> {
         return sqlSession.selectList("getCampMst", proId)
     }
-/*
-    override fun getProgramReportList(dto: Tblmicp_programDto): List<Map<String,Any>> {
-        return sqlSession.selectList("getProgramReportList", dto)
-    }*/
 
     override fun getCampMstTotalDetail(map: HashMap<String, Any>): Tblmire_camp_mstDto {
         return sqlSession.selectOne("getCampMstTotalDetail", map)

@@ -1,8 +1,6 @@
 package com.omnilab.micrm.model.table
 
 import org.apache.ibatis.type.Alias
-import org.springframework.web.multipart.MultipartFile
-import java.io.Serializable
 
 @Alias("Tblmi_tbl_sumDto")
 class Tblmi_tbl_sumDto {

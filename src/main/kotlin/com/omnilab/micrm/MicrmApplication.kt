@@ -7,7 +7,6 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import java.util.*
-import kotlin.collections.HashMap
 
 @EnableWebSecurity
 @SpringBootApplication(exclude = [DataSourceTransactionManagerAutoConfiguration::class, DataSourceAutoConfiguration::class])

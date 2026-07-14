@@ -1,7 +1,5 @@
 package com.omnilab.micrm.model.table
 
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.ibatis.type.Alias
 
 
