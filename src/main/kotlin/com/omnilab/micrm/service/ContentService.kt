@@ -34,8 +34,6 @@ interface ContentService {
 
     fun previewJsonService(dto : Tblmi_cont_lstDto) : Map<String,Any>
 
-    fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String,Any>
-
     fun selectRejectTextList(smsDto: SetLst_searchDto): Map<String,Any>
 
 }

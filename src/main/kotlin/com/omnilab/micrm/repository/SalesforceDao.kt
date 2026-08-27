@@ -9,7 +9,6 @@ import java.util.ArrayList
 
 interface SalesforceDao {
 
-    fun sel_usrInfo(dto: SalesforceDto): Tblmi_usrDto?
     fun mappingLst(dto: SalesforceDto): MutableList<SalesforceDto>
     fun sel_tblmi_cont_mstOne(dto: Tblmi_cont_mstDto): Tblmi_cont_mstDto
     fun sel_tblmi_cont_lst(dto: Tblmi_cont_lstDto): MutableList<Tblmi_cont_lstDto>

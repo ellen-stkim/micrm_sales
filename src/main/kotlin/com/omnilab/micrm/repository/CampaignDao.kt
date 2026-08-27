@@ -28,15 +28,10 @@ interface CampaignDao {
 
     fun ins_campaign(dto: Tblmicp_campaignDto): Int
 
-    fun upd_tblmicp_program(dto: Tblmicp_programDto): Int
-    fun upd_tblmicp_camapaign_cnt_hst(dto: Tblmicp_campaignDto): Int
-    fun upd_tblmicp_program_cnt_hst(pro_id: String): Int
-
     fun getTitleProgramCnt(dto : Tblmicp_programDto) : MutableMap<String,Any>
 
     fun getProgramSearchCnt(dto:Tblmicp_programDto): Int
     fun getProgramList(dto: Tblmicp_programDto):List<Tblmicp_programDto>
-    fun getProgramCnt(dto: Tblmicp_programDto): MutableMap<String, Any>
 
     fun sel_send_program_rstLstExcel(book : Workbook, dto : Tblmicp_send_hstDto)
     fun getContentsViewList(searchCont: Tblmicp_cont_mstDto): List<Content_view_Dto>

@@ -6,7 +6,6 @@ import com.omnilab.micrm.model.table.*
 interface CampaignReportDao {
     fun getCampMstSearchCnt(dto:Tblmicp_programDto): Int
     fun getCampMstList(pdto: Tblmicp_programDto): List<Map<String,Any>>
-    fun getCampMst(proId: String): List<Tblmire_camp_mstDto>
     fun getCampMstTotalDetail(map: HashMap<String, Any>): Tblmire_camp_mstDto
     fun getCampMstTotalList(map: HashMap<String, Any>): List<Map<String,Any>>
     fun openTimingResult(temp: HashMap<String, Any>): List<HashMap<String, Any>>

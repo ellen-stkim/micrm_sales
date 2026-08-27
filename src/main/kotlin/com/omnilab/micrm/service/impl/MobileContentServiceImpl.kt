@@ -2496,25 +2496,6 @@ class MobileContentServiceImpl : ContentService {
         return dataMap;
     }
 
-    override fun previewATJsonService(dto: Tblmi_kko_at_tmplDto): Map<String, Any> {
-        val dataMap = HashMap<String, Any>();
-
-        val g = GsonBuilder().create()
-        val buttons = g.fromJson(dto.button_json, JsonArray::class.java)
-        val quickLst = g.fromJson(dto.quick_repl_json, JsonArray::class.java)
-        val itemHighs = g.fromJson(dto.item_highlight_json, JsonObject::class.java)
-        val items = g.fromJson(dto.item_json, JsonObject::class.java)
-
-        val obj = JsonObject()
-        obj.add("button", buttons)
-        obj.add("quick_reply", quickLst)
-        obj.add("item_highlight", itemHighs)
-        obj.add("item", items)
-
-        dataMap["kko_btn_obj"] = obj
-        return dataMap
-    }
-
     override fun selectRejectTextList(dto: SetLst_searchDto): Map<String, Any> {
         val searchDto = dto
         val paramMap: MutableMap<String, Any> = HashMap()

@@ -43,42 +43,13 @@ class MemberDaoImpl : MemberDao {
     @Qualifier("MicrmUserDaoImpl")
     private lateinit var micrmUserDao: MicrmUserDao
 
-    override fun insertGroup(groupListDto: Tblmi_group_listDto) {
-        sqlSession.insert("insertGroupList", groupListDto)
-    }
-
-    override fun insertGroupUser(groupUserList: List<Tblmi_group_usrDto>) {
-        val splitNum = 1000 // 1000 개씩 끊어서 insert
-        val roopNum = Math.ceil((groupUserList.size.toFloat() / splitNum).toDouble()).toInt()
-        var lastNum: Int
-
-        var paramMap: MutableMap<String, List<Tblmi_group_usrDto>> = HashMap<String, List<Tblmi_group_usrDto>>()
-
-        for (i in 0 until roopNum) {
-            lastNum = splitNum * (i + 1)
-            if (lastNum > groupUserList.size) lastNum = groupUserList.size
-            logger.warn(lastNum.toString() + " / " + groupUserList.size)
-            paramMap["groupUserList"] = groupUserList.subList(i * splitNum, lastNum)
-            sqlSession.insert("insertGrpUser", paramMap)
-        }
-    }
-
     override fun updateGroupList(groupListDto: Tblmi_group_listDto) {
         sqlSession.update("updateGrpList", groupListDto)
-    }
-
-    override fun deleteGrpUser(groupUserDto: Tblmi_group_usrDto) {
-        sqlSession.delete("deleteTargetUser", groupUserDto)
     }
 
     //member 마스터 테이블 정보 가져오기
     override fun getTblmimst(dto: Tblmi_tbl_mstDto): Tblmi_tbl_mstDto? {
         return sqlSession.selectOne("getTblmimst", dto)
-    }
-
-    //member 테이블 컬럼 정보
-    override fun getTblInfoList(dto: Tblmi_tbl_infoDto): List<Tblmi_tbl_infoDto> {
-        return sqlSession.selectList("getTblInfoList", dto)
     }
 
     //member 통계

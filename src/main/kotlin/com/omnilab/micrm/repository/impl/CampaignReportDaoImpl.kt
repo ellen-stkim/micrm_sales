@@ -26,10 +26,6 @@ class CampaignReportDaoImpl : CampaignReportDao {
         return sqlSession.selectList("getCampMstList", dto)
     }
 
-    override fun getCampMst(proId: String): List<Tblmire_camp_mstDto> {
-        return sqlSession.selectList("getCampMst", proId)
-    }
-
     override fun getCampMstTotalDetail(map: HashMap<String, Any>): Tblmire_camp_mstDto {
         return sqlSession.selectOne("getCampMstTotalDetail", map)
     }

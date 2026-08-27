@@ -20,10 +20,6 @@ class SalesforceDaoImpl: SalesforceDao {
     @Autowired
     private lateinit var sqlSession: SqlSession
 
-    override fun sel_usrInfo(dto: SalesforceDto): Tblmi_usrDto? {
-        return sqlSession.selectOne("sel_usrInfo", dto)
-    }
-
     override fun mappingLst(dto: SalesforceDto): MutableList<SalesforceDto> {
         return sqlSession.selectList("selectMappingLst", dto)
     }

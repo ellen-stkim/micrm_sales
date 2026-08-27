@@ -53,10 +53,6 @@ class SysUserDaoImpl : SysUserDao {
         return sqlSession.selectList("getUserLog", dto)
     }
 
-    override fun updateUserAuth(dto: Tblmi_usr_authDto) : Int{
-        return sqlSession.update("updateUserAuth", dto)
-    }
-
     override fun deleteUserAuth(dto: Tblmi_usr_authDto): Int {
         return sqlSession.delete("deleteUserAuth", dto)
     }

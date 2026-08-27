@@ -37,4 +37,6 @@ fun main(args: Array<String>) {
     //log.error("{}", CommonUtils.sha512("7GhwLrNSN0AYxgt8"))
     
     log.error("{}", enc.decrypt("TRqGjSlXD7/biRbDz+gQf0hNigs8KR2j/cZBHy3b1wczYHpmPlfZQmnVcOEqmcXbmn06RlnFfSa54ibk5cfXxA=="))
+    
+    log.error("{}", CommonUtils.sha512("9MsGae5DTCCPlp4b"))
 }

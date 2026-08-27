@@ -135,18 +135,6 @@ class CampaignDaoImpl : CampaignDao {
         return sqlSession.insert("ins_tblmicp_campaign", dto)
     }
 
-    override fun upd_tblmicp_program(dto: Tblmicp_programDto): Int {
-        return sqlSession.update("upd_tblmicp_program", dto)
-    }
-
-    override fun upd_tblmicp_camapaign_cnt_hst(dto: Tblmicp_campaignDto): Int {
-        return sqlSession.update("upd_tblmicp_camapaign_cnt_hst", dto)
-    }
-
-    override fun upd_tblmicp_program_cnt_hst(pro_id: String): Int {
-        return sqlSession.update("upd_tblmicp_program_cnt_hst", pro_id)
-    }
-
     override fun getTitleProgramCnt(dto: Tblmicp_programDto): MutableMap<String,Any> {
         return sqlSession.selectOne("getTitleProgramCnt",dto)
     }
@@ -160,10 +148,6 @@ class CampaignDaoImpl : CampaignDao {
     }
     override fun getProgramList(dto: Tblmicp_programDto):List<Tblmicp_programDto>{
         return sqlSession.selectList("getProgramList", dto)
-    }
-
-    override fun getProgramCnt(dto: Tblmicp_programDto): MutableMap<String, Any>{
-        return sqlSession.selectOne("getProgramCnt", dto)
     }
 
     override fun sel_send_program_rstLstExcel(book: Workbook, dto: Tblmicp_send_hstDto) {

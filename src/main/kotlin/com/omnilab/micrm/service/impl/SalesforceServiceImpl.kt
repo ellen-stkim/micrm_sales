@@ -252,6 +252,7 @@ class SalesforceServiceImpl : SalesforceService {
 
             // 3. 리스트 데이터 처리 (0: 카카오, 1: SMS, 2: RCS)
             val len: Int = dto.send_to_list!!.size - 1
+            var kakaoLstDto: Tblmi_cont_lstDto? = null
             for (i in 0..len) {
                 val tblmiContLstdto = Tblmi_cont_lstDto().apply {
                     cont_cd = tblmiContMstDto.seq
@@ -265,7 +266,10 @@ class SalesforceServiceImpl : SalesforceService {
                 }
                 // 채널별 상세 분기 처리
                 when (i) {
-                    0 -> processKakao(dto, tblmiContLstdto, userInfo, null, null, re)?.let { return it }
+                    0 -> {
+                        processKakao(dto, tblmiContLstdto, userInfo, null, null, re)?.let { return it }
+                        kakaoLstDto = tblmiContLstdto
+                    }
                     1 -> processSms(dto, tblmiContLstdto)
                     2 -> processRcs(dto, tblmiContLstdto, userInfo, i)
                 }
@@ -273,6 +277,18 @@ class SalesforceServiceImpl : SalesforceService {
                 contentDao.insertContent(tblmiContLstdto)
                 // 4. URL 저장 로직
                 saveUrls(i, dto, tblmiContLstdto.seq!!)
+            }
+
+            // 5. 모든 DB 저장 후 "마지막"에 브랜드톡(카카오 외부 API) 등록
+            kakaoLstDto?.let { kdto ->
+                registerBrandTalk(dto, kdto, null, null)?.let {
+                    // 등록 실패: 트랜잭션 롤백으로 신규 저장분 전체 취소
+                    markRollbackOnly()
+                    return it
+                }
+                if (!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-") {
+                    contentDao.updateMobileContent(kdto)   // 등록으로 갱신된 kko_tmpl_cd/kko_tar_tp 반영
+                }
             }
         } catch (e: Exception) {
             logger.error("insert content", e)
@@ -330,6 +346,9 @@ class SalesforceServiceImpl : SalesforceService {
             contentDao.updateMobileMst(tblmiContMstDto)
             val contLst = salesforceDao.sel_tblmi_cont_lst(Tblmi_cont_lstDto().apply { cont_cd = tblmiContMstDto.seq })
             val len = createDto.send_to_list!!.size - 1
+            var kakaoLstDto: Tblmi_cont_lstDto? = null
+            var kakaoOldMsgTp: String? = null
+            var kakaoSenderKey: String? = null
             for (i in 0..len) {
                 val tblmiContLstdto = Tblmi_cont_lstDto().apply {
                     val contMap = contLst.associateBy { it.cont_tp }
@@ -354,7 +373,16 @@ class SalesforceServiceImpl : SalesforceService {
                     }
                 }
                 when (i) {
-                    0 -> processKakao(createDto, tblmiContLstdto, userInfo, contLst[i].msg_tp, contLst[i].key_id, ReturnDto())?.let { return it }
+                    0 -> {
+                        processKakao(createDto, tblmiContLstdto, userInfo, contLst[i].msg_tp, contLst[i].key_id, ReturnDto())?.let {
+                            // 카카오 검증 실패: 부분 변경 커밋 방지 위해 롤백 후 원본 유지
+                            markRollbackOnly()
+                            return it
+                        }
+                        kakaoLstDto = tblmiContLstdto
+                        kakaoOldMsgTp = contLst[i].msg_tp
+                        kakaoSenderKey = contLst[i].key_id
+                    }
                     1 -> processSms(createDto, tblmiContLstdto)
                     2 -> processRcs(createDto, tblmiContLstdto, userInfo, i)
                 }
@@ -365,10 +393,23 @@ class SalesforceServiceImpl : SalesforceService {
                 })
                 saveUrls(i, createDto, tblmiContLstdto.seq!!)
             }
+
+            // 모든 DB 갱신 후 "마지막"에 브랜드톡(카카오 외부 API) 등록
+            kakaoLstDto?.let { kdto ->
+                registerBrandTalk(createDto, kdto, kakaoOldMsgTp, kakaoSenderKey)?.let {
+                    // 등록 실패: 트랜잭션 롤백하여 원본 데이터로 되돌린다
+                    markRollbackOnly()
+                    return it
+                }
+                if (!CommonUtils.isEmptyObject(createDto.kko_tar_tp) && createDto.kko_tar_tp != "-") {
+                    contentDao.updateMobileContent(kdto)   // 등록으로 갱신된 kko_tmpl_cd/kko_tar_tp 반영
+                }
+            }
         } catch (e: Exception){
             logger.error("update content", e)
             logger.error("마스터 코드 " + tblmiContMstDto.seq)
-            handleManualRollback(tblmiContMstDto.seq!!, e)
+            // 수정 실패 시: 콘텐츠를 삭제하지 않고 트랜잭션을 롤백하여 원본 데이터로 되돌린다
+            markRollbackOnly()
             re.status = false
             re.errMsg = "모바일 컨텐츠 수정 도중 오류가 발생 했습니다. \n동일 증상이 반복되면 관리자에게 문의 바랍니다."
             return re
@@ -2095,28 +2136,33 @@ class SalesforceServiceImpl : SalesforceService {
                 kko_video_url = dto.kko_video_url
                 kko_thumbnail_img_cd = dto.kko_thumbnail_img_cd
             }
-            
-            // 브랜드톡 등록
-            if(!CommonUtils.isEmptyObject(dto.kko_tar_tp) && dto.kko_tar_tp != "-"){
-                val isNew = if(oldMsgTp == null && senderKey == null){
-                    true
-                } else {
-                    if(oldMsgTp == listDto.msg_tp && senderKey == listDto.key_id){
-                        false
-                    }else{
-                        true
-                    }
-                }
-                val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto, isNew)
-                if(!reg.status!!){
-                    return reg
-                }else{
-                    listDto.kko_tar_tp = dto.kko_tar_tp
-                    listDto.kko_tmpl_cd = reg.data
-                }
-            }
+
+            // 브랜드톡(카카오 외부 API) 등록은 여기서 하지 않고, DB 쓰기가 모두 끝난 뒤 registerBrandTalk() 로 마지막에 수행한다.
+            // (외부 등록 성공 후 이어지는 DB 실패로 롤백될 때, 카카오 측 고아/불일치가 남는 것을 방지)
         }
         return null
+    }
+
+    /**
+     * 브랜드톡 등록 (카카오 외부 API). DB 쓰기가 모두 끝난 뒤 "마지막"에 호출한다.
+     * @return 실패 시 ReturnDto(false), 등록 대상이 아니거나 성공이면 null.
+     *         성공 시 listDto.kko_tar_tp / kko_tmpl_cd 를 갱신한다(호출부에서 재저장 필요).
+     */
+    private fun registerBrandTalk(dto: Content_list_CreateDto, listDto: Tblmi_cont_lstDto, oldMsgTp: String?, senderKey: String?): ReturnDto? {
+        if (CommonUtils.isEmptyObject(dto.kko_tar_tp) || dto.kko_tar_tp == "-") return null
+        val isNew = if (oldMsgTp == null && senderKey == null) {
+            true
+        } else {
+            !(oldMsgTp == listDto.msg_tp && senderKey == listDto.key_id)
+        }
+        val reg = convertBrandTalk(dto.cont_nm.toString(), listDto.key_id.toString(), listDto, isNew)
+        return if (!reg.status!!) {
+            reg
+        } else {
+            listDto.kko_tar_tp = dto.kko_tar_tp
+            listDto.kko_tmpl_cd = reg.data
+            null
+        }
     }
 
     private fun validateKakaoList(dto: Content_list_CreateDto, re: ReturnDto): Boolean {
@@ -2315,6 +2361,15 @@ class SalesforceServiceImpl : SalesforceService {
                     url_tag = "a"; this.url = url; this.url_id = urlId; cont_lst_cd = listSeq
                 })
             }
+        }
+    }
+
+    // 현재 트랜잭션을 롤백 대상으로 표시 (예외를 catch해 정상 return하더라도 원본으로 되돌림)
+    private fun markRollbackOnly() {
+        try {
+            org.springframework.transaction.interceptor.TransactionAspectSupport.currentTransactionStatus().setRollbackOnly()
+        } catch (ignore: Exception) {
+            logger.warn("no active transaction to mark rollback-only")
         }
     }
 

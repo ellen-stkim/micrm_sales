@@ -103,11 +103,6 @@ class ContentDaoImpl : ContentDao {
        return sqlSession.update("updateImgYn", dto)
     }
 
-    override fun selectImgValue(dto: Tblmi_cont_lstDto): Tblmi_cont_imgDto? {
-        val imageDto : Tblmi_cont_imgDto?= sqlSession.selectOne("selectImgValue",dto)
-        return imageDto
-    }
-
     override fun detailMobileContent(dto: Tblmi_cont_mstDto): List<Content_view_Dto> {
         return sqlSession.selectList("detailMobileContents",dto)
     }
@@ -141,10 +136,6 @@ class ContentDaoImpl : ContentDao {
     }
     override fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int{
         return sqlSession.selectOne("getImgNmCh", dto)
-    }
-
-    override fun selTblmicpContUrlLst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto> {
-        return sqlSession.selectList("sel_tblmicp_cont_url_lst", dto)
     }
 
     override fun delTblmiContUrlLst(dto: Tblmi_cont_url_lstDto): Int {

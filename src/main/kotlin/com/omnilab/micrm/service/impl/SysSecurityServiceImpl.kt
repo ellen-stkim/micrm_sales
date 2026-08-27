@@ -22,7 +22,8 @@ class SysSecurityServiceImpl: SysSecurityService {
     override fun getAdminUserLog(uDto : Tblmi_usr_hstDto):MutableMap<String, Any>{
         val map : MutableMap<String, Any> = HashMap()
         val dto = uDto as UsrHst_searchDto
-        dto.usr_grp_cd =UsefulUtils.sessionUser().usr_grp_cd
+        dto.usr_id = UsefulUtils.sessionUser().usr_id
+        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
         val paginationInfo : PaginationInfo = UsefulUtils.makePage(dto.pageNo,10,10)
 
         dto.firstIndex = paginationInfo.firstRecordIndex
@@ -32,7 +33,7 @@ class SysSecurityServiceImpl: SysSecurityService {
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSecurityDao.getAdminUserLogList(dto);
+        map["list"] = sysSecurityDao.getAdminUserLogList(dto)
 
         return map;
     }

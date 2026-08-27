@@ -38,8 +38,7 @@
 	<select id="getAdminUserLogCnt" parameterType="Tblmi_usr_hstDto" resultType="Int">
 		SELECT count(*)
 		FROM Tblmi_usr_hst as hst
-			LEFT JOIN TBLMI_USR as usr
-					on hst.usr_id = usr.usr_id
+			LEFT JOIN TBLMI_USR as usr on hst.usr_id = usr.usr_id
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_ip)">
 				INET_NTOA(hst.usr_ip) like concat('%',#{usr_ip},'%')
@@ -47,8 +46,8 @@
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(work_detail)">
 				and (hst.work_detail || hst.work_url) like concat('%',#{work_detail},'%')
 			</if>
-			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_nm)">
-				and usr.usr_log_id = #{usr_nm}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
+                and usr.usr_id = #{usr_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and hst.usr_grp_cd = #{usr_grp_cd}
@@ -71,8 +70,7 @@
 			,hst.upd_dt as upd_dt
 			,usr.usr_log_id as usr_nm
 		FROM Tblmi_usr_hst as hst
-			LEFT JOIN TBLMI_USR as usr
-					on hst.usr_id = usr.usr_id
+			LEFT JOIN TBLMI_USR as usr on hst.usr_id = usr.usr_id
 		<where>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_ip)">
 				INET_NTOA(hst.usr_ip) like concat('%',#{usr_ip},'%')
@@ -84,13 +82,13 @@
 				and usr.usr_log_id like concat('%',#{usr_nm},'%')
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_id)">
-				and usr.usr_id like concat('%',#{usr_id},'%')
+				and usr.usr_id = #{usr_id}
 			</if>
 			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(usr_grp_cd)">
 				and hst.usr_grp_cd = #{usr_grp_cd}
 			</if>
 		</where>
-		order by hst.reg_dt desc
+		order by hst.seq desc
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex) and recordCountPerPage != 0">
 			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
 		</if>

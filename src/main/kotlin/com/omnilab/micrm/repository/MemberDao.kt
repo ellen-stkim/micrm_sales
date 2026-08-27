@@ -6,19 +6,11 @@ import java.io.InputStream
 
 interface MemberDao {
 
-    fun insertGroup(groupListDto : Tblmi_group_listDto)
-
-    fun insertGroupUser(groupUserList : List<Tblmi_group_usrDto>)
-
     fun selectGroupUserListCnt(groupUserDto : Tblmi_group_usrDto) : Int
 
     fun updateGroupList(groupListDto: Tblmi_group_listDto)
 
-    fun deleteGrpUser(groupUserDto : Tblmi_group_usrDto)
-
     fun getTblmimst(dto : Tblmi_tbl_mstDto) : Tblmi_tbl_mstDto?
-
-    fun getTblInfoList(dto : Tblmi_tbl_infoDto) : List<Tblmi_tbl_infoDto>
 
     fun getTblTblSum(dto : Tblmi_tbl_sumDto) : Tblmi_tbl_sumDto?
 

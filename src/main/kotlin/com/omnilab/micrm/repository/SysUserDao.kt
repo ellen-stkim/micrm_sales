@@ -25,6 +25,5 @@ interface SysUserDao {
 
     fun getUserLog(dto: Tblmi_usr_log_hstDto): List<Usr_log_searchDto>
 
-    fun updateUserAuth(dto:Tblmi_usr_authDto) : Int
     fun deleteUserAuth(dto:Tblmi_usr_authDto) : Int
 }

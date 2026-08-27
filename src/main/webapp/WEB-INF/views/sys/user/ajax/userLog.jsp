@@ -35,22 +35,22 @@
                      <td>
                          <fmt:parseDate var="regDate" value="${n.reg_dt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                          <jsp:useBean id="nowTime" class="java.util.Date" />
-                         <fmt:parseNumber value="${regDate.time / 1000 }" var="regDateSe" />
-                         <fmt:parseNumber value="${nowTime.time / 1000 }" var="nowTimeSe" />
-                         <fmt:parseNumber value="${nowTimeSe - regDateSe }" integerOnly="true" var="secondsTime"/>
+                         <%-- 밀리초 차이(Long)로 비교하고, 표시값만 정수로 내림(truncate) --%>
+                         <c:set var="diffMs" value="${nowTime.time - regDate.time}"/>
                          <c:choose>
-                             <c:when test="${secondsTime < 60 }">${secondsTime }초 전 </c:when>
-                             <c:when test="${secondsTime < 3600 }">
-                                 <fmt:formatNumber value="${secondsTime / 60 }" pattern="#,##0"></fmt:formatNumber> 분 전
+                             <c:when test="${diffMs < 60000}">
+                                 <fmt:parseNumber var="secAgo" integerOnly="true" value="${diffMs / 1000}"/>${secAgo}초 전
                              </c:when>
-                             <c:when test="${secondsTime / 60 / 60 < 24 }">
-                                 <fmt:formatNumber value="${secondsTime / 60 / 60 }" pattern="#,##0"></fmt:formatNumber> 시간 전
+                             <c:when test="${diffMs < 3600000}">
+                                 <fmt:parseNumber var="minAgo" integerOnly="true" value="${diffMs / 60000}"/>${minAgo}분 전
                              </c:when>
-                             <c:when test="${secondsTime / 60 / 60 < 48 }">어제</c:when>
-                             <c:when test="${secondsTime / 60 / 60 / 24 < 365 }">
-                                 <fmt:formatNumber value="${secondsTime / 60 / 60 / 24}" pattern="#,##0"></fmt:formatNumber> 일 전
+                             <c:when test="${diffMs < 86400000}">
+                                 <fmt:parseNumber var="hourAgo" integerOnly="true" value="${diffMs / 3600000}"/>${hourAgo}시간 전
                              </c:when>
-                             <c:otherwise>작년</c:otherwise>
+                             <c:when test="${diffMs < 172800000}">어제</c:when>
+                             <c:otherwise>
+                                 <fmt:parseNumber var="dayAgo" integerOnly="true" value="${diffMs / 86400000}"/>${dayAgo}일 전
+                             </c:otherwise>
                          </c:choose>
                      </td>
                      <td class="en_font">${n.usr_ip}</td>

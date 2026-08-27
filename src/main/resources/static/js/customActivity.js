@@ -223,7 +223,7 @@ define(["postmonger"], function (Postmonger) {
 				}
 			}
 		}
-        //임시 수정
+        //임시 주석
 		let data = $("#form").serializeArray();
         data.push({name: 'sales_nm', value: model.name});
         data.push({name: 'inten_id', value: model.definitionId});

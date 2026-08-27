@@ -50,9 +50,6 @@ interface ContentDao {
 
     fun updateImgYn(dto: Tblmi_cont_imgDto) : Int
 
-    // 후에 최적화가 필요할듯
-    fun selectImgValue(dto : Tblmi_cont_lstDto) : Tblmi_cont_imgDto?
-
     fun detailMobileContent(dto : Tblmi_cont_mstDto) : List<Content_view_Dto>
 
     fun checkContNm(dto: Tblmi_cont_mstDto) : Int
@@ -70,8 +67,6 @@ interface ContentDao {
     fun selectLstSeq(dto : Tblmi_cont_lstDto) : List<Tblmi_cont_lstDto>
 
     fun getImgNmCh(dto: Tblmi_cont_imgDto) : Int
-
-    fun selTblmicpContUrlLst(dto: Tblmicp_cont_url_lstDto): List<Tblmicp_cont_url_lstDto>
 
     fun delTblmiContUrlLst(dto: Tblmi_cont_url_lstDto): Int
 

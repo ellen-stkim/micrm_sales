@@ -1036,7 +1036,8 @@
 			, l.rcs_btn_tp_3   AS rcs_btn_tp_3
 			, l.rcs_btn_cont_3 AS rcs_btn_cont_3
 			, l.use_yn         AS list_use_yn
-		FROM   TBLMI_CONT_MST m INNER JOIN TBLMI_CONT_LST l ON m.seq = l.cont_cd
+		FROM   TBLMI_CONT_MST m INNER JOIN TBLMI_CONT_LST l
+		                                ON m.seq = l.cont_cd
 		WHERE  l.use_yn = 'Y'
 			AND m.del_yn = 'N'
 		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ch_tp)">
