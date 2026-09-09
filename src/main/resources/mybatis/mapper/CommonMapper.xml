@@ -6,6 +6,60 @@
 	<cache />
 
 	<!-- ================================================================= select ================================================================= -->
+	<sql id="banWordHstWhere">
+		<where>
+			usr_grp_cd = #{usr_grp_cd}
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(blk_tp)">
+				and blk_tp = #{blk_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ban_tp)">
+				and ban_tp = #{ban_tp}
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(ban_word)">
+				and ban_word like concat('%', #{ban_word}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(send_to)">
+				and send_to like concat('%', #{send_to}, '%')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(st_dt)">
+				and reg_dt &gt;= concat(#{st_dt}, ' 00:00:00')
+			</if>
+			<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(end_dt)">
+				and reg_dt &lt;= concat(#{end_dt}, ' 23:59:59')
+			</if>
+		</where>
+	</sql>
+
+	<select id="sel_tblmi_ban_word_hstCnt" parameterType="BanWordHst_searchDto" resultType="Int">
+		/* sel_tblmi_ban_word_hstCnt */
+		SELECT COUNT(seq)
+		FROM tblmi_ban_word_hst
+		<include refid="banWordHstWhere"/>
+	</select>
+
+	<select id="sel_tblmi_ban_word_hst" parameterType="BanWordHst_searchDto" resultType="Tblmi_ban_word_hstDto">
+		/* sel_tblmi_ban_word_hst */
+		SELECT seq
+			, blk_tp
+			, ban_rule
+			, ban_tp
+			, ban_word
+			, cont_cd
+			, camp_id
+			, send_to
+			, cont_sub
+			, cont_body
+			, usr_grp_cd
+			, reg_id
+			, DATE_FORMAT(reg_dt, '%Y-%m-%d %H:%i:%s') as reg_dt
+		FROM tblmi_ban_word_hst
+		<include refid="banWordHstWhere"/>
+		ORDER BY seq DESC
+		<if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+			LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+		</if>
+	</select>
+
 	<select id="sel_login" parameterType="Tblmi_usrDto"  resultType="Tblmi_usrDto">
 		select *
 		from tblmi_usr
@@ -70,6 +124,39 @@
 						#{usr_email},
 						INET_ATON(#{usr_ip}),
 						#{fail_yn},
+						SYSDATE()
+			)
+ 	</insert>
+
+	<insert id="ins_tblmi_ban_word_hst" parameterType="Tblmi_ban_word_hstDto" useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO tblmi_ban_word_hst
+            (
+                        blk_tp,
+                        ban_rule,
+                        ban_tp,
+                        ban_word,
+                        cont_cd,
+                        camp_id,
+                        send_to,
+                        cont_sub,
+                        cont_body,
+                        usr_grp_cd,
+                        reg_id,
+                        reg_dt
+            )
+		values
+			(
+						#{blk_tp},
+						#{ban_rule},
+						#{ban_tp},
+						#{ban_word},
+						#{cont_cd},
+						#{camp_id},
+						#{send_to},
+						#{cont_sub},
+						#{cont_body},
+						#{usr_grp_cd},
+						#{reg_id},
 						SYSDATE()
 			)
  	</insert>

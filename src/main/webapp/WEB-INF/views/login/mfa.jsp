@@ -48,7 +48,7 @@
             <div class="login">
                 <!-- log_form 영역 시작 -->
                 <div class="log_form">
-                    <form:form id="logForm" name="form" method="post" action="/api/sms/verify.service">
+                    <form:form id="logForm" name="form" method="post" action="#" onsubmit="return false;">
                         <div class="txt_input">
                             <!-- 아이디 -->
                             <input type="text" class="" name="code" placeholder="인증코드" tabindex="1"/>

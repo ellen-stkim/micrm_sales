@@ -38,6 +38,7 @@
 				<li<c:if test="${fn:contains(urlPath,'/cost/')}"> class='on'</c:if>><a href="/cost/costDetail.mi">발송 비용</a></li>
 				<%--<li><a href="javascript:void(0);" onclick="popup.popAlert('페이지 준비중입니다.')">리포트</a></li>--%>
 				<li <c:if test="${fn:contains(urlPath,'/report/all.mi') ||fn:contains(urlPath,'/report/singleDt.mi')||fn:contains(urlPath,'/report/dt.mi') ||fn:contains(urlPath,'/report/proDt.mi')}"> class='on'</c:if>><a href="/report/all.mi">캠페인 통합</a></li>
+				<li<c:if test="${fn:contains(urlPath,'/report/banWordHst.mi')}"> class='on'</c:if>><a href="/report/banWordHst.mi">차단 이력</a></li>
 			</ul>
 		</li>
 		<li>

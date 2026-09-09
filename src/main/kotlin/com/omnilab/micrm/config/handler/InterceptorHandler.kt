@@ -77,13 +77,74 @@ class InterceptorHandler : HandlerInterceptor {
                 "/cont/contentUpload.ajax" -> detail = "메시지 : 이미지 파일 업로드";
                 "/cont/deleteImgList.ajax" -> detail = "메시지 : 이미지 파일 삭제";
                 "/cont/updateImgYn.ajax" -> detail = "메시지 : 이미지 파일 사용/비사용 상태 수정";
+                "/cont/updateImg.ajax" -> detail = "메시지 : 이미지 파일 수정";
+                "/cont/mdmLst.mi" -> detail = "메시지 : 문자 컨텐츠 조회";
+                "/cont/mdmCreate.mi" -> detail = "메시지 : 문자 컨텐츠 생성 페이지 접속";
+                "/cont/mobileInsert.service" -> detail = "메시지 : 문자 컨텐츠 생성";
+                "/cont/mobileUpdate.service" -> detail = "메시지 : 문자 컨텐츠 수정";
+                "/cont/updateMobileUseYn.ajax" -> detail = "메시지 : 문자 컨텐츠 사용/비사용 상태 수정";
+                "/cont/deleteMobileContent.ajax" -> detail = "메시지 : 문자 컨텐츠 삭제";
+                "/cont/atTemplate.mi" -> detail = "메시지 : 알림톡 템플릿 조회";
+                "/cont/kko/tmplCreate.mi" -> detail = "메시지 : 알림톡 템플릿 생성 페이지 접속";
+                "/cont/kko/tmplCreate.service" -> detail = "메시지 : 알림톡 템플릿 생성";
+                "/cont/kko/tmplDetail.mi" -> detail = "메시지 : 알림톡 템플릿 상세 조회";
+                "/cont/kko/tmplUpate.service" -> detail = "메시지 : 알림톡 템플릿 수정";
+                "/cont/kko/updateUseYn.ajax" -> detail = "메시지 : 알림톡 템플릿 사용/비사용 상태 수정";
+                "/cont/kko/updateDelYn.ajax" -> detail = "메시지 : 알림톡 템플릿 삭제";
+                "/cont/kko/updReqTmplSt.service" -> detail = "메시지 : 알림톡 템플릿 검수요청";
+                "/cont/kko/cancleTmplReq.service" -> detail = "메시지 : 알림톡 템플릿 검수요청 취소";
+                "/cont/kko/updTmplSt.service" -> detail = "메시지 : 알림톡 템플릿 상태 수정";
+                "/cont/kko/cancleTmplApp.service" -> detail = "메시지 : 알림톡 템플릿 승인 취소";
                 "/camp/sendSetting.mi" -> detail = "캠페인 : 캠페인 발송(캠페인 생성) 페이지 접속";
                 "/camp/sendTempCreate.ajax" -> detail = "캠페인 : 캠페인 임시저장";
                 "/camp/sendTest.ajax" -> detail = "캠페인 : 캠페인 테스트 발송";
                 "/camp/sendCreate.service" -> detail = "캠페인 : 캠페인 작성, 승인 요청";
                 "/camp/st/sendStatus.mi" -> detail = "캠페인 : 캠페인 발송현황 조회";
                 "/camp/st/sendDetail.mi" -> detail = "캠페인 : 캠페인 상세보기";
+                "/camp/getSendHstDown.service" -> detail = "캠페인 : 캠페인 발송 이력 내려받기";
+                "/report/main.mi" -> detail = "리포트 : 리포트 대시보드 조회";
+                "/report/all.mi" -> detail = "리포트 : 캠페인 통합 리포트 조회";
+                "/report/dt.mi" -> detail = "리포트 : 캠페인 통합 리포트 상세 조회";
+                "/report/proDt.mi" -> detail = "리포트 : 캠페인 프로그램별 리포트 조회";
+                "/report/singleDt.mi" -> detail = "리포트 : 캠페인 단건 리포트 조회";
+                "/report/banWordHst.mi" -> detail = "리포트 : 금칙어 차단 이력 조회";
+                "/cost/costDetail.mi" -> detail = "리포트 : 발송 비용 조회";
+                "/cost/costReportDown.service" -> detail = "리포트 : 발송 비용 리포트 내려받기";
+                "/cost/costReportLstDown.service" -> detail = "리포트 : 발송 비용 상세 내려받기";
                 "/sys/work/workList.mi" -> detail = "시스템관리 : 작업 리스트 조회";
+                "/sys/user/userManagement.mi" -> detail = "시스템관리 : 사용자 조회";
+                "/sys/user/userDetail.mi" -> detail = "시스템관리 : 사용자 상세 조회";
+                "/sys/user/saveUser.ajax" -> detail = "시스템관리 : 사용자 등록/수정";
+                "/sys/user/updateUsrSt.ajax" -> detail = "시스템관리 : 사용자 상태 수정";
+                "/sys/user/getUserLog.ajax" -> detail = "시스템관리 : 사용자 접속 이력 조회";
+                "/sys/user/myInfo.mi" -> detail = "시스템관리 : 내 정보 조회";
+                "/sys/info/main.mi" -> detail = "시스템관리 : 시스템 정보 조회";
+                "/sys/info/save.service" -> detail = "시스템관리 : 시스템 정보 수정";
+                "/sys/setting/teamSetting.mi" -> detail = "시스템관리 : 팀 정보 설정 조회";
+                "/sys/setting/insertTeam.ajax" -> detail = "시스템관리 : 팀 정보 등록/수정";
+                "/sys/setting/updateSortLst.ajax" -> detail = "시스템관리 : 팀 정보 순서 수정";
+                "/sys/setting/mappingSetting.mi" -> detail = "시스템관리 : 매핑 정보 설정 조회";
+                "/sys/setting/insertMapping.ajax" -> detail = "시스템관리 : 매핑 정보 등록/수정";
+                "/sys/setting/deleteMapping.ajax" -> detail = "시스템관리 : 매핑 정보 삭제";
+                "/sys/setting/smsSetting.mi" -> detail = "시스템관리 : 문자 정보 설정 조회";
+                "/sys/setting/insertSms.ajax" -> detail = "시스템관리 : 문자 발신번호 등록";
+                "/sys/setting/updateLst.ajax" -> detail = "시스템관리 : 발신자 정보 수정";
+                "/sys/setting/changeDefaultLst.ajax" -> detail = "시스템관리 : 기본 연락처 변경";
+                "/sys/setting/kkoSetting.mi" -> detail = "시스템관리 : 카카오 정보 설정 조회";
+                "/sys/setting/insertKkoSenderKey.ajax" -> detail = "시스템관리 : 카카오 발신프로필 등록";
+                "/sys/setting/rejectSetting.mi" -> detail = "시스템관리 : 수신거부 문구 설정 조회";
+                "/sys/setting/insertRejectText.ajax" -> detail = "시스템관리 : 수신거부 문구 등록";
+                "/sys/setting/naverAppSetting.mi" -> detail = "시스템관리 : 네이버 Short URL 설정 조회";
+                "/sys/setting/insertNaverApp.ajax" -> detail = "시스템관리 : 네이버 Short URL 설정 등록";
+                "/sys/setting/updateNaverApp.ajax" -> detail = "시스템관리 : 네이버 Short URL 설정 수정";
+                "/sys/setting/deleteNaverApp.ajax" -> detail = "시스템관리 : 네이버 Short URL 설정 삭제";
+                "/sys/setting/mcSetting.mi" -> detail = "시스템관리 : Marketing Cloud 설정 조회";
+                "/sys/setting/updateMcSetting.ajax" -> detail = "시스템관리 : Marketing Cloud 설정 수정";
+                "/sys/setting/mailSetting.mi" -> detail = "시스템관리 : 메일 정보 설정 조회";
+                "/sys/setting/insertMail.ajax" -> detail = "시스템관리 : 메일 발신주소 등록";
+                "/sys/setting/deleteAddress.ajax" -> detail = "시스템관리 : 메일 발신주소 삭제";
+                "/sys/setting/updateSetLstYn.ajax" -> detail = "시스템관리 : 설정 항목 사용/비사용 상태 수정";
+                "/sys/setting/changeTypeDefYn.ajax" -> detail = "시스템관리 : 설정 항목 기본값 수정";
                 "/coupon/couponList.mi" -> detail = "쿠폰 : 쿠폰 리스트 페이지 조회";
                 "/coupon/couponRegister.mi" -> detail = "쿠폰 : 쿠폰 등록 페이지 접속";
                 "/coupon/couponUpdate.mi" -> detail = "쿠폰 : 쿠폰 수정 페이지 접속";
@@ -98,7 +159,14 @@ class InterceptorHandler : HandlerInterceptor {
                 "/coupon/getCouponIssuedLogList.ajax" -> detail = "쿠폰 : 쿠폰 발급 내역 조회";
                 "/coupon/extractExcel.ajax" -> detail = "쿠폰 : 쿠폰 발급 대상자 엑셀 추출";
 
-                else -> checkIn = false
+                // URL 에 변수가 포함되어 정확히 일치하지 않는 경우
+                else -> {
+                    if (url.startsWith("/cont/mdmDetail/")) {
+                        detail = "메시지 : 문자 컨텐츠 상세 조회"
+                    } else {
+                        checkIn = false
+                    }
+                }
             }
             if (checkIn) {
                 val userInfo = UsefulUtils.sessionUser()

@@ -2,6 +2,7 @@ package com.omnilab.micrm.controller
 
 import com.omnilab.micrm.common.CommonUtils
 import com.omnilab.micrm.common.UsefulUtils
+import com.omnilab.micrm.model.BanWordHst_searchDto
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.Tblmi_comm_cdDto
@@ -48,6 +49,32 @@ class ReportController {
         val view = ModelAndView("report/main")
         val map = reportService.getReportLst(UsefulUtils.sessionUser().usr_grp_cd!!)
         view.addObject("tableauUrl", map["tableauUrl"])
+        return view
+    }
+
+    /**
+     * @Method Name  : banWordHst
+     * @param    : dto: BanWordHst_searchDto
+     * @return   : ModelAndView
+     * @Method Decription : 금칙어 차단 이력 조회
+     * @title : 금칙어 차단 이력 조회
+     */
+    @GetMapping("/report/banWordHst.mi")
+    fun banWordHst(@ModelAttribute dto: BanWordHst_searchDto): ModelAndView {
+        val view = ModelAndView("report/banWordHst")
+        val map = reportService.getBanWordHstList(dto)
+
+        view.addObject("list", map["list"])
+        view.addObject("page", map["page"])
+        view.addObject("pageNo", map["pageNo"])
+        view.addObject("cnt", map["cnt"])
+        view.addObject("blkTp", dto.blk_tp)
+        view.addObject("banTp", dto.ban_tp)
+        view.addObject("searchType", dto.searchType)
+        view.addObject("searchValue", dto.searchValue)
+        view.addObject("stdt", dto.st_dt)
+        view.addObject("enddt", dto.end_dt)
+
         return view
     }
 

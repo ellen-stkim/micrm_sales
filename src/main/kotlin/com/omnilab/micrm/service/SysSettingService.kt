@@ -91,4 +91,7 @@ interface SysSettingService {
     fun deleteNaverApp(lstDto: Tblmi_set_lstDto): Map<String, Any>
     fun isExistNaverApi(usrCd: String): Map<String, Any>
 
+    fun getMcSetting(): Map<String, Any>
+    fun updateMcSetting(param: Map<String, String>): Map<String, Any>
+
 }

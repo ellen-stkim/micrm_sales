@@ -826,4 +826,32 @@ class SysSettingController {
         return kkoRestApiService.checkBrand(key)
     }
 
+    /**
+     * @Method Name  : mcSetting
+     * @return   : ModelAndView
+     * @Method Decription : Marketing Cloud 설정 페이지 조회
+     * @title : Marketing Cloud 설정 페이지 조회
+     */
+    @GetMapping("/mcSetting.mi")
+    fun mcSetting() : ModelAndView {
+        val view = ModelAndView("sys/setting/mcSetting")
+        val map = sysSettingService.getMcSetting()
+        view.addObject("cdMap", map["cdMap"])
+
+        return view;
+    }
+
+    /**
+     * @Method Name  : updateMcSetting
+     * @param    : param: Map<String, String> (grp_id 별 입력 값)
+     * @return   : Map<String, Any>
+     * @Method Decription : Marketing Cloud 설정 저장
+     * @title : Marketing Cloud 설정 저장
+     */
+    @ResponseBody
+    @PostMapping("/updateMcSetting.ajax")
+    fun updateMcSetting(@RequestParam param: Map<String, String>) : Map<String, Any> {
+        return sysSettingService.updateMcSetting(param)
+    }
+
 }

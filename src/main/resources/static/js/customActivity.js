@@ -219,7 +219,7 @@ define(["postmonger"], function (Postmonger) {
 				if(response.status) {
 					save();
 				} else {
-					popup.popAlert("모바일 컨텐츠 저장 도중 오류가 발생했습니다. \n동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다.");
+					popup.popAlert(response.errMsg ? response.errMsg : "모바일 컨텐츠 저장 도중 오류가 발생했습니다. \n동일 증상이 반복되면 관리자에게 관리자에게 문의 바랍니다.");
 				}
 			}
 		}

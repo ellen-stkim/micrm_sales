@@ -825,4 +825,114 @@ class SysSettingServiceImpl : SysSettingService {
         return kkoRestApiService.createClient(cliMap)
     }
 
+    /**
+     * @Method Name  : getMcSetting
+     * @return   : Map<String, Any>
+     * @Method Decription : 로그인 사용자 그룹의 Marketing Cloud 설정 조회 (인증 정보는 마스킹)
+     * @title : Marketing Cloud 설정 조회
+     */
+    override fun getMcSetting(): Map<String, Any> {
+        val map = HashMap<String, Any>()
+
+        val cdMap = HashMap<String, String?>()
+        for (cd in selMcCommCd()) {
+            cdMap[cd.grp_id!!] = if (MC_SECRET_GRP_ID.contains(cd.grp_id)) maskSecret(cd.cd_val) else cd.cd_val
+        }
+        map["cdMap"] = cdMap
+
+        return map
+    }
+
+    /**
+     * @Method Name  : updateMcSetting
+     * @param    : param: Map<String, String> (grp_id 별 입력 값)
+     * @return   : Map<String, Any>
+     * @Method Decription : Marketing Cloud 설정 저장. 등록된 코드가 없으면 신규 등록한다.
+     *                      인증 정보(Client Secret, JWT)는 입력 값이 없으면 기존 값을 유지한다.
+     * @title : Marketing Cloud 설정 저장
+     */
+    override fun updateMcSetting(param: Map<String, String>): Map<String, Any> {
+        val userInfo = UsefulUtils.sessionUser()
+        val statusMap: MutableMap<String, Any> = HashMap()
+
+        val cdMap = selMcCommCd().associateBy { it.grp_id }
+
+        for (mcCd in MC_COMM_CD) {
+            val cdVal = param[mcCd.grpId]?.trim() ?: continue
+
+            // 인증 정보는 입력하지 않으면 기존 값 유지
+            if (cdVal.isBlank() && MC_SECRET_GRP_ID.contains(mcCd.grpId)) continue
+
+            val dto = cdMap[mcCd.grpId]
+            if (dto != null) {
+                dto.cd_val = cdVal
+                sysSettingDao.upd_tblmi_comm_cd(dto)
+            } else if (cdVal.isNotBlank()) {
+                val insDto = Tblmi_comm_cdDto()
+                insDto.grp_id = mcCd.grpId
+                insDto.grp_nm = mcCd.grpNm
+                insDto.cd_id = userInfo.usr_grp_cd
+                insDto.cd_nm = mcCd.cdNm
+                insDto.cd_val = cdVal
+                insDto.par_id = MC_PAR_ID
+                insDto.par_nm = MC_PAR_ID
+                insDto.use_yn = "Y"
+                insDto.reg_id = userInfo.usr_id
+                sysSettingDao.ins_tblmi_comm_cd(insDto)
+            }
+        }
+
+        return statusMap
+    }
+
+    /**
+     * @Method Name  : selMcCommCd
+     * @return   : MutableList<Tblmi_comm_cdDto>
+     * @Method Decription : 로그인 사용자 그룹(cd_id)의 Marketing Cloud 공통코드 조회
+     * @title : Marketing Cloud 공통코드 조회
+     */
+    private fun selMcCommCd(): MutableList<Tblmi_comm_cdDto> {
+        val dto = Tblmi_comm_cdDto()
+        dto.cd_id = UsefulUtils.sessionUser().usr_grp_cd
+        dto.grpIdLst = MC_COMM_CD.map { it.grpId }.toMutableList()
+
+        return sysSettingDao.getCommCDLst(dto)
+    }
+
+    /**
+     * @Method Name  : maskSecret
+     * @return   : String?
+     * @Method Decription : 앞 4자리, 뒤 4자리만 남기고 원본 길이 그대로 마스킹 (9자리 미만은 전체 마스킹)
+     * @title : 인증 정보 마스킹
+     */
+    private fun maskSecret(value: String?): String? {
+        if (value.isNullOrBlank()) return value
+
+        return if (value.length > 8) {
+            value.take(4) + "*".repeat(value.length - 8) + value.takeLast(4)
+        } else {
+            "*".repeat(value.length)
+        }
+    }
+
+    private class McCommCd(val grpId: String, val grpNm: String, val cdNm: String)
+
+    companion object {
+        private const val MC_PAR_ID = "SALESFORCE"
+
+        /** 마스킹 대상 인증 정보 */
+        private val MC_SECRET_GRP_ID = listOf("SALES_SEC", "SALES_JWT")
+
+        /** Marketing Cloud 설정 항목. 코드명은 시스템 정보(/sys/info/main.mi) 화면과 동일하게 맞춘다. */
+        private val MC_COMM_CD = listOf(
+            McCommCd("SALES_AUTH_URL", "세일즈포스 AUTH Base URI", "세일즈포스 AUTH Base URI"),
+            McCommCd("SALES_REST_URL", "세일즈포스 REST Base URI", "세일즈포스 REST Base URI"),
+            McCommCd("SALES_SOAP_URL", "세일즈포스 SOAP Base URI", "세일즈포스 SOAP Base URI"),
+            McCommCd("SALES_TOTAL", "세일즈포스 DERowCount", "세일즈포스 DE Count 랜딩페이지"),
+            McCommCd("SALES_CID", "세일즈포스 Client Id", "세일즈포스 Client Id"),
+            McCommCd("SALES_SEC", "세일즈포스 Client Secret", "세일즈포스 Client Secret"),
+            McCommCd("SALES_JWT", "세일즈포스 JWT", "세일즈포스 JWT")
+        )
+    }
+
 }

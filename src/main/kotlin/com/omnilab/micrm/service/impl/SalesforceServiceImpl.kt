@@ -63,6 +63,13 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 class SalesforceServiceImpl : SalesforceService {
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)!!
 
+    // 본문에서 전화번호 형태(숫자 사이에 하이픈/점만 허용)의 토큰을 찾는다. 공백으로 끊어 숫자가 이어붙는 오탐을 막는다.
+    private val telPattern = Regex("[0-9][0-9.\\-]{6,}[0-9]")
+    private val numberPattern = Regex("[^0-9]")
+
+    // 차단 규칙 하나를 구성할 수 있는 차단정보 최대 개수
+    private val banRuleMax = 5
+
     @Autowired
     private lateinit var salesforceDao: SalesforceDao
 
@@ -77,6 +84,10 @@ class SalesforceServiceImpl : SalesforceService {
     @Autowired
     @Qualifier("ContentDaoImpl")
     private lateinit var contentDao: ContentDao
+
+    @Autowired
+    @Qualifier("CommonDaoImpl")
+    private lateinit var commonDao: CommonDao
 
     @Autowired
     @Qualifier("CampaignDaoImpl")
@@ -228,6 +239,11 @@ class SalesforceServiceImpl : SalesforceService {
             return isByte
         }
 
+        val isBanWord = isCheckBanWord(dto)
+        if (!isBanWord.status!!) {
+            return isBanWord
+        }
+
         val tblmiContMstDto = Tblmi_cont_mstDto()
         try {
             tblmiContMstDto.apply {
@@ -321,6 +337,9 @@ class SalesforceServiceImpl : SalesforceService {
 
         val isByte = isCheckByte(createDto)
         if (!isByte.status!!) return isByte
+
+        val isBanWord = isCheckBanWord(createDto)
+        if (!isBanWord.status!!) return isBanWord
 
         val tblmiContMstDto = Tblmi_cont_mstDto()
         try {
@@ -913,10 +932,30 @@ class SalesforceServiceImpl : SalesforceService {
                         // 문자
                         else -> {
                             val sendTo = inArguments[contTpLst["DMTP02"]?.from_to]
+                            val banWord = findBanWord(contTpLst["DMTP02"]?.cont_sub, contTpLst["DMTP02"]?.cont_body)
                             if(sendTo == null){
                                 logger.error("sendTo == null")
                                 exMap["inArguments"] = exMap["inArguments"].toString()
                                 salesforceDao.ins_tblmicp_sales_execute(exMap)
+                            }else if(banWord.isNotEmpty()){
+                                // 금칙어가 포함된 경우 발송하지 않는다. 의도된 차단이므로 미처리 요청(tblmicp_sales_execute)으로 남기지 않는다.
+                                logger.error("SMS Ban Word Error. cont_id: {}, banWord: {}", campaignDto.cont_id, banWordText(banWord))
+
+                                for (cd in banWord) {
+                                    insBanWordHst(Tblmi_ban_word_hstDto().apply {
+                                        blk_tp = "SEND"
+                                        ban_rule = cd.par_id
+                                        ban_tp = cd.cd_id
+                                        ban_word = cd.cd_val
+                                        cont_cd = campaignDto.cont_id
+                                        camp_id = campaignDto.seq
+                                        send_to = sendTo.toString()
+                                        cont_sub = contTpLst["DMTP02"]?.cont_sub
+                                        cont_body = contTpLst["DMTP02"]?.cont_body
+                                        usr_grp_cd = campaignDto.usr_grp_cd
+                                        reg_id = campaignDto.reg_id
+                                    })
+                                }
                             }else{
                                 sendHstDto.send_to = sendTo.toString()
                                 campaignDao.ins_programSendHst(sendHstDto)
@@ -1128,6 +1167,137 @@ class SalesforceServiceImpl : SalesforceService {
         }
         re.status = true
         return re
+    }
+
+    /**
+     * @Method Name  : findBanWord
+     * @param    : contSub: String?
+     * @param    : contBody: String?
+     * @return   : List<Tblmi_comm_cdDto>
+     * @Method Decription : 제목/본문에 포함된 금칙어를 조회한다. 금칙어는 사용자 그룹 구분 없이 공통으로 적용한다.
+     *                      종류(cd_id)별로 비교 방식이 다르다.
+     *                      URL : http(s)://, www. 을 제거하고 비교 / TEL : 숫자만 남겨 비교 / 그 외(KEYWORD) : 문자열 부분일치
+     * @title : 금칙어 조회
+     */
+    private fun findBanWord(contSub: String?, contBody: String?): List<Tblmi_comm_cdDto> {
+        val text = (contSub ?: "") + " " + (contBody ?: "")
+        if (text.isBlank()) return emptyList()
+
+        val keywordText = text.lowercase()
+        val urlText = normalizeUrl(text)
+        val telLst = telPattern.findAll(text).map { onlyNumber(it.value) }.toList()
+
+        // 같은 par_id(차단 규칙)로 묶인 차단정보를 하나의 조합으로 본다. par_id 가 없으면 해당 건 단독으로 규칙을 이룬다.
+        val ruleMap = systemDao.getCommCDList(Tblmi_comm_cdDto("BAN_WORD"))
+            .filter { !it.cd_val.isNullOrBlank() }
+            .groupBy { it.par_id ?: it.seq.toString() }
+
+        ruleMap.filter { it.value.size > banRuleMax }
+            .forEach { logger.error("Ban word rule exceeds max({}). par_id: {}, size: {}", banRuleMax, it.key, it.value.size) }
+
+        // 규칙에 묶인 차단정보가 모두 포함될 때만 차단한다.
+        return ruleMap.filterValues { rule -> rule.all { isBanWordMatched(it, keywordText, urlText, telLst) } }
+            .values.flatten()
+    }
+
+    /**
+     * @Method Name  : isBanWordMatched
+     * @param    : cd: Tblmi_comm_cdDto (차단정보)
+     * @return   : Boolean
+     * @Method Decription : 차단정보 한 건이 문자 내용에 포함되어 있는지 종류별로 확인한다.
+     * @title : 차단정보 포함 여부
+     */
+    private fun isBanWordMatched(cd: Tblmi_comm_cdDto, keywordText: String, urlText: String, telLst: List<String>): Boolean {
+        val banVal = cd.cd_val!!.trim()
+
+        return when (cd.cd_id) {
+            "URL" -> urlText.contains(normalizeUrl(banVal))
+            "TEL" -> telLst.any { it.contains(onlyNumber(banVal)) }
+            else -> keywordText.contains(banVal.lowercase())
+        }
+    }
+
+    /**
+     * @Method Name  : normalizeUrl
+     * @Method Decription : URL 비교를 위해 소문자로 바꾸고 http(s):// 와 www. 을 제거한다.
+     * @title : URL 정규화
+     */
+    private fun normalizeUrl(value: String): String {
+        return value.lowercase()
+            .replace("https://", "")
+            .replace("http://", "")
+            .replace("www.", "")
+    }
+
+    /**
+     * @Method Name  : onlyNumber
+     * @Method Decription : 전화번호 비교를 위해 숫자만 남긴다.
+     * @title : 숫자만 추출
+     */
+    private fun onlyNumber(value: String): String {
+        return value.replace(numberPattern, "")
+    }
+
+    /**
+     * @Method Name  : banWordText
+     * @Method Decription : 로그 기록용으로 검출된 금칙어를 "종류:값" 형태로 나열한다.
+     * @title : 금칙어 로그 문자열
+     */
+    private fun banWordText(banWord: List<Tblmi_comm_cdDto>): String {
+        return banWord.joinToString(", ") { "${it.cd_id}:${it.cd_val}" }
+    }
+
+    /**
+     * @Method Name  : isCheckBanWord
+     * @param    : dto: Content_list_CreateDto
+     * @return   : ReturnDto
+     * @Method Decription : 문자 제목/본문에 금칙어가 포함되어 있는지 확인한다.
+     * @title : 문자 금칙어 확인
+     */
+    private fun isCheckBanWord(dto: Content_list_CreateDto): ReturnDto {
+        val re = ReturnDto()
+        val contSub = dto.cont_sub_list!![1].trim()
+        val banWord = findBanWord(contSub, dto.sms_body)
+
+        if (banWord.isNotEmpty()) {
+            val userInfo = UsefulUtils.sessionUser()
+            logger.error("SMS Ban Word Error. mst_seq: {}, banWord: {}", dto.mst_seq, banWordText(banWord))
+
+            for (cd in banWord) {
+                insBanWordHst(Tblmi_ban_word_hstDto().apply {
+                    blk_tp = "SAVE"
+                    ban_rule = cd.par_id
+                    ban_tp = cd.cd_id
+                    ban_word = cd.cd_val
+                    cont_cd = dto.mst_seq?.toIntOrNull()
+                    cont_sub = contSub
+                    cont_body = dto.sms_body
+                    usr_grp_cd = userInfo.usr_grp_cd
+                    reg_id = userInfo.usr_id
+                })
+            }
+
+            re.status = false
+            re.errMsg = "문자 내용에 금칙어가 포함되어 있습니다. (${banWord.joinToString(", ") { it.cd_val ?: "" }})"
+            return re
+        }
+
+        re.status = true
+        return re
+    }
+
+    /**
+     * @Method Name  : insBanWordHst
+     * @param    : dto: Tblmi_ban_word_hstDto
+     * @Method Decription : 금칙어 차단 이력을 기록한다. 이력 기록 실패가 차단 처리에 영향을 주지 않도록 예외를 흡수한다.
+     * @title : 금칙어 차단 이력 기록
+     */
+    private fun insBanWordHst(dto: Tblmi_ban_word_hstDto) {
+        try {
+            commonDao.ins_tblmi_ban_word_hst(dto)
+        } catch (e: Exception) {
+            logger.error("insBanWordHst", e)
+        }
     }
 
     /**

@@ -1,11 +1,13 @@
 package com.omnilab.micrm.service.impl
 
 import com.omnilab.micrm.common.UsefulUtils
+import com.omnilab.micrm.model.BanWordHst_searchDto
 import com.omnilab.micrm.model.Program_SearchDto
 import com.omnilab.micrm.model.SendReportDto
 import com.omnilab.micrm.model.table.*
 import com.omnilab.micrm.repository.CampaignDao
 import com.omnilab.micrm.repository.CampaignReportDao
+import com.omnilab.micrm.repository.CommonDao
 import com.omnilab.micrm.repository.SysSettingDao
 import com.omnilab.micrm.service.ReportService
 import org.slf4j.LoggerFactory
@@ -32,6 +34,9 @@ class ReportServiceImpl : ReportService {
 
     @Autowired
     private lateinit var campaignReportDao: CampaignReportDao
+
+    @Autowired
+    private lateinit var commonDao: CommonDao
 
     override fun getReportLst(usr_grp_cd: String): Map1<String, Any?> {
         val re_map = HashMap<String, Any?>()
@@ -304,6 +309,35 @@ class ReportServiceImpl : ReportService {
         map["page"] = paginationInfo
         map["pageNo"] = paginationInfo.currentPageNo
         map["listCnt"] = paginationInfo.totalRecordCount
+        return map
+    }
+
+    /**
+     * @Method Name  : getBanWordHstList
+     * @param    : dto: BanWordHst_searchDto
+     * @return   : MutableMap<String, Any>
+     * @Method Decription : 로그인 사용자 그룹의 금칙어 차단 이력 목록을 조회한다.
+     * @title : 금칙어 차단 이력 조회
+     */
+    override fun getBanWordHstList(dto: BanWordHst_searchDto): MutableMap<String, Any> {
+        val map = HashMap<String, Any>()
+
+        when (dto.searchType) {
+            "ban_word" -> dto.ban_word = dto.searchValue
+            "send_to" -> dto.send_to = dto.searchValue
+        }
+
+        dto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
+
+        val paginationInfo = UsefulUtils.makePage(dto.pageNo, 10, 10)
+        dto.firstIndex = paginationInfo.firstRecordIndex
+        dto.recordCountPerPage = paginationInfo.recordCountPerPage
+        paginationInfo.totalRecordCount = commonDao.sel_tblmi_ban_word_hstCnt(dto)
+
+        map["list"] = commonDao.sel_tblmi_ban_word_hst(dto)
+        map["page"] = paginationInfo
+        map["pageNo"] = paginationInfo.currentPageNo
+        map["cnt"] = paginationInfo.totalRecordCount
         return map
     }
 }

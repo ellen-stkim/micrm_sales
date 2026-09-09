@@ -16,4 +16,5 @@ interface ReportService {
     fun getDetOpenDet(seqs: Array<String>): List<Any>
     fun getClickList(contId: Int): MutableList<HashMap<String, Any?>>
     fun getCampMstContIdByProId(proId: String): MutableList<String>?
+    fun getBanWordHstList(dto: com.omnilab.micrm.model.BanWordHst_searchDto): MutableMap<String, Any>
 }
