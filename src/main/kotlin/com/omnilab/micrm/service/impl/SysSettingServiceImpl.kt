@@ -52,40 +52,6 @@ class SysSettingServiceImpl : SysSettingService {
         returnMap["ckFileNm"] = dto.file_nm!!;
         return returnMap;
     }
-
-    override fun getMailSettingList(dto: Tblmi_set_lstDto): MutableMap<String, Any> {
-
-        val map: MutableMap<String, Any> = HashMap()
-        val searchDto = dto as SetLst_searchDto
-
-        val pageNo = searchDto.pageNo
-
-        if (searchDto.searchType == "list_nm") {
-            searchDto.list_nm = searchDto.searchValue
-        } else if (searchDto.searchType == "list_val") {
-            searchDto.list_val = searchDto.searchValue
-        } else if (searchDto.searchType == "use_yn") {
-            searchDto.use_yn = searchDto.searchValue
-        }
-
-        searchDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        searchDto.list_tp_id = "CH01"
-        searchDto.list_dt_id = "DMTP01"
-
-        val paginationInfo: PaginationInfo = UsefulUtils.makePage(pageNo, 10, 10)
-
-        searchDto.firstIndex = paginationInfo.firstRecordIndex
-        searchDto.recordCountPerPage = paginationInfo.recordCountPerPage
-        paginationInfo.totalRecordCount = sysSettingDao.getMailSettingListCnt(searchDto)
-
-        map["page"] = paginationInfo
-        map["pageNo"] = paginationInfo.currentPageNo
-        map["cnt"] = paginationInfo.totalRecordCount
-        map["list"] = sysSettingDao.getMailSettingList(searchDto);
-
-        return map;
-    }
-
     override fun getCommCD(dto: Tblmi_comm_cdDto): Tblmi_comm_cdDto? {
         return sysSettingDao.getCommCD(dto)
     }
@@ -130,52 +96,6 @@ class SysSettingServiceImpl : SysSettingService {
         statusMap["status"] = result >= 1
         return statusMap
     }
-
-    override fun insertMailLst(lstDto: Tblmi_set_lstDto): Map<String, Any> {
-
-        val userInfo = UsefulUtils.sessionUser()
-        val statusMap: MutableMap<String, Any> = HashMap()
-
-        lstDto.list_tp_id = "CH01"
-        lstDto.list_dt_id = "DMTP01"
-        lstDto.usr_grp_cd = userInfo.usr_grp_cd
-        lstDto.reg_id = userInfo.usr_id
-
-        val result = sysSettingDao.insertSetLst(lstDto)
-
-        return statusMap
-    }
-
-    override fun isExistMailAddress(lstDto: Tblmi_set_lstDto): Map<String, Any> {
-
-        val statusMap: MutableMap<String, Any> = HashMap();
-
-        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        lstDto.list_tp_id = "CH01"
-        lstDto.list_dt_id = "DMTP01"
-
-        val cntResult = sysSettingDao.isExistSelLst(lstDto)
-
-        statusMap["status"] = cntResult <= 0
-
-        return statusMap
-    }
-
-    override fun isExistMailAddressModify(lstDto: Tblmi_set_lstDto): Map<String, Any> {
-
-        val statusMap: MutableMap<String, Any> = HashMap();
-
-        lstDto.usr_grp_cd = UsefulUtils.sessionUser().usr_grp_cd
-        lstDto.list_tp_id = "CH01"
-        lstDto.list_dt_id = "DMTP01"
-
-        val cntResult = sysSettingDao.isExistModifyAddress(lstDto)
-
-        statusMap["status"] = cntResult <= 0
-
-        return statusMap
-    }
-
     override fun deleteSetLst(dto: Tblmi_set_lstDto): Map<String, Any> {
 
         val statusMap: MutableMap<String, Any> = HashMap();

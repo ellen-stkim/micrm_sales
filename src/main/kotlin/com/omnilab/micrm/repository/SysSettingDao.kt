@@ -7,9 +7,7 @@ interface SysSettingDao {
 
     fun insertNoticeFile(dto: Tblmi_noti_fileDto) : Int
 
-    fun getMailSettingListCnt(dto: Tblmi_set_lstDto) : Int
 
-    fun getMailSettingList(dto: Tblmi_set_lstDto) : List<Tblmi_set_lstDto>
 
     fun getCommCD(dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?
 

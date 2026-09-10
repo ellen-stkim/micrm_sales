@@ -9,7 +9,6 @@ interface SysSettingService {
     //공지사항 파일 업로드 정보 저장
     fun insertNoticeFile(map :MutableMap<String, Any>): MutableMap<String, Any>
 
-    fun getMailSettingList(dto: Tblmi_set_lstDto):MutableMap<String, Any>
 
     fun getCommCD(dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?
 
@@ -19,15 +18,6 @@ interface SysSettingService {
 
     // 발신자 리스트 Y,N 값 변경하기
     fun updateSetLstYn(dto : Tblmi_set_lstDto) : Map<String,Any>
-
-    // 메일 주소 저장하기
-    fun insertMailLst(dto : Tblmi_set_lstDto) : Map<String,Any>
-
-    // 메일 주소 중복 검사하기
-    fun isExistMailAddress(dto : Tblmi_set_lstDto) : Map<String,Any>
-
-    // 메일 주소 수정 중복 검사하기
-    fun isExistMailAddressModify(dto : Tblmi_set_lstDto) : Map<String,Any>
 
     // 메일 주소 삭제
     fun deleteSetLst(dto: Tblmi_set_lstDto) : Map<String,Any>

@@ -140,9 +140,7 @@ class InterceptorHandler : HandlerInterceptor {
                 "/sys/setting/deleteNaverApp.ajax" -> detail = "시스템관리 : 네이버 Short URL 설정 삭제";
                 "/sys/setting/mcSetting.mi" -> detail = "시스템관리 : Marketing Cloud 설정 조회";
                 "/sys/setting/updateMcSetting.ajax" -> detail = "시스템관리 : Marketing Cloud 설정 수정";
-                "/sys/setting/mailSetting.mi" -> detail = "시스템관리 : 메일 정보 설정 조회";
-                "/sys/setting/insertMail.ajax" -> detail = "시스템관리 : 메일 발신주소 등록";
-                "/sys/setting/deleteAddress.ajax" -> detail = "시스템관리 : 메일 발신주소 삭제";
+                "/sys/setting/deleteAddress.ajax" -> detail = "시스템관리 : 발신 정보 삭제";
                 "/sys/setting/updateSetLstYn.ajax" -> detail = "시스템관리 : 설정 항목 사용/비사용 상태 수정";
                 "/sys/setting/changeTypeDefYn.ajax" -> detail = "시스템관리 : 설정 항목 기본값 수정";
                 "/coupon/couponList.mi" -> detail = "쿠폰 : 쿠폰 리스트 페이지 조회";

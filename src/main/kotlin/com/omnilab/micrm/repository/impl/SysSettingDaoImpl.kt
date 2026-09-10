@@ -20,15 +20,6 @@ class SysSettingDaoImpl: SysSettingDao{
     override fun insertNoticeFile(dto: Tblmi_noti_fileDto) : Int {
         return sqlSession.insert("insertNoticeFile", dto)
     }
-
-    override fun getMailSettingListCnt(dto: Tblmi_set_lstDto): Int {
-        return sqlSession.selectOne("getMailSettingListCnt", dto);
-    }
-
-    override fun getMailSettingList(dto: Tblmi_set_lstDto): List<Tblmi_set_lstDto> {
-        return sqlSession.selectList("getMailSettingList", dto);
-    }
-
     override fun getCommCD(dto: Tblmi_comm_cdDto) : Tblmi_comm_cdDto?{
         return sqlSession.selectOne("getCommCD", dto)
     }

@@ -206,22 +206,6 @@ class SysSettingController {
     }
 
 
-    /**
-     * 
-     */
-    @GetMapping("/mailSetting.mi")
-    fun mailSetting(): ModelAndView {
-        val view = ModelAndView("sys/setting/mailSetting")
-        val dto = SetLst_searchDto()
-        val map = sysSettingService.getMailSettingList(dto)
-        view.addObject("list",map["list"])
-        view.addObject("page",map["page"])
-        view.addObject("pageNo",map["pageNo"])
-
-        return view
-    }
-
-
     @ResponseBody
     @RequestMapping("/upload.mi")
     fun upload(@RequestParam("upload") file: MultipartFile, request: HttpServletRequest, session:HttpSession): MutableMap<String, Any> {
@@ -247,15 +231,6 @@ class SysSettingController {
         return map
     }
 
-    @PostMapping("/getMailSettingList.ajax")
-    fun getMailSettingList(@ModelAttribute("form") dto : SetLst_searchDto): ModelAndView {
-        val view = ModelAndView("sys/setting/ajax/getMailSettingList")
-        val map = sysSettingService.getMailSettingList(dto)
-        view.addObject("list", map["list"])
-        view.addObject("page", map["page"])
-        view.addObject("pageNo", map["pageNo"])
-        return view
-    }
 
 
 
@@ -296,63 +271,6 @@ class SysSettingController {
     @PostMapping("/changeTypeDefYn.ajax")
     fun changeTypeDefYn(lstDto: Tblmi_set_lstDto) : Map<String,Any>  {
         return sysSettingService.updateSetTypeYn(lstDto)
-    }
-
-    /**
-     * @Method Name  : insertMail
-     * @Since    : 2021. 03. 29
-     * @author   : Grayson
-     * @param    : lstDto: Tblmi_set_lstDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 메일 주소 INSERT 하기
-     * @title : 메일 주소 INSERT 하기
-     */
-
-    @ResponseBody
-    @PostMapping("/insertMail.ajax")
-    fun insertMailLst(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
-        return sysSettingService.insertMailLst(lstDto)
-    }
-
-    /**
-     * @Method Name  : isExistMailAddress
-     * @Since    : 2021. 03. 29
-     * @author   : Grayson
-     * @param    : lstDto: Tblmi_set_lstDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 메일 주소 저장시 중복 여부 확인하기
-     * @title : 메일 주소 중복 확인
-     */
-
-    @ResponseBody
-    @PostMapping("/isExistMailAddress.ajax")
-    fun isExistMailAddress(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
-        return sysSettingService.isExistMailAddress(lstDto)
-    }
-
-    /**
-     * @Method Name  : isExistMailAddressModify
-     * @Since    : 2021. 03. 30
-     * @author   : Grayson
-     * @param    : lstDto: Tblmi_set_lstDto
-     * @return   : Map<String,Any>
-     * @excetion :
-     * @see      :
-     * @version  : 0.01
-     * @Method Decription : 메일 주소 수정 중복여부 확인하기
-     * @title : 메일 주소 수정 중복 확인
-     */
-
-    @ResponseBody
-    @PostMapping("/isExistMailModifyAddress.ajax")
-    fun isExistMailAddressModify(lstDto : Tblmi_set_lstDto) : Map<String,Any> {
-        return sysSettingService.isExistMailAddressModify(lstDto)
     }
 
     /**
