@@ -549,6 +549,8 @@ class SalesforceServiceImpl : SalesforceService {
         return contentDao.getImgNmCh(idto)
     }
 
+    // 기존 스냅샷을 삭제한 뒤 재삽입하므로, 중간 실패 시 스냅샷이 유실되지 않도록 트랜잭션으로 묶는다.
+    @Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor = [ Throwable::class ])
     override fun campaingContent(dto: Tblmi_cont_mstDto): Boolean {
         try {
             val mstDto: Tblmi_cont_mstDto = salesforceDao.sel_tblmi_cont_mstOne(dto)
@@ -671,6 +673,7 @@ class SalesforceServiceImpl : SalesforceService {
                         }
                     } else {
                         logger.error("fillterActivities is null : {}", dto)
+                        return false
                     }
                     return true
                 } else {
