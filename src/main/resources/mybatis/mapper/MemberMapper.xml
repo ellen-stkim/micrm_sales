@@ -7,22 +7,19 @@
 
     <!-- ================================================================= insert ================================================================= -->
     <insert id="insertGroupList" parameterType="Tblmi_group_listDto" useGeneratedKeys="true" keyProperty="seq">
-		INSERT INTO tblmi_target_grp
-            (
-                        grp_nm,
-                        usr_grp_cd,
-                        status,
-                        reg_id,
-                        reg_dt
-            )
-		VALUES
-		    (
-		                #{grp_nm},
-		                #{usr_grp_cd},
-		                #{status},
-		                #{reg_id},
-		                SYSDATE()
-            )
+        INSERT INTO tblmi_target_grp (
+            grp_nm
+            , usr_grp_cd
+            , status
+            , reg_id
+            , reg_dt
+        ) VALUES (
+            #{grp_nm}
+            , #{usr_grp_cd}
+            , #{status}
+            , #{reg_id}
+            , SYSDATE()
+        )
 	</insert>
 
 
@@ -305,7 +302,6 @@
         UPD_DT = now()
     </insert>
 
-
     <select id ="getTblmimst" parameterType="Tblmi_tbl_mstDto" resultType="Tblmi_tbl_mstDto">
         SELECT *
         from tblmi_tbl_mst as mst
@@ -326,7 +322,126 @@
 
     </select>
 
+    <select id="selectGroupListCnt" parameterType="Tblmi_group_listDto" resultType="Int">
+        SELECT Count(seq)
+        FROM   TBLMI_TARGET_GRP
+        <where>
+            STATUS IN ('0','1')
+            and usr_grp_cd =#{usr_grp_cd}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_nm)">
+                and grp_nm LIKE CONCAT('%',#{grp_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_cnt)">
+                and GRP_CNT = #{grp_cnt}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_id)">
+                and REG_ID = #{reg_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        <choose>
+                            <when test="reg_dt.equals(reg_dt_range)">
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ <= ]]> date_add(#{reg_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt_range)">
+                        <choose>
+                            <when test="upd_dt.equals(upd_dt_range)">
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ <= ]]> date_add(#{upd_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
 
+
+    <select id="selectGroupList" parameterType="Tblmi_group_listDto" resultType="Tblmi_group_listDto">
+        SELECT seq
+            , grp_nm
+            , reg_id
+            , reg_dt
+            , upd_dt
+            , grp_cnt
+            , use_yn
+        FROM   TBLMI_TARGET_GRP
+        <where>
+            STATUS IN ('0','1')
+            and usr_grp_cd = #{usr_grp_cd}
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_nm)">
+                and GRP_NM LIKE CONCAT('%',#{grp_nm},'%')
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(grp_cnt)">
+                and GRP_CNT = #{grp_cnt}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_id)">
+                and REG_ID = #{reg_id}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(use_yn)">
+                and use_yn = #{use_yn}
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(reg_dt_range)">
+                        <choose>
+                            <when test="reg_dt.equals(reg_dt_range)">
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ < ]]> date_add(#{reg_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (REG_DT >= #{reg_dt} and reg_dt <![CDATA[ <= ]]> date_add(#{reg_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt)">
+                <choose>
+                    <when test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(upd_dt_range)">
+                        <choose>
+                            <when test="upd_dt.equals(upd_dt_range)">
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt},interval 1 day))
+                            </when>
+                            <otherwise>
+                                and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ < ]]> date_add(#{upd_dt_range},interval 1 day))
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        and (upd_dt >= #{upd_dt} and upd_dt <![CDATA[ <= ]]> date_add(#{upd_dt},interval 1 day))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        order by tblmi_target_grp.REG_DT DESC
+        <if test="!@com.omnilab.micrm.common.CommonUtils@isEmptyObject(firstIndex)">
+            LIMIT #{firstIndex, javaType=int}, #{recordCountPerPage, javaType=int}
+        </if>
+    </select>
 
 </mapper>
 

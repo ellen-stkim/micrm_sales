@@ -14,6 +14,11 @@ interface MemberDao {
 
     fun getTblTblSum(dto : Tblmi_tbl_sumDto) : Tblmi_tbl_sumDto?
 
+    fun selectGroupListCnt(groupListDto: Tblmi_group_listDto) : Int
+    
+    // 업로드 그룹 리스트
+    fun selectGroupList(groupListDto : Tblmi_group_listDto) : List<Tblmi_group_listDto>
+    
     // 트랜잭션 처리를 위한 멤버 타겟 서비스 저장
     fun insertTargetGrp(file : MultipartFile, excel_file: InputStream, dto: Tblmi_group_usrDto) : Map<String,Any>
 

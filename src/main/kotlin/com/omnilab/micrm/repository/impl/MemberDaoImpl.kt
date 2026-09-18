@@ -60,7 +60,15 @@ class MemberDaoImpl : MemberDao {
     override fun selectGroupUserListCnt(groupUserDto: Tblmi_group_usrDto): Int {
         return sqlSession.selectOne("selectGroupUserListCnt", groupUserDto)
     }
-
+    
+    override fun selectGroupListCnt(groupListDto: Tblmi_group_listDto): Int {
+        return sqlSession.selectOne("selectGroupListCnt", groupListDto)
+    }
+    
+    override fun selectGroupList(groupListDto: Tblmi_group_listDto): List<Tblmi_group_listDto> {
+        return sqlSession.selectList("selectGroupList", groupListDto)
+    }
+    
     override fun insertTargetGrp(file: MultipartFile, excel_file: InputStream, dto: Tblmi_group_usrDto): Map<String, Any> {
 
         val dto = dto as GroupUsr_SearchDto
