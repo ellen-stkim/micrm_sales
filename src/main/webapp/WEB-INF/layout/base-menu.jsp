@@ -11,12 +11,14 @@
 <nav class="nav">
 	<!-- gnb 영역 시작 -->
 	<ul class="gnb">
+        <%--
         <li>
             <span>회원 관리</span>
             <ul class="sub_menu">
                 <li<c:if test="${fn:contains(urlPath, '/mbr/campmbr')}"> class='on'</c:if>><a href="/mbr/campmbr.mi">업로드 회원</a></li>
             </ul>
         </li>
+        --%>
 		<li>
 			<span>메시지</span>
 			<ul class="sub_menu">
