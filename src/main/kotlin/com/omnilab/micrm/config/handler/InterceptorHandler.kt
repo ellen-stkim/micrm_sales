@@ -25,7 +25,7 @@ class InterceptorHandler : HandlerInterceptor {
 
     override fun preHandle(req: HttpServletRequest, rep: HttpServletResponse, handler: Any): Boolean {
         req.characterEncoding = "UTF-8"
-        rep.contentType = "text/html; charset=UTF-8"
+        //rep.contentType = "text/html; charset=UTF-8"
 
         if (handler is ResourceHttpRequestHandler) {
             return true

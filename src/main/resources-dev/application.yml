@@ -44,7 +44,7 @@ variable:
   share-username: ENC(ysXvvktmQZPKfx6DyEVVatZat1KueviWusCJmMO0o6NQcfTfmTq77hZNN/4OH6mv)
   share-password: ENC(DpPCIrO3zhhkShd2ciqoyktEBSpYuLITCgelA3gYWj55059S6NTh2C5Yj/NxDxnD)
 
-  static-path : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static"
+  static-path : "/data/tomcat_micrm_mca/webapps/ROOT/WEB-INF/classes/static"
   tableau-url: "https://t.tableau-report.com/trusted"
 
   coupon-image-path: "sales/dev"
@@ -56,8 +56,8 @@ variable:
   biz-id: R000000015
 
 upload:
-  src : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
-  content : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
+  src : "/data/tomcat_micrm_mca/webapps/ROOT/WEB-INF/classes/static/image/upload/notice"
+  content : "/data/tomcat_micrm_mca/webapps/ROOT/WEB-INF/classes/static/image/upload/content"
   upd_content: "/image/upload/content"
-  temp : "/data/tomcat_micrm_sales/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
+  temp : "/data/tomcat_micrm_mca/webapps/ROOT/WEB-INF/classes/static/image/upload/temp"
 
